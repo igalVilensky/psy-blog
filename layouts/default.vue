@@ -1,14 +1,19 @@
 <template>
-  <div>
-    <header class="p-4 bg-blue-600 text-white">
-      <h1 class="text-2xl">My Site Header</h1>
-    </header>
+  <div class="flex flex-col min-h-screen">
+    <!-- TopBar -->
+    <TopBar />
+
+    <!-- Page Content (Main Content) -->
     <main>
-      <!-- This is where the page content gets injected -->
-      <NuxtPage />
+      <NuxtPage class="flex-grow" />
     </main>
-    <footer class="p-4 bg-gray-800 text-white text-center">
-      <p>My Site Footer</p>
-    </footer>
+
+    <!-- Footer -->
+    <Footer />
   </div>
 </template>
+
+<script setup>
+import TopBar from "@/components/ui/TopBar.vue";
+import Footer from "@/components/ui/Footer.vue";
+</script>
