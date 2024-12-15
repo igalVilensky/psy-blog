@@ -43,7 +43,7 @@
             to="/tests"
             class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-purple-400"
           >
-            Тесты
+            Карты глубоких разговоров
           </NuxtLink>
         </li>
         <li>
@@ -52,6 +52,14 @@
             class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-purple-400"
           >
             Блог
+          </NuxtLink>
+        </li>
+        <li>
+          <NuxtLink
+            to="/about"
+            class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-purple-400"
+          >
+            О проекте
           </NuxtLink>
         </li>
         <li>
@@ -135,7 +143,7 @@
               class="block px-8 py-2 transition-colors duration-500 ease-in-out hover:bg-blue-500"
               @click="closeDropdown"
             >
-              Тесты
+              Карты глубоких разговоров
             </NuxtLink>
           </li>
           <li class="text-white">
@@ -145,6 +153,15 @@
               @click="closeDropdown"
             >
               Блог
+            </NuxtLink>
+          </li>
+          <li class="text-white">
+            <NuxtLink
+              to="/about"
+              class="block px-8 py-2 transition-colors duration-500 ease-in-out hover:bg-blue-500"
+              @click="closeDropdown"
+            >
+              О проекте
             </NuxtLink>
           </li>
           <li class="text-white">
