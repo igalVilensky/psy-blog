@@ -1,74 +1,124 @@
 <template>
-  <div
-    class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-12 px-6"
-  >
-    <!-- Header Section -->
-    <div class="max-w-4xl mx-auto text-center">
-      <h1 class="text-5xl font-extrabold text-blue-700 mb-4">О нас</h1>
-      <p class="text-lg text-gray-700 leading-relaxed">
-        Добро пожаловать! Этот проект создан, чтобы вдохновлять и помогать людям
-        расти, достигать гармонии и радости в жизни.
-      </p>
-    </div>
+  <div class="bg-white antialiased">
+    <div class="container mx-auto px-4 py-16 max-w-6xl">
+      <!-- Профессиональный заголовок -->
+      <header class="text-center mb-16">
+        <h1
+          class="text-4xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight"
+        >
+          О нас
+        </h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+          Добро пожаловать! Этот проект создан, чтобы вдохновлять и помогать
+          людям расти, достигать гармонии и радости в жизни.
+        </p>
+      </header>
 
-    <!-- Content Section -->
-    <div class="mt-12 max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8">
-      <h2 class="text-3xl font-semibold text-blue-600 mb-4">
-        Anastasia Galactik
-      </h2>
-      <p class="text-gray-800 text-lg leading-relaxed">
-        Я, Anastasia Galactik, создала этот проект, чтобы помочь людям расти и
-        развиваться. Я верю, что психическое развитие — это ключ к гармонии в
-        отношениях, осознанному родительству и доброжелательному взаимодействию
-        с окружающими.
-      </p>
-      <p class="text-gray-800 text-lg leading-relaxed mt-6">
-        Люди, которые занимаются саморазвитием, становятся гибче, а их жизнь —
-        более наполненной. Мои продукты — это пазл, который помогает соединить
-        все сферы жизни: от личностного роста до улучшения отношений и
-        воспитания детей.
-      </p>
-    </div>
-
-    <!-- Highlight Section -->
-    <div
-      class="mt-12 max-w-4xl mx-auto flex flex-col md:flex-row items-center bg-gradient-to-br from-purple-100 to-pink-50 rounded-lg shadow-lg p-6"
-    >
-      <div class="w-full md:w-1/2">
-        <h3 class="text-2xl font-bold text-purple-700 mb-4">
-          Что вы найдете здесь?
-        </h3>
-        <ul class="list-disc list-inside text-gray-800 text-lg">
-          <li>Курсы по личностному развитию</li>
-          <li>Гайды для улучшения отношений</li>
-          <li>Рабочие тетради для самоанализа</li>
-          <li>Поддерживающие сообщества</li>
-        </ul>
-      </div>
-      <div class="w-full md:w-1/2 mt-6 md:mt-0">
-        <img
-          src="/assets/images/profile.png"
-          alt="Self-development illustration"
-          class="rounded-lg shadow-md"
-        />
-      </div>
-    </div>
-
-    <!-- Call-to-Action Section -->
-    <div class="mt-12 max-w-4xl mx-auto text-center">
-      <h4 class="text-xl font-bold text-blue-600">
-        Начните свое путешествие к гармонии сегодня!
-      </h4>
-      <p class="text-gray-700 mt-2">
-        Изучите курсы и материалы, которые помогут вам шаг за шагом двигаться к
-        внутреннему равновесию.
-      </p>
-      <NuxtLink
-        to="/courses"
-        class="mt-6 inline-block bg-blue-600 text-white text-lg font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-blue-700 transition duration-300"
+      <!-- Профессиональная биография -->
+      <section
+        class="grid md:grid-cols-2 gap-12 items-center bg-gray-50 rounded-xl p-10 shadow-sm mb-16"
       >
-        Перейти к курсам
-      </NuxtLink>
+        <div>
+          <h2 class="text-3xl font-semibold text-blue-800 mb-6">
+            Anastasia Galactik
+          </h2>
+          <div class="space-y-4 text-gray-700">
+            <p class="text-lg leading-relaxed">
+              Я, Anastasia Galactik, создала этот проект, чтобы помочь людям
+              расти и развиваться. Я верю, что психическое развитие — это ключ к
+              гармонии в отношениях, осознанному родительству и
+              доброжелательному взаимодействию с окружающими.
+            </p>
+            <p class="text-lg leading-relaxed">
+              Люди, которые занимаются саморазвитием, становятся гибче, а их
+              жизнь — более наполненной. Мои продукты — это пазл, который
+              помогает соединить все сферы жизни: от личностного роста до
+              улучшения отношений и воспитания детей.
+            </p>
+          </div>
+        </div>
+        <div class="flex justify-center">
+          <img
+            src="/assets/images/profile.png"
+            alt="Anastasia Galactik"
+            class="w-80 h-80 object-cover rounded-xl shadow-md"
+          />
+        </div>
+      </section>
+
+      <!-- Профессиональные предложения -->
+      <section class="mb-16">
+        <div class="text-center mb-12">
+          <h3 class="text-3xl font-bold text-gray-900 mb-4">
+            Что вы найдете здесь?
+          </h3>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div
+            class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <h4 class="text-xl font-semibold text-blue-700 mb-4">
+              Курсы по личностному развитию
+            </h4>
+            <p class="text-gray-600">
+              Структурированные программы для повышения самосознания и личной
+              эффективности.
+            </p>
+          </div>
+
+          <div
+            class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <h4 class="text-xl font-semibold text-blue-700 mb-4">
+              Гайды для улучшения отношений
+            </h4>
+            <p class="text-gray-600">
+              Практические руководства для создания гармоничных и поддерживающих
+              отношений.
+            </p>
+          </div>
+
+          <div
+            class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <h4 class="text-xl font-semibold text-blue-700 mb-4">
+              Рабочие тетради для самоанализа
+            </h4>
+            <p class="text-gray-600">
+              Инструменты для глубокого личностного роста и самопознания.
+            </p>
+          </div>
+
+          <div
+            class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <h4 class="text-xl font-semibold text-blue-700 mb-4">
+              Поддерживающие сообщества
+            </h4>
+            <p class="text-gray-600">
+              Пространство для обмена опытом и взаимной поддержки.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Призыв к действию -->
+      <section class="text-center bg-blue-50 rounded-xl p-12">
+        <h4 class="text-3xl font-bold text-gray-900 mb-6">
+          Начните свое путешествие к гармонии сегодня!
+        </h4>
+        <p class="text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
+          Изучите курсы и материалы, которые помогут вам шаг за шагом двигаться
+          к внутреннему равновесию.
+        </p>
+        <NuxtLink
+          to="/courses"
+          class="inline-block bg-blue-600 text-white text-lg font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-blue-700 transition duration-300"
+        >
+          Перейти к курсам
+        </NuxtLink>
+      </section>
     </div>
   </div>
 </template>
