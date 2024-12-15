@@ -47,7 +47,7 @@
       </div>
       <div class="w-full md:w-1/2 mt-6 md:mt-0">
         <img
-          src="https://www.instagram.com/galactik.anastasia/p/C6_Ja1JIaKZ/"
+          src="/assets/images/profile.png"
           alt="Self-development illustration"
           class="rounded-lg shadow-md"
         />
