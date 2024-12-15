@@ -1,4 +1,10 @@
 {
-  // https://nuxt.com/docs/guide/concepts/typescript
-  "extends": "./.nuxt/tsconfig.json"
+  "extends": "./.nuxt/tsconfig.json",
+  "compilerOptions": {
+    "module": "esnext", // Enable esnext module to support top-level await
+    "target": "es2017", // Or higher
+    "moduleResolution": "node", // Ensures compatibility with Node.js module system
+    "strict": true,
+    "esModuleInterop": true
+  }
 }
