@@ -15,26 +15,52 @@
       <!-- Desktop Menu -->
       <ul class="hidden md:flex space-x-8">
         <li>
-          <NuxtLink to="/" class="hover:underline"
-            >Бесплатные материалы</NuxtLink
+          <NuxtLink
+            to="/free-resources"
+            class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-purple-400"
           >
+            Бесплатные материалы
+          </NuxtLink>
         </li>
         <li>
-          <NuxtLink to="/about" class="hover:underline">Курсы</NuxtLink>
-        </li>
-        <li>
-          <NuxtLink to="/contact" class="hover:underline">Гайды</NuxtLink>
-        </li>
-        <li>
-          <NuxtLink to="/" class="hover:underline">Тесты</NuxtLink>
-        </li>
-        <li>
-          <NuxtLink to="/about" class="hover:underline">Блог</NuxtLink>
-        </li>
-        <li>
-          <NuxtLink to="/contact" class="hover:underline"
-            >Обратная связь</NuxtLink
+          <NuxtLink
+            to="/courses"
+            class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-purple-400"
           >
+            Курсы
+          </NuxtLink>
+        </li>
+        <li>
+          <NuxtLink
+            to="/guides"
+            class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-purple-400"
+          >
+            Гайды
+          </NuxtLink>
+        </li>
+        <li>
+          <NuxtLink
+            to="/tests"
+            class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-purple-400"
+          >
+            Тесты
+          </NuxtLink>
+        </li>
+        <li>
+          <NuxtLink
+            to="/blog"
+            class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-purple-400"
+          >
+            Блог
+          </NuxtLink>
+        </li>
+        <li>
+          <NuxtLink
+            to="/contact"
+            class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-purple-400"
+          >
+            Обратная связь
+          </NuxtLink>
         </li>
       </ul>
 
@@ -78,7 +104,7 @@
         >
           <li class="text-white">
             <NuxtLink
-              to="/"
+              to="/free-resources"
               class="block px-8 py-2 transition-colors duration-300 ease-in-out hover:bg-blue-500"
               @click="closeDropdown"
             >
@@ -87,7 +113,7 @@
           </li>
           <li class="text-white">
             <NuxtLink
-              to="/"
+              to="/courses"
               class="block px-8 py-2 transition-colors duration-500 ease-in-out hover:bg-blue-500"
               @click="closeDropdown"
             >
@@ -96,7 +122,7 @@
           </li>
           <li class="text-white">
             <NuxtLink
-              to="/about"
+              to="/guides"
               class="block px-8 py-2 transition-colors duration-500 ease-in-out hover:bg-blue-500"
               @click="closeDropdown"
             >
@@ -105,7 +131,7 @@
           </li>
           <li class="text-white">
             <NuxtLink
-              to="/about"
+              to="/tests"
               class="block px-8 py-2 transition-colors duration-500 ease-in-out hover:bg-blue-500"
               @click="closeDropdown"
             >
@@ -114,7 +140,7 @@
           </li>
           <li class="text-white">
             <NuxtLink
-              to="/contact"
+              to="/blog"
               class="block px-8 py-2 transition-colors duration-500 ease-in-out hover:bg-blue-500"
               @click="closeDropdown"
             >
