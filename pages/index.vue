@@ -33,8 +33,8 @@
         >
           <p class="text-xl font-bold text-white w-24">Любовь и отношения</p>
 
-          <i class="fas fa-comments"></i>
           <!-- Comments icon -->
+          <i class="fas fa-comments"></i>
         </div>
       </div>
 
