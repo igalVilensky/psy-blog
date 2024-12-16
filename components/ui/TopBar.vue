@@ -9,6 +9,7 @@
         exact-active-class="text-purple-500 "
         class="text-2xl font-bold hover:text-purple-400 focus:outline-none"
         aria-label="Home"
+        @click="closeDropdown"
       >
         Anastasia
       </NuxtLink>
@@ -112,7 +113,7 @@
         <!-- Dropdown Menu -->
         <ul
           :class="[
-            'absolute -right-4 mt-4 bg-blue-400 py-4 rounded shadow-md w-40 overflow-hidden transition-all duration-700 ease-in-out transform',
+            'absolute -right-4 mt-4 bg-blue-400 py-4 rounded shadow-md w-40 overflow-hidden transition-all duration-700 ease-in-out transform z-50',
             isDropdownOpen
               ? 'max-h-[400px] opacity-100 scale-100'
               : 'max-h-0 opacity-0 scale-95',
@@ -195,7 +196,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 
 // State for dropdown visibility
 const isDropdownOpen = ref(false);
@@ -207,4 +208,19 @@ const toggleDropdown = () => {
 const closeDropdown = () => {
   isDropdownOpen.value = false;
 };
+
+const handleOutsideClick = (event) => {
+  const dropdown = document.querySelector(".xl:hidden");
+  if (!dropdown.contains(event.target)) {
+    closeDropdown();
+  }
+};
+
+// Attach and detach event listeners
+onMounted(() => {
+  document.addEventListener("click", handleOutsideClick);
+});
+onUnmounted(() => {
+  document.removeEventListener("click", handleOutsideClick);
+});
 </script>
