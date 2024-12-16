@@ -14,7 +14,7 @@
       </section>
 
       <!-- Resource Types Tabs -->
-      <div class="mb-12 flex justify-center space-x-4">
+      <div class="flex flex-wrap justify-center gap-4 mb-12">
         <button
           v-for="type in resourceTypes"
           :key="type"
