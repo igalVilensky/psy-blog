@@ -6,6 +6,7 @@
       <!-- Brand/Logo -->
       <NuxtLink
         to="/"
+        exact-active-class="text-purple-500 "
         class="text-2xl font-bold hover:text-purple-400 focus:outline-none"
         aria-label="Home"
       >
@@ -13,10 +14,11 @@
       </NuxtLink>
 
       <!-- Desktop Menu -->
-      <ul class="hidden md:flex space-x-8">
+      <ul class="hidden xl:flex space-x-8">
         <li>
           <NuxtLink
             to="/free-resources"
+            exact-active-class="text-purple-500 "
             class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-purple-400"
           >
             Бесплатные материалы
@@ -25,6 +27,7 @@
         <li>
           <NuxtLink
             to="/courses"
+            exact-active-class="text-purple-500 "
             class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-purple-400"
           >
             Курсы
@@ -33,6 +36,7 @@
         <li>
           <NuxtLink
             to="/guides"
+            exact-active-class="text-purple-500 "
             class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-purple-400"
           >
             Гайды
@@ -41,6 +45,7 @@
         <li>
           <NuxtLink
             to="/tests"
+            exact-active-class="text-purple-500 "
             class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-purple-400"
           >
             Карты глубоких разговоров
@@ -49,6 +54,7 @@
         <li>
           <NuxtLink
             to="/blog"
+            exact-active-class="text-purple-500 "
             class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-purple-400"
           >
             Блог
@@ -57,6 +63,7 @@
         <li>
           <NuxtLink
             to="/about"
+            exact-active-class="text-purple-500 "
             class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-purple-400"
           >
             О проекте
@@ -65,6 +72,7 @@
         <li>
           <NuxtLink
             to="/contact"
+            exact-active-class="text-purple-500 "
             class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-purple-400"
           >
             Обратная связь
@@ -73,7 +81,7 @@
       </ul>
 
       <!-- Hamburger Menu (Small Screens) -->
-      <div class="relative md:hidden">
+      <div class="relative xl:hidden">
         <!-- Animated Hamburger Menu Button -->
         <button
           @click="toggleDropdown"
@@ -110,64 +118,71 @@
               : 'max-h-0 opacity-0 scale-95',
           ]"
         >
-          <li class="text-white">
+          <li>
             <NuxtLink
               to="/free-resources"
-              class="block px-8 py-2 transition-colors duration-300 ease-in-out hover:bg-blue-500"
+              exact-active-class="bg-blue-500"
+              class="block px-8 py-2 text-white transition-colors duration-300 ease-in-out hover:bg-blue-600"
               @click="closeDropdown"
             >
               Бесплатные материалы
             </NuxtLink>
           </li>
-          <li class="text-white">
+          <li>
             <NuxtLink
               to="/courses"
-              class="block px-8 py-2 transition-colors duration-500 ease-in-out hover:bg-blue-500"
+              exact-active-class="bg-blue-500"
+              class="block px-8 py-2 text-white transition-colors duration-300 ease-in-out hover:bg-blue-600"
               @click="closeDropdown"
             >
               Курсы
             </NuxtLink>
           </li>
-          <li class="text-white">
+          <li>
             <NuxtLink
               to="/guides"
-              class="block px-8 py-2 transition-colors duration-500 ease-in-out hover:bg-blue-500"
+              exact-active-class="bg-blue-500"
+              class="block px-8 py-2 text-white transition-colors duration-300 ease-in-out hover:bg-blue-600"
               @click="closeDropdown"
             >
               Гайды
             </NuxtLink>
           </li>
-          <li class="text-white">
+          <li>
             <NuxtLink
               to="/tests"
-              class="block px-8 py-2 transition-colors duration-500 ease-in-out hover:bg-blue-500"
+              exact-active-class="bg-blue-500"
+              class="block px-8 py-2 text-white transition-colors duration-300 ease-in-out hover:bg-blue-600"
               @click="closeDropdown"
             >
               Карты глубоких разговоров
             </NuxtLink>
           </li>
-          <li class="text-white">
+          <li>
             <NuxtLink
               to="/blog"
-              class="block px-8 py-2 transition-colors duration-500 ease-in-out hover:bg-blue-500"
+              exact-active-class="bg-blue-500"
+              class="block px-8 py-2 text-white transition-colors duration-300 ease-in-out hover:bg-blue-600"
               @click="closeDropdown"
             >
               Блог
             </NuxtLink>
           </li>
-          <li class="text-white">
+          <li>
             <NuxtLink
               to="/about"
-              class="block px-8 py-2 transition-colors duration-500 ease-in-out hover:bg-blue-500"
+              exact-active-class="bg-blue-500"
+              class="block px-8 py-2 text-white transition-colors duration-300 ease-in-out hover:bg-blue-600"
               @click="closeDropdown"
             >
               О проекте
             </NuxtLink>
           </li>
-          <li class="text-white">
+          <li>
             <NuxtLink
               to="/contact"
-              class="block px-8 py-2 transition-colors duration-500 ease-in-out hover:bg-blue-500"
+              exact-active-class="bg-blue-500"
+              class="block px-8 py-2 text-white transition-colors duration-300 ease-in-out hover:bg-blue-600"
               @click="closeDropdown"
             >
               Обратная связь
