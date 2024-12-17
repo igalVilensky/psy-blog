@@ -6,8 +6,8 @@
       <!-- Brand/Logo -->
       <NuxtLink
         to="/"
-        exact-active-class="text-purple-500"
-        class="text-2xl font-bold hover:text-purple-400 focus:outline-none"
+        exact-active-class="text-pink-500"
+        class="text-2xl font-bold hover:text-pink-500 focus:outline-none"
         aria-label="Home"
         @click="closeDropdown"
       >
@@ -19,8 +19,8 @@
         <li>
           <NuxtLink
             to="/free-resources"
-            exact-active-class="text-purple-500"
-            class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-purple-400"
+            exact-active-class="text-pink-500"
+            class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
           >
             Бесплатные материалы
           </NuxtLink>
@@ -28,8 +28,8 @@
         <li>
           <NuxtLink
             to="/courses"
-            exact-active-class="text-purple-500"
-            class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-purple-400"
+            exact-active-class="text-pink-500"
+            class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
           >
             Курсы
           </NuxtLink>
@@ -37,8 +37,8 @@
         <li>
           <NuxtLink
             to="/guides"
-            exact-active-class="text-purple-500"
-            class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-purple-400"
+            exact-active-class="text-pink-500"
+            class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
           >
             Гайды
           </NuxtLink>
@@ -46,8 +46,8 @@
         <li>
           <NuxtLink
             to="/tests"
-            exact-active-class="text-purple-500"
-            class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-purple-400"
+            exact-active-class="text-pink-500"
+            class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
           >
             Карты разговоров
           </NuxtLink>
@@ -55,8 +55,8 @@
         <li>
           <NuxtLink
             to="/blog"
-            exact-active-class="text-purple-500"
-            class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-purple-400"
+            exact-active-class="text-pink-500"
+            class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
           >
             Блог
           </NuxtLink>
@@ -64,8 +64,8 @@
         <li>
           <NuxtLink
             to="/about"
-            exact-active-class="text-purple-500"
-            class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-purple-400"
+            exact-active-class="text-pink-500"
+            class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
           >
             О проекте
           </NuxtLink>
@@ -73,8 +73,8 @@
         <li>
           <NuxtLink
             to="/contact"
-            exact-active-class="text-purple-500"
-            class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-purple-400"
+            exact-active-class="text-pink-500"
+            class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
           >
             Связь
           </NuxtLink>

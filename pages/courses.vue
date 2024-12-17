@@ -54,11 +54,11 @@
           </div>
 
           <div class="p-6">
-            <div class="flex justify-between items-center mb-4">
+            <div class="flex justify-between items-start mb-4">
               <h3 class="text-xl font-bold text-gray-800">
                 {{ product.title }}
               </h3>
-              <span class="text-lg font-semibold text-pink-600">
+              <span class="text-lg font-semibold text-pink-600 min-w-20">
                 {{ formatPrice(product.price) }} ₽
               </span>
             </div>

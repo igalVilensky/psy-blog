@@ -10,17 +10,38 @@
 
       <div v-else>
         <!-- Hero Section with Project Description -->
-        <section class="text-center mb-16">
-          <h1
-            class="text-4xl md:text-5xl font-bold text-gray-800 mb-4 tracking-tight"
-          >
-            Ваш Путь к Личностному Росту
-          </h1>
-          <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Мы создаем уникальные образовательные программы, которые помогают
-            раскрыть потенциал каждого человека через глубокое понимание себя и
-            развитие personal skills.
-          </p>
+        <section
+          class="relative text-center mb-16 flex flex-col items-center justify-center py-24"
+        >
+          <!-- Background Image -->
+          <div
+            class="absolute inset-0 bg-cover bg-center opacity-30"
+            :style="{ backgroundImage: `url(${profileImage})` }"
+          ></div>
+
+          <div class="relative z-10">
+            <h1
+              class="text-5xl md:text-6xl font-extrabold text-gray-800 mb-4 tracking-tight leading-tight"
+            >
+              Ваш Путь к Личностному Росту
+            </h1>
+            <p
+              class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed mb-6 px-4"
+            >
+              Мы создаем уникальные образовательные программы, которые помогают
+              раскрыть потенциал каждого человека через глубокое понимание себя
+              и развитие
+              <span class="font-bold text-pink-500">personal skills</span>.
+            </p>
+
+            <!-- CTA Button -->
+            <NuxtLink
+              to="/courses"
+              class="inline-block bg-gradient-to-br from-pink-500 to-purple-500 text-white text-lg font-semibold py-3 px-6 rounded-lg hover:opacity-90 transition duration-300 shadow-lg"
+            >
+              Начать обучение
+            </NuxtLink>
+          </div>
         </section>
 
         <!-- Popular Topics Section -->
@@ -129,7 +150,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-
+import profileImage from "@/assets/images/profile.jpg";
 const isLoading = ref(true);
 
 const popularTopics = [

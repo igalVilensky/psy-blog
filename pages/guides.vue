@@ -1,132 +1,134 @@
 <template>
-  <div class="container mx-auto p-6 bg-[#F7F4F2]">
-    <div class="grid md:grid-cols-2 gap-8">
-      <!-- Emotional Barometer Section -->
-      <div class="bg-white shadow-xl rounded-2xl p-6">
-        <h2 class="text-2xl font-bold mb-6 text-[#4A4238]">
-          Эмоциональный Барометр
-        </h2>
+  <div class="bg-gradient-to-br from-pink-50 to-white min-h-[50vh] py-12">
+    <div class="container mx-auto max-w-6xl p-6 py-24">
+      <div class="grid md:grid-cols-2 gap-8">
+        <!-- Emotional Barometer Section -->
+        <div class="bg-white shadow-xl rounded-2xl p-6">
+          <h2 class="text-2xl font-bold mb-6 text-[#4A4238]">
+            Эмоциональный Барометр
+          </h2>
 
-        <!-- Emotion Selection -->
-        <div class="grid grid-cols-3 gap-4 mb-6">
-          <button
-            v-for="emotion in emotions"
-            :key="emotion.id"
-            @click="selectEmotion(emotion)"
-            :class="[
-              'py-3 rounded-lg transition-all',
-              selectedEmotion?.id === emotion.id
-                ? 'bg-[#FF6B6B] text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200',
-            ]"
-          >
-            {{ emotion.name }}
-          </button>
-        </div>
-
-        <!-- Intensity Slider -->
-        <div v-if="selectedEmotion" class="mb-6">
-          <label class="block mb-2 text-[#6B5B4C]">
-            Интенсивность эмоции: {{ intensityLevel }}/10
-          </label>
-          <input
-            type="range"
-            v-model="intensityLevel"
-            min="1"
-            max="10"
-            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-          />
-        </div>
-
-        <!-- Journal Entry Form -->
-        <div v-if="selectedEmotion" class="mt-6">
-          <textarea
-            v-model="journalEntry"
-            placeholder="Что вызвало эту эмоцию? Какие мысли?"
-            class="w-full p-4 border-2 border-[#FFD1DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B6B]"
-            rows="4"
-          ></textarea>
-
-          <!-- Life Sphere Tags -->
-          <div class="mt-4">
-            <label class="block mb-2 text-[#6B5B4C]">
-              В какой сфере жизни это происходит?
-            </label>
-            <div class="flex flex-wrap gap-2">
-              <button
-                v-for="tag in lifeSpheres"
-                :key="tag"
-                @click="toggleTag(tag)"
-                :class="[
-                  'px-3 py-1 rounded-full text-sm',
-                  selectedTags.includes(tag)
-                    ? 'bg-[#FF6B6B] text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200',
-                ]"
-              >
-                {{ tag }}
-              </button>
-            </div>
-          </div>
-
-          <!-- Submit Button -->
-          <button
-            @click="saveEntry"
-            class="w-full mt-4 bg-[#FF6B6B] text-white py-3 rounded-lg hover:bg-[#FF5252] transition"
-          >
-            Сохранить запись
-          </button>
-        </div>
-      </div>
-
-      <!-- Journal History Section -->
-      <div class="bg-white shadow-xl rounded-2xl p-6">
-        <h2 class="text-2xl font-bold mb-6 text-[#4A4238]">История эмоций</h2>
-
-        <!-- Filters -->
-        <div class="mb-4 flex space-x-2">
-          <select v-model="emotionFilter" class="border rounded p-2">
-            <option value="">Все эмоции</option>
-            <option
+          <!-- Emotion Selection -->
+          <div class="grid grid-cols-3 gap-4 mb-6">
+            <button
               v-for="emotion in emotions"
               :key="emotion.id"
-              :value="emotion.name"
+              @click="selectEmotion(emotion)"
+              :class="[
+                'py-3 rounded-lg transition-all text-sm sm:text-base',
+                selectedEmotion?.id === emotion.id
+                  ? 'bg-[#FF6B6B] text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200',
+              ]"
             >
               {{ emotion.name }}
-            </option>
-          </select>
-          <select v-model="sphereFilter" class="border rounded p-2">
-            <option value="">Все сферы</option>
-            <option v-for="tag in lifeSpheres" :key="tag">
-              {{ tag }}
-            </option>
-          </select>
+            </button>
+          </div>
+
+          <!-- Intensity Slider -->
+          <div v-if="selectedEmotion" class="mb-6">
+            <label class="block mb-2 text-[#6B5B4C]">
+              Интенсивность эмоции: {{ intensityLevel }}/10
+            </label>
+            <input
+              type="range"
+              v-model="intensityLevel"
+              min="1"
+              max="10"
+              class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+            />
+          </div>
+
+          <!-- Journal Entry Form -->
+          <div v-if="selectedEmotion" class="mt-6">
+            <textarea
+              v-model="journalEntry"
+              placeholder="Что вызвало эту эмоцию? Какие мысли?"
+              class="w-full p-4 border-2 border-[#FFD1DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B6B]"
+              rows="4"
+            ></textarea>
+
+            <!-- Life Sphere Tags -->
+            <div class="mt-4">
+              <label class="block mb-2 text-[#6B5B4C]">
+                В какой сфере жизни это происходит?
+              </label>
+              <div class="flex flex-wrap gap-2">
+                <button
+                  v-for="tag in lifeSpheres"
+                  :key="tag"
+                  @click="toggleTag(tag)"
+                  :class="[
+                    'px-3 py-1 rounded-full text-sm',
+                    selectedTags.includes(tag)
+                      ? 'bg-[#FF6B6B] text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200',
+                  ]"
+                >
+                  {{ tag }}
+                </button>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button
+              @click="saveEntry"
+              class="w-full mt-4 bg-[#FF6B6B] text-white py-3 rounded-lg hover:bg-[#FF5252] transition"
+            >
+              Сохранить запись
+            </button>
+          </div>
         </div>
 
-        <!-- Journal Entries List -->
-        <div class="space-y-4 max-h-[500px] overflow-y-auto">
-          <div
-            v-for="(entry, index) in filteredEntries"
-            :key="index"
-            class="border-b pb-4 last:border-b-0"
-          >
-            <div class="flex justify-between items-center">
-              <span class="font-bold text-[#4A4238]">
-                {{ entry.emotion }} ({{ entry.intensity }}/10)
-              </span>
-              <span class="text-sm text-gray-500">
-                {{ formatDate(entry.date) }}
-              </span>
-            </div>
-            <p class="mt-2 text-[#6B5B4C]">{{ entry.entry }}</p>
-            <div class="mt-2">
-              <span
-                v-for="tag in entry.tags"
-                :key="tag"
-                class="inline-block bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs mr-2"
+        <!-- Journal History Section -->
+        <div class="bg-white shadow-xl rounded-2xl p-6">
+          <h2 class="text-2xl font-bold mb-6 text-[#4A4238]">История эмоций</h2>
+
+          <!-- Filters -->
+          <div class="mb-4 flex space-x-2">
+            <select v-model="emotionFilter" class="border rounded p-2">
+              <option value="">Все эмоции</option>
+              <option
+                v-for="emotion in emotions"
+                :key="emotion.id"
+                :value="emotion.name"
               >
+                {{ emotion.name }}
+              </option>
+            </select>
+            <select v-model="sphereFilter" class="border rounded p-2">
+              <option value="">Все сферы</option>
+              <option v-for="tag in lifeSpheres" :key="tag">
                 {{ tag }}
-              </span>
+              </option>
+            </select>
+          </div>
+
+          <!-- Journal Entries List -->
+          <div class="space-y-4 max-h-[500px] overflow-y-auto">
+            <div
+              v-for="(entry, index) in filteredEntries"
+              :key="index"
+              class="border-b pb-4 last:border-b-0"
+            >
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-[#4A4238]">
+                  {{ entry.emotion }} ({{ entry.intensity }}/10)
+                </span>
+                <span class="text-sm text-gray-500">
+                  {{ formatDate(entry.date) }}
+                </span>
+              </div>
+              <p class="mt-2 text-[#6B5B4C]">{{ entry.entry }}</p>
+              <div class="mt-2">
+                <span
+                  v-for="tag in entry.tags"
+                  :key="tag"
+                  class="inline-block bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs mr-2"
+                >
+                  {{ tag }}
+                </span>
+              </div>
             </div>
           </div>
         </div>

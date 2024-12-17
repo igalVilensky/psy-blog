@@ -1,6 +1,6 @@
 <template>
   <div
-    class="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center p-4"
+    class="bg-gradient-to-br from-pink-50 to-white min-h-screen py-12 flex-grow flex items-center justify-center px-4"
   >
     <div class="w-full max-w-md">
       <div class="perspective-1000 cursor-pointer" @click="toggleCardFlip">
@@ -13,7 +13,7 @@
             class="relative w-full h-full bg-white rounded-xl shadow-lg p-12 backface-hidden"
           >
             <div class="text-center">
-              <h2 class="text-2xl font-bold text-blue-600 mb-4">Карта дня</h2>
+              <h2 class="text-2xl font-bold text-gray-800 mb-4">Карта дня</h2>
               <p class="text-gray-600 mb-6">
                 Нажмите, чтобы открыть глубокий разговор с собой
               </p>
@@ -64,8 +64,9 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 
+// Define the cards array
 const cards = [
   {
     title: "Путешествие внутрь себя",
@@ -97,19 +98,154 @@ const cards = [
       "Что делает меня сильным?",
     ],
   },
+  {
+    title: "Цели и мечты",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZtzVUfvPZSpqunyUw1omIHJ0n1tlZWs13_g&s",
+    questions: [
+      "Какие у меня долгосрочные цели?",
+      "Как я могу приблизиться к своей мечте?",
+      "Какие шаги я могу предпринять прямо сейчас?",
+    ],
+  },
+  {
+    title: "Здоровье и благополучие",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZtzVUfvPZSpqunyUw1omIHJ0n1tlZWs13_g&s",
+    questions: [
+      "Что я могу сделать для улучшения своего здоровья?",
+      "Как я могу заботиться о своем теле?",
+      "Какие здоровые привычки мне стоит развивать?",
+    ],
+  },
+  {
+    title: "Творчество и вдохновение",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZtzVUfvPZSpqunyUw1omIHJ0n1tlZWs13_g&s",
+    questions: [
+      "Что меня вдохновляет?",
+      "Как я могу развивать свое творчество?",
+      "Что нового я могу создать?",
+    ],
+  },
+  {
+    title: "Прощение и отпускание",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZtzVUfvPZSpqunyUw1omIHJ0n1tlZWs13_g&s",
+    questions: [
+      "Кого или что мне нужно простить?",
+      "Что я могу отпустить, чтобы двигаться дальше?",
+      "Как я могу освободить себя от обид?",
+    ],
+  },
+  {
+    title: "Мудрость и самоосознание",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZtzVUfvPZSpqunyUw1omIHJ0n1tlZWs13_g&s",
+    questions: [
+      "Что мне важно понять о себе?",
+      "Как я могу стать более осознанным?",
+      "Какие уроки жизни я могу извлечь?",
+    ],
+  },
+  {
+    title: "День благодарности",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZtzVUfvPZSpqunyUw1omIHJ0n1tlZWs13_g&s",
+    questions: [
+      "За что я благодарен сегодня?",
+      "Какие моменты наполняют меня радостью?",
+      "Как я могу выразить благодарность людям в моей жизни?",
+    ],
+  },
+  {
+    title: "Окружение и энергия",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZtzVUfvPZSpqunyUw1omIHJ0n1tlZWs13_g&s",
+    questions: [
+      "Какое окружение поддерживает меня?",
+      "Какие люди в моей жизни поднимают мой дух?",
+      "Что я могу изменить в своем окружении для улучшения настроения?",
+    ],
+  },
+  {
+    title: "Управление временем",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZtzVUfvPZSpqunyUw1omIHJ0n1tlZWs13_g&s",
+    questions: [
+      "Как я могу эффективнее использовать свое время?",
+      "Что для меня является приоритетом?",
+      "Как я могу избежать прокрастинации?",
+    ],
+  },
+  {
+    title: "Позитивное мышление",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZtzVUfvPZSpqunyUw1omIHJ0n1tlZWs13_g&s",
+    questions: [
+      "Какие мысли помогают мне оставаться позитивным?",
+      "Что я могу сделать, чтобы настроиться на позитив?",
+      "Как я могу изменить свой взгляд на сложные ситуации?",
+    ],
+  },
+  {
+    title: "Риски и изменения",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZtzVUfvPZSpqunyUw1omIHJ0n1tlZWs13_g&s",
+    questions: [
+      "Какие риски я готов взять на себя?",
+      "Как я могу адаптироваться к изменениям?",
+      "Что нового я могу попробовать в своей жизни?",
+    ],
+  },
+  {
+    title: "Прошлое и будущее",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZtzVUfvPZSpqunyUw1omIHJ0n1tlZWs13_g&s",
+    questions: [
+      "Что я могу извлечь из своего прошлого?",
+      "Какие шаги мне нужно предпринять, чтобы изменить свое будущее?",
+      "Что я хочу достичь в следующие пять лет?",
+    ],
+  },
+  {
+    title: "Финансовая осознанность",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZtzVUfvPZSpqunyUw1omIHJ0n1tlZWs13_g&s",
+    questions: [
+      "Как я могу улучшить свою финансовую осознанность?",
+      "Что мне нужно сделать, чтобы достичь финансовой независимости?",
+      "Какие шаги я могу предпринять для улучшения финансового благополучия?",
+    ],
+  },
 ];
 
+// Flip logic
 const isFlipped = ref(false);
-const currentCardIndex = ref(2);
+
+// Set the current card index based on the current day
+const currentCardIndex = ref(0);
 
 const currentCard = computed(() => cards[currentCardIndex.value]);
 
+// Function to calculate the current card index based on the current date
+const setCardOfTheDay = () => {
+  const currentDate = new Date();
+  const dayOfYear = Math.floor(
+    (currentDate - new Date(currentDate.getFullYear(), 0, 0)) / 86400000
+  );
+  currentCardIndex.value = dayOfYear % cards.length; // Ensure it loops back to the first card after the last one
+};
+
+// Toggle card flip
 const toggleCardFlip = () => {
-  if (!isFlipped.value) {
-    currentCardIndex.value = Math.floor(Math.random() * cards.length);
-  }
   isFlipped.value = !isFlipped.value;
 };
+
+// Set the card of the day when the component is mounted
+onMounted(() => {
+  setCardOfTheDay();
+});
 </script>
 
 <style scoped>
