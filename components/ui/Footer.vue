@@ -1,5 +1,7 @@
 <template>
-  <footer class="bg-gradient-to-br from-gray-800 to-gray-900 text-white py-12">
+  <footer
+    class="bg-gradient-to-br from-pink-800 to-purple-900 text-white py-12"
+  >
     <div class="container mx-auto px-4 max-w-6xl">
       <div class="grid md:grid-cols-4 gap-8">
         <!-- Sitemap Section -->
@@ -26,7 +28,7 @@
               :key="index"
               :href="social.link"
               target="_blank"
-              class="text-3xl hover:text-blue-400 transition-colors duration-300"
+              class="text-3xl hover:text-pink-400 transition-colors duration-300"
             >
               <i :class="social.icon"></i>
             </a>
@@ -46,11 +48,11 @@
               type="email"
               v-model="email"
               placeholder="Введите ваш email"
-              class="w-full px-4 py-3 rounded-l-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              class="w-full px-4 py-3 rounded-l-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-pink-500"
             />
             <button
               @click="subscribeEmail"
-              class="bg-blue-500 text-white px-6 py-3 rounded-r-lg hover:bg-blue-600 transition-colors duration-300"
+              class="bg-pink-500 text-white px-6 py-3 rounded-r-lg hover:bg-pink-600 transition-colors duration-300"
             >
               Подписаться
             </button>
@@ -59,10 +61,10 @@
       </div>
 
       <!-- Copyright and Legal -->
-      <div class="mt-12 pt-8 border-t border-gray-700 text-center">
+      <div class="mt-12 pt-8 border-t border-pink-700 text-center">
         <p class="text-gray-400">
-          © {{ new Date().getFullYear() }} Anastasia Personal Growth Platform.
-          Все права защищены.
+          © {{ new Date().getFullYear() }} Путь к Личностному Росту. Все права
+          защищены.
         </p>
         <div class="mt-4 space-x-4">
           <NuxtLink
@@ -94,10 +96,10 @@ const sitemapLinks = [
   { label: "Бесплатные материалы", to: "/free-resources" },
   { label: "Курсы", to: "/courses" },
   { label: "Гайды", to: "/guides" },
-  { label: "Карты глубоких разговоров", to: "/tests" },
+  { label: "Карты разговоров", to: "/tests" },
   { label: "Блог", to: "/blog" },
   { label: "О проекте", to: "/about" },
-  { label: "Обратная связь", to: "/contact" },
+  { label: "Связь", to: "/contact" },
 ];
 
 // Social media links
@@ -133,7 +135,3 @@ const validateEmail = (email) => {
   return re.test(String(email).toLowerCase());
 };
 </script>
-
-<style scoped>
-/* Additional custom styles can be added here if needed */
-</style>

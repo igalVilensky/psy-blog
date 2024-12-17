@@ -1,7 +1,7 @@
 <template>
-  <nav class="text-black p-4">
+  <nav class="text-black">
     <div
-      class="container max-w-screen-xl w-full mx-auto flex justify-between items-center"
+      class="container max-w-6xl w-full mx-auto flex justify-between items-center p-4"
     >
       <!-- Brand/Logo -->
       <NuxtLink
@@ -11,7 +11,7 @@
         aria-label="Home"
         @click="closeDropdown"
       >
-        Путь к Личностному Росту
+        Anastasia
       </NuxtLink>
 
       <!-- Desktop Menu -->

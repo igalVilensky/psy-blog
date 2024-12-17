@@ -39,7 +39,7 @@
         </div>
         <div class="flex justify-center">
           <img
-            src="/assets/images/profile.png"
+            src="/assets/images/profilePic.png"
             alt="Anastasia Galactik"
             class="w-80 h-80 object-cover rounded-2xl shadow-md transform transition hover:scale-105"
           />
