@@ -14,6 +14,6 @@
 </template>
 
 <script setup>
-import TopBar from "@/components/ui/TopBar.vue";
+import TopBar from "@/components/navigation/TopBar.vue";
 import Footer from "@/components/ui/Footer.vue";
 </script>
