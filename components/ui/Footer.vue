@@ -106,7 +106,7 @@ const sitemapLinks = [
 const socialLinks = [
   {
     icon: "fab fa-instagram text-pink-500",
-    link: "https://www.instagram.com/your_account",
+    link: "https://www.instagram.com/galactik.anastasia/",
   },
   {
     icon: "fab fa-telegram text-blue-400",
@@ -114,7 +114,7 @@ const socialLinks = [
   },
   {
     icon: "fab fa-youtube text-red-600",
-    link: "https://www.youtube.com/your_channel",
+    link: "https://www.youtube.com/@gelichka84",
   },
 ];
 
