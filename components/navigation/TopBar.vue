@@ -19,7 +19,7 @@
         <ul class="flex items-center">
           <li class="px-4 relative group">
             <NuxtLink
-              to="/courses"
+              to="/courses/courses"
               exact-active-class="text-pink-500"
               class="text-gray-800 text-base whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500 flex items-center"
             >
