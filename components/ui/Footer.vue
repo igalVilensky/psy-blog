@@ -97,7 +97,7 @@ const sitemapLinks = [
   { label: "Курсы", to: "/courses" },
   { label: "Гайды", to: "/guides" },
   { label: "Карты разговоров", to: "/tests" },
-  { label: "Блог", to: "/blog" },
+  { label: "Калькулятор биоритмов", to: "/biorhythm-calculator" },
   { label: "О проекте", to: "/about" },
   { label: "Связь", to: "/contact" },
 ];

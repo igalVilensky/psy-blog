@@ -1,5 +1,5 @@
 <template>
-  <nav class="text-black">
+  <nav class="text-black sticky top-0 bg-white/95 backdrop-blur-sm z-50">
     <div
       class="container max-w-6xl w-full mx-auto flex justify-between items-center p-4"
     >
@@ -15,71 +15,73 @@
       </NuxtLink>
 
       <!-- Desktop Menu -->
-      <ul class="hidden xl:flex space-x-8">
-        <li>
-          <NuxtLink
-            to="/free-resources"
-            exact-active-class="text-pink-500"
-            class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
-          >
-            Бесплатные материалы
-          </NuxtLink>
-        </li>
-        <li>
-          <NuxtLink
-            to="/courses"
-            exact-active-class="text-pink-500"
-            class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
-          >
-            Курсы
-          </NuxtLink>
-        </li>
-        <li>
-          <NuxtLink
-            to="/guides"
-            exact-active-class="text-pink-500"
-            class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
-          >
-            Гайды
-          </NuxtLink>
-        </li>
-        <li>
-          <NuxtLink
-            to="/tests"
-            exact-active-class="text-pink-500"
-            class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
-          >
-            Карты разговоров
-          </NuxtLink>
-        </li>
-        <li>
-          <NuxtLink
-            to="/blog"
-            exact-active-class="text-pink-500"
-            class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
-          >
-            Блог
-          </NuxtLink>
-        </li>
-        <li>
-          <NuxtLink
-            to="/about"
-            exact-active-class="text-pink-500"
-            class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
-          >
-            О проекте
-          </NuxtLink>
-        </li>
-        <li>
-          <NuxtLink
-            to="/contact"
-            exact-active-class="text-pink-500"
-            class="text-gray-800 text-lg font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
-          >
-            Связь
-          </NuxtLink>
-        </li>
-      </ul>
+      <div class="hidden xl:block">
+        <ul class="flex items-center">
+          <li class="px-4">
+            <NuxtLink
+              to="/free-resources"
+              exact-active-class="text-pink-500"
+              class="text-gray-800 text-base whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
+            >
+              Бесплатные материалы
+            </NuxtLink>
+          </li>
+          <li class="px-4">
+            <NuxtLink
+              to="/courses"
+              exact-active-class="text-pink-500"
+              class="text-gray-800 text-base whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
+            >
+              Курсы
+            </NuxtLink>
+          </li>
+          <li class="px-4">
+            <NuxtLink
+              to="/guides"
+              exact-active-class="text-pink-500"
+              class="text-gray-800 text-base whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
+            >
+              Гайды
+            </NuxtLink>
+          </li>
+          <li class="px-4">
+            <NuxtLink
+              to="/tests"
+              exact-active-class="text-pink-500"
+              class="text-gray-800 text-base whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
+            >
+              Карты разговоров
+            </NuxtLink>
+          </li>
+          <li class="px-4">
+            <NuxtLink
+              to="/biorhythm-calculator"
+              exact-active-class="text-pink-500"
+              class="text-gray-800 text-base whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
+            >
+              Калькулятор биоритмов
+            </NuxtLink>
+          </li>
+          <li class="px-4">
+            <NuxtLink
+              to="/about"
+              exact-active-class="text-pink-500"
+              class="text-gray-800 text-base whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
+            >
+              О проекте
+            </NuxtLink>
+          </li>
+          <li class="px-4">
+            <NuxtLink
+              to="/contact"
+              exact-active-class="text-pink-500"
+              class="text-gray-800 text-base whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
+            >
+              Связь
+            </NuxtLink>
+          </li>
+        </ul>
+      </div>
 
       <!-- Hamburger Menu (Small Screens) -->
       <div class="relative xl:hidden">
@@ -113,7 +115,7 @@
         <!-- Dropdown Menu -->
         <ul
           :class="[
-            'absolute -right-4 mt-4 bg-pink-400 py-4 rounded shadow-md w-40 overflow-hidden transition-all duration-700 ease-in-out transform z-50',
+            'absolute -right-4 mt-4 bg-pink-400 py-4 rounded shadow-md w-64 overflow-hidden transition-all duration-700 ease-in-out transform z-50',
             isDropdownOpen
               ? 'max-h-[400px] opacity-100 scale-100'
               : 'max-h-0 opacity-0 scale-95',
@@ -161,12 +163,12 @@
           </li>
           <li>
             <NuxtLink
-              to="/blog"
+              to="/biorhythm-calculator"
               exact-active-class="bg-pink-500"
               class="block px-8 py-2 text-white transition-colors duration-300 ease-in-out hover:bg-pink-600"
               @click="closeDropdown"
             >
-              Блог
+              Калькулятор биоритмов
             </NuxtLink>
           </li>
           <li>

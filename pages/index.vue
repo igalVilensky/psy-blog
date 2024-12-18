@@ -11,7 +11,7 @@
       <div v-else>
         <!-- Hero Section with Project Description -->
         <section
-          class="relative text-center mb-16 flex flex-col items-center justify-center py-24"
+          class="relative text-center mb-16 flex flex-col items-center justify-center sm:py-24 py-12"
         >
           <!-- Background Image -->
           <div
