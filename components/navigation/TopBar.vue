@@ -74,6 +74,15 @@
           </li>
           <li class="px-4">
             <NuxtLink
+              to="/test"
+              exact-active-class="text-pink-500"
+              class="text-gray-800 text-base whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
+            >
+              test
+            </NuxtLink>
+          </li>
+          <li class="px-4">
+            <NuxtLink
               to="/contact"
               exact-active-class="text-pink-500"
               class="text-gray-800 text-base whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
@@ -177,6 +186,15 @@
               @click="closeDropdown"
             >
               О проекте
+            </NuxtLink>
+          </li>
+          <li class="px-4">
+            <NuxtLink
+              to="/test"
+              exact-active-class="text-pink-500"
+              class="text-gray-800 text-base whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
+            >
+              test
             </NuxtLink>
           </li>
           <li>
