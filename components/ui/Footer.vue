@@ -105,6 +105,10 @@ const sitemapLinks = [
     label: "Глубокий разговор с картами",
     to: "/awareness-tools/deep-conversation-with-cards",
   },
+  {
+    label: "Дневник эмоций",
+    to: "/test",
+  },
   { label: "О проекте", to: "/about" },
   { label: "Связь", to: "/contact" },
 ];

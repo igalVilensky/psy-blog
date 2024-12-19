@@ -78,7 +78,7 @@
               exact-active-class="text-pink-500"
               class="text-gray-800 text-base whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
             >
-              test
+              Дневник эмоций
             </NuxtLink>
           </li>
           <li class="px-4">
@@ -188,13 +188,14 @@
               О проекте
             </NuxtLink>
           </li>
-          <li class="px-4">
+          <li>
             <NuxtLink
               to="/test"
-              exact-active-class="text-pink-500"
-              class="text-gray-800 text-base whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
+              exact-active-class="bg-pink-500"
+              class="block px-8 py-2 text-white transition-colors duration-300 ease-in-out hover:bg-pink-600"
+              @click="closeDropdown"
             >
-              test
+              Дневник эмоций
             </NuxtLink>
           </li>
           <li>
