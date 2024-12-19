@@ -1,150 +1,102 @@
 <template>
-  <div
-    class="bg-gradient-to-br from-pink-50 to-white min-h-screen py-6 sm:py-12"
-  >
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-        <!-- Emotional Barometer Section -->
-        <div class="bg-white shadow-xl rounded-2xl p-4 sm:p-6">
-          <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-[#4A4238]">
-            Эмоциональный Барометр
-          </h2>
+  <div class="bg-gradient-to-br from-pink-50 to-white min-h-screen py-12">
+    <div class="container mx-auto px-4 max-w-6xl">
+      <!-- Hero Section -->
+      <section class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-gray-800 mb-4">
+          Руководства для Саморазвития
+        </h1>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+          Исследуйте практические руководства, которые помогут вам углубить
+          самопознание, улучшить отношения и раскрыть внутренний потенциал.
+        </p>
+      </section>
 
-          <!-- Emotion Selection -->
-          <div
-            class="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-4 mb-4 sm:mb-6"
+      <!-- Filters Section -->
+      <div class="mb-12">
+        <div class="flex flex-wrap justify-center gap-4">
+          <button
+            v-for="category in categories"
+            :key="category"
+            @click="selectCategory(category)"
+            :class="[
+              'px-4 py-2 rounded-full transition-all duration-300',
+              selectedCategory === category
+                ? 'bg-pink-500 text-white'
+                : 'bg-gray-100 text-gray-700 hover:bg-pink-100',
+            ]"
           >
-            <button
-              v-for="emotion in emotions"
-              :key="emotion.id"
-              @click="selectEmotion(emotion)"
-              :class="[
-                'py-2 sm:py-3 rounded-lg transition-all text-xs sm:text-sm',
-                selectedEmotion?.id === emotion.id
-                  ? 'bg-[#FF6B6B] text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200',
-              ]"
-            >
-              {{ emotion.name }}
-            </button>
-          </div>
+            {{ category }}
+          </button>
+        </div>
+      </div>
 
-          <!-- Intensity Slider -->
-          <div v-if="selectedEmotion" class="mb-4 sm:mb-6">
-            <label class="block mb-2 text-sm sm:text-base text-[#6B5B4C]">
-              Интенсивность эмоции: {{ intensityLevel }}/10
-            </label>
-            <input
-              type="range"
-              v-model="intensityLevel"
-              min="1"
-              max="10"
-              class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-            />
-          </div>
-
-          <!-- Journal Entry Form -->
-          <div v-if="selectedEmotion" class="mt-4 sm:mt-6">
-            <textarea
-              v-model="journalEntry"
-              placeholder="Что вызвало эту эмоцию? Какие мысли?"
-              class="w-full p-3 sm:p-4 text-sm sm:text-base border-2 border-[#FFD1DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B6B]"
-              rows="4"
-            ></textarea>
-
-            <!-- Life Sphere Tags -->
-            <div class="mt-3 sm:mt-4">
-              <label class="block mb-2 text-sm sm:text-base text-[#6B5B4C]">
-                В какой сфере жизни это происходит?
-              </label>
-              <div class="flex flex-wrap gap-2">
-                <button
-                  v-for="tag in lifeSpheres"
-                  :key="tag"
-                  @click="toggleTag(tag)"
-                  :class="[
-                    'px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm',
-                    selectedTags.includes(tag)
-                      ? 'bg-[#FF6B6B] text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200',
-                  ]"
-                >
-                  {{ tag }}
-                </button>
-              </div>
+      <!-- Guides Grid -->
+      <div class="grid md:grid-cols-3 gap-8">
+        <div
+          v-for="guide in filteredGuides"
+          :key="guide.id"
+          class="bg-white rounded-2xl shadow-lg overflow-hidden transform transition hover:scale-105 hover:shadow-xl"
+        >
+          <!-- Guide Image -->
+          <img
+            :src="guide.image"
+            :alt="guide.title"
+            class="w-full h-48 object-cover"
+          />
+          <!-- Guide Content -->
+          <div class="p-6">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="text-xl font-bold text-gray-800">{{ guide.title }}</h3>
+              <span
+                class="bg-pink-100 text-pink-600 px-3 py-1 rounded-full text-sm text-center"
+              >
+                {{ guide.category }}
+              </span>
             </div>
+            <p class="text-gray-600 mb-4">{{ guide.description }}</p>
+            <div class="flex items-center gap-4 mb-4">
+              <!-- Icon -->
 
-            <!-- Submit Button -->
-            <button
-              @click="saveEntry"
-              class="w-full mt-3 sm:mt-4 bg-[#FF6B6B] text-white py-2 sm:py-3 rounded-lg hover:bg-[#FF5252] transition text-sm sm:text-base"
-            >
-              Сохранить запись
-            </button>
+              <i :class="guide.icon" class="text-xl text-pink-600" />
+
+              <!-- Icon Description -->
+              <p class="text-gray-500 text-sm">{{ guide.iconDescription }}</p>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-sm text-gray-500">{{ guide.date }}</span>
+              <button
+                class="bg-pink-500 text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition"
+              >
+                Читать
+              </button>
+            </div>
           </div>
         </div>
+      </div>
 
-        <!-- Journal History Section -->
-        <div class="bg-white shadow-xl rounded-2xl p-4 sm:p-6">
-          <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-[#4A4238]">
-            История эмоций
-          </h2>
-
-          <!-- Filters -->
-          <div class="mb-4 flex space-x-2">
-            <select
-              v-model="emotionFilter"
-              class="border rounded p-1 sm:p-2 text-xs sm:text-base w-1/2"
-            >
-              <option value="">Все эмоции</option>
-              <option
-                v-for="emotion in emotions"
-                :key="emotion.id"
-                :value="emotion.name"
-              >
-                {{ emotion.name }}
-              </option>
-            </select>
-            <select
-              v-model="sphereFilter"
-              class="border rounded p-1 sm:p-2 text-xs sm:text-base w-1/2"
-            >
-              <option value="">Все сферы</option>
-              <option v-for="tag in lifeSpheres" :key="tag">
-                {{ tag }}
-              </option>
-            </select>
-          </div>
-
-          <!-- Journal Entries List -->
-          <div class="space-y-4 max-h-[50vh] overflow-y-auto">
-            <div
-              v-for="(entry, index) in filteredEntries"
-              :key="index"
-              class="border-b pb-4 last:border-b-0"
-            >
-              <div class="flex justify-between items-center">
-                <span class="font-bold text-sm sm:text-base text-[#4A4238]">
-                  {{ entry.emotion }} ({{ entry.intensity }}/10)
-                </span>
-                <span class="text-xs sm:text-sm text-gray-500">
-                  {{ formatDate(entry.date) }}
-                </span>
-              </div>
-              <p class="mt-2 text-xs sm:text-sm text-[#6B5B4C]">
-                {{ entry.entry }}
-              </p>
-              <div class="mt-2">
-                <span
-                  v-for="tag in entry.tags"
-                  :key="tag"
-                  class="inline-block bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs mr-2"
-                >
-                  {{ tag }}
-                </span>
-              </div>
-            </div>
-          </div>
+      <!-- Call to Action -->
+      <div
+        class="bg-gradient-to-r from-pink-400 to-purple-500 rounded-2xl p-8 mt-12 text-center"
+      >
+        <h2 class="text-3xl font-bold text-white mb-4">
+          Подпишитесь на новые материалы
+        </h2>
+        <p class="text-white mb-6 max-w-2xl mx-auto">
+          Получите доступ к эксклюзивным руководствам, которые помогут вам в
+          путешествии к самопознанию.
+        </p>
+        <div class="max-w-md mx-auto flex">
+          <input
+            type="email"
+            placeholder="Ваш email"
+            class="w-full px-4 py-3 rounded-l-lg text-gray-800"
+          />
+          <button
+            class="bg-white text-pink-600 px-6 py-3 rounded-r-lg hover:bg-gray-100"
+          >
+            Подписаться
+          </button>
         </div>
       </div>
     </div>
@@ -152,92 +104,73 @@
 </template>
 
 <script setup>
-// The script remains the same as in the original code
-const emotions = [
-  { id: 1, name: "Радость" },
-  { id: 2, name: "Тревога" },
-  { id: 3, name: "Злость" },
-  { id: 4, name: "Грусть" },
-  { id: 5, name: "Вдохновение" },
-  { id: 6, name: "Спокойствие" },
-];
+import { ref, computed } from "vue";
+import guideImage from "~/assets/images/podcasts/podcasts.jpeg";
 
-const lifeSpheres = [
-  "Работа",
-  "Семья",
-  "Здоровье",
-  "Личностный рост",
+const selectedCategory = ref("Все");
+
+const categories = [
+  "Все",
+  "Самопознание",
+  "Эмоциональный интеллект",
   "Отношения",
-  "Хобби",
+  "Карьерный рост",
 ];
 
-const selectedEmotion = ref(null);
-const intensityLevel = ref(5);
-const journalEntry = ref("");
-const selectedTags = ref([]);
-const entries = ref([]);
-const emotionFilter = ref("");
-const sphereFilter = ref("");
+const guides = [
+  {
+    id: 1,
+    title: "Практики Осознанности",
+    description:
+      "Узнайте, как внедрить простые практики осознанности в повседневную жизнь.",
+    date: "15 декабря 2024",
+    category: "Самопознание",
+    image: guideImage,
+    icon: "fas fa-seedling", // Example Font Awesome icon
+    iconDescription: "Подходы для внутреннего роста и баланса.",
+  },
+  {
+    id: 2,
+    title: "Управление Эмоциями",
+    description:
+      "Эффективные техники для работы с эмоциями и улучшения эмоционального интеллекта.",
+    date: "10 декабря 2024",
+    category: "Эмоциональный интеллект",
+    image: guideImage,
+    icon: "fas fa-heart", // Example Font Awesome icon
+    iconDescription: "Техники для развития эмпатии и самоконтроля.",
+  },
+  {
+    id: 3,
+    title: "Гармоничные Отношения",
+    description:
+      "Понимание ваших и чужих потребностей для создания доверительных отношений.",
+    date: "5 декабря 2024",
+    category: "Отношения",
+    image: guideImage,
+    icon: "fas fa-users", // Example Font Awesome icon
+    iconDescription: "Инструменты для укрепления связи с близкими.",
+  },
+  {
+    id: 4,
+    title: "Мотивация и Цели",
+    description:
+      "Найдите свой источник мотивации и научитесь ставить реалистичные цели.",
+    date: "1 декабря 2024",
+    category: "Карьерный рост",
+    image: guideImage,
+    icon: "fas fa-mountain", // Example Font Awesome icon
+    iconDescription: "Стратегии для достижения карьерных и личных целей.",
+  },
+];
 
-// Lifecycle hook to load entries from localStorage
-onMounted(() => {
-  const storedEntries = localStorage.getItem("emotionalEntries");
-  if (storedEntries) {
-    entries.value = JSON.parse(storedEntries);
-  }
-});
-
-const selectEmotion = (emotion) => {
-  selectedEmotion.value = emotion;
+const selectCategory = (category) => {
+  selectedCategory.value = category;
 };
 
-const toggleTag = (tag) => {
-  const index = selectedTags.value.indexOf(tag);
-  if (index > -1) {
-    selectedTags.value.splice(index, 1);
-  } else {
-    selectedTags.value.push(tag);
-  }
-};
-
-const saveEntry = () => {
-  if (!selectedEmotion.value) return;
-
-  const newEntry = {
-    emotion: selectedEmotion.value.name,
-    intensity: intensityLevel.value,
-    entry: journalEntry.value,
-    tags: [...selectedTags.value],
-    date: new Date().toISOString(),
-  };
-
-  entries.value.unshift(newEntry);
-
-  // Save to localStorage
-  localStorage.setItem("emotionalEntries", JSON.stringify(entries.value));
-
-  // Reset form
-  selectedEmotion.value = null;
-  intensityLevel.value = 5;
-  journalEntry.value = "";
-  selectedTags.value = [];
-};
-
-const formatDate = (dateString) => {
-  return new Date(dateString).toLocaleString("ru-RU", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-};
-
-const filteredEntries = computed(() => {
-  return entries.value.filter(
-    (entry) =>
-      (!emotionFilter.value || entry.emotion === emotionFilter.value) &&
-      (!sphereFilter.value || entry.tags.includes(sphereFilter.value))
-  );
+const filteredGuides = computed(() => {
+  return selectedCategory.value === "Все"
+    ? guides
+    : guides.filter((guide) => guide.category === selectedCategory.value);
 });
 </script>

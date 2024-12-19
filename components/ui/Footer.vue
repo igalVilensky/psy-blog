@@ -93,11 +93,18 @@ const email = ref("");
 
 // Sitemap links from the navigation
 const sitemapLinks = [
-  { label: "Бесплатные материалы", to: "/free-resources" },
-  { label: "Курсы", to: "/courses" },
-  { label: "Гайды", to: "/guides" },
-  { label: "Карты разговоров", to: "/tests" },
-  { label: "Калькулятор биоритмов", to: "/biorhythm-calculator" },
+  { label: "Бесплатные материалы", to: "/courses/free-resources" },
+  { label: "Курсы", to: "/courses/courses" },
+  { label: "Гайды", to: "/courses/guides" },
+  { label: " Подкасты ", to: "/courses/podcasts" },
+  {
+    label: "Эмоциональный барометр",
+    to: "/awareness-tools/emotional-barometer",
+  },
+  {
+    label: "Глубокий разговор с картами",
+    to: "/awareness-tools/deep-conversation-with-cards",
+  },
   { label: "О проекте", to: "/about" },
   { label: "Связь", to: "/contact" },
 ];

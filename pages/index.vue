@@ -36,7 +36,7 @@
 
             <!-- CTA Button -->
             <NuxtLink
-              to="/courses"
+              to="/courses/courses"
               class="inline-block bg-gradient-to-br from-pink-500 to-purple-500 text-white text-lg font-semibold py-3 px-6 rounded-lg hover:opacity-90 transition duration-300 shadow-lg"
             >
               Начать обучение
