@@ -10,7 +10,40 @@
           Превратите ваши эмоции в цветущее дерево. Каждая запись помогает ему
           расти и раскрывает новые сюрпризы.
         </p>
+        <button
+          @click="resetTree"
+          class="mt-6 px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+        >
+          Сбросить дерево
+        </button>
       </section>
+
+      <!-- Surprise Modal -->
+      <div
+        v-if="showSurpriseModal"
+        class="fixed inset-0 flex items-center justify-center z-50"
+      >
+        <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+        <div
+          class="bg-white rounded-xl shadow-2xl p-8 max-w-md mx-4 relative z-10"
+        >
+          <h3 class="text-2xl font-bold text-gray-800 mb-4">🎉 Сюрприз!</h3>
+          <p class="text-lg text-gray-700">{{ currentSurpriseMessage }}</p>
+          <button
+            @click="showSurpriseModal = false"
+            class="mt-6 px-6 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition"
+          >
+            Замечательно!
+          </button>
+        </div>
+      </div>
+
+      <!-- Confetti Effect -->
+      <div v-if="showConfetti" class="fixed inset-0 pointer-events-none z-40">
+        <div class="absolute inset-0 overflow-hidden">
+          <!-- Confetti elements would be added here via CSS -->
+        </div>
+      </div>
 
       <!-- Main Content Grid -->
       <div class="grid md:grid-cols-2 gap-8">
@@ -24,7 +57,7 @@
               >
               <div class="flex flex-wrap gap-3 mb-4">
                 <button
-                  v-for="emotion in emotions"
+                  v-for="emotion in unlockedEmotions"
                   :key="emotion.name"
                   type="button"
                   @click="() => (selectedEmotion = emotion)"
@@ -89,21 +122,32 @@
 
         <!-- Right Column - Tree Visualization -->
         <div class="bg-white rounded-2xl shadow-lg p-6">
-          <!-- Added wrapper div with fixed aspect ratio -->
           <div class="relative w-full" style="padding-bottom: 100%">
             <div class="absolute inset-0">
               <svg
                 class="w-full h-full"
                 viewBox="0 0 400 400"
                 preserveAspectRatio="xMidYMid meet"
-                :class="{ 'tree-animation': showTreeAnimation }"
               >
-                <!-- Tree Base - Adjusted path for square viewport -->
+                <!-- Tree Base -->
+                <defs>
+                  <linearGradient
+                    id="tree-gradient"
+                    x1="0"
+                    y1="1"
+                    x2="0"
+                    y2="0"
+                  >
+                    <stop offset="0%" stop-color="#8B4513" />
+                    <stop offset="100%" stop-color="#6A340E" />
+                  </linearGradient>
+                </defs>
                 <path
-                  :d="'M200,350 Q200,200 250,150 T200,50'"
+                  d="M200,350 Q200,200 250,150 T200,50"
                   fill="none"
-                  stroke="#8B4513"
-                  stroke-width="4"
+                  stroke="url(#tree-gradient)"
+                  stroke-width="8"
+                  stroke-linecap="round"
                 />
 
                 <!-- Emotion Leaves -->
@@ -113,12 +157,31 @@
                     :cy="leaf.y"
                     :r="leaf.size"
                     :fill="leaf.color"
-                    class="leaf-animation"
-                  >
-                    <title>{{ leaf.emotion }}</title>
-                  </circle>
+                  />
                 </g>
               </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Achievements Section -->
+      <div class="mt-8 bg-white rounded-2xl shadow-lg p-6">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Достижения</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div
+            v-for="achievement in achievements"
+            :key="achievement.id"
+            class="bg-gray-50 rounded-lg p-4"
+          >
+            <div class="flex items-center">
+              <span class="text-2xl mr-2">🏆</span>
+              <div>
+                <p class="font-medium text-gray-800">{{ achievement.title }}</p>
+                <p class="text-sm text-gray-500">
+                  {{ formatDate(achievement.date) }}
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -149,8 +212,9 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 
+// Base emotions
 const emotions = [
   { name: "Радость", emoji: "😊", color: "#FFD700" },
   { name: "Спокойствие", emoji: "😌", color: "#98FB98" },
@@ -160,13 +224,37 @@ const emotions = [
   { name: "Благодарность", emoji: "🙏", color: "#FFB6C1" },
 ];
 
+// Advanced emotions (unlocked later)
+const advancedEmotions = [
+  { name: "Восторг", emoji: "🌟", color: "#FFA500" },
+  { name: "Умиротворение", emoji: "🌸", color: "#E6E6FA" },
+  { name: "Надежда", emoji: "🌈", color: "#98FF98" },
+];
+
+// Tree styles
+const treeStyles = [
+  { name: "classic", path: "M200,350 Q200,200 250,150 T200,50" },
+  { name: "weeping", path: "M200,350 Q160,200 120,150 T200,50" },
+  { name: "spiral", path: "M200,350 Q250,250 200,150 T250,50" },
+];
+
+// State management
 const selectedEmotion = ref(null);
 const diaryEntry = ref("");
-const entriesCount = ref(15);
+const entriesCount = ref(0);
 const treeLevel = ref("Цветущее");
 const showTreeAnimation = ref(false);
 const treeLeaves = ref([]);
+const recentEntries = ref([]);
+const currentTreeStyle = ref(treeStyles[0]);
+const showConfetti = ref(false);
+const unlockedEmotions = ref([...emotions]);
+const achievements = ref([]);
+const showSurpriseModal = ref(false);
+const currentSurpriseMessage = ref("");
+const flowers = ref([]);
 
+// Computed properties
 const isFormValid = computed(() => {
   return selectedEmotion.value && diaryEntry.value.trim().length > 0;
 });
@@ -175,29 +263,148 @@ const remainingForSurprise = computed(() => {
   return 5 - (entriesCount.value % 5);
 });
 
-// Sample tree data
-const treePath = "M200,500 Q200,300 250,200 T200,100";
+// Milestones configuration
+const milestones = {
+  5: {
+    type: "animation",
+    message: "Поздравляем! Ваше дерево начинает цвести! 🌸",
+    reward: "flowerAnimation",
+  },
+  10: {
+    type: "emotion",
+    message: "Открыта новая эмоция: Восторг! ✨",
+    reward: "newEmotion",
+  },
+  15: {
+    type: "tree",
+    message: "Разблокирован новый стиль дерева!",
+    reward: "newTreeStyle",
+  },
+  20: {
+    type: "special",
+    message: "Особое достижение: Золотые листья разблокированы! 🌟",
+    reward: "goldenLeaves",
+  },
+};
 
-const recentEntries = ref([
-  {
-    id: 1,
-    emotion: emotions[0],
-    text: "Сегодня был замечательный день! Столько всего успела сделать.",
-    date: new Date(),
-  },
-  {
-    id: 2,
-    emotion: emotions[4],
-    text: "Нашла отличную идею для нового проекта.",
-    date: new Date(Date.now() - 86400000),
-  },
-  {
-    id: 3,
-    emotion: emotions[1],
-    text: "Медитация помогла справиться со стрессом.",
-    date: new Date(Date.now() - 172800000),
-  },
-]);
+const resetTree = () => {
+  treeLeaves.value = [];
+  entriesCount.value = 0;
+  unlockedEmotions.value = [...emotions];
+  achievements.value = [];
+  recentEntries.value = [];
+  localStorage.clear(); // Clear saved state
+  alert("Дерево успешно сброшено!");
+};
+
+// Local storage functions
+const saveToLocalStorage = () => {
+  try {
+    localStorage.setItem("entriesCount", entriesCount.value.toString());
+    localStorage.setItem("treeLeaves", JSON.stringify(treeLeaves.value));
+    localStorage.setItem("recentEntries", JSON.stringify(recentEntries.value));
+    localStorage.setItem("achievements", JSON.stringify(achievements.value));
+    localStorage.setItem(
+      "unlockedEmotions",
+      JSON.stringify(unlockedEmotions.value)
+    );
+    localStorage.setItem(
+      "currentTreeStyle",
+      JSON.stringify(currentTreeStyle.value)
+    );
+  } catch (error) {
+    console.error("Error saving to localStorage:", error);
+  }
+};
+
+const loadFromLocalStorage = () => {
+  try {
+    const storedEntriesCount = localStorage.getItem("entriesCount");
+    const storedTreeLeaves = localStorage.getItem("treeLeaves");
+    const storedRecentEntries = localStorage.getItem("recentEntries");
+    const storedAchievements = localStorage.getItem("achievements");
+    const storedUnlockedEmotions = localStorage.getItem("unlockedEmotions");
+    const storedTreeStyle = localStorage.getItem("currentTreeStyle");
+
+    if (storedEntriesCount) entriesCount.value = parseInt(storedEntriesCount);
+    if (storedTreeLeaves) treeLeaves.value = JSON.parse(storedTreeLeaves);
+    if (storedRecentEntries) {
+      recentEntries.value = JSON.parse(storedRecentEntries, (key, value) => {
+        if (key === "date") return new Date(value);
+        return value;
+      });
+    }
+    if (storedAchievements) achievements.value = JSON.parse(storedAchievements);
+    if (storedUnlockedEmotions)
+      unlockedEmotions.value = JSON.parse(storedUnlockedEmotions);
+    if (storedTreeStyle) currentTreeStyle.value = JSON.parse(storedTreeStyle);
+  } catch (error) {
+    console.error("Error loading from localStorage:", error);
+  }
+};
+
+// Helper functions
+const addFlowerEffect = () => {
+  const newFlowers = Array.from({ length: 5 }, () => ({
+    x: 150 + Math.random() * 100,
+    y: 100 + Math.random() * 200,
+  }));
+  flowers.value.push(...newFlowers);
+};
+
+const enableGoldenLeaves = () => {
+  // Golden leaves are handled in createLeaf function
+};
+
+// Handle milestone rewards
+const checkMilestones = () => {
+  const milestone = milestones[entriesCount.value];
+  if (milestone) {
+    currentSurpriseMessage.value = milestone.message;
+    showSurpriseModal.value = true;
+    showConfetti.value = true;
+
+    switch (milestone.reward) {
+      case "flowerAnimation":
+        addFlowerEffect();
+        break;
+      case "newEmotion":
+        unlockedEmotions.value.push(advancedEmotions[0]);
+        break;
+      case "newTreeStyle":
+        currentTreeStyle.value = treeStyles[2];
+        break;
+      case "goldenLeaves":
+        enableGoldenLeaves();
+        break;
+    }
+
+    // Add achievement
+    achievements.value.push({
+      id: Date.now(),
+      title: milestone.message,
+      date: new Date(),
+    });
+
+    // Save achievements
+    saveToLocalStorage();
+  }
+};
+
+// Enhanced leaf generation with special effects
+const createLeaf = (emotion) => {
+  const isGoldenLeaf = entriesCount.value >= 20 && Math.random() > 0.8;
+
+  return {
+    x: 150 + Math.random() * 100,
+    y: 100 + Math.random() * 200,
+    size: 8 + Math.random() * 5,
+    color: isGoldenLeaf ? "#FFD700" : emotion.color,
+    emotion: emotion.name,
+    special: isGoldenLeaf ? "golden" : null,
+    rotation: Math.random() * 360,
+  };
+};
 
 const handleSubmitEntry = () => {
   if (!isFormValid.value) return;
@@ -205,14 +412,8 @@ const handleSubmitEntry = () => {
   // Add new entry
   entriesCount.value++;
 
-  // Add new leaf to tree
-  const newLeaf = {
-    x: 150 + Math.random() * 100,
-    y: 100 + Math.random() * 200,
-    size: 8 + Math.random() * 5,
-    color: selectedEmotion.value.color,
-    emotion: selectedEmotion.value.name,
-  };
+  // Add new leaf
+  const newLeaf = createLeaf(selectedEmotion.value);
   treeLeaves.value.push(newLeaf);
 
   // Add to recent entries
@@ -227,14 +428,18 @@ const handleSubmitEntry = () => {
     recentEntries.value.pop();
   }
 
+  // Check for milestones
+  checkMilestones();
+
   // Reset form
   selectedEmotion.value = null;
   diaryEntry.value = "";
   showTreeAnimation.value = true;
 
-  // Reset animation
+  // Reset animations
   setTimeout(() => {
     showTreeAnimation.value = false;
+    showConfetti.value = false;
   }, 1000);
 };
 
@@ -244,18 +449,70 @@ const formatDate = (date) => {
     month: "long",
   });
 };
+
+// Watch for changes and save to localStorage
+watch(
+  [
+    entriesCount,
+    treeLeaves,
+    recentEntries,
+    achievements,
+    unlockedEmotions,
+    currentTreeStyle,
+  ],
+  () => {
+    saveToLocalStorage();
+  },
+  { deep: true }
+);
+
+// Initialize data on component mount
+onMounted(() => {
+  loadFromLocalStorage();
+});
 </script>
 
 <style scoped>
 .leaf-animation {
   animation: growLeaf 0.5s ease-out;
+  transform-origin: center;
 }
 
 .tree-animation {
   animation: growTree 1s ease-out;
 }
 
+.flower-animation {
+  animation: bloomFlower 0.8s ease-out;
+}
+
+.golden-leaf {
+  filter: drop-shadow(0 0 3px gold);
+}
+
 @keyframes growLeaf {
+  from {
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) rotate(var(--rotation));
+    opacity: 1;
+  }
+}
+
+@keyframes growTree {
+  from {
+    opacity: 0.5;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bloomFlower {
   from {
     transform: scale(0);
     opacity: 0;
@@ -266,10 +523,64 @@ const formatDate = (date) => {
   }
 }
 
+/* Confetti animation */
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-100vh);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+@keyframes confetti-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(80px);
+  }
+}
+
+.confetti {
+  position: absolute;
+  animation: confetti-fall 3s linear infinite,
+    confetti-shake 2s ease-in-out infinite;
+}
+
+/* Create multiple confetti elements with different colors */
+.confetti::before {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: var(--confetti-color);
+  transform: rotate(45deg);
+}
+
+path {
+  animation: growTree 1.5s ease-out forwards;
+}
+circle {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
 @keyframes growTree {
   from {
-    opacity: 0.5;
-    transform: scale(0.95);
+    stroke-dasharray: 0 600;
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dasharray: 600 0;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
   }
   to {
     opacity: 1;
