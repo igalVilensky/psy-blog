@@ -38,13 +38,6 @@
         </div>
       </div>
 
-      <!-- Confetti Effect -->
-      <div v-if="showConfetti" class="fixed inset-0 pointer-events-none z-40">
-        <div class="absolute inset-0 overflow-hidden">
-          <!-- Confetti elements would be added here via CSS -->
-        </div>
-      </div>
-
       <!-- Main Content Grid -->
       <div class="grid md:grid-cols-2 gap-8">
         <!-- Left Column - Diary Entry -->
@@ -213,6 +206,7 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from "vue";
+import confetti from "canvas-confetti";
 
 // Base emotions
 const emotions = [
@@ -253,7 +247,14 @@ const achievements = ref([]);
 const showSurpriseModal = ref(false);
 const currentSurpriseMessage = ref("");
 const flowers = ref([]);
-
+const triggerConfetti = () => {
+  confetti({
+    particleCount: 100,
+    spread: 70,
+    origin: { y: 0.6 },
+    colors: ["#FF6B6B", "#FFD700", "#DDA0DD", "#87CEEB"],
+  });
+};
 // Computed properties
 const isFormValid = computed(() => {
   return selectedEmotion.value && diaryEntry.value.trim().length > 0;
@@ -362,7 +363,7 @@ const checkMilestones = () => {
   if (milestone) {
     currentSurpriseMessage.value = milestone.message;
     showSurpriseModal.value = true;
-    showConfetti.value = true;
+    triggerConfetti();
 
     switch (milestone.reward) {
       case "flowerAnimation":
@@ -439,7 +440,6 @@ const handleSubmitEntry = () => {
   // Reset animations
   setTimeout(() => {
     showTreeAnimation.value = false;
-    showConfetti.value = false;
   }, 1000);
 };
 
@@ -521,42 +521,6 @@ onMounted(() => {
     transform: scale(1);
     opacity: 1;
   }
-}
-
-/* Confetti animation */
-@keyframes confetti-fall {
-  0% {
-    transform: translateY(-100vh);
-  }
-  100% {
-    transform: translateY(100vh);
-  }
-}
-
-@keyframes confetti-shake {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(80px);
-  }
-}
-
-.confetti {
-  position: absolute;
-  animation: confetti-fall 3s linear infinite,
-    confetti-shake 2s ease-in-out infinite;
-}
-
-/* Create multiple confetti elements with different colors */
-.confetti::before {
-  content: "";
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  background: var(--confetti-color);
-  transform: rotate(45deg);
 }
 
 path {
