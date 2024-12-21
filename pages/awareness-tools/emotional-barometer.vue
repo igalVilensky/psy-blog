@@ -3,7 +3,7 @@
     class="bg-gradient-to-br from-pink-50 to-white min-h-screen py-6 sm:py-12"
   >
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
         <!-- Emotional Barometer Section -->
         <div class="bg-white shadow-xl rounded-2xl p-4 sm:p-6">
           <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-[#4A4238]">
@@ -21,8 +21,8 @@
               :class="[
                 'py-2 sm:py-3 rounded-lg transition-all text-xs sm:text-sm',
                 selectedEmotion?.id === emotion.id
-                  ? 'bg-[#FF6B6B] text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200',
+                  ? `${emotion.activeColor} text-white`
+                  : `${emotion.color} hover:opacity-80`,
               ]"
             >
               {{ emotion.name }}
@@ -59,17 +59,20 @@
               </label>
               <div class="flex flex-wrap gap-2">
                 <button
-                  v-for="tag in lifeSpheres"
-                  :key="tag"
-                  @click="toggleTag(tag)"
+                  v-for="sphere in lifeSpheres"
+                  :key="sphere.name"
+                  @click="toggleTag(sphere.name)"
                   :class="[
-                    'px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm',
-                    selectedTags.includes(tag)
-                      ? 'bg-[#FF6B6B] text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200',
+                    'px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm transition-all',
+                    selectedTags.includes(sphere.name)
+                      ? sphere.activeColor
+                      : sphere.color,
+                    selectedTags.includes(sphere.name)
+                      ? 'text-white'
+                      : 'text-gray-700',
                   ]"
                 >
-                  {{ tag }}
+                  {{ sphere.name }}
                 </button>
               </div>
             </div>
@@ -81,6 +84,60 @@
             >
               Сохранить запись
             </button>
+
+            <!-- Recommendations -->
+            <div
+              v-if="currentRecommendations.length"
+              class="mt-4 p-4 bg-blue-50 rounded-lg"
+            >
+              <h3 class="font-semibold mb-2 text-blue-800">Рекомендации:</h3>
+              <ul class="list-disc pl-4 space-y-1">
+                <li
+                  v-for="(rec, index) in currentRecommendations"
+                  :key="index"
+                  class="text-sm text-blue-700"
+                >
+                  {{ rec }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Analysis Section -->
+        <div class="bg-white shadow-xl rounded-2xl p-4 sm:p-6">
+          <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-[#4A4238]">
+            Анализ Эмоций
+          </h2>
+
+          <!-- Emotion Patterns -->
+          <div class="space-y-4">
+            <div
+              v-for="(pattern, emotion) in emotionPatterns"
+              :key="emotion"
+              class="p-4 bg-gray-50 rounded-lg"
+            >
+              <h3 class="font-semibold text-[#4A4238]">{{ emotion }}</h3>
+              <div class="mt-2 space-y-1 text-sm">
+                <p>Частота: {{ pattern.count }} раз</p>
+                <p>
+                  Средняя интенсивность:
+                  {{ pattern.avgIntensity.toFixed(1) }}/10
+                </p>
+                <div v-if="Object.keys(pattern.commonSpheres).length">
+                  <p class="font-medium">Чаще всего в сферах:</p>
+                  <div class="flex flex-wrap gap-1 mt-1">
+                    <span
+                      v-for="(count, sphere) in pattern.commonSpheres"
+                      :key="sphere"
+                      class="text-xs px-2 py-1 bg-white rounded"
+                    >
+                      {{ sphere }} ({{ count }})
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -110,14 +167,18 @@
               class="border rounded p-1 sm:p-2 text-xs sm:text-base w-1/2"
             >
               <option value="">Все сферы</option>
-              <option v-for="tag in lifeSpheres" :key="tag">
-                {{ tag }}
+              <option
+                v-for="sphere in lifeSpheres"
+                :key="sphere.name"
+                :value="sphere.name"
+              >
+                {{ sphere.name }}
               </option>
             </select>
           </div>
 
           <!-- Journal Entries List -->
-          <div class="space-y-4 max-h-[50vh] overflow-y-auto">
+          <div class="space-y-4 max-h-[100vh] overflow-y-auto">
             <div
               v-for="(entry, index) in filteredEntries"
               :key="index"
@@ -138,7 +199,10 @@
                 <span
                   v-for="tag in entry.tags"
                   :key="tag"
-                  class="inline-block bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs mr-2"
+                  :class="[
+                    'inline-block px-2 py-1 rounded-full text-xs mr-2',
+                    getTagColor(tag),
+                  ]"
                 >
                   {{ tag }}
                 </span>
@@ -152,23 +216,48 @@
 </template>
 
 <script setup>
-// The script remains the same as in the original code
+import { ref, computed, onMounted } from "vue";
+
 const emotions = [
-  { id: 1, name: "Радость" },
-  { id: 2, name: "Тревога" },
-  { id: 3, name: "Злость" },
-  { id: 4, name: "Грусть" },
-  { id: 5, name: "Вдохновение" },
-  { id: 6, name: "Спокойствие" },
+  {
+    id: 1,
+    name: "Радость",
+    color: "bg-yellow-100",
+    activeColor: "bg-yellow-500",
+  },
+  {
+    id: 2,
+    name: "Тревога",
+    color: "bg-purple-100",
+    activeColor: "bg-purple-500",
+  },
+  { id: 3, name: "Злость", color: "bg-red-100", activeColor: "bg-red-500" },
+  { id: 4, name: "Грусть", color: "bg-blue-100", activeColor: "bg-blue-500" },
+  {
+    id: 5,
+    name: "Вдохновение",
+    color: "bg-green-100",
+    activeColor: "bg-green-500",
+  },
+  {
+    id: 6,
+    name: "Спокойствие",
+    color: "bg-teal-100",
+    activeColor: "bg-teal-500",
+  },
 ];
 
 const lifeSpheres = [
-  "Работа",
-  "Семья",
-  "Здоровье",
-  "Личностный рост",
-  "Отношения",
-  "Хобби",
+  { name: "Работа", color: "bg-blue-100", activeColor: "bg-[#FF6B6B]" },
+  { name: "Семья", color: "bg-green-100", activeColor: "bg-[#FF6B6B]" },
+  { name: "Здоровье", color: "bg-purple-100", activeColor: "bg-[#FF6B6B]" },
+  {
+    name: "Личностный рост",
+    color: "bg-yellow-100",
+    activeColor: "bg-[#FF6B6B]",
+  },
+  { name: "Отношения", color: "bg-pink-100", activeColor: "bg-[#FF6B6B]" },
+  { name: "Хобби", color: "bg-orange-100", activeColor: "bg-[#FF6B6B]" },
 ];
 
 const selectedEmotion = ref(null);
@@ -179,7 +268,7 @@ const entries = ref([]);
 const emotionFilter = ref("");
 const sphereFilter = ref("");
 
-// Lifecycle hook to load entries from localStorage
+// Load entries from localStorage
 onMounted(() => {
   const storedEntries = localStorage.getItem("emotionalEntries");
   if (storedEntries) {
@@ -200,6 +289,11 @@ const toggleTag = (tag) => {
   }
 };
 
+const getTagColor = (tagName) => {
+  const sphere = lifeSpheres.find((s) => s.name === tagName);
+  return sphere ? sphere.color : "bg-gray-100";
+};
+
 const saveEntry = () => {
   if (!selectedEmotion.value) return;
 
@@ -212,8 +306,6 @@ const saveEntry = () => {
   };
 
   entries.value.unshift(newEntry);
-
-  // Save to localStorage
   localStorage.setItem("emotionalEntries", JSON.stringify(entries.value));
 
   // Reset form
@@ -239,5 +331,57 @@ const filteredEntries = computed(() => {
       (!emotionFilter.value || entry.emotion === emotionFilter.value) &&
       (!sphereFilter.value || entry.tags.includes(sphereFilter.value))
   );
+});
+
+// Emotion pattern analysis
+const emotionPatterns = computed(() => {
+  const patterns = entries.value.reduce((acc, entry) => {
+    if (!acc[entry.emotion]) {
+      acc[entry.emotion] = {
+        count: 0,
+        avgIntensity: 0,
+        commonSpheres: {},
+      };
+    }
+    acc[entry.emotion].count++;
+    acc[entry.emotion].avgIntensity += entry.intensity;
+    entry.tags.forEach((tag) => {
+      acc[entry.emotion].commonSpheres[tag] =
+        (acc[entry.emotion].commonSpheres[tag] || 0) + 1;
+    });
+    return acc;
+  }, {});
+
+  // Calculate averages
+  Object.keys(patterns).forEach((emotion) => {
+    patterns[emotion].avgIntensity /= patterns[emotion].count;
+  });
+
+  return patterns;
+});
+
+// Recommendations based on patterns
+const currentRecommendations = computed(() => {
+  if (!selectedEmotion.value) return [];
+
+  const recommendations = {
+    Тревога: [
+      "Попробуйте дыхательные упражнения (4-7-8)",
+      "Запишите свои мысли и попробуйте их оспорить",
+      "Совершите короткую прогулку на свежем воздухе",
+    ],
+    Злость: [
+      "Сделайте паузу перед реакцией",
+      "Выполните физические упражнения",
+      "Переключитесь на другую активность",
+    ],
+    Грусть: [
+      "Поговорите с близким человеком",
+      "Сделайте что-то приятное для себя",
+      "Вспомните хорошие моменты",
+    ],
+  };
+
+  return recommendations[selectedEmotion.value.name] || [];
 });
 </script>

@@ -127,7 +127,7 @@
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-4 w-4 ml-1 transform transition-transform duration-300"
-                :class="isMobileSubmenuOpen ? 'rotate-180' : ''"
+                :class="openSubmenu === 'courses' ? 'rotate-180' : ''"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -157,7 +157,7 @@
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-4 w-4 ml-1 flex-shrink-0 transform transition-transform duration-300"
-                :class="isMobileAwarenessSubmenuOpen ? 'rotate-180' : ''"
+                :class="openSubmenu === 'awareness-tools' ? 'rotate-180' : ''"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
