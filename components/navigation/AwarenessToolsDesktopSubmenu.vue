@@ -5,15 +5,24 @@
     <div class="py-2 bg-white rounded-lg shadow-lg">
       <NuxtLink
         to="/awareness-tools/emotional-barometer"
+        exact-active-class="bg-pink-500 text-white"
         class="block px-4 py-2 text-sm text-gray-700 hover:bg-pink-500 hover:text-white"
       >
         Эмоциональный барометр
       </NuxtLink>
       <NuxtLink
         to="/awareness-tools/deep-conversation-with-cards"
+        exact-active-class="bg-pink-500 text-white"
         class="block px-4 py-2 text-sm text-gray-700 hover:bg-pink-500 hover:text-white"
       >
         Глубокий разговор с картами
+      </NuxtLink>
+      <NuxtLink
+        to="/awareness-tools/emotion-diary"
+        exact-active-class="bg-pink-500 text-white"
+        class="block px-4 py-2 text-sm text-gray-700 hover:bg-pink-500 hover:text-white"
+      >
+        Дневник эмоций
       </NuxtLink>
     </div>
   </div>

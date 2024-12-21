@@ -107,7 +107,7 @@ const sitemapLinks = [
   },
   {
     label: "Дневник эмоций",
-    to: "/test",
+    to: "/awareness-tools/emotion-diary",
   },
   { label: "О проекте", to: "/about" },
   { label: "Связь", to: "/contact" },

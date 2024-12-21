@@ -31,14 +31,14 @@
 
           <!-- Back of Card -->
           <div
-            class="absolute top-0 w-full h-full bg-white rounded-xl shadow-lg p-6 rotate-y-180 backface-hidden"
+            class="absolute top-0 w-full h-fit bg-white rounded-xl shadow-lg p-6 rotate-y-180 backface-hidden"
           >
             <div>
               <h3 class="text-2xl font-bold text-blue-600 mb-4">
                 {{ currentCard.title }}
               </h3>
               <img
-                :src="currentCard.image"
+                src="https://i.pinimg.com/originals/a7/61/9b/a7619b50601cf51ef0029c6cdf8c7bc8.jpg"
                 alt="Card Illustration"
                 class="w-full h-48 object-cover rounded-lg mb-6"
               />

@@ -6,7 +6,9 @@
     <li>
       <NuxtLink
         to="/awareness-tools/emotional-barometer"
+        exact-active-class="bg-pink-500"
         class="block px-12 py-2 text-white text-sm transition-colors duration-300 ease-in-out hover:bg-pink-600"
+        @click="closeDropdown"
       >
         Эмоциональный барометр
       </NuxtLink>
@@ -14,9 +16,21 @@
     <li>
       <NuxtLink
         to="/awareness-tools/deep-conversation-with-cards"
+        exact-active-class="bg-pink-500"
         class="block px-12 py-2 text-white text-sm transition-colors duration-300 ease-in-out hover:bg-pink-600"
+        @click="closeDropdown"
       >
         Глубокий разговор с картами
+      </NuxtLink>
+    </li>
+    <li>
+      <NuxtLink
+        to="/awareness-tools/emotion-diary"
+        exact-active-class="bg-pink-500"
+        class="block px-12 py-2 text-white text-sm transition-colors duration-300 ease-in-out hover:bg-pink-600"
+        @click="closeDropdown"
+      >
+        Дневник эмоций
       </NuxtLink>
     </li>
   </ul>
@@ -27,6 +41,10 @@ defineProps({
   isOpen: {
     type: Boolean,
     default: false,
+  },
+  closeDropdown: {
+    type: Function,
+    required: true,
   },
 });
 

@@ -5,24 +5,28 @@
     <div class="py-2 bg-white rounded-lg shadow-lg">
       <NuxtLink
         to="/courses/free-resources"
+        exact-active-class="bg-pink-500 text-white"
         class="block px-4 py-2 text-sm text-gray-700 hover:bg-pink-500 hover:text-white"
       >
         Бесплатные материалы
       </NuxtLink>
       <NuxtLink
         to="/courses/courses"
+        exact-active-class="bg-pink-500 text-white"
         class="block px-4 py-2 text-sm text-gray-700 hover:bg-pink-500 hover:text-white"
       >
         Курсы
       </NuxtLink>
       <NuxtLink
         to="/courses/guides"
+        exact-active-class="bg-pink-500 text-white"
         class="block px-4 py-2 text-sm text-gray-700 hover:bg-pink-500 hover:text-white"
       >
         Гайды
       </NuxtLink>
       <NuxtLink
         to="/courses/podcasts"
+        exact-active-class="bg-pink-500 text-white"
         class="block px-4 py-2 text-sm text-gray-700 hover:bg-pink-500 hover:text-white"
       >
         Подкасты
