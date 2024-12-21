@@ -1,6 +1,7 @@
 <template>
   <div
-    class="bg-gradient-to-br from-pink-50 to-white min-h-screen py-12 flex-grow flex items-center justify-center px-4"
+    class="bg-gradient-to-br from-pink-50 to-white flex-grow flex items-center justify-center px-4"
+    :style="{ minHeight: 'calc(100vh - 250px)' }"
   >
     <div class="w-full max-w-md">
       <div class="perspective-1000 cursor-pointer" @click="toggleCardFlip">
