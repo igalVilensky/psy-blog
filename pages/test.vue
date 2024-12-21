@@ -117,39 +117,77 @@
         <div class="bg-white rounded-2xl shadow-lg p-6">
           <div class="relative w-full" style="padding-bottom: 100%">
             <div class="absolute inset-0">
-              <svg
-                class="w-full h-full"
-                viewBox="0 0 400 400"
-                preserveAspectRatio="xMidYMid meet"
-              >
-                <!-- Tree Base -->
-                <defs>
-                  <linearGradient
-                    id="tree-gradient"
-                    x1="0"
-                    y1="1"
-                    x2="0"
-                    y2="0"
-                  >
-                    <stop offset="0%" stop-color="#8B4513" />
-                    <stop offset="100%" stop-color="#6A340E" />
-                  </linearGradient>
-                </defs>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+                <!-- Tree trunk with texture -->
                 <path
-                  d="M200,350 Q200,200 250,150 T200,50"
-                  fill="none"
-                  stroke="url(#tree-gradient)"
-                  stroke-width="8"
-                  stroke-linecap="round"
+                  d="M190 350 
+           C 185 280, 175 250, 180 200
+           C 185 150, 195 120, 190 100
+           L 210 100
+           C 205 120, 215 150, 220 200
+           C 225 250, 215 280, 210 350 Z"
+                  fill="#8B4513"
                 />
 
-                <!-- Emotion Leaves -->
-                <g v-for="(leaf, index) in treeLeaves" :key="index">
-                  <circle
-                    :cx="leaf.x"
-                    :cy="leaf.y"
-                    :r="leaf.size"
+                <!-- Bark texture -->
+                <path
+                  d="M195 300 C 190 280, 205 260, 200 240"
+                  fill="none"
+                  stroke="#6B3E26"
+                  stroke-width="2"
+                />
+                <path
+                  d="M205 280 C 200 260, 215 240, 210 220"
+                  fill="none"
+                  stroke="#6B3E26"
+                  stroke-width="2"
+                />
+
+                <!-- Branch structure -->
+                <path
+                  d="M200 150 L 150 120"
+                  fill="none"
+                  stroke="#8B4513"
+                  stroke-width="8"
+                />
+                <path
+                  d="M200 150 L 250 120"
+                  fill="none"
+                  stroke="#8B4513"
+                  stroke-width="8"
+                />
+                <path
+                  d="M200 200 L 140 180"
+                  fill="none"
+                  stroke="#8B4513"
+                  stroke-width="8"
+                />
+                <path
+                  d="M200 200 L 260 180"
+                  fill="none"
+                  stroke="#8B4513"
+                  stroke-width="8"
+                />
+
+                <!-- Dynamic leaves will be added here by Vue -->
+                <g id="leaves-container">
+                  <path
+                    v-for="(leaf, index) in treeLeaves"
+                    :key="leaf.id"
+                    Add
+                    unique
+                    ID
+                    for
+                    each
+                    leaf
+                    :d="leaf.pathData"
                     :fill="leaf.color"
+                    :class="{
+                      'leaf-animation': leaf.isNew,
+                      'golden-leaf': leaf.special === 'golden',
+                    }"
+                    :style="`transform-origin: ${leaf.x}px ${leaf.y}px; transform:
+                  rotate(${leaf.rotation}deg);`"
                   />
                 </g>
               </svg>
@@ -241,7 +279,6 @@ const showTreeAnimation = ref(false);
 const treeLeaves = ref([]);
 const recentEntries = ref([]);
 const currentTreeStyle = ref(treeStyles[0]);
-const showConfetti = ref(false);
 const unlockedEmotions = ref([...emotions]);
 const achievements = ref([]);
 const showSurpriseModal = ref(false);
@@ -328,7 +365,12 @@ const loadFromLocalStorage = () => {
     const storedTreeStyle = localStorage.getItem("currentTreeStyle");
 
     if (storedEntriesCount) entriesCount.value = parseInt(storedEntriesCount);
-    if (storedTreeLeaves) treeLeaves.value = JSON.parse(storedTreeLeaves);
+    if (storedTreeLeaves) {
+      treeLeaves.value = JSON.parse(storedTreeLeaves).map((leaf) => ({
+        ...leaf,
+        isNew: false, // Ensure loaded leaves don't animate
+      }));
+    }
     if (storedRecentEntries) {
       recentEntries.value = JSON.parse(storedRecentEntries, (key, value) => {
         if (key === "date") return new Date(value);
@@ -394,16 +436,26 @@ const checkMilestones = () => {
 
 // Enhanced leaf generation with special effects
 const createLeaf = (emotion) => {
+  const x = 150 + Math.random() * 100;
+  const y = 100 + Math.random() * 200;
   const isGoldenLeaf = entriesCount.value >= 20 && Math.random() > 0.8;
 
+  const leafPath = `M${x} ${y}
+    C ${x - 10} ${y - 10}, ${x - 20} ${y - 5}, ${x - 25} ${y - 15}
+    C ${x - 30} ${y - 25}, ${x - 25} ${y - 35}, ${x - 15} ${y - 40}
+    C ${x - 5} ${y - 45}, ${x + 5} ${y - 40}, ${x + 10} ${y - 30}
+    C ${x + 15} ${y - 20}, ${x + 10} ${y - 10}, ${x} ${y} Z`;
+
   return {
-    x: 150 + Math.random() * 100,
-    y: 100 + Math.random() * 200,
-    size: 8 + Math.random() * 5,
+    id: Date.now() + Math.random(), // Unique ID for each leaf
+    pathData: leafPath,
+    x,
+    y,
     color: isGoldenLeaf ? "#FFD700" : emotion.color,
     emotion: emotion.name,
     special: isGoldenLeaf ? "golden" : null,
     rotation: Math.random() * 360,
+    isNew: true, // Flag for animation
   };
 };
 
@@ -439,7 +491,15 @@ const handleSubmitEntry = () => {
 
   // Reset animations
   setTimeout(() => {
-    showTreeAnimation.value = false;
+    const leafIndex = treeLeaves.value.findIndex(
+      (leaf) => leaf.id === newLeaf.id
+    );
+    if (leafIndex !== -1) {
+      treeLeaves.value[leafIndex] = {
+        ...treeLeaves.value[leafIndex],
+        isNew: false,
+      };
+    }
   }, 1000);
 };
 
@@ -452,6 +512,10 @@ const formatDate = (date) => {
 
 // Watch for changes and save to localStorage
 watch(
+  () => treeLeaves.value,
+  (newValue) => {
+    saveToLocalStorage();
+  },
   [
     entriesCount,
     treeLeaves,
