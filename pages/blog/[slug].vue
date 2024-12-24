@@ -38,15 +38,48 @@
 
         <!-- Content Container -->
         <div class="p-8">
-          <!-- Meta Information -->
-          <div class="mb-6 text-gray-500 text-sm">
-            {{ new Date(post.publishedAt).toLocaleDateString() }}
-          </div>
-
           <!-- Title -->
-          <h1 v-if="post.title" class="text-4xl font-bold text-gray-800 mb-8">
+          <h1 v-if="post.title" class="text-4xl font-bold text-gray-800 mb-6">
             {{ post.title }}
           </h1>
+
+          <!-- Author and Meta Information -->
+          <div
+            class="flex items-center justify-between mb-8 border-b border-gray-100 pb-6"
+          >
+            <div class="flex items-center">
+              <img
+                v-if="post.author?.image"
+                :src="urlFor(post?.author)?.width(40).height(40).url()"
+                :alt="post.author?.name"
+                class="w-10 h-10 rounded-full object-cover mr-3"
+              />
+              <div>
+                <div class="font-medium text-gray-800">
+                  {{ post.author }}
+                </div>
+                <div class="text-sm text-gray-500">
+                  {{ new Date(post.publishedAt).toLocaleDateString() }}
+                </div>
+              </div>
+            </div>
+            <div class="text-sm text-gray-500 flex items-center">
+              <svg
+                class="w-4 h-4 mr-1"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              {{ post.readtime }} мин чтения
+            </div>
+          </div>
 
           <!-- Article Content -->
           <div class="prose prose-pink max-w-none">
