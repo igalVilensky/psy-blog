@@ -110,6 +110,7 @@ const sitemapLinks = [
     to: "/awareness-tools/emotion-diary",
   },
   { label: "О проекте", to: "/about" },
+  { label: "Блог", to: "/blog" },
   { label: "Связь", to: "/contact" },
 ];
 
