@@ -49,34 +49,38 @@
               {{ post.title }}
             </h2>
             <div class="border-t pt-4">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-2">
-                  <div
-                    class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center"
+              <div class="flex flex-wrap items-center justify-between gap-y-2">
+                <!-- Left side: Category + Views -->
+                <div class="flex items-center gap-3">
+                  <!-- Category badge -->
+                  <span
+                    :class="[
+                      'px-3 py-1 rounded-full text-sm font-medium',
+                      {
+                        'bg-emerald-100 text-emerald-800':
+                          post.category === 'Личностный рост',
+                        'bg-purple-100 text-purple-800':
+                          post.category === 'Отношения',
+                        'bg-blue-100 text-blue-800':
+                          post.category === 'Продуктивность',
+                        'bg-gray-100 text-gray-800': !post.category,
+                      },
+                    ]"
                   >
-                    <span class="text-sm font-medium text-gray-600">
-                      {{ post.author.charAt(0).toUpperCase() }}
-                    </span>
-                  </div>
-                  <span class="text-sm font-medium text-gray-700">{{
-                    post.author
-                  }}</span>
+                    {{ post.category }}
+                  </span>
+
+                  <!-- Views count -->
+                  <span class="flex items-center text-sm text-gray-600">
+                    <i class="far fa-eye mr-1"></i>
+                    {{ post.views || 0 }}
+                  </span>
                 </div>
+
+                <!-- Right side: Reading time and date -->
                 <div class="flex items-center text-sm text-gray-500">
                   <span class="flex items-center">
-                    <svg
-                      class="w-4 h-4 mr-1"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
+                    <i class="far fa-clock mr-1"></i>
                     {{ post.readtime }} мин
                   </span>
                   <span class="mx-2">•</span>

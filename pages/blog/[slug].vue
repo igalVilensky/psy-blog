@@ -6,19 +6,9 @@
         to="/blog"
         class="inline-flex items-center text-pink-600 hover:text-pink-700 transition-colors mb-8 group"
       >
-        <svg
-          class="w-5 h-5 mr-2 transform transition-transform group-hover:-translate-x-1"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M15 19l-7-7 7-7"
-          />
-        </svg>
+        <i
+          class="fas fa-arrow-left mr-2 transform transition-transform group-hover:-translate-x-1"
+        ></i>
         Вернуться к статьям
       </nuxt-link>
 
@@ -26,59 +16,72 @@
         v-if="post"
         class="bg-white rounded-2xl shadow-lg overflow-hidden"
       >
-        <!-- Featured Image -->
-        <div class="relative w-full">
+        <!-- Featured Image Container with Gradient Overlay -->
+        <div class="relative w-full h-[300px]">
           <img
             v-if="post.image"
             :src="urlFor(post?.image)?.width(1200).height(675).url()"
             :alt="post?.title"
-            class="w-full h-[400px] object-cover"
+            class="w-full h-full object-cover"
           />
+          <!-- Gradient overlay -->
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"
+          ></div>
+
+          <!-- Category Badge - Moved to top left of image -->
+          <span
+            :class="[
+              'absolute top-4 left-4 px-3 py-1 rounded-full text-sm font-medium',
+              {
+                'bg-emerald-100 text-emerald-800':
+                  post.category === 'Личностный рост',
+                'bg-purple-100 text-purple-800': post.category === 'Отношения',
+                'bg-blue-100 text-blue-800': post.category === 'Продуктивность',
+                'bg-gray-100 text-gray-800': !post.category,
+              },
+            ]"
+          >
+            {{ post.category }}
+          </span>
         </div>
 
         <!-- Content Container -->
-        <div class="p-8">
+        <div class="px-8 py-6 sm:py-8">
           <!-- Title -->
           <h1 v-if="post.title" class="text-4xl font-bold text-gray-800 mb-6">
             {{ post.title }}
           </h1>
 
-          <!-- Author and Meta Information -->
+          <!-- Meta Information Row with Share Button -->
           <div
-            class="flex items-center justify-between mb-8 border-b border-gray-100 pb-6"
+            class="flex flex-wrap items-center justify-between mb-6 sm:mb-8 border-b border-gray-100 sm:pb-8 pb-6 text-sm text-gray-600"
           >
-            <div class="flex items-center">
-              <img
-                v-if="post.author?.image"
-                :src="urlFor(post?.author)?.width(40).height(40).url()"
-                :alt="post.author?.name"
-                class="w-10 h-10 rounded-full object-cover mr-3"
-              />
-              <div>
-                <div class="font-medium text-gray-800">
-                  {{ post.author }}
-                </div>
-                <div class="text-sm text-gray-500">
-                  {{ new Date(post.publishedAt).toLocaleDateString() }}
-                </div>
+            <div class="flex flex-wrap items-center gap-4 sm:gap-8">
+              <div class="flex items-center gap-2">
+                <i class="far fa-calendar"></i>
+                <span>{{
+                  new Date(post.publishedAt).toLocaleDateString()
+                }}</span>
               </div>
-            </div>
-            <div class="text-sm text-gray-500 flex items-center">
-              <svg
-                class="w-4 h-4 mr-1"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+              <div class="flex items-center gap-2">
+                <i class="far fa-clock"></i>
+                <span>{{ post.readtime }} мин чтения</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <i class="far fa-eye"></i>
+                <span>{{ postViews }} просмотров</span>
+              </div>
+              <button
+                @click="isShareOpen = true"
+                class="flex items-center gap-2 hover:text-pink-600 transition-colors"
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              {{ post.readtime }} мин чтения
+                <i class="fas fa-share-alt"></i>
+                <span class="text-sm">Поделиться</span>
+              </button>
             </div>
+
+            <!-- Share Button - Moved to meta row -->
           </div>
 
           <!-- Article Content -->
@@ -87,6 +90,54 @@
           </div>
         </div>
       </article>
+
+      <!-- Share Modal -->
+      <div
+        v-if="isShareOpen"
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      >
+        <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-bold">Поделиться статьей</h3>
+            <button
+              @click="isShareOpen = false"
+              class="text-gray-500 hover:text-gray-700"
+            >
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="flex flex-col gap-3">
+            <button
+              @click="shareOn('twitter')"
+              class="flex items-center gap-3 w-full p-3 rounded-lg bg-[#1DA1F2] text-white hover:bg-opacity-90"
+            >
+              <i class="fab fa-twitter"></i>
+              Twitter
+            </button>
+            <button
+              @click="shareOn('facebook')"
+              class="flex items-center gap-3 w-full p-3 rounded-lg bg-[#4267B2] text-white hover:bg-opacity-90"
+            >
+              <i class="fab fa-facebook"></i>
+              Facebook
+            </button>
+            <button
+              @click="shareOn('telegram')"
+              class="flex items-center gap-3 w-full p-3 rounded-lg bg-[#0088cc] text-white hover:bg-opacity-90"
+            >
+              <i class="fab fa-telegram"></i>
+              Telegram
+            </button>
+            <button
+              @click="copyLink"
+              class="flex items-center gap-3 w-full p-3 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200"
+            >
+              <i class="fas fa-link"></i>
+              Копировать ссылку
+            </button>
+          </div>
+        </div>
+      </div>
 
       <!-- Newsletter Section -->
       <div
@@ -117,16 +168,48 @@
 import type { SanityDocument } from "@sanity/client";
 import imageUrlBuilder from "@sanity/image-url";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { ref } from "vue";
 
 const POST_QUERY = groq`*[_type == "post" && slug.current == $slug][0]`;
 const { params } = useRoute();
-
 const { data: post } = await useSanityQuery<SanityDocument>(POST_QUERY, params);
 const { projectId, dataset } = useSanity().client.config();
 const urlFor = (source: SanityImageSource) =>
   projectId && dataset
     ? imageUrlBuilder({ projectId, dataset }).image(source)
     : null;
+
+const isShareOpen = ref(false);
+const postViews = ref(357);
+
+const shareOn = (platform: string) => {
+  const url = window.location.href;
+  const title = post.value.title;
+
+  const shareUrls = {
+    twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+      url
+    )}&text=${encodeURIComponent(title)}`,
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+      url
+    )}`,
+    telegram: `https://t.me/share/url?url=${encodeURIComponent(
+      url
+    )}&text=${encodeURIComponent(title)}`,
+  };
+
+  window.open(shareUrls[platform], "_blank");
+};
+
+const copyLink = async () => {
+  try {
+    await navigator.clipboard.writeText(window.location.href);
+    // You might want to add a toast notification here
+    alert("Ссылка скопирована!");
+  } catch (err) {
+    console.error("Failed to copy link:", err);
+  }
+};
 </script>
 
 <style>
