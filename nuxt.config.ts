@@ -13,4 +13,9 @@ export default defineNuxtConfig({
   },
 
   compatibilityDate: "2024-12-14",
+  modules: ["@nuxtjs/sanity"],
+  sanity: {
+    projectId: "wlg2lkvy",
+    dataset: "production",
+  },
 });
