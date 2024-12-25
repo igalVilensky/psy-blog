@@ -3,7 +3,9 @@
     <div class="container mx-auto px-4 max-w-6xl">
       <!-- Profile Header -->
       <div class="bg-white rounded-2xl shadow-lg p-8 mb-8">
-        <div class="flex items-center justify-between">
+        <div
+          class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+        >
           <div class="flex items-center gap-6">
             <!-- Profile Avatar -->
             <div class="relative">
@@ -28,17 +30,17 @@
             </div>
           </div>
 
-          <!-- Actions -->
-          <div class="flex gap-4">
+          <!-- Actions - Full width on mobile -->
+          <div class="flex gap-4 w-full sm:w-auto">
             <button
-              class="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+              class="flex-1 sm:flex-initial px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
             >
               <i class="fas fa-cog mr-2"></i>
               Настройки
             </button>
             <button
               @click="logoutUser"
-              class="px-4 py-2 text-white bg-pink-600 rounded-lg hover:bg-pink-700 transition-colors"
+              class="flex-1 sm:flex-initial px-4 py-2 text-white bg-pink-600 rounded-lg hover:bg-pink-700 transition-colors"
             >
               <i class="fas fa-sign-out-alt mr-2"></i>
               Выйти
