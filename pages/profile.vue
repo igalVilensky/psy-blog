@@ -99,28 +99,49 @@
         <div class="space-y-8">
           <!-- Quick Stats -->
           <div class="bg-white rounded-2xl shadow-lg p-8">
+            <!-- Blog Stats -->
             <h2 class="text-xl font-bold text-gray-800 mb-6">
               <i class="fas fa-chart-line text-pink-600 mr-2"></i>
-              Статистика
+              Статистика блога
             </h2>
-            <div class="space-y-4">
+            <div class="space-y-4 mb-8">
               <div
                 class="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
               >
                 <div class="text-gray-600">Прочитано статей</div>
                 <div class="text-xl font-semibold text-gray-800">24</div>
               </div>
+            </div>
+
+            <!-- Emotion Diary Stats -->
+            <h2 class="text-xl font-bold text-gray-800 mb-6">
+              <i class="fa fa-book-open text-pink-600 mr-2"></i>
+              Цифровой дневник эмоций
+            </h2>
+            <div class="space-y-4">
               <div
                 class="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
               >
-                <div class="text-gray-600">В избранном</div>
-                <div class="text-xl font-semibold text-gray-800">12</div>
+                <div class="text-gray-600">Количество записей</div>
+                <div class="text-xl font-semibold text-gray-800">
+                  {{ emotionStats.entriesCount }}
+                </div>
               </div>
               <div
                 class="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
               >
-                <div class="text-gray-600">Комментариев</div>
-                <div class="text-xl font-semibold text-gray-800">8</div>
+                <div class="text-gray-600">Изученные эмоции</div>
+                <div class="text-xl font-semibold text-gray-800">
+                  {{ emotionStats.unlockedEmotions.length }}
+                </div>
+              </div>
+              <div
+                class="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
+              >
+                <div class="text-gray-600">Последняя запись</div>
+                <div class="text-base font-semibold text-gray-800">
+                  {{ getLastEntryDate() }}
+                </div>
               </div>
             </div>
           </div>
@@ -129,6 +150,7 @@
           <div class="bg-white rounded-2xl shadow-lg p-8">
             <h2 class="text-xl font-bold text-gray-800 mb-6">
               <i class="fas fa-history text-pink-600 mr-2"></i>
+
               Недавняя активность
             </h2>
             <div class="space-y-4">
@@ -158,13 +180,37 @@ import { ref, onMounted } from "vue";
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "vue-router";
 import { getUserProfile } from "~/utils/firebase";
+import { doc, getDoc, getFirestore } from "firebase/firestore";
 import hostImage from "~/assets/images/podcasts/podcasts.jpeg";
 
 const user = ref(null);
 const router = useRouter();
 const error = ref(null);
+const emotionStats = ref({
+  entriesCount: 0,
+  recentEntries: [],
+  unlockedEmotions: [],
+});
 
 const auth = getAuth();
+const db = getFirestore();
+
+const loadEmotionData = async (userId) => {
+  const userRef = doc(db, "emotion_diary", userId);
+  try {
+    const docSnap = await getDoc(userRef);
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      emotionStats.value = {
+        entriesCount: data.entriesCount || 0,
+        recentEntries: data.recentEntries || [],
+        unlockedEmotions: data.unlockedEmotions || [],
+      };
+    }
+  } catch (error) {
+    console.error("Error loading emotion data:", error);
+  }
+};
 
 // Listen for auth state changes
 onAuthStateChanged(auth, async (currentUser) => {
@@ -172,12 +218,12 @@ onAuthStateChanged(auth, async (currentUser) => {
     try {
       const userProfile = await getUserProfile(currentUser.uid);
       user.value = userProfile;
+      await loadEmotionData(currentUser.uid);
     } catch (err) {
       error.value = "Failed to load user profile";
       console.error(err);
     }
   } else {
-    // Redirect to login if no user is authenticated
     router.push("/login");
   }
 });
@@ -185,5 +231,21 @@ onAuthStateChanged(auth, async (currentUser) => {
 const logoutUser = async () => {
   await signOut(auth);
   router.push("/login");
+};
+
+// Get the date of the last emotion entry
+const getLastEntryDate = () => {
+  if (emotionStats.value.recentEntries?.length > 0) {
+    const lastEntry = emotionStats.value.recentEntries[0];
+    if (lastEntry.date && lastEntry.date.seconds) {
+      const date = new Date(lastEntry.date.seconds * 1000);
+      return date.toLocaleDateString("ru-RU", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      });
+    }
+  }
+  return "Нет записей";
 };
 </script>
