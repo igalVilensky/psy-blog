@@ -1,5 +1,10 @@
+// plugins/firebase.js
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth"; // Import getAuth
+import {
+  getAuth,
+  setPersistence,
+  browserLocalPersistence,
+} from "firebase/auth"; // Import setPersistence and persistence modes
 import { getFirestore } from "firebase/firestore"; // Import Firestore
 import { getAnalytics, isSupported } from "firebase/analytics"; // Optional (if you're using analytics)
 
@@ -20,6 +25,11 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const firestore = getFirestore(app);
 
+// Set persistence for Firebase Auth (use localStorage for persistence)
+setPersistence(auth, browserLocalPersistence).catch((error) => {
+  console.error("Failed to set persistence:", error);
+});
+
 // Initialize Firebase Analytics only if it's supported (client-side check)
 let analytics = null;
 if (typeof window !== "undefined" && isSupported()) {
@@ -28,8 +38,9 @@ if (typeof window !== "undefined" && isSupported()) {
 
 // Export Firebase services for use in your app
 export default defineNuxtPlugin((nuxtApp) => {
-  nuxtApp.provide("auth", auth); // Provide auth
-  nuxtApp.provide("firestore", firestore); // Provide Firestore
+  // Provide Firebase services to the app
+  nuxtApp.provide("auth", auth);
+  nuxtApp.provide("firestore", firestore);
 
   // Only provide analytics on the client-side
   if (analytics) {

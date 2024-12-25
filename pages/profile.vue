@@ -153,7 +153,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { getAuth, signOut } from "firebase/auth";
+import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "vue-router";
 import { getUserProfile } from "~/utils/firebase";
 import hostImage from "~/assets/images/podcasts/podcasts.jpeg";
@@ -162,10 +162,10 @@ const user = ref(null);
 const router = useRouter();
 const error = ref(null);
 
-onMounted(async () => {
-  const auth = getAuth();
-  const currentUser = auth.currentUser;
+const auth = getAuth();
 
+// Listen for auth state changes
+onAuthStateChanged(auth, async (currentUser) => {
   if (currentUser) {
     try {
       const userProfile = await getUserProfile(currentUser.uid);
@@ -175,12 +175,12 @@ onMounted(async () => {
       console.error(err);
     }
   } else {
+    // Redirect to login if no user is authenticated
     router.push("/login");
   }
 });
 
 const logoutUser = async () => {
-  const auth = getAuth();
   await signOut(auth);
   router.push("/login");
 };
