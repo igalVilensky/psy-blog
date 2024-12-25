@@ -17,7 +17,7 @@
         class="bg-white rounded-2xl shadow-lg overflow-hidden"
       >
         <!-- Featured Image Container with Gradient Overlay -->
-        <div class="relative w-full h-[300px]">
+        <div class="relative w-full h-[250px] sm:h-[350px]">
           <img
             v-if="post.image"
             :src="urlFor(post?.image)?.width(1200).height(675).url()"
@@ -57,7 +57,7 @@
           <div
             class="flex flex-wrap items-center justify-between mb-6 sm:mb-8 border-b border-gray-100 sm:pb-8 pb-6 text-sm text-gray-600"
           >
-            <div class="flex flex-wrap items-center gap-4 sm:gap-8">
+            <div class="flex flex-wrap items-center gap-4 sm:gap-8 text-base">
               <div class="flex items-center gap-2">
                 <i class="far fa-calendar"></i>
                 <span>{{
@@ -77,7 +77,7 @@
                 class="flex items-center gap-2 hover:text-pink-600 transition-colors"
               >
                 <i class="fas fa-share-alt"></i>
-                <span class="text-sm">Поделиться</span>
+                <span>Поделиться</span>
               </button>
             </div>
 
@@ -214,19 +214,19 @@ const copyLink = async () => {
 
 <style>
 .prose {
-  @apply text-gray-700;
+  @apply text-gray-700 text-lg;
 }
 
 .prose h2 {
-  @apply text-2xl font-bold text-gray-800 mt-8 mb-4;
+  @apply text-2xl sm:text-3xl font-semibold text-gray-800 mt-8 mb-4;
 }
 
 .prose h3 {
-  @apply text-xl font-bold text-gray-800 mt-6 mb-3;
+  @apply text-2xl font-medium text-gray-800 mt-6 mb-3;
 }
 
 .prose p {
-  @apply mb-4;
+  @apply text-lg mb-4 leading-relaxed;
 }
 
 .prose ul {
@@ -235,6 +235,10 @@ const copyLink = async () => {
 
 .prose ol {
   @apply list-decimal list-inside mb-4;
+}
+
+.prose li {
+  @apply mb-2;
 }
 
 .prose a {
@@ -246,7 +250,11 @@ const copyLink = async () => {
 }
 
 .prose blockquote {
-  @apply border-l-4 border-pink-500 pl-4 italic my-6;
+  @apply border-l-4 border-pink-500 pl-4 py-1 my-6 text-gray-600 italic;
+}
+
+.prose blockquote p {
+  @apply italic mb-0;
 }
 
 .prose code {
@@ -255,5 +263,13 @@ const copyLink = async () => {
 
 .prose pre {
   @apply bg-gray-800 text-white p-4 rounded-lg my-6 overflow-x-auto;
+}
+
+/* Add spacing between multi-level lists */
+.prose ul ul,
+.prose ol ol,
+.prose ul ol,
+.prose ol ul {
+  @apply mt-2 ml-6;
 }
 </style>

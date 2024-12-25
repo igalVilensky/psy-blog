@@ -3,9 +3,12 @@
     <div class="container mx-auto px-4 max-w-6xl">
       <!-- Hero Section -->
       <section class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-gray-800 mb-4">Наш Блог</h1>
+        <h1 class="text-4xl font-bold text-gray-800 mb-4">
+          Блог о Развитии и Трансформации
+        </h1>
         <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-          Исследуйте наши статьи о личностном росте, развитии и трансформации
+          Исследуйте идеи, подходы и опыт, которые помогут вам расти и достигать
+          новых высот.
         </p>
       </section>
 
