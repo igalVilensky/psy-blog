@@ -244,6 +244,8 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from "vue";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 import confetti from "canvas-confetti";
 
 // Base emotions
@@ -271,6 +273,61 @@ const treeStyles = [
 ];
 
 // State management
+const user = ref(null);
+// Firebase Authentication and Firestore initialization
+const auth = getAuth();
+const db = getFirestore();
+// Listen for auth state changes
+onAuthStateChanged(auth, async (currentUser) => {
+  if (currentUser) {
+    user.value = currentUser; // Store user data
+    console.log("User UID: ", currentUser.uid);
+    loadDataFromFirebase(currentUser.uid); // Load data for the authenticated user
+  }
+});
+// Save user data to Firebase
+const saveDataToFirebase = async (userId) => {
+  const userRef = doc(db, "emotion_diary", userId); // Save to emotion_diary collection
+
+  const data = {
+    entriesCount: entriesCount.value,
+    treeLeaves: treeLeaves.value,
+    recentEntries: recentEntries.value,
+    achievements: achievements.value,
+    unlockedEmotions: unlockedEmotions.value,
+    currentTreeStyle: currentTreeStyle.value,
+  };
+
+  try {
+    await setDoc(userRef, data);
+    console.log("Data saved successfully to Firebase!");
+  } catch (error) {
+    console.error("Error saving data to Firebase:", error);
+  }
+};
+
+// Load user data from the emotion_diary collection
+const loadDataFromFirebase = async (userId) => {
+  const userRef = doc(db, "emotion_diary", userId); // Reference the emotion_diary collection
+
+  try {
+    const docSnap = await getDoc(userRef);
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      entriesCount.value = data.entriesCount || 0;
+      treeLeaves.value = data.treeLeaves || [];
+      recentEntries.value = data.recentEntries || [];
+      achievements.value = data.achievements || [];
+      unlockedEmotions.value = data.unlockedEmotions || [...emotions];
+      currentTreeStyle.value = data.currentTreeStyle || "classic";
+    } else {
+      console.log("No data found for user in emotion_diary");
+    }
+  } catch (error) {
+    console.error("Error loading data from Firebase:", error);
+  }
+};
+
 const selectedEmotion = ref(null);
 const diaryEntry = ref("");
 const entriesCount = ref(0);
@@ -331,60 +388,11 @@ const resetTree = () => {
   unlockedEmotions.value = [...emotions];
   achievements.value = [];
   recentEntries.value = [];
-  localStorage.clear(); // Clear saved state
+
   alert("Дерево успешно сброшено!");
 };
 
 // Local storage functions
-const saveToLocalStorage = () => {
-  try {
-    localStorage.setItem("entriesCount", entriesCount.value.toString());
-    localStorage.setItem("treeLeaves", JSON.stringify(treeLeaves.value));
-    localStorage.setItem("recentEntries", JSON.stringify(recentEntries.value));
-    localStorage.setItem("achievements", JSON.stringify(achievements.value));
-    localStorage.setItem(
-      "unlockedEmotions",
-      JSON.stringify(unlockedEmotions.value)
-    );
-    localStorage.setItem(
-      "currentTreeStyle",
-      JSON.stringify(currentTreeStyle.value)
-    );
-  } catch (error) {
-    console.error("Error saving to localStorage:", error);
-  }
-};
-
-const loadFromLocalStorage = () => {
-  try {
-    const storedEntriesCount = localStorage.getItem("entriesCount");
-    const storedTreeLeaves = localStorage.getItem("treeLeaves");
-    const storedRecentEntries = localStorage.getItem("recentEntries");
-    const storedAchievements = localStorage.getItem("achievements");
-    const storedUnlockedEmotions = localStorage.getItem("unlockedEmotions");
-    const storedTreeStyle = localStorage.getItem("currentTreeStyle");
-
-    if (storedEntriesCount) entriesCount.value = parseInt(storedEntriesCount);
-    if (storedTreeLeaves) {
-      treeLeaves.value = JSON.parse(storedTreeLeaves).map((leaf) => ({
-        ...leaf,
-        isNew: false, // Ensure loaded leaves don't animate
-      }));
-    }
-    if (storedRecentEntries) {
-      recentEntries.value = JSON.parse(storedRecentEntries, (key, value) => {
-        if (key === "date") return new Date(value);
-        return value;
-      });
-    }
-    if (storedAchievements) achievements.value = JSON.parse(storedAchievements);
-    if (storedUnlockedEmotions)
-      unlockedEmotions.value = JSON.parse(storedUnlockedEmotions);
-    if (storedTreeStyle) currentTreeStyle.value = JSON.parse(storedTreeStyle);
-  } catch (error) {
-    console.error("Error loading from localStorage:", error);
-  }
-};
 
 // Helper functions
 const addFlowerEffect = () => {
@@ -430,7 +438,9 @@ const checkMilestones = () => {
     });
 
     // Save achievements
-    saveToLocalStorage();
+    if (user.value) {
+      saveDataToFirebase(user.value.uid); // Save when any data changes
+    }
   }
 };
 
@@ -514,7 +524,9 @@ const formatDate = (date) => {
 watch(
   () => treeLeaves.value,
   (newValue) => {
-    saveToLocalStorage();
+    if (user.value) {
+      saveDataToFirebase(user.value.uid); // Save when any data changes
+    }
   },
   [
     entriesCount,
@@ -524,15 +536,14 @@ watch(
     unlockedEmotions,
     currentTreeStyle,
   ],
-  () => {
-    saveToLocalStorage();
-  },
   { deep: true }
 );
 
 // Initialize data on component mount
 onMounted(() => {
-  loadFromLocalStorage();
+  if (user.value) {
+    loadDataFromFirebase(user.value.uid); // Load data if user is authenticated
+  }
 });
 </script>
 

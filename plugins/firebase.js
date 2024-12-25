@@ -35,7 +35,7 @@ let analytics = null;
 if (typeof window !== "undefined" && isSupported()) {
   analytics = getAnalytics(app);
 }
-
+export const useFirestore = () => firestore;
 // Export Firebase services for use in your app
 export default defineNuxtPlugin((nuxtApp) => {
   // Provide Firebase services to the app
