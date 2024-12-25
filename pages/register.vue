@@ -5,6 +5,22 @@
 
       <!-- Registration form -->
       <form @submit.prevent="registerUser">
+        <!-- Display Name input with Tailwind styling -->
+        <div class="mb-4">
+          <label
+            for="displayName"
+            class="block text-sm font-medium text-gray-700"
+            >Display Name</label
+          >
+          <input
+            type="text"
+            id="displayName"
+            v-model="displayName"
+            required
+            class="w-full p-3 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+
         <!-- Email input with Tailwind styling -->
         <div class="mb-4">
           <label for="email" class="block text-sm font-medium text-gray-700"
@@ -77,13 +93,18 @@
 
 <script setup>
 import { ref } from "vue";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 import { useRouter } from "vue-router";
 import { doc, setDoc } from "firebase/firestore"; // Import Firestore methods
 
 const email = ref("");
 const password = ref("");
 const confirmPassword = ref("");
+const displayName = ref(""); // Add a new ref for the displayName
 const error = ref("");
 const router = useRouter();
 
@@ -93,7 +114,7 @@ const registerUser = async () => {
     return;
   }
 
-  const auth = useNuxtApp().$auth; // Access auth from Nuxt context
+  const auth = getAuth();
   error.value = ""; // Reset error message
 
   try {
@@ -105,11 +126,16 @@ const registerUser = async () => {
     );
     const user = userCredential.user;
 
+    // Update the user's displayName
+    await updateProfile(user, {
+      displayName: displayName.value,
+    });
+
     // Save user data to Firestore after successful registration
     const firestore = useNuxtApp().$firestore; // Access Firestore from Nuxt context
     await setDoc(doc(firestore, "users", user.uid), {
       email: user.email,
-      displayName: user.displayName || "",
+      displayName: displayName.value, // Store displayName in Firestore
       createdAt: new Date(),
     });
 
