@@ -79,6 +79,7 @@
 import { ref } from "vue";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "vue-router";
+import { doc, setDoc } from "firebase/firestore"; // Import Firestore methods
 
 const email = ref("");
 const password = ref("");
@@ -92,12 +93,28 @@ const registerUser = async () => {
     return;
   }
 
-  const auth = getAuth();
+  const auth = useNuxtApp().$auth; // Access auth from Nuxt context
   error.value = ""; // Reset error message
 
   try {
-    await createUserWithEmailAndPassword(auth, email.value, password.value);
-    router.push("/login"); // Redirect to login page after successful registration
+    // Create a new user
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email.value,
+      password.value
+    );
+    const user = userCredential.user;
+
+    // Save user data to Firestore after successful registration
+    const firestore = useNuxtApp().$firestore; // Access Firestore from Nuxt context
+    await setDoc(doc(firestore, "users", user.uid), {
+      email: user.email,
+      displayName: user.displayName || "",
+      createdAt: new Date(),
+    });
+
+    // Redirect to login page after successful registration
+    router.push("/login");
   } catch (err) {
     error.value = err.message; // Show error message
   }
