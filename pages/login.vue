@@ -46,13 +46,23 @@
                 <i class="fas fa-lock text-[#FF6B6B]"></i>
               </span>
               <input
-                type="password"
+                :type="showPassword ? 'text' : 'password'"
                 id="password"
                 v-model="password"
                 autocomplete="current-password"
                 required
-                class="w-full pl-10 pr-4 py-2 border-2 border-[#FFD1DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B6B]"
+                class="w-full pl-10 pr-12 py-2 border-2 border-[#FFD1DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B6B]"
               />
+              <button
+                type="button"
+                @click="showPassword = !showPassword"
+                class="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
+              >
+                <i
+                  :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
+                  class="text-[#FF6B6B]"
+                ></i>
+              </button>
             </div>
           </div>
 
@@ -111,6 +121,7 @@ const email = ref("");
 const password = ref("");
 const error = ref("");
 const router = useRouter();
+const showPassword = ref(false);
 
 const loginUser = async () => {
   const auth = getAuth();

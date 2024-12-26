@@ -13,8 +13,8 @@ export default defineNuxtConfig({
   },
 
   compatibilityDate: "2024-12-14",
-  modules: ["@nuxtjs/sanity"],
-  plugins: ["../plugins/firebase.js"],
+  modules: ["@nuxtjs/sanity", "@pinia/nuxt"],
+  plugins: ["../plugins/firebase.js", "../plugins/initAuth.js"],
   sanity: {
     projectId: "wlg2lkvy",
     dataset: "production",

@@ -13,7 +13,9 @@
                 class="w-24 h-24 bg-pink-100 rounded-full flex items-center justify-center"
               >
                 <span class="text-3xl font-semibold text-pink-600">
-                  {{ user?.displayName?.charAt(0).toUpperCase() || "U" }}
+                  {{
+                    authStore.user?.displayName?.charAt(0).toUpperCase() || "U"
+                  }}
                 </span>
               </div>
               <div
@@ -24,7 +26,7 @@
             <!-- Greeting & Status -->
             <div>
               <h1 class="text-2xl font-bold text-gray-800 mb-2">
-                {{ user?.displayName || "User" }}
+                {{ authStore.user?.displayName || "User" }}
               </h1>
               <p class="text-gray-600">Активный пользователь</p>
             </div>
@@ -176,26 +178,36 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+import { onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { getUserProfile } from "~/utils/firebase";
-import { doc, getDoc, getFirestore } from "firebase/firestore";
+import { useAuthStore } from "~/stores/auth";
 import hostImage from "~/assets/images/podcasts/podcasts.jpeg";
 
-const user = ref(null);
+const authStore = useAuthStore();
 const router = useRouter();
-const error = ref(null);
 const emotionStats = ref({
   entriesCount: 0,
   recentEntries: [],
   unlockedEmotions: [],
 });
 
-const auth = getAuth();
-const db = getFirestore();
+onMounted(async () => {
+  await authStore.initAuth(); // Wait for auth to initialize
 
+  if (!authStore.user && !authStore.isLoading) {
+    router.push("/login"); // Redirect only if the user is null and loading is complete
+    return;
+  }
+
+  // Load additional data if the user exists
+  if (authStore.user) {
+    await loadEmotionData(authStore.user.uid);
+  }
+});
+
+// Logic to load emotion data
 const loadEmotionData = async (userId) => {
+  const db = getFirestore();
   const userRef = doc(db, "emotion_diary", userId);
   try {
     const docSnap = await getDoc(userRef);
@@ -212,27 +224,6 @@ const loadEmotionData = async (userId) => {
   }
 };
 
-// Listen for auth state changes
-onAuthStateChanged(auth, async (currentUser) => {
-  if (currentUser) {
-    try {
-      const userProfile = await getUserProfile(currentUser.uid);
-      user.value = userProfile;
-      await loadEmotionData(currentUser.uid);
-    } catch (err) {
-      error.value = "Failed to load user profile";
-      console.error(err);
-    }
-  } else {
-    router.push("/login");
-  }
-});
-
-const logoutUser = async () => {
-  await signOut(auth);
-  router.push("/login");
-};
-
 // Get the date of the last emotion entry
 const getLastEntryDate = () => {
   if (emotionStats.value.recentEntries?.length > 0) {
@@ -247,5 +238,10 @@ const getLastEntryDate = () => {
     }
   }
   return "Нет записей";
+};
+
+const logoutUser = async () => {
+  await authStore.logout();
+  router.push("/login");
 };
 </script>

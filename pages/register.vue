@@ -54,7 +54,6 @@
               />
             </div>
           </div>
-
           <!-- Password input -->
           <div>
             <label
@@ -68,13 +67,23 @@
                 <i class="fas fa-lock text-[#FF6B6B]"></i>
               </span>
               <input
-                type="password"
+                :type="showPassword ? 'text' : 'password'"
                 id="password"
                 v-model="password"
                 autocomplete="new-password"
                 required
-                class="w-full pl-10 pr-4 py-2 border-2 border-[#FFD1DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B6B]"
+                class="w-full pl-10 pr-12 py-2 border-2 border-[#FFD1DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B6B]"
               />
+              <button
+                type="button"
+                @click="showPassword = !showPassword"
+                class="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
+              >
+                <i
+                  :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
+                  class="text-[#FF6B6B]"
+                ></i>
+              </button>
             </div>
           </div>
 
@@ -91,12 +100,24 @@
                 <i class="fas fa-lock text-[#FF6B6B]"></i>
               </span>
               <input
-                type="password"
+                :type="showConfirmPassword ? 'text' : 'password'"
                 id="confirmPassword"
                 v-model="confirmPassword"
                 required
-                class="w-full pl-10 pr-4 py-2 border-2 border-[#FFD1DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B6B]"
+                class="w-full pl-10 pr-12 py-2 border-2 border-[#FFD1DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B6B]"
               />
+              <button
+                type="button"
+                @click="showConfirmPassword = !showConfirmPassword"
+                class="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
+              >
+                <i
+                  :class="
+                    showConfirmPassword ? 'fas fa-eye-slash' : 'fas fa-eye'
+                  "
+                  class="text-[#FF6B6B]"
+                ></i>
+              </button>
             </div>
           </div>
 
@@ -164,6 +185,8 @@ const confirmPassword = ref("");
 const displayName = ref("");
 const error = ref("");
 const router = useRouter();
+const showPassword = ref(false);
+const showConfirmPassword = ref(false);
 
 const registerUser = async () => {
   if (password.value !== confirmPassword.value) {
