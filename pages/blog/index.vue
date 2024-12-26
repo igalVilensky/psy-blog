@@ -110,6 +110,7 @@
 import imageUrlBuilder from "@sanity/image-url";
 import type { SanityDocument } from "@sanity/client";
 import { computed, ref } from "vue";
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 
 const POSTS_QUERY = groq`*[
     _type == "post"
