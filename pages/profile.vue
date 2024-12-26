@@ -126,7 +126,7 @@
               >
                 <div class="text-gray-600">Количество записей</div>
                 <div class="text-xl font-semibold text-gray-800">
-                  {{ emotionStats.entriesCount }}
+                  {{ emotionStats?.entriesCount }}
                 </div>
               </div>
               <div
@@ -134,7 +134,7 @@
               >
                 <div class="text-gray-600">Изученные эмоции</div>
                 <div class="text-xl font-semibold text-gray-800">
-                  {{ emotionStats.unlockedEmotions.length }}
+                  {{ emotionStats?.unlockedEmotions.length }}
                 </div>
               </div>
               <div
@@ -181,15 +181,27 @@
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "~/stores/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import hostImage from "~/assets/images/podcasts/podcasts.jpeg";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 
-const authStore = useAuthStore();
-const router = useRouter();
+const user = ref(null);
 const emotionStats = ref({
   entriesCount: 0,
   recentEntries: [],
   unlockedEmotions: [],
+});
+
+const auth = getAuth();
+const authStore = useAuthStore();
+const router = useRouter();
+
+onAuthStateChanged(auth, async (currentUser) => {
+  if (currentUser) {
+    user.value = currentUser; // Store user data
+    console.log("User UID: ", currentUser.uid);
+    loadEmotionData(currentUser.uid);
+  }
 });
 
 onMounted(async () => {
@@ -198,12 +210,6 @@ onMounted(async () => {
   if (!authStore.user && !authStore.isLoading) {
     router.push("/login"); // Redirect only if the user is null and loading is complete
     return;
-  }
-
-  // Load additional data if the user exists
-  if (authStore.user && authStore.user.uid) {
-    console.log(authStore.user.uid);
-    await loadEmotionData(authStore.user.uid);
   }
 });
 

@@ -118,76 +118,28 @@
           <div class="relative w-full" style="padding-bottom: 100%">
             <div class="absolute inset-0">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
-                <!-- Tree trunk with texture -->
-                <path
-                  d="M190 350 
-           C 185 280, 175 250, 180 200
-           C 185 150, 195 120, 190 100
-           L 210 100
-           C 205 120, 215 150, 220 200
-           C 225 250, 215 280, 210 350 Z"
-                  fill="#8B4513"
-                />
+                <!-- Tree Trunk -->
+                <path :d="currentTreeStyle.path" fill="#8B4513" />
 
-                <!-- Bark texture -->
+                <!-- Tree Branches -->
                 <path
-                  d="M195 300 C 190 280, 205 260, 200 240"
-                  fill="none"
-                  stroke="#6B3E26"
-                  stroke-width="2"
-                />
-                <path
-                  d="M205 280 C 200 260, 215 240, 210 220"
-                  fill="none"
-                  stroke="#6B3E26"
-                  stroke-width="2"
-                />
-
-                <!-- Branch structure -->
-                <path
-                  d="M200 150 L 150 120"
-                  fill="none"
-                  stroke="#8B4513"
-                  stroke-width="8"
-                />
-                <path
-                  d="M200 150 L 250 120"
-                  fill="none"
-                  stroke="#8B4513"
-                  stroke-width="8"
-                />
-                <path
-                  d="M200 200 L 140 180"
-                  fill="none"
-                  stroke="#8B4513"
-                  stroke-width="8"
-                />
-                <path
-                  d="M200 200 L 260 180"
+                  v-for="(branch, index) in currentTreeStyle.branches"
+                  :key="index"
+                  :d="branch"
                   fill="none"
                   stroke="#8B4513"
                   stroke-width="8"
                 />
 
-                <!-- Dynamic leaves will be added here by Vue -->
+                <!-- Dynamic Leaves -->
                 <g id="leaves-container">
                   <path
                     v-for="(leaf, index) in treeLeaves"
                     :key="leaf.id"
-                    Add
-                    unique
-                    ID
-                    for
-                    each
-                    leaf
                     :d="leaf.pathData"
                     :fill="leaf.color"
-                    :class="{
-                      'leaf-animation': leaf.isNew,
-                      'golden-leaf': leaf.special === 'golden',
-                    }"
-                    :style="`transform-origin: ${leaf.x}px ${leaf.y}px; transform:
-                  rotate(${leaf.rotation}deg);`"
+                    :style="`transform-origin: ${leaf.x}px ${leaf.y}px; transform: rotate(${leaf.rotation}deg);`"
+                    class="leaf-animation"
                   />
                 </g>
               </svg>
@@ -243,8 +195,8 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from "vue";
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { ref, computed } from "vue";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 import confetti from "canvas-confetti";
 
@@ -267,14 +219,49 @@ const advancedEmotions = [
 
 // Tree styles
 const treeStyles = [
-  { name: "classic", path: "M200,350 Q200,200 250,150 T200,50" },
-  { name: "weeping", path: "M200,350 Q160,200 120,150 T200,50" },
-  { name: "spiral", path: "M200,350 Q250,250 200,150 T250,50" },
+  {
+    name: "classic", // A classic tree style
+    path: "M190 350 C 185 280, 175 250, 180 200 C 185 150, 195 120, 190 100 L 210 100 C 205 120, 215 150, 220 200 C 225 250, 215 280, 210 350 Z",
+    branches: [
+      "M200 150 L 150 120",
+      "M200 150 L 250 120",
+      "M200 200 L 140 180",
+      "M200 200 L 260 180",
+    ],
+  },
+  {
+    name: "weeping", // Includes roots and weeping branches
+    path: "M180 360 C 170 300, 160 250, 165 190 C 170 130, 180 100, 190 80 L 210 80 C 220 100, 230 130, 235 190 C 240 250, 230 300, 220 360 C 215 400, 185 400, 180 360 Z",
+    branches: [
+      "M200 140 L 140 110",
+      "M200 140 L 260 110",
+      "M200 180 L 130 150",
+      "M200 180 L 270 150",
+    ],
+  },
+  {
+    name: "spiral", // Spiral tree with longer branches
+    path: "M200 370 C 195 320, 185 280, 190 230 C 195 180, 200 150, 205 120 L 215 120 C 220 150, 225 180, 230 230 C 235 280, 225 320, 220 370 Z",
+    branches: [
+      "M210 160 L 170 130",
+      "M210 160 L 250 130",
+      "M210 200 L 150 170",
+      "M210 200 L 270 170",
+    ],
+  },
+  {
+    name: "spiral2", // Further refined spiral with extended branches
+    path: "M195 380 C 190 340, 180 300, 185 260 C 190 220, 200 190, 205 160 L 215 160 C 220 190, 230 220, 235 260 C 240 300, 230 340, 225 380 Z",
+    branches: [
+      "M210 170 L 160 140",
+      "M210 170 L 260 140",
+      "M210 210 L 140 180",
+      "M210 210 L 280 180",
+    ],
+  },
 ];
 
-// State management
 const user = ref(null);
-// Firebase Authentication and Firestore initialization
 const auth = getAuth();
 const db = getFirestore();
 // Listen for auth state changes
@@ -282,7 +269,7 @@ onAuthStateChanged(auth, async (currentUser) => {
   if (currentUser) {
     user.value = currentUser; // Store user data
     console.log("User UID: ", currentUser.uid);
-    loadDataFromFirebase(currentUser.uid); // Load data for the authenticated user
+    loadDataFromFirebase(currentUser.uid);
   }
 });
 // Save user data to Firebase
@@ -320,6 +307,7 @@ const loadDataFromFirebase = async (userId) => {
       achievements.value = data.achievements || [];
       unlockedEmotions.value = data.unlockedEmotions || [...emotions];
       currentTreeStyle.value = data.currentTreeStyle || "classic";
+      console.log(data);
     } else {
       console.log("No data found for user in emotion_diary");
     }
@@ -371,14 +359,24 @@ const milestones = {
     reward: "newEmotion",
   },
   15: {
-    type: "tree",
-    message: "Разблокирован новый стиль дерева!",
-    reward: "newTreeStyle",
+    type: "emotion",
+    message: "Открыта новая эмоция: Умиротворение! 🌸",
+    reward: "newEmotion2",
   },
   20: {
     type: "special",
     message: "Особое достижение: Золотые листья разблокированы! 🌟",
     reward: "goldenLeaves",
+  },
+  25: {
+    type: "tree",
+    message: "Разблокирован новый стиль дерева!",
+    reward: "newTreeStyle",
+  },
+  30: {
+    type: "tree",
+    message: "Разблокирован новый стиль дерева!",
+    reward: "newTreeStyle2",
   },
 };
 
@@ -388,11 +386,10 @@ const resetTree = () => {
   unlockedEmotions.value = [...emotions];
   achievements.value = [];
   recentEntries.value = [];
-
+  currentTreeStyle.value = treeStyles.find((style) => style.name === "classic");
+  saveDataToFirebase(user.value.uid);
   alert("Дерево успешно сброшено!");
 };
-
-// Local storage functions
 
 // Helper functions
 const addFlowerEffect = () => {
@@ -423,10 +420,16 @@ const checkMilestones = () => {
         unlockedEmotions.value.push(advancedEmotions[0]);
         break;
       case "newTreeStyle":
+        currentTreeStyle.value = treeStyles[1];
+        break;
+      case "newTreeStyle2":
         currentTreeStyle.value = treeStyles[2];
         break;
       case "goldenLeaves":
         enableGoldenLeaves();
+        break;
+      case "newEmotion2":
+        unlockedEmotions.value.push(advancedEmotions[1]);
         break;
     }
 
@@ -436,11 +439,6 @@ const checkMilestones = () => {
       title: milestone.message,
       date: new Date(),
     });
-
-    // Save achievements
-    if (user.value) {
-      saveDataToFirebase(user.value.uid); // Save when any data changes
-    }
   }
 };
 
@@ -486,7 +484,7 @@ const handleSubmitEntry = () => {
     text: diaryEntry.value,
     date: new Date(),
   });
-
+  saveDataToFirebase(user.value.uid);
   if (recentEntries.value.length > 3) {
     recentEntries.value.pop();
   }
@@ -519,32 +517,6 @@ const formatDate = (date) => {
     month: "long",
   });
 };
-
-// Watch for changes and save to localStorage
-watch(
-  () => treeLeaves.value,
-  (newValue) => {
-    if (user.value) {
-      saveDataToFirebase(user.value.uid); // Save when any data changes
-    }
-  },
-  [
-    entriesCount,
-    treeLeaves,
-    recentEntries,
-    achievements,
-    unlockedEmotions,
-    currentTreeStyle,
-  ],
-  { deep: true }
-);
-
-// Initialize data on component mount
-onMounted(() => {
-  if (user.value) {
-    loadDataFromFirebase(user.value.uid); // Load data if user is authenticated
-  }
-});
 </script>
 
 <style scoped>
