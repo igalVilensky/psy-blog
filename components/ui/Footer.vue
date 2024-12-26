@@ -68,13 +68,13 @@
         </p>
         <div class="mt-4 space-x-4">
           <NuxtLink
-            to="/privacy"
+            to="/legal/privacy"
             class="text-gray-300 hover:text-white transition-colors"
           >
             Политика конфиденциальности
           </NuxtLink>
           <NuxtLink
-            to="/terms"
+            to="/legal/terms"
             class="text-gray-300 hover:text-white transition-colors"
           >
             Условия использования

@@ -182,6 +182,7 @@ import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "~/stores/auth";
 import hostImage from "~/assets/images/podcasts/podcasts.jpeg";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -200,7 +201,8 @@ onMounted(async () => {
   }
 
   // Load additional data if the user exists
-  if (authStore.user) {
+  if (authStore.user && authStore.user.uid) {
+    console.log(authStore.user.uid);
     await loadEmotionData(authStore.user.uid);
   }
 });

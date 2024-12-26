@@ -138,7 +138,7 @@
                 <label for="privacy" class="text-sm text-[#6B5B4C]">
                   Я согласен с
                   <NuxtLink
-                    to="/privacy-policy"
+                    to="/legal/privacy"
                     class="text-[#FF6B6B] hover:text-[#FF5252] transition"
                   >
                     Политикой конфиденциальности
@@ -161,7 +161,7 @@
                 <label for="terms" class="text-sm text-[#6B5B4C]">
                   Я принимаю
                   <NuxtLink
-                    to="/terms"
+                    to="/legal/terms"
                     class="text-[#FF6B6B] hover:text-[#FF5252] transition"
                   >
                     Условия использования
