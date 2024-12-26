@@ -11,6 +11,7 @@
           Мы всегда на связи
         </h2>
         <div class="space-y-4">
+          <!-- Contact Details -->
           <div class="flex items-center space-x-4">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -67,6 +68,7 @@
           Форма обратной связи
         </h3>
         <form @submit.prevent="submitForm" class="space-y-4">
+          <!-- Name Input -->
           <div>
             <label
               for="name"
@@ -82,6 +84,7 @@
               required
             />
           </div>
+          <!-- Email Input -->
           <div>
             <label
               for="email"
@@ -97,6 +100,7 @@
               required
             />
           </div>
+          <!-- Message Input -->
           <div>
             <label
               for="message"
@@ -112,6 +116,7 @@
               required
             ></textarea>
           </div>
+          <!-- Subscription -->
           <div>
             <h4 class="text-lg font-medium text-[#4A4238] mb-4">
               Подписаться на рассылку
@@ -131,6 +136,7 @@
               </button>
             </div>
           </div>
+          <!-- Submit Button -->
           <button
             type="submit"
             class="w-full bg-[#FF6B6B] text-white py-3 rounded-lg hover:bg-[#FF5252] transition flex items-center justify-center space-x-2"
@@ -158,6 +164,13 @@
 </template>
 
 <script setup>
+import { reactive, ref } from "vue";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+
+// Firestore initialization
+const db = getFirestore();
+
+// Reactive form data
 const formData = reactive({
   name: "",
   email: "",
@@ -166,18 +179,41 @@ const formData = reactive({
 
 const subscribeEmail = ref("");
 
-const submitForm = () => {
-  // Add form submission logic
-  console.log("Form submitted:", formData);
-  // Reset form after submission
-  formData.name = "";
-  formData.email = "";
-  formData.message = "";
+// Form submission logic
+const submitForm = async () => {
+  try {
+    await addDoc(collection(db, "contactMessages"), {
+      name: formData.name,
+      email: formData.email,
+      message: formData.message,
+      timestamp: new Date(),
+    });
+    alert("Сообщение отправлено успешно!");
+    formData.name = "";
+    formData.email = "";
+    formData.message = "";
+  } catch (error) {
+    console.error("Ошибка при отправке сообщения:", error);
+    alert("Не удалось отправить сообщение.");
+  }
 };
 
-const subscribe = () => {
-  // Add subscription logic
-  console.log("Subscribed email:", subscribeEmail.value);
-  subscribeEmail.value = "";
+// Subscription logic
+const subscribe = async () => {
+  if (!subscribeEmail.value) {
+    alert("Введите Email для подписки!");
+    return;
+  }
+  try {
+    await addDoc(collection(db, "subscriptions"), {
+      email: subscribeEmail.value,
+      timestamp: new Date(),
+    });
+    alert("Подписка оформлена!");
+    subscribeEmail.value = "";
+  } catch (error) {
+    console.error("Ошибка при оформлении подписки:", error);
+    alert("Не удалось оформить подписку.");
+  }
 };
 </script>

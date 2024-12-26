@@ -54,6 +54,7 @@
               />
             </div>
           </div>
+
           <!-- Password input -->
           <div>
             <label
@@ -121,13 +122,63 @@
             </div>
           </div>
 
+          <!-- Privacy Policy and Terms Checkboxes -->
+          <div class="space-y-3">
+            <div class="flex items-start">
+              <div class="flex items-center h-5">
+                <input
+                  id="privacy"
+                  v-model="acceptPrivacy"
+                  type="checkbox"
+                  required
+                  class="w-4 h-4 border-2 border-[#FFD1DC] rounded focus:ring-[#FF6B6B] focus:ring-2"
+                />
+              </div>
+              <div class="ml-3">
+                <label for="privacy" class="text-sm text-[#6B5B4C]">
+                  Я согласен с
+                  <NuxtLink
+                    to="/privacy-policy"
+                    class="text-[#FF6B6B] hover:text-[#FF5252] transition"
+                  >
+                    Политикой конфиденциальности
+                  </NuxtLink>
+                </label>
+              </div>
+            </div>
+
+            <div class="flex items-start">
+              <div class="flex items-center h-5">
+                <input
+                  id="terms"
+                  v-model="acceptTerms"
+                  type="checkbox"
+                  required
+                  class="w-4 h-4 border-2 border-[#FFD1DC] rounded focus:ring-[#FF6B6B] focus:ring-2"
+                />
+              </div>
+              <div class="ml-3">
+                <label for="terms" class="text-sm text-[#6B5B4C]">
+                  Я принимаю
+                  <NuxtLink
+                    to="/terms"
+                    class="text-[#FF6B6B] hover:text-[#FF5252] transition"
+                  >
+                    Условия использования
+                  </NuxtLink>
+                </label>
+              </div>
+            </div>
+          </div>
+
           <!-- Error message -->
           <div v-if="error" class="text-sm text-red-500 mb-4">{{ error }}</div>
 
           <!-- Submit button -->
           <button
             type="submit"
-            class="w-full bg-[#FF6B6B] text-white py-3 rounded-lg hover:bg-[#FF5252] transition flex items-center justify-center space-x-2"
+            :disabled="!isFormValid"
+            class="w-full bg-[#FF6B6B] text-white py-3 rounded-lg hover:bg-[#FF5252] transition flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <i class="fas fa-user-plus"></i>
             <span>Зарегистрироваться</span>
@@ -170,7 +221,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -184,13 +235,33 @@ const password = ref("");
 const confirmPassword = ref("");
 const displayName = ref("");
 const error = ref("");
+const acceptPrivacy = ref(false);
+const acceptTerms = ref(false);
 const router = useRouter();
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
 
+// Computed property to check if all fields are filled and valid
+const isFormValid = computed(() => {
+  return (
+    displayName.value.trim() !== "" &&
+    email.value.trim() !== "" &&
+    password.value.trim() !== "" &&
+    confirmPassword.value.trim() !== "" &&
+    password.value === confirmPassword.value &&
+    acceptPrivacy.value &&
+    acceptTerms.value &&
+    // Basic email validation
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value) &&
+    // Minimum password length validation (e.g., 6 characters)
+    password.value.length >= 6
+  );
+});
+
 const registerUser = async () => {
-  if (password.value !== confirmPassword.value) {
-    error.value = "Passwords do not match";
+  if (!isFormValid.value) {
+    error.value =
+      "Пожалуйста, заполните все поля корректно и примите условия использования";
     return;
   }
 
@@ -214,6 +285,8 @@ const registerUser = async () => {
       email: user.email,
       displayName: displayName.value,
       createdAt: new Date(),
+      acceptedPrivacyPolicy: true,
+      acceptedTerms: true,
     });
 
     router.push("/login");
