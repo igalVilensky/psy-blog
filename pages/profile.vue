@@ -146,6 +146,7 @@
                 </div>
               </div>
             </div>
+            <canvas ref="blogStatsChart" width="400" height="200"></canvas>
           </div>
 
           <!-- Recent Activity -->
@@ -184,8 +185,10 @@ import { useAuthStore } from "~/stores/auth";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import hostImage from "~/assets/images/podcasts/podcasts.jpeg";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
-
+import { Chart, registerables } from "chart.js";
+Chart.register(...registerables);
 const user = ref(null);
+const blogStatsChart = ref(null);
 const emotionStats = ref({
   entriesCount: 0,
   recentEntries: [],
@@ -199,8 +202,48 @@ const router = useRouter();
 onAuthStateChanged(auth, async (currentUser) => {
   if (currentUser) {
     user.value = currentUser; // Store user data
-    console.log("User UID: ", currentUser.uid);
-    loadEmotionData(currentUser.uid);
+    await loadEmotionData(currentUser.uid);
+    if (blogStatsChart.value) {
+      new Chart(blogStatsChart.value, {
+        type: "bar", // or 'line', 'pie', etc., based on your need
+        data: {
+          labels: [
+            "Прочитано статей",
+            "Количество записей",
+            "Изученные эмоции",
+          ], // Example labels
+          datasets: [
+            {
+              label: "Статистика",
+              data: [
+                24,
+                emotionStats.value.entriesCount,
+                emotionStats.value.unlockedEmotions.length,
+              ], // Example data
+              backgroundColor: [
+                "rgba(255, 99, 132, 0.2)",
+                "rgba(54, 162, 235, 0.2)",
+                "rgba(255, 206, 86, 0.2)",
+              ],
+              borderColor: [
+                "rgba(255, 99, 132, 1)",
+                "rgba(54, 162, 235, 1)",
+                "rgba(255, 206, 86, 1)",
+              ],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+    }
   }
 });
 

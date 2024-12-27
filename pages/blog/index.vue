@@ -39,6 +39,7 @@
           v-for="post in filteredPosts"
           :key="post._id"
           :to="`/blog/${post.slug.current}`"
+          @click="incrementViewCount(post._id)"
           class="group block bg-white rounded-2xl shadow-md overflow-hidden transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
         >
           <div class="relative">
@@ -106,32 +107,23 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import imageUrlBuilder from "@sanity/image-url";
-import type { SanityDocument } from "@sanity/client";
+<script setup>
 import { computed, ref } from "vue";
-import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { useFirestore } from "~/plugins/firebase";
+import { fetchPosts } from "~/api/sanity/posts";
+import { getImageUrl } from "~/api/sanity/client";
+import { incrementPostViewCount } from "~/api/firebase/views";
 
-const POSTS_QUERY = groq`*[
-    _type == "post"
-    && defined(slug.current)
-   ]|order(publishedAt desc)[0...12]{
-    _id,
-    title,
-    slug,
-    publishedAt,
-    image,
-    category,
-    readtime,
-    author
-   }`;
+const firestore = useFirestore();
 
-const { data: posts } = await useSanityQuery<SanityDocument[]>(POSTS_QUERY);
+const incrementViewCount = async (postId) => {
+  await incrementPostViewCount(firestore, postId);
+};
+
+// Use the query result directly
+const { data: posts } = await fetchPosts();
 const { projectId, dataset } = useSanity().client.config();
-const urlFor = (source: SanityImageSource) =>
-  projectId && dataset
-    ? imageUrlBuilder({ projectId, dataset }).image(source)
-    : null;
+const urlFor = getImageUrl(projectId, dataset);
 
 const categories = ref([
   "Все",
@@ -143,9 +135,10 @@ const categories = ref([
 const activeTab = ref("Все");
 
 const filteredPosts = computed(() => {
+  if (!posts.value) return []; // Add null check
   if (activeTab.value === "Все") {
     return posts.value;
   }
-  return posts.value?.filter((post) => post.category === activeTab.value);
+  return posts.value.filter((post) => post.category === activeTab.value);
 });
 </script>
