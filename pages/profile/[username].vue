@@ -186,7 +186,9 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import hostImage from "~/assets/images/podcasts/podcasts.jpeg";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { Chart, registerables } from "chart.js";
+
 Chart.register(...registerables);
+
 const user = ref(null);
 const blogStatsChart = ref(null);
 const emotionStats = ref({
@@ -197,6 +199,7 @@ const emotionStats = ref({
 
 const auth = getAuth();
 const authStore = useAuthStore();
+const route = useRoute();
 const router = useRouter();
 
 onAuthStateChanged(auth, async (currentUser) => {

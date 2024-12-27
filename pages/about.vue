@@ -6,7 +6,7 @@
         <h1
           class="text-4xl md:text-5xl font-bold text-gray-800 mb-4 tracking-tight"
         >
-          О нас
+          О проекте
         </h1>
         <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
           Добро пожаловать! Этот проект создан, чтобы вдохновлять и помогать
@@ -19,28 +19,29 @@
         class="grid md:grid-cols-2 gap-12 items-center bg-white rounded-2xl p-10 shadow-lg mb-16"
       >
         <div>
-          <h2 class="text-3xl font-semibold text-pink-600 mb-6">
-            Anastasia Galactik
-          </h2>
           <div class="space-y-4 text-gray-700">
             <p class="text-lg leading-relaxed">
-              Я, Anastasia Galactik, создала этот проект с искренним желанием
-              помочь людям раскрывать свой потенциал и расти. Я убеждена, что
-              внутреннее развитие — это фундамент гармоничных отношений,
-              осознанного родительства и доброжелательного общения с миром.
+              Здравствуйте! Меня зовут Анастасия, и я рада, что вы здесь. Этот
+              проект — результат моего стремления вдохновлять людей находить
+              свою гармонию и раскрывать свой потенциал.
             </p>
             <p class="text-lg leading-relaxed">
-              Саморазвитие делает нас более гибкими, открывая путь к глубокой и
-              насыщенной жизни. Мои продукты — это своего рода пазл,
-              объединяющий все важные сферы: личностный рост, улучшение
-              взаимоотношений и воспитание детей.
+              Я верю, что личностный рост — это не только путь к лучшему
+              пониманию себя, но и основа гармоничных отношений, осознанного
+              родительства и доброжелательного взаимодействия с окружающим
+              миром. Моя цель — предложить вам инструменты и идеи, которые
+              помогут сделать вашу жизнь более наполненной и радостной.
+            </p>
+            <p class="text-lg leading-relaxed">
+              Надеюсь, вы найдете здесь что-то ценное для себя. Пусть это станет
+              вашим источником вдохновения и поддержки.
             </p>
           </div>
         </div>
         <div class="flex justify-center">
           <img
             src="/assets/images/profile.jpg"
-            alt="Anastasia Galactik"
+            alt="Анастасия"
             class="w-80 h-80 object-cover rounded-2xl shadow-md transform transition hover:scale-105"
           />
         </div>
@@ -85,7 +86,7 @@
           к внутреннему равновесию.
         </p>
         <NuxtLink
-          to="/courses"
+          to="/courses/courses"
           class="inline-block bg-white text-pink-600 text-lg font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-gray-100 transition duration-300"
         >
           Перейти к курсам

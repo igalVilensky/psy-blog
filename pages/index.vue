@@ -1,11 +1,9 @@
 <template>
-  <div class="bg-gradient-to-br from-pink-50 to-white min-h-screen py-12">
+  <div class="bg-gradient-to-br from-pink-50 via-rose-50 to-white py-12">
     <div class="container mx-auto px-4 max-w-6xl">
       <!-- Loading State -->
       <div v-if="isLoading" class="flex justify-center items-center h-screen">
-        <div
-          class="animate-spin rounded-full border-t-4 border-pink-500 border-solid w-16 h-16"
-        ></div>
+        <i class="fas fa-spinner fa-spin fa-2x text-pink-500"></i>
       </div>
 
       <div v-else>
@@ -28,10 +26,11 @@
             <p
               class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed mb-6 px-4"
             >
-              Мы создаем уникальные образовательные программы, которые помогают
-              раскрыть потенциал каждого человека через глубокое понимание себя
-              и развитие
-              <span class="font-bold text-pink-500">personal skills</span>.
+              Мы разрабатываем уникальные образовательные программы, которые
+              помогают каждому человеку раскрыть свой потенциал через глубокое
+              понимание себя и совершенствование
+              <span class="font-bold text-pink-500">навыков личного роста</span
+              >.
             </p>
 
             <!-- CTA Button -->
