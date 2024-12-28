@@ -10,6 +10,7 @@
           <ul class="space-y-3">
             <li v-for="(link, index) in sitemapLinks" :key="index">
               <NuxtLink
+                active-class="text-pink-500"
                 :to="link.to"
                 class="text-gray-300 hover:text-white transition-colors duration-300"
               >
@@ -97,6 +98,10 @@ const sitemapLinks = [
   { label: "Курсы", to: "/courses/courses" },
   { label: "Гайды", to: "/courses/guides" },
   { label: " Подкасты ", to: "/courses/podcasts" },
+  {
+    label: "Инструменты осознанности",
+    to: "/awareness-tools",
+  },
   {
     label: "Эмоциональный барометр",
     to: "/awareness-tools/emotional-barometer",

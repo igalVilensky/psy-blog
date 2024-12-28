@@ -1,5 +1,7 @@
 <template>
-  <div class="bg-gradient-to-br from-pink-50 to-white min-h-screen py-12">
+  <div
+    class="bg-gradient-to-br from-pink-50 via-rose-50 to-white min-h-screen py-12"
+  >
     <div class="container mx-auto px-4 max-w-3xl">
       <!-- Back Navigation -->
       <nuxt-link
@@ -184,7 +186,7 @@ const postViews = ref(357);
 
 const shareOn = (platform: string) => {
   const url = window.location.href;
-  const title = post.value.title;
+  const title = post.value?.title;
 
   const shareUrls = {
     twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(

@@ -28,13 +28,14 @@
             <DesktopSubmenu />
           </li>
           <li class="px-4 relative group">
-            <div
-              exact-active-class="text-pink-500"
+            <NuxtLink
+              to="/awareness-tools"
+              active-class="text-pink-500"
               class="text-gray-800 cursor-pointer text-base whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500 flex items-center"
             >
               Инструменты осознанности
               <i class="fas fa-chevron-down ml-1 text-sm"></i>
-            </div>
+            </NuxtLink>
             <AwarenessToolsDesktopSubmenu />
           </li>
           <li class="px-4">
@@ -158,21 +159,11 @@
               @click="toggleSubmenu('courses')"
             >
               Курсы
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-4 w-4 ml-1 transform transition-transform duration-300"
+
+              <i
+                class="fas fa-chevron-down ml-1 text-sm"
                 :class="openSubmenu === 'courses' ? 'rotate-180' : ''"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
+              ></i>
             </div>
             <MobileSubmenu
               :isOpen="openSubmenu === 'courses'"
@@ -181,27 +172,17 @@
           </li>
 
           <li class="relative">
-            <div
+            <NuxtLink
+              active-class="bg-pink-500"
               class="px-8 py-2 text-white transition-colors duration-300 ease-in-out hover:bg-pink-600 cursor-pointer flex items-center justify-between"
               @click="toggleSubmenu('awareness-tools')"
             >
               Инструменты осознанности
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-4 w-4 ml-1 flex-shrink-0 transform transition-transform duration-300"
+              <i
+                class="fas fa-chevron-down ml-1 text-sm"
                 :class="openSubmenu === 'awareness-tools' ? 'rotate-180' : ''"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </div>
+              ></i>
+            </NuxtLink>
             <AwarenessToolsMobileSubmenu
               :isOpen="openSubmenu === 'awareness-tools'"
               :closeDropdown="closeDropdown"

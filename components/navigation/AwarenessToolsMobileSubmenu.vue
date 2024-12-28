@@ -1,8 +1,18 @@
 <template>
   <ul
     class="bg-pink-300 overflow-hidden transition-all duration-500 ease-in-out"
-    :class="[isOpen ? 'max-h-48' : 'max-h-0']"
+    :class="[isOpen ? 'max-h-64' : 'max-h-0']"
   >
+    <li>
+      <NuxtLink
+        to="/awareness-tools"
+        exact-active-class="bg-pink-500"
+        class="block px-12 py-2 text-white text-sm transition-colors duration-300 ease-in-out hover:bg-pink-600"
+        @click="closeDropdown"
+      >
+        Инструменты осознанности
+      </NuxtLink>
+    </li>
     <li>
       <NuxtLink
         to="/awareness-tools/emotional-barometer"

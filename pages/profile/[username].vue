@@ -1,5 +1,7 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-pink-50 to-white py-12">
+  <div
+    class="min-h-screen bg-gradient-to-br from-pink-50 via-rose-50 to-white py-12"
+  >
     <div class="container mx-auto px-4 max-w-6xl">
       <!-- Profile Header -->
       <div class="bg-white rounded-2xl shadow-lg p-8 mb-8">
