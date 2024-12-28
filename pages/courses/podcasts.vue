@@ -54,7 +54,7 @@
                   {{ podcast.title }}
                 </h3>
                 <span
-                  class="bg-pink-100 text-pink-600 px-3 py-1 rounded-full text-sm"
+                  class="bg-pink-100 text-pink-600 px-3 py-1 rounded-full text-sm text-center"
                 >
                   {{ podcast.category }}
                 </span>
