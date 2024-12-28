@@ -92,20 +92,28 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useFirestore } from "~/plugins/firebase";
-import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import {
+  submitAssessment,
+  saveAssessmentProgress,
+} from "~/api/firebase/assessments";
 
 const router = useRouter();
 const db = useFirestore();
+const auth = getAuth();
 
 // State
 const currentQuestionIndex = ref(0);
 const selectedAnswer = ref(null);
 const userAnswers = ref({});
+const isLoading = ref(false);
+const error = ref(null);
 
-// Mock data (replace with Sanity data)
+// Questions data
 const questions = ref([
   {
     id: 1,
@@ -146,52 +154,156 @@ const selectAnswer = (index) => {
 const previousQuestion = () => {
   if (currentQuestionIndex.value > 0) {
     currentQuestionIndex.value--;
-    selectedAnswer.value = null;
+    selectedAnswer.value = userAnswers.value[
+      questions.value[currentQuestionIndex.value].id
+    ]
+      ? answerOptions.findIndex(
+          (opt) =>
+            opt.value ===
+            userAnswers.value[questions.value[currentQuestionIndex.value].id]
+        )
+      : null;
   }
 };
 
 const nextQuestion = async () => {
   if (isLastQuestion.value) {
-    await submitAssessment();
+    await submitAssessmentHandler();
   } else {
     currentQuestionIndex.value++;
-    selectedAnswer.value = null;
-  }
-};
-
-const submitAssessment = async () => {
-  try {
-    // Calculate archetype scores (implement your scoring logic)
-    const scores = calculateArchetypeScores(userAnswers.value);
-
-    // Save to Firebase
-    const resultId = crypto.randomUUID();
-    await setDoc(doc(db, "archetypeResults", resultId), {
-      userId: "current-user-id", // Replace with actual user ID
-      timestamp: serverTimestamp(),
-      answers: userAnswers.value,
-      scores: scores,
-      // Add other relevant data
-    });
-
-    // Navigate to results page
-    router.push(`/tools/life-purpose-archetype/results/${resultId}`);
-  } catch (error) {
-    console.error("Error submitting assessment:", error);
-    // Handle error appropriately
+    selectedAnswer.value = userAnswers.value[
+      questions.value[currentQuestionIndex.value].id
+    ]
+      ? answerOptions.findIndex(
+          (opt) =>
+            opt.value ===
+            userAnswers.value[questions.value[currentQuestionIndex.value].id]
+        )
+      : null;
   }
 };
 
 const calculateArchetypeScores = (answers) => {
-  // Implement your scoring algorithm
-  // This is a placeholder implementation
-  return {
+  const scores = {
     creator: 0,
     explorer: 0,
     sage: 0,
     warrior: 0,
     magician: 0,
-    // Add other archetypes
   };
+
+  questions.value.forEach((question) => {
+    const answer = answers[question.id];
+    question.relatedArchetypes.forEach((archetype) => {
+      scores[archetype] += answer / questions.value.length;
+    });
+  });
+
+  // Convert to percentages
+  Object.keys(scores).forEach((archetype) => {
+    scores[archetype] = (scores[archetype] * 100).toFixed(1);
+  });
+
+  return scores;
 };
+
+const submitAssessmentHandler = async () => {
+  if (isLoading.value) return;
+
+  isLoading.value = true;
+  error.value = null;
+
+  try {
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+      throw new Error(
+        "Пожалуйста, войдите в систему для сохранения результатов"
+      );
+    }
+
+    // Calculate scores
+    const scores = calculateArchetypeScores(userAnswers.value);
+
+    // Submit assessment
+    const result = await submitAssessment(
+      db,
+      currentUser.uid,
+      userAnswers.value,
+      scores
+    );
+
+    if (result.success && result.assessmentId) {
+      router.push(
+        `/awareness-tools/life-purpose-archetype/results/${result.assessmentId}`
+      );
+    } else {
+      throw new Error(result.message || "Не удалось сохранить результаты");
+    }
+  } catch (error) {
+    console.error("Error submitting assessment:", error);
+    error.value =
+      error.message || "Произошла ошибка при сохранении результатов";
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+// Save progress function
+const saveProgress = async () => {
+  try {
+    const currentUser = auth.currentUser;
+    if (!currentUser) return;
+
+    await saveAssessmentProgress(db, currentUser.uid, {
+      currentQuestionIndex: currentQuestionIndex.value,
+      answers: userAnswers.value,
+    });
+  } catch (error) {
+    console.error("Error saving progress:", error);
+  }
+};
+
+// Optional: Load saved progress
+// const loadProgress = async () => {
+//   try {
+//     const currentUser = auth.currentUser;
+//     if (!currentUser) return;
+
+//     const progressDoc = await getDoc(
+//       doc(
+//         db,
+//         "users",
+//         currentUser.uid,
+//         "assessmentProgress",
+//         "archetypeAssessment"
+//       )
+//     );
+
+//     if (progressDoc.exists()) {
+//       const data = progressDoc.data();
+//       currentQuestionIndex.value = data.currentQuestionIndex;
+//       userAnswers.value = data.answers;
+//       selectedAnswer.value = userAnswers.value[currentQuestion.value.id]
+//         ? answerOptions.findIndex(
+//             (opt) => opt.value === userAnswers.value[currentQuestion.value.id]
+//           )
+//         : null;
+//     }
+//   } catch (error) {
+//     console.error("Error loading progress:", error);
+//   }
+// };
+// Watch for changes to save progress
+watch(
+  userAnswers,
+  () => {
+    saveProgress();
+  },
+  { deep: true }
+);
+
+// Load progress on mount
+// onMounted(() => {
+//   loadProgress();
+// });
 </script>
