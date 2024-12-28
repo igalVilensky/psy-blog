@@ -1,7 +1,7 @@
 <template>
   <ul
     class="bg-pink-300 overflow-hidden transition-all duration-500 ease-in-out"
-    :class="[isOpen ? 'max-h-64' : 'max-h-0']"
+    :class="[isOpen ? 'max-h-80' : 'max-h-0']"
   >
     <li>
       <NuxtLink
