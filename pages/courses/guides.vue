@@ -91,10 +91,12 @@
         <div class="max-w-md mx-auto flex">
           <input
             type="email"
+            v-model="email"
             placeholder="Ваш email"
             class="w-full px-4 py-3 rounded-l-lg text-gray-800"
           />
           <button
+            @click="subscribeEmail"
             class="bg-white text-pink-600 px-6 py-3 rounded-r-lg hover:bg-gray-100"
           >
             Подписаться
@@ -108,7 +110,11 @@
 <script setup>
 import { ref, computed } from "vue";
 import guideImage from "~/assets/images/podcasts/podcasts.jpeg";
+import { getFirestore } from "firebase/firestore";
+import { subscribeUser } from "@/api/firebase/contact";
 
+const db = getFirestore();
+const email = ref("");
 const selectedCategory = ref("Все");
 
 const categories = [
@@ -175,4 +181,25 @@ const filteredGuides = computed(() => {
     ? guides
     : guides.filter((guide) => guide.category === selectedCategory.value);
 });
+
+// Email subscription method
+const subscribeEmail = async () => {
+  if (email.value && validateEmail(email.value)) {
+    const result = await subscribeUser(db, email.value);
+    if (result.success) {
+      alert(result.message);
+    } else {
+      alert(result.message);
+    }
+    email.value = ""; // Clear input after submission
+  } else {
+    alert("Пожалуйста, введите корректный email");
+  }
+};
+
+// Simple email validation
+const validateEmail = (email) => {
+  const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return re.test(String(email).toLowerCase());
+};
 </script>

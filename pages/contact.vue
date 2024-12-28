@@ -165,7 +165,8 @@
 
 <script setup>
 import { reactive, ref } from "vue";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import { submitContactForm, subscribeUser } from "../api/firebase/contact";
 
 // Firestore initialization
 const db = getFirestore();
@@ -181,39 +182,26 @@ const subscribeEmail = ref("");
 
 // Form submission logic
 const submitForm = async () => {
-  try {
-    await addDoc(collection(db, "contactMessages"), {
-      name: formData.name,
-      email: formData.email,
-      message: formData.message,
-      timestamp: new Date(),
-    });
-    alert("Сообщение отправлено успешно!");
+  const result = await submitContactForm(db, formData);
+  if (result.success) {
+    alert(result.message);
+    // Clear form data after successful submission
     formData.name = "";
     formData.email = "";
     formData.message = "";
-  } catch (error) {
-    console.error("Ошибка при отправке сообщения:", error);
-    alert("Не удалось отправить сообщение.");
+  } else {
+    alert(result.message);
   }
 };
 
 // Subscription logic
 const subscribe = async () => {
-  if (!subscribeEmail.value) {
-    alert("Введите Email для подписки!");
-    return;
-  }
-  try {
-    await addDoc(collection(db, "subscriptions"), {
-      email: subscribeEmail.value,
-      timestamp: new Date(),
-    });
-    alert("Подписка оформлена!");
-    subscribeEmail.value = "";
-  } catch (error) {
-    console.error("Ошибка при оформлении подписки:", error);
-    alert("Не удалось оформить подписку.");
+  const result = await subscribeUser(db, subscribeEmail.value);
+  if (result.success) {
+    alert(result.message);
+    subscribeEmail.value = ""; // Clear email input
+  } else {
+    alert(result.message);
   }
 };
 </script>

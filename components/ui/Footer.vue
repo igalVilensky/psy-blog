@@ -88,8 +88,11 @@
 
 <script setup>
 import { ref } from "vue";
+import { getFirestore } from "firebase/firestore";
+import { subscribeUser } from "../api/firebase/contact";
 
-// Reactive email input
+const db = getFirestore();
+
 const email = ref("");
 
 // Sitemap links from the navigation
@@ -135,11 +138,15 @@ const socialLinks = [
   },
 ];
 
-// Email subscription method (placeholder)
-const subscribeEmail = () => {
+// Email subscription method
+const subscribeEmail = async () => {
   if (email.value && validateEmail(email.value)) {
-    // Here you would typically call an API to handle email subscription
-    alert(`Спасибо за подписку: ${email.value}`);
+    const result = await subscribeUser(db, email.value);
+    if (result.success) {
+      alert(result.message);
+    } else {
+      alert(result.message);
+    }
     email.value = ""; // Clear input after submission
   } else {
     alert("Пожалуйста, введите корректный email");

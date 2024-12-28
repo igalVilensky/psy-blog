@@ -109,8 +109,12 @@
 <script setup>
 import { ref, computed } from "vue";
 import courseImage from "~/assets/images/freeResourses/metCards.webp";
+import { getFirestore } from "firebase/firestore";
+import { subscribeUser } from "../api/firebase/contact";
 
+const db = getFirestore();
 const email = ref("");
+
 const selectedType = ref("Все");
 
 const resourceTypes = [
@@ -174,15 +178,22 @@ const openResource = (resource) => {
   alert(`Открытие ресурса: ${resource.title}`);
 };
 
-const subscribeEmail = () => {
+// Email subscription method
+const subscribeEmail = async () => {
   if (email.value && validateEmail(email.value)) {
-    alert(`Спасибо за подписку: ${email.value}`);
-    email.value = "";
+    const result = await subscribeUser(db, email.value);
+    if (result.success) {
+      alert(result.message);
+    } else {
+      alert(result.message);
+    }
+    email.value = ""; // Clear input after submission
   } else {
     alert("Пожалуйста, введите корректный email");
   }
 };
 
+// Simple email validation
 const validateEmail = (email) => {
   const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   return re.test(String(email).toLowerCase());
