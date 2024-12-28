@@ -43,6 +43,16 @@
         Дневник эмоций
       </NuxtLink>
     </li>
+    <li>
+      <NuxtLink
+        to="/awareness-tools/life-purpose-archetype"
+        exact-active-class="bg-pink-500"
+        class="block px-12 py-2 text-white text-sm transition-colors duration-300 ease-in-out hover:bg-pink-600"
+        @click="closeDropdown"
+      >
+        Открытие Архетипа Жизни
+      </NuxtLink>
+    </li>
   </ul>
 </template>
 
