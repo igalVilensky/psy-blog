@@ -9,19 +9,9 @@
           <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-[#4A4238]">
             Эмоциональный Барометр
           </h2>
+
           <!-- Step Indicator -->
-          <div class="mb-6">
-            <div class="flex justify-between mb-2">
-              <span class="text-sm text-gray-600">Шаг {{ currentStep }}/4</span>
-              <span class="text-sm text-gray-600">{{ stepTitle }}</span>
-            </div>
-            <div class="w-full bg-gray-200 rounded-full h-2">
-              <div
-                class="bg-[#FF6B6B] h-2 rounded-full transition-all duration-300"
-                :style="{ width: `${(currentStep / 4) * 100}%` }"
-              ></div>
-            </div>
-          </div>
+          <StepIndicator :current-step="currentStep" :step-title="stepTitle" />
 
           <!-- Step 1: Emotion Selection -->
           <EmotionSelection
@@ -32,52 +22,27 @@
           />
 
           <!-- Step 2: Intensity Level -->
-          <div v-if="currentStep === 2">
-            <IntensityLevel
-              :selected-emotion="selectedEmotion"
-              v-model:intensity-level="intensityLevel"
-            />
-          </div>
+          <IntensityLevel
+            v-if="currentStep === 2"
+            :selected-emotion="selectedEmotion"
+            v-model:intensity-level="intensityLevel"
+          />
 
           <!-- Journal Entry Form -->
           <div v-if="selectedEmotion" class="mt-4 sm:mt-6">
             <!-- Step 3: Journal Entry -->
-            <div v-if="currentStep === 3">
-              <p class="text-sm text-gray-600 mb-3">
-                Опишите, что вызвало эту эмоцию и какие мысли у вас возникли:
-              </p>
-              <textarea
-                v-model="journalEntry"
-                class="w-full p-3 sm:p-4 text-sm sm:text-base border-2 border-[#FFD1DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B6B]"
-                rows="4"
-                placeholder="Опишите ваши мысли и чувства..."
-              ></textarea>
-            </div>
+            <JournalEntry
+              v-if="currentStep === 3"
+              v-model:journal-entry="journalEntry"
+            />
 
             <!-- Step 4: Life Spheres -->
-            <div v-if="currentStep === 4">
-              <p class="text-sm text-gray-600 mb-3">
-                Выберите сферы жизни, к которым относится эта эмоция:
-              </p>
-              <div class="flex flex-wrap gap-2">
-                <button
-                  v-for="sphere in lifeSpheres"
-                  :key="sphere.name"
-                  @click="toggleTag(sphere.name)"
-                  :class="[
-                    'px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm transition-all',
-                    selectedTags.includes(sphere.name)
-                      ? sphere.activeColor
-                      : sphere.color,
-                    selectedTags.includes(sphere.name)
-                      ? 'text-white'
-                      : 'text-gray-700',
-                  ]"
-                >
-                  {{ sphere.name }}
-                </button>
-              </div>
-            </div>
+            <LifeSpheresSelection
+              v-if="currentStep === 4"
+              :life-spheres="lifeSpheres"
+              :selected-tags="selectedTags"
+              @toggle-tag="toggleTag"
+            />
 
             <!-- Navigation Buttons -->
             <div class="flex justify-between mt-6">
@@ -156,6 +121,9 @@ import EmotionalAnalysis from "~/components/emotional-barometer/EmotionalAnalysi
 import JournalHistory from "~/components/emotional-barometer/JournalHistory.vue";
 import EmotionSelection from "~/components/emotional-barometer/EmotionSelection.vue";
 import IntensityLevel from "~/components/emotional-barometer/IntensityLevel.vue";
+import StepIndicator from "~/components/emotional-barometer/StepIndicator.vue";
+import JournalEntry from "~/components/emotional-barometer/JournalEntry.vue";
+import LifeSpheresSelection from "~/components/emotional-barometer/LifeSpheresSelection.vue";
 
 const emotions = [
   {
