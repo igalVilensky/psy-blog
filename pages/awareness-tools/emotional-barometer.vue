@@ -24,27 +24,12 @@
           </div>
 
           <!-- Step 1: Emotion Selection -->
-          <div v-if="currentStep === 1">
-            <p class="text-sm text-gray-600 mb-3">
-              Выберите эмоцию, которую вы сейчас испытываете. Это поможет вам
-              лучше понять свое эмоциональное состояние.
-            </p>
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-4">
-              <button
-                v-for="emotion in emotions"
-                :key="emotion.id"
-                @click="selectEmotion(emotion)"
-                :class="[
-                  'py-2 sm:py-3 rounded-lg transition-all text-xs sm:text-sm',
-                  selectedEmotion?.id === emotion.id
-                    ? `${emotion.activeColor} text-white`
-                    : `${emotion.color} hover:opacity-80`,
-                ]"
-              >
-                {{ emotion.name }}
-              </button>
-            </div>
-          </div>
+          <EmotionSelection
+            v-if="currentStep === 1"
+            :emotions="emotions"
+            :selected-emotion="selectedEmotion"
+            @select-emotion="selectEmotion"
+          />
 
           <!-- Step 2: Intensity Level -->
           <div v-if="currentStep === 2">
@@ -186,6 +171,7 @@ import {
 import RecommendationsModal from "~/components/emotional-barometer/RecommendationsModal.vue";
 import EmotionalAnalysis from "~/components/emotional-barometer/EmotionalAnalysis.vue";
 import JournalHistory from "~/components/emotional-barometer/JournalHistory.vue";
+import EmotionSelection from "~/components/emotional-barometer/EmotionSelection.vue";
 
 const emotions = [
   {
