@@ -33,27 +33,10 @@
 
           <!-- Step 2: Intensity Level -->
           <div v-if="currentStep === 2">
-            <div class="mb-3">
-              <p class="text-sm text-gray-600">
-                Оцените силу вашей эмоции "{{ selectedEmotion?.name }}" от 1 до
-                10:
-              </p>
-              <ul class="text-xs text-gray-500 mt-2 space-y-1">
-                <li>1-3: Слабое ощущение</li>
-                <li>4-7: Умеренное влияние</li>
-                <li>8-10: Сильное воздействие</li>
-              </ul>
-            </div>
-            <input
-              type="range"
-              v-model="intensityLevel"
-              min="1"
-              max="10"
-              class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+            <IntensityLevel
+              :selected-emotion="selectedEmotion"
+              v-model:intensity-level="intensityLevel"
             />
-            <span class="block text-center mt-2 text-sm font-medium">
-              {{ intensityLevel }}/10
-            </span>
           </div>
 
           <!-- Journal Entry Form -->
@@ -172,6 +155,7 @@ import RecommendationsModal from "~/components/emotional-barometer/Recommendatio
 import EmotionalAnalysis from "~/components/emotional-barometer/EmotionalAnalysis.vue";
 import JournalHistory from "~/components/emotional-barometer/JournalHistory.vue";
 import EmotionSelection from "~/components/emotional-barometer/EmotionSelection.vue";
+import IntensityLevel from "~/components/emotional-barometer/IntensityLevel.vue";
 
 const emotions = [
   {
@@ -360,7 +344,6 @@ const loadDataFromFirebase = async (userId) => {
     if (docSnap.exists()) {
       const data = docSnap.data();
       entries.value = data.entries || [];
-      console.log("Loaded entries:", entries.value);
     } else {
       console.log("No entries found for user");
       entries.value = [];
