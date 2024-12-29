@@ -147,75 +147,14 @@
                 Сохранить
               </button>
             </div>
-
             <!-- Recommendations Modal -->
-            <Teleport to="body">
-              <div
-                v-if="showModal"
-                class="fixed inset-0 z-50 overflow-y-auto"
-                aria-labelledby="modal-title"
-                role="dialog"
-                aria-modal="true"
-              >
-                <!-- Background overlay -->
-                <div
-                  class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-                ></div>
-
-                <!-- Modal panel -->
-                <div class="fixed inset-0 z-50 overflow-y-auto">
-                  <div
-                    class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0"
-                  >
-                    <div
-                      class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
-                    >
-                      <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                        <div class="sm:flex sm:items-start">
-                          <div
-                            class="mt-3 text-center sm:mt-0 sm:text-left w-full"
-                          >
-                            <h3
-                              class="text-lg font-semibold leading-6 text-gray-900"
-                              id="modal-title"
-                            >
-                              Рекомендации для вас
-                            </h3>
-                            <div class="mt-4">
-                              <p class="text-sm text-gray-600 mb-3">
-                                Основываясь на вашей эмоции "{{
-                                  selectedEmotion?.name
-                                }}" ({{ intensityLevel }}/10), мы предлагаем:
-                              </p>
-                              <ul class="list-disc pl-5 space-y-2">
-                                <li
-                                  v-for="(rec, index) in currentRecommendations"
-                                  :key="index"
-                                  class="text-sm text-gray-700"
-                                >
-                                  {{ rec }}
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6"
-                      >
-                        <button
-                          type="button"
-                          @click="closeModal"
-                          class="inline-flex w-full justify-center rounded-md bg-[#FF6B6B] px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#FF5252] sm:ml-3 sm:w-auto"
-                        >
-                          Понятно
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Teleport>
+            <RecommendationsModal
+              :is-open="showModal"
+              :emotion="selectedEmotion"
+              :intensity="intensityLevel"
+              :recommendations="currentRecommendations"
+              @close="closeModal"
+            />
           </div>
         </div>
         <!-- Analysis Section -->
@@ -340,6 +279,7 @@ import {
   updateDoc,
   arrayUnion,
 } from "firebase/firestore";
+import RecommendationsModal from "~/components/emotional-barometer/RecommendationsModal.vue";
 
 const emotions = [
   {
@@ -430,7 +370,6 @@ const canProceed = computed(() => {
 onAuthStateChanged(auth, async (currentUser) => {
   if (currentUser) {
     user.value = currentUser;
-    console.log("User UID: ", currentUser.uid);
     loadDataFromFirebase(currentUser.uid);
   }
 });
