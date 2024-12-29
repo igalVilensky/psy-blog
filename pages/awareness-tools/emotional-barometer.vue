@@ -303,7 +303,7 @@
                   {{ entry.emotion }} ({{ entry.intensity }}/10)
                 </span>
                 <span class="text-xs sm:text-sm text-gray-500">
-                  {{ formatDate(entry.date) }}
+                  {{ formatDate(entry.timestamp) }}
                 </span>
               </div>
               <p class="mt-2 text-xs sm:text-sm text-[#6B5B4C]">
@@ -331,6 +331,15 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  arrayUnion,
+} from "firebase/firestore";
 
 const emotions = [
   {
@@ -374,6 +383,9 @@ const lifeSpheres = [
   { name: "Хобби", color: "bg-orange-100", activeColor: "bg-[#FF6B6B]" },
 ];
 
+const user = ref(null);
+const auth = getAuth();
+const db = getFirestore();
 const currentStep = ref(1);
 const showModal = ref(false);
 const selectedEmotion = ref(null);
@@ -414,6 +426,15 @@ const canProceed = computed(() => {
   }
 });
 
+// Listen for auth state changes
+onAuthStateChanged(auth, async (currentUser) => {
+  if (currentUser) {
+    user.value = currentUser;
+    console.log("User UID: ", currentUser.uid);
+    loadDataFromFirebase(currentUser.uid);
+  }
+});
+
 const canSubmit = computed(() => {
   return selectedTags.value.length > 0;
 });
@@ -441,14 +462,6 @@ const closeModal = () => {
   selectedTags.value = [];
 };
 
-// Load entries from localStorage
-onMounted(() => {
-  const storedEntries = localStorage.getItem("emotionalEntries");
-  if (storedEntries) {
-    entries.value = JSON.parse(storedEntries);
-  }
-});
-
 const selectEmotion = (emotion) => {
   selectedEmotion.value = emotion;
 };
@@ -467,27 +480,6 @@ const getTagColor = (tagName) => {
   return sphere ? sphere.color : "bg-gray-100";
 };
 
-const saveEntry = () => {
-  if (!selectedEmotion.value) return;
-
-  const newEntry = {
-    emotion: selectedEmotion.value.name,
-    intensity: intensityLevel.value,
-    entry: journalEntry.value,
-    tags: [...selectedTags.value],
-    date: new Date().toISOString(),
-  };
-
-  entries.value.unshift(newEntry);
-  localStorage.setItem("emotionalEntries", JSON.stringify(entries.value));
-
-  // Reset form
-  selectedEmotion.value = null;
-  intensityLevel.value = 5;
-  journalEntry.value = "";
-  selectedTags.value = [];
-};
-
 const formatDate = (dateString) => {
   return new Date(dateString).toLocaleString("ru-RU", {
     day: "numeric",
@@ -498,28 +490,76 @@ const formatDate = (dateString) => {
   });
 };
 
-const handleSubmit = () => {
-  if (!canSubmit.value) return;
+// Save emotion entry to Firebase
+const saveEntryToFirebase = async () => {
+  if (!user.value || !canSubmit.value) return;
+
+  const userRef = doc(db, "emotion_barometer", user.value.uid);
 
   const newEntry = {
     emotion: selectedEmotion.value.name,
     intensity: intensityLevel.value,
     entry: journalEntry.value,
     tags: [...selectedTags.value],
-    date: new Date().toISOString(),
+    timestamp: new Date().toISOString(),
   };
 
-  // Save entry
-  entries.value.unshift(newEntry);
-  localStorage.setItem("emotionalEntries", JSON.stringify(entries.value));
+  try {
+    // Get current data first
+    const docSnap = await getDoc(userRef);
 
-  // Show recommendations modal if available
-  if (currentRecommendations.value.length > 0) {
-    showModal.value = true;
-  } else {
-    // Reset form if no recommendations
-    closeModal();
+    if (docSnap.exists()) {
+      // Update existing document
+      await updateDoc(userRef, {
+        entries: arrayUnion(newEntry),
+        lastUpdated: new Date().toISOString(),
+      });
+    } else {
+      // Create new document
+      await setDoc(userRef, {
+        entries: [newEntry],
+        lastUpdated: new Date().toISOString(),
+      });
+    }
+
+    console.log("Entry saved successfully to Firebase!");
+
+    // Show recommendations modal if available
+    if (currentRecommendations.value.length > 0) {
+      showModal.value = true;
+    } else {
+      closeModal();
+    }
+
+    loadDataFromFirebase(user.value.uid);
+  } catch (error) {
+    console.error("Error saving entry to Firebase:", error);
   }
+};
+
+// Load entries from Firebase
+const loadDataFromFirebase = async (userId) => {
+  const userRef = doc(db, "emotion_barometer", userId);
+
+  try {
+    const docSnap = await getDoc(userRef);
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      entries.value = data.entries || [];
+      console.log("Loaded entries:", entries.value);
+    } else {
+      console.log("No entries found for user");
+      entries.value = [];
+    }
+  } catch (error) {
+    console.error("Error loading data from Firebase:", error);
+  }
+};
+
+// Replace the original handleSubmit with the Firebase version
+const handleSubmit = () => {
+  if (!canSubmit.value) return;
+  saveEntryToFirebase();
 };
 
 const filteredEntries = computed(() => {
