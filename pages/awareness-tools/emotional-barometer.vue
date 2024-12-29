@@ -9,31 +9,56 @@
           <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-[#4A4238]">
             Эмоциональный Барометр
           </h2>
-
-          <!-- Emotion Selection -->
-          <div
-            class="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-4 mb-4 sm:mb-6"
-          >
-            <button
-              v-for="emotion in emotions"
-              :key="emotion.id"
-              @click="selectEmotion(emotion)"
-              :class="[
-                'py-2 sm:py-3 rounded-lg transition-all text-xs sm:text-sm',
-                selectedEmotion?.id === emotion.id
-                  ? `${emotion.activeColor} text-white`
-                  : `${emotion.color} hover:opacity-80`,
-              ]"
-            >
-              {{ emotion.name }}
-            </button>
+          <!-- Step Indicator -->
+          <div class="mb-6">
+            <div class="flex justify-between mb-2">
+              <span class="text-sm text-gray-600">Шаг {{ currentStep }}/4</span>
+              <span class="text-sm text-gray-600">{{ stepTitle }}</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2">
+              <div
+                class="bg-[#FF6B6B] h-2 rounded-full transition-all duration-300"
+                :style="{ width: `${(currentStep / 4) * 100}%` }"
+              ></div>
+            </div>
           </div>
 
-          <!-- Intensity Slider -->
-          <div v-if="selectedEmotion" class="mb-4 sm:mb-6">
-            <label class="block mb-2 text-sm sm:text-base text-[#6B5B4C]">
-              Интенсивность эмоции: {{ intensityLevel }}/10
-            </label>
+          <!-- Step 1: Emotion Selection -->
+          <div v-if="currentStep === 1">
+            <p class="text-sm text-gray-600 mb-3">
+              Выберите эмоцию, которую вы сейчас испытываете. Это поможет вам
+              лучше понять свое эмоциональное состояние.
+            </p>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-4">
+              <button
+                v-for="emotion in emotions"
+                :key="emotion.id"
+                @click="selectEmotion(emotion)"
+                :class="[
+                  'py-2 sm:py-3 rounded-lg transition-all text-xs sm:text-sm',
+                  selectedEmotion?.id === emotion.id
+                    ? `${emotion.activeColor} text-white`
+                    : `${emotion.color} hover:opacity-80`,
+                ]"
+              >
+                {{ emotion.name }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 2: Intensity Level -->
+          <div v-if="currentStep === 2">
+            <div class="mb-3">
+              <p class="text-sm text-gray-600">
+                Оцените силу вашей эмоции "{{ selectedEmotion?.name }}" от 1 до
+                10:
+              </p>
+              <ul class="text-xs text-gray-500 mt-2 space-y-1">
+                <li>1-3: Слабое ощущение</li>
+                <li>4-7: Умеренное влияние</li>
+                <li>8-10: Сильное воздействие</li>
+              </ul>
+            </div>
             <input
               type="range"
               v-model="intensityLevel"
@@ -41,22 +66,31 @@
               max="10"
               class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
             />
+            <span class="block text-center mt-2 text-sm font-medium">
+              {{ intensityLevel }}/10
+            </span>
           </div>
 
           <!-- Journal Entry Form -->
           <div v-if="selectedEmotion" class="mt-4 sm:mt-6">
-            <textarea
-              v-model="journalEntry"
-              placeholder="Что вызвало эту эмоцию? Какие мысли?"
-              class="w-full p-3 sm:p-4 text-sm sm:text-base border-2 border-[#FFD1DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B6B]"
-              rows="4"
-            ></textarea>
+            <!-- Step 3: Journal Entry -->
+            <div v-if="currentStep === 3">
+              <p class="text-sm text-gray-600 mb-3">
+                Опишите, что вызвало эту эмоцию и какие мысли у вас возникли:
+              </p>
+              <textarea
+                v-model="journalEntry"
+                class="w-full p-3 sm:p-4 text-sm sm:text-base border-2 border-[#FFD1DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B6B]"
+                rows="4"
+                placeholder="Опишите ваши мысли и чувства..."
+              ></textarea>
+            </div>
 
-            <!-- Life Sphere Tags -->
-            <div class="mt-3 sm:mt-4">
-              <label class="block mb-2 text-sm sm:text-base text-[#6B5B4C]">
-                В какой сфере жизни это происходит?
-              </label>
+            <!-- Step 4: Life Spheres -->
+            <div v-if="currentStep === 4">
+              <p class="text-sm text-gray-600 mb-3">
+                Выберите сферы жизни, к которым относится эта эмоция:
+              </p>
               <div class="flex flex-wrap gap-2">
                 <button
                   v-for="sphere in lifeSpheres"
@@ -77,33 +111,113 @@
               </div>
             </div>
 
-            <!-- Submit Button -->
-            <button
-              @click="saveEntry"
-              class="w-full mt-3 sm:mt-4 bg-[#FF6B6B] text-white py-2 sm:py-3 rounded-lg hover:bg-[#FF5252] transition text-sm sm:text-base"
-            >
-              Сохранить запись
-            </button>
-
-            <!-- Recommendations -->
-            <div
-              v-if="currentRecommendations.length"
-              class="mt-4 p-4 bg-blue-50 rounded-lg"
-            >
-              <h3 class="font-semibold mb-2 text-blue-800">Рекомендации:</h3>
-              <ul class="list-disc pl-4 space-y-1">
-                <li
-                  v-for="(rec, index) in currentRecommendations"
-                  :key="index"
-                  class="text-sm text-blue-700"
-                >
-                  {{ rec }}
-                </li>
-              </ul>
+            <!-- Navigation Buttons -->
+            <div class="flex justify-between mt-6">
+              <button
+                v-if="currentStep > 1"
+                @click="previousStep"
+                class="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50"
+              >
+                Назад
+              </button>
+              <button
+                v-if="currentStep < 4"
+                @click="nextStep"
+                :disabled="!canProceed"
+                :class="[
+                  'px-4 py-2 text-sm rounded-lg ml-auto',
+                  canProceed
+                    ? 'bg-[#FF6B6B] text-white hover:bg-[#FF5252]'
+                    : 'bg-gray-300 text-gray-500 cursor-not-allowed',
+                ]"
+              >
+                Далее
+              </button>
+              <button
+                v-if="currentStep === 4"
+                @click="handleSubmit"
+                :disabled="!canSubmit"
+                :class="[
+                  'px-4 py-2 text-sm rounded-lg ml-auto',
+                  canSubmit
+                    ? 'bg-[#FF6B6B] text-white hover:bg-[#FF5252]'
+                    : 'bg-gray-300 text-gray-500 cursor-not-allowed',
+                ]"
+              >
+                Сохранить
+              </button>
             </div>
+
+            <!-- Recommendations Modal -->
+            <Teleport to="body">
+              <div
+                v-if="showModal"
+                class="fixed inset-0 z-50 overflow-y-auto"
+                aria-labelledby="modal-title"
+                role="dialog"
+                aria-modal="true"
+              >
+                <!-- Background overlay -->
+                <div
+                  class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+                ></div>
+
+                <!-- Modal panel -->
+                <div class="fixed inset-0 z-50 overflow-y-auto">
+                  <div
+                    class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0"
+                  >
+                    <div
+                      class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
+                    >
+                      <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                          <div
+                            class="mt-3 text-center sm:mt-0 sm:text-left w-full"
+                          >
+                            <h3
+                              class="text-lg font-semibold leading-6 text-gray-900"
+                              id="modal-title"
+                            >
+                              Рекомендации для вас
+                            </h3>
+                            <div class="mt-4">
+                              <p class="text-sm text-gray-600 mb-3">
+                                Основываясь на вашей эмоции "{{
+                                  selectedEmotion?.name
+                                }}" ({{ intensityLevel }}/10), мы предлагаем:
+                              </p>
+                              <ul class="list-disc pl-5 space-y-2">
+                                <li
+                                  v-for="(rec, index) in currentRecommendations"
+                                  :key="index"
+                                  class="text-sm text-gray-700"
+                                >
+                                  {{ rec }}
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6"
+                      >
+                        <button
+                          type="button"
+                          @click="closeModal"
+                          class="inline-flex w-full justify-center rounded-md bg-[#FF6B6B] px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#FF5252] sm:ml-3 sm:w-auto"
+                        >
+                          Понятно
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Teleport>
           </div>
         </div>
-
         <!-- Analysis Section -->
         <div class="bg-white shadow-xl rounded-2xl p-4 sm:p-6">
           <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-[#4A4238]">
@@ -260,6 +374,8 @@ const lifeSpheres = [
   { name: "Хобби", color: "bg-orange-100", activeColor: "bg-[#FF6B6B]" },
 ];
 
+const currentStep = ref(1);
+const showModal = ref(false);
 const selectedEmotion = ref(null);
 const intensityLevel = ref(5);
 const journalEntry = ref("");
@@ -267,6 +383,63 @@ const selectedTags = ref([]);
 const entries = ref([]);
 const emotionFilter = ref("");
 const sphereFilter = ref("");
+
+// Step titles
+const stepTitle = computed(() => {
+  switch (currentStep.value) {
+    case 1:
+      return "Выбор эмоции";
+    case 2:
+      return "Интенсивность";
+    case 3:
+      return "Описание";
+    case 4:
+      return "Сферы жизни";
+    default:
+      return "";
+  }
+});
+
+// Validation for each step
+const canProceed = computed(() => {
+  switch (currentStep.value) {
+    case 1:
+      return selectedEmotion.value !== null;
+    case 2:
+      return true; // Always true as we have a default value
+    case 3:
+      return journalEntry.value.trim().length > 0;
+    default:
+      return true;
+  }
+});
+
+const canSubmit = computed(() => {
+  return selectedTags.value.length > 0;
+});
+
+// Navigation functions
+const nextStep = () => {
+  if (canProceed.value && currentStep.value < 4) {
+    currentStep.value++;
+  }
+};
+
+const previousStep = () => {
+  if (currentStep.value > 1) {
+    currentStep.value--;
+  }
+};
+
+const closeModal = () => {
+  showModal.value = false;
+  // Reset form after closing modal
+  currentStep.value = 1;
+  selectedEmotion.value = null;
+  intensityLevel.value = 5;
+  journalEntry.value = "";
+  selectedTags.value = [];
+};
 
 // Load entries from localStorage
 onMounted(() => {
@@ -323,6 +496,30 @@ const formatDate = (dateString) => {
     hour: "2-digit",
     minute: "2-digit",
   });
+};
+
+const handleSubmit = () => {
+  if (!canSubmit.value) return;
+
+  const newEntry = {
+    emotion: selectedEmotion.value.name,
+    intensity: intensityLevel.value,
+    entry: journalEntry.value,
+    tags: [...selectedTags.value],
+    date: new Date().toISOString(),
+  };
+
+  // Save entry
+  entries.value.unshift(newEntry);
+  localStorage.setItem("emotionalEntries", JSON.stringify(entries.value));
+
+  // Show recommendations modal if available
+  if (currentRecommendations.value.length > 0) {
+    showModal.value = true;
+  } else {
+    // Reset form if no recommendations
+    closeModal();
+  }
 };
 
 const filteredEntries = computed(() => {
