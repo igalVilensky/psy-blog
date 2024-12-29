@@ -41,8 +41,16 @@ import ToolCard from "@/components/tools/ToolCard.vue";
 import EmotionalBarometerImage from "@/assets/images/awarenessTools/emotional-barometer.jpeg";
 import DeepConversationWithCardsImage from "@/assets/images/awarenessTools/deep-conversation-with-cards.jpeg";
 import EmotionaDiaryImage from "@/assets/images/awarenessTools/emotion-diary.jpeg";
+import LifeArchetypeImage from "@/assets/images/awarenessTools/life-archetype.jpg";
 
 const tools = ref([
+  {
+    name: "Открытие Архетипа Жизни",
+    path: "/awareness-tools/life-purpose-archetype",
+    description:
+      "Погрузитесь в глубокое исследование архетипов вашей личности и раскройте истинную цель вашей жизни через трансформационный процесс самопознания.",
+    image: LifeArchetypeImage,
+  },
   {
     name: "Эмоциональный барометр",
     path: "/awareness-tools/emotional-barometer",

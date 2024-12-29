@@ -64,7 +64,7 @@
           Назад к тесту
         </NuxtLink>
         <NuxtLink
-          to="/awareness-tools/life-purpose-archetype/results/explanation"
+          to="/awareness-tools/life-purpose-archetype/explanation"
           class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg transition-colors"
         >
           Подробное объяснение архетипов
@@ -95,7 +95,7 @@ const dominantArchetype = computed(() => {
   if (!result.value?.scores) return null;
 
   return Object.entries(result.value.scores).reduce((a, b) =>
-    a[1] > b[1] ? a : b
+    parseFloat(a[1]) > parseFloat(b[1]) ? a : b
   )[0];
 });
 
