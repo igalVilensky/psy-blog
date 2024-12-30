@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-gradient-to-br from-pink-50 to-white min-h-screen py-6 sm:py-12"
+    class="bg-gradient-to-br from-pink-50 via-rose-50 to-white min-h-screen py-6 sm:py-12"
   >
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1">

@@ -1,14 +1,33 @@
 <template>
-  <div class="bg-white shadow-xl rounded-2xl p-4 sm:p-6">
-    <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-[#4A4238]">
-      История эмоций
-    </h2>
+  <div class="bg-white shadow-xl rounded-2xl p-4 sm:p-6 border border-gray-100">
+    <!-- Back Navigation -->
+    <nuxt-link
+      to="/awareness-tools/emotional-barometer"
+      class="inline-flex items-center text-pink-600 hover:text-pink-700 transition-colors mb-8 group"
+    >
+      <i
+        class="fas fa-arrow-left mr-2 transform transition-transform group-hover:-translate-x-1"
+      ></i>
+      Вернуться
+    </nuxt-link>
+
+    <!-- Header with Icon -->
+    <div class="flex items-center gap-3 mb-8">
+      <div
+        class="w-11 h-11 p-3 bg-[#FF6B6B]/10 rounded-full flex items-center justify-center flex-shrink-0"
+      >
+        <i class="fas fa-book text-[#FF6B6B]"></i>
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-bold text-[#4A4238]">
+        История эмоций
+      </h2>
+    </div>
 
     <!-- Filters -->
-    <div class="mb-4 flex space-x-2">
+    <div class="grid grid-cols-2 gap-3 mb-6">
       <select
         v-model="emotionFilter"
-        class="border rounded p-1 sm:p-2 text-xs sm:text-base w-1/2"
+        class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none transition-all"
       >
         <option value="">Все эмоции</option>
         <option
@@ -21,7 +40,7 @@
       </select>
       <select
         v-model="sphereFilter"
-        class="border rounded p-1 sm:p-2 text-xs sm:text-base w-1/2"
+        class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none transition-all"
       >
         <option value="">Все сферы</option>
         <option
@@ -34,30 +53,45 @@
       </select>
     </div>
 
+    <!-- Loading State -->
+    <div v-if="loading" class="flex flex-col items-center gap-4">
+      <i class="fas fa-spinner fa-spin fa-2x text-[#FF6B6B]"></i>
+      <p class="text-gray-600 text-lg font-medium">Пожалуйста, подождите...</p>
+    </div>
+
     <!-- Journal Entries List -->
-    <div class="space-y-4 max-h-[100vh] overflow-y-auto">
+    <div class="space-y-6 max-h-[calc(100vh-250px)] overflow-y-auto pr-2">
       <div
         v-for="(entry, index) in filteredEntries"
         :key="index"
-        class="border-b pb-4 last:border-b-0"
+        class="p-4 rounded-xl bg-gray-50 border border-gray-100 hover:shadow-md transition-all"
       >
-        <div class="flex justify-between items-center">
-          <span class="font-bold text-sm sm:text-base text-[#4A4238]">
-            {{ entry.emotion }} ({{ entry.intensity }}/10)
-          </span>
-          <span class="text-xs sm:text-sm text-gray-500">
+        <div class="flex justify-between items-start mb-3">
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-base text-[#4A4238]">
+              {{ entry.emotion }}
+            </span>
+            <span
+              class="px-2 py-0.5 bg-white rounded-full text-sm font-medium text-gray-600 shadow-sm"
+            >
+              {{ entry.intensity }}/10
+            </span>
+          </div>
+          <span class="text-sm text-gray-500">
             {{ formatDate(entry.timestamp) }}
           </span>
         </div>
-        <p class="mt-2 text-xs sm:text-sm text-[#6B5B4C]">
+
+        <p class="text-sm text-[#6B5B4C] mb-3">
           {{ entry.entry }}
         </p>
-        <div class="mt-2">
+
+        <div class="flex flex-wrap gap-2">
           <span
             v-for="tag in entry.tags"
             :key="tag"
             :class="[
-              'inline-block px-2 py-1 rounded-full text-xs mr-2',
+              'px-3 py-1.5 rounded-full text-xs font-medium',
               getTagColor(tag),
             ]"
           >
@@ -86,6 +120,17 @@ const filteredEntries = computed(() => {
     (entry) =>
       (!emotionFilter.value || entry.emotion === emotionFilter.value) &&
       (!sphereFilter.value || entry.tags.includes(sphereFilter.value))
+  );
+});
+
+const loading = computed(() => {
+  return (
+    !props.emotions ||
+    props.emotions.length === 0 ||
+    !props.lifeSpheres ||
+    props.lifeSpheres.length === 0 ||
+    !props.entries ||
+    props.entries.length === 0
   );
 });
 
