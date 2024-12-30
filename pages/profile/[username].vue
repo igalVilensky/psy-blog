@@ -34,7 +34,7 @@
             </div>
           </div>
 
-          <!-- Actions - Full width on mobile -->
+          <!-- Actions -->
           <div class="flex gap-4 w-full sm:w-auto">
             <button
               class="flex-1 sm:flex-initial px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
@@ -54,9 +54,102 @@
       </div>
 
       <!-- Main Content Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <!-- Favorite Posts -->
-        <div class="md:col-span-2">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Statistics Section - Takes full width on mobile, 2 columns on large screens -->
+        <div class="lg:col-span-2 space-y-8">
+          <!-- Emotional Barometer Stats -->
+          <div class="bg-white rounded-2xl shadow-lg p-8">
+            <h2 class="text-xl font-bold text-gray-800 mb-6">
+              <i class="fas fa-chart-line text-pink-600 mr-2"></i>
+              Эмоциональный барометр
+            </h2>
+
+            <!-- Stats Grid - 2 columns on larger screens -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+              <!-- Total Entries -->
+              <div class="bg-gray-50 rounded-lg p-6">
+                <div class="text-sm text-gray-600 mb-2">Всего записей</div>
+                <div class="text-2xl font-bold text-gray-800">
+                  {{ emotionBarometerStats.totalEntries }}
+                </div>
+              </div>
+
+              <!-- Most Common Emotion -->
+              <div class="bg-gray-50 rounded-lg p-6">
+                <div class="text-sm text-gray-600 mb-2">Частая эмоция</div>
+                <div class="text-2xl font-bold text-gray-800">
+                  {{ emotionBarometerStats.mostCommonEmotion || "Нет данных" }}
+                </div>
+              </div>
+
+              <!-- Average Intensity -->
+              <div class="bg-gray-50 rounded-lg p-6">
+                <div class="text-sm text-gray-600 mb-2">
+                  Средняя интенсивность
+                </div>
+                <div class="text-2xl font-bold text-gray-800">
+                  {{ emotionBarometerStats.averageIntensity.toFixed(1) || "0" }}
+                </div>
+              </div>
+
+              <!-- Most Common Tag -->
+              <div class="bg-gray-50 rounded-lg p-6">
+                <div class="text-sm text-gray-600 mb-2">Частая сфера жизни</div>
+                <div class="text-2xl font-bold text-gray-800">
+                  {{ emotionBarometerStats.mostCommonTag || "Нет данных" }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Emotion Distribution Chart -->
+            <div class="mt-8">
+              <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                Распределение эмоций
+              </h3>
+              <canvas ref="emotionChart" class="w-full max-h-64"></canvas>
+            </div>
+          </div>
+          <!-- Digital Emotion Diary Stats -->
+          <div class="bg-white rounded-2xl shadow-lg p-8">
+            <h2 class="text-xl font-bold text-gray-800 mb-6">
+              <i class="fa fa-book-open text-pink-600 mr-2"></i>
+              Цифровой дневник эмоций
+            </h2>
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+              <div class="bg-gray-50 rounded-lg p-6">
+                <div class="text-sm text-gray-600 mb-2">Количество записей</div>
+                <div class="text-2xl font-bold text-gray-800">
+                  {{ emotionStats.entriesCount }}
+                </div>
+              </div>
+
+              <div class="bg-gray-50 rounded-lg p-6">
+                <div class="text-sm text-gray-600 mb-2">Изученные эмоции</div>
+                <div class="text-2xl font-bold text-gray-800">
+                  {{ emotionStats.unlockedEmotions.length }}
+                </div>
+              </div>
+
+              <div class="bg-gray-50 rounded-lg p-6">
+                <div class="text-sm text-gray-600 mb-2">Последняя запись</div>
+                <div class="text-2xl font-bold text-gray-800">
+                  {{ getLastEntryDate() }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Digital Diary Chart -->
+            <div class="mt-8">
+              <canvas ref="blogStatsChart" class="w-full"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Sidebar Content -->
+        <div class="space-y-8">
+          <!-- Favorite Posts -->
           <div class="bg-white rounded-2xl shadow-lg p-8">
             <div class="flex items-center justify-between mb-6">
               <h2 class="text-xl font-bold text-gray-800">
@@ -70,7 +163,6 @@
               </button>
             </div>
 
-            <!-- Favorite Posts List -->
             <div class="space-y-6">
               <div
                 v-for="i in 3"
@@ -79,7 +171,7 @@
               >
                 <img
                   :src="hostImage"
-                  class="w-30 h-20 rounded-lg object-cover"
+                  class="w-24 h-16 rounded-lg object-cover"
                 />
                 <div>
                   <h3 class="font-medium text-gray-800 mb-2">
@@ -97,65 +189,11 @@
               </div>
             </div>
           </div>
-        </div>
-
-        <!-- Stats & Activity -->
-        <div class="space-y-8">
-          <!-- Quick Stats -->
-          <div class="bg-white rounded-2xl shadow-lg p-8">
-            <!-- Blog Stats -->
-            <h2 class="text-xl font-bold text-gray-800 mb-6">
-              <i class="fas fa-chart-line text-pink-600 mr-2"></i>
-              Статистика блога
-            </h2>
-            <div class="space-y-4 mb-8">
-              <div
-                class="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
-              >
-                <div class="text-gray-600">Прочитано статей</div>
-                <div class="text-xl font-semibold text-gray-800">24</div>
-              </div>
-            </div>
-
-            <!-- Emotion Diary Stats -->
-            <h2 class="text-xl font-bold text-gray-800 mb-6">
-              <i class="fa fa-book-open text-pink-600 mr-2"></i>
-              Цифровой дневник эмоций
-            </h2>
-            <div class="space-y-4">
-              <div
-                class="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
-              >
-                <div class="text-gray-600">Количество записей</div>
-                <div class="text-xl font-semibold text-gray-800">
-                  {{ emotionStats?.entriesCount }}
-                </div>
-              </div>
-              <div
-                class="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
-              >
-                <div class="text-gray-600">Изученные эмоции</div>
-                <div class="text-xl font-semibold text-gray-800">
-                  {{ emotionStats?.unlockedEmotions.length }}
-                </div>
-              </div>
-              <div
-                class="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
-              >
-                <div class="text-gray-600">Последняя запись</div>
-                <div class="text-base font-semibold text-gray-800">
-                  {{ getLastEntryDate() }}
-                </div>
-              </div>
-            </div>
-            <canvas ref="blogStatsChart" width="400" height="200"></canvas>
-          </div>
 
           <!-- Recent Activity -->
           <div class="bg-white rounded-2xl shadow-lg p-8">
             <h2 class="text-xl font-bold text-gray-800 mb-6">
               <i class="fas fa-history text-pink-600 mr-2"></i>
-
               Недавняя активность
             </h2>
             <div class="space-y-4">
@@ -181,7 +219,6 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "~/stores/auth";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -193,10 +230,18 @@ Chart.register(...registerables);
 
 const user = ref(null);
 const blogStatsChart = ref(null);
+const emotionChart = ref(null);
 const emotionStats = ref({
   entriesCount: 0,
   recentEntries: [],
   unlockedEmotions: [],
+});
+const emotionBarometerStats = ref({
+  totalEntries: 0,
+  mostCommonEmotion: "",
+  averageIntensity: 0,
+  mostCommonTag: "",
+  emotionDistribution: {},
 });
 
 const auth = getAuth();
@@ -206,17 +251,63 @@ const router = useRouter();
 
 onAuthStateChanged(auth, async (currentUser) => {
   if (currentUser) {
-    user.value = currentUser; // Store user data
+    user.value = currentUser;
     await loadEmotionData(currentUser.uid);
+
+    // Load emotion barometer data
+    const db = getFirestore();
+    const barometerRef = doc(db, "emotion_barometer", currentUser.uid);
+
+    try {
+      const docSnap = await getDoc(barometerRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        const entries = data.entries || [];
+
+        // Calculate emotion barometer statistics
+        const emotionCounts = {};
+        const tagCounts = {};
+        let totalIntensity = 0;
+
+        entries.forEach((entry) => {
+          emotionCounts[entry.emotion] =
+            (emotionCounts[entry.emotion] || 0) + 1;
+          totalIntensity += entry.intensity;
+          entry.tags.forEach((tag) => {
+            tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+          });
+        });
+
+        const mostCommonEmotion = Object.entries(emotionCounts).sort(
+          (a, b) => b[1] - a[1]
+        )[0]?.[0];
+
+        const mostCommonTag = Object.entries(tagCounts).sort(
+          (a, b) => b[1] - a[1]
+        )[0]?.[0];
+
+        emotionBarometerStats.value = {
+          totalEntries: entries.length,
+          mostCommonEmotion,
+          averageIntensity: totalIntensity / entries.length,
+          mostCommonTag,
+          emotionDistribution: emotionCounts,
+        };
+      }
+    } catch (error) {
+      console.error("Error loading emotion barometer data:", error);
+    }
+
+    // Initialize both charts
     if (blogStatsChart.value) {
       new Chart(blogStatsChart.value, {
-        type: "bar", // or 'line', 'pie', etc., based on your need
+        type: "bar",
         data: {
           labels: [
             "Прочитано статей",
             "Количество записей",
             "Изученные эмоции",
-          ], // Example labels
+          ],
           datasets: [
             {
               label: "Статистика",
@@ -224,7 +315,7 @@ onAuthStateChanged(auth, async (currentUser) => {
                 24,
                 emotionStats.value.entriesCount,
                 emotionStats.value.unlockedEmotions.length,
-              ], // Example data
+              ],
               backgroundColor: [
                 "rgba(255, 99, 132, 0.2)",
                 "rgba(54, 162, 235, 0.2)",
@@ -249,19 +340,41 @@ onAuthStateChanged(auth, async (currentUser) => {
         },
       });
     }
+
+    if (emotionChart.value) {
+      const distribution = emotionBarometerStats.value.emotionDistribution;
+      new Chart(emotionChart.value, {
+        type: "doughnut",
+        data: {
+          labels: Object.keys(distribution),
+          datasets: [
+            {
+              data: Object.values(distribution),
+              backgroundColor: [
+                "rgba(255, 99, 132, 0.6)",
+                "rgba(54, 162, 235, 0.6)",
+                "rgba(255, 206, 86, 0.6)",
+                "rgba(75, 192, 192, 0.6)",
+                "rgba(153, 102, 255, 0.6)",
+              ],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: "bottom",
+            },
+          },
+        },
+      });
+    }
   }
 });
 
-onMounted(async () => {
-  await authStore.initAuth(); // Wait for auth to initialize
-
-  if (!authStore.user && !authStore.isLoading) {
-    router.push("/login"); // Redirect only if the user is null and loading is complete
-    return;
-  }
-});
-
-// Logic to load emotion data
+// Original loadEmotionData function
 const loadEmotionData = async (userId) => {
   const db = getFirestore();
   const userRef = doc(db, "emotion_diary", userId);
@@ -280,7 +393,6 @@ const loadEmotionData = async (userId) => {
   }
 };
 
-// Get the date of the last emotion entry
 const getLastEntryDate = () => {
   if (emotionStats.value.recentEntries?.length > 0) {
     const lastEntry = emotionStats.value.recentEntries[0];
