@@ -222,6 +222,7 @@ import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { ref } from "vue";
 import { getFirestore } from "firebase/firestore";
 import { subscribeUser } from "@/api/firebase/contact";
+import { getPostViewCount } from "@/api/firebase/views";
 
 const POST_QUERY = groq`*[_type == "post" && slug.current == $slug][0]`;
 const { params } = useRoute();
@@ -236,7 +237,7 @@ const urlFor = (source: SanityImageSource) =>
     : null;
 
 const isShareOpen = ref(false);
-const postViews = ref(357);
+const postViews = ref(0);
 const db = getFirestore();
 const email = ref("");
 
@@ -288,6 +289,17 @@ const validateEmail = (email) => {
   const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   return re.test(String(email).toLowerCase());
 };
+
+// Use watch to getPostViewCount
+watch(
+  () => post.value,
+  async (newPost) => {
+    if (newPost && newPost._id) {
+      postViews.value = await getPostViewCount(db, newPost._id);
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <style>

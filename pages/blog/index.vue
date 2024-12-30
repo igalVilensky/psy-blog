@@ -112,8 +112,7 @@ import { computed, ref, onMounted } from "vue";
 import { useFirestore } from "~/plugins/firebase";
 import { fetchPosts } from "~/api/sanity/posts";
 import { getImageUrl } from "~/api/sanity/client";
-import { incrementPostViewCount } from "~/api/firebase/views";
-import { doc, getDoc } from "firebase/firestore";
+import { incrementPostViewCount, getPostViewCount } from "~/api/firebase/views"; // Include getPostViewCount
 
 const firestore = useFirestore();
 
@@ -142,9 +141,7 @@ onMounted(async () => {
   try {
     await Promise.all(
       posts.value.map(async (post) => {
-        const postRef = doc(firestore, "posts", post._id);
-        const postDoc = await getDoc(postRef);
-        post.views = postDoc.exists() ? postDoc.data().views || 0 : 0;
+        post.views = await getPostViewCount(firestore, post._id);
       })
     );
   } catch (error) {
