@@ -108,20 +108,23 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, onMounted } from "vue";
 import { useFirestore } from "~/plugins/firebase";
 import { fetchPosts } from "~/api/sanity/posts";
 import { getImageUrl } from "~/api/sanity/client";
 import { incrementPostViewCount } from "~/api/firebase/views";
+import { doc, getDoc } from "firebase/firestore";
 
 const firestore = useFirestore();
 
+// Function to increment view count (unchanged)
 const incrementViewCount = async (postId) => {
   await incrementPostViewCount(firestore, postId);
 };
 
-// Use the query result directly
-const { data: posts } = await fetchPosts();
+// Use the query result directly, but convert to ref for reactivity
+const initialPosts = await fetchPosts();
+const posts = ref(initialPosts.data || []);
 const { projectId, dataset } = useSanity().client.config();
 const urlFor = getImageUrl(projectId, dataset);
 
@@ -133,6 +136,21 @@ const categories = ref([
 ]);
 
 const activeTab = ref("Все");
+
+// Fetch view counts when the component mounts
+onMounted(async () => {
+  try {
+    await Promise.all(
+      posts.value.map(async (post) => {
+        const postRef = doc(firestore, "posts", post._id);
+        const postDoc = await getDoc(postRef);
+        post.views = postDoc.exists() ? postDoc.data().views || 0 : 0;
+      })
+    );
+  } catch (error) {
+    console.error("Failed to fetch views:", error);
+  }
+});
 
 const filteredPosts = computed(() => {
   if (!posts.value) return []; // Add null check
