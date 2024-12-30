@@ -117,6 +117,10 @@ const sitemapLinks = [
     label: "Дневник эмоций",
     to: "/awareness-tools/emotion-diary",
   },
+  {
+    label: "Открытие Архетипа Жизни",
+    to: "/awareness-tools/life-purpose-archetype",
+  },
   { label: "О проекте", to: "/about" },
   { label: "Блог", to: "/blog" },
   { label: "Связь", to: "/contact" },
