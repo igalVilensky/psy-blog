@@ -80,6 +80,7 @@
                 Сохранить
               </button>
             </div>
+
             <!-- Recommendations Modal -->
             <RecommendationsModal
               :is-open="showModal"
@@ -208,6 +209,58 @@ const canProceed = computed(() => {
   }
 });
 
+// Emotion pattern analysis
+const emotionPatterns = computed(() => {
+  const patterns = entries.value.reduce((acc, entry) => {
+    if (!acc[entry.emotion]) {
+      acc[entry.emotion] = {
+        count: 0,
+        avgIntensity: 0,
+        commonSpheres: {},
+      };
+    }
+    acc[entry.emotion].count++;
+    acc[entry.emotion].avgIntensity += entry.intensity;
+    entry.tags.forEach((tag) => {
+      acc[entry.emotion].commonSpheres[tag] =
+        (acc[entry.emotion].commonSpheres[tag] || 0) + 1;
+    });
+    return acc;
+  }, {});
+
+  // Calculate averages
+  Object.keys(patterns).forEach((emotion) => {
+    patterns[emotion].avgIntensity /= patterns[emotion].count;
+  });
+
+  return patterns;
+});
+
+// Recommendations based on patterns
+const currentRecommendations = computed(() => {
+  if (!selectedEmotion.value) return [];
+
+  const recommendations = {
+    Тревога: [
+      "Попробуйте дыхательные упражнения (4-7-8)",
+      "Запишите свои мысли и попробуйте их оспорить",
+      "Совершите короткую прогулку на свежем воздухе",
+    ],
+    Злость: [
+      "Сделайте паузу перед реакцией",
+      "Выполните физические упражнения",
+      "Переключитесь на другую активность",
+    ],
+    Грусть: [
+      "Поговорите с близким человеком",
+      "Сделайте что-то приятное для себя",
+      "Вспомните хорошие моменты",
+    ],
+  };
+
+  return recommendations[selectedEmotion.value.name] || [];
+});
+
 // Listen for auth state changes
 onAuthStateChanged(auth, async (currentUser) => {
   if (currentUser) {
@@ -326,56 +379,4 @@ const handleSubmit = () => {
   if (!canSubmit.value) return;
   saveEntryToFirebase();
 };
-
-// Emotion pattern analysis
-const emotionPatterns = computed(() => {
-  const patterns = entries.value.reduce((acc, entry) => {
-    if (!acc[entry.emotion]) {
-      acc[entry.emotion] = {
-        count: 0,
-        avgIntensity: 0,
-        commonSpheres: {},
-      };
-    }
-    acc[entry.emotion].count++;
-    acc[entry.emotion].avgIntensity += entry.intensity;
-    entry.tags.forEach((tag) => {
-      acc[entry.emotion].commonSpheres[tag] =
-        (acc[entry.emotion].commonSpheres[tag] || 0) + 1;
-    });
-    return acc;
-  }, {});
-
-  // Calculate averages
-  Object.keys(patterns).forEach((emotion) => {
-    patterns[emotion].avgIntensity /= patterns[emotion].count;
-  });
-
-  return patterns;
-});
-
-// Recommendations based on patterns
-const currentRecommendations = computed(() => {
-  if (!selectedEmotion.value) return [];
-
-  const recommendations = {
-    Тревога: [
-      "Попробуйте дыхательные упражнения (4-7-8)",
-      "Запишите свои мысли и попробуйте их оспорить",
-      "Совершите короткую прогулку на свежем воздухе",
-    ],
-    Злость: [
-      "Сделайте паузу перед реакцией",
-      "Выполните физические упражнения",
-      "Переключитесь на другую активность",
-    ],
-    Грусть: [
-      "Поговорите с близким человеком",
-      "Сделайте что-то приятное для себя",
-      "Вспомните хорошие моменты",
-    ],
-  };
-
-  return recommendations[selectedEmotion.value.name] || [];
-});
 </script>

@@ -140,7 +140,54 @@
           </div>
         </div>
       </div>
+      <!-- Share Section -->
+      <div class="mt-12 bg-white rounded-2xl shadow-lg p-8">
+        <div class="text-center mb-6">
+          <div class="flex items-center justify-center gap-2 mb-2">
+            <i class="fas fa-share-alt text-gray-600"></i>
+            <h3 class="text-xl font-semibold text-gray-800">
+              Поделиться статьей
+            </h3>
+          </div>
+          <p class="text-gray-600">
+            Понравилась статья? Поделитесь с друзьями!
+          </p>
+        </div>
 
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <button
+            @click="shareOn('twitter')"
+            class="flex items-center justify-center gap-2 p-3 rounded-lg bg-[#1DA1F2] text-white hover:bg-opacity-90 transition-all"
+          >
+            <i class="fab fa-twitter"></i>
+            <span>Twitter</span>
+          </button>
+
+          <button
+            @click="shareOn('facebook')"
+            class="flex items-center justify-center gap-2 p-3 rounded-lg bg-[#4267B2] text-white hover:bg-opacity-90 transition-all"
+          >
+            <i class="fab fa-facebook"></i>
+            <span>Facebook</span>
+          </button>
+
+          <button
+            @click="shareOn('telegram')"
+            class="flex items-center justify-center gap-2 p-3 rounded-lg bg-[#0088cc] text-white hover:bg-opacity-90 transition-all"
+          >
+            <i class="fab fa-telegram"></i>
+            <span>Telegram</span>
+          </button>
+
+          <button
+            @click="copyLink"
+            class="flex items-center justify-center gap-2 p-3 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all"
+          >
+            <i class="fas fa-link"></i>
+            <span>Копировать</span>
+          </button>
+        </div>
+      </div>
       <!-- Newsletter Section -->
       <div
         class="bg-gradient-to-r from-pink-400 to-purple-500 rounded-2xl p-8 mt-12 text-center"
@@ -178,7 +225,10 @@ import { subscribeUser } from "@/api/firebase/contact";
 
 const POST_QUERY = groq`*[_type == "post" && slug.current == $slug][0]`;
 const { params } = useRoute();
-const { data: post } = await useSanityQuery<SanityDocument>(POST_QUERY, params);
+const { data: post } = (await useSanityQuery)<SanityDocument>(
+  POST_QUERY,
+  params
+);
 const { projectId, dataset } = useSanity().client.config();
 const urlFor = (source: SanityImageSource) =>
   projectId && dataset
