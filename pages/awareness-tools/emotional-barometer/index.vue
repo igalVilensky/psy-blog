@@ -3,104 +3,111 @@
     class="bg-gradient-to-br from-pink-50 to-white min-h-screen py-6 sm:py-12"
   >
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-        <!-- Emotional Barometer Section -->
-        <div class="bg-white shadow-xl rounded-2xl p-4 sm:p-6">
-          <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-[#4A4238]">
-            Эмоциональный Барометр
-          </h2>
+      <!-- Hero Section -->
+      <div class="text-center mb-8">
+        <h1 class="text-4xl sm:text-6xl font-bold text-[#4A4238] mb-4">
+          Эмоциональный Барометр
+        </h1>
+        <p class="text-lg sm:text-xl text-gray-600">Понимаем ваши эмоции</p>
+      </div>
 
-          <!-- Step Indicator -->
-          <StepIndicator :current-step="currentStep" :step-title="stepTitle" />
+      <!-- Emotional Barometer Section -->
+      <div class="bg-white shadow-xl rounded-2xl p-4 sm:p-6 mb-8">
+        <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-[#4A4238]">
+          Измерьте свои эмоции
+        </h2>
 
-          <!-- Step 1: Emotion Selection -->
+        <StepIndicator :current-step="currentStep" :step-title="stepTitle" />
+
+        <div v-if="currentStep === 1">
           <EmotionSelection
-            v-if="currentStep === 1"
             :emotions="emotions"
             :selected-emotion="selectedEmotion"
             @select-emotion="selectEmotion"
           />
-
-          <!-- Step 2: Intensity Level -->
+        </div>
+        <div v-if="currentStep === 2 && selectedEmotion">
           <IntensityLevel
-            v-if="currentStep === 2"
             :selected-emotion="selectedEmotion"
             v-model:intensity-level="intensityLevel"
           />
-
-          <!-- Journal Entry Form -->
-          <div v-if="selectedEmotion" class="mt-4 sm:mt-6">
-            <!-- Step 3: Journal Entry -->
-            <JournalEntry
-              v-if="currentStep === 3"
-              v-model:journal-entry="journalEntry"
-            />
-
-            <!-- Step 4: Life Spheres -->
-            <LifeSpheresSelection
-              v-if="currentStep === 4"
-              :life-spheres="lifeSpheres"
-              :selected-tags="selectedTags"
-              @toggle-tag="toggleTag"
-            />
-
-            <!-- Navigation Buttons -->
-            <div class="flex justify-between mt-6">
-              <button
-                v-if="currentStep > 1"
-                @click="previousStep"
-                class="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50"
-              >
-                Назад
-              </button>
-              <button
-                v-if="currentStep < 4"
-                @click="nextStep"
-                :disabled="!canProceed"
-                :class="[
-                  'px-4 py-2 text-sm rounded-lg ml-auto',
-                  canProceed
-                    ? 'bg-[#FF6B6B] text-white hover:bg-[#FF5252]'
-                    : 'bg-gray-300 text-gray-500 cursor-not-allowed',
-                ]"
-              >
-                Далее
-              </button>
-              <button
-                v-if="currentStep === 4"
-                @click="handleSubmit"
-                :disabled="!canSubmit"
-                :class="[
-                  'px-4 py-2 text-sm rounded-lg ml-auto',
-                  canSubmit
-                    ? 'bg-[#FF6B6B] text-white hover:bg-[#FF5252]'
-                    : 'bg-gray-300 text-gray-500 cursor-not-allowed',
-                ]"
-              >
-                Сохранить
-              </button>
-            </div>
-
-            <!-- Recommendations Modal -->
-            <RecommendationsModal
-              :is-open="showModal"
-              :emotion="selectedEmotion"
-              :intensity="intensityLevel"
-              :recommendations="currentRecommendations"
-              @close="closeModal"
-            />
-          </div>
+        </div>
+        <div v-if="currentStep === 3 && selectedEmotion">
+          <JournalEntry v-model:journal-entry="journalEntry" />
+        </div>
+        <div v-if="currentStep === 4 && selectedEmotion">
+          <LifeSpheresSelection
+            :life-spheres="lifeSpheres"
+            :selected-tags="selectedTags"
+            @toggle-tag="toggleTag"
+          />
         </div>
 
-        <!-- Analysis Section -->
-        <EmotionalAnalysis :patterns="emotionPatterns" />
+        <!-- Navigation Buttons -->
+        <div class="flex justify-end mt-6">
+          <button
+            v-if="currentStep > 1"
+            @click="previousStep"
+            class="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 mr-2"
+          >
+            Назад
+          </button>
+          <button
+            v-if="currentStep < 4"
+            @click="nextStep"
+            :disabled="!canProceed"
+            :class="[
+              'px-4 py-2 text-sm rounded-lg',
+              canProceed
+                ? 'bg-[#FF6B6B] text-white hover:bg-[#FF5252]'
+                : 'bg-gray-300 text-gray-500 cursor-not-allowed',
+            ]"
+          >
+            Далее
+          </button>
+          <button
+            v-if="currentStep === 4"
+            @click="handleSubmit"
+            :disabled="!canSubmit"
+            :class="[
+              'px-4 py-2 text-sm rounded-lg',
+              canSubmit
+                ? 'bg-[#FF6B6B] text-white hover:bg-[#FF5252]'
+                : 'bg-gray-300 text-gray-500 cursor-not-allowed',
+            ]"
+          >
+            Сохранить
+          </button>
+        </div>
 
-        <!-- Journal History Section -->
-        <JournalHistory
-          :emotions="emotions"
-          :lifeSpheres="lifeSpheres"
-          :entries="entries"
+        <!-- Recommendations Modal -->
+        <RecommendationsModal
+          :is-open="showModal"
+          :emotion="selectedEmotion"
+          :intensity="intensityLevel"
+          :recommendations="currentRecommendations"
+          @close="closeModal"
         />
+      </div>
+
+      <!-- Links to Additional Tools -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <a
+          href="/awareness-tools/emotional-barometer/analysis"
+          class="bg-white shadow-lg rounded-lg p-4 hover:shadow-xl transition-shadow text-center"
+        >
+          <h3 class="text-lg font-semibold text-[#FF6B6B]">Анализ Эмоций</h3>
+          <p class="text-sm text-gray-600">
+            Изучите свои эмоциональные паттерны
+          </p>
+        </a>
+        <a
+          href="/awareness-tools/emotional-barometer/journal-history"
+          class="bg-white shadow-lg rounded-lg p-4 hover:shadow-xl transition-shadow text-center"
+        >
+          <h3 class="text-lg font-semibold text-[#FF6B6B]">История Журнала</h3>
+          <p class="text-sm text-gray-600">Просмотрите ваши прошлые записи</p>
+        </a>
       </div>
     </div>
   </div>
@@ -118,8 +125,6 @@ import {
   arrayUnion,
 } from "firebase/firestore";
 import RecommendationsModal from "~/components/emotional-barometer/RecommendationsModal.vue";
-import EmotionalAnalysis from "~/components/emotional-barometer/EmotionalAnalysis.vue";
-import JournalHistory from "~/components/emotional-barometer/JournalHistory.vue";
 import EmotionSelection from "~/components/emotional-barometer/EmotionSelection.vue";
 import IntensityLevel from "~/components/emotional-barometer/IntensityLevel.vue";
 import StepIndicator from "~/components/emotional-barometer/StepIndicator.vue";
@@ -207,33 +212,6 @@ const canProceed = computed(() => {
     default:
       return true;
   }
-});
-
-// Emotion pattern analysis
-const emotionPatterns = computed(() => {
-  const patterns = entries.value.reduce((acc, entry) => {
-    if (!acc[entry.emotion]) {
-      acc[entry.emotion] = {
-        count: 0,
-        avgIntensity: 0,
-        commonSpheres: {},
-      };
-    }
-    acc[entry.emotion].count++;
-    acc[entry.emotion].avgIntensity += entry.intensity;
-    entry.tags.forEach((tag) => {
-      acc[entry.emotion].commonSpheres[tag] =
-        (acc[entry.emotion].commonSpheres[tag] || 0) + 1;
-    });
-    return acc;
-  }, {});
-
-  // Calculate averages
-  Object.keys(patterns).forEach((emotion) => {
-    patterns[emotion].avgIntensity /= patterns[emotion].count;
-  });
-
-  return patterns;
 });
 
 // Recommendations based on patterns
