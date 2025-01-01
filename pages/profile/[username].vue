@@ -250,7 +250,7 @@ import { useRouter } from "vue-router";
 import { useAuthStore } from "~/stores/auth";
 import { getAuth, onAuthStateChanged, updateProfile } from "firebase/auth";
 import hostImage from "~/assets/images/podcasts/podcasts.jpeg";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 import { Chart, registerables } from "chart.js";
 
 Chart.register(...registerables);
@@ -484,7 +484,8 @@ const uploadAvatar = async (file) => {
 
     const result = await response.json();
     if (result.success) {
-      const uploadedAvatarUrl = result.data.url; // Corrected variable name
+      const uploadedAvatarUrl = result.data.url; // Get the uploaded avatar URL
+
       // Store the avatar URL in Firebase user's profile
       const auth = getAuth();
       const currentUser = auth.currentUser;
@@ -492,9 +493,21 @@ const uploadAvatar = async (file) => {
         photoURL: uploadedAvatarUrl, // Update the user's photoURL with the new avatar
       });
 
-      // Now update the avatarUrl ref to reactively update it
-      avatarUrl.value = uploadedAvatarUrl; // This line now correctly sets the avatar URL
-      console.log("Avatar uploaded successfully:", avatarUrl.value);
+      // Now update the Firestore document with the new avatar URL
+      const db = getFirestore();
+      const userRef = doc(db, "users", currentUser.uid); // Reference to the user's document in Firestore
+
+      // Update the user's avatar URL in Firestore
+      await updateDoc(userRef, {
+        avatarUrl: uploadedAvatarUrl, // Set the avatarUrl field to the uploaded URL
+      });
+
+      // Update the avatarUrl ref in the frontend so the UI can reactively reflect the change
+      avatarUrl.value = uploadedAvatarUrl;
+      console.log(
+        "Avatar uploaded and Firestore updated successfully:",
+        avatarUrl.value
+      );
     } else {
       console.error("Upload failed:", result.error);
     }
