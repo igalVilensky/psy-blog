@@ -12,29 +12,29 @@
             <!-- Profile Avatar -->
             <template>
               <div class="relative group">
-                <div
-                  v-if="avatarUrl"
-                  class="w-24 h-24 rounded-full overflow-hidden ring-2 ring-offset-2 ring-gray-100"
-                >
-                  <img
-                    :src="avatarUrl"
-                    alt="Avatar"
-                    class="w-full h-full object-cover"
-                  />
-                </div>
-                <div
-                  v-else
-                  class="w-24 h-24 rounded-full overflow-hidden bg-gradient-to-br from-purple-50 to-pink-50 ring-2 ring-offset-2 ring-gray-100 flex items-center justify-center"
-                >
-                  <span
-                    class="text-3xl font-semibold bg-gradient-to-br from-purple-600 to-pink-600 bg-clip-text text-transparent"
+                <template v-if="avatarUrl">
+                  <div
+                    class="w-24 h-24 rounded-full overflow-hidden ring-2 ring-offset-2 ring-gray-100"
                   >
-                    {{
-                      authStore.user?.displayName?.charAt(0).toUpperCase() ||
-                      "U"
-                    }}
-                  </span>
-                </div>
+                    <img
+                      :src="avatarUrl"
+                      alt="Avatar"
+                      class="w-full h-full object-cover"
+                    />
+                  </div>
+                </template>
+                <template v-else>
+                  <div
+                    class="w-24 h-24 rounded-full bg-pink-100 flex items-center justify-center ring-2 ring-offset-2 ring-gray-100"
+                  >
+                    <span class="text-3xl font-semibold text-pink-600">
+                      {{
+                        authStore.user?.displayName?.charAt(0).toUpperCase() ||
+                        "U"
+                      }}
+                    </span>
+                  </div>
+                </template>
 
                 <label class="absolute inset-0 w-24 h-24 cursor-pointer">
                   <input
