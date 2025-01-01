@@ -13,7 +13,7 @@
 
             <div class="relative group">
               <div
-                v-if="avatarUrl"
+                v-if="avatarUrl && !loading"
                 class="w-24 h-24 rounded-full overflow-hidden ring-2 ring-offset-2 ring-gray-100"
               >
                 <img
@@ -24,13 +24,17 @@
               </div>
 
               <div
+                v-else-if="loading"
+                class="w-24 h-24 rounded-full bg-pink-100 flex items-center justify-center ring-2 ring-offset-2 ring-gray-100"
+              >
+                <i class="fas fa-spinner fa-spin fa-2x text-[#FF6B6B]"></i>
+              </div>
+              <div
                 v-else
                 class="w-24 h-24 rounded-full bg-pink-100 flex items-center justify-center ring-2 ring-offset-2 ring-gray-100"
               >
                 <span class="text-3xl font-semibold text-pink-600">
-                  {{
-                    authStore.user?.displayName?.charAt(0).toUpperCase() || "U"
-                  }}
+                  {{ authStore.user?.displayName?.charAt(0).toUpperCase() }}
                 </span>
               </div>
 
@@ -246,13 +250,12 @@
 import { useRouter } from "vue-router";
 import { useAuthStore } from "~/stores/auth";
 import { getAuth, onAuthStateChanged, updateProfile } from "firebase/auth";
-import hostImage from "~/assets/images/podcasts/podcasts.jpeg";
 import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 import { Chart, registerables } from "chart.js";
 
 Chart.register(...registerables);
 
-const user = ref(null);
+const loading = ref(true);
 const avatarUrl = ref(null); // Store the uploaded avatar URL
 const blogStatsChart = ref(null);
 const emotionChart = ref(null);
@@ -271,10 +274,10 @@ const emotionBarometerStats = ref({
 
 const auth = getAuth();
 const authStore = useAuthStore();
-const route = useRoute();
 const router = useRouter();
 
 onAuthStateChanged(auth, async (currentUser) => {
+  loading.value = true;
   if (currentUser) {
     // Store user data in your store (useAuthStore) or wherever you need it
     authStore.user = currentUser;
@@ -286,11 +289,8 @@ onAuthStateChanged(auth, async (currentUser) => {
 
     if (userSnap.exists()) {
       const userData = userSnap.data();
-      avatarUrl.value = userData.avatarUrl || hostImage; // Use the Firestore avatarUrl or fallback to default
-    } else {
-      avatarUrl.value = hostImage; // Fallback if no document exists
+      avatarUrl.value = userData.avatarUrl; // Use the Firestore avatarUrl or fallback to default
     }
-
     // Load emotion data
     await loadEmotionData(currentUser.uid);
 
@@ -410,6 +410,7 @@ onAuthStateChanged(auth, async (currentUser) => {
         },
       });
     }
+    loading.value = false;
   } else {
     // User is signed out, clear avatarUrl
     avatarUrl.value = null;
