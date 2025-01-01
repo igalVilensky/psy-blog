@@ -10,47 +10,44 @@
         >
           <div class="flex items-center gap-6">
             <!-- Profile Avatar -->
-            <template>
-              <div class="relative group">
-                <template v-if="avatarUrl">
-                  <div
-                    class="w-24 h-24 rounded-full overflow-hidden ring-2 ring-offset-2 ring-gray-100"
-                  >
-                    <img
-                      :src="avatarUrl"
-                      alt="Avatar"
-                      class="w-full h-full object-cover"
-                    />
-                  </div>
-                </template>
-                <template v-else>
-                  <div
-                    class="w-24 h-24 rounded-full bg-pink-100 flex items-center justify-center ring-2 ring-offset-2 ring-gray-100"
-                  >
-                    <span class="text-3xl font-semibold text-pink-600">
-                      {{
-                        authStore.user?.displayName?.charAt(0).toUpperCase() ||
-                        "U"
-                      }}
-                    </span>
-                  </div>
-                </template>
 
-                <label class="absolute inset-0 w-24 h-24 cursor-pointer">
-                  <input
-                    type="file"
-                    @change="onFileChange"
-                    accept="image/*"
-                    class="hidden"
-                  />
-                  <div
-                    class="absolute inset-0 bg-black/30 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
-                  >
-                    <i class="fas fa-camera text-white text-xl"></i>
-                  </div>
-                </label>
+            <div class="relative group">
+              <div
+                v-if="avatarUrl"
+                class="w-24 h-24 rounded-full overflow-hidden ring-2 ring-offset-2 ring-gray-100"
+              >
+                <img
+                  :src="avatarUrl"
+                  alt="Avatar"
+                  class="w-full h-full object-cover"
+                />
               </div>
-            </template>
+
+              <div
+                v-else
+                class="w-24 h-24 rounded-full bg-pink-100 flex items-center justify-center ring-2 ring-offset-2 ring-gray-100"
+              >
+                <span class="text-3xl font-semibold text-pink-600">
+                  {{
+                    authStore.user?.displayName?.charAt(0).toUpperCase() || "U"
+                  }}
+                </span>
+              </div>
+
+              <label class="absolute inset-0 w-24 h-24 cursor-pointer">
+                <input
+                  type="file"
+                  @change="onFileChange"
+                  accept="image/*"
+                  class="hidden"
+                />
+                <div
+                  class="absolute inset-0 bg-black/30 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                >
+                  <i class="fas fa-camera text-white text-xl"></i>
+                </div>
+              </label>
+            </div>
 
             <!-- Greeting & Status -->
             <div>
@@ -281,15 +278,23 @@ onAuthStateChanged(auth, async (currentUser) => {
   if (currentUser) {
     // Store user data in your store (useAuthStore) or wherever you need it
     authStore.user = currentUser;
-    avatarUrl.value = currentUser.photoURL || null;
-    if (!avatarUrl.value) {
-      avatarUrl.value = null; // No avatar set
+
+    // Fetch the avatar URL from Firestore (do not rely solely on currentUser.avatarUrl)
+    const db = getFirestore();
+    const userRef = doc(db, "users", currentUser.uid); // Use the correct collection ("users" instead of "emotion_diary")
+    const userSnap = await getDoc(userRef);
+
+    if (userSnap.exists()) {
+      const userData = userSnap.data();
+      avatarUrl.value = userData.avatarUrl || hostImage; // Use the Firestore avatarUrl or fallback to default
+    } else {
+      avatarUrl.value = hostImage; // Fallback if no document exists
     }
+
     // Load emotion data
     await loadEmotionData(currentUser.uid);
 
     // Load the emotion barometer data
-    const db = getFirestore();
     const barometerRef = doc(db, "emotion_barometer", currentUser.uid);
 
     try {
@@ -330,13 +335,6 @@ onAuthStateChanged(auth, async (currentUser) => {
       }
     } catch (error) {
       console.error("Error loading emotion barometer data:", error);
-    }
-
-    // Fetch the avatar URL if available
-    if (currentUser.photoURL) {
-      avatarUrl.value = currentUser.photoURL;
-    } else {
-      avatarUrl.value = null; // No avatar set, fallback to default
     }
 
     // Initialize both charts
@@ -515,4 +513,10 @@ const uploadAvatar = async (file) => {
     console.error("Error uploading avatar:", error);
   }
 };
+// Watch the avatarUrl for changes and log updates (optional)
+watchEffect(() => {
+  if (avatarUrl.value) {
+    console.log("Avatar URL updated:", avatarUrl.value);
+  }
+});
 </script>
