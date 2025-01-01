@@ -13,7 +13,8 @@
 <script setup>
 import { ref, computed } from "vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import { getEmotionBarometerData } from "~/api/firebase/emotionBarometer";
 import EmotionalAnalysis from "~/components/emotional-barometer/EmotionalAnalysis.vue";
 
 const user = ref(null);
@@ -24,6 +25,7 @@ const entries = ref([]);
 // Emotion pattern analysis
 const emotionPatterns = computed(() => {
   const patterns = entries.value.reduce((acc, entry) => {
+    // Ensure emotion exists in accumulator
     if (!acc[entry.emotion]) {
       acc[entry.emotion] = {
         count: 0,
@@ -31,49 +33,50 @@ const emotionPatterns = computed(() => {
         commonSpheres: {},
       };
     }
+
+    // Increment count
     acc[entry.emotion].count++;
-    acc[entry.emotion].avgIntensity += entry.intensity;
-    entry.tags.forEach((tag) => {
+
+    // Safely add intensity
+    const intensity = parseFloat(entry.intensity) || 0;
+    acc[entry.emotion].avgIntensity += intensity;
+
+    // Count tags (spheres)
+    (entry.tags || []).forEach((tag) => {
       acc[entry.emotion].commonSpheres[tag] =
         (acc[entry.emotion].commonSpheres[tag] || 0) + 1;
     });
+
     return acc;
   }, {});
 
-  // Calculate averages
+  // Calculate average intensity for each emotion
   Object.keys(patterns).forEach((emotion) => {
-    patterns[emotion].avgIntensity /= patterns[emotion].count;
+    if (patterns[emotion].count > 0) {
+      patterns[emotion].avgIntensity /= patterns[emotion].count;
+    }
   });
 
   return patterns;
 });
 
+// Fetch entries using API method
+const fetchEntries = async (userId) => {
+  const result = await getEmotionBarometerData(db, userId);
+
+  if (result.success) {
+    entries.value = result.data;
+  } else {
+    console.error(result.message);
+    entries.value = [];
+  }
+};
+
 // Listen for auth state changes
 onAuthStateChanged(auth, async (currentUser) => {
   if (currentUser) {
     user.value = currentUser;
-    loadDataFromFirebase(currentUser.uid);
+    await fetchEntries(currentUser.uid);
   }
 });
-
-// Load entries from Firebase
-const loadDataFromFirebase = async (userId) => {
-  const userRef = doc(db, "emotion_barometer", userId);
-
-  try {
-    const docSnap = await getDoc(userRef);
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      entries.value = data.entries || [];
-    } else {
-      console.log("No entries found for user");
-      entries.value = [];
-    }
-  } catch (error) {
-    console.error("Error loading data from Firebase:", error);
-  }
-};
-
-// Trigger loading data when the component mounts
-loadDataFromFirebase(user.value ? user.value.uid : null);
 </script>

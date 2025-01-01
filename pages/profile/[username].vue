@@ -396,6 +396,12 @@ import { useAuthStore } from "~/stores/auth";
 import { getAuth, onAuthStateChanged, updateProfile } from "firebase/auth";
 import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 import { Chart, registerables } from "chart.js";
+import {
+  fetchUserAvatarUrl,
+  updateUserAvatarUrl,
+} from "~/api/firebase/userProfile";
+
+import { getEmotionBarometerStats } from "~/api/firebase/emotionBarometer";
 
 Chart.register(...registerables);
 
@@ -429,54 +435,25 @@ onAuthStateChanged(auth, async (currentUser) => {
 
     // Fetch the avatar URL from Firestore (do not rely solely on currentUser.avatarUrl)
     const db = getFirestore();
-    const userRef = doc(db, "users", currentUser.uid); // Use the correct collection ("users" instead of "emotion_diary")
-    const userSnap = await getDoc(userRef);
-
-    if (userSnap.exists()) {
-      const userData = userSnap.data();
-      avatarUrl.value = userData.avatarUrl; // Use the Firestore avatarUrl or fallback to default
-    }
+    authStore.user = currentUser;
+    avatarUrl.value = await fetchUserAvatarUrl(currentUser.uid);
     // Load emotion data
     await loadEmotionData(currentUser.uid);
 
     // Load the emotion barometer data
-    const barometerRef = doc(db, "emotion_barometer", currentUser.uid);
 
     try {
-      const docSnap = await getDoc(barometerRef);
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        const entries = data.entries || [];
-
-        // Calculate emotion barometer statistics
-        const emotionCounts = {};
-        const tagCounts = {};
-        let totalIntensity = 0;
-
-        entries.forEach((entry) => {
-          emotionCounts[entry.emotion] =
-            (emotionCounts[entry.emotion] || 0) + 1;
-          totalIntensity += entry.intensity;
-          entry.tags.forEach((tag) => {
-            tagCounts[tag] = (tagCounts[tag] || 0) + 1;
-          });
-        });
-
-        const mostCommonEmotion = Object.entries(emotionCounts).sort(
-          (a, b) => b[1] - a[1]
-        )[0]?.[0];
-
-        const mostCommonTag = Object.entries(tagCounts).sort(
-          (a, b) => b[1] - a[1]
-        )[0]?.[0];
-
-        emotionBarometerStats.value = {
-          totalEntries: entries.length,
-          mostCommonEmotion,
-          averageIntensity: totalIntensity / entries.length,
-          mostCommonTag,
-          emotionDistribution: emotionCounts,
-        };
+      const { success, stats } = await getEmotionBarometerStats(
+        db,
+        currentUser.uid
+      );
+      if (success) {
+        emotionBarometerStats.value = stats;
+      } else {
+        console.error(
+          "Failed to fetch emotion barometer stats:",
+          stats.message
+        );
       }
     } catch (error) {
       console.error("Error loading emotion barometer data:", error);
@@ -612,7 +589,7 @@ const onFileChange = async (event) => {
   }
 };
 
-// The upload function from earlier
+// The upload function
 const uploadAvatar = async (file) => {
   const formData = new FormData();
   formData.append("image", file);
@@ -620,51 +597,28 @@ const uploadAvatar = async (file) => {
   try {
     const response = await fetch(
       "https://api.imgbb.com/1/upload?key=b19c8d945e3c37e4760b8ce4cf983904",
-      {
-        method: "POST",
-        body: formData,
-      }
+      { method: "POST", body: formData }
+    );
+    const result = await response.json();
+
+    if (!result.success) throw new Error("Image upload failed");
+
+    const { uid } = getAuth().currentUser;
+    const { success, message } = await updateUserAvatarUrl(
+      uid,
+      result.data.url
     );
 
-    const result = await response.json();
-    if (result.success) {
-      const uploadedAvatarUrl = result.data.url; // Get the uploaded avatar URL
-
-      // Store the avatar URL in Firebase user's profile
-      const auth = getAuth();
-      const currentUser = auth.currentUser;
-      await updateProfile(currentUser, {
-        photoURL: uploadedAvatarUrl, // Update the user's photoURL with the new avatar
-      });
-
-      // Now update the Firestore document with the new avatar URL
-      const db = getFirestore();
-      const userRef = doc(db, "users", currentUser.uid); // Reference to the user's document in Firestore
-
-      // Update the user's avatar URL in Firestore
-      await updateDoc(userRef, {
-        avatarUrl: uploadedAvatarUrl, // Set the avatarUrl field to the uploaded URL
-      });
-
-      // Update the avatarUrl ref in the frontend so the UI can reactively reflect the change
-      avatarUrl.value = uploadedAvatarUrl;
-      console.log(
-        "Avatar uploaded and Firestore updated successfully:",
-        avatarUrl.value
-      );
+    if (success) {
+      avatarUrl.value = result.data.url;
+      console.log("Avatar updated:", avatarUrl.value);
     } else {
-      console.error("Upload failed:", result.error);
+      console.error("Avatar update failed:", message);
     }
   } catch (error) {
-    console.error("Error uploading avatar:", error);
+    console.error("Avatar upload error:", error.message);
   }
 };
-// Watch the avatarUrl for changes and log updates (optional)
-watchEffect(() => {
-  if (avatarUrl.value) {
-    console.log("Avatar URL updated:", avatarUrl.value);
-  }
-});
 
 const tabs = [
   { id: "archetypes", name: "Архетипы" },

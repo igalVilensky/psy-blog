@@ -123,6 +123,6 @@ const startAssessment = () => {
 };
 
 const showInfo = () => {
-  router.push("/tools/life-purpose-archetype/explanation");
+  router.push("/awareness-tools/life-purpose-archetype/explanation");
 };
 </script>

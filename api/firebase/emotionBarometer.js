@@ -1,150 +1,94 @@
 // api/firebase/emotionBarometer.js
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  doc,
-  getDoc,
-  addDoc,
-  serverTimestamp,
-  orderBy,
-  deleteDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
-// Submit a new emotion entry
-export const submitEmotionEntry = async (firestore, userId, entryData) => {
+// Fetch user emotion data from `emotion_barometer` document
+export const getEmotionBarometerData = async (firestore, userId) => {
   try {
-    const emotionData = {
-      userId,
-      timestamp: serverTimestamp(),
-      emotion: entryData.emotion,
-      intensity: entryData.intensity,
-      entry: entryData.entry,
-      tags: entryData.tags,
-      status: "completed",
-    };
-
-    const docRef = await addDoc(
-      collection(firestore, "emotionBarometer"),
-      emotionData
-    );
-
-    return {
-      success: true,
-      entryId: docRef.id,
-      message: "Emotion entry saved successfully",
-    };
-  } catch (error) {
-    console.error("Error submitting emotion entry:", error);
-    return {
-      success: false,
-      message: "Failed to save emotion entry",
-    };
-  }
-};
-
-// Get all emotion entries for a user
-export const getUserEmotionEntries = async (firestore, userId) => {
-  try {
-    const q = query(
-      collection(firestore, "emotionBarometer"),
-      where("userId", "==", userId),
-      orderBy("timestamp", "desc")
-    );
-
-    const querySnapshot = await getDocs(q);
-    const entries = [];
-
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      entries.push({
-        id: doc.id,
-        ...data,
-        timestamp: data.timestamp?.toDate(), // Convert timestamp to Date object
-      });
-    });
-
-    return {
-      success: true,
-      entries,
-    };
-  } catch (error) {
-    console.error("Error fetching emotion entries:", error);
-    return {
-      success: false,
-      message: "Failed to fetch entries",
-    };
-  }
-};
-
-// Get a specific emotion entry
-export const getEmotionEntry = async (firestore, entryId) => {
-  try {
-    const docRef = doc(firestore, "emotionBarometer", entryId);
-    const docSnap = await getDoc(docRef);
+    const userRef = doc(firestore, "emotion_barometer", userId);
+    const docSnap = await getDoc(userRef);
 
     if (docSnap.exists()) {
       const data = docSnap.data();
       return {
         success: true,
-        entry: {
-          id: docSnap.id,
-          ...data,
-          timestamp: data.timestamp?.toDate(),
-        },
+        data: data.entries || [], // Return entries or an empty array
+      };
+    } else {
+      return {
+        success: false,
+        message: "No entries found for this user",
       };
     }
-
-    return {
-      success: false,
-      message: "Entry not found",
-    };
   } catch (error) {
-    console.error("Error fetching emotion entry:", error);
+    console.error("Error fetching emotion barometer data:", error);
     return {
       success: false,
-      message: "Failed to fetch entry",
+      message: "Failed to fetch data",
     };
   }
 };
+// New function to calculate emotion barometer statistics
+export const getEmotionBarometerStats = async (firestore, userId) => {
+  const barometerRef = doc(firestore, "emotion_barometer", userId);
 
-// Delete an emotion entry
-export const deleteEmotionEntry = async (firestore, entryId) => {
   try {
-    await deleteDoc(doc(firestore, "emotionBarometer", entryId));
-    return {
-      success: true,
-      message: "Entry deleted successfully",
-    };
+    const docSnap = await getDoc(barometerRef);
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      const entries = data.entries || [];
+
+      // Initialize counts and totals
+      const emotionCounts = {};
+      const tagCounts = {};
+      let totalIntensity = 0;
+
+      entries.forEach((entry) => {
+        // Validate intensity
+        const intensity = parseFloat(entry.intensity) || 0;
+        totalIntensity += intensity;
+
+        // Count emotions
+        emotionCounts[entry.emotion] = (emotionCounts[entry.emotion] || 0) + 1;
+
+        // Count tags
+        (entry.tags || []).forEach((tag) => {
+          tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+        });
+      });
+
+      // Find the most common emotion and tag
+      const mostCommonEmotion = Object.entries(emotionCounts).sort(
+        (a, b) => b[1] - a[1]
+      )[0]?.[0];
+      const mostCommonTag = Object.entries(tagCounts).sort(
+        (a, b) => b[1] - a[1]
+      )[0]?.[0];
+
+      // Calculate average intensity
+      const averageIntensity =
+        entries.length > 0 ? totalIntensity / entries.length : 0;
+
+      return {
+        success: true,
+        stats: {
+          totalEntries: entries.length,
+          mostCommonEmotion,
+          averageIntensity: Number(averageIntensity.toFixed(2)), // Round to 2 decimal places
+          mostCommonTag,
+          emotionDistribution: emotionCounts,
+        },
+      };
+    } else {
+      return {
+        success: false,
+        message: "No emotion barometer data found for this user",
+      };
+    }
   } catch (error) {
-    console.error("Error deleting emotion entry:", error);
+    console.error("Error fetching emotion barometer stats:", error);
     return {
       success: false,
-      message: "Failed to delete entry",
-    };
-  }
-};
-
-// Update an emotion entry
-export const updateEmotionEntry = async (firestore, entryId, updateData) => {
-  try {
-    const docRef = doc(firestore, "emotionBarometer", entryId);
-    await updateDoc(docRef, {
-      ...updateData,
-      lastUpdated: serverTimestamp(),
-    });
-
-    return {
-      success: true,
-      message: "Entry updated successfully",
-    };
-  } catch (error) {
-    console.error("Error updating emotion entry:", error);
-    return {
-      success: false,
-      message: "Failed to update entry",
+      message: "Error fetching emotion barometer stats",
     };
   }
 };
