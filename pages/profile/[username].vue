@@ -10,20 +10,47 @@
         >
           <div class="flex items-center gap-6">
             <!-- Profile Avatar -->
-            <div class="relative">
-              <div
-                class="w-24 h-24 bg-pink-100 rounded-full flex items-center justify-center"
-              >
-                <span class="text-3xl font-semibold text-pink-600">
-                  {{
-                    authStore.user?.displayName?.charAt(0).toUpperCase() || "U"
-                  }}
-                </span>
+            <template>
+              <div class="relative group">
+                <div
+                  v-if="avatarUrl"
+                  class="w-24 h-24 rounded-full overflow-hidden ring-2 ring-offset-2 ring-gray-100"
+                >
+                  <img
+                    :src="avatarUrl"
+                    alt="Avatar"
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+                <div
+                  v-else
+                  class="w-24 h-24 rounded-full overflow-hidden bg-gradient-to-br from-purple-50 to-pink-50 ring-2 ring-offset-2 ring-gray-100 flex items-center justify-center"
+                >
+                  <span
+                    class="text-3xl font-semibold bg-gradient-to-br from-purple-600 to-pink-600 bg-clip-text text-transparent"
+                  >
+                    {{
+                      authStore.user?.displayName?.charAt(0).toUpperCase() ||
+                      "U"
+                    }}
+                  </span>
+                </div>
+
+                <label class="absolute inset-0 w-24 h-24 cursor-pointer">
+                  <input
+                    type="file"
+                    @change="onFileChange"
+                    accept="image/*"
+                    class="hidden"
+                  />
+                  <div
+                    class="absolute inset-0 bg-black/30 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                  >
+                    <i class="fas fa-camera text-white text-xl"></i>
+                  </div>
+                </label>
               </div>
-              <div
-                class="absolute -bottom-2 -right-2 bg-green-400 w-6 h-6 rounded-full border-4 border-white"
-              ></div>
-            </div>
+            </template>
 
             <!-- Greeting & Status -->
             <div>
@@ -221,7 +248,7 @@
 <script setup>
 import { useRouter } from "vue-router";
 import { useAuthStore } from "~/stores/auth";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged, updateProfile } from "firebase/auth";
 import hostImage from "~/assets/images/podcasts/podcasts.jpeg";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { Chart, registerables } from "chart.js";
@@ -229,6 +256,7 @@ import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
 
 const user = ref(null);
+const avatarUrl = ref(null); // Store the uploaded avatar URL
 const blogStatsChart = ref(null);
 const emotionChart = ref(null);
 const emotionStats = ref({
@@ -251,10 +279,16 @@ const router = useRouter();
 
 onAuthStateChanged(auth, async (currentUser) => {
   if (currentUser) {
-    user.value = currentUser;
+    // Store user data in your store (useAuthStore) or wherever you need it
+    authStore.user = currentUser;
+    avatarUrl.value = currentUser.photoURL || null;
+    if (!avatarUrl.value) {
+      avatarUrl.value = null; // No avatar set
+    }
+    // Load emotion data
     await loadEmotionData(currentUser.uid);
 
-    // Load emotion barometer data
+    // Load the emotion barometer data
     const db = getFirestore();
     const barometerRef = doc(db, "emotion_barometer", currentUser.uid);
 
@@ -296,6 +330,13 @@ onAuthStateChanged(auth, async (currentUser) => {
       }
     } catch (error) {
       console.error("Error loading emotion barometer data:", error);
+    }
+
+    // Fetch the avatar URL if available
+    if (currentUser.photoURL) {
+      avatarUrl.value = currentUser.photoURL;
+    } else {
+      avatarUrl.value = null; // No avatar set, fallback to default
     }
 
     // Initialize both charts
@@ -371,6 +412,9 @@ onAuthStateChanged(auth, async (currentUser) => {
         },
       });
     }
+  } else {
+    // User is signed out, clear avatarUrl
+    avatarUrl.value = null;
   }
 });
 
@@ -411,5 +455,51 @@ const getLastEntryDate = () => {
 const logoutUser = async () => {
   await authStore.logout();
   router.push("/login");
+};
+
+const onFileChange = async (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    const url = await uploadAvatar(file);
+    if (url) {
+      avatarUrl.value = url; // Set the uploaded avatar URL
+      console.log("Avatar uploaded successfully:", avatarUrl.value);
+    }
+  }
+};
+
+// The upload function from earlier
+const uploadAvatar = async (file) => {
+  const formData = new FormData();
+  formData.append("image", file);
+
+  try {
+    const response = await fetch(
+      "https://api.imgbb.com/1/upload?key=b19c8d945e3c37e4760b8ce4cf983904",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    const result = await response.json();
+    if (result.success) {
+      const uploadedAvatarUrl = result.data.url; // Corrected variable name
+      // Store the avatar URL in Firebase user's profile
+      const auth = getAuth();
+      const currentUser = auth.currentUser;
+      await updateProfile(currentUser, {
+        photoURL: uploadedAvatarUrl, // Update the user's photoURL with the new avatar
+      });
+
+      // Now update the avatarUrl ref to reactively update it
+      avatarUrl.value = uploadedAvatarUrl; // This line now correctly sets the avatar URL
+      console.log("Avatar uploaded successfully:", avatarUrl.value);
+    } else {
+      console.error("Upload failed:", result.error);
+    }
+  } catch (error) {
+    console.error("Error uploading avatar:", error);
+  }
 };
 </script>
