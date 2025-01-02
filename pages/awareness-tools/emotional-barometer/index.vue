@@ -27,15 +27,22 @@
           />
         </div>
         <div v-if="currentStep === 2 && selectedEmotion">
+          <SubEmotionSelection
+            :sub-emotions="subEmotions"
+            :selected-sub-emotion="selectedSubEmotion"
+            @select-sub-emotion="selectSubEmotion"
+          />
+        </div>
+        <div v-if="currentStep === 3 && selectedEmotion">
           <IntensityLevel
             :selected-emotion="selectedEmotion"
             v-model:intensity-level="intensityLevel"
           />
         </div>
-        <div v-if="currentStep === 3 && selectedEmotion">
+        <div v-if="currentStep === 4 && selectedEmotion">
           <JournalEntry v-model:journal-entry="journalEntry" />
         </div>
-        <div v-if="currentStep === 4 && selectedEmotion">
+        <div v-if="currentStep === 5 && selectedEmotion">
           <LifeSpheresSelection
             :life-spheres="lifeSpheres"
             :selected-tags="selectedTags"
@@ -53,7 +60,7 @@
             Назад
           </button>
           <button
-            v-if="currentStep < 4"
+            v-if="currentStep < 5"
             @click="nextStep"
             :disabled="!canProceed"
             :class="[
@@ -66,7 +73,7 @@
             Далее
           </button>
           <button
-            v-if="currentStep === 4"
+            v-if="currentStep === 5"
             @click="handleSubmit"
             :disabled="!canSubmit"
             :class="[
@@ -83,7 +90,7 @@
         <!-- Recommendations Modal -->
         <RecommendationsModal
           :is-open="showModal"
-          :emotion="selectedEmotion"
+          :emotion="{ name: selectedSubEmotion }"
           :intensity="intensityLevel"
           :recommendations="currentRecommendations"
           @close="closeModal"
@@ -130,6 +137,7 @@ import IntensityLevel from "~/components/emotional-barometer/IntensityLevel.vue"
 import StepIndicator from "~/components/emotional-barometer/StepIndicator.vue";
 import JournalEntry from "~/components/emotional-barometer/JournalEntry.vue";
 import LifeSpheresSelection from "~/components/emotional-barometer/LifeSpheresSelection.vue";
+import SubEmotionSelection from "~/components/emotional-barometer/SubEmotionSelection.vue";
 
 const emotions = [
   {
@@ -140,25 +148,82 @@ const emotions = [
   },
   {
     id: 2,
-    name: "Тревога",
+    name: "Грусть",
+    color: "bg-blue-100",
+    activeColor: "bg-blue-500",
+  },
+  {
+    id: 3,
+    name: "Страх",
     color: "bg-purple-100",
     activeColor: "bg-purple-500",
   },
-  { id: 3, name: "Злость", color: "bg-red-100", activeColor: "bg-red-500" },
-  { id: 4, name: "Грусть", color: "bg-blue-100", activeColor: "bg-blue-500" },
+  {
+    id: 4,
+    name: "Гнев",
+    color: "bg-red-100",
+    activeColor: "bg-red-500",
+  },
   {
     id: 5,
-    name: "Вдохновение",
+    name: "Удивление",
     color: "bg-green-100",
     activeColor: "bg-green-500",
   },
-  {
-    id: 6,
-    name: "Спокойствие",
-    color: "bg-teal-100",
-    activeColor: "bg-teal-500",
-  },
 ];
+
+const subEmotionsMap = {
+  Радость: [
+    "Восторг",
+    "Удовольствие",
+    "Гордость",
+    "Облегчение",
+    "Счастье",
+    "Благодарность",
+    "Эйфория",
+    "Вдохновение",
+  ],
+  Грусть: [
+    "Одиночество",
+    "Потеря",
+    "Разочарование",
+    "Тоска",
+    "Сожаление",
+    "Печаль",
+    "Уныние",
+    "Грусть",
+  ],
+  Страх: [
+    "Тревога",
+    "Паника",
+    "Неуверенность",
+    "Опасение",
+    "Ужас",
+    "Беспокойство",
+    "Шок",
+    "Тревожность",
+  ],
+  Гнев: [
+    "Раздражение",
+    "Ярость",
+    "Обида",
+    "Негодование",
+    "Злость",
+    "Враждебность",
+    "Гнев",
+    "Агрессия",
+  ],
+  Удивление: [
+    "Изумление",
+    "Вдохновение",
+    "Ошеломление",
+    "Любопытство",
+    "Изумление",
+    "Шок",
+    "Неожиданность",
+    "Потрясение",
+  ],
+};
 
 const lifeSpheres = [
   { name: "Работа", color: "bg-blue-100", activeColor: "bg-[#FF6B6B]" },
@@ -183,6 +248,8 @@ const intensityLevel = ref(5);
 const journalEntry = ref("");
 const selectedTags = ref([]);
 const entries = ref([]);
+const subEmotions = ref([]);
+const selectedSubEmotion = ref(null);
 
 // Step titles
 const stepTitle = computed(() => {
@@ -190,10 +257,12 @@ const stepTitle = computed(() => {
     case 1:
       return "Выбор эмоции";
     case 2:
-      return "Интенсивность";
+      return "Выбор подэмоции";
     case 3:
-      return "Описание";
+      return "Интенсивность";
     case 4:
+      return "Описание";
+    case 5:
       return "Сферы жизни";
     default:
       return "";
@@ -204,39 +273,153 @@ const stepTitle = computed(() => {
 const canProceed = computed(() => {
   switch (currentStep.value) {
     case 1:
-      return selectedEmotion.value !== null;
+      return selectedEmotion.value !== null; // Primary emotion must be selected
     case 2:
-      return true; // Always true as we have a default value
+      return selectedSubEmotion.value !== null; // Sub-emotion must be selected
     case 3:
-      return journalEntry.value.trim().length > 0;
+      return true; // Intensity level is always valid due to the default value
+    case 4:
+      return journalEntry.value.trim().length > 0; // Journal entry must be non-empty
+    case 5:
+      return selectedTags.value.length > 0; // At least one life sphere must be selected
     default:
-      return true;
+      return false; // Safety fallback for invalid steps
   }
 });
 
 // Recommendations based on patterns
 const currentRecommendations = computed(() => {
-  if (!selectedEmotion.value) return [];
+  if (!selectedSubEmotion.value) return [];
 
   const recommendations = {
-    Тревога: [
-      "Попробуйте дыхательные упражнения (4-7-8)",
-      "Запишите свои мысли и попробуйте их оспорить",
-      "Совершите короткую прогулку на свежем воздухе",
+    // Грусть Sub-emotions
+    Одиночество: [
+      "Поговорите с близким другом или родственником",
+      "Попробуйте заняться волонтерской деятельностью",
+      "Запланируйте время на приятные мероприятия",
     ],
-    Злость: [
-      "Сделайте паузу перед реакцией",
-      "Выполните физические упражнения",
-      "Переключитесь на другую активность",
+    Потеря: [
+      "Позвольте себе время для грусти",
+      "Ведите дневник, чтобы выразить свои чувства",
+      "Обратитесь за поддержкой к психологу или близкому человеку",
+    ],
+    Разочарование: [
+      "Попробуйте переосмыслить ожидания",
+      "Сфокусируйтесь на том, что вы можете изменить",
+      "Отвлекитесь на что-то приятное, чтобы снизить напряжение",
+    ],
+    Тоска: [
+      "Послушайте музыку, которая поднимает настроение",
+      "Прогуляйтесь на свежем воздухе",
+      "Попробуйте медитацию для успокоения ума",
+    ],
+    Сожаление: [
+      "Примите прошлые ошибки как уроки для будущего",
+      "Извинитесь перед собой или другими, если возможно",
+      "Фокусируйтесь на том, что можно сделать сейчас, чтобы улучшить ситуацию",
+    ],
+    Печаль: [
+      "Поплачьте, если чувствуете в этом необходимость — это естественно",
+      "Поговорите с кем-то, кто может вас поддержать",
+      "Займитесь чем-то, что приносит вам радость, даже если это трудно",
+    ],
+    Уныние: [
+      "Попробуйте составить список достижений, чтобы напомнить себе о позитивных моментах",
+      "Сделайте небольшой шаг в направлении вашей цели",
+      "Обратитесь за поддержкой к близким или специалисту",
     ],
     Грусть: [
-      "Поговорите с близким человеком",
-      "Сделайте что-то приятное для себя",
-      "Вспомните хорошие моменты",
+      "Посмотрите вдохновляющий фильм или прочитайте позитивную книгу",
+      "Сделайте что-то, что приносит вам удовольствие, например, хобби",
+      "Сходите на прогулку или займитесь физической активностью",
+    ],
+
+    // Страх Sub-emotions
+    Тревога: [
+      "Попробуйте дыхательные упражнения (4-7-8)",
+      "Запишите свои мысли и найдите рациональные ответы",
+      "Сделайте физические упражнения, чтобы снизить напряжение",
+    ],
+    Паника: [
+      "Попробуйте метод заземления (назовите 5 предметов, которые видите)",
+      "Медленно дышите, сосредотачиваясь на выдохе",
+      "Обратитесь за помощью, если чувствуете, что не справляетесь",
+    ],
+    Неуверенность: [
+      "Составьте список своих достижений",
+      "Поговорите с кем-то, кто вас поддерживает",
+      "Напомните себе, что неопределенность — это временно",
+    ],
+    Опасение: [
+      "Оцените вероятные исходы и приготовьтесь к ним",
+      "Обсудите свои опасения с надежным человеком",
+      "Попробуйте представить наихудший сценарий и способы справиться с ним",
+    ],
+    Ужас: [
+      "Закройте глаза и сосредоточьтесь на медленном дыхании",
+      "Напомните себе, что это чувство временно и пройдет",
+      "Сконцентрируйтесь на чем-то реальном и безопасном рядом с вами",
+    ],
+    Беспокойство: [
+      "Выпишите все свои беспокойства на бумаге, чтобы очистить разум",
+      "Сосредоточьтесь на текущем моменте через осознанность",
+      "Постарайтесь отвлечь себя приятным занятием или фильмом",
+    ],
+    Шок: [
+      "Попросите поддержку у близкого человека",
+      "Позвольте себе время обработать ситуацию",
+      "Избегайте принятия серьезных решений в состоянии шока",
+    ],
+    Тревожность: [
+      "Примите, что тревога — это нормальная реакция, но она временная",
+      "Выполните несколько легких упражнений на расслабление",
+      "Старайтесь не изолироваться — поговорите с кем-то, кому доверяете",
+    ],
+
+    // Гнев Sub-emotions
+    Раздражение: [
+      "Сделайте паузу и глубоко вдохните",
+      "Занимайтесь физической активностью, чтобы выплеснуть эмоции",
+      "Избегайте ситуаций, вызывающих раздражение, пока не успокоитесь",
+    ],
+    Ярость: [
+      "Найдите безопасный способ выразить свою ярость (например, крик в подушку)",
+      "Уединитесь и попробуйте успокоиться",
+      "Ведите дневник, чтобы выразить свои эмоции словами",
+    ],
+    Обида: [
+      "Попробуйте понять, почему вы чувствуете обиду",
+      "Обсудите свои чувства с человеком, который вас задел",
+      "Сосредоточьтесь на прощении ради себя",
+    ],
+    Негодование: [
+      "Напишите письмо, но не отправляйте его, чтобы выразить свои эмоции",
+      "Сделайте паузу и попробуйте рационализировать свои чувства",
+      "Займитесь физической активностью, чтобы снять напряжение",
+    ],
+    Злость: [
+      "Попробуйте переключить свое внимание на физическую активность",
+      "Подумайте, стоит ли эта ситуация ваших эмоций",
+      "Изучите технику позитивной переоценки",
+    ],
+    Враждебность: [
+      "Примите, что ваши чувства могут быть не совсем объективны",
+      "Попробуйте представить себя на месте другого человека",
+      "Займитесь чем-то, что успокаивает вас — прогулка, музыка, медитация",
+    ],
+    Гнев: [
+      "Проведите время на природе, чтобы освободиться от напряжения",
+      "Попробуйте записать свои чувства и мысли",
+      "Избегайте агрессивных действий — вместо этого дайте себе время успокоиться",
+    ],
+    Агрессия: [
+      "Уединитесь, чтобы избежать конфликтов",
+      "Выполните энергичные упражнения, чтобы высвободить эмоции",
+      "Сосредоточьтесь на дыхании, чтобы снизить уровень возбуждения",
     ],
   };
 
-  return recommendations[selectedEmotion.value.name] || [];
+  return recommendations[selectedSubEmotion.value] || [];
 });
 
 // Listen for auth state changes
@@ -253,7 +436,7 @@ const canSubmit = computed(() => {
 
 // Navigation functions
 const nextStep = () => {
-  if (canProceed.value && currentStep.value < 4) {
+  if (canProceed.value && currentStep.value < 5) {
     currentStep.value++;
   }
 };
@@ -276,6 +459,12 @@ const closeModal = () => {
 
 const selectEmotion = (emotion) => {
   selectedEmotion.value = emotion;
+  subEmotions.value = subEmotionsMap[emotion.name] || []; // Properly map emotions to sub-emotions
+  selectedSubEmotion.value = null; // Reset sub-emotion when the main emotion changes
+};
+
+const selectSubEmotion = (subEmotion) => {
+  selectedSubEmotion.value = subEmotion;
 };
 
 const toggleTag = (tag) => {
@@ -295,6 +484,7 @@ const saveEntryToFirebase = async () => {
 
   const newEntry = {
     emotion: selectedEmotion.value.name,
+    subEmotion: selectedSubEmotion.value,
     intensity: intensityLevel.value,
     entry: journalEntry.value,
     tags: [...selectedTags.value],

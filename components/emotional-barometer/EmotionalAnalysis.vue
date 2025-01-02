@@ -1,59 +1,94 @@
 <template>
-  <div class="bg-white shadow-xl rounded-2xl p-4 sm:p-6 border border-gray-100">
+  <div class="bg-white shadow-lg rounded-2xl p-6 border border-gray-100">
     <!-- Back Navigation -->
     <nuxt-link
       to="/awareness-tools/emotional-barometer"
-      class="inline-flex items-center text-pink-600 hover:text-pink-700 transition-colors mb-8 group"
+      class="inline-flex items-center text-pink-600 hover:text-pink-700 transition-all mb-8 group"
     >
       <i
         class="fas fa-arrow-left mr-2 transform transition-transform group-hover:-translate-x-1"
       ></i>
-      Вернуться
+      <span class="text-sm font-medium">Вернуться</span>
     </nuxt-link>
 
-    <!-- Header with Icon -->
-    <div class="flex items-center gap-3 mb-8">
+    <!-- Header -->
+    <div class="flex items-center gap-4 mb-10">
       <div
-        class="w-11 h-11 p-3 bg-[#FF6B6B]/10 rounded-full flex items-center justify-center flex-shrink-0"
+        class="w-12 h-12 bg-[#FF6B6B]/10 rounded-xl flex items-center justify-center flex-shrink-0"
       >
-        <i class="far fa-face-smile text-[#FF6B6B]"></i>
+        <i class="far fa-face-smile text-xl text-[#FF6B6B]"></i>
       </div>
-      <h2 class="text-2xl sm:text-3xl font-bold text-[#4A4238]">
+      <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">
         Анализ Эмоций
       </h2>
     </div>
 
     <!-- Loading State -->
-    <div v-if="loading" class="flex flex-col items-center gap-4">
+    <div v-if="loading" class="flex flex-col items-center gap-4 py-12">
       <i class="fas fa-spinner fa-spin fa-2x text-[#FF6B6B]"></i>
-      <p class="text-gray-600 text-lg font-medium">Пожалуйста, подождите...</p>
+      <p class="text-gray-600 text-base font-medium">
+        Пожалуйста, подождите...
+      </p>
     </div>
 
-    <!-- Emotion Patterns Grid -->
-    <div v-else class="grid sm:grid-cols-2 gap-4">
+    <!-- Content Grid -->
+    <div v-else class="grid sm:grid-cols-2 gap-5">
       <div
         v-for="(pattern, emotion) in patterns"
         :key="emotion"
-        class="p-5 rounded-xl border transition-all hover:shadow-md bg-gray-50"
+        class="bg-gray-50 rounded-xl border border-gray-200/75 p-6 transition-all hover:shadow-md"
       >
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="font-bold text-lg text-[#4A4238]">{{ emotion }}</h3>
+        <!-- Emotion Header -->
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h3 class="font-bold text-lg text-gray-900">{{ emotion }}</h3>
+          </div>
           <span
-            class="text-sm font-medium px-3 py-1 bg-white rounded-full shadow-sm"
+            class="px-3 py-1.5 bg-gray-50 text-gray-700 text-sm font-medium rounded-full border border-gray-100"
           >
-            {{ pattern.count }} раз
+            {{
+              pattern.count === 1
+                ? `${pattern.count} раз`
+                : pattern.count >= 2 && pattern.count <= 4
+                ? `${pattern.count} раза`
+                : `${pattern.count} раз`
+            }}
           </span>
         </div>
 
+        <!-- Sub-emotions -->
+        <div v-if="Object.keys(pattern.subEmotions || {}).length">
+          <p class="text-sm font-medium text-gray-900 mb-3">Подэмоции:</p>
+          <ul>
+            <li
+              v-for="(subPattern, subEmotion) in pattern.subEmotions"
+              :key="subEmotion"
+              class="text-sm text-gray-700 mb-2"
+            >
+              <span class="font-semibold">{{ subEmotion }}</span> —
+              {{
+                subPattern.count === 1
+                  ? `${subPattern.count} раз`
+                  : subPattern.count >= 2 && subPattern.count <= 4
+                  ? `${subPattern.count} раза`
+                  : `${subPattern.count} раз`
+              }}, средняя интенсивность:
+              {{ subPattern.avgIntensity.toFixed(1) }}/10
+            </li>
+          </ul>
+        </div>
+
         <!-- Intensity Meter -->
-        <div class="mb-4">
-          <div class="flex justify-between items-center mb-2">
-            <span class="text-sm text-gray-600">Средняя интенсивность</span>
-            <span class="font-medium"
+        <div class="mb-6">
+          <div class="flex justify-between items-center mb-2.5">
+            <span class="text-sm font-medium text-gray-600"
+              >Средняя интенсивность</span
+            >
+            <span class="font-semibold text-gray-900"
               >{{ pattern.avgIntensity.toFixed(1) }}/10</span
             >
           </div>
-          <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
             <div
               class="h-full rounded-full transition-all"
               :class="getEmotionActiveColor(emotion)"
@@ -64,7 +99,7 @@
 
         <!-- Common Spheres -->
         <div v-if="Object.keys(pattern.commonSpheres).length">
-          <p class="text-sm font-medium text-gray-700 mb-2">
+          <p class="text-sm font-medium text-gray-900 mb-3">
             Чаще всего в сферах:
           </p>
           <div class="flex flex-wrap gap-2">
@@ -72,7 +107,7 @@
               v-for="(count, sphere) in pattern.commonSpheres"
               :key="sphere"
               :class="getSphereColor(sphere)"
-              class="text-xs px-3 py-1.5 rounded-full shadow-sm font-medium"
+              class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium shadow-sm border border-gray-100"
             >
               {{ sphere }} ({{ count }})
             </span>
@@ -139,7 +174,12 @@ const props = defineProps({
           (pattern) =>
             "count" in pattern &&
             "avgIntensity" in pattern &&
-            "commonSpheres" in pattern
+            "commonSpheres" in pattern &&
+            (!pattern.subEmotions ||
+              Object.values(pattern.subEmotions).every(
+                (subPattern) =>
+                  "count" in subPattern && "avgIntensity" in subPattern
+              ))
         )
       );
     },

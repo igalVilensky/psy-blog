@@ -6,7 +6,7 @@
     <!-- Content slot -->
     <template #content>
       <p class="text-sm text-gray-600 mb-3">
-        Основываясь на вашей эмоции "{{ emotion?.name }}" ({{ intensity }}/10),
+        Основываясь на вашей эмоции "{{ emotion.name }}" ({{ intensity }}/10),
         мы предлагаем:
       </p>
       <ul class="list-disc pl-5 space-y-2">

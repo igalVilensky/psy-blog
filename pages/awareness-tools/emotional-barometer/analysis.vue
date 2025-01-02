@@ -25,35 +25,57 @@ const entries = ref([]);
 // Emotion pattern analysis
 const emotionPatterns = computed(() => {
   const patterns = entries.value.reduce((acc, entry) => {
-    // Ensure emotion exists in accumulator
+    // Ensure the emotion exists in the accumulator
     if (!acc[entry.emotion]) {
       acc[entry.emotion] = {
         count: 0,
         avgIntensity: 0,
         commonSpheres: {},
+        subEmotions: {}, // Add subEmotions field
       };
     }
 
-    // Increment count
+    // Increment main emotion count and intensity
     acc[entry.emotion].count++;
-
-    // Safely add intensity
     const intensity = parseFloat(entry.intensity) || 0;
     acc[entry.emotion].avgIntensity += intensity;
 
-    // Count tags (spheres)
+    // Count the common spheres
     (entry.tags || []).forEach((tag) => {
       acc[entry.emotion].commonSpheres[tag] =
         (acc[entry.emotion].commonSpheres[tag] || 0) + 1;
     });
 
+    // Handle subEmotion (single sub-emotion field)
+    if (entry.subEmotion) {
+      if (!acc[entry.emotion].subEmotions[entry.subEmotion]) {
+        acc[entry.emotion].subEmotions[entry.subEmotion] = {
+          count: 0,
+          avgIntensity: 0,
+        };
+      }
+      acc[entry.emotion].subEmotions[entry.subEmotion].count++;
+      acc[entry.emotion].subEmotions[entry.subEmotion].avgIntensity +=
+        parseFloat(entry.intensity) || 0;
+    }
+
     return acc;
   }, {});
 
-  // Calculate average intensity for each emotion
+  // Calculate the average intensity for each emotion and sub-emotion
   Object.keys(patterns).forEach((emotion) => {
     if (patterns[emotion].count > 0) {
       patterns[emotion].avgIntensity /= patterns[emotion].count;
+    }
+
+    // Calculate average intensity for sub-emotions
+    if (patterns[emotion].subEmotions) {
+      Object.keys(patterns[emotion].subEmotions).forEach((subEmotion) => {
+        const subEmotionPattern = patterns[emotion].subEmotions[subEmotion];
+        if (subEmotionPattern.count > 0) {
+          subEmotionPattern.avgIntensity /= subEmotionPattern.count;
+        }
+      });
     }
   });
 
@@ -63,6 +85,7 @@ const emotionPatterns = computed(() => {
 // Fetch entries using API method
 const fetchEntries = async (userId) => {
   const result = await getEmotionBarometerData(db, userId);
+  console.log(result);
 
   if (result.success) {
     entries.value = result.data;
