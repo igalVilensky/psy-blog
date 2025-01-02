@@ -5,7 +5,7 @@
     <div class="container mx-auto px-4 max-w-7xl">
       <div class="grid grid-cols-1">
         <!-- Analysis Section -->
-        <EmotionalAnalysis :patterns="emotionPatterns" />
+        <EmotionalAnalysis :patterns="emotionPatterns" :entries="entries" />
       </div>
     </div>
   </div>

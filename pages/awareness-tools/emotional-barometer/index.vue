@@ -40,7 +40,13 @@
           />
         </div>
         <div v-if="currentStep === 4 && selectedEmotion">
-          <JournalEntry v-model:journal-entry="journalEntry" />
+          <div v-if="currentStep === 4 && selectedEmotion">
+            <JournalEntry
+              v-model:journal-entry="journalEntry"
+              v-model:perception-entry="perceptionEntry"
+              v-model:coping-entry="copingEntry"
+            />
+          </div>
         </div>
         <div v-if="currentStep === 5 && selectedEmotion">
           <LifeSpheresSelection
@@ -250,6 +256,8 @@ const selectedTags = ref([]);
 const entries = ref([]);
 const subEmotions = ref([]);
 const selectedSubEmotion = ref(null);
+const perceptionEntry = ref("");
+const copingEntry = ref("");
 
 // Step titles
 const stepTitle = computed(() => {
@@ -486,23 +494,22 @@ const saveEntryToFirebase = async () => {
     emotion: selectedEmotion.value.name,
     subEmotion: selectedSubEmotion.value,
     intensity: intensityLevel.value,
-    entry: journalEntry.value,
+    entry: journalEntry.value, // Original journal entry
+    perception: perceptionEntry.value, // New field for perception entry
+    coping: copingEntry.value, // New field for coping entry
     tags: [...selectedTags.value],
     timestamp: new Date().toISOString(),
   };
 
   try {
-    // Get current data first
     const docSnap = await getDoc(userRef);
 
     if (docSnap.exists()) {
-      // Update existing document
       await updateDoc(userRef, {
         entries: arrayUnion(newEntry),
         lastUpdated: new Date().toISOString(),
       });
     } else {
-      // Create new document
       await setDoc(userRef, {
         entries: [newEntry],
         lastUpdated: new Date().toISOString(),
@@ -511,7 +518,6 @@ const saveEntryToFirebase = async () => {
 
     console.log("Entry saved successfully to Firebase!");
 
-    // Show recommendations modal if available
     if (currentRecommendations.value.length > 0) {
       showModal.value = true;
     } else {

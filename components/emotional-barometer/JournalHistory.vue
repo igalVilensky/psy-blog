@@ -94,9 +94,31 @@
           </span>
         </div>
 
-        <p class="text-xs sm:text-sm text-[#6B5B4C] mb-2 sm:mb-3">
-          {{ entry.entry }}
-        </p>
+        <!-- Journal Entry -->
+        <div class="mb-2 sm:mb-3">
+          <p class="font-semibold text-xs sm:text-sm text-[#6B5B4C]">
+            Описание:
+          </p>
+          <p class="text-xs sm:text-sm text-[#6B5B4C]">{{ entry.entry }}</p>
+        </div>
+
+        <!-- Perception Entry -->
+        <div class="mb-2 sm:mb-3">
+          <p class="font-semibold text-xs sm:text-sm text-[#6B5B4C]">
+            Восприятие:
+          </p>
+          <p class="text-xs sm:text-sm text-[#6B5B4C]">
+            {{ entry.perception }}
+          </p>
+        </div>
+
+        <!-- Coping Entry -->
+        <div class="mb-2 sm:mb-3">
+          <p class="font-semibold text-xs sm:text-sm text-[#6B5B4C]">
+            Стратегии совладания:
+          </p>
+          <p class="text-xs sm:text-sm text-[#6B5B4C]">{{ entry.coping }}</p>
+        </div>
 
         <div class="flex flex-wrap gap-1.5 sm:gap-2">
           <span
