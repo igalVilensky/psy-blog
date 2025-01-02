@@ -5,9 +5,9 @@
     <div class="container mx-auto px-4 max-w-7xl">
       <div class="grid grid-cols-1">
         <!-- Emotion Chart -->
-        <template>
-          <EmotionChart :entries="entries" :emotions="emotions" />
-        </template>
+
+        <EmotionChart :entries="entries" :emotions="emotions" />
+
         <!-- Journal History Section -->
         <div class="mt-8">
           <JournalHistory
