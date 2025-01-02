@@ -2,7 +2,7 @@
   <div
     class="bg-gradient-to-br from-pink-50 via-rose-50 to-white min-h-screen py-6 sm:py-12"
   >
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="container px-4 max-w-7xl mx-auto">
       <!-- Hero Section -->
       <div class="text-center mb-8">
         <h1 class="text-4xl sm:text-6xl font-bold text-[#4A4238] mb-4">

@@ -2,7 +2,7 @@
   <div
     class="bg-gradient-to-br from-pink-50 via-rose-50 to-white min-h-screen py-6 sm:py-12"
   >
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="container mx-auto px-4 max-w-7xl">
       <div class="grid grid-cols-1">
         <!-- Journal History Section -->
         <JournalHistory
@@ -15,9 +15,10 @@
   </div>
 </template>
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import { getEmotionBarometerData } from "~/api/firebase/emotionBarometer";
 import JournalHistory from "~/components/emotional-barometer/JournalHistory.vue";
 
 // Assuming these are defined in a separate file or passed from a store
@@ -30,23 +31,27 @@ const emotions = [
   },
   {
     id: 2,
-    name: "Тревога",
+    name: "Грусть",
+    color: "bg-blue-100",
+    activeColor: "bg-blue-500",
+  },
+  {
+    id: 3,
+    name: "Страх",
     color: "bg-purple-100",
     activeColor: "bg-purple-500",
   },
-  { id: 3, name: "Злость", color: "bg-red-100", activeColor: "bg-red-500" },
-  { id: 4, name: "Грусть", color: "bg-blue-100", activeColor: "bg-blue-500" },
   {
-    id: 5,
-    name: "Вдохновение",
-    color: "bg-green-100",
-    activeColor: "bg-green-500",
+    id: 4,
+    name: "Гнев",
+    color: "bg-red-100",
+    activeColor: "bg-red-500",
   },
   {
-    id: 6,
-    name: "Спокойствие",
-    color: "bg-teal-100",
-    activeColor: "bg-teal-500",
+    id: 5,
+    name: "Удивление",
+    color: "bg-green-100",
+    activeColor: "bg-green-500",
   },
 ];
 
@@ -68,30 +73,24 @@ const auth = getAuth();
 const db = getFirestore();
 const entries = ref([]);
 
-onMounted(() => {
-  onAuthStateChanged(auth, async (currentUser) => {
-    if (currentUser) {
-      user.value = currentUser;
-      await loadDataFromFirebase(currentUser.uid);
-    }
-  });
-});
+// Fetch entries using API method
+const fetchEntries = async (userId) => {
+  const result = await getEmotionBarometerData(db, userId);
+  console.log(result);
 
-// Load entries from Firebase
-const loadDataFromFirebase = async (userId) => {
-  const userRef = doc(db, "emotion_barometer", userId);
-
-  try {
-    const docSnap = await getDoc(userRef);
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      entries.value = data.entries || [];
-    } else {
-      console.log("No entries found for user");
-      entries.value = [];
-    }
-  } catch (error) {
-    console.error("Error loading data from Firebase:", error);
+  if (result.success) {
+    entries.value = result.data;
+  } else {
+    console.error(result.message);
+    entries.value = [];
   }
 };
+
+// Listen for auth state changes
+onAuthStateChanged(auth, async (currentUser) => {
+  if (currentUser) {
+    user.value = currentUser;
+    await fetchEntries(currentUser.uid);
+  }
+});
 </script>

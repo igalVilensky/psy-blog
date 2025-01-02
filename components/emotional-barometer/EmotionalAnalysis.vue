@@ -14,7 +14,7 @@
     <!-- Header -->
     <div class="flex items-center gap-4 mb-10">
       <div
-        class="w-12 h-12 bg-[#FF6B6B]/10 rounded-xl flex items-center justify-center flex-shrink-0"
+        class="w-12 h-12 bg-[#FF6B6B]/10 rounded-full flex items-center justify-center flex-shrink-0"
       >
         <i class="far fa-face-smile text-xl text-[#FF6B6B]"></i>
       </div>
