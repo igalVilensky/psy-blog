@@ -1,5 +1,7 @@
 <template>
-  <div class="w-full max-w-2xl mx-auto bg-white rounded-xl shadow-lg p-6">
+  <div
+    class="w-full max-w-2xl mx-auto bg-white rounded-xl shadow-lg px-6 pb-6 sm:pt-6"
+  >
     <!-- Header Section -->
     <div class="text-center mb-8">
       <h2 class="text-xl font-semibold text-gray-800 mb-3">
@@ -28,7 +30,7 @@
           ]"
         >
           <!-- Emotion Icon -->
-          <div class="text-2xl mb-2">{{ emotion.icon || "😊" }}</div>
+          <div class="text-2xl mb-2">{{ emotionMapper[emotion.id] }}</div>
           <!-- Emotion Name -->
           <div class="text-sm font-medium">{{ emotion.name }}</div>
           <!-- Selection Indicator -->
@@ -54,7 +56,7 @@
           ]"
         >
           <!-- Emotion Icon -->
-          <div class="text-2xl mb-2">{{ emotion.icon || "😊" }}</div>
+          <div class="text-2xl mb-2">{{ emotionMapper[emotion.id] }}</div>
           <!-- Emotion Name -->
           <div class="text-sm font-medium">{{ emotion.name }}</div>
           <!-- Selection Indicator -->
@@ -73,49 +75,21 @@ const props = defineProps({
   emotions: {
     type: Array,
     required: true,
-    default: () => [
-      {
-        id: 1,
-        name: "Радость",
-        color: "bg-yellow-100",
-        activeColor: "bg-yellow-500",
-        icon: "😊",
-      },
-      {
-        id: 2,
-        name: "Грусть",
-        color: "bg-blue-100",
-        activeColor: "bg-blue-500",
-        icon: "😢",
-      },
-      {
-        id: 3,
-        name: "Злость",
-        color: "bg-red-100",
-        activeColor: "bg-red-500",
-        icon: "😠",
-      },
-      {
-        id: 4,
-        name: "Страх",
-        color: "bg-purple-100",
-        activeColor: "bg-purple-500",
-        icon: "😨",
-      },
-      {
-        id: 5,
-        name: "Спокойствие",
-        color: "bg-green-100",
-        activeColor: "bg-green-500",
-        icon: "😌",
-      },
-    ],
   },
   selectedEmotion: {
     type: Object,
     default: null,
   },
 });
+
+// Mapper to link emotions with their corresponding emoji
+const emotionMapper = {
+  1: "😊", // Радость
+  2: "😢", // Грусть
+  3: "😨", // Страх
+  4: "😠", // Гнев
+  5: "😲", // Удивление
+};
 
 const emit = defineEmits(["select-emotion"]);
 </script>
