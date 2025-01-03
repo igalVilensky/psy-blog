@@ -4,17 +4,15 @@
   >
     <div class="container mx-auto px-4 max-w-7xl">
       <div class="grid grid-cols-1">
-        <!-- Emotion Chart -->
-
-        <EmotionChart :entries="entries" :emotions="emotions" />
-
         <!-- Journal History Section -->
+        <JournalHistory
+          :emotions="emotions"
+          :lifeSpheres="lifeSpheres"
+          :entries="entries"
+        />
         <div class="mt-8">
-          <JournalHistory
-            :emotions="emotions"
-            :lifeSpheres="lifeSpheres"
-            :entries="entries"
-          />
+          <!-- Emotion Chart -->
+          <EmotionChart :entries="entries" :emotions="emotions" />
         </div>
       </div>
     </div>

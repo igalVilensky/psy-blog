@@ -12,15 +12,6 @@
         rows="4"
         placeholder="Опишите ваши мысли и чувства..."
       ></textarea>
-      <div v-if="journalEntry.length >= minCharacters" class="mt-3">
-        <button
-          @click="showNextSection('perception')"
-          class="px-4 py-2 bg-[#FF6B6B] text-white rounded-lg text-sm hover:bg-[#FF5252] transition-colors"
-          :disabled="sections.perception.visible"
-        >
-          Продолжить →
-        </button>
-      </div>
     </div>
 
     <!-- Additional Question 1 -->
@@ -39,15 +30,6 @@
         rows="4"
         placeholder="Опишите изменения в вашем восприятии..."
       ></textarea>
-      <div v-if="perceptionEntry.length >= minCharacters" class="mt-3">
-        <button
-          @click="showNextSection('coping')"
-          class="px-4 py-2 bg-[#FF6B6B] text-white rounded-lg text-sm hover:bg-[#FF5252] transition-colors"
-          :disabled="sections.coping.visible"
-        >
-          Продолжить →
-        </button>
-      </div>
     </div>
 
     <!-- Additional Question 2 -->
@@ -67,15 +49,27 @@
         rows="4"
         placeholder="Опишите ваши стратегии..."
       ></textarea>
-      <div v-if="copingEntry.length >= minCharacters" class="mt-3">
-        <p class="text-sm text-green-600">Спасибо за ваши ответы! 🎉</p>
-      </div>
+    </div>
+
+    <!-- Single Continue Button -->
+    <div v-if="showContinueButton" class="mt-3">
+      <button
+        @click="handleContinue"
+        class="px-4 py-2 bg-[#FF6B6B] text-white rounded-lg text-sm hover:bg-[#FF5252] transition-colors"
+      >
+        Продолжить →
+      </button>
+    </div>
+
+    <!-- Completion Message -->
+    <div v-if="isCompleted" class="mt-3">
+      <p class="text-sm text-green-600">Спасибо за ваши ответы! 🎉</p>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, watch, defineProps, defineEmits, reactive } from "vue";
+import { ref, watch, defineProps, defineEmits, reactive, computed } from "vue";
 
 const props = defineProps({
   journalEntry: {
@@ -106,11 +100,32 @@ const journalTextarea = ref(null);
 const perceptionTextarea = ref(null);
 const copingTextarea = ref(null);
 
-const minCharacters = 10; // Minimum characters required before showing next button
+const minCharacters = 10;
 
 const sections = reactive({
   perception: { visible: false },
   coping: { visible: false },
+});
+
+const currentStep = ref("journal"); // 'journal', 'perception', 'coping'
+
+const isCompleted = computed(() => {
+  return sections.coping.visible && copingEntry.value.length >= minCharacters;
+});
+
+const showContinueButton = computed(() => {
+  if (currentStep.value === "journal") {
+    return (
+      journalEntry.value.length >= minCharacters && !sections.perception.visible
+    );
+  } else if (currentStep.value === "perception") {
+    return (
+      perceptionEntry.value.length >= minCharacters && !sections.coping.visible
+    );
+  } else if (currentStep.value === "coping") {
+    return false;
+  }
+  return false;
 });
 
 // Watch for changes and emit events
@@ -126,15 +141,19 @@ watch(copingEntry, (newValue) => {
   emit("update:coping-entry", newValue);
 });
 
-const showNextSection = (section) => {
-  sections[section].visible = true;
-  // Focus the newly revealed textarea after a short delay to allow for animation
-  setTimeout(() => {
-    if (section === "perception") {
+const handleContinue = () => {
+  if (currentStep.value === "journal") {
+    sections.perception.visible = true;
+    currentStep.value = "perception";
+    setTimeout(() => {
       perceptionTextarea.value?.focus();
-    } else if (section === "coping") {
+    }, 100);
+  } else if (currentStep.value === "perception") {
+    sections.coping.visible = true;
+    currentStep.value = "coping";
+    setTimeout(() => {
       copingTextarea.value?.focus();
-    }
-  }, 100);
+    }, 100);
+  }
 };
 </script>
