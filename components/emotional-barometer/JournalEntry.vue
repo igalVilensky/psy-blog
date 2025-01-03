@@ -6,44 +6,76 @@
         Опишите, что вызвало эту эмоцию и какие мысли у вас возникли:
       </p>
       <textarea
+        ref="journalTextarea"
         v-model="journalEntry"
         class="w-full p-3 sm:p-4 text-sm sm:text-base border-2 border-[#FFD1DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B6B]"
         rows="4"
         placeholder="Опишите ваши мысли и чувства..."
       ></textarea>
+      <div v-if="journalEntry.length >= minCharacters" class="mt-3">
+        <button
+          @click="showNextSection('perception')"
+          class="px-4 py-2 bg-[#FF6B6B] text-white rounded-lg text-sm hover:bg-[#FF5252] transition-colors"
+          :disabled="sections.perception.visible"
+        >
+          Продолжить →
+        </button>
+      </div>
     </div>
 
     <!-- Additional Question 1 -->
-    <div>
+    <div
+      v-if="sections.perception.visible"
+      :class="{ 'opacity-0 translate-y-4': !sections.perception.visible }"
+      class="transition-all duration-500"
+    >
       <p class="text-sm text-gray-600 mb-3">
         Как эта ситуация повлияла на ваше восприятие себя и окружающих?
       </p>
       <textarea
+        ref="perceptionTextarea"
         v-model="perceptionEntry"
         class="w-full p-3 sm:p-4 text-sm sm:text-base border-2 border-[#FFD1DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B6B]"
         rows="4"
         placeholder="Опишите изменения в вашем восприятии..."
       ></textarea>
+      <div v-if="perceptionEntry.length >= minCharacters" class="mt-3">
+        <button
+          @click="showNextSection('coping')"
+          class="px-4 py-2 bg-[#FF6B6B] text-white rounded-lg text-sm hover:bg-[#FF5252] transition-colors"
+          :disabled="sections.coping.visible"
+        >
+          Продолжить →
+        </button>
+      </div>
     </div>
 
     <!-- Additional Question 2 -->
-    <div>
+    <div
+      v-if="sections.coping.visible"
+      :class="{ 'opacity-0 translate-y-4': !sections.coping.visible }"
+      class="transition-all duration-500"
+    >
       <p class="text-sm text-gray-600 mb-3">
         Какие стратегии совладания вы использовали или могли бы использовать в
         подобной ситуации?
       </p>
       <textarea
+        ref="copingTextarea"
         v-model="copingEntry"
         class="w-full p-3 sm:p-4 text-sm sm:text-base border-2 border-[#FFD1DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B6B]"
         rows="4"
         placeholder="Опишите ваши стратегии..."
       ></textarea>
+      <div v-if="copingEntry.length >= minCharacters" class="mt-3">
+        <p class="text-sm text-green-600">Спасибо за ваши ответы! 🎉</p>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, watch, defineProps, defineEmits } from "vue";
+import { ref, watch, defineProps, defineEmits, reactive } from "vue";
 
 const props = defineProps({
   journalEntry: {
@@ -70,7 +102,18 @@ const journalEntry = ref(props.journalEntry);
 const perceptionEntry = ref(props.perceptionEntry);
 const copingEntry = ref(props.copingEntry);
 
-// Watch for changes in all entries and emit events
+const journalTextarea = ref(null);
+const perceptionTextarea = ref(null);
+const copingTextarea = ref(null);
+
+const minCharacters = 10; // Minimum characters required before showing next button
+
+const sections = reactive({
+  perception: { visible: false },
+  coping: { visible: false },
+});
+
+// Watch for changes and emit events
 watch(journalEntry, (newValue) => {
   emit("update:journal-entry", newValue);
 });
@@ -82,4 +125,16 @@ watch(perceptionEntry, (newValue) => {
 watch(copingEntry, (newValue) => {
   emit("update:coping-entry", newValue);
 });
+
+const showNextSection = (section) => {
+  sections[section].visible = true;
+  // Focus the newly revealed textarea after a short delay to allow for animation
+  setTimeout(() => {
+    if (section === "perception") {
+      perceptionTextarea.value?.focus();
+    } else if (section === "coping") {
+      copingTextarea.value?.focus();
+    }
+  }, 100);
+};
 </script>

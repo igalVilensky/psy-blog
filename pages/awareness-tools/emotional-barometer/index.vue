@@ -287,7 +287,11 @@ const canProceed = computed(() => {
     case 3:
       return true; // Intensity level is always valid due to the default value
     case 4:
-      return journalEntry.value.trim().length > 0; // Journal entry must be non-empty
+      return (
+        journalEntry.value.trim().length > 0 &&
+        perceptionEntry.value.trim().length > 0 &&
+        copingEntry.value.trim().length > 0
+      );
     case 5:
       return selectedTags.value.length > 0; // At least one life sphere must be selected
     default:
