@@ -1,6 +1,6 @@
 <template>
   <div
-    class="max-w-xl mx-auto p-6 bg-white rounded-xl shadow-sm border border-gray-100"
+    class="w-full max-w-2xl mx-auto bg-white rounded-xl shadow-lg px-3 sm:px-6 pb-6 sm:pt-6"
   >
     <div class="mb-6">
       <h3 class="text-lg font-medium text-gray-900 mb-2">

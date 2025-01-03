@@ -12,7 +12,9 @@
       </div>
 
       <!-- Emotional Barometer Section -->
-      <div class="bg-white shadow-xl rounded-2xl p-4 sm:p-6 mb-8">
+      <div
+        class="bg-white shadow-xl rounded-2xl p-4 sm:p-6 mb-8 max-w-3xl w-full mx-auto"
+      >
         <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-[#4A4238]">
           Измерьте свои эмоции
         </h2>
@@ -104,7 +106,9 @@
       </div>
 
       <!-- Links to Additional Tools -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl w-full mx-auto"
+      >
         <a
           href="/awareness-tools/emotional-barometer/analysis"
           class="bg-white shadow-lg rounded-lg p-4 hover:shadow-xl transition-shadow text-center"
@@ -232,16 +236,48 @@ const subEmotionsMap = {
 };
 
 const lifeSpheres = [
-  { name: "Работа", color: "bg-blue-100", activeColor: "bg-[#FF6B6B]" },
-  { name: "Семья", color: "bg-green-100", activeColor: "bg-[#FF6B6B]" },
-  { name: "Здоровье", color: "bg-purple-100", activeColor: "bg-[#FF6B6B]" },
+  {
+    name: "Работа",
+    color: "bg-blue-100",
+    activeColor: "bg-[#FF6B6B]",
+    dotColor: "bg-blue-400",
+    ringColor: "blue-400",
+  },
+  {
+    name: "Семья",
+    color: "bg-green-100",
+    activeColor: "bg-[#FF6B6B]",
+    dotColor: "bg-green-400",
+    ringColor: "green-400",
+  },
+  {
+    name: "Здоровье",
+    color: "bg-purple-100",
+    activeColor: "bg-[#FF6B6B]",
+    dotColor: "bg-purple-400",
+    ringColor: "purple-400",
+  },
   {
     name: "Личностный рост",
     color: "bg-yellow-100",
     activeColor: "bg-[#FF6B6B]",
+    dotColor: "bg-yellow-400",
+    ringColor: "yellow-400",
   },
-  { name: "Отношения", color: "bg-pink-100", activeColor: "bg-[#FF6B6B]" },
-  { name: "Хобби", color: "bg-orange-100", activeColor: "bg-[#FF6B6B]" },
+  {
+    name: "Отношения",
+    color: "bg-pink-100",
+    activeColor: "bg-[#FF6B6B]",
+    dotColor: "bg-pink-400",
+    ringColor: "pink-400",
+  },
+  {
+    name: "Хобби",
+    color: "bg-orange-100",
+    activeColor: "bg-[#FF6B6B]",
+    dotColor: "bg-orange-400",
+    ringColor: "orange-400",
+  },
 ];
 
 const user = ref(null);

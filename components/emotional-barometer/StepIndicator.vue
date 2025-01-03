@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-8">
+  <div class="mb-8 max-w-2xl w-full mx-auto">
     <!-- Header with step information -->
     <div class="flex justify-between items-center mb-3">
       <div class="flex items-center gap-2">
