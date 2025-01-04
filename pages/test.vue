@@ -18,7 +18,7 @@
         class="h-1 bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600"
       ></div>
 
-      <!-- Hero Section (Unchanged, but with updated colors) -->
+      <!-- Hero Section (Unchanged) -->
       <section
         class="relative overflow-hidden bg-gradient-to-br from-slate-50 to-blue-50"
       >
@@ -101,65 +101,42 @@
         </div>
       </section>
 
-      <!-- New: Community Engagement Section -->
+      <!-- Features Grid - Redesigned with Interactive Cards -->
       <section class="py-16 md:py-24 bg-white">
         <div class="container mx-auto px-4">
-          <div class="max-w-3xl mx-auto text-center mb-16">
-            <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-6">
-              Присоединяйтесь к нашему сообществу
-            </h2>
-            <p class="text-lg text-slate-600">
-              Общайтесь, делитесь опытом и находите поддержку среди
-              единомышленников.
-            </p>
-          </div>
+          <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">
+            <span
+              class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600"
+            >
+              Что вы найдете здесь?
+            </span>
+          </h2>
           <div class="grid md:grid-cols-3 gap-8">
             <div
-              class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-slate-100"
+              v-for="(topic, index) in popularTopics"
+              :key="index"
+              class="group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-slate-100"
             >
-              <div class="text-center">
-                <i class="fas fa-users text-5xl text-blue-600 mb-6"></i>
+              <div
+                class="absolute inset-0 bg-gradient-to-br from-indigo-50/50 to-blue-50/50 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"
+              ></div>
+              <div class="relative z-10">
+                <div
+                  class="w-14 h-14 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"
+                >
+                  <i :class="topic.icon" class="text-2xl text-blue-600"></i>
+                </div>
                 <h3 class="text-xl font-semibold text-slate-800 mb-4">
-                  Общение
+                  {{ topic.title }}
                 </h3>
-                <p class="text-slate-600">
-                  Общайтесь с людьми, которые разделяют ваши интересы и цели.
-                </p>
-              </div>
-            </div>
-            <div
-              class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-slate-100"
-            >
-              <div class="text-center">
-                <i
-                  class="fas fa-hand-holding-heart text-5xl text-blue-600 mb-6"
-                ></i>
-                <h3 class="text-xl font-semibold text-slate-800 mb-4">
-                  Поддержка
-                </h3>
-                <p class="text-slate-600">
-                  Получайте поддержку и советы от опытных участников.
-                </p>
-              </div>
-            </div>
-            <div
-              class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-slate-100"
-            >
-              <div class="text-center">
-                <i class="fas fa-lightbulb text-5xl text-blue-600 mb-6"></i>
-                <h3 class="text-xl font-semibold text-slate-800 mb-4">
-                  Вдохновение
-                </h3>
-                <p class="text-slate-600">
-                  Находите вдохновение в историях успеха других участников.
-                </p>
+                <p class="text-slate-600">{{ topic.description }}</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- New: Psychological Tools Section -->
+      <!-- Tools Section - Redesigned with Interactive Cards -->
       <section class="py-16 md:py-24 bg-gradient-to-b from-white to-slate-50">
         <div class="container mx-auto px-4">
           <div class="max-w-3xl mx-auto text-center mb-16">
@@ -203,7 +180,84 @@
         </div>
       </section>
 
-      <!-- New: Call to Action Section -->
+      <!-- Free Materials Section - Redesigned with Interactive Cards -->
+      <section class="py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-4">
+          <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">
+            <span
+              class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600"
+            >
+              Бесплатные материалы
+            </span>
+          </h2>
+          <div class="grid md:grid-cols-3 gap-8">
+            <div
+              v-for="(material, index) in freeMaterials"
+              :key="index"
+              class="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-slate-100"
+            >
+              <div class="mb-6">
+                <i :class="material.icon" class="text-3xl text-blue-600"></i>
+              </div>
+              <h3 class="text-xl font-semibold text-slate-800 mb-3">
+                {{ material.title }}
+              </h3>
+              <p class="text-slate-600 mb-4">{{ material.description }}</p>
+              <NuxtLink
+                :to="material.link"
+                class="inline-flex items-center text-blue-600 font-medium group-hover:text-blue-700 transition-colors"
+              >
+                {{ material.linkText }}
+                <i
+                  class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"
+                ></i>
+              </NuxtLink>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Testimonials - Redesigned with Interactive Cards -->
+      <section
+        class="py-16 md:py-24 bg-gradient-to-br from-blue-600 to-indigo-700"
+      >
+        <div class="container mx-auto px-4">
+          <h2
+            class="text-3xl md:text-4xl font-bold text-center text-white mb-16"
+          >
+            Отзывы наших участников
+          </h2>
+          <div class="grid md:grid-cols-3 gap-8">
+            <div
+              v-for="(testimonial, index) in testimonials"
+              :key="index"
+              class="bg-white rounded-2xl p-6 shadow-xl transform hover:-translate-y-2 transition-all duration-300"
+            >
+              <div class="mb-6">
+                <i class="fas fa-quote-left text-3xl text-blue-200"></i>
+              </div>
+              <p class="text-slate-600 mb-6 italic">{{ testimonial.text }}</p>
+              <div class="flex items-center">
+                <div class="mr-4">
+                  <div
+                    class="w-12 h-12 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-full flex items-center justify-center text-blue-600 font-medium"
+                  >
+                    {{ testimonial.name[0] }}
+                  </div>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-slate-800">
+                    {{ testimonial.name }}
+                  </h4>
+                  <p class="text-slate-500 text-sm">{{ testimonial.course }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA Section - Redesigned with Interactive Button -->
       <section class="py-16 md:py-24 bg-white">
         <div class="container mx-auto px-4">
           <div class="max-w-3xl mx-auto text-center">
