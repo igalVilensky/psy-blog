@@ -1,5 +1,5 @@
 <template>
-  <nav class="text-black bg-gray-50">
+  <nav class="text-white bg-[#0D1117]">
     <div
       class="container max-w-7xl w-full mx-auto flex justify-between items-center p-4"
     >
@@ -7,7 +7,7 @@
       <NuxtLink
         to="/"
         exact-active-class="text-pink-500"
-        class="text-2xl font-bold hover:text-pink-500 focus:outline-none"
+        class="text-2xl font-bold hover:text-pink-500 focus:outline-none bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400"
         aria-label="Home"
         @click="closeDropdown"
       >
@@ -20,7 +20,7 @@
           <li class="px-4 relative group">
             <div
               exact-active-class="text-pink-500"
-              class="text-gray-800 text-base cursor-pointer whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500 flex items-center"
+              class="text-gray-300 text-base cursor-pointer whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500 flex items-center"
             >
               Курсы
               <i class="fas fa-chevron-down ml-1 text-sm"></i>
@@ -31,7 +31,7 @@
             <NuxtLink
               to="/awareness-tools"
               active-class="text-pink-500"
-              class="text-gray-800 cursor-pointer text-base whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500 flex items-center"
+              class="text-gray-300 cursor-pointer text-base whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500 flex items-center"
             >
               Инструменты осознанности
               <i class="fas fa-chevron-down ml-1 text-sm"></i>
@@ -42,7 +42,7 @@
             <NuxtLink
               to="/blog"
               exact-active-class="text-pink-500"
-              class="text-gray-800 text-base whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
+              class="text-gray-300 text-base whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
             >
               Блог
             </NuxtLink>
@@ -51,7 +51,7 @@
             <NuxtLink
               to="/about"
               exact-active-class="text-pink-500"
-              class="text-gray-800 text-base whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
+              class="text-gray-300 text-base whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
             >
               О проекте
             </NuxtLink>
@@ -61,7 +61,7 @@
             <NuxtLink
               to="/contact"
               exact-active-class="text-pink-500"
-              class="text-gray-800 text-base whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
+              class="text-gray-300 text-base whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
             >
               Связь
             </NuxtLink>
@@ -70,7 +70,7 @@
             <template v-if="currentUser">
               <div class="relative group">
                 <div
-                  class="flex items-center space-x-2 text-gray-800 hover:text-pink-500 cursor-pointer"
+                  class="flex items-center space-x-2 text-gray-300 hover:text-pink-500 cursor-pointer"
                 >
                   <span class="font-semibold">{{
                     currentUser.displayName
@@ -80,18 +80,18 @@
 
                 <!-- User Dropdown Menu (Now uses group-hover) -->
                 <div
-                  class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300"
+                  class="absolute right-0 mt-2 w-48 bg-[#1A1B26] rounded-md shadow-lg py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300"
                 >
                   <NuxtLink
                     to="/profile"
                     exact-active-class="text-pink-500"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    class="block px-4 py-2 text-sm text-gray-300 hover:bg-[#242436]"
                   >
                     Профиль
                   </NuxtLink>
                   <button
                     @click="handleLogout"
-                    class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    class="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-[#242436]"
                   >
                     Выйти
                   </button>
@@ -103,14 +103,14 @@
               <NuxtLink
                 to="/login"
                 exact-active-class="text-pink-500"
-                class="text-gray-800 font-semibold hover:text-pink-500 mr-4"
+                class="text-gray-300 font-semibold hover:text-pink-500 mr-4"
               >
                 Войти
               </NuxtLink>
               <NuxtLink
                 to="/register"
                 exact-active-class="text-pink-500"
-                class="bg-pink-500 text-white px-4 py-2 rounded-md hover:bg-pink-600 transition-colors duration-300"
+                class="bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 py-2 rounded-md hover:from-pink-600 hover:to-red-600 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 focus:ring-offset-[#0D1117]"
               >
                 Регистрация
               </NuxtLink>
@@ -127,17 +127,17 @@
           aria-label="Toggle Menu"
         >
           <span
-            class="block w-6 h-0.5 bg-black transition-all duration-500 ease-in-out"
+            class="block w-6 h-0.5 bg-white transition-all duration-500 ease-in-out"
             :class="
               isDropdownOpen ? 'rotate-45 translate-y-2' : 'translate-y-0'
             "
           ></span>
           <span
-            class="block w-6 h-0.5 bg-black mt-1.5 transition-all duration-500 ease-in-out"
+            class="block w-6 h-0.5 bg-white mt-1.5 transition-all duration-500 ease-in-out"
             :class="isDropdownOpen ? 'opacity-0' : 'opacity-100'"
           ></span>
           <span
-            class="block w-6 h-0.5 bg-black mt-1.5 transition-all duration-500 ease-in-out"
+            class="block w-6 h-0.5 bg-white mt-1.5 transition-all duration-500 ease-in-out"
             :class="
               isDropdownOpen ? '-rotate-45 -translate-y-2' : 'translate-y-0'
             "
@@ -146,7 +146,7 @@
 
         <ul
           :class="[
-            'absolute -right-4 mt-4 bg-pink-400 py-4 rounded shadow-md w-52 overflow-hidden transition-all duration-700 ease-in-out transform z-50',
+            'absolute -right-4 mt-4 bg-[#1A1B26] py-4 rounded shadow-md w-52 overflow-hidden transition-all duration-700 ease-in-out transform z-50',
             isDropdownOpen
               ? 'max-h-fit opacity-100 scale-100'
               : 'max-h-0 opacity-0 scale-95',
@@ -155,7 +155,7 @@
           <!-- Navigation Items -->
           <li class="relative">
             <div
-              class="px-8 py-2 text-white transition-colors duration-300 ease-in-out hover:bg-pink-600 cursor-pointer flex items-center justify-between"
+              class="px-8 py-2 text-gray-300 transition-colors duration-300 ease-in-out hover:bg-[#242436] cursor-pointer flex items-center justify-between"
               @click="toggleSubmenu('courses')"
             >
               Курсы
@@ -173,8 +173,8 @@
 
           <li class="relative">
             <NuxtLink
-              active-class="bg-pink-500"
-              class="px-8 py-2 text-white transition-colors duration-300 ease-in-out hover:bg-pink-600 cursor-pointer flex items-center justify-between"
+              active-class="bg-[#242436]"
+              class="px-8 py-2 text-gray-300 transition-colors duration-300 ease-in-out hover:bg-[#242436] cursor-pointer flex items-center justify-between"
               @click="toggleSubmenu('awareness-tools')"
             >
               Инструменты осознанности
@@ -192,8 +192,8 @@
           <li>
             <NuxtLink
               to="/about"
-              exact-active-class="bg-pink-500"
-              class="block px-8 py-2 text-white transition-colors duration-300 ease-in-out hover:bg-pink-600"
+              exact-active-class="bg-[#242436]"
+              class="block px-8 py-2 text-gray-300 transition-colors duration-300 ease-in-out hover:bg-[#242436]"
               @click="closeDropdown"
             >
               О проекте
@@ -202,8 +202,8 @@
           <li>
             <NuxtLink
               to="/blog"
-              exact-active-class="bg-pink-500"
-              class="block px-8 py-2 text-white transition-colors duration-300 ease-in-out hover:bg-pink-600"
+              exact-active-class="bg-[#242436]"
+              class="block px-8 py-2 text-gray-300 transition-colors duration-300 ease-in-out hover:bg-[#242436]"
               @click="closeDropdown"
             >
               Блог
@@ -212,8 +212,8 @@
           <li>
             <NuxtLink
               to="/contact"
-              exact-active-class="bg-pink-500"
-              class="block px-8 py-2 text-white transition-colors duration-300 ease-in-out hover:bg-pink-600"
+              exact-active-class="bg-[#242436]"
+              class="block px-8 py-2 text-gray-300 transition-colors duration-300 ease-in-out hover:bg-[#242436]"
               @click="closeDropdown"
             >
               Связь
@@ -222,16 +222,16 @@
 
           <!-- Auth Section -->
           <template v-if="currentUser">
-            <li class="border-t border-pink-300 mt-2 pt-2">
-              <span class="block px-8 py-2 text-white">
+            <li class="border-t border-gray-700 mt-2 pt-2">
+              <span class="block px-8 py-2 text-gray-300">
                 {{ currentUser.displayName || currentUser.email }}
               </span>
             </li>
             <li>
               <NuxtLink
                 to="/profile"
-                exact-active-class="bg-pink-500"
-                class="block px-8 py-2 text-white transition-colors duration-300 ease-in-out hover:bg-pink-600"
+                exact-active-class="bg-[#242436]"
+                class="block px-8 py-2 text-gray-300 transition-colors duration-300 ease-in-out hover:bg-[#242436]"
                 @click="closeDropdown"
               >
                 Профиль
@@ -240,18 +240,18 @@
             <li>
               <button
                 @click="handleLogout"
-                class="w-full text-left px-8 py-2 text-white transition-colors duration-300 ease-in-out hover:bg-pink-600"
+                class="w-full text-left px-8 py-2 text-gray-300 transition-colors duration-300 ease-in-out hover:bg-[#242436]"
               >
                 Выйти
               </button>
             </li>
           </template>
           <template v-else>
-            <li class="border-t border-pink-300 mt-2 pt-2">
+            <li class="border-t border-gray-700 mt-2 pt-2">
               <NuxtLink
                 to="/login"
-                exact-active-class="bg-pink-500"
-                class="block px-8 py-2 text-white transition-colors duration-300 ease-in-out hover:bg-pink-600"
+                exact-active-class="bg-[#242436]"
+                class="block px-8 py-2 text-gray-300 transition-colors duration-300 ease-in-out hover:bg-[#242436]"
                 @click="closeDropdown"
               >
                 Войти
@@ -260,8 +260,8 @@
             <li>
               <NuxtLink
                 to="/register"
-                exact-active-class="bg-pink-500"
-                class="block px-8 py-2 text-white transition-colors duration-300 ease-in-out hover:bg-pink-600"
+                exact-active-class="bg-[#242436]"
+                class="block px-8 py-2 text-gray-300 transition-colors duration-300 ease-in-out hover:bg-[#242436]"
                 @click="closeDropdown"
               >
                 Регистрация

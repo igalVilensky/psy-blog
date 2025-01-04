@@ -1,19 +1,45 @@
 <template>
-  <footer
-    class="bg-gradient-to-br from-pink-800 to-purple-900 text-white py-12"
-  >
-    <div class="container mx-auto px-4 max-w-6xl">
-      <div class="grid md:grid-cols-4 gap-8">
+  <footer class="relative bg-[#0D1117] overflow-hidden">
+    <!-- Decorative gradient background -->
+    <div
+      class="absolute inset-0 bg-gradient-to-br from-[#1A1B26] to-[#242436]"
+    ></div>
+    <div
+      class="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(0deg,rgba(13,17,23,0.9),rgba(13,17,23,0.2))]"
+    ></div>
+
+    <!-- Animated gradient orbs -->
+    <div
+      class="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-r from-purple-600/10 to-pink-600/10 rounded-full blur-3xl animate-pulse"
+      style="animation-duration: 7s"
+    ></div>
+    <div
+      class="absolute top-0 left-0 w-96 h-96 bg-gradient-to-r from-blue-600/10 to-purple-600/10 rounded-full blur-3xl animate-pulse"
+      style="animation-duration: 5s"
+    ></div>
+
+    <div class="relative container mx-auto px-4 max-w-6xl py-16">
+      <div class="grid md:grid-cols-4 gap-12">
         <!-- Sitemap Section -->
         <div>
-          <h4 class="text-xl font-bold mb-6 text-white">Карта сайта</h4>
+          <h4
+            class="text-xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400"
+          >
+            Карта сайта
+          </h4>
+          <div
+            class="w-12 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mb-6"
+          ></div>
           <ul class="space-y-3">
             <li v-for="(link, index) in sitemapLinks" :key="index">
               <NuxtLink
                 active-class="text-pink-500"
                 :to="link.to"
-                class="text-gray-300 hover:text-white transition-colors duration-300"
+                class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center group"
               >
+                <span
+                  class="w-1 h-1 bg-blue-500 rounded-full mr-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                ></span>
                 {{ link.label }}
               </NuxtLink>
             </li>
@@ -22,26 +48,44 @@
 
         <!-- Social Media Section -->
         <div>
-          <h4 class="text-xl font-bold mb-6 text-white">Социальные сети</h4>
-          <div class="flex space-x-4">
+          <h4
+            class="text-xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400"
+          >
+            Социальные сети
+          </h4>
+          <div
+            class="w-12 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mb-6"
+          ></div>
+          <div class="flex space-x-6">
             <a
               v-for="(social, index) in socialLinks"
               :key="index"
               :href="social.link"
               target="_blank"
-              class="text-3xl hover:text-pink-400 transition-colors duration-300"
+              class="group relative"
             >
-              <i :class="social.icon"></i>
+              <div
+                class="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg blur opacity-0 group-hover:opacity-100 transition-opacity"
+              ></div>
+              <i
+                :class="social.icon"
+                class="text-3xl relative z-10 transition-transform duration-300 group-hover:scale-110"
+              ></i>
             </a>
           </div>
         </div>
 
         <!-- Email Subscription Section -->
         <div class="md:col-span-2">
-          <h4 class="text-xl font-bold mb-6 text-white">
+          <h4
+            class="text-xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-red-400"
+          >
             Подпишитесь на наши инсайты
           </h4>
-          <p class="text-gray-300 mb-4">
+          <div
+            class="w-12 h-0.5 bg-gradient-to-r from-pink-500 to-red-500 rounded-full mb-6"
+          ></div>
+          <p class="text-gray-300 mb-6">
             Получайте еженедельные советы по личностному росту и развитию
           </p>
           <div class="flex">
@@ -49,11 +93,11 @@
               type="email"
               v-model="email"
               placeholder="Введите ваш email"
-              class="w-full px-4 py-3 rounded-l-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-pink-500"
+              class="w-full px-4 py-3 rounded-l-lg bg-[#242436] border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500 transition-all"
             />
             <button
               @click="subscribeEmail"
-              class="bg-pink-500 text-white px-6 py-3 rounded-r-lg hover:bg-pink-600 transition-colors duration-300"
+              class="px-6 py-3 bg-gradient-to-r from-pink-500 to-red-500 text-white rounded-r-lg hover:from-pink-600 hover:to-red-600 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 focus:ring-offset-[#0D1117]"
             >
               Подписаться
             </button>
@@ -62,24 +106,25 @@
       </div>
 
       <!-- Copyright and Legal -->
-      <div class="mt-12 pt-8 border-t border-pink-700 text-center">
-        <p class="text-gray-400">
-          © {{ new Date().getFullYear() }} Путь к Личностному Росту. Все права
-          защищены.
-        </p>
-        <div class="mt-4 space-x-4">
-          <NuxtLink
-            to="/legal/privacy"
-            class="text-gray-300 hover:text-white transition-colors"
-          >
-            Политика конфиденциальности
-          </NuxtLink>
-          <NuxtLink
-            to="/legal/terms"
-            class="text-gray-300 hover:text-white transition-colors"
-          >
-            Условия использования
-          </NuxtLink>
+      <div class="mt-16 pt-8 border-t border-gray-800">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <p class="text-gray-400 mb-4 md:mb-0">
+            © {{ new Date().getFullYear() }} Путь к Личностному Росту. Все права
+            защищены.
+          </p>
+          <div class="flex space-x-6">
+            <NuxtLink
+              v-for="(link, index) in [
+                'Политика конфиденциальности',
+                'Условия использования',
+              ]"
+              :key="index"
+              :to="index === 0 ? '/legal/privacy' : '/legal/terms'"
+              class="text-gray-400 hover:text-white transition-colors duration-300"
+            >
+              {{ link }}
+            </NuxtLink>
+          </div>
         </div>
       </div>
     </div>

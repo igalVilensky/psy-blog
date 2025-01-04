@@ -1,292 +1,155 @@
 <template>
-  <div
-    class="bg-gradient-to-br from-slate-50 via-blue-50 to-white min-h-screen"
-  >
-    <!-- Loading State -->
-    <div
-      v-if="isLoading"
-      class="fixed inset-0 bg-white/80 backdrop-blur-sm flex justify-center items-center z-50"
-    >
-      <div
-        class="animate-spin rounded-full h-16 w-16 border-4 border-blue-600 border-t-transparent"
-      ></div>
-    </div>
+  <div class="bg-gradient-to-br from-pink-50 via-rose-50 to-white py-12">
+    <div class="container mx-auto px-4 max-w-6xl">
+      <!-- Loading State -->
+      <div v-if="isLoading" class="flex justify-center items-center h-screen">
+        <i class="fas fa-spinner fa-spin fa-2x text-pink-500"></i>
+      </div>
 
-    <div v-else>
-      <!-- Navbar Highlight -->
-      <div
-        class="h-1 bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600"
-      ></div>
+      <div v-else>
+        <!-- Hero Section with Project Description -->
+        <section
+          class="relative text-center mb-16 flex flex-col items-center justify-center sm:py-24 py-12"
+        >
+          <!-- Background Image -->
+          <div
+            class="absolute inset-0 bg-cover bg-center opacity-30"
+            :style="{ backgroundImage: `url(${profileImage})` }"
+          ></div>
 
-      <!-- Hero Section (Unchanged) -->
-      <section
-        class="relative overflow-hidden bg-gradient-to-br from-slate-50 to-blue-50"
-      >
-        <!-- Decorative Elements -->
-        <div
-          class="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-10"
-        ></div>
-        <div
-          class="absolute -top-40 -right-40 w-80 h-80 bg-blue-600/20 rounded-full blur-3xl animate-pulse"
-          style="animation-duration: 5s"
-        ></div>
-        <div
-          class="absolute -bottom-40 -left-40 w-80 h-80 bg-indigo-600/20 rounded-full blur-3xl animate-pulse"
-          style="animation-duration: 7s"
-        ></div>
-
-        <div class="container mx-auto px-4 py-16 md:py-24">
-          <div class="max-w-4xl mx-auto text-center">
-            <div class="animate-fadeIn">
-              <h1
-                class="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 mb-6 leading-tight animate-slideDown"
-              >
-                Ваш Путь к Личностному Росту
-              </h1>
-              <p
-                class="text-lg md:text-xl text-slate-600 mb-8 leading-relaxed animate-slideUp opacity-0"
-                style="animation-delay: 0.3s"
-              >
-                Исследуйте себя, развивайтесь и достигайте своих целей с помощью
-                наших
-                <span class="font-semibold text-blue-600"
-                  >профессиональных инструментов</span
-                >, курсов и материалов.
-              </p>
-              <div
-                class="flex flex-col sm:flex-row gap-4 justify-center animate-fadeIn opacity-0"
-                style="animation-delay: 0.6s"
-              >
-                <NuxtLink
-                  to="/courses"
-                  class="group relative inline-flex items-center justify-center px-8 py-3 bg-blue-600 text-white font-medium rounded-xl overflow-hidden transition-all hover:bg-blue-700"
-                >
-                  <span class="relative z-10">Начать обучение</span>
-                  <div
-                    class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-blue-700 transition-transform duration-300"
-                  ></div>
-                </NuxtLink>
-                <NuxtLink
-                  to="/profile"
-                  class="group inline-flex items-center justify-center px-8 py-3 bg-white text-blue-600 font-medium rounded-xl border-2 border-blue-600 hover:bg-blue-50 transition-colors"
-                >
-                  Открыть профиль
-                  <i
-                    class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"
-                  ></i>
-                </NuxtLink>
-              </div>
-            </div>
-
-            <!-- Floating elements -->
-            <div
-              class="absolute top-1/4 left-10 animate-float"
-              style="animation-delay: 0.2s"
+          <div class="relative z-10">
+            <h1
+              class="text-5xl md:text-6xl font-extrabold text-gray-800 mb-4 tracking-tight leading-tight"
             >
-              <div class="w-12 h-12 bg-blue-100 rounded-lg rotate-12"></div>
-            </div>
-            <div
-              class="absolute bottom-1/4 right-10 animate-float"
-              style="animation-delay: 0.7s"
+              Ваш Путь к Личностному Росту
+            </h1>
+            <p
+              class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed mb-6 px-4"
             >
-              <div class="w-8 h-8 bg-indigo-100 rounded-full"></div>
-            </div>
-            <div
-              class="absolute top-1/3 right-1/4 animate-float"
-              style="animation-delay: 0.4s"
+              Мы разрабатываем уникальные образовательные программы, которые
+              помогают каждому человеку раскрыть свой потенциал через глубокое
+              понимание себя и совершенствование
+              <span class="font-bold text-pink-500">навыков личного роста</span
+              >.
+            </p>
+
+            <!-- CTA Button -->
+            <NuxtLink
+              to="/courses/courses"
+              class="inline-block bg-gradient-to-br from-pink-500 to-purple-500 text-white text-lg font-semibold py-3 px-6 rounded-lg hover:opacity-90 transition duration-300 shadow-lg"
             >
-              <div class="w-10 h-10 bg-blue-50 rounded-lg -rotate-12"></div>
-            </div>
+              Начать обучение
+            </NuxtLink>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- Features Grid - Redesigned with Interactive Cards -->
-      <section class="py-16 md:py-24 bg-white">
-        <div class="container mx-auto px-4">
-          <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">
-            <span
-              class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600"
-            >
-              Что вы найдете здесь?
-            </span>
-          </h2>
+        <!-- Popular Topics Section -->
+        <section class="mb-16">
+          <div class="text-center mb-12">
+            <h3 class="text-3xl font-bold text-gray-800 mb-4">
+              Популярные темы
+            </h3>
+          </div>
+
           <div class="grid md:grid-cols-3 gap-8">
             <div
               v-for="(topic, index) in popularTopics"
               :key="index"
-              class="group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-slate-100"
+              class="bg-white rounded-2xl p-6 shadow-lg transform transition hover:scale-105 hover:shadow-xl"
             >
-              <div
-                class="absolute inset-0 bg-gradient-to-br from-indigo-50/50 to-blue-50/50 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"
-              ></div>
-              <div class="relative z-10">
-                <div
-                  class="w-14 h-14 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"
-                >
-                  <i :class="topic.icon" class="text-2xl text-blue-600"></i>
-                </div>
-                <h3 class="text-xl font-semibold text-slate-800 mb-4">
+              <div class="mb-4">
+                <i :class="topic.icon" class="text-3xl text-pink-500 mb-4"></i>
+                <h4 class="text-xl font-semibold text-gray-800 mb-3">
                   {{ topic.title }}
-                </h3>
-                <p class="text-slate-600">{{ topic.description }}</p>
+                </h4>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Tools Section - Redesigned with Interactive Cards -->
-      <section class="py-16 md:py-24 bg-gradient-to-b from-white to-slate-50">
-        <div class="container mx-auto px-4">
-          <div class="max-w-3xl mx-auto text-center mb-16">
-            <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-6">
-              Психологические инструменты
-            </h2>
-            <p class="text-lg text-slate-600">
-              Профессиональные методики для самопознания и развития
-            </p>
-          </div>
-          <div class="grid md:grid-cols-3 gap-6">
-            <div
-              v-for="tool in psychTools"
-              :key="tool.title"
-              class="group bg-white rounded-xl p-5 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-slate-100"
-            >
-              <div class="aspect-[4/3] rounded-lg overflow-hidden mb-4">
-                <img
-                  :src="tool.image"
-                  :alt="tool.title"
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-              <h3 class="text-lg font-semibold text-slate-800 mb-2">
-                {{ tool.title }}
-              </h3>
-              <p class="text-sm text-slate-600 mb-3 line-clamp-2">
-                {{ tool.description }}
+              <p class="text-gray-600">
+                {{ topic.description }}
               </p>
-              <NuxtLink
-                :to="tool.link"
-                class="inline-flex items-center text-blue-600 text-sm font-medium hover:text-blue-700 transition-colors group"
-              >
-                Подробнее
-                <i
-                  class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"
-                ></i>
-              </NuxtLink>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- Free Materials Section - Redesigned with Interactive Cards -->
-      <section class="py-16 md:py-24 bg-white">
-        <div class="container mx-auto px-4">
-          <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">
-            <span
-              class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600"
-            >
-              Бесплатные материалы
-            </span>
-          </h2>
-          <div class="grid md:grid-cols-3 gap-8">
+        <!-- Discounted Courses Section -->
+        <section class="mb-16">
+          <div class="text-center mb-12">
+            <h3 class="text-3xl font-bold text-gray-800 mb-4">
+              Курсы недели со скидкой
+            </h3>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-8">
             <div
-              v-for="(material, index) in freeMaterials"
+              v-for="(course, index) in discountedCourses"
               :key="index"
-              class="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-slate-100"
+              class="bg-gradient-to-br from-pink-100 to-purple-200 rounded-2xl p-6 shadow-lg"
             >
-              <div class="mb-6">
-                <i :class="material.icon" class="text-3xl text-blue-600"></i>
+              <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">
+                  {{ course.title }}
+                </h3>
+                <span
+                  class="bg-red-500 text-white px-3 py-1 rounded-full text-sm"
+                >
+                  -{{ course.discount }}%
+                </span>
               </div>
-              <h3 class="text-xl font-semibold text-slate-800 mb-3">
-                {{ material.title }}
-              </h3>
-              <p class="text-slate-600 mb-4">{{ material.description }}</p>
-              <NuxtLink
-                :to="material.link"
-                class="inline-flex items-center text-blue-600 font-medium group-hover:text-blue-700 transition-colors"
-              >
-                {{ material.linkText }}
-                <i
-                  class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"
-                ></i>
-              </NuxtLink>
+              <p class="text-gray-700 mb-4">{{ course.description }}</p>
+              <div class="flex justify-between items-center">
+                <span class="text-lg font-semibold text-pink-700">
+                  {{ course.price }} ₽
+                </span>
+                <NuxtLink
+                  to="/signup"
+                  class="inline-block bg-pink-500 text-white text-sm font-semibold py-2 px-4 rounded-lg hover:bg-pink-600 transition"
+                >
+                  Записаться
+                </NuxtLink>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- Testimonials - Redesigned with Interactive Cards -->
-      <section
-        class="py-16 md:py-24 bg-gradient-to-br from-blue-600 to-indigo-700"
-      >
-        <div class="container mx-auto px-4">
-          <h2
-            class="text-3xl md:text-4xl font-bold text-center text-white mb-16"
-          >
+        <!-- Testimonials Section -->
+        <section
+          class="bg-gradient-to-r from-pink-400 to-purple-500 rounded-2xl p-12 text-center"
+        >
+          <h4 class="text-3xl font-bold text-white mb-6">
             Отзывы наших участников
-          </h2>
-          <div class="grid md:grid-cols-3 gap-8">
+          </h4>
+          <div class="grid md:grid-cols-3 gap-6">
             <div
               v-for="(testimonial, index) in testimonials"
               :key="index"
-              class="bg-white rounded-2xl p-6 shadow-xl transform hover:-translate-y-2 transition-all duration-300"
+              class="bg-white rounded-2xl p-6"
             >
-              <div class="mb-6">
-                <i class="fas fa-quote-left text-3xl text-blue-200"></i>
-              </div>
-              <p class="text-slate-600 mb-6 italic">{{ testimonial.text }}</p>
+              <p class="text-gray-700 mb-4 italic">"{{ testimonial.text }}"</p>
               <div class="flex items-center">
                 <div class="mr-4">
                   <div
-                    class="w-12 h-12 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-full flex items-center justify-center text-blue-600 font-medium"
+                    class="w-12 h-12 bg-pink-200 rounded-full flex items-center justify-center"
                   >
                     {{ testimonial.name[0] }}
                   </div>
                 </div>
                 <div>
-                  <h4 class="font-semibold text-slate-800">
+                  <h4 class="font-semibold text-gray-800">
                     {{ testimonial.name }}
                   </h4>
-                  <p class="text-slate-500 text-sm">{{ testimonial.course }}</p>
+                  <p class="text-gray-600 text-sm">{{ testimonial.course }}</p>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      <!-- CTA Section - Redesigned with Interactive Button -->
-      <section class="py-16 md:py-24 bg-white">
-        <div class="container mx-auto px-4">
-          <div class="max-w-3xl mx-auto text-center">
-            <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-6">
-              Готовы начать свой путь?
-            </h2>
-            <p class="text-lg text-slate-600 mb-8">
-              Присоединяйтесь к тысячам людей, которые уже изменили свою жизнь с
-              помощью наших инструментов
-            </p>
-            <NuxtLink
-              to="/register"
-              class="group inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 hover:shadow-lg transition-all"
-            >
-              Создать бесплатный аккаунт
-              <i
-                class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"
-              ></i>
-            </NuxtLink>
-          </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
-
+import profileImage from "@/assets/images/profile.jpg";
 const isLoading = ref(true);
 
 const popularTopics = [
@@ -307,55 +170,20 @@ const popularTopics = [
   },
 ];
 
-const psychTools = ref([
+const discountedCourses = [
   {
-    title: "Тест на эмоциональный интеллект",
-    description:
-      "Определите уровень вашего эмоционального интеллекта и получите рекомендации по его развитию.",
-    image: "/images/emotional-intelligence.jpg",
-    link: "/tools/emotional-intelligence",
+    title: 'Курс "Эмоциональный интеллект"',
+    description: "Научитесь управлять эмоциями и строить глубокие отношения",
+    discount: 30,
+    price: 4900,
   },
   {
-    title: "Дневник благодарности",
-    description:
-      "Ежедневно записывайте то, за что вы благодарны, чтобы развивать позитивное мышление.",
-    image: "/images/gratitude-journal.jpg",
-    link: "/tools/gratitude-journal",
+    title: 'Тренинг "Личная эффективность"',
+    description: "Раскройте свой потенциал и достигайте целей",
+    discount: 25,
+    price: 5700,
   },
-  {
-    title: "Медитации для расслабления",
-    description:
-      "Аудиомедитации для снятия стресса и улучшения эмоционального состояния.",
-    image: "/images/meditation.jpg",
-    link: "/tools/meditation",
-  },
-]);
-
-const freeMaterials = ref([
-  {
-    title: 'Мини-курс: "Управление стрессом"',
-    icon: "fas fa-book",
-    description: "Изучите техники расслабления и сохранения ясности ума.",
-    link: "/free-mini-course",
-    linkText: "Начать курс",
-  },
-  {
-    title: 'Гайд: "Как справляться с тревогой"',
-    icon: "fas fa-file-alt",
-    description:
-      "Практические советы для снижения тревожности в повседневной жизни.",
-    link: "/guides/anxiety",
-    linkText: "Скачать гайд",
-  },
-  {
-    title: 'Чек-лист: "Ежедневные привычки для счастья"',
-    icon: "fas fa-check-circle",
-    description:
-      "Список простых привычек, которые помогут вам чувствовать себя лучше каждый день.",
-    link: "/checklists/happiness",
-    linkText: "Скачать чек-лист",
-  },
-]);
+];
 
 const testimonials = [
   {
@@ -381,62 +209,3 @@ onMounted(() => {
   }, 500);
 });
 </script>
-
-<style>
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-}
-
-@keyframes slideDown {
-  0% {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideUp {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-.animate-slideDown {
-  animation: slideDown 0.8s ease-out forwards;
-}
-
-.animate-slideUp {
-  animation: slideUp 0.8s ease-out forwards;
-}
-
-.animate-fadeIn {
-  animation: fadeIn 0.8s ease-out forwards;
-}
-</style>
