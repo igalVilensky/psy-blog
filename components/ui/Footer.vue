@@ -10,11 +10,11 @@
 
     <!-- Animated gradient orbs -->
     <div
-      class="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-r from-purple-600/10 to-pink-600/10 rounded-full blur-3xl animate-pulse"
+      class="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-r from-purple-600/10 to-pink-600/20 rounded-full blur-3xl animate-pulse"
       style="animation-duration: 7s"
     ></div>
     <div
-      class="absolute top-0 left-0 w-96 h-96 bg-gradient-to-r from-blue-600/10 to-purple-600/10 rounded-full blur-3xl animate-pulse"
+      class="absolute top-0 left-0 w-96 h-96 bg-gradient-to-r from-blue-600/10 to-purple-600/20 rounded-full blur-3xl animate-pulse"
       style="animation-duration: 5s"
     ></div>
 

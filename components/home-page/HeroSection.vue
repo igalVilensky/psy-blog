@@ -8,11 +8,11 @@
       class="absolute inset-0 bg-[url('/grid.svg')] bg-repeat opacity-20"
     ></div>
     <div
-      class="absolute -top-40 -right-40 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl animate-pulse"
+      class="absolute -top-10 right-0 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl animate-pulse"
       style="animation-duration: 5s"
     ></div>
     <div
-      class="absolute -bottom-40 -left-40 w-80 h-80 bg-indigo-600/10 rounded-full blur-3xl animate-pulse"
+      class="absolute -bottom-10 left-0 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl animate-pulse"
       style="animation-duration: 7s"
     ></div>
 
