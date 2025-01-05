@@ -1,18 +1,16 @@
 <template>
   <!-- Hero Section with a Bright Layout -->
   <section
-    class="relative overflow-hidden bg-gradient-to-br from-[#ECF0F1] to-[#F8F9FA]"
+    class="relative overflow-hidden bg-gradient-to-br from-indigo-50 to-white"
   >
     <!-- Decorative Elements -->
+
     <div
-      class="absolute inset-0 bg-[url('/grid.svg')] bg-repeat opacity-10"
-    ></div>
-    <div
-      class="absolute -top-10 right-0 w-96 h-96 bg-[#3498DB]/20 rounded-full blur-3xl animate-pulse"
+      class="absolute -top-10 right-0 w-96 h-96 bg-[#3498DB]/10 rounded-full blur-3xl animate-pulse"
       style="animation-duration: 5s"
     ></div>
     <div
-      class="absolute -bottom-10 left-0 w-96 h-96 bg-[#9B59B6]/20 rounded-full blur-3xl animate-pulse"
+      class="absolute -bottom-10 left-0 w-96 h-96 bg-[#9B59B6]/10 rounded-full blur-3xl animate-pulse"
       style="animation-duration: 7s"
     ></div>
 

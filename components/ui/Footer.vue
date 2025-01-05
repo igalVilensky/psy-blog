@@ -1,49 +1,43 @@
 <template>
-  <footer class="relative bg-[#2C3E50] overflow-hidden text-white">
-    <!-- Enhanced Gradient Background -->
-    <div
-      class="absolute inset-0 bg-gradient-to-br from-[#2C3E50] to-[#34495E] opacity-90"
-    ></div>
-    <div
-      class="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-50"
-      style="
-        mask-image: linear-gradient(
-          0deg,
-          rgba(44, 62, 80, 0.9),
-          rgba(44, 62, 80, 0.4)
-        );
-      "
-    ></div>
-
-    <!-- Animated Gradient Orbs -->
-    <div
-      class="absolute bottom-0 right-0 w-[28rem] h-[28rem] bg-gradient-to-r from-[#3498DB]/30 to-[#27AE60]/20 rounded-full blur-3xl animate-[pulse_7s_infinite]"
-    ></div>
-    <div
-      class="absolute top-0 left-0 w-[24rem] h-[24rem] bg-gradient-to-r from-[#9B59B6]/30 to-[#3498DB]/20 rounded-full blur-3xl animate-[pulse_5s_infinite]"
-    ></div>
+  <footer
+    class="relative bg-gradient-to-b from-[#1A1F35] to-[#1E293B] overflow-hidden text-white"
+  >
+    <!-- Subtle Animated Background Elements -->
+    <div class="absolute inset-0 bg-[url('/subtle-dots.svg')] opacity-5"></div>
+    <div class="absolute inset-0">
+      <!-- Multiple organic shapes with different colors -->
+      <div
+        class="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-[#0EA5E9]/10 to-[#22D3EE]/10 rounded-full blur-3xl animate-slow-drift"
+      ></div>
+      <div
+        class="absolute bottom-1/4 right-1/3 w-80 h-80 bg-gradient-to-r from-[#F59E0B]/10 to-[#F97316]/10 rounded-full blur-3xl animate-slow-pulse"
+      ></div>
+      <div
+        class="absolute top-1/3 right-1/4 w-72 h-72 bg-gradient-to-r from-[#E879F9]/10 to-[#C084FC]/10 rounded-full blur-3xl animate-slow-float"
+      ></div>
+    </div>
 
     <div class="relative container mx-auto px-4 max-w-6xl py-16">
       <div class="grid md:grid-cols-4 gap-12">
         <!-- Sitemap Section -->
         <div>
           <h4
-            class="text-xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[#3498DB] to-[#9B59B6]"
+            class="text-xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE]"
           >
             Карта сайта
           </h4>
           <div
-            class="w-12 h-0.5 bg-gradient-to-r from-[#3498DB] to-[#27AE60] rounded-full mb-6"
+            class="w-12 h-0.5 bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] rounded-full mb-6"
           ></div>
           <ul class="space-y-3">
             <li v-for="(link, index) in sitemapLinks" :key="index">
               <NuxtLink
-                active-class="text-[#27AE60]"
                 :to="link.to"
-                class="text-[#ECF0F1] hover:text-[#3498DB] transition-colors duration-300 flex items-center group"
+                active-class="text-[#E879F9]"
+                class="text-slate-300 hover:text-[#22D3EE] transition-colors duration-300 flex items-center group"
               >
                 <span
-                  class="w-1 h-1 bg-[#27AE60] rounded-full mr-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                  class="w-1.5 h-1.5 bg-[#C084FC] rounded-full mr-2 scale-0 group-hover:scale-100 transition-transform duration-300"
                 ></span>
                 {{ link.label }}
               </NuxtLink>
@@ -54,12 +48,12 @@
         <!-- Social Media Section -->
         <div>
           <h4
-            class="text-xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[#27AE60] to-[#F1C40F]"
+            class="text-xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[#F59E0B] to-[#F97316]"
           >
             Социальные сети
           </h4>
           <div
-            class="w-12 h-0.5 bg-gradient-to-r from-[#27AE60] to-[#F1C40F] rounded-full mb-6"
+            class="w-12 h-0.5 bg-gradient-to-r from-[#F59E0B] to-[#F97316] rounded-full mb-6"
           ></div>
           <div class="flex space-x-6">
             <a
@@ -67,30 +61,30 @@
               :key="index"
               :href="social.link"
               target="_blank"
-              class="group relative"
+              class="group relative p-3"
             >
               <div
-                class="absolute inset-0 bg-gradient-to-r from-[#3498DB]/30 to-[#27AE60]/30 rounded-lg blur opacity-0 group-hover:opacity-100 transition-opacity"
+                class="absolute inset-0 bg-gradient-to-r from-[#F59E0B]/20 to-[#F97316]/20 rounded-lg blur opacity-0 group-hover:opacity-100 transition-opacity"
               ></div>
               <i
                 :class="social.icon"
-                class="text-3xl relative z-10 transition-transform duration-300 group-hover:scale-110"
+                class="text-2xl relative z-10 text-slate-300 group-hover:text-white transition-all duration-300 group-hover:scale-110"
               ></i>
             </a>
           </div>
         </div>
 
-        <!-- Email Subscription Section -->
+        <!-- Newsletter Section -->
         <div class="md:col-span-2">
           <h4
-            class="text-xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[#F1C40F] to-[#9B59B6]"
+            class="text-xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[#E879F9] to-[#C084FC]"
           >
             Подпишитесь на наши инсайты
           </h4>
           <div
-            class="w-12 h-0.5 bg-gradient-to-r from-[#F1C40F] to-[#3498DB] rounded-full mb-6"
+            class="w-12 h-0.5 bg-gradient-to-r from-[#E879F9] to-[#C084FC] rounded-full mb-6"
           ></div>
-          <p class="text-[#ECF0F1] mb-6">
+          <p class="text-slate-300 mb-6">
             Получайте еженедельные советы по личностному росту и развитию
           </p>
           <div class="flex">
@@ -98,11 +92,11 @@
               type="email"
               v-model="email"
               placeholder="Введите ваш email"
-              class="w-full px-4 py-3 rounded-l-lg bg-[#34495E] border border-[#7F8C8D] text-white placeholder-[#BDC3C7] focus:outline-none focus:border-[#3498DB] focus:ring-1 focus:ring-[#3498DB] transition-all"
+              class="w-full px-4 py-3 rounded-l-lg bg-slate-800/50 border border-slate-700 text-white placeholder-slate-400 focus:outline-none focus:border-[#C084FC] focus:ring-1 focus:ring-[#C084FC] transition-all"
             />
             <button
               @click="subscribeEmail"
-              class="px-6 py-3 bg-gradient-to-r from-[#27AE60] to-[#3498DB] text-white rounded-r-lg hover:from-[#2ECC71] hover:to-[#2980B9] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#3498DB] focus:ring-offset-2 focus:ring-offset-[#2C3E50]"
+              class="px-6 py-3 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white rounded-r-lg hover:from-[#22D3EE] hover:to-[#C084FC] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#C084FC] focus:ring-offset-2 focus:ring-offset-[#1A1F35]"
             >
               Подписаться
             </button>
@@ -110,10 +104,10 @@
         </div>
       </div>
 
-      <!-- Copyright and Legal -->
-      <div class="mt-16 pt-8 border-t border-[#7F8C8D]">
+      <!-- Copyright Section -->
+      <div class="mt-16 pt-8 border-t border-slate-800">
         <div class="flex flex-col md:flex-row justify-between items-center">
-          <p class="text-[#BDC3C7] mb-4 md:mb-0">
+          <p class="text-slate-400 mb-4 md:mb-0">
             © {{ new Date().getFullYear() }} Путь к Личностному Росту. Все права
             защищены.
           </p>
@@ -125,7 +119,7 @@
               ]"
               :key="index"
               :to="index === 0 ? '/legal/privacy' : '/legal/terms'"
-              class="text-[#BDC3C7] hover:text-[#3498DB] transition-colors duration-300"
+              class="text-slate-400 hover:text-[#22D3EE] transition-colors duration-300"
             >
               {{ link }}
             </NuxtLink>
@@ -145,11 +139,8 @@ const sitemapLinks = [
   { label: "Бесплатные материалы", to: "/courses/free-resources" },
   { label: "Курсы", to: "/courses/courses" },
   { label: "Гайды", to: "/courses/guides" },
-  { label: " Подкасты ", to: "/courses/podcasts" },
-  {
-    label: "Инструменты осознанности",
-    to: "/awareness-tools",
-  },
+  { label: "Подкасты", to: "/courses/podcasts" },
+  { label: "Инструменты осознанности", to: "/awareness-tools" },
   {
     label: "Эмоциональный барометр",
     to: "/awareness-tools/emotional-barometer",
@@ -158,10 +149,7 @@ const sitemapLinks = [
     label: "Глубокий разговор с картами",
     to: "/awareness-tools/deep-conversation-with-cards",
   },
-  {
-    label: "Дневник эмоций",
-    to: "/awareness-tools/emotion-diary",
-  },
+  { label: "Дневник эмоций", to: "/awareness-tools/emotion-diary" },
   {
     label: "Открытие Архетипа Жизни",
     to: "/awareness-tools/life-purpose-archetype",
@@ -173,15 +161,12 @@ const sitemapLinks = [
 
 const socialLinks = [
   {
-    icon: "fab fa-instagram text-[#F1C40F]",
+    icon: "fab fa-instagram text-[#F97316]",
     link: "https://www.instagram.com/galactik.anastasia/",
   },
+  { icon: "fab fa-telegram text-[#0EA5E9]", link: "https://t.me/your_channel" },
   {
-    icon: "fab fa-telegram text-[#3498DB]",
-    link: "https://t.me/your_channel",
-  },
-  {
-    icon: "fab fa-youtube text-[#E74C3C]",
+    icon: "fab fa-youtube text-[#E879F9]",
     link: "https://www.youtube.com/@gelichka84",
   },
 ];
@@ -189,7 +174,7 @@ const socialLinks = [
 const subscribeEmail = () => {
   if (email.value && validateEmail(email.value)) {
     alert("Спасибо за подписку!");
-    email.value = ""; // Clear input after submission
+    email.value = "";
   } else {
     alert("Пожалуйста, введите корректный email");
   }
@@ -200,3 +185,47 @@ const validateEmail = (email) => {
   return re.test(String(email).toLowerCase());
 };
 </script>
+
+<style scoped>
+@keyframes slow-drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(20px, 20px);
+  }
+}
+
+@keyframes slow-pulse {
+  0%,
+  100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
+
+@keyframes slow-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.animate-slow-drift {
+  animation: slow-drift 20s ease-in-out infinite;
+}
+
+.animate-slow-pulse {
+  animation: slow-pulse 15s ease-in-out infinite;
+}
+
+.animate-slow-float {
+  animation: slow-float 18s ease-in-out infinite;
+}
+</style>
