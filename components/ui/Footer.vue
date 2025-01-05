@@ -33,7 +33,7 @@
             <li v-for="(link, index) in sitemapLinks" :key="index">
               <NuxtLink
                 :to="link.to"
-                active-class="text-[#E879F9]"
+                active-class="text-fuchsia-400"
                 class="text-slate-300 hover:text-[#22D3EE] transition-colors duration-300 flex items-center group"
               >
                 <span

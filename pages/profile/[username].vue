@@ -10,7 +10,6 @@
         >
           <div class="flex items-center gap-6">
             <!-- Profile Avatar -->
-
             <div class="relative group">
               <div
                 v-if="avatarUrl && !loading"
@@ -54,11 +53,15 @@
             </div>
 
             <!-- Greeting & Status -->
-            <div>
+            <div class="w-full max-w-60 sm:max-w-xs">
               <h1 class="text-2xl font-bold text-gray-800 mb-2">
                 {{ authStore.user?.displayName || "User" }}
               </h1>
-              <p class="text-gray-600">Активный пользователь</p>
+              <p class="text-gray-600 font-semibold">
+                <span class="truncate block"
+                  >[{{ authStore.user?.email || "Email not provided" }}]</span
+                >
+              </p>
             </div>
           </div>
 
