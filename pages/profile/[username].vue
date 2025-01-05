@@ -6,9 +6,11 @@
       <!-- Profile Header -->
       <div class="bg-white rounded-2xl shadow-lg p-8 mb-8">
         <div
-          class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+          class="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-4"
         >
-          <div class="flex items-center gap-6">
+          <div
+            class="flex flex-col items-center sm:flex-row sm:items-center gap-6 w-full"
+          >
             <!-- Profile Avatar -->
             <div class="relative group">
               <div
@@ -53,14 +55,14 @@
             </div>
 
             <!-- Greeting & Status -->
-            <div class="w-full max-w-60 sm:max-w-xs">
+            <div class="text-center sm:text-left w-full max-w-60 sm:max-w-xs">
               <h1 class="text-2xl font-bold text-gray-800 mb-2">
                 {{ authStore.user?.displayName || "User" }}
               </h1>
               <p class="text-gray-600 font-semibold">
-                <span class="truncate block"
-                  >[{{ authStore.user?.email || "Email not provided" }}]</span
-                >
+                <span class="truncate block">
+                  [{{ authStore.user?.email || "Email not provided" }}]
+                </span>
               </p>
             </div>
           </div>
