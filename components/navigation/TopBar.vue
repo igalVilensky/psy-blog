@@ -1,13 +1,13 @@
 <template>
-  <nav class="text-white bg-[#0D1117]">
+  <nav class="text-white bg-[#2C3E50]">
     <div
       class="container max-w-7xl w-full mx-auto flex justify-between items-center p-4"
     >
       <!-- Brand/Logo -->
       <NuxtLink
         to="/"
-        exact-active-class="text-pink-500"
-        class="text-2xl font-bold hover:text-pink-500 focus:outline-none bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400"
+        exact-active-class="text-[#3498DB]"
+        class="text-2xl font-bold hover:text-[#3498DB] focus:outline-none bg-clip-text text-transparent bg-gradient-to-r from-[#3498DB] to-[#9B59B6]"
         aria-label="Home"
         @click="closeDropdown"
       >
@@ -19,8 +19,8 @@
         <ul class="flex items-center">
           <li class="px-4 relative group">
             <div
-              exact-active-class="text-pink-500"
-              class="text-gray-300 text-base cursor-pointer whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500 flex items-center"
+              exact-active-class="text-[#3498DB]"
+              class="text-[#ECF0F1] text-base cursor-pointer whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-[#3498DB] flex items-center"
             >
               Курсы
               <i class="fas fa-chevron-down ml-1 text-sm"></i>
@@ -30,8 +30,8 @@
           <li class="px-4 relative group">
             <NuxtLink
               to="/awareness-tools"
-              active-class="text-pink-500"
-              class="text-gray-300 cursor-pointer text-base whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500 flex items-center"
+              active-class="text-[#3498DB]"
+              class="text-[#ECF0F1] cursor-pointer text-base whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-[#3498DB] flex items-center"
             >
               Инструменты осознанности
               <i class="fas fa-chevron-down ml-1 text-sm"></i>
@@ -41,8 +41,8 @@
           <li class="px-4">
             <NuxtLink
               to="/blog"
-              exact-active-class="text-pink-500"
-              class="text-gray-300 text-base whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
+              exact-active-class="text-[#3498DB]"
+              class="text-[#ECF0F1] text-base whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-[#3498DB]"
             >
               Блог
             </NuxtLink>
@@ -50,8 +50,8 @@
           <li class="px-4">
             <NuxtLink
               to="/about"
-              exact-active-class="text-pink-500"
-              class="text-gray-300 text-base whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
+              exact-active-class="text-[#3498DB]"
+              class="text-[#ECF0F1] text-base whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-[#3498DB]"
             >
               О проекте
             </NuxtLink>
@@ -60,8 +60,8 @@
           <li class="px-4">
             <NuxtLink
               to="/contact"
-              exact-active-class="text-pink-500"
-              class="text-gray-300 text-base whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-pink-500"
+              exact-active-class="text-[#3498DB]"
+              class="text-[#ECF0F1] text-base whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-[#3498DB]"
             >
               Связь
             </NuxtLink>
@@ -70,7 +70,7 @@
             <template v-if="currentUser">
               <div class="relative group">
                 <div
-                  class="flex items-center space-x-2 text-gray-300 hover:text-pink-500 cursor-pointer"
+                  class="flex items-center space-x-2 text-[#ECF0F1] hover:text-[#3498DB] cursor-pointer"
                 >
                   <span class="font-semibold">{{
                     currentUser.displayName
@@ -80,18 +80,18 @@
 
                 <!-- User Dropdown Menu (Now uses group-hover) -->
                 <div
-                  class="absolute right-0 mt-2 w-48 bg-[#1A1B26] rounded-md shadow-lg py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300"
+                  class="absolute right-0 mt-2 w-48 bg-[#34495E] rounded-md shadow-lg py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300"
                 >
                   <NuxtLink
                     to="/profile"
-                    exact-active-class="text-pink-500"
-                    class="block px-4 py-2 text-sm text-gray-300 hover:bg-[#242436]"
+                    exact-active-class="text-[#3498DB]"
+                    class="block px-4 py-2 text-sm text-[#ECF0F1] hover:bg-[#27AE60]"
                   >
                     Профиль
                   </NuxtLink>
                   <button
                     @click="handleLogout"
-                    class="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-[#242436]"
+                    class="block w-full text-left px-4 py-2 text-sm text-[#ECF0F1] hover:bg-[#27AE60]"
                   >
                     Выйти
                   </button>
@@ -102,15 +102,15 @@
             <template v-else>
               <NuxtLink
                 to="/login"
-                exact-active-class="text-pink-500"
-                class="text-gray-300 font-semibold hover:text-pink-500 mr-4"
+                exact-active-class="text-[#3498DB]"
+                class="text-[#ECF0F1] font-semibold hover:text-[#3498DB] mr-4"
               >
                 Войти
               </NuxtLink>
               <NuxtLink
                 to="/register"
-                exact-active-class="text-pink-500"
-                class="bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 py-2 rounded-md hover:from-pink-600 hover:to-red-600 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 focus:ring-offset-[#0D1117]"
+                exact-active-class="text-[#3498DB]"
+                class="bg-gradient-to-r from-[#27AE60] to-[#3498DB] text-white px-4 py-2 rounded-md hover:from-[#34B079] hover:to-[#5AB8E6] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#3498DB] focus:ring-offset-2 focus:ring-offset-[#2C3E50]"
               >
                 Регистрация
               </NuxtLink>
@@ -146,7 +146,7 @@
 
         <ul
           :class="[
-            'absolute -right-4 mt-4 bg-[#1A1B26] py-4 rounded shadow-md w-52 overflow-hidden transition-all duration-700 ease-in-out transform z-50',
+            'absolute -right-4 mt-4 bg-[#34495E] py-4 rounded-bl-lg shadow-md w-52 overflow-hidden transition-all duration-700 ease-in-out transform z-50',
             isDropdownOpen
               ? 'max-h-fit opacity-100 scale-100'
               : 'max-h-0 opacity-0 scale-95',
@@ -155,7 +155,7 @@
           <!-- Navigation Items -->
           <li class="relative">
             <div
-              class="px-8 py-2 text-gray-300 transition-colors duration-300 ease-in-out hover:bg-[#242436] cursor-pointer flex items-center justify-between"
+              class="px-8 py-2 text-[#ECF0F1] transition-colors duration-300 ease-in-out hover:bg-[#242436] cursor-pointer flex items-center justify-between"
               @click="toggleSubmenu('courses')"
             >
               Курсы
@@ -174,7 +174,7 @@
           <li class="relative">
             <NuxtLink
               active-class="bg-[#242436]"
-              class="px-8 py-2 text-gray-300 transition-colors duration-300 ease-in-out hover:bg-[#242436] cursor-pointer flex items-center justify-between"
+              class="px-8 py-2 text-[#ECF0F1] transition-colors duration-300 ease-in-out hover:bg-[#242436] cursor-pointer flex items-center justify-between"
               @click="toggleSubmenu('awareness-tools')"
             >
               Инструменты осознанности
@@ -193,7 +193,7 @@
             <NuxtLink
               to="/about"
               exact-active-class="bg-[#242436]"
-              class="block px-8 py-2 text-gray-300 transition-colors duration-300 ease-in-out hover:bg-[#242436]"
+              class="block px-8 py-2 text-[#ECF0F1] transition-colors duration-300 ease-in-out hover:bg-[#242436]"
               @click="closeDropdown"
             >
               О проекте
@@ -203,7 +203,7 @@
             <NuxtLink
               to="/blog"
               exact-active-class="bg-[#242436]"
-              class="block px-8 py-2 text-gray-300 transition-colors duration-300 ease-in-out hover:bg-[#242436]"
+              class="block px-8 py-2 text-[#ECF0F1] transition-colors duration-300 ease-in-out hover:bg-[#242436]"
               @click="closeDropdown"
             >
               Блог
@@ -213,7 +213,7 @@
             <NuxtLink
               to="/contact"
               exact-active-class="bg-[#242436]"
-              class="block px-8 py-2 text-gray-300 transition-colors duration-300 ease-in-out hover:bg-[#242436]"
+              class="block px-8 py-2 text-[#ECF0F1] transition-colors duration-300 ease-in-out hover:bg-[#242436]"
               @click="closeDropdown"
             >
               Связь

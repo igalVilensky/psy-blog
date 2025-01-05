@@ -1,13 +1,13 @@
 <template>
   <ul
-    class="bg-pink-300 overflow-hidden transition-all duration-500 ease-in-out"
+    class="bg-[#2C3E50] border-t border-[#34495E] overflow-hidden transition-all duration-500 ease-in-out"
     :class="[isOpen ? 'max-h-80' : 'max-h-0']"
   >
     <li>
       <NuxtLink
         to="/awareness-tools"
-        exact-active-class="bg-pink-500"
-        class="block px-12 py-2 text-white text-sm transition-colors duration-300 ease-in-out hover:bg-pink-600"
+        exact-active-class="bg-[#3498DB]"
+        class="block px-12 py-2 text-[#ECF0F1] text-sm transition-colors duration-300 ease-in-out hover:bg-[#2980B9] hover:text-white"
         @click="closeDropdown"
       >
         Инструменты осознанности
@@ -16,8 +16,8 @@
     <li>
       <NuxtLink
         to="/awareness-tools/emotional-barometer"
-        exact-active-class="bg-pink-500"
-        class="block px-12 py-2 text-white text-sm transition-colors duration-300 ease-in-out hover:bg-pink-600"
+        exact-active-class="bg-[#3498DB]"
+        class="block px-12 py-2 text-[#ECF0F1] text-sm transition-colors duration-300 ease-in-out hover:bg-[#2980B9] hover:text-white"
         @click="closeDropdown"
       >
         Эмоциональный барометр
@@ -26,8 +26,8 @@
     <li>
       <NuxtLink
         to="/awareness-tools/deep-conversation-with-cards"
-        exact-active-class="bg-pink-500"
-        class="block px-12 py-2 text-white text-sm transition-colors duration-300 ease-in-out hover:bg-pink-600"
+        exact-active-class="bg-[#3498DB]"
+        class="block px-12 py-2 text-[#ECF0F1] text-sm transition-colors duration-300 ease-in-out hover:bg-[#2980B9] hover:text-white"
         @click="closeDropdown"
       >
         Глубокий разговор с картами
@@ -36,8 +36,8 @@
     <li>
       <NuxtLink
         to="/awareness-tools/emotion-diary"
-        exact-active-class="bg-pink-500"
-        class="block px-12 py-2 text-white text-sm transition-colors duration-300 ease-in-out hover:bg-pink-600"
+        exact-active-class="bg-[#3498DB]"
+        class="block px-12 py-2 text-[#ECF0F1] text-sm transition-colors duration-300 ease-in-out hover:bg-[#2980B9] hover:text-white"
         @click="closeDropdown"
       >
         Дневник эмоций
@@ -46,8 +46,8 @@
     <li>
       <NuxtLink
         to="/awareness-tools/life-purpose-archetype"
-        exact-active-class="bg-pink-500"
-        class="block px-12 py-2 text-white text-sm transition-colors duration-300 ease-in-out hover:bg-pink-600"
+        exact-active-class="bg-[#3498DB]"
+        class="block px-12 py-2 text-[#ECF0F1] text-sm transition-colors duration-300 ease-in-out hover:bg-[#2980B9] hover:text-white"
         @click="closeDropdown"
       >
         Открытие Архетипа Жизни

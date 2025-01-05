@@ -1,26 +1,29 @@
 <template>
-  <section class="py-20 bg-gray-900">
+  <section class="py-20 bg-[#ECF0F1]">
     <div class="container mx-auto px-4">
-      <h2 class="text-3xl font-bold text-center text-white mb-12">
+      <h2 class="text-3xl font-bold text-center text-[#2D2D2D] mb-12">
         Курсы и руководства
       </h2>
-      <div class="grid md:grid-cols-3 gap-8">
+      <div
+        class="w-20 h-1 bg-gradient-to-r from-blue-400 to-purple-400 mx-auto mt-4 rounded-full"
+      ></div>
+      <div class="grid md:grid-cols-3 gap-8 mt-12">
         <div
           v-for="course in courses"
           :key="course.title"
-          class="group bg-gray-800 rounded-xl overflow-hidden hover:transform hover:scale-105 transition-all duration-300"
+          class="group bg-white rounded-xl shadow-lg overflow-hidden hover:transform hover:scale-105 transition-all duration-300"
         >
-          <div class="aspect-w-16 aspect-h-9 bg-gray-700"></div>
+          <div class="aspect-w-16 aspect-h-9 bg-[#F8F9FA]"></div>
           <div class="p-6">
-            <h3 class="text-xl font-semibold text-white mb-2">
+            <h3 class="text-xl font-semibold text-[#2D2D2D] mb-2">
               {{ course.title }}
             </h3>
-            <p class="text-gray-400 mb-4">{{ course.description }}</p>
+            <p class="text-[#7F8C8D] mb-4">{{ course.description }}</p>
             <div class="flex justify-between items-center">
-              <span class="text-blue-400">{{ course.duration }}</span>
+              <span class="text-[#3498DB]">{{ course.duration }}</span>
               <NuxtLink
                 :to="course.link"
-                class="text-blue-400 hover:text-blue-300"
+                class="text-[#3498DB] hover:text-[#9B59B6] transition-colors"
               >
                 Подробнее →
               </NuxtLink>
@@ -57,3 +60,10 @@ const courses = ref([
   },
 ]);
 </script>
+
+<style scoped>
+/* Optional shadow to give depth to the section */
+section {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+</style>

@@ -1,10 +1,11 @@
 <template>
   <div class="flex flex-col min-h-screen">
-    <!-- TopBar -->
-    <TopBar />
+    <!-- TopBar (Fixed) -->
+    <TopBar class="fixed top-0 left-0 right-0 z-50" />
 
     <!-- Page Content (Main Content) -->
-    <main>
+    <main class="mt-16">
+      <!-- Adjust to add space below the fixed TopBar -->
       <NuxtPage class="flex-grow" />
     </main>
 
