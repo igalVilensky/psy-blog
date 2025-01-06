@@ -6,11 +6,11 @@
     <!-- Decorative Elements -->
 
     <div
-      class="absolute -top-10 right-0 w-96 h-96 bg-[#3498DB]/10 rounded-full blur-3xl animate-pulse"
+      class="absolute -top-10 right-0 w-96 h-96 bg-[#3498DB]/20 rounded-full blur-3xl animate-pulse"
       style="animation-duration: 5s"
     ></div>
     <div
-      class="absolute -bottom-10 left-0 w-96 h-96 bg-[#9B59B6]/10 rounded-full blur-3xl animate-pulse"
+      class="absolute -bottom-10 left-0 w-96 h-96 bg-[#9B59B6]/20 rounded-full blur-3xl animate-pulse"
       style="animation-duration: 7s"
     ></div>
 
@@ -67,7 +67,7 @@
 @keyframes slideDown {
   0% {
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(-50px);
   }
   100% {
     opacity: 1;
@@ -77,7 +77,7 @@
 @keyframes slideUp {
   0% {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(50px);
   }
   100% {
     opacity: 1;
