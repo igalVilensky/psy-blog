@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-gradient-to-br from-pink-50 via-rose-50 to-white flex flex-col items-center justify-center py-12 px-4"
+    class="bg-gradient-to-br from-indigo-50 via-blue-50 to-white flex flex-col items-center justify-center py-12 px-4"
     :style="{ minHeight: 'calc(100vh - 250px)' }"
   >
     <div

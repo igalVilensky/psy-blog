@@ -1,6 +1,6 @@
 <!-- components/EmotionChart.vue -->
 <template>
-  <div class="w-full max-w-4xl mx-auto">
+  <div class="w-full max-w-5xl mx-auto">
     <div class="relative w-full bg-white rounded-lg shadow-lg p-4 sm:p-6">
       <div class="w-full" :style="{ height: computedHeight + 'px' }">
         <canvas ref="emotionGraph" class="w-full h-full"></canvas>

@@ -80,18 +80,18 @@
 
                 <!-- User Dropdown Menu (Now uses group-hover) -->
                 <div
-                  class="absolute right-0 mt-2 w-48 bg-[#34495E] rounded-md shadow-lg py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300"
+                  class="absolute right-0 mt-[1.2rem] w-48 bg-gradient-to-t from-[#1A1F35] to-[#1E293B] rounded-b-lg shadow-lg py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300"
                 >
                   <NuxtLink
                     to="/profile"
                     exact-active-class="text-sky-500"
-                    class="block px-4 py-2 text-sm text-[#ECF0F1] hover:bg-[#27AE60]"
+                    class="block px-4 py-2 text-sm text-[#ECF0F1] hover:bg-[#3498DB]"
                   >
                     Профиль
                   </NuxtLink>
                   <button
                     @click="handleLogout"
-                    class="block w-full text-left px-4 py-2 text-sm text-[#ECF0F1] hover:bg-[#27AE60]"
+                    class="block w-full text-left px-4 py-2 text-sm text-[#ECF0F1] hover:bg-[#3498DB]"
                   >
                     Выйти
                   </button>
@@ -146,7 +146,7 @@
 
         <ul
           :class="[
-            'absolute -right-4 mt-4 bg-gradient-to-b from-[#1A1F35] to-[#1E293B] text-white py-4 rounded-bl-lg shadow-md w-52 overflow-hidden transition-all duration-700 ease-in-out transform z-50',
+            'absolute -right-4 mt-4 bg-gradient-to-t from-[#1A1F35] to-[#1E293B] text-white py-4 rounded-bl-lg shadow-md w-52 overflow-hidden transition-all duration-700 ease-in-out transform z-50',
             isDropdownOpen
               ? 'max-h-fit opacity-100 scale-100'
               : 'max-h-0 opacity-0 scale-95',
@@ -192,7 +192,7 @@
           <li>
             <NuxtLink
               to="/about"
-              exact-active-class="bg-[#242436]"
+              exact-active-class="bg-[#3498DB]"
               class="block px-8 py-2 text-[#ECF0F1] transition-colors duration-300 ease-in-out hover:bg-sky-500"
               @click="closeDropdown"
             >
@@ -202,7 +202,7 @@
           <li>
             <NuxtLink
               to="/blog"
-              exact-active-class="bg-[#242436]"
+              exact-active-class="bg-[#3498DB]"
               class="block px-8 py-2 text-[#ECF0F1] transition-colors duration-300 ease-in-out hover:bg-sky-500"
               @click="closeDropdown"
             >
@@ -212,7 +212,7 @@
           <li>
             <NuxtLink
               to="/contact"
-              exact-active-class="bg-[#242436]"
+              exact-active-class="bg-[#3498DB]"
               class="block px-8 py-2 text-[#ECF0F1] transition-colors duration-300 ease-in-out hover:bg-sky-500"
               @click="closeDropdown"
             >
@@ -230,7 +230,7 @@
             <li>
               <NuxtLink
                 to="/profile"
-                exact-active-class="bg-[#242436]"
+                exact-active-class="bg-[#3498DB]"
                 class="block px-8 py-2 text-gray-300 transition-colors duration-300 ease-in-out hover:bg-sky-500"
                 @click="closeDropdown"
               >
@@ -250,7 +250,7 @@
             <li class="border-t border-gray-700 mt-2 pt-2">
               <NuxtLink
                 to="/login"
-                exact-active-class="bg-[#242436]"
+                exact-active-class="bg-[#3498DB]"
                 class="block px-8 py-2 text-gray-300 transition-colors duration-300 ease-in-out hover:bg-sky-500"
                 @click="closeDropdown"
               >
@@ -260,7 +260,7 @@
             <li>
               <NuxtLink
                 to="/register"
-                exact-active-class="bg-[#242436]"
+                exact-active-class="bg-[#3498DB]"
                 class="block px-8 py-2 text-gray-300 transition-colors duration-300 ease-in-out hover:bg-sky-500"
                 @click="closeDropdown"
               >

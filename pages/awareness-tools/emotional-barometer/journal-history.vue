@@ -1,8 +1,8 @@
 <template>
   <div
-    class="bg-gradient-to-br from-pink-50 via-rose-50 to-white min-h-screen py-6 sm:py-12"
+    class="bg-gradient-to-br from-indigo-50 via-blue-50 to-white min-h-screen py-6 sm:py-12"
   >
-    <div class="container mx-auto px-4 max-w-7xl">
+    <div class="container mx-auto px-4 max-w-5xl">
       <div class="grid grid-cols-1">
         <!-- Journal History Section -->
         <JournalHistory

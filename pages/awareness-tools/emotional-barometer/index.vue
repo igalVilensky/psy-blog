@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-gradient-to-br from-pink-50 via-rose-50 to-white min-h-screen py-6 sm:py-12"
+    class="bg-gradient-to-br from-indigo-50 via-blue-50 to-white min-h-screen py-6 sm:py-12"
   >
     <div class="container px-4 max-w-7xl mx-auto">
       <!-- Hero Section -->
@@ -128,6 +128,14 @@
       </div>
     </div>
   </div>
+
+  <Notification
+    v-if="notificationMessage"
+    :message="notificationMessage"
+    :type="notificationType"
+    @close="hideNotification"
+    class="z-50"
+  />
 </template>
 
 <script setup>
@@ -148,7 +156,7 @@ import StepIndicator from "~/components/emotional-barometer/StepIndicator.vue";
 import JournalEntry from "~/components/emotional-barometer/JournalEntry.vue";
 import LifeSpheresSelection from "~/components/emotional-barometer/LifeSpheresSelection.vue";
 import SubEmotionSelection from "~/components/emotional-barometer/SubEmotionSelection.vue";
-
+import Notification from "~/components/base/Notification.vue";
 const emotions = [
   {
     id: 1,
@@ -556,7 +564,7 @@ const saveEntryToFirebase = async () => {
       });
     }
 
-    console.log("Entry saved successfully to Firebase!");
+    showNotification("Запись успешно сохранена!");
 
     if (currentRecommendations.value.length > 0) {
       showModal.value = true;
@@ -567,6 +575,9 @@ const saveEntryToFirebase = async () => {
     loadDataFromFirebase(user.value.uid);
   } catch (error) {
     console.error("Error saving entry to Firebase:", error);
+    showNotification(
+      "Ошибка сохранения записи. Пожалуйста, попробуйте еще раз."
+    );
   }
 };
 
@@ -592,5 +603,22 @@ const loadDataFromFirebase = async (userId) => {
 const handleSubmit = () => {
   if (!canSubmit.value) return;
   saveEntryToFirebase();
+};
+
+const notificationMessage = ref("");
+const notificationType = ref("success");
+
+const hideNotification = () => {
+  notificationMessage.value = "";
+};
+
+const showNotification = (message, type = "success") => {
+  console.log("notification", message);
+  notificationMessage.value = message;
+  notificationType.value = type;
+
+  setTimeout(() => {
+    hideNotification();
+  }, 3000);
 };
 </script>

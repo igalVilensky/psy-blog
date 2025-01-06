@@ -1,5 +1,7 @@
 <template>
-  <div class="bg-gradient-to-br from-pink-50 to-white min-h-screen py-12">
+  <div
+    class="bg-gradient-to-br from-indigo-50 via-blue-50 to-white min-h-screen py-12"
+  >
     <div class="container mx-auto px-4 max-w-6xl">
       <!-- Hero Section -->
       <section class="text-center mb-12">

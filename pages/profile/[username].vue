@@ -1,6 +1,6 @@
 <template>
   <div
-    class="min-h-screen bg-gradient-to-br from-pink-50 via-rose-50 to-white py-12"
+    class="min-h-screen bg-gradient-to-br from-indigo-50 via-blue-50 to-white py-12"
   >
     <div class="container mx-auto px-4 max-w-6xl">
       <!-- Profile Header -->

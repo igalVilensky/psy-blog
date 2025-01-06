@@ -1,5 +1,7 @@
 <template>
-  <div class="max-w-4xl mx-auto px-4 py-8">
+  <div
+    class="bg-gradient-to-br max-w-4xl mx-auto px-4 py-8 from-indigo-50 via-blue-50 to-white"
+  >
     <!-- Loading state -->
     <div v-if="isLoading" class="text-center py-12">
       <div

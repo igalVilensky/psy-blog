@@ -1,8 +1,10 @@
 <template>
   <div
-    class="absolute left-0 mt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-in-out z-50"
+    class="absolute left-0 mt-[1.2rem] w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-in-out z-50"
   >
-    <div class="py-2 bg-[#34495E] rounded-lg shadow-lg">
+    <div
+      class="py-2 bg-gradient-to-t from-[#1A1F35] to-[#1E293B] rounded-b-lg shadow-lg"
+    >
       <NuxtLink
         to="/courses/free-resources"
         exact-active-class="bg-[#3498DB] text-white"

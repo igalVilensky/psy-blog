@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex items-center justify-center bg-gradient-to-br from-pink-50 via-rose-50 to-white"
+    class="flex items-center justify-center bg-gradient-to-br from-indigo-50 via-blue-50 to-white"
     :style="{ minHeight: 'calc(100vh - 250px)' }"
   >
     <div class="text-center">
