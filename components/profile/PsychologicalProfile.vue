@@ -26,15 +26,28 @@
           </div>
         </div>
 
-        <!-- Rest of the code remains the same -->
+        <!-- Loading State -->
+        <div
+          v-if="!archetypes.length"
+          class="flex items-center justify-center h-64"
+        >
+          <div
+            class="h-20 w-20 rounded-full bg-pink-100 flex items-center justify-center ring-2 ring-offset-2 ring-gray-100"
+          >
+            <i class="fas fa-spinner fa-spin fa-2x text-[#FF6B6B]"></i>
+          </div>
+        </div>
+
         <!-- Archetypes Section -->
-        <div v-if="activeTab === 'archetypes'" class="space-y-6">
+        <div v-else-if="activeTab === 'archetypes'" class="space-y-6">
+          <!-- Archetypes Grid -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div
-              v-for="archetype in archetypes"
+              v-for="archetype in visibleArchetypes"
               :key="archetype.name"
               class="bg-gray-50 rounded-lg p-6 flex items-center gap-4"
             >
+              <!-- Archetype Icon Container -->
               <div
                 :class="[
                   'w-16 h-16 rounded-full flex items-center justify-center',
@@ -67,6 +80,15 @@
               </div>
             </div>
           </div>
+
+          <!-- Show More Button -->
+          <button
+            v-if="archetypes.length > 4"
+            @click="showMore = !showMore"
+            class="w-full sm:w-auto px-4 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition-colors"
+          >
+            {{ showMore ? "Скрыть" : "Показать больше" }}
+          </button>
         </div>
 
         <!-- Big Five Section -->
@@ -137,7 +159,20 @@
 </template>
 
 <script setup>
+import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const props = defineProps({
+  archetypes: {
+    type: Array,
+    default: () => [],
+  },
+});
+
 const activeTab = ref("archetypes");
+const showMore = ref(false);
 
 const tabs = [
   { id: "archetypes", name: "Архетипы" },
@@ -145,12 +180,14 @@ const tabs = [
   { id: "cognitive", name: "Когнитивные стили" },
 ];
 
-const archetypes = [
-  { name: "Герой", level: 75, color: "pink", icon: "fa-shield-alt" },
-  { name: "Мудрец", level: 60, color: "blue", icon: "fa-book" },
-  { name: "Творец", level: 85, color: "purple", icon: "fa-paint-brush" },
-  { name: "Искатель", level: 70, color: "green", icon: "fa-compass" },
-];
+// Sort archetypes by level (score) in descending order
+const sortedArchetypes = computed(() =>
+  props.archetypes.slice().sort((a, b) => b.level - a.level)
+);
+
+const visibleArchetypes = computed(() =>
+  showMore.value ? sortedArchetypes.value : sortedArchetypes.value.slice(0, 4)
+);
 
 const bigFiveTraits = [
   { name: "Открытость новому", value: 78, color: "pink" },

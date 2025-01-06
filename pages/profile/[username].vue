@@ -54,7 +54,7 @@
       </div>
 
       <!-- Main Content Grid -->
-      <PsychologicalProfile />
+      <PsychologicalProfile :archetypes="archetypeScores" />
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Statistics Section - Takes full width on mobile, 2 columns on large screens -->
@@ -111,49 +111,7 @@
               <canvas ref="emotionChart" class="w-full max-h-64"></canvas>
             </div>
           </div>
-          <!-- Assessment Results Section -->
-          <div class="bg-white rounded-2xl shadow-lg p-8">
-            <h2 class="text-xl font-bold text-gray-800 mb-6">
-              <i class="fas fa-poll text-pink-600 mr-2"></i>
-              Результаты теста
-            </h2>
 
-            <!-- Loading State -->
-            <div v-if="loadingAssessments" class="text-center py-4">
-              <i class="fas fa-spinner fa-spin text-pink-600"></i>
-              Загрузка результатов...
-            </div>
-
-            <!-- Error State -->
-            <div v-if="assessmentError" class="text-red-600 text-center py-4">
-              {{ assessmentError }}
-            </div>
-
-            <!-- Display Latest Assessment Results -->
-            <div v-if="latestAssessment" class="space-y-4">
-              <h3 class="text-lg font-semibold text-gray-800">
-                Последний результат теста
-              </h3>
-              <div
-                v-for="(score, archetype) in latestAssessment.scores"
-                :key="archetype"
-                class="bg-gray-50 rounded-lg p-4"
-              >
-                <div class="text-sm text-gray-600 mb-1">
-                  {{ archetype }}
-                </div>
-                <div class="text-2xl font-bold text-gray-800">{{ score }}%</div>
-              </div>
-            </div>
-
-            <!-- No Assessments Found -->
-            <div
-              v-if="!loadingAssessments && !latestAssessment"
-              class="text-center py-4"
-            >
-              <p class="text-gray-600">Нет доступных результатов теста.</p>
-            </div>
-          </div>
           <!-- Digital Emotion Diary Stats -->
           <div class="bg-white rounded-2xl shadow-lg p-8">
             <h2 class="text-xl font-bold text-gray-800 mb-6">
@@ -295,6 +253,7 @@ const emotionBarometerStats = ref({
 });
 const latestAssessment = ref(null);
 const assessmentError = ref(null);
+const archetypeScores = ref([]);
 
 const auth = getAuth();
 const authStore = useAuthStore();
@@ -311,6 +270,16 @@ const fetchLatestAssessment = async (userId) => {
 
     if (success) {
       latestAssessment.value = assessment;
+
+      // Transform the scores into the format expected by the component
+      archetypeScores.value = Object.entries(assessment.scores).map(
+        ([name, level]) => ({
+          name,
+          level: parseFloat(level), // Ensure level is a number
+          color: getColorForArchetype(name), // Add a function to assign colors
+          icon: getIconForArchetype(name), // Add a function to assign icons
+        })
+      );
     } else {
       assessmentError.value = "Не удалось загрузить результаты теста.";
     }
@@ -320,6 +289,42 @@ const fetchLatestAssessment = async (userId) => {
   } finally {
     loadingAssessments.value = false;
   }
+};
+
+const getColorForArchetype = (name) => {
+  const colors = {
+    творец: "purple", // Creative and imaginative
+    исследователь: "blue", // Adventurous and curious
+    мудрец: "green", // Knowledgeable and wise
+    воин: "red", // Bold and strong
+    маг: "indigo", // Mystical and powerful
+    заботливый: "pink", // Caring and empathetic
+    наставник: "teal", // Stable and grounded
+    правитель: "yellow", // Regal and authoritative
+    друг: "orange", // Warm and friendly
+    шут: "yellow", // Playful and vibrant
+    мятежник: "gray", // Rebellious and unconventional
+    герой: "emerald", // Heroic and passionate
+  };
+  return colors[name] || "gray"; // Default to gray if not found
+};
+
+const getIconForArchetype = (name) => {
+  const icons = {
+    творец: "fa-paint-brush",
+    исследователь: "fa-compass",
+    мудрец: "fa-book",
+    воин: "fa-shield-alt",
+    маг: "fa-magic",
+    заботливый: "fa-heart",
+    наставник: "fa-chalkboard-teacher",
+    правитель: "fa-crown",
+    друг: "fa-handshake",
+    шут: "fa-laugh",
+    мятежник: "fa-fire",
+    герой: "fa-shield-alt",
+  };
+  return icons[name] || "fa-question";
 };
 
 onAuthStateChanged(auth, async (currentUser) => {
