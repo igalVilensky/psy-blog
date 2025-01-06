@@ -5,14 +5,51 @@
     <div class="container px-4 max-w-7xl mx-auto">
       <!-- Hero Section -->
       <div class="text-center mb-8">
-        <h1 class="text-4xl sm:text-6xl font-bold text-[#4A4238] mb-4">
+        <h1 class="text-4xl font-bold text-gray-800 mb-6 tracking-tight">
           Эмоциональный Барометр
         </h1>
         <p class="text-lg sm:text-xl text-gray-600">Понимаем ваши эмоции</p>
       </div>
 
+      <!-- Message for Unauthenticated Users -->
+      <div
+        v-if="!user"
+        class="bg-white shadow-xl rounded-2xl p-4 sm:p-6 mb-8 max-w-3xl w-full mx-auto text-center"
+      >
+        <!-- Description of the Tool -->
+        <p class="text-lg sm:text-xl text-gray-600 mb-4">
+          Эмоциональный Барометр — это инструмент, который помогает вам лучше
+          понять свои эмоции, отслеживать их интенсивность и находить способы
+          справляться с ними. С его помощью вы сможете анализировать свои
+          эмоциональные паттерны и улучшить свое эмоциональное состояние.
+        </p>
+
+        <!-- CTA for Login/Registration -->
+        <div class="mt-6">
+          <p class="text-lg sm:text-xl text-gray-600 mb-4">
+            Чтобы начать использовать инструмент, пожалуйста, войдите или
+            зарегистрируйтесь.
+          </p>
+          <div class="flex justify-center gap-4">
+            <NuxtLink
+              to="/login"
+              class="px-6 py-2 bg-[#FF6B6B] text-white rounded-lg hover:bg-[#FF5252] transition-colors"
+            >
+              Войти
+            </NuxtLink>
+            <NuxtLink
+              to="/register"
+              class="px-6 py-2 bg-white border border-[#FF6B6B] text-[#FF6B6B] rounded-lg hover:bg-[#FF6B6B] hover:text-white transition-colors"
+            >
+              Зарегистрироваться
+            </NuxtLink>
+          </div>
+        </div>
+      </div>
+
       <!-- Emotional Barometer Section -->
       <div
+        v-if="user"
         class="bg-white shadow-xl rounded-2xl p-4 sm:p-6 mb-8 max-w-3xl w-full mx-auto"
       >
         <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-[#4A4238]">
@@ -42,13 +79,11 @@
           />
         </div>
         <div v-if="currentStep === 4 && selectedEmotion">
-          <div v-if="currentStep === 4 && selectedEmotion">
-            <JournalEntry
-              v-model:journal-entry="journalEntry"
-              v-model:perception-entry="perceptionEntry"
-              v-model:coping-entry="copingEntry"
-            />
-          </div>
+          <JournalEntry
+            v-model:journal-entry="journalEntry"
+            v-model:perception-entry="perceptionEntry"
+            v-model:coping-entry="copingEntry"
+          />
         </div>
         <div v-if="currentStep === 5 && selectedEmotion">
           <LifeSpheresSelection
@@ -107,24 +142,52 @@
 
       <!-- Links to Additional Tools -->
       <div
+        v-if="user"
         class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl w-full mx-auto"
       >
-        <a
-          href="/awareness-tools/emotional-barometer/analysis"
-          class="bg-white shadow-lg rounded-lg p-4 hover:shadow-xl transition-shadow text-center"
-        >
-          <h3 class="text-lg font-semibold text-[#FF6B6B]">Анализ Эмоций</h3>
-          <p class="text-sm text-gray-600">
-            Изучите свои эмоциональные паттерны
-          </p>
-        </a>
-        <a
-          href="/awareness-tools/emotional-barometer/journal-history"
-          class="bg-white shadow-lg rounded-lg p-4 hover:shadow-xl transition-shadow text-center"
-        >
-          <h3 class="text-lg font-semibold text-[#FF6B6B]">История Журнала</h3>
-          <p class="text-sm text-gray-600">Просмотрите ваши прошлые записи</p>
-        </a>
+        <template v-if="hasStatsData">
+          <NuxtLink
+            to="/awareness-tools/emotional-barometer/analysis"
+            class="bg-white shadow-lg rounded-lg p-4 hover:shadow-xl transition-shadow text-center"
+          >
+            <h3 class="text-lg font-semibold text-[#FF6B6B]">Анализ Эмоций</h3>
+            <p class="text-sm text-gray-600">
+              Изучите свои эмоциональные паттерны
+            </p>
+          </NuxtLink>
+        </template>
+        <template v-else>
+          <div
+            class="bg-white shadow-lg rounded-lg p-4 opacity-50 cursor-not-allowed text-center"
+          >
+            <h3 class="text-lg font-semibold text-[#FF6B6B]">Анализ Эмоций</h3>
+            <p class="text-sm text-gray-600">
+              Изучите свои эмоциональные паттерны
+            </p>
+          </div>
+        </template>
+
+        <template v-if="hasStatsData">
+          <NuxtLink
+            to="/awareness-tools/emotional-barometer/journal-history"
+            class="bg-white shadow-lg rounded-lg p-4 hover:shadow-xl transition-shadow text-center"
+          >
+            <h3 class="text-lg font-semibold text-[#FF6B6B]">
+              История Журнала
+            </h3>
+            <p class="text-sm text-gray-600">Просмотрите ваши прошлые записи</p>
+          </NuxtLink>
+        </template>
+        <template v-else>
+          <div
+            class="bg-white shadow-lg rounded-lg p-4 opacity-50 cursor-not-allowed text-center"
+          >
+            <h3 class="text-lg font-semibold text-[#FF6B6B]">
+              История Журнала
+            </h3>
+            <p class="text-sm text-gray-600">Просмотрите ваши прошлые записи</p>
+          </div>
+        </template>
       </div>
     </div>
   </div>
@@ -158,6 +221,7 @@ import LifeSpheresSelection from "~/components/emotional-barometer/LifeSpheresSe
 import SubEmotionSelection from "~/components/emotional-barometer/SubEmotionSelection.vue";
 import Notification from "~/components/base/Notification.vue";
 import { useNotification } from "@/composables/useNotification";
+import { getEmotionBarometerStats } from "~/api/firebase/emotionBarometer";
 
 const {
   notificationMessage,
@@ -306,7 +370,7 @@ const selectedEmotion = ref(null);
 const intensityLevel = ref(5);
 const journalEntry = ref("");
 const selectedTags = ref([]);
-const entries = ref([]);
+const stats = ref(null);
 const subEmotions = ref([]);
 const selectedSubEmotion = ref(null);
 const perceptionEntry = ref("");
@@ -491,12 +555,25 @@ const currentRecommendations = computed(() => {
 onAuthStateChanged(auth, async (currentUser) => {
   if (currentUser) {
     user.value = currentUser;
-    loadDataFromFirebase(currentUser.uid);
+
+    // Fetch statistics
+    const statsResult = await getEmotionBarometerStats(db, currentUser.uid);
+    if (statsResult.success) {
+      stats.value = statsResult.stats;
+      console.log("Emotion Barometer Stats:", stats.value);
+    } else {
+      console.log("Failed to fetch stats:", statsResult.message);
+      stats.value = null;
+    }
   }
 });
 
 const canSubmit = computed(() => {
   return selectedTags.value.length > 0;
+});
+
+const hasStatsData = computed(() => {
+  return stats.value && stats.value.totalEntries > 0;
 });
 
 // Navigation functions
@@ -580,32 +657,12 @@ const saveEntryToFirebase = async () => {
     } else {
       closeModal();
     }
-
-    loadDataFromFirebase(user.value.uid);
   } catch (error) {
     console.error("Error saving entry to Firebase:", error);
     showNotification(
       "Ошибка сохранения записи. Пожалуйста, попробуйте еще раз.",
       "error"
     );
-  }
-};
-
-// Load entries from Firebase
-const loadDataFromFirebase = async (userId) => {
-  const userRef = doc(db, "emotion_barometer", userId);
-
-  try {
-    const docSnap = await getDoc(userRef);
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      entries.value = data.entries || [];
-    } else {
-      console.log("No entries found for user");
-      entries.value = [];
-    }
-  } catch (error) {
-    console.error("Error loading data from Firebase:", error);
   }
 };
 

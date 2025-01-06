@@ -61,8 +61,9 @@
         <div class="lg:col-span-2 space-y-8">
           <!-- Emotional Barometer Stats -->
           <div class="bg-white rounded-2xl shadow-lg p-8">
+            <!-- Title -->
             <h2 class="text-xl font-bold text-gray-800 mb-6">
-              <i class="fas fa-chart-line text-pink-600 mr-2"></i>
+              <i class="fas fa-chart-line text-indigo-600 mr-2"></i>
               Эмоциональный барометр
             </h2>
 
@@ -109,6 +110,25 @@
                 Распределение эмоций
               </h3>
               <canvas ref="emotionChart" class="w-full max-h-64"></canvas>
+            </div>
+
+            <!-- CTA Link -->
+            <div class="mt-8 text-center">
+              <NuxtLink
+                to="/awareness-tools/emotional-barometer"
+                class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-2 bg-indigo-600 text-white rounded-lg overflow-hidden transition-colors"
+              >
+                <!-- Text and Icon -->
+                <span class="relative z-10">
+                  <i class="fas fa-arrow-right text-sm mr-2"></i>
+                  Перейти к барометру
+                </span>
+
+                <!-- Hover Background -->
+                <div
+                  class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-indigo-700 transition-transform duration-300"
+                ></div>
+              </NuxtLink>
             </div>
           </div>
 

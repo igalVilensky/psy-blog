@@ -1,7 +1,7 @@
 <template>
   <nav class="bg-gradient-to-b from-[#1A1F35] to-[#1E293B] text-white">
     <div
-      class="container max-w-7xl w-full mx-auto flex justify-between items-center p-4"
+      class="container max-w-6xl w-full mx-auto flex justify-between items-center p-4"
     >
       <!-- Brand/Logo -->
       <NuxtLink
@@ -15,7 +15,7 @@
       </NuxtLink>
 
       <!-- Desktop Menu -->
-      <div class="hidden xl:block">
+      <div class="hidden lg:block">
         <ul class="flex items-center">
           <li class="px-4 relative group">
             <div
@@ -120,7 +120,7 @@
       </div>
 
       <!-- Mobile Menu -->
-      <div class="relative xl:hidden mobile-menu" data-menu="mobile">
+      <div class="relative lg:hidden mobile-menu" data-menu="mobile">
         <button
           @click="toggleDropdown"
           class="focus:outline-none flex flex-col items-center justify-center w-8 h-8 relative"
