@@ -2,8 +2,6 @@
   <footer
     class="relative bg-gradient-to-b from-[#1A1F35] to-[#1E293B] overflow-hidden text-white"
   >
-    <!-- Subtle Animated Background Elements -->
-    <div class="absolute inset-0 bg-[url('/subtle-dots.svg')] opacity-5"></div>
     <div class="absolute inset-0">
       <!-- Multiple organic shapes with different colors -->
       <div
@@ -193,7 +191,7 @@ const validateEmail = (email) => {
     transform: translate(0, 0);
   }
   50% {
-    transform: translate(20px, 20px);
+    transform: translate(-200px, 300px);
   }
 }
 
@@ -203,7 +201,7 @@ const validateEmail = (email) => {
     opacity: 0.1;
   }
   50% {
-    opacity: 0.2;
+    opacity: 0.5;
   }
 }
 
@@ -213,19 +211,19 @@ const validateEmail = (email) => {
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-20px);
+    transform: translateY(-200px);
   }
 }
 
 .animate-slow-drift {
-  animation: slow-drift 20s ease-in-out infinite;
+  animation: slow-drift 15s ease-in-out infinite;
 }
 
 .animate-slow-pulse {
-  animation: slow-pulse 15s ease-in-out infinite;
+  animation: slow-pulse 12s ease-in-out infinite;
 }
 
 .animate-slow-float {
-  animation: slow-float 18s ease-in-out infinite;
+  animation: slow-float 15s ease-in-out infinite;
 }
 </style>

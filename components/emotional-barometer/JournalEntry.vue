@@ -69,7 +69,7 @@
 </template>
 
 <script setup>
-import { ref, watch, defineProps, defineEmits, reactive, computed } from "vue";
+import { ref, watch, reactive, computed } from "vue";
 
 const props = defineProps({
   journalEntry: {

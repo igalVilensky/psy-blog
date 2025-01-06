@@ -157,6 +157,15 @@ import JournalEntry from "~/components/emotional-barometer/JournalEntry.vue";
 import LifeSpheresSelection from "~/components/emotional-barometer/LifeSpheresSelection.vue";
 import SubEmotionSelection from "~/components/emotional-barometer/SubEmotionSelection.vue";
 import Notification from "~/components/base/Notification.vue";
+import { useNotification } from "@/composables/useNotification";
+
+const {
+  notificationMessage,
+  notificationType,
+  showNotification,
+  hideNotification,
+} = useNotification();
+
 const emotions = [
   {
     id: 1,
@@ -564,7 +573,7 @@ const saveEntryToFirebase = async () => {
       });
     }
 
-    showNotification("Запись успешно сохранена!");
+    showNotification("Запись успешно сохранена!", "success");
 
     if (currentRecommendations.value.length > 0) {
       showModal.value = true;
@@ -576,7 +585,8 @@ const saveEntryToFirebase = async () => {
   } catch (error) {
     console.error("Error saving entry to Firebase:", error);
     showNotification(
-      "Ошибка сохранения записи. Пожалуйста, попробуйте еще раз."
+      "Ошибка сохранения записи. Пожалуйста, попробуйте еще раз.",
+      "error"
     );
   }
 };
@@ -603,22 +613,5 @@ const loadDataFromFirebase = async (userId) => {
 const handleSubmit = () => {
   if (!canSubmit.value) return;
   saveEntryToFirebase();
-};
-
-const notificationMessage = ref("");
-const notificationType = ref("success");
-
-const hideNotification = () => {
-  notificationMessage.value = "";
-};
-
-const showNotification = (message, type = "success") => {
-  console.log("notification", message);
-  notificationMessage.value = message;
-  notificationType.value = type;
-
-  setTimeout(() => {
-    hideNotification();
-  }, 3000);
 };
 </script>
