@@ -9,7 +9,7 @@
       <!-- Registration Form Section -->
       <div class="p-10">
         <h2 class="text-3xl font-bold text-[#4A4238] mb-6">Регистрация</h2>
-        <form @submit.prevent="registerUser" class="space-y-4">
+        <form @submit.prevent="registerUserHandler" class="space-y-4">
           <!-- Display Name input -->
           <div>
             <label
@@ -222,13 +222,8 @@
 
 <script setup>
 import { ref, computed } from "vue";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  updateProfile,
-} from "firebase/auth";
 import { useRouter } from "vue-router";
-import { doc, setDoc } from "firebase/firestore";
+import { registerUser } from "~/api/firebase/userProfile";
 
 const email = ref("");
 const password = ref("");
@@ -251,45 +246,33 @@ const isFormValid = computed(() => {
     password.value === confirmPassword.value &&
     acceptPrivacy.value &&
     acceptTerms.value &&
-    // Basic email validation
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value) &&
-    // Minimum password length validation (e.g., 6 characters)
     password.value.length >= 6
   );
 });
 
-const registerUser = async () => {
+const registerUserHandler = async () => {
   if (!isFormValid.value) {
     error.value =
       "Пожалуйста, заполните все поля корректно и примите условия использования";
     return;
   }
 
-  const auth = getAuth();
   error.value = "";
 
   try {
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
+    const response = await registerUser(
       email.value,
-      password.value
+      password.value,
+      displayName.value
     );
-    const user = userCredential.user;
 
-    await updateProfile(user, {
-      displayName: displayName.value,
-    });
-
-    const firestore = useNuxtApp().$firestore;
-    await setDoc(doc(firestore, "users", user.uid), {
-      email: user.email,
-      displayName: displayName.value,
-      createdAt: new Date(),
-      acceptedPrivacyPolicy: true,
-      acceptedTerms: true,
-    });
-
-    router.push("/login");
+    if (response.success) {
+      // Redirect to login page after successful registration
+      router.push("/login");
+    } else {
+      error.value = response.message;
+    }
   } catch (err) {
     error.value = err.message;
   }

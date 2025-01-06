@@ -36,39 +36,79 @@
 
           <!-- Actions -->
           <div class="flex gap-4 w-full sm:w-auto">
+            <!-- Settings Button -->
             <button
-              class="flex-1 sm:flex-initial px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+              class="group relative inline-flex items-center justify-center w-full sm:w-auto px-4 py-2 bg-gray-100 text-gray-700 rounded-lg overflow-hidden transition-colors hover:bg-gray-200"
             >
-              <i class="fas fa-cog mr-2"></i>
-              Настройки
+              <span class="relative z-10">
+                <i class="fas fa-cog text-sm mr-2"></i>
+                Настройки
+              </span>
+              <div
+                class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-gray-300 transition-transform duration-300"
+              ></div>
             </button>
+
+            <!-- Logout Button -->
             <button
               @click="logoutUser"
-              class="flex-1 sm:flex-initial px-4 py-2 text-white bg-pink-600 rounded-lg hover:bg-pink-700 transition-colors"
+              class="group relative inline-flex items-center justify-center w-full sm:w-auto px-4 py-2 bg-indigo-600 text-white rounded-lg overflow-hidden transition-colors"
             >
-              <i class="fas fa-sign-out-alt mr-2"></i>
-              Выйти
+              <span class="relative z-10">
+                <i class="fas fa-sign-out-alt text-sm mr-2"></i>
+                Выйти
+              </span>
+              <div
+                class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-indigo-700 transition-transform duration-300"
+              ></div>
             </button>
           </div>
         </div>
       </div>
 
       <!-- Main Content Grid -->
-      <PsychologicalProfile :archetypes="archetypeScores" />
+      <PsychologicalProfile
+        :archetypes="archetypeScores"
+        :loading="loadingAssessments"
+      />
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Statistics Section - Takes full width on mobile, 2 columns on large screens -->
         <div class="lg:col-span-2 space-y-8">
           <!-- Emotional Barometer Stats -->
           <div class="bg-white rounded-2xl shadow-lg p-8">
-            <!-- Title -->
             <h2 class="text-xl font-bold text-gray-800 mb-6">
               <i class="fas fa-chart-line text-indigo-600 mr-2"></i>
               Эмоциональный барометр
             </h2>
 
-            <!-- Stats Grid - 2 columns on larger screens -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+            <!-- No Data State -->
+            <div
+              v-if="emotionBarometerStats.totalEntries === 0"
+              class="flex flex-col items-center justify-center h-64 text-center"
+            >
+              <i class="fas fa-chart-pie text-4xl text-gray-400 mb-4"></i>
+              <p class="text-gray-600">Нет данных для отображения.</p>
+              <p class="text-sm text-gray-500 mt-2">
+                Начните использовать эмоциональный барометр, чтобы отслеживать
+                свои эмоции.
+              </p>
+              <NuxtLink
+                to="/awareness-tools/emotional-barometer"
+                class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-2 bg-indigo-600 text-white rounded-lg overflow-hidden transition-colors mt-4"
+              >
+                <span class="relative z-10">
+                  <i class="fas fa-play-circle text-sm mr-2"></i>
+                  Перейти к барометру
+                </span>
+                <div
+                  class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-indigo-700 transition-transform duration-300"
+                ></div>
+              </NuxtLink>
+            </div>
+
+            <!-- Stats Grid -->
+            <div v-else class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
               <!-- Total Entries -->
               <div class="bg-gray-50 rounded-lg p-6">
                 <div class="text-sm text-gray-600 mb-2">Всего записей</div>
@@ -81,7 +121,7 @@
               <div class="bg-gray-50 rounded-lg p-6">
                 <div class="text-sm text-gray-600 mb-2">Частая эмоция</div>
                 <div class="text-2xl font-bold text-gray-800">
-                  {{ emotionBarometerStats.mostCommonEmotion || "Нет данных" }}
+                  {{ emotionBarometerStats.mostCommonEmotion }}
                 </div>
               </div>
 
@@ -91,7 +131,7 @@
                   Средняя интенсивность
                 </div>
                 <div class="text-2xl font-bold text-gray-800">
-                  {{ emotionBarometerStats.averageIntensity.toFixed(1) || "0" }}
+                  {{ emotionBarometerStats.averageIntensity.toFixed(1) }}
                 </div>
               </div>
 
@@ -99,13 +139,13 @@
               <div class="bg-gray-50 rounded-lg p-6">
                 <div class="text-sm text-gray-600 mb-2">Частая сфера жизни</div>
                 <div class="text-2xl font-bold text-gray-800">
-                  {{ emotionBarometerStats.mostCommonTag || "Нет данных" }}
+                  {{ emotionBarometerStats.mostCommonTag }}
                 </div>
               </div>
             </div>
 
             <!-- Emotion Distribution Chart -->
-            <div class="mt-8">
+            <div v-if="emotionBarometerStats.totalEntries > 0" class="mt-8">
               <h3 class="text-lg font-semibold text-gray-800 mb-4">
                 Распределение эмоций
               </h3>
@@ -113,18 +153,18 @@
             </div>
 
             <!-- CTA Link -->
-            <div class="mt-8 text-center">
+            <div
+              v-if="emotionBarometerStats.totalEntries > 0"
+              class="mt-8 text-center"
+            >
               <NuxtLink
                 to="/awareness-tools/emotional-barometer"
                 class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-2 bg-indigo-600 text-white rounded-lg overflow-hidden transition-colors"
               >
-                <!-- Text and Icon -->
                 <span class="relative z-10">
                   <i class="fas fa-arrow-right text-sm mr-2"></i>
                   Перейти к барометру
                 </span>
-
-                <!-- Hover Background -->
                 <div
                   class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-indigo-700 transition-transform duration-300"
                 ></div>
@@ -349,37 +389,79 @@ const getIconForArchetype = (name) => {
 
 onAuthStateChanged(auth, async (currentUser) => {
   loading.value = true;
+
+  // Initialize Firestore
+  const db = getFirestore();
+
   if (currentUser) {
-    // Store user data in your store (useAuthStore) or wherever you need it
+    // Store user data in the auth store
     authStore.user = currentUser;
 
-    // Fetch the avatar URL from Firestore (do not rely solely on currentUser.avatarUrl)
-    const db = getFirestore();
-    authStore.user = currentUser;
+    // Fetch the user's avatar URL
     avatarUrl.value = await fetchUserAvatarUrl(currentUser.uid);
-    // Load emotion data
+
+    // Load emotion diary data
     await loadEmotionData(currentUser.uid);
+
+    // Fetch the latest assessment results
     await fetchLatestAssessment(currentUser.uid);
-    // Load the emotion barometer data
 
     try {
+      // Fetch emotion barometer stats
       const { success, stats } = await getEmotionBarometerStats(
         db,
         currentUser.uid
       );
+
       if (success) {
+        // Update the emotion barometer stats
         emotionBarometerStats.value = stats;
+
+        // Initialize the emotion distribution chart if there are entries
+        if (
+          emotionBarometerStats.value.totalEntries > 0 &&
+          emotionChart.value
+        ) {
+          const distribution = emotionBarometerStats.value.emotionDistribution;
+          new Chart(emotionChart.value, {
+            type: "doughnut",
+            data: {
+              labels: Object.keys(distribution),
+              datasets: [
+                {
+                  data: Object.values(distribution),
+                  backgroundColor: [
+                    "rgba(255, 99, 132, 0.6)",
+                    "rgba(54, 162, 235, 0.6)",
+                    "rgba(255, 206, 86, 0.6)",
+                    "rgba(75, 192, 192, 0.6)",
+                    "rgba(153, 102, 255, 0.6)",
+                  ],
+                  borderWidth: 1,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: "bottom",
+                },
+              },
+            },
+          });
+        }
       } else {
         console.error(
           "Failed to fetch emotion barometer stats:",
-          stats.message
+          stats?.message || "Unknown error"
         );
       }
     } catch (error) {
       console.error("Error loading emotion barometer data:", error);
     }
 
-    // Initialize both charts
+    // Initialize the blog stats chart
     if (blogStatsChart.value) {
       new Chart(blogStatsChart.value, {
         type: "bar",
@@ -393,7 +475,7 @@ onAuthStateChanged(auth, async (currentUser) => {
             {
               label: "Статистика",
               data: [
-                24,
+                24, // Hardcoded for now, replace with dynamic data if available
                 emotionStats.value.entriesCount,
                 emotionStats.value.unlockedEmotions.length,
               ],
@@ -422,39 +504,10 @@ onAuthStateChanged(auth, async (currentUser) => {
       });
     }
 
-    if (emotionChart.value) {
-      const distribution = emotionBarometerStats.value.emotionDistribution;
-      new Chart(emotionChart.value, {
-        type: "doughnut",
-        data: {
-          labels: Object.keys(distribution),
-          datasets: [
-            {
-              data: Object.values(distribution),
-              backgroundColor: [
-                "rgba(255, 99, 132, 0.6)",
-                "rgba(54, 162, 235, 0.6)",
-                "rgba(255, 206, 86, 0.6)",
-                "rgba(75, 192, 192, 0.6)",
-                "rgba(153, 102, 255, 0.6)",
-              ],
-              borderWidth: 1,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              position: "bottom",
-            },
-          },
-        },
-      });
-    }
+    // Set loading to false after all data is fetched
     loading.value = false;
   } else {
-    // User is signed out, clear avatarUrl
+    // If the user is not logged in, clear the avatar URL
     avatarUrl.value = null;
   }
 });

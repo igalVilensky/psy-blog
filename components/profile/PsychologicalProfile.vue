@@ -15,7 +15,7 @@
               :key="tab.id"
               @click="activeTab = tab.id"
               :class="[
-                'flex-1 sm:flex-initial px-3 py-1 rounded-lg text-sm transition-colors whitespace-nowrap',
+                'flex-1 sm:flex-initial px-3 py-2 rounded-lg text-sm transition-colors whitespace-nowrap',
                 activeTab === tab.id
                   ? 'bg-indigo-600 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200',
@@ -27,15 +27,36 @@
         </div>
 
         <!-- Loading State -->
-        <div
-          v-if="!archetypes.length"
-          class="flex items-center justify-center h-64"
-        >
+        <div v-if="loading" class="flex items-center justify-center h-64">
           <div
             class="h-20 w-20 rounded-full bg-indigo-100 flex items-center justify-center ring-2 ring-offset-2 ring-gray-100"
           >
             <i class="fas fa-spinner fa-spin fa-2x text-indigo-600"></i>
           </div>
+        </div>
+
+        <!-- No Data State -->
+        <div
+          v-else-if="!archetypes.length"
+          class="flex flex-col items-center justify-center h-64 text-center"
+        >
+          <i class="fas fa-chart-pie text-4xl text-gray-400 mb-4"></i>
+          <p class="text-gray-600">Нет данных для отображения.</p>
+          <p class="text-sm text-gray-500 mt-2">
+            Пройдите тест, чтобы увидеть ваш психологический профиль.
+          </p>
+          <NuxtLink
+            to="/awareness-tools/life-purpose-archetype"
+            class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-2 bg-indigo-600 text-white rounded-lg overflow-hidden transition-colors mt-4"
+          >
+            <span class="relative z-10">
+              <i class="fas fa-play-circle text-sm mr-2"></i>
+              Пройти тест
+            </span>
+            <div
+              class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-indigo-700 transition-transform duration-300"
+            ></div>
+          </NuxtLink>
         </div>
 
         <!-- Archetypes Section -->
@@ -165,14 +186,15 @@
 
 <script setup>
 import { ref, computed } from "vue";
-import { useRouter } from "vue-router";
-
-const router = useRouter();
 
 const props = defineProps({
   archetypes: {
     type: Array,
     default: () => [],
+  },
+  loading: {
+    type: Boolean,
+    default: false,
   },
 });
 
