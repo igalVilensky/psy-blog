@@ -111,6 +111,49 @@
               <canvas ref="emotionChart" class="w-full max-h-64"></canvas>
             </div>
           </div>
+          <!-- Assessment Results Section -->
+          <div class="bg-white rounded-2xl shadow-lg p-8">
+            <h2 class="text-xl font-bold text-gray-800 mb-6">
+              <i class="fas fa-poll text-pink-600 mr-2"></i>
+              Результаты теста
+            </h2>
+
+            <!-- Loading State -->
+            <div v-if="loadingAssessments" class="text-center py-4">
+              <i class="fas fa-spinner fa-spin text-pink-600"></i>
+              Загрузка результатов...
+            </div>
+
+            <!-- Error State -->
+            <div v-if="assessmentError" class="text-red-600 text-center py-4">
+              {{ assessmentError }}
+            </div>
+
+            <!-- Display Latest Assessment Results -->
+            <div v-if="latestAssessment" class="space-y-4">
+              <h3 class="text-lg font-semibold text-gray-800">
+                Последний результат теста
+              </h3>
+              <div
+                v-for="(score, archetype) in latestAssessment.scores"
+                :key="archetype"
+                class="bg-gray-50 rounded-lg p-4"
+              >
+                <div class="text-sm text-gray-600 mb-1">
+                  {{ archetype }}
+                </div>
+                <div class="text-2xl font-bold text-gray-800">{{ score }}%</div>
+              </div>
+            </div>
+
+            <!-- No Assessments Found -->
+            <div
+              v-if="!loadingAssessments && !latestAssessment"
+              class="text-center py-4"
+            >
+              <p class="text-gray-600">Нет доступных результатов теста.</p>
+            </div>
+          </div>
           <!-- Digital Emotion Diary Stats -->
           <div class="bg-white rounded-2xl shadow-lg p-8">
             <h2 class="text-xl font-bold text-gray-800 mb-6">
@@ -230,10 +273,11 @@ import { fetchUserAvatarUrl } from "~/api/firebase/userProfile";
 import UserAvatar from "~/components/profile/UserAvatar.vue";
 import { getEmotionBarometerStats } from "~/api/firebase/emotionBarometer";
 import PsychologicalProfile from "~/components/profile/PsychologicalProfile.vue";
-
+import { getLatestUserAssessment } from "~/api/firebase/assessments";
 Chart.register(...registerables);
 
 const loading = ref(true);
+const loadingAssessments = ref(false);
 const avatarUrl = ref(null); // Store the uploaded avatar URL
 const blogStatsChart = ref(null);
 const emotionChart = ref(null);
@@ -249,10 +293,34 @@ const emotionBarometerStats = ref({
   mostCommonTag: "",
   emotionDistribution: {},
 });
+const latestAssessment = ref(null);
+const assessmentError = ref(null);
 
 const auth = getAuth();
 const authStore = useAuthStore();
 const router = useRouter();
+
+// Fetch the latest assessment results
+const fetchLatestAssessment = async (userId) => {
+  loadingAssessments.value = true;
+  assessmentError.value = null;
+
+  try {
+    const db = getFirestore();
+    const { success, assessment } = await getLatestUserAssessment(db, userId);
+
+    if (success) {
+      latestAssessment.value = assessment;
+    } else {
+      assessmentError.value = "Не удалось загрузить результаты теста.";
+    }
+  } catch (error) {
+    console.error("Error fetching latest assessment:", error);
+    assessmentError.value = "Произошла ошибка при загрузке результатов.";
+  } finally {
+    loadingAssessments.value = false;
+  }
+};
 
 onAuthStateChanged(auth, async (currentUser) => {
   loading.value = true;
@@ -266,7 +334,7 @@ onAuthStateChanged(auth, async (currentUser) => {
     avatarUrl.value = await fetchUserAvatarUrl(currentUser.uid);
     // Load emotion data
     await loadEmotionData(currentUser.uid);
-
+    await fetchLatestAssessment(currentUser.uid);
     // Load the emotion barometer data
 
     try {
