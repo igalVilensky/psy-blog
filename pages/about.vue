@@ -5,9 +5,7 @@
     <div class="container mx-auto px-4 max-w-6xl">
       <!-- Hero Section -->
       <header class="text-center mb-16">
-        <h1
-          class="text-4xl md:text-5xl font-bold text-gray-800 mb-4 tracking-tight"
-        >
+        <h1 class="text-4xl font-bold text-gray-800 mb-4 tracking-tight">
           О проекте
         </h1>
         <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">

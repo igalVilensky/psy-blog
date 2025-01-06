@@ -88,3 +88,30 @@ export const getEmotionBarometerStats = async (firestore, userId) => {
     };
   }
 };
+
+// Fetch user emotion data from `emotion_barometer` document
+export const getEmotionBarometerData = async (firestore, userId) => {
+  try {
+    const userRef = doc(firestore, "emotion_barometer", userId);
+    const docSnap = await getDoc(userRef);
+
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      return {
+        success: true,
+        data: data.entries || [], // Return entries or an empty array
+      };
+    } else {
+      return {
+        success: false,
+        message: "No entries found for this user",
+      };
+    }
+  } catch (error) {
+    console.error("Error fetching emotion barometer data:", error);
+    return {
+      success: false,
+      message: "Failed to fetch data",
+    };
+  }
+};
