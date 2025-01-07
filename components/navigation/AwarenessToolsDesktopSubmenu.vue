@@ -7,29 +7,29 @@
     >
       <NuxtLink
         to="/awareness-tools/emotional-barometer"
-        exact-active-class="bg-[#3498DB] text-white"
-        class="block px-4 py-2 text-sm text-[#ECF0F1] hover:bg-[#3498DB] hover:text-white rounded-md transition-all duration-300 ease-in-out"
+        exact-active-class="bg-indigo-600 text-white"
+        class="block px-4 py-2 text-sm text-[#ECF0F1] hover:bg-indigo-600 hover:text-white rounded-md transition-all duration-300 ease-in-out"
       >
         Эмоциональный барометр
       </NuxtLink>
       <NuxtLink
         to="/awareness-tools/deep-conversation-with-cards"
-        exact-active-class="bg-[#3498DB] text-white"
-        class="block px-4 py-2 text-sm text-[#ECF0F1] hover:bg-[#3498DB] hover:text-white rounded-md transition-all duration-300 ease-in-out"
+        exact-active-class="bg-indigo-600 text-white"
+        class="block px-4 py-2 text-sm text-[#ECF0F1] hover:bg-indigo-600 hover:text-white rounded-md transition-all duration-300 ease-in-out"
       >
         Глубокий разговор с картами
       </NuxtLink>
       <NuxtLink
         to="/awareness-tools/emotion-diary"
-        exact-active-class="bg-[#3498DB] text-white"
-        class="block px-4 py-2 text-sm text-[#ECF0F1] hover:bg-[#3498DB] hover:text-white rounded-md transition-all duration-300 ease-in-out"
+        exact-active-class="bg-indigo-600 text-white"
+        class="block px-4 py-2 text-sm text-[#ECF0F1] hover:bg-indigo-600 hover:text-white rounded-md transition-all duration-300 ease-in-out"
       >
         Дневник эмоций
       </NuxtLink>
       <NuxtLink
         to="/awareness-tools/life-purpose-archetype"
-        exact-active-class="bg-[#3498DB] text-white"
-        class="block px-4 py-2 text-sm text-[#ECF0F1] hover:bg-[#3498DB] hover:text-white rounded-md transition-all duration-300 ease-in-out"
+        exact-active-class="bg-indigo-600 text-white"
+        class="block px-4 py-2 text-sm text-[#ECF0F1] hover:bg-indigo-600 hover:text-white rounded-md transition-all duration-300 ease-in-out"
       >
         Открытие Архетипа Жизни
       </NuxtLink>

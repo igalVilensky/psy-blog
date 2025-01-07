@@ -6,7 +6,7 @@
       <!-- Hero Section -->
       <section class="text-center mb-16">
         <div
-          class="inline-block px-6 py-2 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-full text-white font-medium mb-6 shadow-lg"
+          class="inline-block px-6 py-2 bg-gradient-to-b from-[#1A1F35] to-indigo-600 rounded-full text-white font-medium mb-6 shadow-lg"
         >
           Эмоциональный Барометр
         </div>

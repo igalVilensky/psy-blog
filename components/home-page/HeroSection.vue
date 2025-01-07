@@ -18,7 +18,7 @@
       <div class="max-w-4xl mx-auto text-center">
         <div class="animate-fadeIn">
           <h1
-            class="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#3498DB] to-[#9B59B6] mb-6 leading-tight animate-slideDown"
+            class="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-[#1A1F35] to-indigo-600 mb-6 leading-tight animate-slideDown"
           >
             Ваш Путь к Личностному Росту
           </h1>

@@ -2,20 +2,21 @@
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 my-8">
     <div class="lg:col-span-2 space-y-8">
       <div class="bg-white rounded-2xl shadow-lg p-8">
-        <div
-          class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6"
-        >
-          <h2 class="text-xl font-bold text-gray-800">
+        <div class="flex flex-col justify-between mb-6">
+          <!-- Title (Aligned to the Left) -->
+          <h2 class="text-xl font-bold text-gray-800 text-left mb-4">
             <i class="fas fa-brain text-indigo-600 mr-2"></i>
             Психологический профиль
           </h2>
-          <div class="flex flex-wrap gap-2">
+
+          <!-- Buttons (Full Width) -->
+          <div class="flex flex-wrap gap-2 w-full">
             <button
               v-for="tab in tabs"
               :key="tab.id"
               @click="activeTab = tab.id"
               :class="[
-                'flex-1 sm:flex-initial px-3 py-2 rounded-lg text-sm transition-colors whitespace-nowrap',
+                'w-full sm:w-auto flex-1 px-3 py-2 rounded-lg transition-colors whitespace-nowrap',
                 activeTab === tab.id
                   ? 'bg-indigo-600 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200',

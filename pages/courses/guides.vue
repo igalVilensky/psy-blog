@@ -1,12 +1,12 @@
 <template>
   <div
-    class="min-h-screen bg-gradient-to-br from-indigo-50 via-blue-50 to-white py-16"
+    class="min-h-screen bg-gradient-to-br from-indigo-50 via-blue-50 to-white py-12"
   >
     <div class="container mx-auto px-4 max-w-6xl">
       <!-- Hero Section -->
       <section class="text-center mb-20">
         <div
-          class="inline-block px-4 py-2 bg-indigo-50 rounded-full text-indigo-600 font-medium mb-6"
+          class="inline-block px-6 py-2 bg-gradient-to-b from-[#1A1F35] to-indigo-600 rounded-full text-white font-medium mb-6 shadow-lg"
         >
           Руководства
         </div>

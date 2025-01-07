@@ -5,7 +5,7 @@
     <div class="container mx-auto px-4 max-w-6xl">
       <!-- Hero Section with Animated Background -->
       <header
-        class="relative text-center mb-24 p-12 rounded-3xl bg-gradient-to-r from-indigo-600 to-blue-600 overflow-hidden"
+        class="relative text-center mb-24 p-12 rounded-3xl bg-gradient-to-b from-[#1A1F35] to-indigo-600 overflow-hidden"
       >
         <div class="absolute inset-0 bg-grid-pattern opacity-10"></div>
         <div class="relative z-10">
@@ -130,10 +130,10 @@
       <!-- Call to Action -->
       <section class="relative">
         <div
-          class="absolute inset-0 bg-gradient-to-r from-indigo-600 to-blue-600 transform -skew-y-2"
+          class="absolute inset-0 bg-gradient-to-t from-[#1A1F35] to-indigo-600 transform -skew-y-2"
         ></div>
         <div
-          class="relative bg-gradient-to-r from-indigo-600 to-blue-600 rounded-3xl p-16 text-center overflow-hidden"
+          class="relative bg-gradient-to-t from-[#1A1F35] to-indigo-600 rounded-3xl p-16 text-center overflow-hidden"
         >
           <div class="absolute inset-0 bg-grid-pattern opacity-10"></div>
           <div class="relative z-10">
