@@ -3,7 +3,7 @@
     <!-- Back Navigation -->
     <nuxt-link
       to="/awareness-tools/emotional-barometer"
-      class="inline-flex items-center text-pink-600 hover:text-pink-700 transition-colors mb-4 sm:mb-8 group text-sm sm:text-base"
+      class="inline-flex items-center text-indigo-600 hover:text-indigo-800 transition-colors mb-4 sm:mb-8 group text-sm sm:text-base"
     >
       <i
         class="fas fa-arrow-left mr-2 transform transition-transform group-hover:-translate-x-1"
@@ -14,9 +14,9 @@
     <!-- Header with Icon -->
     <div class="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-8">
       <div
-        class="w-9 h-9 sm:w-11 sm:h-11 p-2 sm:p-3 bg-[#FF6B6B]/10 rounded-full flex items-center justify-center flex-shrink-0"
+        class="w-9 h-9 sm:w-11 sm:h-11 p-2 sm:p-3 bg-indigo-500/10 rounded-full flex items-center justify-center flex-shrink-0"
       >
-        <i class="fas fa-book text-[#FF6B6B] text-sm sm:text-base"></i>
+        <i class="fas fa-book text-indigo-500 text-sm sm:text-base"></i>
       </div>
       <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-[#4A4238]">
         История эмоций
@@ -27,7 +27,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 mb-4 sm:mb-6">
       <select
         v-model="emotionFilter"
-        class="w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg border border-gray-200 text-xs sm:text-sm focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none transition-all"
+        class="w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg border border-gray-200 text-xs sm:text-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all"
       >
         <option value="">Все эмоции</option>
         <option
@@ -40,7 +40,7 @@
       </select>
       <select
         v-model="sphereFilter"
-        class="w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg border border-gray-200 text-xs sm:text-sm focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none transition-all"
+        class="w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg border border-gray-200 text-xs sm:text-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all"
       >
         <option value="">Все сферы</option>
         <option
@@ -55,7 +55,7 @@
 
     <!-- Loading State -->
     <div v-if="loading" class="flex flex-col items-center gap-3 sm:gap-4">
-      <i class="fas fa-spinner fa-spin fa-lg sm:fa-2x text-[#FF6B6B]"></i>
+      <i class="fas fa-spinner fa-spin fa-lg sm:fa-2x text-indigo-600"></i>
       <p class="text-gray-600 text-base sm:text-lg font-medium">
         Пожалуйста, подождите...
       </p>

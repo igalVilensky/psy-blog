@@ -3,7 +3,7 @@
     <!-- Back Navigation -->
     <nuxt-link
       to="/awareness-tools/emotional-barometer"
-      class="inline-flex items-center text-pink-600 hover:text-pink-700 transition-all mb-8 group"
+      class="inline-flex items-center text-indigo-600 hover:text-indigo-800 transition-all mb-8 group"
     >
       <i
         class="fas fa-arrow-left mr-2 transform transition-transform group-hover:-translate-x-1"

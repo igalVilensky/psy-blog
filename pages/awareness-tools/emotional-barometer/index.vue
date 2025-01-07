@@ -14,7 +14,7 @@
       <!-- Message for Unauthenticated Users -->
       <div
         v-if="!user"
-        class="bg-white shadow-xl rounded-2xl p-4 sm:p-6 mb-8 max-w-3xl w-full mx-auto text-center"
+        class="bg-white shadow-xl rounded-2xl p-4 sm:p-6 mb-8 max-w-6xl w-full mx-auto text-center"
       >
         <!-- Description of the Tool -->
         <p class="text-lg sm:text-xl text-gray-600 mb-4">
@@ -50,7 +50,7 @@
       <!-- Emotional Barometer Section -->
       <div
         v-if="user"
-        class="bg-white shadow-xl rounded-2xl p-4 sm:p-6 mb-8 max-w-3xl w-full mx-auto"
+        class="bg-white shadow-xl rounded-2xl p-4 sm:p-6 mb-8 max-w-6xl w-full mx-auto"
       >
         <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-[#4A4238]">
           Измерьте свои эмоции
@@ -143,14 +143,14 @@
       <!-- Links to Additional Tools -->
       <div
         v-if="user"
-        class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl w-full mx-auto"
+        class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-6xl w-full mx-auto"
       >
         <template v-if="hasStatsData">
           <NuxtLink
             to="/awareness-tools/emotional-barometer/analysis"
             class="bg-white shadow-lg rounded-lg p-4 hover:shadow-xl transition-shadow text-center"
           >
-            <h3 class="text-lg font-semibold text-[#FF6B6B]">Анализ Эмоций</h3>
+            <h3 class="text-lg font-semibold text-indigo-500">Анализ Эмоций</h3>
             <p class="text-sm text-gray-600">
               Изучите свои эмоциональные паттерны
             </p>
@@ -160,7 +160,7 @@
           <div
             class="bg-white shadow-lg rounded-lg p-4 opacity-50 cursor-not-allowed text-center"
           >
-            <h3 class="text-lg font-semibold text-[#FF6B6B]">Анализ Эмоций</h3>
+            <h3 class="text-lg font-semibold text-indigo-500">Анализ Эмоций</h3>
             <p class="text-sm text-gray-600">
               Изучите свои эмоциональные паттерны
             </p>
@@ -172,7 +172,7 @@
             to="/awareness-tools/emotional-barometer/journal-history"
             class="bg-white shadow-lg rounded-lg p-4 hover:shadow-xl transition-shadow text-center"
           >
-            <h3 class="text-lg font-semibold text-[#FF6B6B]">
+            <h3 class="text-lg font-semibold text-indigo-500">
               История Журнала
             </h3>
             <p class="text-sm text-gray-600">Просмотрите ваши прошлые записи</p>
@@ -182,7 +182,7 @@
           <div
             class="bg-white shadow-lg rounded-lg p-4 opacity-50 cursor-not-allowed text-center"
           >
-            <h3 class="text-lg font-semibold text-[#FF6B6B]">
+            <h3 class="text-lg font-semibold text-indigo-500">
               История Журнала
             </h3>
             <p class="text-sm text-gray-600">Просмотрите ваши прошлые записи</p>

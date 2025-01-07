@@ -9,15 +9,16 @@
 
     <div
       v-else-if="loading"
-      class="w-24 h-24 rounded-full bg-pink-100 flex items-center justify-center ring-2 ring-offset-2 ring-gray-100"
+      class="w-24 h-24 rounded-full bg-indigo-100 flex items-center justify-center ring-2 ring-offset-2 ring-gray-100"
     >
-      <i class="fas fa-spinner fa-spin fa-2x text-[#FF6B6B]"></i>
+      <i class="fas fa-spinner fa-spin fa-2x text-indigo-600"></i>
     </div>
+
     <div
       v-else
-      class="w-24 h-24 rounded-full bg-pink-100 flex items-center justify-center ring-2 ring-offset-2 ring-gray-100"
+      class="w-24 h-24 rounded-full bg-indigo-100 flex items-center justify-center ring-2 ring-offset-2 ring-gray-100"
     >
-      <span class="text-3xl font-semibold text-pink-600">
+      <span class="text-3xl font-semibold text-indigo-600">
         {{ userInitial }}
       </span>
     </div>

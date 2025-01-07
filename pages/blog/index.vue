@@ -24,8 +24,8 @@
             :class="[
               'px-6 py-2.5 rounded-full transition-all duration-300 font-medium text-sm',
               activeTab === category
-                ? 'bg-pink-500 text-white shadow-lg shadow-pink-200'
-                : 'bg-white text-gray-700 hover:bg-pink-100 border border-gray-100',
+                ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-200'
+                : 'bg-white text-gray-700 hover:bg-indigo-100 border border-gray-100',
             ]"
           >
             {{ category }}
