@@ -82,9 +82,20 @@
               Эмоциональный барометр
             </h2>
 
+            <!-- Loading State -->
+            <div
+              v-if="loadingEmotionBarometer"
+              class="flex flex-col items-center justify-center h-64"
+            >
+              <i
+                class="fas fa-spinner fa-spin text-4xl text-indigo-600 mb-4"
+              ></i>
+              <p class="text-gray-600">Загрузка данных...</p>
+            </div>
+
             <!-- No Data State -->
             <div
-              v-if="emotionBarometerStats.totalEntries === 0"
+              v-else-if="emotionBarometerStats.totalEntries === 0"
               class="flex flex-col items-center justify-center h-64 text-center"
             >
               <i class="fas fa-chart-pie text-4xl text-gray-400 mb-4"></i>
@@ -292,9 +303,13 @@ import UserAvatar from "~/components/profile/UserAvatar.vue";
 import { getEmotionBarometerStats } from "~/api/firebase/emotionBarometer";
 import PsychologicalProfile from "~/components/profile/PsychologicalProfile.vue";
 import { getLatestUserAssessment } from "~/api/firebase/assessments";
+import { ref, nextTick } from "vue";
+
 Chart.register(...registerables);
 
 const loading = ref(true);
+const loadingEmotionBarometer = ref(true);
+
 const loadingAssessments = ref(false);
 const avatarUrl = ref(null); // Store the uploaded avatar URL
 const blogStatsChart = ref(null);
@@ -389,6 +404,7 @@ const getIconForArchetype = (name) => {
 
 onAuthStateChanged(auth, async (currentUser) => {
   loading.value = true;
+  loadingEmotionBarometer.value = true; // Set loading to true initially
 
   // Initialize Firestore
   const db = getFirestore();
@@ -416,6 +432,9 @@ onAuthStateChanged(auth, async (currentUser) => {
       if (success) {
         // Update the emotion barometer stats
         emotionBarometerStats.value = stats;
+
+        // Use nextTick to ensure the DOM is updated
+        await nextTick();
 
         // Initialize the emotion distribution chart if there are entries
         if (
@@ -459,6 +478,8 @@ onAuthStateChanged(auth, async (currentUser) => {
       }
     } catch (error) {
       console.error("Error loading emotion barometer data:", error);
+    } finally {
+      loadingEmotionBarometer.value = false; // Set loading to false after data is fetched
     }
 
     // Initialize the blog stats chart
