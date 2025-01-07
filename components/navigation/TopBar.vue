@@ -1,5 +1,7 @@
 <template>
-  <nav class="bg-gradient-to-b from-[#1A1F35] to-[#1E293B] text-white">
+  <nav
+    class="bg-gradient-to-b from-[#1A1F35] to-[#1E293B] text-white shadow-lg"
+  >
     <div
       class="container max-w-6xl w-full mx-auto flex justify-between items-center p-4"
     >
@@ -15,9 +17,9 @@
       </NuxtLink>
 
       <!-- Desktop Menu -->
-      <div class="hidden lg:block">
-        <ul class="flex items-center">
-          <li class="px-4 relative group">
+      <div class="hidden lg:flex items-center space-x-6">
+        <ul class="flex items-center space-x-6">
+          <li class="relative group">
             <div
               exact-active-class="text-sky-500"
               class="text-slate-300 text-base cursor-pointer whitespace-nowrap font-semibold transition-colors duration-300 ease-in-out hover:text-[#3498DB] flex items-center"
@@ -27,7 +29,7 @@
             </div>
             <DesktopSubmenu />
           </li>
-          <li class="px-4 relative group">
+          <li class="relative group">
             <NuxtLink
               to="/awareness-tools"
               exact-active-class="text-sky-500"
@@ -38,7 +40,7 @@
             </NuxtLink>
             <AwarenessToolsDesktopSubmenu />
           </li>
-          <li class="px-4">
+          <li>
             <NuxtLink
               to="/blog"
               exact-active-class="text-sky-500"
@@ -47,7 +49,7 @@
               Блог
             </NuxtLink>
           </li>
-          <li class="px-4">
+          <li>
             <NuxtLink
               to="/about"
               exact-active-class="text-sky-500"
@@ -56,8 +58,7 @@
               О проекте
             </NuxtLink>
           </li>
-
-          <li class="px-4">
+          <li>
             <NuxtLink
               to="/contact"
               exact-active-class="text-sky-500"
@@ -66,61 +67,61 @@
               Связь
             </NuxtLink>
           </li>
-          <div class="ml-6 flex items-center">
-            <template v-if="currentUser">
-              <div class="relative group">
-                <div
-                  class="flex items-center space-x-2 text-[#ECF0F1] hover:text-[#3498DB] cursor-pointer"
-                >
-                  <span class="font-semibold">{{
-                    currentUser.displayName
-                  }}</span>
-                  <i class="fas fa-chevron-down text-sm"></i>
-                </div>
-
-                <!-- User Dropdown Menu (Now uses group-hover) -->
-                <div
-                  class="absolute right-0 mt-[1.2rem] w-48 bg-gradient-to-t from-[#1A1F35] to-[#1E293B] rounded-b-lg shadow-lg py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300"
-                >
-                  <NuxtLink
-                    to="/profile"
-                    exact-active-class="text-sky-500"
-                    class="block px-4 py-2 text-sm text-[#ECF0F1] hover:bg-[#3498DB]"
-                  >
-                    Профиль
-                  </NuxtLink>
-                  <button
-                    @click="handleLogout"
-                    class="block w-full text-left px-4 py-2 text-sm text-[#ECF0F1] hover:bg-[#3498DB]"
-                  >
-                    Выйти
-                  </button>
-                </div>
-              </div>
-            </template>
-
-            <template v-else>
-              <NuxtLink
-                to="/login"
-                exact-active-class="text-sky-500"
-                class="text-slate-300 hover:text-[#22D3EE] font-semibold mr-4"
-              >
-                Войти
-              </NuxtLink>
-              <NuxtLink
-                to="/register"
-                exact-active-class="text-sky-500"
-                class="bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white px-4 py-2 rounded-md hover:from-[#22D3EE] hover:to-[#C084FC] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#C084FC] focus:ring-offset-2 focus:ring-offset-[#1A1F35]"
-              >
-                Регистрация
-              </NuxtLink>
-            </template>
-          </div>
         </ul>
+
+        <!-- Auth Section -->
+        <div class="ml-6 flex items-center">
+          <template v-if="currentUser">
+            <div class="relative group">
+              <div
+                class="flex items-center space-x-2 text-[#ECF0F1] hover:text-[#3498DB] cursor-pointer"
+              >
+                <span class="font-semibold">{{ currentUser.displayName }}</span>
+                <i class="fas fa-chevron-down text-sm"></i>
+              </div>
+
+              <!-- User Dropdown Menu -->
+              <div
+                class="absolute right-0 mt-2 w-48 bg-gradient-to-t from-[#1A1F35] to-[#1E293B] rounded-lg shadow-lg py-2 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300"
+              >
+                <NuxtLink
+                  to="/profile"
+                  exact-active-class="text-sky-500"
+                  class="block px-4 py-2 text-sm text-[#ECF0F1] hover:bg-[#3498DB]"
+                >
+                  Профиль
+                </NuxtLink>
+                <button
+                  @click="handleLogout"
+                  class="block w-full text-left px-4 py-2 text-sm text-[#ECF0F1] hover:bg-[#3498DB]"
+                >
+                  Выйти
+                </button>
+              </div>
+            </div>
+          </template>
+
+          <template v-else>
+            <NuxtLink
+              to="/login"
+              exact-active-class="text-sky-500"
+              class="text-slate-300 hover:text-[#22D3EE] font-semibold mr-4"
+            >
+              Войти
+            </NuxtLink>
+            <NuxtLink
+              to="/register"
+              exact-active-class="text-sky-500"
+              class="bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white px-4 py-2 rounded-md hover:from-[#22D3EE] hover:to-[#C084FC] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#C084FC] focus:ring-offset-2 focus:ring-offset-[#1A1F35]"
+            >
+              Регистрация
+            </NuxtLink>
+          </template>
+        </div>
       </div>
 
       <!-- Mobile Menu -->
-      <div class="relative lg:hidden mobile-menu" data-menu="mobile">
+      <div class="lg:hidden relative">
         <button
           @click="toggleDropdown"
           class="focus:outline-none flex flex-col items-center justify-center w-8 h-8 relative"
@@ -146,7 +147,7 @@
 
         <ul
           :class="[
-            'absolute -right-4 mt-4 bg-gradient-to-t from-[#1A1F35] to-[#1E293B] text-white py-4 rounded-bl-lg shadow-md w-52 overflow-hidden transition-all duration-700 ease-in-out transform z-50',
+            'absolute right-0 mt-4 bg-gradient-to-t from-[#1A1F35] to-[#1E293B] text-white py-4 rounded-lg shadow-md w-52 overflow-hidden transition-all duration-700 ease-in-out transform z-50',
             isDropdownOpen
               ? 'max-h-fit opacity-100 scale-100'
               : 'max-h-0 opacity-0 scale-95',
@@ -159,7 +160,6 @@
               @click="toggleSubmenu('courses')"
             >
               Курсы
-
               <i
                 class="fas fa-chevron-down ml-1 text-sm"
                 :class="openSubmenu === 'courses' ? 'rotate-180' : ''"

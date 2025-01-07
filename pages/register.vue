@@ -8,26 +8,27 @@
     >
       <!-- Registration Form Section -->
       <div class="p-10">
-        <h2 class="text-3xl font-bold text-[#4A4238] mb-6">Регистрация</h2>
-        <form @submit.prevent="registerUserHandler" class="space-y-4">
+        <h2 class="text-3xl font-bold text-gray-800 mb-6">Регистрация</h2>
+        <form @submit.prevent="handleRegister" class="space-y-4">
           <!-- Display Name input -->
           <div>
             <label
               for="displayName"
-              class="block text-sm font-medium text-[#6B5B4C] mb-2"
+              class="block text-sm font-medium text-gray-700 mb-2"
             >
               Ваше имя
             </label>
             <div class="relative">
               <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-                <i class="fas fa-user text-[#FF6B6B]"></i>
+                <i class="fas fa-user text-indigo-600"></i>
               </span>
               <input
                 type="text"
                 id="displayName"
                 v-model="displayName"
                 required
-                class="w-full pl-10 pr-4 py-2 border-2 border-[#FFD1DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B6B]"
+                class="w-full pl-10 pr-4 py-2 border-2 border-indigo-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors duration-200"
+                placeholder="Иван Иванов"
               />
             </div>
           </div>
@@ -36,13 +37,13 @@
           <div>
             <label
               for="email"
-              class="block text-sm font-medium text-[#6B5B4C] mb-2"
+              class="block text-sm font-medium text-gray-700 mb-2"
             >
               Email
             </label>
             <div class="relative">
               <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-                <i class="fas fa-envelope text-[#FF6B6B]"></i>
+                <i class="fas fa-envelope text-indigo-600"></i>
               </span>
               <input
                 type="email"
@@ -50,7 +51,8 @@
                 v-model="email"
                 autocomplete="email"
                 required
-                class="w-full pl-10 pr-4 py-2 border-2 border-[#FFD1DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B6B]"
+                class="w-full pl-10 pr-4 py-2 border-2 border-indigo-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors duration-200"
+                placeholder="your@email.com"
               />
             </div>
           </div>
@@ -59,13 +61,13 @@
           <div>
             <label
               for="password"
-              class="block text-sm font-medium text-[#6B5B4C] mb-2"
+              class="block text-sm font-medium text-gray-700 mb-2"
             >
               Пароль
             </label>
             <div class="relative">
               <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-                <i class="fas fa-lock text-[#FF6B6B]"></i>
+                <i class="fas fa-lock text-indigo-600"></i>
               </span>
               <input
                 :type="showPassword ? 'text' : 'password'"
@@ -73,16 +75,17 @@
                 v-model="password"
                 autocomplete="new-password"
                 required
-                class="w-full pl-10 pr-12 py-2 border-2 border-[#FFD1DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B6B]"
+                class="w-full pl-10 pr-12 py-2 border-2 border-indigo-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors duration-200"
+                placeholder="••••••••"
               />
               <button
                 type="button"
-                @click="showPassword = !showPassword"
+                @click="togglePassword('password')"
                 class="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
               >
                 <i
                   :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
-                  class="text-[#FF6B6B]"
+                  class="text-indigo-600 hover:text-indigo-800 transition-colors duration-200"
                 ></i>
               </button>
             </div>
@@ -92,31 +95,32 @@
           <div>
             <label
               for="confirmPassword"
-              class="block text-sm font-medium text-[#6B5B4C] mb-2"
+              class="block text-sm font-medium text-gray-700 mb-2"
             >
               Подтвердите пароль
             </label>
             <div class="relative">
               <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-                <i class="fas fa-lock text-[#FF6B6B]"></i>
+                <i class="fas fa-lock text-indigo-600"></i>
               </span>
               <input
                 :type="showConfirmPassword ? 'text' : 'password'"
                 id="confirmPassword"
                 v-model="confirmPassword"
                 required
-                class="w-full pl-10 pr-12 py-2 border-2 border-[#FFD1DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B6B]"
+                class="w-full pl-10 pr-12 py-2 border-2 border-indigo-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors duration-200"
+                placeholder="••••••••"
               />
               <button
                 type="button"
-                @click="showConfirmPassword = !showConfirmPassword"
+                @click="togglePassword('confirm')"
                 class="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
               >
                 <i
                   :class="
                     showConfirmPassword ? 'fas fa-eye-slash' : 'fas fa-eye'
                   "
-                  class="text-[#FF6B6B]"
+                  class="text-indigo-600 hover:text-indigo-800 transition-colors duration-200"
                 ></i>
               </button>
             </div>
@@ -131,15 +135,15 @@
                   v-model="acceptPrivacy"
                   type="checkbox"
                   required
-                  class="w-4 h-4 border-2 border-[#FFD1DC] rounded focus:ring-[#FF6B6B] focus:ring-2"
+                  class="w-4 h-4 border-2 border-indigo-100 rounded focus:ring-indigo-500 focus:ring-2 text-indigo-600"
                 />
               </div>
               <div class="ml-3">
-                <label for="privacy" class="text-sm text-[#6B5B4C]">
+                <label for="privacy" class="text-sm text-gray-600">
                   Я согласен с
                   <NuxtLink
                     to="/legal/privacy"
-                    class="text-[#FF6B6B] hover:text-[#FF5252] transition"
+                    class="text-indigo-600 hover:text-indigo-800 transition-colors duration-200"
                   >
                     Политикой конфиденциальности
                   </NuxtLink>
@@ -154,15 +158,15 @@
                   v-model="acceptTerms"
                   type="checkbox"
                   required
-                  class="w-4 h-4 border-2 border-[#FFD1DC] rounded focus:ring-[#FF6B6B] focus:ring-2"
+                  class="w-4 h-4 border-2 border-indigo-100 rounded focus:ring-indigo-500 focus:ring-2 text-indigo-600"
                 />
               </div>
               <div class="ml-3">
-                <label for="terms" class="text-sm text-[#6B5B4C]">
+                <label for="terms" class="text-sm text-gray-600">
                   Я принимаю
                   <NuxtLink
                     to="/legal/terms"
-                    class="text-[#FF6B6B] hover:text-[#FF5252] transition"
+                    class="text-indigo-600 hover:text-indigo-800 transition-colors duration-200"
                   >
                     Условия использования
                   </NuxtLink>
@@ -172,24 +176,33 @@
           </div>
 
           <!-- Error message -->
-          <div v-if="error" class="text-sm text-red-500 mb-4">{{ error }}</div>
+          <div
+            v-if="error"
+            class="text-sm text-red-500 bg-red-50 p-3 rounded-lg"
+          >
+            {{ error }}
+          </div>
 
           <!-- Submit button -->
           <button
             type="submit"
-            :disabled="!isFormValid"
-            class="w-full bg-[#FF6B6B] text-white py-3 rounded-lg hover:bg-[#FF5252] transition flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            :disabled="!isFormValid || isLoading"
+            class="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-200 flex items-center justify-center space-x-2 group disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <i class="fas fa-user-plus"></i>
-            <span>Зарегистрироваться</span>
+            <i
+              class="fas fa-user-plus group-hover:translate-x-1 transition-transform duration-200"
+            ></i>
+            <span>{{
+              isLoading ? "Регистрация..." : "Зарегистрироваться"
+            }}</span>
           </button>
         </form>
 
-        <p class="mt-4 text-center text-sm text-[#6B5B4C]">
+        <p class="mt-6 text-center text-sm text-gray-600">
           Уже есть аккаунт?
           <NuxtLink
             to="/login"
-            class="text-[#FF6B6B] hover:text-[#FF5252] transition"
+            class="text-indigo-600 hover:text-indigo-800 font-medium transition-colors duration-200"
           >
             Войти
           </NuxtLink>
@@ -197,22 +210,36 @@
       </div>
 
       <!-- Info Section -->
-      <div class="bg-[#FFE4E1] p-10 flex flex-col justify-center space-y-6">
-        <h2 class="text-3xl font-bold text-[#4A4238] mb-4">
+      <div
+        class="bg-gradient-to-br from-indigo-50 to-blue-50 p-10 flex flex-col justify-center"
+      >
+        <h2 class="text-3xl font-bold text-gray-800 mb-8">
           Присоединяйтесь к нам
         </h2>
-        <div class="space-y-4">
-          <div class="flex items-center space-x-4">
-            <i class="fas fa-users text-[#FF6B6B] text-xl"></i>
-            <span class="text-[#6B5B4C]">Доступ к эксклюзивному контенту</span>
+        <div class="space-y-6">
+          <div class="flex items-center space-x-4 group">
+            <div
+              class="p-3 bg-white rounded-lg shadow-md group-hover:shadow-lg transition-shadow duration-200"
+            >
+              <i class="fas fa-users text-indigo-600 text-xl"></i>
+            </div>
+            <span class="text-gray-700">Доступ к эксклюзивному контенту</span>
           </div>
-          <div class="flex items-center space-x-4">
-            <i class="fas fa-graduation-cap text-[#FF6B6B] text-xl"></i>
-            <span class="text-[#6B5B4C]">Возможность обучения</span>
+          <div class="flex items-center space-x-4 group">
+            <div
+              class="p-3 bg-white rounded-lg shadow-md group-hover:shadow-lg transition-shadow duration-200"
+            >
+              <i class="fas fa-graduation-cap text-indigo-600 text-xl"></i>
+            </div>
+            <span class="text-gray-700">Возможность обучения</span>
           </div>
-          <div class="flex items-center space-x-4">
-            <i class="fas fa-comments text-[#FF6B6B] text-xl"></i>
-            <span class="text-[#6B5B4C]">Общение с единомышленниками</span>
+          <div class="flex items-center space-x-4 group">
+            <div
+              class="p-3 bg-white rounded-lg shadow-md group-hover:shadow-lg transition-shadow duration-200"
+            >
+              <i class="fas fa-comments text-indigo-600 text-xl"></i>
+            </div>
+            <span class="text-gray-700">Общение с единомышленниками</span>
           </div>
         </div>
       </div>
@@ -225,6 +252,7 @@ import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { registerUser } from "~/api/firebase/userProfile";
 
+// Refs for form inputs and state
 const email = ref("");
 const password = ref("");
 const confirmPassword = ref("");
@@ -232,9 +260,10 @@ const displayName = ref("");
 const error = ref("");
 const acceptPrivacy = ref(false);
 const acceptTerms = ref(false);
-const router = useRouter();
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
+const isLoading = ref(false); // Added loading state
+const router = useRouter();
 
 // Computed property to check if all fields are filled and valid
 const isFormValid = computed(() => {
@@ -251,14 +280,25 @@ const isFormValid = computed(() => {
   );
 });
 
-const registerUserHandler = async () => {
+// Toggle password visibility
+const togglePassword = (field) => {
+  if (field === "password") {
+    showPassword.value = !showPassword.value;
+  } else if (field === "confirm") {
+    showConfirmPassword.value = !showConfirmPassword.value;
+  }
+};
+
+// Handle registration
+const handleRegister = async () => {
   if (!isFormValid.value) {
     error.value =
       "Пожалуйста, заполните все поля корректно и примите условия использования";
     return;
   }
 
-  error.value = "";
+  error.value = ""; // Clear any previous errors
+  isLoading.value = true; // Set loading state
 
   try {
     const response = await registerUser(
@@ -271,10 +311,12 @@ const registerUserHandler = async () => {
       // Redirect to login page after successful registration
       router.push("/login");
     } else {
-      error.value = response.message;
+      error.value = response.message || "Ошибка при регистрации";
     }
   } catch (err) {
-    error.value = err.message;
+    error.value = err.message || "Произошла ошибка при регистрации";
+  } finally {
+    isLoading.value = false; // Reset loading state
   }
 };
 </script>

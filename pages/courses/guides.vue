@@ -1,74 +1,99 @@
 <template>
   <div
-    class="bg-gradient-to-br from-indigo-50 via-blue-50 to-white min-h-screen py-12"
+    class="min-h-screen bg-gradient-to-br from-indigo-50 via-blue-50 to-white py-16"
   >
     <div class="container mx-auto px-4 max-w-6xl">
       <!-- Hero Section -->
-      <section class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-gray-800 mb-4">
+      <section class="text-center mb-20">
+        <div
+          class="inline-block px-4 py-2 bg-indigo-50 rounded-full text-indigo-600 font-medium mb-6"
+        >
+          Руководства
+        </div>
+        <h1 class="text-5xl font-bold text-gray-800 mb-6 tracking-tight">
           Руководства для Саморазвития
         </h1>
-        <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
           Исследуйте практические руководства, которые помогут вам углубить
           самопознание, улучшить отношения и раскрыть внутренний потенциал.
         </p>
       </section>
 
       <!-- Filters Section -->
-      <div class="mb-12">
+      <div class="mb-16">
         <div class="flex flex-wrap justify-center gap-4">
           <button
             v-for="category in categories"
             :key="category"
             @click="selectCategory(category)"
             :class="[
-              'px-4 py-2 rounded-full transition-all duration-300',
+              'px-6 py-3 rounded-full transition-all duration-300 font-medium relative overflow-hidden group',
               selectedCategory === category
-                ? 'bg-pink-500 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-pink-100',
+                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200'
+                : 'bg-white text-gray-700 hover:bg-indigo-50 border border-gray-200 hover:text-white',
             ]"
           >
-            {{ category }}
+            <span class="relative z-10">{{ category }}</span>
+            <div
+              class="absolute inset-0 bg-gradient-to-r from-indigo-600 to-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"
+              :class="{ 'scale-x-100': selectedCategory === category }"
+            ></div>
           </button>
         </div>
       </div>
 
       <!-- Guides Grid -->
-      <div class="grid md:grid-cols-3 gap-8">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         <div
           v-for="guide in filteredGuides"
           :key="guide.id"
-          class="bg-white rounded-2xl shadow-lg overflow-hidden transform transition hover:scale-105 hover:shadow-xl"
+          class="group bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-xl hover:-translate-y-2"
         >
           <!-- Guide Image -->
-          <img
-            :src="guide.image"
-            :alt="guide.title"
-            class="w-full h-48 object-cover"
-          />
+          <div class="relative overflow-hidden">
+            <img
+              :src="guide.image"
+              :alt="guide.title"
+              class="w-full h-52 object-cover transition-transform duration-500 group-hover:scale-110"
+            />
+            <!-- Category Badge -->
+            <span
+              :class="[
+                'absolute top-4 left-4 px-4 py-2 rounded-full text-sm font-medium shadow-md backdrop-blur-sm text-white',
+                {
+                  'bg-emerald-500/80 border border-emerald-200':
+                    guide.category === 'Самопознание',
+                  'bg-purple-500/80 border border-purple-200':
+                    guide.category === 'Эмоциональный интеллект',
+                  'bg-blue-500/80 border border-blue-200':
+                    guide.category === 'Отношения',
+                  'bg-pink-500/80 border border-pink-200':
+                    guide.category === 'Карьерный рост',
+                },
+              ]"
+            >
+              {{ guide.category }}
+            </span>
+          </div>
+
           <!-- Guide Content -->
-          <div class="p-6">
-            <div class="flex justify-between items-center mb-4">
-              <h3 class="text-xl font-bold text-gray-800">{{ guide.title }}</h3>
-              <span
-                class="bg-pink-100 text-pink-600 px-3 py-1 rounded-full text-sm text-center"
-              >
-                {{ guide.category }}
-              </span>
-            </div>
-            <p class="text-gray-600 mb-4">{{ guide.description }}</p>
+          <div class="p-8">
+            <h2
+              class="text-xl font-bold text-gray-800 mb-4 line-clamp-2 group-hover:text-indigo-600 transition-colors duration-300"
+            >
+              {{ guide.title }}
+            </h2>
+            <p class="text-gray-600 mb-4 line-clamp-3">
+              {{ guide.description }}
+            </p>
             <div class="flex items-center gap-4 mb-4">
-              <!-- Icon -->
-
-              <i :class="guide.icon" class="text-xl text-pink-600" />
-
-              <!-- Icon Description -->
+              <i :class="guide.icon" class="text-xl text-indigo-600" />
               <p class="text-gray-500 text-sm">{{ guide.iconDescription }}</p>
             </div>
             <div class="flex justify-between items-center">
               <span class="text-sm text-gray-500">{{ guide.date }}</span>
               <button
-                class="bg-pink-500 text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition"
+                class="bg-gradient-to-r from-indigo-600 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-indigo-700 hover:to-blue-700 transition-all"
               >
                 Читать
               </button>
@@ -79,7 +104,7 @@
 
       <!-- Call to Action -->
       <div
-        class="bg-gradient-to-r from-pink-400 to-purple-500 rounded-2xl p-8 mt-12 text-center"
+        class="bg-gradient-to-r from-indigo-600 to-blue-600 rounded-2xl p-8 mt-16 text-center transform transition-all duration-300 hover:shadow-xl hover:-translate-y-2"
       >
         <h2 class="text-3xl font-bold text-white mb-4">
           Подпишитесь на новые материалы
@@ -93,11 +118,11 @@
             type="email"
             v-model="email"
             placeholder="Ваш email"
-            class="w-full px-4 py-3 rounded-l-lg text-gray-800"
+            class="w-full px-4 py-3 rounded-l-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
           <button
             @click="subscribeEmail"
-            class="bg-white text-pink-600 px-6 py-3 rounded-r-lg hover:bg-gray-100"
+            class="bg-white text-indigo-600 px-6 py-3 rounded-r-lg hover:bg-gray-100 transition-all"
           >
             Подписаться
           </button>
@@ -203,3 +228,27 @@ const validateEmail = (email) => {
   return re.test(String(email).toLowerCase());
 };
 </script>
+<style scoped>
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+</style>

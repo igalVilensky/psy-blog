@@ -34,13 +34,15 @@
           <!-- Category Badge - Moved to top left of image -->
           <span
             :class="[
-              'absolute top-4 left-4 px-3 py-1 rounded-full text-sm font-medium',
+              'absolute top-4 left-4 px-3 py-1 rounded-full text-sm font-medium shadow-md backdrop-blur-sm text-white',
               {
-                'bg-emerald-100 text-emerald-800':
+                'bg-emerald-500/80 border border-emerald-200':
                   post.category === 'Личностный рост',
-                'bg-purple-100 text-purple-800': post.category === 'Отношения',
-                'bg-blue-100 text-blue-800': post.category === 'Продуктивность',
-                'bg-gray-100 text-gray-800': !post.category,
+                'bg-purple-500/80 border border-purple-200':
+                  post.category === 'Отношения',
+                'bg-blue-500/80 border border-blue-200':
+                  post.category === 'Продуктивность',
+                'bg-gray-500/80 border border-gray-200': !post.category,
               },
             ]"
           >
@@ -82,8 +84,6 @@
                 <span>Поделиться</span>
               </button>
             </div>
-
-            <!-- Share Button - Moved to meta row -->
           </div>
 
           <!-- Article Content -->
@@ -140,6 +140,7 @@
           </div>
         </div>
       </div>
+
       <!-- Share Section -->
       <div class="mt-12 bg-white rounded-2xl shadow-lg p-8">
         <div class="text-center mb-6">
@@ -188,6 +189,7 @@
           </button>
         </div>
       </div>
+
       <!-- Newsletter Section -->
       <div
         class="bg-gradient-to-r from-pink-400 to-purple-500 rounded-2xl p-8 mt-12 text-center"
@@ -201,7 +203,7 @@
             type="email"
             v-model="email"
             placeholder="Ваш email"
-            class="w-full px-4 py-3 rounded-l-lg text-gray-800"
+            class="w-full px-4 py-3 rounded-l-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-pink-500"
           />
           <button
             @click="subscribeEmail"

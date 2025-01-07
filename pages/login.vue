@@ -8,19 +8,19 @@
     >
       <!-- Login Form Section -->
       <div class="p-10">
-        <h2 class="text-3xl font-bold text-[#4A4238] mb-6">Вход</h2>
-        <form @submit.prevent="loginUser" class="space-y-4">
+        <h2 class="text-3xl font-bold text-gray-800 mb-6">Вход</h2>
+        <form @submit.prevent="handleLogin" class="space-y-4">
           <!-- Email input -->
           <div>
             <label
               for="email"
-              class="block text-sm font-medium text-[#6B5B4C] mb-2"
+              class="block text-sm font-medium text-gray-700 mb-2"
             >
               Email
             </label>
             <div class="relative">
               <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-                <i class="fas fa-envelope text-[#FF6B6B]"></i>
+                <i class="far fa-envelope text-indigo-600"></i>
               </span>
               <input
                 type="email"
@@ -28,7 +28,8 @@
                 v-model="email"
                 autocomplete="email"
                 required
-                class="w-full pl-10 pr-4 py-2 border-2 border-[#FFD1DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B6B]"
+                class="w-full pl-10 pr-4 py-2 border-2 border-indigo-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors duration-200"
+                placeholder="your@email.com"
               />
             </div>
           </div>
@@ -37,13 +38,13 @@
           <div>
             <label
               for="password"
-              class="block text-sm font-medium text-[#6B5B4C] mb-2"
+              class="block text-sm font-medium text-gray-700 mb-2"
             >
               Пароль
             </label>
             <div class="relative">
               <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-                <i class="fas fa-lock text-[#FF6B6B]"></i>
+                <i class="fa fa-lock text-indigo-600"></i>
               </span>
               <input
                 :type="showPassword ? 'text' : 'password'"
@@ -51,39 +52,48 @@
                 v-model="password"
                 autocomplete="current-password"
                 required
-                class="w-full pl-10 pr-12 py-2 border-2 border-[#FFD1DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B6B]"
+                class="w-full pl-10 pr-12 py-2 border-2 border-indigo-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors duration-200"
+                placeholder="••••••••"
               />
               <button
                 type="button"
-                @click="showPassword = !showPassword"
+                @click="togglePassword"
                 class="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
               >
                 <i
-                  :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
-                  class="text-[#FF6B6B]"
+                  :class="showPassword ? 'far fa-eye-slash' : 'far fa-eye'"
+                  class="text-indigo-600 hover:text-indigo-800 transition-colors duration-200"
                 ></i>
               </button>
             </div>
           </div>
 
           <!-- Error message -->
-          <div v-if="error" class="text-sm text-red-500 mb-4">{{ error }}</div>
+          <div
+            v-if="error"
+            class="text-sm text-red-500 bg-red-50 p-3 rounded-lg"
+          >
+            {{ error }}
+          </div>
 
           <!-- Submit button -->
           <button
             type="submit"
-            class="w-full bg-[#FF6B6B] text-white py-3 rounded-lg hover:bg-[#FF5252] transition flex items-center justify-center space-x-2"
+            class="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-200 flex items-center justify-center space-x-2 group"
+            :disabled="isLoading"
           >
-            <i class="fas fa-sign-in-alt"></i>
-            <span>Войти</span>
+            <i
+              class="fas fa-sign-in-alt group-hover:translate-x-1 transition-transform duration-200"
+            ></i>
+            <span>{{ isLoading ? "Вход..." : "Войти" }}</span>
           </button>
         </form>
 
-        <p class="mt-4 text-center text-sm text-[#6B5B4C]">
+        <p class="mt-6 text-center text-sm text-gray-600">
           Нет аккаунта?
           <NuxtLink
             to="/register"
-            class="text-[#FF6B6B] hover:text-[#FF5252] transition"
+            class="text-indigo-600 hover:text-indigo-800 font-medium transition-colors duration-200"
           >
             Зарегистрироваться
           </NuxtLink>
@@ -91,20 +101,34 @@
       </div>
 
       <!-- Info Section -->
-      <div class="bg-[#FFE4E1] p-10 flex flex-col justify-center space-y-6">
-        <h2 class="text-3xl font-bold text-[#4A4238] mb-4">С возвращением!</h2>
-        <div class="space-y-4">
-          <div class="flex items-center space-x-4">
-            <i class="fas fa-book-reader text-[#FF6B6B] text-xl"></i>
-            <span class="text-[#6B5B4C]">Продолжите обучение</span>
+      <div
+        class="bg-gradient-to-br from-indigo-50 to-blue-50 p-10 flex flex-col justify-center"
+      >
+        <h2 class="text-3xl font-bold text-gray-800 mb-8">Добро пожаловать!</h2>
+        <div class="space-y-6">
+          <div class="flex items-center space-x-4 group">
+            <div
+              class="p-3 bg-white rounded-lg shadow-md group-hover:shadow-lg transition-shadow duration-200"
+            >
+              <i class="fas fa-book-reader text-indigo-600 text-xl"></i>
+            </div>
+            <span class="text-gray-700">Продолжите свой путь обучения</span>
           </div>
-          <div class="flex items-center space-x-4">
-            <i class="fas fa-chart-line text-[#FF6B6B] text-xl"></i>
-            <span class="text-[#6B5B4C]">Отслеживайте свой прогресс</span>
+          <div class="flex items-center space-x-4 group">
+            <div
+              class="p-3 bg-white rounded-lg shadow-md group-hover:shadow-lg transition-shadow duration-200"
+            >
+              <i class="fas fa-chart-line text-indigo-600 text-xl"></i>
+            </div>
+            <span class="text-gray-700">Отслеживайте свой прогресс</span>
           </div>
-          <div class="flex items-center space-x-4">
-            <i class="fas fa-users text-[#FF6B6B] text-xl"></i>
-            <span class="text-[#6B5B4C]">Присоединяйтесь к сообществу</span>
+          <div class="flex items-center space-x-4 group">
+            <div
+              class="p-3 bg-white rounded-lg shadow-md group-hover:shadow-lg transition-shadow duration-200"
+            >
+              <i class="fas fa-users text-indigo-600 text-xl"></i>
+            </div>
+            <span class="text-gray-700">Станьте частью сообщества</span>
           </div>
         </div>
       </div>
@@ -114,24 +138,32 @@
 
 <script setup>
 import { ref } from "vue";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "vue-router";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
+const router = useRouter();
 const email = ref("");
 const password = ref("");
 const error = ref("");
-const router = useRouter();
 const showPassword = ref(false);
+const isLoading = ref(false);
 
-const loginUser = async () => {
-  const auth = getAuth();
+const togglePassword = () => {
+  showPassword.value = !showPassword.value;
+};
+
+const handleLogin = async () => {
+  isLoading.value = true;
   error.value = "";
 
   try {
+    const auth = getAuth();
     await signInWithEmailAndPassword(auth, email.value, password.value);
     router.push("/profile");
   } catch (err) {
     error.value = err.message;
+  } finally {
+    isLoading.value = false;
   }
 };
 </script>

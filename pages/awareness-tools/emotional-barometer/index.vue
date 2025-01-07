@@ -1,63 +1,65 @@
 <template>
   <div
-    class="bg-gradient-to-br from-indigo-50 via-blue-50 to-white min-h-screen py-6 sm:py-12"
+    class="bg-gradient-to-br from-indigo-50 via-blue-50 to-white min-h-screen py-12"
   >
-    <div class="container px-4 max-w-7xl mx-auto">
+    <div class="container mx-auto px-4 max-w-7xl">
       <!-- Hero Section -->
-      <div class="text-center mb-8">
-        <h1 class="text-4xl font-bold text-gray-800 mb-6 tracking-tight">
+      <section class="text-center mb-16">
+        <div
+          class="inline-block px-6 py-2 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-full text-white font-medium mb-6 shadow-lg"
+        >
           Эмоциональный Барометр
+        </div>
+        <h1
+          class="text-4xl sm:text-5xl font-bold text-gray-800 mb-6 tracking-tight"
+        >
+          Понимаем ваши эмоции
         </h1>
-        <p class="text-lg sm:text-xl text-gray-600">Понимаем ваши эмоции</p>
-      </div>
+        <p class="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
+          Эмоциональный Барометр — это инструмент, который помогает вам лучше
+          понять свои эмоции, отслеживать их интенсивность и находить способы
+          справляться с ними.
+        </p>
+      </section>
 
       <!-- Message for Unauthenticated Users -->
       <div
         v-if="!user"
-        class="bg-white shadow-xl rounded-2xl p-4 sm:p-6 mb-8 max-w-6xl w-full mx-auto text-center"
+        class="bg-white rounded-2xl shadow-xl p-8 sm:p-12 mb-12 max-w-4xl mx-auto text-center"
       >
-        <!-- Description of the Tool -->
-        <p class="text-lg sm:text-xl text-gray-600 mb-4">
-          Эмоциональный Барометр — это инструмент, который помогает вам лучше
-          понять свои эмоции, отслеживать их интенсивность и находить способы
-          справляться с ними. С его помощью вы сможете анализировать свои
-          эмоциональные паттерны и улучшить свое эмоциональное состояние.
+        <p class="text-lg sm:text-xl text-gray-600 mb-6">
+          Чтобы начать использовать инструмент, пожалуйста, войдите или
+          зарегистрируйтесь.
         </p>
-
-        <!-- CTA for Login/Registration -->
-        <div class="mt-6">
-          <p class="text-lg sm:text-xl text-gray-600 mb-4">
-            Чтобы начать использовать инструмент, пожалуйста, войдите или
-            зарегистрируйтесь.
-          </p>
-          <div class="flex justify-center gap-4">
-            <NuxtLink
-              to="/login"
-              class="px-6 py-2 bg-[#FF6B6B] text-white rounded-lg hover:bg-[#FF5252] transition-colors"
-            >
-              Войти
-            </NuxtLink>
-            <NuxtLink
-              to="/register"
-              class="px-6 py-2 bg-white border border-[#FF6B6B] text-[#FF6B6B] rounded-lg hover:bg-[#FF6B6B] hover:text-white transition-colors"
-            >
-              Зарегистрироваться
-            </NuxtLink>
-          </div>
+        <div class="flex justify-center gap-4">
+          <NuxtLink
+            to="/login"
+            class="px-6 py-3 bg-gradient-to-r from-indigo-500 to-blue-500 text-white rounded-lg hover:from-indigo-600 hover:to-blue-600 transition-all shadow-md"
+          >
+            Войти
+          </NuxtLink>
+          <NuxtLink
+            to="/register"
+            class="px-6 py-3 bg-white border border-indigo-500 text-indigo-500 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all shadow-md"
+          >
+            Зарегистрироваться
+          </NuxtLink>
         </div>
       </div>
 
       <!-- Emotional Barometer Section -->
       <div
         v-if="user"
-        class="bg-white shadow-xl rounded-2xl p-4 sm:p-6 mb-8 max-w-6xl w-full mx-auto"
+        class="bg-white rounded-2xl shadow-xl p-8 sm:p-12 mb-12 max-w-4xl mx-auto"
       >
-        <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-[#4A4238]">
+        <h2 class="text-2xl font-bold text-gray-800 mb-8">
           Измерьте свои эмоции
         </h2>
 
+        <!-- Step Indicator -->
         <StepIndicator :current-step="currentStep" :step-title="stepTitle" />
 
+        <!-- Step 1: Emotion Selection -->
         <div v-if="currentStep === 1">
           <EmotionSelection
             :emotions="emotions"
@@ -65,6 +67,8 @@
             @select-emotion="selectEmotion"
           />
         </div>
+
+        <!-- Step 2: Sub-Emotion Selection -->
         <div v-if="currentStep === 2 && selectedEmotion">
           <SubEmotionSelection
             :sub-emotions="subEmotions"
@@ -72,12 +76,16 @@
             @select-sub-emotion="selectSubEmotion"
           />
         </div>
+
+        <!-- Step 3: Intensity Level -->
         <div v-if="currentStep === 3 && selectedEmotion">
           <IntensityLevel
             :selected-emotion="selectedEmotion"
             v-model:intensity-level="intensityLevel"
           />
         </div>
+
+        <!-- Step 4: Journal Entry -->
         <div v-if="currentStep === 4 && selectedEmotion">
           <JournalEntry
             v-model:journal-entry="journalEntry"
@@ -85,6 +93,8 @@
             v-model:coping-entry="copingEntry"
           />
         </div>
+
+        <!-- Step 5: Life Spheres Selection -->
         <div v-if="currentStep === 5 && selectedEmotion">
           <LifeSpheresSelection
             :life-spheres="lifeSpheres"
@@ -94,11 +104,11 @@
         </div>
 
         <!-- Navigation Buttons -->
-        <div class="flex justify-end mt-6">
+        <div class="flex justify-end mt-8 gap-4">
           <button
             v-if="currentStep > 1"
             @click="previousStep"
-            class="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 mr-2"
+            class="px-6 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all shadow-md"
           >
             Назад
           </button>
@@ -107,10 +117,10 @@
             @click="nextStep"
             :disabled="!canProceed"
             :class="[
-              'px-4 py-2 text-sm rounded-lg',
+              'px-6 py-2 bg-gradient-to-r from-indigo-500 to-blue-500 text-white rounded-lg transition-all shadow-md',
               canProceed
-                ? 'bg-[#FF6B6B] text-white hover:bg-[#FF5252]'
-                : 'bg-gray-300 text-gray-500 cursor-not-allowed',
+                ? 'hover:from-indigo-600 hover:to-blue-600'
+                : 'opacity-50 cursor-not-allowed',
             ]"
           >
             Далее
@@ -120,59 +130,39 @@
             @click="handleSubmit"
             :disabled="!canSubmit"
             :class="[
-              'px-4 py-2 text-sm rounded-lg',
+              'px-6 py-2 bg-gradient-to-r from-indigo-500 to-blue-500 text-white rounded-lg transition-all shadow-md',
               canSubmit
-                ? 'bg-[#FF6B6B] text-white hover:bg-[#FF5252]'
-                : 'bg-gray-300 text-gray-500 cursor-not-allowed',
+                ? 'hover:from-indigo-600 hover:to-blue-600'
+                : 'opacity-50 cursor-not-allowed',
             ]"
           >
             Сохранить
           </button>
         </div>
-
-        <!-- Recommendations Modal -->
-        <RecommendationsModal
-          :is-open="showModal"
-          :emotion="{ name: selectedSubEmotion }"
-          :intensity="intensityLevel"
-          :recommendations="currentRecommendations"
-          @close="closeModal"
-        />
       </div>
 
       <!-- Links to Additional Tools -->
       <div
         v-if="user"
-        class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-6xl w-full mx-auto"
+        class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto"
       >
         <template v-if="hasStatsData">
           <NuxtLink
             to="/awareness-tools/emotional-barometer/analysis"
-            class="bg-white shadow-lg rounded-lg p-4 hover:shadow-xl transition-shadow text-center"
+            class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all text-center"
           >
-            <h3 class="text-lg font-semibold text-indigo-500">Анализ Эмоций</h3>
+            <h3 class="text-xl font-semibold text-indigo-600 mb-2">
+              Анализ Эмоций
+            </h3>
             <p class="text-sm text-gray-600">
               Изучите свои эмоциональные паттерны
             </p>
           </NuxtLink>
-        </template>
-        <template v-else>
-          <div
-            class="bg-white shadow-lg rounded-lg p-4 opacity-50 cursor-not-allowed text-center"
-          >
-            <h3 class="text-lg font-semibold text-indigo-500">Анализ Эмоций</h3>
-            <p class="text-sm text-gray-600">
-              Изучите свои эмоциональные паттерны
-            </p>
-          </div>
-        </template>
-
-        <template v-if="hasStatsData">
           <NuxtLink
             to="/awareness-tools/emotional-barometer/journal-history"
-            class="bg-white shadow-lg rounded-lg p-4 hover:shadow-xl transition-shadow text-center"
+            class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all text-center"
           >
-            <h3 class="text-lg font-semibold text-indigo-500">
+            <h3 class="text-xl font-semibold text-indigo-600 mb-2">
               История Журнала
             </h3>
             <p class="text-sm text-gray-600">Просмотрите ваши прошлые записи</p>
@@ -180,9 +170,19 @@
         </template>
         <template v-else>
           <div
-            class="bg-white shadow-lg rounded-lg p-4 opacity-50 cursor-not-allowed text-center"
+            class="bg-white rounded-2xl shadow-lg p-6 opacity-50 cursor-not-allowed text-center"
           >
-            <h3 class="text-lg font-semibold text-indigo-500">
+            <h3 class="text-xl font-semibold text-indigo-600 mb-2">
+              Анализ Эмоций
+            </h3>
+            <p class="text-sm text-gray-600">
+              Изучите свои эмоциональные паттерны
+            </p>
+          </div>
+          <div
+            class="bg-white rounded-2xl shadow-lg p-6 opacity-50 cursor-not-allowed text-center"
+          >
+            <h3 class="text-xl font-semibold text-indigo-600 mb-2">
               История Журнала
             </h3>
             <p class="text-sm text-gray-600">Просмотрите ваши прошлые записи</p>
@@ -190,15 +190,25 @@
         </template>
       </div>
     </div>
-  </div>
 
-  <Notification
-    v-if="notificationMessage"
-    :message="notificationMessage"
-    :type="notificationType"
-    @close="hideNotification"
-    class="z-50"
-  />
+    <!-- Recommendations Modal -->
+    <RecommendationsModal
+      :is-open="showModal"
+      :emotion="{ name: selectedSubEmotion }"
+      :intensity="intensityLevel"
+      :recommendations="currentRecommendations"
+      @close="closeModal"
+    />
+
+    <!-- Notification -->
+    <Notification
+      v-if="notificationMessage"
+      :message="notificationMessage"
+      :type="notificationType"
+      @close="hideNotification"
+      class="z-50"
+    />
+  </div>
 </template>
 
 <script setup>
