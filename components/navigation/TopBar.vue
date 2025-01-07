@@ -223,24 +223,19 @@
                 <span class="font-medium">Курсы</span>
                 <i
                   class="fas fa-chevron-down text-xs transition-transform duration-300"
-                  :class="openSubmenu === 'courses' ? 'rotate-180' : ''"
+                  :class="
+                    openSubmenu === 'courses' || isCoursesRouteActive
+                      ? 'rotate-180'
+                      : ''
+                  "
                 ></i>
               </button>
 
-              <div
-                :class="[
-                  'overflow-hidden transition-all duration-300 bg-white/5 rounded-lg mt-1',
-                  openSubmenu === 'courses'
-                    ? 'max-h-96 opacity-100 visible'
-                    : 'max-h-0 opacity-0 invisible',
-                ]"
-              >
-                <MobileSubmenu
-                  :isOpen="openSubmenu === 'courses'"
-                  :closeDropdown="closeDropdown"
-                  class="p-2"
-                />
-              </div>
+              <MobileSubmenu
+                :isOpen="openSubmenu === 'courses' || isCoursesRouteActive"
+                :closeDropdown="closeDropdown"
+                class="p-2"
+              />
             </div>
 
             <!-- Awareness Tools Dropdown -->
@@ -252,24 +247,23 @@
                 <span class="font-medium">Инструменты осознанности</span>
                 <i
                   class="fas fa-chevron-down text-xs transition-transform duration-300"
-                  :class="openSubmenu === 'awareness-tools' ? 'rotate-180' : ''"
+                  :class="
+                    openSubmenu === 'awareness-tools' ||
+                    isAwarenessToolsRouteActive
+                      ? 'rotate-180'
+                      : ''
+                  "
                 ></i>
               </button>
 
-              <div
-                :class="[
-                  'overflow-hidden transition-all duration-300 bg-white/5 rounded-lg mt-1',
-                  openSubmenu === 'awareness-tools'
-                    ? 'max-h-96 opacity-100 visible'
-                    : 'max-h-0 opacity-0 invisible',
-                ]"
-              >
-                <AwarenessToolsMobileSubmenu
-                  :isOpen="openSubmenu === 'awareness-tools'"
-                  :closeDropdown="closeDropdown"
-                  class="p-2"
-                />
-              </div>
+              <AwarenessToolsMobileSubmenu
+                :isOpen="
+                  openSubmenu === 'awareness-tools' ||
+                  isAwarenessToolsRouteActive
+                "
+                :closeDropdown="closeDropdown"
+                class="p-2"
+              />
             </div>
 
             <!-- Regular Menu Items -->
@@ -364,7 +358,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { useNuxtApp } from "#app";
 import { signOut } from "firebase/auth";
 import DesktopSubmenu from "@/components/navigation/DesktopSubmenu.vue";
@@ -374,11 +368,35 @@ import AwarenessToolsMobileSubmenu from "./AwarenessToolsMobileSubmenu.vue";
 const nuxtApp = useNuxtApp();
 const auth = nuxtApp.$auth;
 const router = useRouter();
+const route = useRoute();
 
 // Reactive references
 const isDropdownOpen = ref(false);
 const openSubmenu = ref(null);
 const currentUser = ref(auth.currentUser);
+
+// Check if the current route is inside the "Courses" submenu
+const isCoursesRouteActive = computed(() => {
+  const submenuRoutes = [
+    "/courses/free-resources",
+    "/courses/courses",
+    "/courses/guides",
+    "/courses/podcasts",
+  ];
+  return submenuRoutes.includes(route.path);
+});
+
+// Check if the current route is inside the "Awareness Tools" submenu
+const isAwarenessToolsRouteActive = computed(() => {
+  const submenuRoutes = [
+    "/awareness-tools",
+    "/awareness-tools/emotional-barometer",
+    "/awareness-tools/deep-conversation-with-cards",
+    "/awareness-tools/emotion-diary",
+    "/awareness-tools/life-purpose-archetype",
+  ];
+  return submenuRoutes.includes(route.path);
+});
 
 // Update currentUser when auth state changes
 onMounted(() => {
