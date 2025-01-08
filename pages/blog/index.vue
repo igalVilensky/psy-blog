@@ -52,11 +52,16 @@
           class="group bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-xl hover:-translate-y-2"
         >
           <div class="relative overflow-hidden">
-            <img
+            <nuxt-img
               v-if="post.image"
               :src="urlFor(post?.image)?.width(550).height(310).url()"
               :alt="post.title"
               class="w-full h-52 object-cover transition-transform duration-500 group-hover:scale-110"
+              width="550"
+              height="310"
+              loading="lazy"
+              format="webp"
+              quality="80"
             />
             <!-- Category badge with gradient -->
             <span

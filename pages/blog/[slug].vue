@@ -20,11 +20,17 @@
       >
         <!-- Featured Image Container with Gradient Overlay -->
         <div class="relative w-full h-[250px] sm:h-[350px]">
-          <img
+          <!-- Replace <img> with <nuxt-img> -->
+          <nuxt-img
             v-if="post.image"
             :src="urlFor(post?.image)?.width(1200).height(675).url()"
             :alt="post?.title"
             class="w-full h-full object-cover"
+            width="1200"
+            height="675"
+            loading="lazy"
+            format="webp"
+            quality="80"
           />
           <!-- Gradient overlay -->
           <div

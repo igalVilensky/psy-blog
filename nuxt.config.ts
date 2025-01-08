@@ -13,10 +13,15 @@ export default defineNuxtConfig({
   },
 
   compatibilityDate: "2024-12-14",
-  modules: ["@nuxtjs/sanity", "@pinia/nuxt"],
+  modules: ["@nuxtjs/sanity", "@pinia/nuxt", "@nuxt/image"],
   plugins: ["../plugins/firebase.js", "../plugins/initAuth.js"],
   sanity: {
     projectId: "wlg2lkvy",
     dataset: "production",
+  },
+  image: {
+    // Optional: Configure providers or presets
+    // Example: Using the local provider (default)
+    provider: "ipx",
   },
 });

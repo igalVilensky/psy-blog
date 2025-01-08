@@ -4,7 +4,17 @@
       v-if="avatarUrl && !loading"
       class="w-24 h-24 rounded-full overflow-hidden ring-2 ring-offset-2 ring-gray-100"
     >
-      <img :src="avatarUrl" alt="Avatar" class="w-full h-full object-cover" />
+      <!-- Replace <img> with <nuxt-img> -->
+      <nuxt-img
+        :src="avatarUrl"
+        alt="Avatar"
+        class="w-full h-full object-cover"
+        width="96"
+        height="96"
+        loading="lazy"
+        format="webp"
+        quality="80"
+      />
     </div>
 
     <div
