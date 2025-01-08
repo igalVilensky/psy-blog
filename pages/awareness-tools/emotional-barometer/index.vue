@@ -1,117 +1,165 @@
 <template>
-  <div
-    class="bg-gradient-to-br from-[#0F172A] via-[#1E1B4B] to-[#0F172A] min-h-screen py-12 relative overflow-hidden"
-  >
-    <!-- Neon glow line at the top -->
-    <div
-      class="absolute -top-px left-0 right-0 h-px bg-gradient-to-r from-purple-400/50 via-cyan-400/50 to-purple-400/50"
-    ></div>
+  <div class="relative min-h-screen">
+    <!-- Animated Background -->
+    <div class="fixed inset-0 -z-1">
+      <div class="absolute top-0 left-0 w-full h-full bg-[#0F172A]">
+        <!-- Gradient Orbs -->
+        <div
+          class="absolute top-0 left-0 w-[500px] h-[500px] bg-purple-500/20 rounded-full blur-[120px] animate-float"
+        ></div>
+        <div
+          class="absolute bottom-0 right-0 w-[400px] h-[400px] bg-blue-500/20 rounded-full blur-[100px] animate-float-delay"
+        ></div>
+        <!-- Animated Grid -->
+        <div
+          class="absolute inset-0 bg-gradient-to-b from-transparent to-[#0F172A]/80"
+        >
+          <div class="absolute inset-0 bg-grid-white/[0.02] animate-grid"></div>
+        </div>
+      </div>
+    </div>
 
     <div class="container mx-auto px-4 max-w-7xl relative z-10">
       <!-- Hero Section -->
-      <section class="text-center mb-16">
-        <div
-          class="inline-block px-6 py-2 bg-gradient-to-b from-[#1A1F35] to-indigo-600 rounded-full text-white font-medium mb-6 shadow-lg"
-        >
-          Эмоциональный Барометр
+      <section class="text-center mb-16 pt-12">
+        <div class="relative inline-block group">
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full blur opacity-75 group-hover:opacity-100 transition-opacity"
+          ></div>
+          <div
+            class="relative px-8 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full text-white font-medium backdrop-blur-sm border border-white/10"
+          >
+            Эмоциональный Барометр
+          </div>
         </div>
         <h1
-          class="text-4xl sm:text-5xl font-bold text-white mb-6 tracking-tight"
+          class="text-5xl sm:text-6xl font-bold mt-8 mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80 tracking-tight"
         >
           Понимаем ваши эмоции
         </h1>
-        <p class="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto">
+        <p
+          class="text-lg sm:text-xl text-indigo-200/80 max-w-2xl mx-auto leading-relaxed"
+        >
           Эмоциональный Барометр — это инструмент, который помогает вам лучше
           понять свои эмоции, отслеживать их интенсивность и находить способы
           справляться с ними.
         </p>
       </section>
 
-      <!-- Message for Unauthenticated Users -->
+      <!-- Unauthenticated Section -->
       <div
         v-if="!user"
-        class="bg-[#1E1B4B]/70 backdrop-blur-sm rounded-2xl shadow-2xl p-8 sm:p-12 mb-12 max-w-4xl mx-auto text-center border border-indigo-500/20"
+        class="relative group overflow-hidden bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-2xl border border-indigo-500/20 p-8 sm:p-12 mb-12 max-w-4xl mx-auto"
       >
-        <p class="text-lg sm:text-xl text-gray-300 mb-6">
+        <div
+          class="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        ></div>
+        <p class="text-xl text-indigo-100 mb-8">
           Чтобы начать использовать инструмент, пожалуйста, войдите или
           зарегистрируйтесь.
         </p>
-        <div class="flex justify-center gap-4">
+        <div class="flex justify-center gap-6 relative z-10">
           <NuxtLink
             to="/login"
-            class="px-6 py-3 bg-gradient-to-r from-indigo-500 to-blue-500 text-white rounded-lg hover:from-indigo-600 hover:to-blue-600 transition-all shadow-md"
+            class="px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-xl font-medium hover:shadow-lg hover:shadow-indigo-500/25 transition-all duration-300 relative z-10"
           >
             Войти
           </NuxtLink>
           <NuxtLink
             to="/register"
-            class="px-6 py-3 bg-white border border-indigo-500 text-indigo-500 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all shadow-md"
+            class="px-8 py-3 bg-white/10 border border-indigo-500/50 text-indigo-300 rounded-xl font-medium hover:bg-white/20 transition-all duration-300 relative z-10"
           >
             Зарегистрироваться
           </NuxtLink>
         </div>
       </div>
 
-      <!-- Emotional Barometer Section -->
+      <!-- Main Barometer Section -->
       <div
         v-if="user"
-        class="bg-[#1E1B4B]/70 backdrop-blur-sm rounded-2xl shadow-2xl p-8 sm:p-12 mb-12 max-w-4xl mx-auto border border-indigo-500/20"
+        class="relative bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-2xl border border-indigo-500/20 p-8 sm:p-12 mb-12 max-w-4xl mx-auto"
       >
-        <h2 class="text-2xl font-bold text-white mb-8">Измерьте свои эмоции</h2>
-
-        <!-- Step Indicator -->
-        <StepIndicator :current-step="currentStep" :step-title="stepTitle" />
-
-        <!-- Step 1: Emotion Selection -->
-        <div v-if="currentStep === 1">
-          <EmotionSelection
-            :emotions="emotionsRef"
-            :selected-emotion="selectedEmotion"
-            @select-emotion="selectEmotion"
-          />
+        <!-- Step Progress -->
+        <div class="flex items-center justify-center gap-2 sm:gap-3 mb-12 px-4">
+          <template v-for="step in 5" :key="step">
+            <div class="flex items-center">
+              <div
+                :class="[
+                  'w-3 h-3 sm:w-4 sm:h-4 rounded-full transition-all duration-500',
+                  currentStep >= step
+                    ? 'bg-gradient-to-r from-indigo-500 to-purple-500 scale-100'
+                    : 'bg-white/20 scale-90',
+                ]"
+              ></div>
+              <div
+                v-if="step < 5"
+                :class="[
+                  'h-0.5 w-8 sm:w-16 transition-all duration-500',
+                  currentStep > step
+                    ? 'bg-gradient-to-r from-indigo-500 to-purple-500'
+                    : 'bg-white/20',
+                ]"
+              ></div>
+            </div>
+          </template>
         </div>
 
-        <!-- Step 2: Sub-Emotion Selection -->
-        <div v-if="currentStep === 2 && selectedEmotion">
-          <SubEmotionSelection
-            :sub-emotions="subEmotions"
-            :selected-sub-emotion="selectedSubEmotion"
-            @select-sub-emotion="selectSubEmotion"
-          />
-        </div>
+        <h2 class="text-3xl font-bold text-white mb-8 text-center">
+          {{ stepTitle }}
+        </h2>
 
-        <!-- Step 3: Intensity Level -->
-        <div v-if="currentStep === 3 && selectedEmotion">
-          <IntensityLevel
-            :selected-emotion="selectedEmotion"
-            v-model:intensity-level="intensityLevel"
-          />
-        </div>
+        <!-- Step Content -->
+        <transition-group name="fade-slide" mode="out-in">
+          <div
+            v-if="currentStep === 1"
+            key="emotion"
+            class="transition-all duration-300"
+          >
+            <EmotionSelection
+              :emotions="emotionsRef"
+              :selected-emotion="selectedEmotion"
+              @select-emotion="selectEmotion"
+            />
+          </div>
 
-        <!-- Step 4: Journal Entry -->
-        <div v-if="currentStep === 4 && selectedEmotion">
-          <JournalEntry
-            v-model:journal-entry="journalEntry"
-            v-model:perception-entry="perceptionEntry"
-            v-model:coping-entry="copingEntry"
-          />
-        </div>
+          <div v-if="currentStep === 2 && selectedEmotion" key="subemotion">
+            <SubEmotionSelection
+              :sub-emotions="subEmotions"
+              :selected-sub-emotion="selectedSubEmotion"
+              @select-sub-emotion="selectSubEmotion"
+            />
+          </div>
 
-        <!-- Step 5: Life Spheres Selection -->
-        <div v-if="currentStep === 5 && selectedEmotion">
-          <LifeSpheresSelection
-            :life-spheres="lifeSpheresRef"
-            :selected-tags="selectedTags"
-            @toggle-tag="toggleTag"
-          />
-        </div>
+          <div v-if="currentStep === 3 && selectedEmotion" key="intensity">
+            <IntensityLevel
+              :selected-emotion="selectedEmotion"
+              v-model:intensity-level="intensityLevel"
+            />
+          </div>
 
-        <!-- Navigation Buttons -->
-        <div class="flex justify-end mt-8 gap-4">
+          <div v-if="currentStep === 4 && selectedEmotion" key="journal">
+            <JournalEntry
+              v-model:journal-entry="journalEntry"
+              v-model:perception-entry="perceptionEntry"
+              v-model:coping-entry="copingEntry"
+            />
+          </div>
+
+          <div v-if="currentStep === 5 && selectedEmotion" key="spheres">
+            <LifeSpheresSelection
+              :life-spheres="lifeSpheresRef"
+              :selected-tags="selectedTags"
+              @toggle-tag="toggleTag"
+            />
+          </div>
+        </transition-group>
+
+        <!-- Navigation -->
+        <div class="flex justify-end mt-12 gap-4">
           <button
             v-if="currentStep > 1"
             @click="previousStep"
-            class="px-6 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all shadow-md"
+            class="px-8 py-3 bg-white/10 border border-white/20 text-white rounded-xl hover:bg-white/20 transition-all duration-300"
           >
             Назад
           </button>
@@ -119,12 +167,7 @@
             v-if="currentStep < 5"
             @click="nextStep"
             :disabled="!canProceed"
-            :class="[
-              'px-6 py-2 bg-gradient-to-r from-indigo-500 to-blue-500 text-white rounded-lg transition-all shadow-md',
-              canProceed
-                ? 'hover:from-indigo-600 hover:to-blue-600'
-                : 'opacity-50 cursor-not-allowed',
-            ]"
+            class="px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/25 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none"
           >
             Далее
           </button>
@@ -132,43 +175,43 @@
             v-if="currentStep === 5"
             @click="handleSubmit"
             :disabled="!canSubmit"
-            :class="[
-              'px-6 py-2 bg-gradient-to-r from-indigo-500 to-blue-500 text-white rounded-lg transition-all shadow-md',
-              canSubmit
-                ? 'hover:from-indigo-600 hover:to-blue-600'
-                : 'opacity-50 cursor-not-allowed',
-            ]"
+            class="px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/25 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none"
           >
             Сохранить
           </button>
         </div>
       </div>
 
-      <!-- Links to Additional Tools -->
+      <!-- Tools Section -->
       <div
         v-if="user"
-        class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto"
+        class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto mb-20"
       >
         <template v-if="hasStatsData">
           <NuxtLink
             to="/awareness-tools/emotional-barometer/analysis"
-            class="bg-[#1E1B4B]/70 backdrop-blur-sm rounded-2xl shadow-2xl p-6 hover:shadow-xl transition-all text-center border border-indigo-500/20"
+            class="group relative bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-2xl p-8 border border-indigo-500/20 hover:shadow-xl transition-all duration-500"
           >
-            <h3 class="text-xl font-semibold text-indigo-400 mb-2">
+            <div
+              class="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"
+            ></div>
+            <h3 class="text-2xl font-semibold text-indigo-300 mb-3">
               Анализ Эмоций
             </h3>
-            <p class="text-sm text-gray-300">
-              Изучите свои эмоциональные паттерны
-            </p>
+            <p class="text-gray-300">Изучите свои эмоциональные паттерны</p>
           </NuxtLink>
+
           <NuxtLink
             to="/awareness-tools/emotional-barometer/journal-history"
-            class="bg-[#1E1B4B]/70 backdrop-blur-sm rounded-2xl shadow-2xl p-6 hover:shadow-xl transition-all text-center border border-indigo-500/20"
+            class="group relative bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-2xl p-8 border border-indigo-500/20 hover:shadow-xl transition-all duration-500"
           >
-            <h3 class="text-xl font-semibold text-indigo-400 mb-2">
+            <div
+              class="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"
+            ></div>
+            <h3 class="text-2xl font-semibold text-indigo-300 mb-3">
               История Журнала
             </h3>
-            <p class="text-sm text-gray-300">Просмотрите ваши прошлые записи</p>
+            <p class="text-gray-300">Просмотрите ваши прошлые записи</p>
           </NuxtLink>
         </template>
         <template v-else>
@@ -194,7 +237,7 @@
       </div>
     </div>
 
-    <!-- Recommendations Modal -->
+    <!-- Modals -->
     <RecommendationsModal
       :is-open="showModal"
       :emotion="{ name: selectedSubEmotion }"
@@ -203,7 +246,6 @@
       @close="closeModal"
     />
 
-    <!-- Notification -->
     <Notification
       v-if="notificationMessage"
       :message="notificationMessage"
@@ -289,11 +331,11 @@ const stepTitle = computed(() => {
 const canProceed = computed(() => {
   switch (currentStep.value) {
     case 1:
-      return selectedEmotion.value !== null; // Primary emotion must be selected
+      return selectedEmotion.value !== null;
     case 2:
-      return selectedSubEmotion.value !== null; // Sub-emotion must be selected
+      return selectedSubEmotion.value !== null;
     case 3:
-      return true; // Intensity level is always valid due to the default value
+      return true;
     case 4:
       return (
         journalEntry.value.trim().length > 0 &&
@@ -301,16 +343,15 @@ const canProceed = computed(() => {
         copingEntry.value.trim().length > 0
       );
     case 5:
-      return selectedTags.value.length > 0; // At least one life sphere must be selected
+      return selectedTags.value.length > 0;
     default:
-      return false; // Safety fallback for invalid steps
+      return false;
   }
 });
 
 // Recommendations based on patterns
 const currentRecommendations = computed(() => {
   if (!selectedSubEmotion.value) return [];
-
   return recommendationsRef.value[selectedSubEmotion.value] || [];
 });
 
@@ -318,14 +359,10 @@ const currentRecommendations = computed(() => {
 onAuthStateChanged(auth, async (currentUser) => {
   if (currentUser) {
     user.value = currentUser;
-
-    // Fetch statistics
     const statsResult = await getEmotionBarometerStats(db, currentUser.uid);
     if (statsResult.success) {
       stats.value = statsResult.stats;
-      console.log("Emotion Barometer Stats:", stats.value);
     } else {
-      console.log("Failed to fetch stats:", statsResult.message);
       stats.value = null;
     }
   }
@@ -354,7 +391,6 @@ const previousStep = () => {
 
 const closeModal = () => {
   showModal.value = false;
-  // Reset form after closing modal
   currentStep.value = 1;
   selectedEmotion.value = null;
   intensityLevel.value = 5;
@@ -364,8 +400,8 @@ const closeModal = () => {
 
 const selectEmotion = (emotion) => {
   selectedEmotion.value = emotion;
-  subEmotions.value = subEmotionsMapRef.value[emotion.name] || []; // Properly map emotions to sub-emotions
-  selectedSubEmotion.value = null; // Reset sub-emotion when the main emotion changes
+  subEmotions.value = subEmotionsMapRef.value[emotion.name] || [];
+  selectedSubEmotion.value = null;
 };
 
 const selectSubEmotion = (subEmotion) => {
@@ -391,9 +427,9 @@ const saveEntryToFirebase = async () => {
     emotion: selectedEmotion.value.name,
     subEmotion: selectedSubEmotion.value,
     intensity: intensityLevel.value,
-    entry: journalEntry.value, // Original journal entry
-    perception: perceptionEntry.value, // New field for perception entry
-    coping: copingEntry.value, // New field for coping entry
+    entry: journalEntry.value,
+    perception: perceptionEntry.value,
+    coping: copingEntry.value,
     tags: [...selectedTags.value],
     timestamp: new Date().toISOString(),
   };
@@ -435,3 +471,62 @@ const handleSubmit = () => {
   saveEntryToFirebase();
 };
 </script>
+
+<style scoped>
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes float-delay {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+@keyframes grid {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+.animate-float {
+  animation: float 20s ease-in-out infinite;
+}
+
+.animate-float-delay {
+  animation: float 25s ease-in-out infinite;
+  animation-delay: -10s;
+}
+
+.animate-grid {
+  animation: grid 20s linear infinite;
+}
+
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fade-slide-enter-from {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+</style>

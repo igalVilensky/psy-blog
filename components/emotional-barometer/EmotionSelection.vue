@@ -1,84 +1,123 @@
 <template>
-  <div
-    class="w-full max-w-2xl mx-auto bg-white rounded-xl shadow-lg px-3 sm:px-6 pb-6 sm:pt-6"
-  >
+  <div class="w-full max-w-2xl mx-auto">
     <!-- Header Section -->
     <div class="text-center mb-8">
-      <h2 class="text-xl font-semibold text-gray-800 mb-3">
+      <h2 class="text-2xl text-white/90 font-medium mb-3">
         Как вы себя чувствуете сегодня?
       </h2>
-      <p class="text-sm text-gray-600">
+      <p class="text-indigo-200/80 text-lg">
         Выберите эмоцию, которую вы сейчас испытываете. Это поможет вам лучше
         понять свое эмоциональное состояние.
       </p>
     </div>
 
     <!-- Emotions Grid Container -->
-    <div class="flex flex-col gap-4 sm:gap-6">
+    <div class="flex flex-col gap-6 sm:gap-8">
       <!-- First Row - 3 emotions -->
-      <div class="grid grid-cols-3 gap-2 sm:gap-4">
+      <div class="grid grid-cols-3 gap-3 sm:gap-6">
         <button
           v-for="emotion in emotions.slice(0, 3)"
           :key="emotion.id"
           @click="$emit('select-emotion', emotion)"
-          :class="[
-            'group relative py-3 sm:py-4 px-2 sm:px-3 rounded-xl transition-all duration-300',
-            'hover:transform hover:scale-105 w-24 sm:w-32 mx-auto',
-            selectedEmotion?.id === emotion.id
-              ? `${emotion.activeColor} text-white shadow-lg`
-              : `${emotion.color} hover:opacity-90 shadow-sm hover:shadow-md`,
-          ]"
+          class="group relative"
         >
-          <!-- Emotion Icon -->
-          <div class="text-xl sm:text-2xl mb-1 sm:mb-2">
-            {{ emotionMapper[emotion.id] }}
-          </div>
-          <!-- Emotion Name -->
-          <div class="text-xs sm:text-sm font-medium break-words">
-            {{ emotion.name }}
-          </div>
-          <!-- Selection Indicator -->
+          <!-- Hover Effect Background -->
           <div
-            v-if="selectedEmotion?.id === emotion.id"
-            class="absolute -top-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 bg-green-500 rounded-full border-2 border-white"
+            class="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
           ></div>
-        </button>
-      </div>
 
-      <!-- Second Row - 2 emotions -->
-      <div class="px-12">
-        <div class="grid grid-cols-2 gap-2 sm:gap-4">
-          <button
-            v-for="emotion in emotions.slice(3, 5)"
-            :key="emotion.id"
-            @click="$emit('select-emotion', emotion)"
+          <!-- Main Button Content -->
+          <div
             :class="[
-              'group relative py-3 sm:py-4 px-2 sm:px-3 rounded-xl transition-all duration-300',
-              'hover:transform hover:scale-105 w-24 sm:w-32 mx-auto',
+              'relative py-6 sm:py-8 px-3 sm:px-4 rounded-xl transition-all duration-300',
+              'backdrop-blur-sm border w-full h-full',
               selectedEmotion?.id === emotion.id
-                ? `${emotion.activeColor} text-white shadow-lg`
-                : `${emotion.color} hover:opacity-90 shadow-sm hover:shadow-md`,
+                ? 'bg-gradient-to-r from-indigo-500/40 to-purple-500/40 border-indigo-400/50 shadow-lg shadow-indigo-500/20'
+                : 'bg-[#1E1B4B]/40 border-indigo-500/20 group-hover:border-indigo-400/30',
             ]"
           >
             <!-- Emotion Icon -->
-            <div class="text-xl sm:text-2xl mb-1 sm:mb-2">
+            <div
+              class="text-3xl sm:text-4xl mb-2 sm:mb-3 transition-transform duration-300 group-hover:scale-110"
+            >
               {{ emotionMapper[emotion.id] }}
             </div>
             <!-- Emotion Name -->
-            <div class="text-xs sm:text-sm font-medium break-words">
+            <div
+              class="text-sm sm:text-base font-medium text-indigo-200 break-words"
+            >
               {{ emotion.name }}
             </div>
             <!-- Selection Indicator -->
             <div
               v-if="selectedEmotion?.id === emotion.id"
-              class="absolute -top-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 bg-green-500 rounded-full border-2 border-white"
+              class="absolute -top-1.5 -right-1.5 w-4 h-4 sm:w-5 sm:h-5"
+            >
+              <div
+                class="absolute inset-0 bg-indigo-500 rounded-full animate-ping opacity-75"
+              ></div>
+              <div class="absolute inset-0 bg-indigo-500 rounded-full"></div>
+              <div class="absolute inset-0.5 bg-white rounded-full"></div>
+            </div>
+          </div>
+        </button>
+      </div>
+
+      <!-- Second Row - 2 emotions -->
+      <div class="px-8 sm:px-16">
+        <div class="grid grid-cols-2 gap-3 sm:gap-6">
+          <button
+            v-for="emotion in emotions.slice(3, 5)"
+            :key="emotion.id"
+            @click="$emit('select-emotion', emotion)"
+            class="group relative"
+          >
+            <!-- Hover Effect Background -->
+            <div
+              class="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
             ></div>
+
+            <!-- Main Button Content -->
+            <div
+              :class="[
+                'relative py-6 sm:py-8 px-3 sm:px-4 rounded-xl transition-all duration-300',
+                'backdrop-blur-sm border w-full h-full',
+                selectedEmotion?.id === emotion.id
+                  ? 'bg-gradient-to-r from-indigo-500/40 to-purple-500/40 border-indigo-400/50 shadow-lg shadow-indigo-500/20'
+                  : 'bg-[#1E1B4B]/40 border-indigo-500/20 group-hover:border-indigo-400/30',
+              ]"
+            >
+              <!-- Emotion Icon -->
+              <div
+                class="text-3xl sm:text-4xl mb-2 sm:mb-3 transition-transform duration-300 group-hover:scale-110"
+              >
+                {{ emotionMapper[emotion.id] }}
+              </div>
+              <!-- Emotion Name -->
+              <div
+                class="text-sm sm:text-base font-medium text-indigo-200 break-words"
+              >
+                {{ emotion.name }}
+              </div>
+              <!-- Selection Indicator -->
+              <div
+                v-if="selectedEmotion?.id === emotion.id"
+                class="absolute -top-1.5 -right-1.5 w-4 h-4 sm:w-5 sm:h-5"
+              >
+                <div
+                  class="absolute inset-0 bg-indigo-500 rounded-full animate-ping opacity-75"
+                ></div>
+                <div class="absolute inset-0 bg-indigo-500 rounded-full"></div>
+                <div class="absolute inset-0.5 bg-white rounded-full"></div>
+              </div>
+            </div>
           </button>
         </div>
       </div>
     </div>
   </div>
 </template>
+
 <script setup>
 const props = defineProps({
   emotions: {
