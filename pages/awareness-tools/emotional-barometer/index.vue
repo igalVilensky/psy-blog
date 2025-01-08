@@ -1,8 +1,13 @@
 <template>
   <div
-    class="bg-gradient-to-br from-indigo-50 via-blue-50 to-white min-h-screen py-12"
+    class="bg-gradient-to-br from-[#0F172A] via-[#1E1B4B] to-[#0F172A] min-h-screen py-12 relative overflow-hidden"
   >
-    <div class="container mx-auto px-4 max-w-7xl">
+    <!-- Neon glow line at the top -->
+    <div
+      class="absolute -top-px left-0 right-0 h-px bg-gradient-to-r from-purple-400/50 via-cyan-400/50 to-purple-400/50"
+    ></div>
+
+    <div class="container mx-auto px-4 max-w-7xl relative z-10">
       <!-- Hero Section -->
       <section class="text-center mb-16">
         <div
@@ -11,11 +16,11 @@
           Эмоциональный Барометр
         </div>
         <h1
-          class="text-4xl sm:text-5xl font-bold text-gray-800 mb-6 tracking-tight"
+          class="text-4xl sm:text-5xl font-bold text-white mb-6 tracking-tight"
         >
           Понимаем ваши эмоции
         </h1>
-        <p class="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
+        <p class="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto">
           Эмоциональный Барометр — это инструмент, который помогает вам лучше
           понять свои эмоции, отслеживать их интенсивность и находить способы
           справляться с ними.
@@ -25,9 +30,9 @@
       <!-- Message for Unauthenticated Users -->
       <div
         v-if="!user"
-        class="bg-white rounded-2xl shadow-xl p-8 sm:p-12 mb-12 max-w-4xl mx-auto text-center"
+        class="bg-[#1E1B4B]/70 backdrop-blur-sm rounded-2xl shadow-2xl p-8 sm:p-12 mb-12 max-w-4xl mx-auto text-center border border-indigo-500/20"
       >
-        <p class="text-lg sm:text-xl text-gray-600 mb-6">
+        <p class="text-lg sm:text-xl text-gray-300 mb-6">
           Чтобы начать использовать инструмент, пожалуйста, войдите или
           зарегистрируйтесь.
         </p>
@@ -50,11 +55,9 @@
       <!-- Emotional Barometer Section -->
       <div
         v-if="user"
-        class="bg-white rounded-2xl shadow-xl p-8 sm:p-12 mb-12 max-w-4xl mx-auto"
+        class="bg-[#1E1B4B]/70 backdrop-blur-sm rounded-2xl shadow-2xl p-8 sm:p-12 mb-12 max-w-4xl mx-auto border border-indigo-500/20"
       >
-        <h2 class="text-2xl font-bold text-gray-800 mb-8">
-          Измерьте свои эмоции
-        </h2>
+        <h2 class="text-2xl font-bold text-white mb-8">Измерьте свои эмоции</h2>
 
         <!-- Step Indicator -->
         <StepIndicator :current-step="currentStep" :step-title="stepTitle" />
@@ -62,7 +65,7 @@
         <!-- Step 1: Emotion Selection -->
         <div v-if="currentStep === 1">
           <EmotionSelection
-            :emotions="emotions"
+            :emotions="emotionsRef"
             :selected-emotion="selectedEmotion"
             @select-emotion="selectEmotion"
           />
@@ -97,7 +100,7 @@
         <!-- Step 5: Life Spheres Selection -->
         <div v-if="currentStep === 5 && selectedEmotion">
           <LifeSpheresSelection
-            :life-spheres="lifeSpheres"
+            :life-spheres="lifeSpheresRef"
             :selected-tags="selectedTags"
             @toggle-tag="toggleTag"
           />
@@ -149,43 +152,43 @@
         <template v-if="hasStatsData">
           <NuxtLink
             to="/awareness-tools/emotional-barometer/analysis"
-            class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all text-center"
+            class="bg-[#1E1B4B]/70 backdrop-blur-sm rounded-2xl shadow-2xl p-6 hover:shadow-xl transition-all text-center border border-indigo-500/20"
           >
-            <h3 class="text-xl font-semibold text-indigo-600 mb-2">
+            <h3 class="text-xl font-semibold text-indigo-400 mb-2">
               Анализ Эмоций
             </h3>
-            <p class="text-sm text-gray-600">
+            <p class="text-sm text-gray-300">
               Изучите свои эмоциональные паттерны
             </p>
           </NuxtLink>
           <NuxtLink
             to="/awareness-tools/emotional-barometer/journal-history"
-            class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all text-center"
+            class="bg-[#1E1B4B]/70 backdrop-blur-sm rounded-2xl shadow-2xl p-6 hover:shadow-xl transition-all text-center border border-indigo-500/20"
           >
-            <h3 class="text-xl font-semibold text-indigo-600 mb-2">
+            <h3 class="text-xl font-semibold text-indigo-400 mb-2">
               История Журнала
             </h3>
-            <p class="text-sm text-gray-600">Просмотрите ваши прошлые записи</p>
+            <p class="text-sm text-gray-300">Просмотрите ваши прошлые записи</p>
           </NuxtLink>
         </template>
         <template v-else>
           <div
-            class="bg-white rounded-2xl shadow-lg p-6 opacity-50 cursor-not-allowed text-center"
+            class="bg-[#1E1B4B]/70 backdrop-blur-sm rounded-2xl shadow-2xl p-6 opacity-50 cursor-not-allowed text-center border border-indigo-500/20"
           >
-            <h3 class="text-xl font-semibold text-indigo-600 mb-2">
+            <h3 class="text-xl font-semibold text-indigo-400 mb-2">
               Анализ Эмоций
             </h3>
-            <p class="text-sm text-gray-600">
+            <p class="text-sm text-gray-300">
               Изучите свои эмоциональные паттерны
             </p>
           </div>
           <div
-            class="bg-white rounded-2xl shadow-lg p-6 opacity-50 cursor-not-allowed text-center"
+            class="bg-[#1E1B4B]/70 backdrop-blur-sm rounded-2xl shadow-2xl p-6 opacity-50 cursor-not-allowed text-center border border-indigo-500/20"
           >
-            <h3 class="text-xl font-semibold text-indigo-600 mb-2">
+            <h3 class="text-xl font-semibold text-indigo-400 mb-2">
               История Журнала
             </h3>
-            <p class="text-sm text-gray-600">Просмотрите ваши прошлые записи</p>
+            <p class="text-sm text-gray-300">Просмотрите ваши прошлые записи</p>
           </div>
         </template>
       </div>
@@ -232,6 +235,10 @@ import SubEmotionSelection from "~/components/emotional-barometer/SubEmotionSele
 import Notification from "~/components/base/Notification.vue";
 import { useNotification } from "@/composables/useNotification";
 import { getEmotionBarometerStats } from "~/api/firebase/emotionBarometer";
+import { emotions } from "~/data/emotionalBarometer/emotions.js";
+import { subEmotionsMap } from "~/data/emotionalBarometer/subEmotionsMap";
+import { lifeSpheres } from "~/data/emotionalBarometer/lifeSpheres";
+import { recommendations } from "~/data/emotionalBarometer/recommendations";
 
 const {
   notificationMessage,
@@ -240,136 +247,10 @@ const {
   hideNotification,
 } = useNotification();
 
-const emotions = [
-  {
-    id: 1,
-    name: "Радость",
-    color: "bg-yellow-100",
-    activeColor: "bg-yellow-500",
-  },
-  {
-    id: 2,
-    name: "Грусть",
-    color: "bg-blue-100",
-    activeColor: "bg-blue-500",
-  },
-  {
-    id: 3,
-    name: "Страх",
-    color: "bg-purple-100",
-    activeColor: "bg-purple-500",
-  },
-  {
-    id: 4,
-    name: "Гнев",
-    color: "bg-red-100",
-    activeColor: "bg-red-500",
-  },
-  {
-    id: 5,
-    name: "Удивление",
-    color: "bg-green-100",
-    activeColor: "bg-green-500",
-  },
-];
-
-const subEmotionsMap = {
-  Радость: [
-    "Восторг",
-    "Удовольствие",
-    "Гордость",
-    "Облегчение",
-    "Счастье",
-    "Благодарность",
-    "Эйфория",
-    "Вдохновение",
-  ],
-  Грусть: [
-    "Одиночество",
-    "Потеря",
-    "Разочарование",
-    "Тоска",
-    "Сожаление",
-    "Печаль",
-    "Уныние",
-    "Грусть",
-  ],
-  Страх: [
-    "Тревога",
-    "Паника",
-    "Неуверенность",
-    "Опасение",
-    "Ужас",
-    "Беспокойство",
-    "Шок",
-    "Тревожность",
-  ],
-  Гнев: [
-    "Раздражение",
-    "Ярость",
-    "Обида",
-    "Негодование",
-    "Злость",
-    "Враждебность",
-    "Гнев",
-    "Агрессия",
-  ],
-  Удивление: [
-    "Изумление",
-    "Вдохновение",
-    "Ошеломление",
-    "Любопытство",
-    "Изумление",
-    "Шок",
-    "Неожиданность",
-    "Потрясение",
-  ],
-};
-
-const lifeSpheres = [
-  {
-    name: "Работа",
-    color: "bg-blue-100",
-    activeColor: "bg-[#FF6B6B]",
-    dotColor: "bg-blue-400",
-    ringColor: "blue-400",
-  },
-  {
-    name: "Семья",
-    color: "bg-green-100",
-    activeColor: "bg-[#FF6B6B]",
-    dotColor: "bg-green-400",
-    ringColor: "green-400",
-  },
-  {
-    name: "Здоровье",
-    color: "bg-purple-100",
-    activeColor: "bg-[#FF6B6B]",
-    dotColor: "bg-purple-400",
-    ringColor: "purple-400",
-  },
-  {
-    name: "Личностный рост",
-    color: "bg-yellow-100",
-    activeColor: "bg-[#FF6B6B]",
-    dotColor: "bg-yellow-400",
-    ringColor: "yellow-400",
-  },
-  {
-    name: "Отношения",
-    color: "bg-pink-100",
-    activeColor: "bg-[#FF6B6B]",
-    dotColor: "bg-pink-400",
-    ringColor: "pink-400",
-  },
-  {
-    name: "Хобби",
-    color: "bg-orange-100",
-    activeColor: "bg-[#FF6B6B]",
-    dotColor: "bg-orange-400",
-    ringColor: "orange-400",
-  },
-];
+const emotionsRef = ref(emotions);
+const subEmotionsMapRef = ref(subEmotionsMap);
+const lifeSpheresRef = ref(lifeSpheres);
+const recommendationsRef = ref(recommendations);
 
 const user = ref(null);
 const auth = getAuth();
@@ -430,135 +311,7 @@ const canProceed = computed(() => {
 const currentRecommendations = computed(() => {
   if (!selectedSubEmotion.value) return [];
 
-  const recommendations = {
-    // Грусть Sub-emotions
-    Одиночество: [
-      "Поговорите с близким другом или родственником",
-      "Попробуйте заняться волонтерской деятельностью",
-      "Запланируйте время на приятные мероприятия",
-    ],
-    Потеря: [
-      "Позвольте себе время для грусти",
-      "Ведите дневник, чтобы выразить свои чувства",
-      "Обратитесь за поддержкой к психологу или близкому человеку",
-    ],
-    Разочарование: [
-      "Попробуйте переосмыслить ожидания",
-      "Сфокусируйтесь на том, что вы можете изменить",
-      "Отвлекитесь на что-то приятное, чтобы снизить напряжение",
-    ],
-    Тоска: [
-      "Послушайте музыку, которая поднимает настроение",
-      "Прогуляйтесь на свежем воздухе",
-      "Попробуйте медитацию для успокоения ума",
-    ],
-    Сожаление: [
-      "Примите прошлые ошибки как уроки для будущего",
-      "Извинитесь перед собой или другими, если возможно",
-      "Фокусируйтесь на том, что можно сделать сейчас, чтобы улучшить ситуацию",
-    ],
-    Печаль: [
-      "Поплачьте, если чувствуете в этом необходимость — это естественно",
-      "Поговорите с кем-то, кто может вас поддержать",
-      "Займитесь чем-то, что приносит вам радость, даже если это трудно",
-    ],
-    Уныние: [
-      "Попробуйте составить список достижений, чтобы напомнить себе о позитивных моментах",
-      "Сделайте небольшой шаг в направлении вашей цели",
-      "Обратитесь за поддержкой к близким или специалисту",
-    ],
-    Грусть: [
-      "Посмотрите вдохновляющий фильм или прочитайте позитивную книгу",
-      "Сделайте что-то, что приносит вам удовольствие, например, хобби",
-      "Сходите на прогулку или займитесь физической активностью",
-    ],
-
-    // Страх Sub-emotions
-    Тревога: [
-      "Попробуйте дыхательные упражнения (4-7-8)",
-      "Запишите свои мысли и найдите рациональные ответы",
-      "Сделайте физические упражнения, чтобы снизить напряжение",
-    ],
-    Паника: [
-      "Попробуйте метод заземления (назовите 5 предметов, которые видите)",
-      "Медленно дышите, сосредотачиваясь на выдохе",
-      "Обратитесь за помощью, если чувствуете, что не справляетесь",
-    ],
-    Неуверенность: [
-      "Составьте список своих достижений",
-      "Поговорите с кем-то, кто вас поддерживает",
-      "Напомните себе, что неопределенность — это временно",
-    ],
-    Опасение: [
-      "Оцените вероятные исходы и приготовьтесь к ним",
-      "Обсудите свои опасения с надежным человеком",
-      "Попробуйте представить наихудший сценарий и способы справиться с ним",
-    ],
-    Ужас: [
-      "Закройте глаза и сосредоточьтесь на медленном дыхании",
-      "Напомните себе, что это чувство временно и пройдет",
-      "Сконцентрируйтесь на чем-то реальном и безопасном рядом с вами",
-    ],
-    Беспокойство: [
-      "Выпишите все свои беспокойства на бумаге, чтобы очистить разум",
-      "Сосредоточьтесь на текущем моменте через осознанность",
-      "Постарайтесь отвлечь себя приятным занятием или фильмом",
-    ],
-    Шок: [
-      "Попросите поддержку у близкого человека",
-      "Позвольте себе время обработать ситуацию",
-      "Избегайте принятия серьезных решений в состоянии шока",
-    ],
-    Тревожность: [
-      "Примите, что тревога — это нормальная реакция, но она временная",
-      "Выполните несколько легких упражнений на расслабление",
-      "Старайтесь не изолироваться — поговорите с кем-то, кому доверяете",
-    ],
-
-    // Гнев Sub-emotions
-    Раздражение: [
-      "Сделайте паузу и глубоко вдохните",
-      "Занимайтесь физической активностью, чтобы выплеснуть эмоции",
-      "Избегайте ситуаций, вызывающих раздражение, пока не успокоитесь",
-    ],
-    Ярость: [
-      "Найдите безопасный способ выразить свою ярость (например, крик в подушку)",
-      "Уединитесь и попробуйте успокоиться",
-      "Ведите дневник, чтобы выразить свои эмоции словами",
-    ],
-    Обида: [
-      "Попробуйте понять, почему вы чувствуете обиду",
-      "Обсудите свои чувства с человеком, который вас задел",
-      "Сосредоточьтесь на прощении ради себя",
-    ],
-    Негодование: [
-      "Напишите письмо, но не отправляйте его, чтобы выразить свои эмоции",
-      "Сделайте паузу и попробуйте рационализировать свои чувства",
-      "Займитесь физической активностью, чтобы снять напряжение",
-    ],
-    Злость: [
-      "Попробуйте переключить свое внимание на физическую активность",
-      "Подумайте, стоит ли эта ситуация ваших эмоций",
-      "Изучите технику позитивной переоценки",
-    ],
-    Враждебность: [
-      "Примите, что ваши чувства могут быть не совсем объективны",
-      "Попробуйте представить себя на месте другого человека",
-      "Займитесь чем-то, что успокаивает вас — прогулка, музыка, медитация",
-    ],
-    Гнев: [
-      "Проведите время на природе, чтобы освободиться от напряжения",
-      "Попробуйте записать свои чувства и мысли",
-      "Избегайте агрессивных действий — вместо этого дайте себе время успокоиться",
-    ],
-    Агрессия: [
-      "Уединитесь, чтобы избежать конфликтов",
-      "Выполните энергичные упражнения, чтобы высвободить эмоции",
-      "Сосредоточьтесь на дыхании, чтобы снизить уровень возбуждения",
-    ],
-  };
-
-  return recommendations[selectedSubEmotion.value] || [];
+  return recommendationsRef.value[selectedSubEmotion.value] || [];
 });
 
 // Listen for auth state changes
@@ -611,7 +364,7 @@ const closeModal = () => {
 
 const selectEmotion = (emotion) => {
   selectedEmotion.value = emotion;
-  subEmotions.value = subEmotionsMap[emotion.name] || []; // Properly map emotions to sub-emotions
+  subEmotions.value = subEmotionsMapRef.value[emotion.name] || []; // Properly map emotions to sub-emotions
   selectedSubEmotion.value = null; // Reset sub-emotion when the main emotion changes
 };
 

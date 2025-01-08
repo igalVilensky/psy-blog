@@ -2,13 +2,12 @@
   <nav
     class="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-[#0F172A] via-[#1E1B4B] to-[#0F172A] shadow-[0_2px_20px_rgba(123,97,255,0.15)]"
   >
-    <!-- Animated background overlay -->
-    <div class="absolute inset-0 opacity-20">
-      <div
-        class="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-cyan-500/10 to-purple-500/10 animate-gradient-x"
-      ></div>
-    </div>
+    <!-- Neon glow divider -->
+    <div
+      class="absolute -bottom-px left-0 right-0 h-px bg-gradient-to-r from-purple-400/50 via-cyan-400/50 to-purple-400/50"
+    ></div>
 
+    <!-- Container for topbar content -->
     <div
       class="container max-w-6xl w-full mx-auto flex justify-between items-center p-4 relative z-10"
     >
@@ -205,10 +204,10 @@
       <div
         data-menu="mobile"
         :class="[
-          'lg:hidden absolute top-full left-0 right-0 bg-gradient-to-b from-[#1E1B4B] to-[#0F172A] border-t border-white/10 transform transition-all duration-300 shadow-[0_10px_20px_rgba(0,0,0,0.3)] backdrop-blur-sm',
+          'lg:hidden absolute top-full left-0 right-0 bg-gradient-to-b from-[#1E1B4B] to-[#0F172A] border-t border-white/10 transform transition-all duration-300 shadow-[0_10px_20px_rgba(0,0,0,0.3)] backdrop-blur-sm overflow-y-auto',
           isDropdownOpen
-            ? 'translate-y-0 opacity-100 visible'
-            : '-translate-y-4 opacity-0 invisible',
+            ? 'translate-y-0 opacity-100 visible max-h-[80vh]'
+            : '-translate-y-4 opacity-0 invisible max-h-0',
         ]"
       >
         <div class="p-4 space-y-2">
@@ -224,7 +223,8 @@
                 <i
                   class="fas fa-chevron-down text-xs transition-transform duration-300"
                   :class="
-                    openSubmenu === 'courses' || isCoursesRouteActive
+                    (openSubmenu === 'courses' || isCoursesRouteActive) &&
+                    !isManuallyClosed
                       ? 'rotate-180'
                       : ''
                   "
@@ -232,11 +232,18 @@
               </button>
 
               <MobileSubmenu
-                :isOpen="openSubmenu === 'courses' || isCoursesRouteActive"
+                :isOpen="
+                  (openSubmenu === 'courses' || isCoursesRouteActive) &&
+                  !isManuallyClosed
+                "
                 :closeDropdown="closeDropdown"
-                class="p-2"
               />
             </div>
+
+            <!-- Neon line separator -->
+            <div
+              class="w-full h-px bg-gradient-to-r from-purple-400/50 via-cyan-400/50 to-purple-400/50"
+            ></div>
 
             <!-- Awareness Tools Dropdown -->
             <div class="relative">
@@ -248,8 +255,9 @@
                 <i
                   class="fas fa-chevron-down text-xs transition-transform duration-300"
                   :class="
-                    openSubmenu === 'awareness-tools' ||
-                    isAwarenessToolsRouteActive
+                    (openSubmenu === 'awareness-tools' ||
+                      isAwarenessToolsRouteActive) &&
+                    !isManuallyClosed
                       ? 'rotate-180'
                       : ''
                   "
@@ -258,13 +266,18 @@
 
               <AwarenessToolsMobileSubmenu
                 :isOpen="
-                  openSubmenu === 'awareness-tools' ||
-                  isAwarenessToolsRouteActive
+                  (openSubmenu === 'awareness-tools' ||
+                    isAwarenessToolsRouteActive) &&
+                  !isManuallyClosed
                 "
                 :closeDropdown="closeDropdown"
-                class="p-2"
               />
             </div>
+
+            <!-- Neon line separator -->
+            <div
+              class="w-full h-px bg-gradient-to-r from-purple-400/50 via-cyan-400/50 to-purple-400/50"
+            ></div>
 
             <!-- Regular Menu Items -->
             <NuxtLink
@@ -295,8 +308,13 @@
             </NuxtLink>
           </div>
 
+          <!-- Neon line separator -->
+          <div
+            class="w-full h-px bg-gradient-to-r from-purple-400/50 via-cyan-400/50 to-purple-400/50"
+          ></div>
+
           <!-- Mobile Auth Section -->
-          <div class="pt-4 border-t border-white/10">
+          <div>
             <template v-if="currentUser">
               <!-- User Info -->
               <div class="px-3 py-2 mb-2">
@@ -365,6 +383,7 @@ import DesktopSubmenu from "@/components/navigation/DesktopSubmenu.vue";
 import MobileSubmenu from "@/components/navigation/MobileSubmenu.vue";
 import AwarenessToolsDesktopSubmenu from "./AwarenessToolsDesktopSubmenu.vue";
 import AwarenessToolsMobileSubmenu from "./AwarenessToolsMobileSubmenu.vue";
+
 const nuxtApp = useNuxtApp();
 const auth = nuxtApp.$auth;
 const router = useRouter();
@@ -374,6 +393,7 @@ const route = useRoute();
 const isDropdownOpen = ref(false);
 const openSubmenu = ref(null);
 const currentUser = ref(auth.currentUser);
+const isManuallyClosed = ref(false);
 
 // Check if the current route is inside the "Courses" submenu
 const isCoursesRouteActive = computed(() => {
@@ -423,14 +443,17 @@ const toggleDropdown = () => {
 const toggleSubmenu = (submenuName) => {
   if (openSubmenu.value === submenuName) {
     openSubmenu.value = null;
+    isManuallyClosed.value = true; // Mark the submenu as manually closed
   } else {
     openSubmenu.value = submenuName;
+    isManuallyClosed.value = false; // Reset the manual close state
   }
 };
 
 const closeDropdown = () => {
   isDropdownOpen.value = false;
   openSubmenu.value = null;
+  isManuallyClosed.value = false; // Reset the manual close state
 };
 
 const handleLogout = async () => {
@@ -457,21 +480,8 @@ const handleOutsideClick = (event) => {
   }
 };
 </script>
+
 <style scoped>
-@keyframes gradient-x {
-  0%,
-  100% {
-    transform: translateX(-50%);
-  }
-  50% {
-    transform: translateX(50%);
-  }
-}
-
-.animate-gradient-x {
-  animation: gradient-x 15s linear infinite;
-}
-
 .active-link {
   color: white; /* Change this to your desired active link color */
   font-weight: bold; /* Optional: Make the active link bold */
