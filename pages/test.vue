@@ -1,211 +1,247 @@
 <template>
-  <div class="bg-gradient-to-br from-pink-50 via-rose-50 to-white py-12">
-    <div class="container mx-auto px-4 max-w-6xl">
-      <!-- Loading State -->
-      <div v-if="isLoading" class="flex justify-center items-center h-screen">
-        <i class="fas fa-spinner fa-spin fa-2x text-pink-500"></i>
+  <div
+    class="min-h-screen bg-gradient-to-br from-purple-900 via-pink-800 to-purple-900 p-6"
+  >
+    <!-- Glass-morphism container -->
+    <div
+      class="max-w-5xl mx-auto backdrop-blur-lg bg-white/10 rounded-3xl shadow-2xl p-8 text-white my-12"
+    >
+      <!-- Floating shapes background -->
+      <div class="shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
       </div>
 
-      <div v-else>
-        <!-- Hero Section with Project Description -->
-        <section
-          class="relative text-center mb-16 flex flex-col items-center justify-center sm:py-24 py-12"
+      <!-- Header with animated gradient text -->
+      <div class="text-center mb-16 relative">
+        <h1 class="text-5xl font-bold mb-6 gradient-text animate-gradient">
+          Самооценка: "ПУТЕШЕСТВИЕ В МИР СЕБЯ"
+        </h1>
+        <p class="text-xl text-purple-100 leading-relaxed max-w-3xl mx-auto">
+          Чувствуете, что иногда сомнения и страхи мешают вам двигаться вперед?
+          <span class="block mt-2">
+            Замечаете, что внутренний критик звучит слишком громко?
+          </span>
+        </p>
+      </div>
+
+      <!-- Content Sections -->
+      <div class="grid md:grid-cols-2 gap-8">
+        <div
+          v-for="(section, index) in sections"
+          :key="index"
+          class="backdrop-blur-md bg-white/20 rounded-2xl p-8 transform hover:scale-105 transition-all duration-300 hover:shadow-xl"
         >
-          <!-- Background Image -->
-          <div
-            class="absolute inset-0 bg-cover bg-center opacity-30"
-            :style="{ backgroundImage: `url(${profileImage})` }"
-          ></div>
-
-          <div class="relative z-10">
-            <h1
-              class="text-5xl md:text-6xl font-extrabold text-gray-800 mb-4 tracking-tight leading-tight"
-            >
-              Ваш Путь к Личностному Росту
-            </h1>
-            <p
-              class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed mb-6 px-4"
-            >
-              Мы разрабатываем уникальные образовательные программы, которые
-              помогают каждому человеку раскрыть свой потенциал через глубокое
-              понимание себя и совершенствование
-              <span class="font-bold text-pink-500">навыков личного роста</span
-              >.
-            </p>
-
-            <!-- CTA Button -->
-            <NuxtLink
-              to="/courses/courses"
-              class="inline-block bg-gradient-to-br from-pink-500 to-purple-500 text-white text-lg font-semibold py-3 px-6 rounded-lg hover:opacity-90 transition duration-300 shadow-lg"
-            >
-              Начать обучение
-            </NuxtLink>
+          <div class="flex items-center mb-6">
+            <i
+              :class="['fas', section.icon, 'text-3xl text-purple-300 mr-4']"
+            ></i>
+            <h2 class="text-2xl font-semibold gradient-text">
+              {{ section.title }}
+            </h2>
           </div>
-        </section>
-
-        <!-- Popular Topics Section -->
-        <section class="mb-16">
-          <div class="text-center mb-12">
-            <h3 class="text-3xl font-bold text-gray-800 mb-4">
-              Популярные темы
-            </h3>
-          </div>
-
-          <div class="grid md:grid-cols-3 gap-8">
-            <div
-              v-for="(topic, index) in popularTopics"
-              :key="index"
-              class="bg-white rounded-2xl p-6 shadow-lg transform transition hover:scale-105 hover:shadow-xl"
+          <ul class="space-y-4">
+            <li
+              v-for="(item, itemIndex) in section.items"
+              :key="itemIndex"
+              class="flex items-start group"
             >
-              <div class="mb-4">
-                <i :class="topic.icon" class="text-3xl text-pink-500 mb-4"></i>
-                <h4 class="text-xl font-semibold text-gray-800 mb-3">
-                  {{ topic.title }}
-                </h4>
-              </div>
-              <p class="text-gray-600">
-                {{ topic.description }}
-              </p>
-            </div>
-          </div>
-        </section>
+              <i
+                class="fas fa-sparkles text-purple-300 mr-3 mt-1 group-hover:text-yellow-300 transition-colors"
+              ></i>
+              <span
+                class="text-purple-100 group-hover:text-white transition-colors"
+                >{{ item }}</span
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
 
-        <!-- Discounted Courses Section -->
-        <section class="mb-16">
-          <div class="text-center mb-12">
-            <h3 class="text-3xl font-bold text-gray-800 mb-4">
-              Курсы недели со скидкой
-            </h3>
-          </div>
-
-          <div class="grid md:grid-cols-2 gap-8">
-            <div
-              v-for="(course, index) in discountedCourses"
-              :key="index"
-              class="bg-gradient-to-br from-pink-100 to-purple-200 rounded-2xl p-6 shadow-lg"
-            >
-              <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-gray-800">
-                  {{ course.title }}
-                </h3>
-                <span
-                  class="bg-red-500 text-white px-3 py-1 rounded-full text-sm"
-                >
-                  -{{ course.discount }}%
-                </span>
-              </div>
-              <p class="text-gray-700 mb-4">{{ course.description }}</p>
-              <div class="flex justify-between items-center">
-                <span class="text-lg font-semibold text-pink-700">
-                  {{ course.price }} ₽
-                </span>
-                <NuxtLink
-                  to="/signup"
-                  class="inline-block bg-pink-500 text-white text-sm font-semibold py-2 px-4 rounded-lg hover:bg-pink-600 transition"
-                >
-                  Записаться
-                </NuxtLink>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Testimonials Section -->
-        <section
-          class="bg-gradient-to-r from-pink-400 to-purple-500 rounded-2xl p-12 text-center"
-        >
-          <h4 class="text-3xl font-bold text-white mb-6">
-            Отзывы наших участников
-          </h4>
-          <div class="grid md:grid-cols-3 gap-6">
-            <div
-              v-for="(testimonial, index) in testimonials"
-              :key="index"
-              class="bg-white rounded-2xl p-6"
-            >
-              <p class="text-gray-700 mb-4 italic">"{{ testimonial.text }}"</p>
-              <div class="flex items-center">
-                <div class="mr-4">
-                  <div
-                    class="w-12 h-12 bg-pink-200 rounded-full flex items-center justify-center"
-                  >
-                    {{ testimonial.name[0] }}
-                  </div>
-                </div>
-                <div>
-                  <h4 class="font-semibold text-gray-800">
-                    {{ testimonial.name }}
-                  </h4>
-                  <p class="text-gray-600 text-sm">{{ testimonial.course }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+      <!-- Download Section -->
+      <div class="text-center mt-16">
+        <button @click="downloadGuide" class="download-button group">
+          <span class="relative z-10">
+            <i class="fas fa-download mr-2 group-hover:animate-bounce"></i>
+            Скачать гайд "Самооценка" прямо сейчас!
+          </span>
+        </button>
+        <p class="text-purple-200 mt-6 text-lg animate-pulse">
+          Начните путь к самопринятию и раскрытию своего истинного потенциала!
+        </p>
       </div>
     </div>
   </div>
 </template>
-
 <script setup>
-import { ref, onMounted } from "vue";
-import profileImage from "@/assets/images/profile.jpg";
-const isLoading = ref(true);
-
-const popularTopics = [
+const sections = [
   {
-    title: "Любовь и отношения",
-    icon: "fas fa-heart",
-    description: "Глубокое понимание себя и построение гармоничных отношений",
+    title: "Что вы найдете в гайде:",
+    icon: "fa-gem",
+    items: [
+      "Упражнения для глубокого самоанализа, чтобы лучше понять свои чувства, ценности и желания.",
+      "Методы выявления и трансформации убеждений, которые ограничивают вас в жизни.",
+      "Практики для укрепления самоценности и формирования здорового отношения к себе.",
+      "Рекомендации по самопринятию и улучшению внутреннего диалога.",
+    ],
   },
   {
-    title: "Саморазвитие",
-    icon: "fas fa-user-graduate",
-    description: "Техники личностного роста и преодоления внутренних барьеров",
+    title: "Что вы получите:",
+    icon: "fa-gift",
+    items: [
+      "Осознание своей истинной ценности, независимо от чужих ожиданий.",
+      "Инструменты для построения уверенности и гармонии с собой.",
+      "Простые шаги, чтобы начать жить в соответствии со своими желаниями, а не чужими стандартами.",
+    ],
   },
   {
-    title: "Карьерный рост",
-    icon: "fas fa-chart-line",
-    description: "Стратегии профессионального развития и успеха",
-  },
-];
-
-const discountedCourses = [
-  {
-    title: 'Курс "Эмоциональный интеллект"',
-    description: "Научитесь управлять эмоциями и строить глубокие отношения",
-    discount: 30,
-    price: 4900,
+    title: "Для кого этот гайд:",
+    icon: "fa-users",
+    items: [
+      "Для тех, кто хочет повысить уверенность в себе и перестать зависеть от чужого мнения.",
+      "Для тех, кто стремится разобраться с внутренними ограничениями и страхами.",
+      "Для всех, кто готов принять себя такими, какие они есть, и двигаться к жизни своей мечты.",
+    ],
   },
   {
-    title: 'Тренинг "Личная эффективность"',
-    description: "Раскройте свой потенциал и достигайте целей",
-    discount: 25,
-    price: 5700,
-  },
-];
-
-const testimonials = [
-  {
-    name: "Анна К.",
-    course: 'Курс "Эмоциональный интеллект"',
-    text: "Невероятно полезный курс, который помог мне лучше понять себя и свои эмоции.",
-  },
-  {
-    name: "Михаил П.",
-    course: 'Тренинг "Личная эффективность"',
-    text: "Получил массу практических инструментов для достижения целей и повышения продуктивности.",
-  },
-  {
-    name: "Елена С.",
-    course: "Курс по отношениям",
-    text: "Курс открыл мне глаза на многие аспекты построения здоровых отношений.",
+    title: "Почему стоит скачать этот гайд?",
+    icon: "fa-star",
+    items: [
+      "Он поможет вам начать глубокую трансформацию вашего внутреннего мира.",
+      "Вы получите проверенные упражнения, которые реально работают.",
+      "Это первый шаг на пути к осознанности, гармонии и уверенности.",
+    ],
   },
 ];
 
-onMounted(() => {
-  setTimeout(() => {
-    isLoading.value = false;
-  }, 500);
-});
+const downloadGuide = () => {
+  console.log("Downloading guide...");
+};
 </script>
+<style scoped>
+.shapes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.shape {
+  position: absolute;
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.05)
+  );
+  border-radius: 50%;
+  animation: float 20s infinite linear;
+}
+
+.shape-1 {
+  width: 300px;
+  height: 300px;
+  top: -150px;
+  left: -150px;
+}
+
+.shape-2 {
+  width: 200px;
+  height: 200px;
+  top: 50%;
+  right: -100px;
+  animation-delay: -7s;
+}
+
+.shape-3 {
+  width: 250px;
+  height: 250px;
+  bottom: -125px;
+  left: 50%;
+  animation-delay: -14s;
+}
+
+@keyframes float {
+  0% {
+    transform: rotate(0deg) translate(0, 0);
+  }
+  100% {
+    transform: rotate(360deg) translate(50px, 50px);
+  }
+}
+
+.gradient-text {
+  background: linear-gradient(-45deg, #fff, #e6e6ff, #fff, #ffe6f2);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.download-button {
+  background: linear-gradient(-45deg, #7e22ce, #be185d);
+  background-size: 200% 200%;
+  padding: 1rem 3rem;
+  border-radius: 9999px;
+  font-weight: bold;
+  font-size: 1.25rem;
+  color: white;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  animation: gradient 15s ease infinite;
+}
+
+.download-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.download-button:hover::before {
+  transform: translateX(100%);
+}
+
+.download-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.3);
+}
+
+/* Ensure FontAwesome icons are styled correctly */
+.fas {
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+/* Hover effects for list items */
+li.group:hover .fas {
+  transform: scale(1.2);
+}
+</style>
