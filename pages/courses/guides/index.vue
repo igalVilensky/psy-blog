@@ -161,7 +161,7 @@ const guides = [
       "Практики для укрепления самоценности, улучшения внутреннего диалога и самопринятия.",
     date: "12 января 2025", // Update the date as needed
     category: "Самопознание", // Choose the appropriate category
-    image: "assets/images/self-love.webp",
+    image: "/self-love.webp",
     icon: "fas fa-star", // Example Font Awesome icon
     iconDescription: "Упражнения для глубокого самоанализа.",
     link: "guides/self-assessment-guide", // Add a link to the self-assessment page
@@ -173,7 +173,7 @@ const guides = [
       "Эффективные техники для работы с эмоциями и улучшения эмоционального интеллекта.",
     date: "10 декабря 2024",
     category: "Эмоциональный интеллект",
-    image: "assets/images/podcasts.jpeg",
+    image: "/podcasts.jpeg",
     icon: "fas fa-heart", // Example Font Awesome icon
     iconDescription: "Техники для развития эмпатии и самоконтроля.",
   },
@@ -184,7 +184,7 @@ const guides = [
       "Понимание ваших и чужих потребностей для создания доверительных отношений.",
     date: "5 декабря 2024",
     category: "Отношения",
-    image: "assets/images/podcasts.jpeg",
+    image: "/podcasts.jpeg",
     icon: "fas fa-users", // Example Font Awesome icon
     iconDescription: "Инструменты для укрепления связи с близкими.",
   },
@@ -195,7 +195,7 @@ const guides = [
       "Найдите свой источник мотивации и научитесь ставить реалистичные цели.",
     date: "1 декабря 2024",
     category: "Карьерный рост",
-    image: "assets/images/podcasts.jpeg",
+    image: "/podcasts.jpeg",
     icon: "fas fa-mountain", // Example Font Awesome icon
     iconDescription: "Стратегии для достижения карьерных и личных целей.",
   },
