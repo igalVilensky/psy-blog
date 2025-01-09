@@ -19,10 +19,7 @@ export default defineNuxtConfig({
     projectId: "wlg2lkvy",
     dataset: "production",
   },
-  ssr: true, // Enable server-side rendering
   image: {
-    // Optional: Configure providers or presets
-    // Example: Using the local provider (default)
     provider: "ipx",
   },
 });

@@ -51,12 +51,11 @@
         >
           <!-- Guide Image -->
           <div class="relative overflow-hidden">
-            <nuxt-img
+            <img
               :src="guide.image"
               :alt="guide.title"
               class="w-full h-52 object-cover transition-transform duration-500 group-hover:scale-110"
               loading="lazy"
-              sizes="sm:100vw md:50vw lg:400px"
             />
             <!-- Category Badge -->
             <span
@@ -137,7 +136,10 @@
 
 <script setup>
 import { ref, computed } from "vue";
-// import guideImage from "~/assets/images/podcasts/podcasts.jpeg";
+import guideImage from "~/assets/images/podcasts/podcasts.jpeg";
+import selfguideImage from "~/assets/images/self-love.webp";
+import courseImage from "~/assets/images/courses/loveyourself.webp";
+
 import { getFirestore } from "firebase/firestore";
 import { subscribeUser } from "@/api/firebase/contact";
 
@@ -161,7 +163,7 @@ const guides = [
       "Практики для укрепления самоценности, улучшения внутреннего диалога и самопринятия.",
     date: "12 января 2025", // Update the date as needed
     category: "Самопознание", // Choose the appropriate category
-    image: "/self-love.webp",
+    image: selfguideImage, // Use the same image or add a new one
     icon: "fas fa-star", // Example Font Awesome icon
     iconDescription: "Упражнения для глубокого самоанализа.",
     link: "guides/self-assessment-guide", // Add a link to the self-assessment page
@@ -173,7 +175,7 @@ const guides = [
       "Эффективные техники для работы с эмоциями и улучшения эмоционального интеллекта.",
     date: "10 декабря 2024",
     category: "Эмоциональный интеллект",
-    image: "/podcasts.jpeg",
+    image: courseImage,
     icon: "fas fa-heart", // Example Font Awesome icon
     iconDescription: "Техники для развития эмпатии и самоконтроля.",
   },
@@ -184,7 +186,7 @@ const guides = [
       "Понимание ваших и чужих потребностей для создания доверительных отношений.",
     date: "5 декабря 2024",
     category: "Отношения",
-    image: "/podcasts.jpeg",
+    image: guideImage,
     icon: "fas fa-users", // Example Font Awesome icon
     iconDescription: "Инструменты для укрепления связи с близкими.",
   },
@@ -195,7 +197,7 @@ const guides = [
       "Найдите свой источник мотивации и научитесь ставить реалистичные цели.",
     date: "1 декабря 2024",
     category: "Карьерный рост",
-    image: "/podcasts.jpeg",
+    image: guideImage,
     icon: "fas fa-mountain", // Example Font Awesome icon
     iconDescription: "Стратегии для достижения карьерных и личных целей.",
   },
