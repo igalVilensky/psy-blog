@@ -147,7 +147,6 @@ const sitemapLinks = [
     label: "Глубокий разговор с картами",
     to: "/awareness-tools/deep-conversation-with-cards",
   },
-  { label: "Дневник эмоций", to: "/awareness-tools/emotion-diary" },
   {
     label: "Открытие Архетипа Жизни",
     to: "/awareness-tools/life-purpose-archetype",

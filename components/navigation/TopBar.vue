@@ -11,7 +11,7 @@
     <div
       class="container max-w-6xl w-full mx-auto flex justify-between items-center p-4 relative z-10"
     >
-      <!-- Brand/Logo -->
+      <!--  Brand/Logo -->
       <NuxtLink to="/" class="group relative" @click="closeDropdown">
         <span
           class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-fuchsia-300 to-cyan-400 group-hover:from-cyan-400 group-hover:via-fuchsia-300 group-hover:to-purple-400 transition-all duration-500"
@@ -23,11 +23,15 @@
         ></span>
       </NuxtLink>
 
-      <!-- Desktop Menu -->
-      <div class="hidden lg:flex items-center space-x-8">
-        <ul class="flex items-center space-x-8">
+      <!--  Desktop Menu -->
+      <div class="hidden lg:flex items-center space-x-4">
+        <ul class="flex items-center space-x-4">
+          <!-- Courses Dropdown -->
           <li class="relative group">
-            <div class="flex items-center space-x-1 cursor-pointer">
+            <div
+              class="flex items-center space-x-2 cursor-pointer px-1 py-2 rounded-lg hover:bg-white/5 transition-all duration-300"
+            >
+              <i class="fas fa-graduation-cap text-purple-400"></i>
               <span
                 class="text-slate-300 font-medium group-hover:text-white transition-colors duration-300"
                 >Курсы</span
@@ -36,19 +40,20 @@
                 class="fas fa-chevron-down text-xs text-slate-400 group-hover:text-white transition-all duration-300 group-hover:-rotate-180"
               ></i>
             </div>
-            <!-- Glowing border effect on hover -->
-            <span
-              class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-purple-400 to-cyan-400 group-hover:w-full transition-all duration-300"
-            ></span>
-            <DesktopSubmenu />
+            <!-- Adjusted submenu position -->
+            <div class="absolute top-6 left-0 pt-2">
+              <DesktopSubmenu class="min-w-[240px]" />
+            </div>
           </li>
 
+          <!-- Awareness Tools Dropdown -->
           <li class="relative group">
             <NuxtLink
               to="/awareness-tools"
-              class="flex items-center space-x-1"
-              exact-active-class="active-link"
+              class="flex items-center space-x-2 px-1 py-2 rounded-lg hover:bg-white/5 transition-all duration-300"
+              exact-active-class="bg-white/10"
             >
+              <i class="fas fa-brain text-cyan-400"></i>
               <span
                 class="text-slate-300 font-medium group-hover:text-white transition-colors duration-300"
                 >Инструменты осознанности</span
@@ -57,45 +62,42 @@
                 class="fas fa-chevron-down text-xs text-slate-400 group-hover:text-white transition-all duration-300 group-hover:-rotate-180"
               ></i>
             </NuxtLink>
-            <span
-              class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-purple-400 to-cyan-400 group-hover:w-full transition-all duration-300"
-            ></span>
-            <AwarenessToolsDesktopSubmenu />
+            <!-- Adjusted submenu position -->
+            <div class="absolute top-6 left-0 pt-2">
+              <AwarenessToolsDesktopSubmenu class="min-w-[240px]" />
+            </div>
           </li>
 
+          <!-- Blog -->
           <li class="relative group">
             <NuxtLink
               to="/blog"
-              class="text-slate-300 font-medium group-hover:text-white transition-colors duration-300"
-              exact-active-class="active-link"
+              class="flex items-center space-x-2 px-1 py-2 rounded-lg hover:bg-white/5 transition-all duration-300"
+              exact-active-class="bg-white/10"
             >
-              Блог
+              <i class="fas fa-book-open text-fuchsia-400"></i>
+              <span
+                class="text-slate-300 font-medium group-hover:text-white transition-colors duration-300"
+                >Блог</span
+              >
             </NuxtLink>
             <span
               class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-purple-400 to-cyan-400 group-hover:w-full transition-all duration-300"
             ></span>
           </li>
 
+          <!-- About -->
           <li class="relative group">
             <NuxtLink
               to="/about"
-              class="text-slate-300 font-medium group-hover:text-white transition-colors duration-300"
-              exact-active-class="active-link"
+              class="flex items-center space-x-2 px-1 py-2 rounded-lg hover:bg-white/5 transition-all duration-300"
+              exact-active-class="bg-white/10"
             >
-              О проекте
-            </NuxtLink>
-            <span
-              class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-purple-400 to-cyan-400 group-hover:w-full transition-all duration-300"
-            ></span>
-          </li>
-
-          <li class="relative group">
-            <NuxtLink
-              to="/contact"
-              class="text-slate-300 font-medium group-hover:text-white transition-colors duration-300"
-              exact-active-class="active-link"
-            >
-              Связь
+              <i class="fas fa-info-circle text-purple-400"></i>
+              <span
+                class="text-slate-300 font-medium group-hover:text-white transition-colors duration-300"
+                >О проекте</span
+              >
             </NuxtLink>
             <span
               class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-purple-400 to-cyan-400 group-hover:w-full transition-all duration-300"
@@ -103,69 +105,84 @@
           </li>
         </ul>
 
-        <!-- Auth Section -->
-        <div class="flex items-center space-x-4">
+        <!--  Auth Section -->
+        <div class="flex items-center">
           <template v-if="currentUser">
             <div class="relative group">
               <NuxtLink
                 to="/profile"
                 :class="[
-                  'flex cursor-pointer items-center space-x-2 bg-opacity-20 bg-white/5 rounded-full px-4 py-2 hover:bg-white/10 transition-all duration-300 text-slate-300',
-                  $route.path.startsWith('/profile') ? 'active-link' : '',
+                  'flex cursor-pointer items-center space-x-2 bg-white/5 rounded-lg px-4 py-2 hover:bg-white/10 transition-all duration-300',
+                  $route.path.startsWith('/profile') ? 'bg-white/15' : '',
                 ]"
               >
-                <span class="font-medium">{{ currentUser.displayName }}</span>
+                <i class="fas fa-user text-purple-400"></i>
+                <span
+                  class="font-medium text-slate-300 group-hover:text-white"
+                  >{{ currentUser.displayName }}</span
+                >
                 <i
                   class="fas fa-chevron-down text-xs text-slate-400 group-hover:rotate-180 transition-transform duration-300"
                 ></i>
               </NuxtLink>
 
-              <!-- User Dropdown -->
+              <!-- Adjusted auth dropdown position -->
               <div
-                class="absolute right-0 mt-4 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-2 z-50"
+                class="absolute top-full right-0 pt-4 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300"
               >
                 <div
-                  class="bg-gradient-to-b from-[#1E1B4B] to-[#0F172A] rounded-b-lg shadow-[0_4px_20px_rgba(123,97,255,0.2)] backdrop-blur-sm border border-white/10"
+                  class="bg-gradient-to-b from-[#1E1B4B] to-[#0F172A] rounded-xl shadow-[0_4px_20px_rgba(123,97,255,0.2)] backdrop-blur-sm border border-white/10 overflow-hidden"
                 >
                   <NuxtLink
                     to="/profile"
                     :class="[
-                      'block px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/5 transition-colors duration-300 first:rounded-t-lg',
-                      $route.path.startsWith('/profile') ? 'active-link' : '',
+                      'flex items-center space-x-2 px-4 py-2.5 text-sm text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-300',
+                      $route.path.startsWith('/profile') ? 'bg-white/10' : '',
                     ]"
                   >
-                    Профиль
+                    <i class="fas fa-user-circle text-purple-400"></i>
+                    <span>Профиль</span>
                   </NuxtLink>
                   <button
                     @click="handleLogout"
-                    class="w-full text-left px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/5 transition-colors duration-300 last:rounded-b-lg"
+                    class="w-full flex items-center space-x-2 px-4 py-2.5 text-sm text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-300"
                   >
-                    Выйти
+                    <i class="fas fa-sign-out-alt text-red-400"></i>
+                    <span>Выйти</span>
                   </button>
                 </div>
               </div>
             </div>
           </template>
           <template v-else>
+            <!--  Login Button -->
             <NuxtLink
               to="/login"
-              class="text-slate-300 font-medium hover:text-white transition-colors duration-300"
+              class="flex items-center space-x-2 px-4 py-2 rounded-lg hover:bg-white/5 transition-all duration-300"
             >
-              Войти
+              <i class="fas fa-sign-in-alt text-purple-400"></i>
+              <span
+                class="text-slate-300 font-medium hover:text-white transition-colors duration-300"
+                >Войти</span
+              >
             </NuxtLink>
+
+            <!--  Register Button -->
             <NuxtLink
               to="/register"
-              class="relative inline-flex items-center justify-center px-6 py-2 overflow-hidden font-medium transition-all duration-300 ease-out rounded-full group"
+              class="relative inline-flex items-center justify-center px-6 py-2 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group"
             >
               <span
                 class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
               >
-                <i class="fas fa-arrow-right"></i>
+                <i class="fas fa-arrow-right ml-2"></i>
               </span>
               <span
                 class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
-                >Регистрация</span
               >
+                <i class="fas fa-user-plus mr-2"></i>
+                Регистрация
+              </span>
               <span class="relative invisible">Регистрация</span>
             </NuxtLink>
           </template>
@@ -210,57 +227,66 @@
             : '-translate-y-4 opacity-0 invisible max-h-0',
         ]"
       >
-        <div class="p-4 space-y-2">
+        <div class="p-4 space-y-4">
           <!-- Mobile Navigation Items -->
-          <div class="space-y-2">
+          <div class="space-y-3">
             <!-- Courses Dropdown -->
             <div class="relative">
               <button
                 @click="toggleSubmenu('courses')"
-                class="w-full flex items-center justify-between p-3 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-300"
+                class="w-full flex items-center justify-between p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-300 group"
               >
-                <span class="font-medium">Курсы</span>
+                <div class="flex items-center space-x-3 flex-1">
+                  <i class="fas fa-graduation-cap text-purple-400 text-lg"></i>
+                  <span
+                    class="font-medium text-slate-300 group-hover:text-white"
+                    >Курсы</span
+                  >
+                </div>
                 <i
-                  class="fas fa-chevron-down text-xs transition-transform duration-300"
-                  :class="
+                  class="fas fa-chevron-down text-slate-400 transition-transform duration-300"
+                  :class="[
                     (openSubmenu === 'courses' || isCoursesRouteActive) &&
                     !isManuallyClosed
-                      ? 'rotate-180'
-                      : ''
-                  "
+                      ? 'rotate-180 text-white'
+                      : '',
+                  ]"
                 ></i>
               </button>
 
+              <!--  submenu animation and styling -->
               <MobileSubmenu
                 :isOpen="
                   (openSubmenu === 'courses' || isCoursesRouteActive) &&
                   !isManuallyClosed
                 "
                 :closeDropdown="closeDropdown"
+                class="mt-2 rounded-xl overflow-hidden"
               />
             </div>
-
-            <!-- Neon line separator -->
-            <div
-              class="w-full h-px bg-gradient-to-r from-purple-400/50 via-cyan-400/50 to-purple-400/50"
-            ></div>
 
             <!-- Awareness Tools Dropdown -->
             <div class="relative">
               <button
                 @click="toggleSubmenu('awareness-tools')"
-                class="w-full flex items-center justify-between p-3 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-300"
+                class="w-full flex items-center justify-between p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-300 group"
               >
-                <span class="font-medium">Инструменты осознанности</span>
+                <div class="flex items-center space-x-3 flex-1">
+                  <i class="fas fa-brain text-cyan-400 text-lg"></i>
+                  <span
+                    class="font-medium text-slate-300 group-hover:text-white"
+                    >Инструменты осознанности</span
+                  >
+                </div>
                 <i
-                  class="fas fa-chevron-down text-xs transition-transform duration-300"
-                  :class="
+                  class="fas fa-chevron-down text-slate-400 transition-transform duration-300"
+                  :class="[
                     (openSubmenu === 'awareness-tools' ||
                       isAwarenessToolsRouteActive) &&
                     !isManuallyClosed
-                      ? 'rotate-180'
-                      : ''
-                  "
+                      ? 'rotate-180 text-white'
+                      : '',
+                  ]"
                 ></i>
               </button>
 
@@ -271,77 +297,83 @@
                   !isManuallyClosed
                 "
                 :closeDropdown="closeDropdown"
+                class="mt-2 rounded-xl overflow-hidden"
               />
             </div>
 
-            <!-- Neon line separator -->
-            <div
-              class="w-full h-px bg-gradient-to-r from-purple-400/50 via-cyan-400/50 to-purple-400/50"
-            ></div>
-
-            <!-- Regular Menu Items -->
+            <!-- Regular Menu Items with  Styling -->
             <NuxtLink
               to="/blog"
-              class="block p-3 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-300"
+              class="flex items-center space-x-3 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-300 group"
               @click="closeDropdown"
-              exact-active-class="active-link"
+              exact-active-class="bg-white/15"
             >
-              <span class="font-medium">Блог</span>
+              <i class="fas fa-book-open text-fuchsia-400 text-lg"></i>
+              <span class="font-medium text-slate-300 group-hover:text-white"
+                >Блог</span
+              >
             </NuxtLink>
 
             <NuxtLink
               to="/about"
-              class="block p-3 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-300"
+              class="flex items-center space-x-3 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-300 group"
               @click="closeDropdown"
-              exact-active-class="active-link"
+              exact-active-class="bg-white/15"
             >
-              <span class="font-medium">О проекте</span>
+              <i class="fas fa-info-circle text-purple-400 text-lg"></i>
+              <span class="font-medium text-slate-300 group-hover:text-white"
+                >О проекте</span
+              >
             </NuxtLink>
 
             <NuxtLink
               to="/contact"
-              class="block p-3 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-300"
+              class="flex items-center space-x-3 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-300 group"
               @click="closeDropdown"
-              exact-active-class="active-link"
+              exact-active-class="bg-white/15"
             >
-              <span class="font-medium">Связь</span>
+              <i class="fas fa-envelope text-cyan-400 text-lg"></i>
+              <span class="font-medium text-slate-300 group-hover:text-white"
+                >Связь</span
+              >
             </NuxtLink>
           </div>
 
-          <!-- Neon line separator -->
-          <div
-            class="w-full h-px bg-gradient-to-r from-purple-400/50 via-cyan-400/50 to-purple-400/50"
-          ></div>
-
-          <!-- Mobile Auth Section -->
-          <div>
+          <!--  Auth Section -->
+          <div class="pt-4 border-t border-white/10">
             <template v-if="currentUser">
-              <!-- User Info -->
-              <div class="px-3 py-2 mb-2">
+              <!-- User Profile Card -->
+              <div class="mb-4 p-4 rounded-xl bg-white/5">
                 <span class="text-sm text-slate-400">Вы вошли как</span>
-                <div class="text-slate-200 font-medium">
+                <div class="text-white font-medium mt-1">
                   {{ currentUser.displayName || currentUser.email }}
                 </div>
               </div>
 
               <!-- User Actions -->
-              <div class="space-y-2">
+              <div class="space-y-3">
                 <NuxtLink
                   to="/profile"
-                  :class="[
-                    'block p-3 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-300',
-                    $route.path.startsWith('/profile') ? 'active-link' : '',
-                  ]"
+                  class="flex items-center space-x-3 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-300 group"
                   @click="closeDropdown"
+                  exact-active-class="bg-white/15"
                 >
-                  <span class="font-medium">Профиль</span>
+                  <i class="fas fa-user text-purple-400 text-lg"></i>
+                  <span
+                    class="font-medium text-slate-300 group-hover:text-white"
+                    >Профиль</span
+                  >
                 </NuxtLink>
 
                 <button
                   @click="handleLogout"
-                  class="w-full p-3 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-300 text-left"
+                  class="w-full flex items-center space-x-3 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-300 group"
                 >
-                  <span class="font-medium">Выйти</span>
+                  <i class="fas fa-sign-out-alt text-red-400 text-lg"></i>
+                  <span
+                    class="font-medium text-slate-300 group-hover:text-white"
+                    >Выйти</span
+                  >
                 </button>
               </div>
             </template>
@@ -350,20 +382,20 @@
               <div class="space-y-3">
                 <NuxtLink
                   to="/login"
-                  class="block w-full p-3 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-300 text-center font-medium"
+                  class="flex items-center justify-center space-x-2 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-300"
                   @click="closeDropdown"
-                  exact-active-class="active-link"
                 >
-                  Войти
+                  <i class="fas fa-sign-in-alt text-purple-400"></i>
+                  <span class="font-medium text-slate-300">Войти</span>
                 </NuxtLink>
 
                 <NuxtLink
                   to="/register"
-                  class="block w-full p-3 rounded-lg bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white transition-all duration-300 text-center font-medium"
+                  class="flex items-center justify-center space-x-2 p-4 rounded-xl bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 transition-all duration-300"
                   @click="closeDropdown"
-                  exact-active-class="active-link"
                 >
-                  Регистрация
+                  <i class="fas fa-user-plus text-white"></i>
+                  <span class="font-medium text-white">Регистрация</span>
                 </NuxtLink>
               </div>
             </template>
@@ -412,7 +444,6 @@ const isAwarenessToolsRouteActive = computed(() => {
     "/awareness-tools",
     "/awareness-tools/emotional-barometer",
     "/awareness-tools/deep-conversation-with-cards",
-    "/awareness-tools/emotion-diary",
     "/awareness-tools/life-purpose-archetype",
   ];
   return submenuRoutes.includes(route.path);

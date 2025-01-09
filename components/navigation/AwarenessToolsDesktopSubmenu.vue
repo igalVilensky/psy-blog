@@ -36,11 +36,6 @@ const menuItems = [
     path: "/awareness-tools/deep-conversation-with-cards",
   },
   {
-    icon: "fas fa-book",
-    label: "Дневник эмоций",
-    path: "/awareness-tools/emotion-diary",
-  },
-  {
     icon: "fas fa-compass",
     label: "Открытие Архетипа Жизни",
     path: "/awareness-tools/life-purpose-archetype",

@@ -40,7 +40,6 @@ import { ref } from "vue";
 import ToolCard from "@/components/tools/ToolCard.vue";
 import EmotionalBarometerImage from "@/assets/images/awarenessTools/emotional-barometer.jpeg";
 import DeepConversationWithCardsImage from "@/assets/images/awarenessTools/deep-conversation-with-cards.jpeg";
-import EmotionaDiaryImage from "@/assets/images/awarenessTools/emotion-diary.jpeg";
 import LifeArchetypeImage from "@/assets/images/awarenessTools/life-archetype.jpg";
 
 const tools = ref([
@@ -64,13 +63,6 @@ const tools = ref([
     description:
       "Погрузитесь в глубокие разговоры с помощью специально разработанных карт. Откройте новые грани себя и своих отношений.",
     image: DeepConversationWithCardsImage,
-  },
-  {
-    name: "Дневник эмоций",
-    path: "/awareness-tools/emotion-diary",
-    description:
-      "Ведите учет своих эмоций и чувств. Анализируйте паттерны и развивайте эмоциональный интеллект.",
-    image: EmotionaDiaryImage,
   },
 ]);
 </script>

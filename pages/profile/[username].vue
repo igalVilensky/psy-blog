@@ -179,43 +179,6 @@
               <canvas ref="emotionChart" class="w-full max-h-64"></canvas>
             </div>
           </div>
-
-          <!-- Digital Emotion Diary Stats -->
-          <div class="bg-white rounded-2xl shadow-lg p-8">
-            <h2 class="text-xl font-bold text-gray-800 mb-6">
-              <i class="fa fa-book-open text-pink-600 mr-2"></i>
-              Цифровой дневник эмоций
-            </h2>
-
-            <!-- Stats Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-              <div class="bg-gray-50 rounded-lg p-6">
-                <div class="text-sm text-gray-600 mb-2">Количество записей</div>
-                <div class="text-2xl font-bold text-gray-800">
-                  {{ emotionStats.entriesCount }}
-                </div>
-              </div>
-
-              <div class="bg-gray-50 rounded-lg p-6">
-                <div class="text-sm text-gray-600 mb-2">Изученные эмоции</div>
-                <div class="text-2xl font-bold text-gray-800">
-                  {{ emotionStats.unlockedEmotions.length }}
-                </div>
-              </div>
-
-              <div class="bg-gray-50 rounded-lg p-6">
-                <div class="text-sm text-gray-600 mb-2">Последняя запись</div>
-                <div class="text-2xl font-bold text-gray-800">
-                  {{ getLastEntryDate() }}
-                </div>
-              </div>
-            </div>
-
-            <!-- Digital Diary Chart -->
-            <div class="mt-8">
-              <canvas ref="blogStatsChart" class="w-full"></canvas>
-            </div>
-          </div>
         </div>
 
         <!-- Right Sidebar Content -->
@@ -309,13 +272,8 @@ const loadingEmotionBarometer = ref(true);
 
 const loadingAssessments = ref(false);
 const avatarUrl = ref(null); // Store the uploaded avatar URL
-const blogStatsChart = ref(null);
 const emotionChart = ref(null);
-const emotionStats = ref({
-  entriesCount: 0,
-  recentEntries: [],
-  unlockedEmotions: [],
-});
+
 const emotionBarometerStats = ref({
   totalEntries: 0,
   mostCommonEmotion: "",
@@ -413,9 +371,6 @@ onAuthStateChanged(auth, async (currentUser) => {
     // Fetch the user's avatar URL
     avatarUrl.value = await fetchUserAvatarUrl(currentUser.uid);
 
-    // Load emotion diary data
-    await loadEmotionData(currentUser.uid);
-
     // Fetch the latest assessment results
     await fetchLatestAssessment(currentUser.uid);
 
@@ -479,49 +434,6 @@ onAuthStateChanged(auth, async (currentUser) => {
       loadingEmotionBarometer.value = false; // Set loading to false after data is fetched
     }
 
-    // Initialize the blog stats chart
-    if (blogStatsChart.value) {
-      new Chart(blogStatsChart.value, {
-        type: "bar",
-        data: {
-          labels: [
-            "Прочитано статей",
-            "Количество записей",
-            "Изученные эмоции",
-          ],
-          datasets: [
-            {
-              label: "Статистика",
-              data: [
-                24, // Hardcoded for now, replace with dynamic data if available
-                emotionStats.value.entriesCount,
-                emotionStats.value.unlockedEmotions.length,
-              ],
-              backgroundColor: [
-                "rgba(255, 99, 132, 0.2)",
-                "rgba(54, 162, 235, 0.2)",
-                "rgba(255, 206, 86, 0.2)",
-              ],
-              borderColor: [
-                "rgba(255, 99, 132, 1)",
-                "rgba(54, 162, 235, 1)",
-                "rgba(255, 206, 86, 1)",
-              ],
-              borderWidth: 1,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          scales: {
-            y: {
-              beginAtZero: true,
-            },
-          },
-        },
-      });
-    }
-
     // Set loading to false after all data is fetched
     loading.value = false;
   } else {
@@ -529,40 +441,6 @@ onAuthStateChanged(auth, async (currentUser) => {
     avatarUrl.value = null;
   }
 });
-
-// Original loadEmotionData function
-const loadEmotionData = async (userId) => {
-  const db = getFirestore();
-  const userRef = doc(db, "emotion_diary", userId);
-  try {
-    const docSnap = await getDoc(userRef);
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      emotionStats.value = {
-        entriesCount: data.entriesCount || 0,
-        recentEntries: data.recentEntries || [],
-        unlockedEmotions: data.unlockedEmotions || [],
-      };
-    }
-  } catch (error) {
-    console.error("Error loading emotion data:", error);
-  }
-};
-
-const getLastEntryDate = () => {
-  if (emotionStats.value.recentEntries?.length > 0) {
-    const lastEntry = emotionStats.value.recentEntries[0];
-    if (lastEntry.date && lastEntry.date.seconds) {
-      const date = new Date(lastEntry.date.seconds * 1000);
-      return date.toLocaleDateString("ru-RU", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      });
-    }
-  }
-  return "Нет записей";
-};
 
 const logoutUser = async () => {
   await authStore.logout();
