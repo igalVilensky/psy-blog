@@ -1,19 +1,40 @@
 <template>
-  <div
-    class="min-h-screen bg-gradient-to-br from-indigo-50 via-blue-50 to-white py-12"
-  >
-    <div class="container mx-auto px-4 max-w-6xl">
-      <!-- Hero Section -->
-      <section class="text-center mb-20">
+  <div class="relative min-h-screen">
+    <!-- Animated Background -->
+    <div class="fixed inset-0 -z-1">
+      <div class="absolute top-0 left-0 w-full h-full bg-[#0F172A]">
+        <!-- Gradient Orbs -->
         <div
-          class="inline-block px-6 py-2 bg-gradient-to-b from-[#1A1F35] to-indigo-600 rounded-full text-white font-medium mb-6 shadow-lg"
+          class="absolute top-0 left-0 w-[500px] h-[500px] bg-purple-500/20 rounded-full blur-[120px] animate-float"
+        ></div>
+        <div
+          class="absolute bottom-0 right-0 w-[400px] h-[400px] bg-blue-500/20 rounded-full blur-[100px] animate-float-delay"
+        ></div>
+        <!-- Animated Grid -->
+        <div
+          class="absolute inset-0 bg-gradient-to-b from-transparent to-[#0F172A]/80"
+        >
+          <div class="absolute inset-0 bg-grid-white/[0.02] animate-grid"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container mx-auto px-4 max-w-6xl relative z-10 pb-12 pt-12">
+      <!-- Hero Section -->
+      <section class="text-center mb-12">
+        <!-- <div
+          class="inline-block px-6 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full text-white font-medium mb-6 backdrop-blur-sm border border-white/10"
         >
           Руководства
-        </div>
-        <h1 class="text-5xl font-bold text-gray-800 mb-6 tracking-tight">
+        </div> -->
+        <h1
+          class="text-4xl sm:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80 tracking-tight mb-6"
+        >
           Руководства для Саморазвития
         </h1>
-        <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+        <p
+          class="text-lg sm:text-xl text-indigo-200/80 max-w-2xl mx-auto leading-relaxed"
+        >
           Исследуйте практические руководства, которые помогут вам углубить
           самопознание, улучшить отношения и раскрыть внутренний потенциал.
         </p>
@@ -27,15 +48,15 @@
             :key="category"
             @click="selectCategory(category)"
             :class="[
-              'px-6 py-3 rounded-full transition-all duration-300 font-medium relative overflow-hidden group',
+              'px-6 py-3 rounded-full transition-all duration-300 font-medium relative overflow-hidden group backdrop-blur-sm',
               selectedCategory === category
-                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200'
-                : 'bg-white text-gray-700 hover:bg-indigo-50 border border-gray-200 hover:text-white',
+                ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white'
+                : 'bg-white/10 text-indigo-200 border border-indigo-500/20',
             ]"
           >
             <span class="relative z-10">{{ category }}</span>
             <div
-              class="absolute inset-0 bg-gradient-to-r from-indigo-600 to-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"
+              class="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"
               :class="{ 'scale-x-100': selectedCategory === category }"
             ></div>
           </button>
@@ -47,7 +68,7 @@
         <div
           v-for="guide in filteredGuides"
           :key="guide.id"
-          class="group bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-xl hover:-translate-y-2"
+          class="group bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-2xl border border-indigo-500/20 overflow-hidden transform transition-all duration-300 hover:-translate-y-2"
         >
           <!-- Guide Image -->
           <div class="relative overflow-hidden">
@@ -80,22 +101,24 @@
           <!-- Guide Content -->
           <div class="p-8">
             <h2
-              class="text-xl font-bold text-gray-800 mb-4 line-clamp-2 group-hover:text-indigo-600 transition-colors duration-300"
+              class="text-xl font-bold text-white/90 mb-4 line-clamp-2 group-hover:text-indigo-300 transition-colors duration-300"
             >
               {{ guide.title }}
             </h2>
-            <p class="text-gray-600 mb-4 line-clamp-3">
+            <p class="text-indigo-200/80 mb-4 line-clamp-3">
               {{ guide.description }}
             </p>
             <div class="flex items-center gap-4 mb-4">
-              <i :class="guide.icon" class="text-xl text-indigo-600" />
-              <p class="text-gray-500 text-sm">{{ guide.iconDescription }}</p>
+              <i :class="guide.icon" class="text-xl text-indigo-400" />
+              <p class="text-indigo-200/60 text-sm">
+                {{ guide.iconDescription }}
+              </p>
             </div>
             <div class="flex justify-between items-center">
-              <span class="text-sm text-gray-500">{{ guide.date }}</span>
+              <span class="text-sm text-indigo-200/60">{{ guide.date }}</span>
               <a
                 :href="guide.link"
-                class="bg-gradient-to-r from-indigo-600 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-indigo-700 hover:to-blue-700 transition-all"
+                class="bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-4 py-2 rounded-lg hover:opacity-90 transition-all"
               >
                 Читать
               </a>
@@ -106,12 +129,12 @@
 
       <!-- Call to Action -->
       <div
-        class="bg-gradient-to-r from-indigo-600 to-blue-600 rounded-2xl p-8 mt-16 text-center transform transition-all duration-300 hover:shadow-xl hover:-translate-y-2"
+        class="mt-16 bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-2xl border border-indigo-500/20 p-8 text-center transform transition-all duration-300 hover:-translate-y-2"
       >
-        <h2 class="text-3xl font-bold text-white mb-4">
+        <h2 class="text-2xl font-bold text-white/90 mb-4">
           Подпишитесь на новые материалы
         </h2>
-        <p class="text-white mb-6 max-w-2xl mx-auto">
+        <p class="text-indigo-200/80 mb-6 max-w-2xl mx-auto">
           Получите доступ к эксклюзивным руководствам, которые помогут вам в
           путешествии к самопознанию.
         </p>
@@ -120,11 +143,11 @@
             type="email"
             v-model="email"
             placeholder="Ваш email"
-            class="w-full px-4 py-3 rounded-l-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            class="w-full px-4 py-3 rounded-l-lg bg-white/5 border border-indigo-500/20 text-white placeholder-indigo-200/50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
           <button
             @click="subscribeEmail"
-            class="bg-white text-indigo-600 px-6 py-3 rounded-r-lg hover:bg-gray-100 transition-all"
+            class="bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-6 py-3 rounded-r-lg hover:opacity-90 transition-all"
           >
             Подписаться
           </button>
@@ -157,16 +180,16 @@ const categories = [
 
 const guides = [
   {
-    id: 1, // Unique ID
+    id: 1,
     title: "Самооценка: Путешествие в мир себя",
     description:
       "Практики для укрепления самоценности, улучшения внутреннего диалога и самопринятия.",
-    date: "12 января 2025", // Update the date as needed
-    category: "Самопознание", // Choose the appropriate category
-    image: selfguideImage, // Use the same image or add a new one
-    icon: "fas fa-star", // Example Font Awesome icon
+    date: "12 января 2025",
+    category: "Самопознание",
+    image: selfguideImage,
+    icon: "fas fa-star",
     iconDescription: "Упражнения для глубокого самоанализа.",
-    link: "guides/self-assessment-guide", // Add a link to the self-assessment page
+    link: "guides/self-assessment-guide",
   },
   {
     id: 3,
@@ -176,7 +199,7 @@ const guides = [
     date: "10 декабря 2024",
     category: "Эмоциональный интеллект",
     image: courseImage,
-    icon: "fas fa-heart", // Example Font Awesome icon
+    icon: "fas fa-heart",
     iconDescription: "Техники для развития эмпатии и самоконтроля.",
   },
   {
@@ -187,7 +210,7 @@ const guides = [
     date: "5 декабря 2024",
     category: "Отношения",
     image: guideImage,
-    icon: "fas fa-users", // Example Font Awesome icon
+    icon: "fas fa-users",
     iconDescription: "Инструменты для укрепления связи с близкими.",
   },
   {
@@ -198,7 +221,7 @@ const guides = [
     date: "1 декабря 2024",
     category: "Карьерный рост",
     image: guideImage,
-    icon: "fas fa-mountain", // Example Font Awesome icon
+    icon: "fas fa-mountain",
     iconDescription: "Стратегии для достижения карьерных и личных целей.",
   },
 ];
@@ -213,31 +236,67 @@ const filteredGuides = computed(() => {
     : guides.filter((guide) => guide.category === selectedCategory.value);
 });
 
-// Email subscription method
 const subscribeEmail = async () => {
-  if (email.value && validateEmail(email.value)) {
-    const result = await subscribeUser(db, email.value);
-    if (result.success) {
-      alert(result.message);
-    } else {
-      alert(result.message);
-    }
-    email.value = ""; // Clear input after submission
-  } else {
+  if (!validateEmail(email.value)) {
     alert("Пожалуйста, введите корректный email");
+    return;
+  }
+
+  const result = await subscribeUser(db, email.value);
+  if (result.success) {
+    alert(result.message);
+    email.value = "";
+  } else {
+    alert(result.message);
   }
 };
 
-// Simple email validation
 const validateEmail = (email) => {
   const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   return re.test(String(email).toLowerCase());
 };
 </script>
+
 <style scoped>
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
+.bg-grid-white {
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.1) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes grid {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-20px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delay {
+  animation: float 6s ease-in-out infinite;
+  animation-delay: -3s;
+}
+
+.animate-grid {
+  animation: grid 20s linear infinite;
 }
 
 /* Custom scrollbar */
@@ -246,15 +305,15 @@ html {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #1e1b4b;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #94a3b8;
+  background: #4f46e5;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #64748b;
+  background: #6366f1;
 }
 </style>

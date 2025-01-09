@@ -19,10 +19,10 @@
       </div>
     </div>
 
-    <div class="container mx-auto px-4 max-w-7xl relative z-10 pb-12 pt-12">
+    <div class="container mx-auto px-4 max-w-7xl relative z-10 pb-12 pt-6">
       <!-- Hero Section (hidden when showStartButton is false) -->
       <section v-if="showStartButton" class="text-center">
-        <div class="relative inline-block group">
+        <!-- <div class="relative inline-block group">
           <div
             class="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full blur opacity-75 group-hover:opacity-100 transition-opacity"
           ></div>
@@ -31,9 +31,9 @@
           >
             Эмоциональный Барометр
           </div>
-        </div>
+        </div> -->
         <h1
-          class="text-4xl sm:text-6xl font-bold my-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80 tracking-tight"
+          class="text-4xl sm:text-5xl font-bold my-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80 tracking-tight"
         >
           Понимаем ваши эмоции
         </h1>

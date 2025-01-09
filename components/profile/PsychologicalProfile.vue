@@ -1,11 +1,13 @@
 <template>
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 my-8">
     <div class="lg:col-span-2 space-y-8">
-      <div class="bg-white rounded-2xl shadow-lg p-8">
+      <div
+        class="bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-2xl border border-indigo-500/20 p-8"
+      >
         <div class="flex flex-col justify-between mb-6">
           <!-- Title (Aligned to the Left) -->
-          <h2 class="text-xl font-bold text-gray-800 text-left mb-4">
-            <i class="fas fa-brain text-indigo-600 mr-2"></i>
+          <h2 class="text-xl font-bold text-white/90 text-left mb-4">
+            <i class="fas fa-brain text-indigo-400 mr-2"></i>
             Психологический профиль
           </h2>
 
@@ -18,8 +20,8 @@
               :class="[
                 'w-full sm:w-auto flex-1 px-3 py-2 rounded-lg transition-colors whitespace-nowrap',
                 activeTab === tab.id
-                  ? 'bg-indigo-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200',
+                  ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white'
+                  : 'bg-indigo-500/20 text-indigo-200 hover:bg-indigo-500/30',
               ]"
             >
               {{ tab.name }}
@@ -32,8 +34,8 @@
           v-if="isInitialLoading || loading"
           class="flex flex-col items-center justify-center h-64"
         >
-          <i class="fas fa-spinner fa-spin text-4xl text-indigo-600 mb-4"></i>
-          <p class="text-gray-600">Загрузка данных...</p>
+          <i class="fas fa-spinner fa-spin text-4xl text-indigo-400 mb-4"></i>
+          <p class="text-indigo-200/80">Загрузка данных...</p>
         </div>
 
         <!-- Content after loading -->
@@ -45,21 +47,21 @@
               v-if="archetypes.length === 0"
               class="flex flex-col items-center justify-center h-64 text-center"
             >
-              <i class="fas fa-chart-pie text-4xl text-gray-400 mb-4"></i>
-              <p class="text-gray-600">Нет данных для отображения.</p>
-              <p class="text-sm text-gray-500 mt-2">
+              <i class="fas fa-chart-pie text-4xl text-indigo-400 mb-4"></i>
+              <p class="text-indigo-200/80">Нет данных для отображения.</p>
+              <p class="text-sm text-indigo-200/60 mt-2">
                 Пройдите тест, чтобы увидеть ваш психологический профиль.
               </p>
               <NuxtLink
                 to="/awareness-tools/life-purpose-archetype"
-                class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-2 bg-indigo-600 text-white rounded-lg overflow-hidden transition-colors mt-4"
+                class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-lg overflow-hidden transition-colors mt-4"
               >
                 <span class="relative z-10">
                   <i class="fas fa-play-circle text-sm mr-2"></i>
                   Пройти тест
                 </span>
                 <div
-                  class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-indigo-700 transition-transform duration-300"
+                  class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-indigo-600 transition-transform duration-300"
                 ></div>
               </NuxtLink>
             </div>
@@ -71,35 +73,35 @@
                 <div
                   v-for="archetype in visibleArchetypes"
                   :key="archetype.name"
-                  class="bg-gray-50 rounded-lg p-6 flex items-center gap-4"
+                  class="bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-lg p-6 flex items-center gap-4 border border-indigo-500/20"
                 >
                   <!-- Archetype Icon Container -->
                   <div
                     :class="[
                       'w-16 h-16 rounded-full flex items-center justify-center',
-                      `bg-${archetype.color}-100`,
+                      `bg-${archetype.color}-500/20`,
                     ]"
                   >
                     <i
                       :class="[
                         'fas',
                         archetype.icon,
-                        `text-${archetype.color}-600 text-2xl`,
+                        `text-${archetype.color}-400 text-2xl`,
                       ]"
                     ></i>
                   </div>
                   <div>
-                    <h3 class="font-semibold text-gray-800">
+                    <h3 class="font-semibold text-white/90">
                       {{ archetype.name }}
                     </h3>
                     <div class="flex items-center mt-2">
-                      <div class="h-2 bg-gray-200 rounded-full w-32">
+                      <div class="h-2 bg-indigo-500/20 rounded-full w-32">
                         <div
-                          class="h-2 rounded-full bg-indigo-600"
+                          class="h-2 rounded-full bg-indigo-500"
                           :style="{ width: `${archetype.level}%` }"
                         ></div>
                       </div>
-                      <span class="ml-2 text-sm text-gray-600"
+                      <span class="ml-2 text-sm text-indigo-200/60"
                         >{{ archetype.level }}%</span
                       >
                     </div>
@@ -111,13 +113,13 @@
               <button
                 v-if="archetypes.length > 4"
                 @click="showMore = !showMore"
-                class="group relative inline-flex items-center justify-center w-full sm:w-auto px-4 py-2 bg-indigo-600 text-white rounded-lg overflow-hidden transition-colors"
+                class="group relative inline-flex items-center justify-center w-full sm:w-auto px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-lg overflow-hidden transition-colors"
               >
                 <span class="relative z-10">
                   {{ showMore ? "Скрыть" : "Показать больше" }}
                 </span>
                 <div
-                  class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-indigo-700 transition-transform duration-300"
+                  class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-indigo-600 transition-transform duration-300"
                 ></div>
               </button>
             </div>
@@ -131,13 +133,17 @@
               class="space-y-2"
             >
               <div class="flex justify-between items-center">
-                <span class="text-gray-700 font-medium">{{ trait.name }}</span>
-                <span class="text-sm text-gray-600">{{ trait.value }}%</span>
+                <span class="text-indigo-200/80 font-medium">{{
+                  trait.name
+                }}</span>
+                <span class="text-sm text-indigo-200/60"
+                  >{{ trait.value }}%</span
+                >
               </div>
-              <div class="h-2 bg-gray-200 rounded-full">
+              <div class="h-2 bg-indigo-500/20 rounded-full">
                 <div
                   class="h-2 rounded-full"
-                  :class="`bg-${trait.color}-600`"
+                  :class="`bg-${trait.color}-500`"
                   :style="{ width: `${trait.value}%` }"
                 ></div>
               </div>
@@ -150,17 +156,19 @@
               <div
                 v-for="style in cognitiveStyles"
                 :key="style.name"
-                class="bg-gray-50 rounded-lg p-6"
+                class="bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-lg p-6 border border-indigo-500/20"
               >
-                <h3 class="font-semibold text-gray-800 mb-2">
+                <h3 class="font-semibold text-white/90 mb-2">
                   {{ style.name }}
                 </h3>
-                <p class="text-sm text-gray-600 mb-4">
+                <p class="text-sm text-indigo-200/60 mb-4">
                   {{ style.description }}
                 </p>
                 <div class="flex items-center gap-2">
-                  <i :class="['fas', style.icon, 'text-indigo-600']"></i>
-                  <span class="text-sm font-medium">{{ style.level }}/10</span>
+                  <i :class="['fas', style.icon, 'text-indigo-400']"></i>
+                  <span class="text-sm font-medium text-indigo-200/60"
+                    >{{ style.level }}/10</span
+                  >
                 </div>
               </div>
             </div>
@@ -171,9 +179,11 @@
 
     <!-- Right Sidebar Stats -->
     <div class="space-y-8">
-      <div class="bg-white rounded-2xl shadow-lg p-8">
-        <h2 class="text-xl font-bold text-gray-800 mb-6">
-          <i class="fas fa-chart-line text-indigo-600 mr-2"></i>
+      <div
+        class="bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-2xl border border-indigo-500/20 p-8"
+      >
+        <h2 class="text-xl font-bold text-white/90 mb-6">
+          <i class="fas fa-chart-line text-indigo-400 mr-2"></i>
           Развитие личности
         </h2>
         <div class="space-y-4">
@@ -182,8 +192,8 @@
             :key="stat.name"
             class="flex items-center justify-between"
           >
-            <span class="text-gray-700">{{ stat.name }}</span>
-            <span class="font-semibold text-gray-900">{{ stat.value }}</span>
+            <span class="text-indigo-200/80">{{ stat.name }}</span>
+            <span class="font-semibold text-white/90">{{ stat.value }}</span>
           </div>
         </div>
       </div>
