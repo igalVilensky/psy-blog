@@ -51,10 +51,12 @@
         >
           <!-- Guide Image -->
           <div class="relative overflow-hidden">
-            <img
+            <nuxt-img
               :src="guide.image"
               :alt="guide.title"
               class="w-full h-52 object-cover transition-transform duration-500 group-hover:scale-110"
+              loading="lazy"
+              sizes="sm:100vw md:50vw lg:400px"
             />
             <!-- Category Badge -->
             <span
@@ -92,11 +94,12 @@
             </div>
             <div class="flex justify-between items-center">
               <span class="text-sm text-gray-500">{{ guide.date }}</span>
-              <button
+              <a
+                :href="guide.link"
                 class="bg-gradient-to-r from-indigo-600 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-indigo-700 hover:to-blue-700 transition-all"
               >
                 Читать
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -134,7 +137,7 @@
 
 <script setup>
 import { ref, computed } from "vue";
-import guideImage from "~/assets/images/podcasts/podcasts.jpeg";
+// import guideImage from "~/assets/images/podcasts/podcasts.jpeg";
 import { getFirestore } from "firebase/firestore";
 import { subscribeUser } from "@/api/firebase/contact";
 
@@ -152,46 +155,47 @@ const categories = [
 
 const guides = [
   {
-    id: 1,
-    title: "Практики Осознанности",
+    id: 1, // Unique ID
+    title: "Самооценка: Путешествие в мир себя",
     description:
-      "Узнайте, как внедрить простые практики осознанности в повседневную жизнь.",
-    date: "15 декабря 2024",
-    category: "Самопознание",
-    image: guideImage,
-    icon: "fas fa-seedling", // Example Font Awesome icon
-    iconDescription: "Подходы для внутреннего роста и баланса.",
+      "Практики для укрепления самоценности, улучшения внутреннего диалога и самопринятия.",
+    date: "12 января 2025", // Update the date as needed
+    category: "Самопознание", // Choose the appropriate category
+    image: "assets/images/self-love.webp",
+    icon: "fas fa-star", // Example Font Awesome icon
+    iconDescription: "Упражнения для глубокого самоанализа.",
+    link: "guides/self-assessment-guide", // Add a link to the self-assessment page
   },
   {
-    id: 2,
+    id: 3,
     title: "Управление Эмоциями",
     description:
       "Эффективные техники для работы с эмоциями и улучшения эмоционального интеллекта.",
     date: "10 декабря 2024",
     category: "Эмоциональный интеллект",
-    image: guideImage,
+    image: "assets/images/podcasts.jpeg",
     icon: "fas fa-heart", // Example Font Awesome icon
     iconDescription: "Техники для развития эмпатии и самоконтроля.",
   },
   {
-    id: 3,
+    id: 4,
     title: "Гармоничные Отношения",
     description:
       "Понимание ваших и чужих потребностей для создания доверительных отношений.",
     date: "5 декабря 2024",
     category: "Отношения",
-    image: guideImage,
+    image: "assets/images/podcasts.jpeg",
     icon: "fas fa-users", // Example Font Awesome icon
     iconDescription: "Инструменты для укрепления связи с близкими.",
   },
   {
-    id: 4,
+    id: 5,
     title: "Мотивация и Цели",
     description:
       "Найдите свой источник мотивации и научитесь ставить реалистичные цели.",
     date: "1 декабря 2024",
     category: "Карьерный рост",
-    image: guideImage,
+    image: "assets/images/podcasts.jpeg",
     icon: "fas fa-mountain", // Example Font Awesome icon
     iconDescription: "Стратегии для достижения карьерных и личных целей.",
   },

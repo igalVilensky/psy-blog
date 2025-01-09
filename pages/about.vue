@@ -73,7 +73,7 @@
             <div
               class="absolute inset-0 bg-gradient-to-br from-indigo-200 to-blue-100 rounded-3xl transform rotate-6"
             ></div>
-            <NuxtImg
+            <nuxt-img
               src="/assets/images/profile.jpg"
               alt="Анастасия"
               class="relative w-full h-[500px] object-cover rounded-3xl shadow-lg transform transition-transform duration-500 hover:-translate-y-2"

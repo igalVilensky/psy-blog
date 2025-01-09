@@ -64,18 +64,6 @@
       <!-- Download Section -->
       <div class="text-center mt-16">
         <button
-          @click="downloadWorkbook"
-          :disabled="isDownloading"
-          class="group relative inline-flex items-center gap-2 bg-gradient-to-r from-purple-500/10 to-cyan-500/10 text-gray-200 px-8 py-4 rounded-xl font-semibold transition-all duration-500 hover:from-purple-500/20 hover:to-cyan-500/20"
-        >
-          <span v-if="!isDownloading">Скачать бесплатно</span>
-          <span v-else>Загрузка...</span>
-          <span class="w-5 h-5">↓</span>
-          <span
-            class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-400 to-cyan-400 group-hover:w-full transition-all duration-500"
-          ></span>
-        </button>
-        <button
           @click="downloadGuide"
           class="download-button group"
           :disabled="isDownloading"
@@ -85,6 +73,7 @@
             Скачать гайд "Самооценка" прямо сейчас!
           </span>
           <span v-else>Загрузка...</span>
+          <span class="w-5 h-5">↓</span>
         </button>
 
         <p class="text-purple-200 mt-6 text-lg animate-pulse">
@@ -147,24 +136,6 @@ const downloadGuide = async () => {
     const link = document.createElement("a");
     link.href = "/downloads/selfAssessment.pdf"; // Path to your file
     link.download = "selfAsessment.pdf"; // Filename for the download
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  } finally {
-    isDownloading.value = false;
-  }
-};
-
-const downloadWorkbook = async () => {
-  isDownloading.value = true;
-  try {
-    // Simulate a delay (optional)
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    // Trigger the download
-    const link = document.createElement("a");
-    link.href = "/downloads/workbook.pdf"; // Path to your file
-    link.download = "Рабочая тетрадь для развития.pdf"; // Filename for the download
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
