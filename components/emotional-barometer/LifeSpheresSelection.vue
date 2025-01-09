@@ -1,56 +1,72 @@
 <template>
-  <div
-    class="w-full max-w-2xl mx-auto bg-white rounded-xl shadow-lg px-3 sm:px-6 pb-6 sm:pt-6"
-  >
-    <div class="flex items-center gap-3 mb-4">
-      <div class="h-8 w-1 bg-indigo-500 rounded-full"></div>
-      <p class="text-sm sm:text-base text-gray-700 font-medium">
-        Выберите сферы жизни, к которым относится эта эмоция:
+  <div class="w-full max-w-2xl mx-auto">
+    <div class="text-center mb-8">
+      <h2 class="text-2xl text-white/90 font-medium mb-3">
+        Выберите сферы жизни
+      </h2>
+      <p class="text-indigo-200/80 text-lg">
+        Отметьте, к каким сферам жизни относится эта эмоция:
       </p>
     </div>
 
-    <div class="flex flex-wrap gap-2 sm:gap-3">
+    <div class="flex flex-wrap gap-3">
       <button
         v-for="sphere in lifeSpheres"
         :key="sphere.name"
         @click="$emit('toggle-tag', sphere.name)"
-        :class="[
-          'group relative px-4 py-2 rounded-xl text-sm transition-all duration-300',
-          'hover:shadow-md hover:transform hover:-translate-y-0.5',
-          'focus:outline-none focus:ring-2 focus:ring-offset-2',
-          'focus:ring-opacity-50',
-          selectedTags.includes(sphere.name)
-            ? `${sphere.activeColor} text-white shadow-lg focus:ring-${sphere.ringColor}`
-            : `${sphere.color} text-gray-700 shadow-sm hover:opacity-90 focus:ring-${sphere.ringColor}`,
-        ]"
+        class="group relative"
       >
-        <div class="flex items-center gap-2">
-          <span
-            :class="[
-              'w-2 h-2 rounded-full transition-all duration-300',
-              selectedTags.includes(sphere.name)
-                ? 'bg-white'
-                : `${sphere.dotColor}`,
-            ]"
-          ></span>
-          {{ sphere.name }}
-        </div>
+        <!-- Hover Effect Background -->
         <div
-          v-if="selectedTags.includes(sphere.name)"
-          class="absolute -top-1 -right-1 w-3 h-3 bg-white rounded-full shadow-sm"
+          class="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        ></div>
+
+        <!-- Main Button Content -->
+        <div
+          :class="[
+            'relative px-4 py-2 rounded-xl transition-all duration-300',
+            'backdrop-blur-sm border',
+            'group-hover:transform group-hover:-translate-y-0.5',
+            selectedTags.includes(sphere.name)
+              ? 'bg-gradient-to-r from-indigo-500/40 to-purple-500/40 border-indigo-400/50 shadow-lg shadow-indigo-500/20'
+              : 'bg-[#1E1B4B]/40 border-indigo-500/20 group-hover:border-indigo-400/30',
+          ]"
         >
+          <div class="flex items-center gap-2">
+            <span
+              :class="[
+                'w-2 h-2 rounded-full transition-all duration-300',
+                selectedTags.includes(sphere.name)
+                  ? 'bg-white'
+                  : 'bg-indigo-400/50',
+              ]"
+            ></span>
+            <span class="text-sm font-medium text-indigo-200">
+              {{ sphere.name }}
+            </span>
+          </div>
+
+          <!-- Selection Indicator -->
           <div
-            :class="['absolute inset-0.5 rounded-full', `${sphere.dotColor}`]"
-          ></div>
+            v-if="selectedTags.includes(sphere.name)"
+            class="absolute -top-1.5 -right-1.5 w-4 h-4 sm:w-5 sm:h-5"
+          >
+            <div
+              class="absolute inset-0 bg-indigo-500 rounded-full animate-ping opacity-75"
+            ></div>
+            <div class="absolute inset-0 bg-indigo-500 rounded-full"></div>
+            <div class="absolute inset-0.5 bg-white rounded-full"></div>
+          </div>
         </div>
       </button>
     </div>
 
-    <div class="mt-4 flex flex-wrap gap-2">
+    <!-- Selected Tags Display -->
+    <div class="mt-6 flex flex-wrap gap-2">
       <span
         v-for="tag in selectedTags"
         :key="tag"
-        class="inline-flex items-center px-2 py-1 rounded-md bg-gray-100 text-xs text-gray-600"
+        class="inline-flex items-center px-3 py-1 rounded-lg bg-[#1E1B4B]/40 backdrop-blur-sm border border-indigo-500/20 text-xs text-indigo-200/80"
       >
         #{{ tag }}
       </span>

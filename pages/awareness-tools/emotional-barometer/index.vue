@@ -19,9 +19,9 @@
       </div>
     </div>
 
-    <div class="container mx-auto px-4 max-w-7xl relative z-10">
-      <!-- Hero Section -->
-      <section class="text-center mb-16 pt-12">
+    <div class="container mx-auto px-4 max-w-7xl relative z-10 py-12">
+      <!-- Hero Section (hidden when showStartButton is false) -->
+      <section v-if="showStartButton" class="text-center mb-16 pt-12">
         <div class="relative inline-block group">
           <div
             class="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full blur opacity-75 group-hover:opacity-100 transition-opacity"
@@ -74,10 +74,20 @@
         </div>
       </div>
 
-      <!-- Main Barometer Section -->
+      <!-- Start Button (shown only when showStartButton is true) -->
+      <div v-if="user && showStartButton" class="text-center mt-12 mb-12">
+        <button
+          @click="startEntry"
+          class="px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-xl font-medium hover:shadow-lg hover:shadow-indigo-500/25 transition-all duration-300"
+        >
+          Добавить запись
+        </button>
+      </div>
+
+      <!-- Main Barometer Section (shown only when showStartButton is false) -->
       <div
-        v-if="user"
-        class="relative bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-2xl border border-indigo-500/20 p-8 sm:p-12 mb-12 max-w-4xl mx-auto"
+        v-if="user && !showStartButton"
+        class="relative bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-2xl border border-indigo-500/20 p-8 sm:p-12 my-12 max-w-4xl mx-auto"
       >
         <!-- Step Progress -->
         <div class="flex items-center justify-center gap-2 sm:gap-3 mb-12 px-4">
@@ -109,50 +119,48 @@
         </h2>
 
         <!-- Step Content -->
-        <transition-group name="fade-slide" mode="out-in">
-          <div
-            v-if="currentStep === 1"
-            key="emotion"
-            class="transition-all duration-300"
-          >
-            <EmotionSelection
-              :emotions="emotionsRef"
-              :selected-emotion="selectedEmotion"
-              @select-emotion="selectEmotion"
-            />
-          </div>
+        <div
+          v-if="currentStep === 1"
+          key="emotion"
+          class="transition-all duration-300"
+        >
+          <EmotionSelection
+            :emotions="emotionsRef"
+            :selected-emotion="selectedEmotion"
+            @select-emotion="selectEmotion"
+          />
+        </div>
 
-          <div v-if="currentStep === 2 && selectedEmotion" key="subemotion">
-            <SubEmotionSelection
-              :sub-emotions="subEmotions"
-              :selected-sub-emotion="selectedSubEmotion"
-              @select-sub-emotion="selectSubEmotion"
-            />
-          </div>
+        <div v-if="currentStep === 2 && selectedEmotion" key="subemotion">
+          <SubEmotionSelection
+            :sub-emotions="subEmotions"
+            :selected-sub-emotion="selectedSubEmotion"
+            @select-sub-emotion="selectSubEmotion"
+          />
+        </div>
 
-          <div v-if="currentStep === 3 && selectedEmotion" key="intensity">
-            <IntensityLevel
-              :selected-emotion="selectedEmotion"
-              v-model:intensity-level="intensityLevel"
-            />
-          </div>
+        <div v-if="currentStep === 3 && selectedEmotion" key="intensity">
+          <IntensityLevel
+            :selected-emotion="selectedEmotion"
+            v-model:intensity-level="intensityLevel"
+          />
+        </div>
 
-          <div v-if="currentStep === 4 && selectedEmotion" key="journal">
-            <JournalEntry
-              v-model:journal-entry="journalEntry"
-              v-model:perception-entry="perceptionEntry"
-              v-model:coping-entry="copingEntry"
-            />
-          </div>
+        <div v-if="currentStep === 4 && selectedEmotion" key="journal">
+          <JournalEntry
+            v-model:journal-entry="journalEntry"
+            v-model:perception-entry="perceptionEntry"
+            v-model:coping-entry="copingEntry"
+          />
+        </div>
 
-          <div v-if="currentStep === 5 && selectedEmotion" key="spheres">
-            <LifeSpheresSelection
-              :life-spheres="lifeSpheresRef"
-              :selected-tags="selectedTags"
-              @toggle-tag="toggleTag"
-            />
-          </div>
-        </transition-group>
+        <div v-if="currentStep === 5 && selectedEmotion" key="spheres">
+          <LifeSpheresSelection
+            :life-spheres="lifeSpheresRef"
+            :selected-tags="selectedTags"
+            @toggle-tag="toggleTag"
+          />
+        </div>
 
         <!-- Navigation -->
         <div class="flex justify-end mt-12 gap-4">
@@ -255,7 +263,6 @@
     />
   </div>
 </template>
-
 <script setup>
 import { ref, computed } from "vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -308,6 +315,7 @@ const subEmotions = ref([]);
 const selectedSubEmotion = ref(null);
 const perceptionEntry = ref("");
 const copingEntry = ref("");
+const showStartButton = ref(true); // Initially show the "Добавить запись" button
 
 // Step titles
 const stepTitle = computed(() => {
@@ -348,6 +356,11 @@ const canProceed = computed(() => {
       return false;
   }
 });
+
+const startEntry = () => {
+  showStartButton.value = false; // Hide the button and show the steps
+  currentStep.value = 1; // Start from the first step
+};
 
 // Recommendations based on patterns
 const currentRecommendations = computed(() => {
@@ -513,20 +526,5 @@ const handleSubmit = () => {
 
 .animate-grid {
   animation: grid 20s linear infinite;
-}
-
-.fade-slide-enter-active,
-.fade-slide-leave-active {
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.fade-slide-enter-from {
-  opacity: 0;
-  transform: translateX(20px);
-}
-
-.fade-slide-leave-to {
-  opacity: 0;
-  transform: translateX(-20px);
 }
 </style>

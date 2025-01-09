@@ -73,7 +73,6 @@
             Скачать гайд "Самооценка" прямо сейчас!
           </span>
           <span v-else>Загрузка...</span>
-          <span class="w-5 h-5">↓</span>
         </button>
 
         <p class="text-purple-200 mt-6 text-lg animate-pulse">

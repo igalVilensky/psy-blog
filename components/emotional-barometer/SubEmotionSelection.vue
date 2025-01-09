@@ -1,46 +1,63 @@
 <template>
-  <div
-    class="w-full max-w-2xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-100 p-6"
-  >
-    <div class="flex items-center gap-3 mb-6">
-      <div class="h-8 w-1 rounded-full bg-[#FF6B6B]"></div>
-      <h3 class="text-lg sm:text-xl font-semibold text-gray-800">
+  <div class="w-full max-w-2xl mx-auto">
+    <!-- Header Section -->
+    <div class="text-center mb-8">
+      <h2 class="text-2xl text-white/90 font-medium mb-3">
         Выберите подэмоцию:
-      </h3>
+      </h2>
+      <p class="text-indigo-200/80 text-lg">
+        Уточните ваше эмоциональное состояние, выбрав один из вариантов ниже.
+      </p>
     </div>
 
-    <div class="grid grid-cols-2 gap-3">
+    <!-- Sub-emotions Grid -->
+    <div class="grid grid-cols-2 gap-3 sm:gap-6">
       <button
-        v-for="subEmotion in subEmotions"
-        :key="subEmotion"
-        @click="$emit('select-sub-emotion', subEmotion)"
+        v-for="emotion in subEmotions"
+        :key="emotion"
+        @click="$emit('select-sub-emotion', emotion)"
         class="group relative"
       >
+        <!-- Hover Effect Background -->
+        <div
+          class="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        ></div>
+
+        <!-- Main Button Content -->
         <div
           :class="[
-            'px-4 py-3 rounded-xl text-sm sm:text-base font-medium transition-all duration-300',
-            'border-2 hover:shadow-md',
-            'flex items-center justify-center text-center min-h-[56px]',
-            selectedSubEmotion === subEmotion
-              ? 'bg-gradient-to-br from-[#FF6B6B] to-[#FF8787] text-white border-transparent shadow-lg'
-              : 'bg-gray-50 text-gray-700 border-gray-100 hover:border-[#FF6B6B]/20 hover:bg-[#FF6B6B]/5',
+            'relative py-6 sm:py-8 px-3 sm:px-4 rounded-xl transition-all duration-300',
+            'backdrop-blur-sm border w-full h-full',
+            selectedSubEmotion === emotion
+              ? 'bg-gradient-to-r from-indigo-500/40 to-purple-500/40 border-indigo-400/50 shadow-lg shadow-indigo-500/20'
+              : 'bg-[#1E1B4B]/40 border-indigo-500/20 group-hover:border-indigo-400/30',
           ]"
         >
-          {{ subEmotion }}
-        </div>
-        <!-- Selection indicator -->
-        <div
-          v-if="selectedSubEmotion === subEmotion"
-          class="absolute -top-1.5 -right-1.5 w-4 h-4 bg-white rounded-full shadow-sm flex items-center justify-center"
-        >
-          <div class="w-2.5 h-2.5 rounded-full bg-[#FF6B6B]"></div>
+          <!-- Sub-emotion Text -->
+          <div
+            class="text-sm sm:text-base font-medium text-indigo-200 break-words"
+          >
+            {{ emotion }}
+          </div>
+
+          <!-- Selection Indicator -->
+          <div
+            v-if="selectedSubEmotion === emotion"
+            class="absolute -top-1.5 -right-1.5 w-4 h-4 sm:w-5 sm:h-5"
+          >
+            <div
+              class="absolute inset-0 bg-indigo-500 rounded-full animate-ping opacity-75"
+            ></div>
+            <div class="absolute inset-0 bg-indigo-500 rounded-full"></div>
+            <div class="absolute inset-0.5 bg-white rounded-full"></div>
+          </div>
         </div>
       </button>
     </div>
 
-    <!-- Visual helper text -->
+    <!-- Helper Text -->
     <div class="mt-4 text-center">
-      <p class="text-xs text-gray-500">
+      <p class="text-sm text-indigo-200/60">
         {{
           selectedSubEmotion
             ? "Выбрано: " + selectedSubEmotion
@@ -52,8 +69,7 @@
 </template>
 
 <script setup>
-// Define props with types
-defineProps({
+const props = defineProps({
   subEmotions: {
     type: Array,
     required: true,
@@ -64,6 +80,5 @@ defineProps({
   },
 });
 
-// Define the emitted event
 defineEmits(["select-sub-emotion"]);
 </script>
