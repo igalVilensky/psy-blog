@@ -1,17 +1,18 @@
 <template>
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 my-8">
+    <!-- Main Content -->
     <div class="lg:col-span-2 space-y-8">
       <div
-        class="bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-2xl border border-indigo-500/20 p-8"
+        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8"
       >
+        <!-- Title and Tabs -->
         <div class="flex flex-col justify-between mb-6">
-          <!-- Title (Aligned to the Left) -->
           <h2 class="text-xl font-bold text-white/90 text-left mb-4">
-            <i class="fas fa-brain text-indigo-400 mr-2"></i>
+            <i class="fas fa-brain text-[#0EA5E9] mr-2"></i>
             Психологический профиль
           </h2>
 
-          <!-- Buttons (Full Width) -->
+          <!-- Tabs -->
           <div class="flex flex-wrap gap-2 w-full">
             <button
               v-for="tab in tabs"
@@ -20,8 +21,8 @@
               :class="[
                 'w-full sm:w-auto flex-1 px-3 py-2 rounded-lg transition-colors whitespace-nowrap',
                 activeTab === tab.id
-                  ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white'
-                  : 'bg-indigo-500/20 text-indigo-200 hover:bg-indigo-500/30',
+                  ? 'bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white'
+                  : 'bg-[#0EA5E9]/20 text-[#0EA5E9] hover:bg-[#0EA5E9]/30',
               ]"
             >
               {{ tab.name }}
@@ -34,8 +35,8 @@
           v-if="isInitialLoading || loading"
           class="flex flex-col items-center justify-center h-64"
         >
-          <i class="fas fa-spinner fa-spin text-4xl text-indigo-400 mb-4"></i>
-          <p class="text-indigo-200/80">Загрузка данных...</p>
+          <i class="fas fa-spinner fa-spin text-4xl text-[#0EA5E9] mb-4"></i>
+          <p class="text-slate-300">Загрузка данных...</p>
         </div>
 
         <!-- Content after loading -->
@@ -47,21 +48,21 @@
               v-if="archetypes.length === 0"
               class="flex flex-col items-center justify-center h-64 text-center"
             >
-              <i class="fas fa-chart-pie text-4xl text-indigo-400 mb-4"></i>
-              <p class="text-indigo-200/80">Нет данных для отображения.</p>
-              <p class="text-sm text-indigo-200/60 mt-2">
+              <i class="fas fa-chart-pie text-4xl text-[#0EA5E9] mb-4"></i>
+              <p class="text-slate-300">Нет данных для отображения.</p>
+              <p class="text-sm text-slate-400 mt-2">
                 Пройдите тест, чтобы увидеть ваш психологический профиль.
               </p>
               <NuxtLink
                 to="/awareness-tools/life-purpose-archetype"
-                class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-lg overflow-hidden transition-colors mt-4"
+                class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-2 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white rounded-lg overflow-hidden transition-colors mt-4"
               >
                 <span class="relative z-10">
                   <i class="fas fa-play-circle text-sm mr-2"></i>
                   Пройти тест
                 </span>
                 <div
-                  class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-indigo-600 transition-transform duration-300"
+                  class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-[#0EA5E9]/60 transition-transform duration-300"
                 ></div>
               </NuxtLink>
             </div>
@@ -73,7 +74,7 @@
                 <div
                   v-for="archetype in visibleArchetypes"
                   :key="archetype.name"
-                  class="bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-lg p-6 flex items-center gap-4 border border-indigo-500/20"
+                  class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-lg p-6 flex items-center gap-4 border border-white/10"
                 >
                   <!-- Archetype Icon Container -->
                   <div
@@ -95,13 +96,13 @@
                       {{ archetype.name }}
                     </h3>
                     <div class="flex items-center mt-2">
-                      <div class="h-2 bg-indigo-500/20 rounded-full w-32">
+                      <div class="h-2 bg-[#0EA5E9]/20 rounded-full w-32">
                         <div
-                          class="h-2 rounded-full bg-indigo-500"
+                          class="h-2 rounded-full bg-[#0EA5E9]"
                           :style="{ width: `${archetype.level}%` }"
                         ></div>
                       </div>
-                      <span class="ml-2 text-sm text-indigo-200/60"
+                      <span class="ml-2 text-sm text-slate-400"
                         >{{ archetype.level }}%</span
                       >
                     </div>
@@ -109,17 +110,17 @@
                 </div>
               </div>
 
-              <!-- Show More Button with Hover Effect -->
+              <!-- Show More Button -->
               <button
                 v-if="archetypes.length > 4"
                 @click="showMore = !showMore"
-                class="group relative inline-flex items-center justify-center w-full sm:w-auto px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-lg overflow-hidden transition-colors"
+                class="group relative inline-flex items-center justify-center w-full sm:w-auto px-4 py-2 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white rounded-lg overflow-hidden transition-colors"
               >
                 <span class="relative z-10">
                   {{ showMore ? "Скрыть" : "Показать больше" }}
                 </span>
                 <div
-                  class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-indigo-600 transition-transform duration-300"
+                  class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-[#0EA5E9]/60 transition-transform duration-300"
                 ></div>
               </button>
             </div>
@@ -133,14 +134,10 @@
               class="space-y-2"
             >
               <div class="flex justify-between items-center">
-                <span class="text-indigo-200/80 font-medium">{{
-                  trait.name
-                }}</span>
-                <span class="text-sm text-indigo-200/60"
-                  >{{ trait.value }}%</span
-                >
+                <span class="text-slate-300 font-medium">{{ trait.name }}</span>
+                <span class="text-sm text-slate-400">{{ trait.value }}%</span>
               </div>
-              <div class="h-2 bg-indigo-500/20 rounded-full">
+              <div class="h-2 bg-[#0EA5E9]/20 rounded-full">
                 <div
                   class="h-2 rounded-full"
                   :class="`bg-${trait.color}-500`"
@@ -156,17 +153,17 @@
               <div
                 v-for="style in cognitiveStyles"
                 :key="style.name"
-                class="bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-lg p-6 border border-indigo-500/20"
+                class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-lg p-6 border border-white/10"
               >
                 <h3 class="font-semibold text-white/90 mb-2">
                   {{ style.name }}
                 </h3>
-                <p class="text-sm text-indigo-200/60 mb-4">
+                <p class="text-sm text-slate-400 mb-4">
                   {{ style.description }}
                 </p>
                 <div class="flex items-center gap-2">
-                  <i :class="['fas', style.icon, 'text-indigo-400']"></i>
-                  <span class="text-sm font-medium text-indigo-200/60"
+                  <i :class="['fas', style.icon, 'text-[#0EA5E9]']"></i>
+                  <span class="text-sm font-medium text-slate-400"
                     >{{ style.level }}/10</span
                   >
                 </div>
@@ -180,10 +177,10 @@
     <!-- Right Sidebar Stats -->
     <div class="space-y-8">
       <div
-        class="bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-2xl border border-indigo-500/20 p-8"
+        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8"
       >
         <h2 class="text-xl font-bold text-white/90 mb-6">
-          <i class="fas fa-chart-line text-indigo-400 mr-2"></i>
+          <i class="fas fa-chart-line text-[#0EA5E9] mr-2"></i>
           Развитие личности
         </h2>
         <div class="space-y-4">
@@ -192,7 +189,7 @@
             :key="stat.name"
             class="flex items-center justify-between"
           >
-            <span class="text-indigo-200/80">{{ stat.name }}</span>
+            <span class="text-slate-300">{{ stat.name }}</span>
             <span class="font-semibold text-white/90">{{ stat.value }}</span>
           </div>
         </div>
@@ -217,7 +214,7 @@ const props = defineProps({
 
 const activeTab = ref("archetypes");
 const showMore = ref(false);
-const isInitialLoading = ref(true); // Track initial loading state
+const isInitialLoading = ref(true);
 
 const tabs = [
   { id: "archetypes", name: "Архетипы" },
@@ -225,7 +222,6 @@ const tabs = [
   { id: "cognitive", name: "Когнитивные стили" },
 ];
 
-// Sort archetypes by level (score) in descending order
 const sortedArchetypes = computed(() =>
   props.archetypes.slice().sort((a, b) => b.level - a.level)
 );
@@ -234,7 +230,6 @@ const visibleArchetypes = computed(() =>
   showMore.value ? sortedArchetypes.value : sortedArchetypes.value.slice(0, 4)
 );
 
-// Big Five Traits Data
 const bigFiveTraits = [
   { name: "Открытость новому", value: 78, color: "pink" },
   { name: "Добросовестность", value: 65, color: "blue" },
@@ -243,7 +238,6 @@ const bigFiveTraits = [
   { name: "Нейротизм", value: 45, color: "yellow" },
 ];
 
-// Cognitive Styles Data
 const cognitiveStyles = [
   {
     name: "Логическое мышление",
@@ -271,7 +265,6 @@ const cognitiveStyles = [
   },
 ];
 
-// Personal Stats Data
 const personalStats = [
   { name: "Уровень осознанности", value: "7/10" },
   { name: "Эмоциональный интеллект", value: "75%" },
@@ -279,12 +272,10 @@ const personalStats = [
   { name: "Адаптивность", value: "82%" },
 ];
 
-// Watch for changes in the loading prop
 watch(
   () => props.loading,
   (newLoading) => {
     if (!newLoading) {
-      // Once loading is complete, set isInitialLoading to false
       isInitialLoading.value = false;
     }
   }
