@@ -2,38 +2,30 @@
   <div class="relative min-h-screen">
     <!-- Animated Background -->
     <div class="fixed inset-0 -z-1">
-      <div class="absolute top-0 left-0 w-full h-full bg-[#0F172A]">
+      <div class="absolute top-0 left-0 w-full h-full bg-[#1A1F35]">
         <!-- Gradient Orbs -->
         <div
-          class="absolute top-0 left-0 w-[500px] h-[500px] bg-purple-500/20 rounded-full blur-[120px] animate-float"
+          class="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-[#0EA5E9]/10 to-[#22D3EE]/10 rounded-full blur-3xl animate-slow-drift"
         ></div>
         <div
-          class="absolute bottom-0 right-0 w-[400px] h-[400px] bg-blue-500/20 rounded-full blur-[100px] animate-float-delay"
+          class="absolute bottom-1/4 right-1/3 w-80 h-80 bg-gradient-to-r from-[#F59E0B]/10 to-[#F97316]/10 rounded-full blur-3xl animate-slow-pulse"
         ></div>
-        <!-- Animated Grid -->
         <div
-          class="absolute inset-0 bg-gradient-to-b from-transparent to-[#0F172A]/80"
-        >
-          <div class="absolute inset-0 bg-grid-white/[0.02] animate-grid"></div>
-        </div>
+          class="absolute top-1/3 right-1/4 w-72 h-72 bg-gradient-to-r from-[#E879F9]/10 to-[#C084FC]/10 rounded-full blur-3xl animate-slow-float"
+        ></div>
       </div>
     </div>
 
     <div class="container mx-auto px-4 max-w-7xl relative z-10 pb-12 pt-12">
       <!-- Hero Section -->
       <section class="text-center mb-12">
-        <!-- <div
-          class="inline-block px-6 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full text-white font-medium mb-6 backdrop-blur-sm border border-white/10"
-        >
-          Блог
-        </div> -->
         <h1
-          class="text-4xl sm:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80 tracking-tight mb-6"
+          class="text-4xl sm:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] tracking-tight mb-6"
         >
           Блог о Развитии и Трансформации
         </h1>
         <p
-          class="text-lg sm:text-xl text-indigo-200/80 max-w-2xl mx-auto leading-relaxed"
+          class="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed"
         >
           Исследуйте идеи, подходы и практический опыт, которые помогут вам
           раскрыть свой потенциал и достичь значимых перемен в жизни.
@@ -50,13 +42,13 @@
             :class="[
               'px-6 py-3 rounded-full transition-all duration-300 font-medium relative overflow-hidden group backdrop-blur-sm',
               activeTab === category
-                ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white'
-                : 'bg-white/10 text-indigo-200 border border-indigo-500/20',
+                ? 'bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white'
+                : 'bg-white/10 text-slate-300 border border-white/10',
             ]"
           >
             <span class="relative z-10">{{ category }}</span>
             <div
-              class="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"
+              class="absolute inset-0 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"
               :class="{ 'scale-x-100': activeTab === category }"
             ></div>
           </button>
@@ -70,7 +62,7 @@
           :key="post._id"
           :to="`/blog/${post.slug.current}`"
           @click="incrementViewCount(post._id)"
-          class="group bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-2xl border border-indigo-500/20 overflow-hidden transform transition-all duration-300 hover:-translate-y-2"
+          class="group bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden transform transition-all duration-300 hover:-translate-y-2"
         >
           <div class="relative overflow-hidden">
             <nuxt-img
@@ -89,9 +81,9 @@
               :class="[
                 'absolute top-4 left-4 px-4 py-2 rounded-full text-sm font-medium shadow-md backdrop-blur-sm border border-white/10',
                 {
-                  'bg-emerald-500/80': post.category === 'Личностный рост',
-                  'bg-purple-500/80': post.category === 'Отношения',
-                  'bg-blue-500/80': post.category === 'Продуктивность',
+                  'bg-[#0EA5E9]/80': post.category === 'Личностный рост',
+                  'bg-[#F59E0B]/80': post.category === 'Отношения',
+                  'bg-[#E879F9]/80': post.category === 'Продуктивность',
                   'bg-gray-500/80': !post.category,
                 },
               ]"
@@ -103,25 +95,25 @@
 
           <div class="p-8">
             <h2
-              class="text-xl font-bold text-white/90 mb-4 line-clamp-2 group-hover:text-indigo-300 transition-colors duration-300"
+              class="text-xl font-bold text-white/90 mb-4 line-clamp-2 group-hover:text-[#0EA5E9] transition-colors duration-300"
             >
               {{ post.title }}
             </h2>
 
             <!-- Metadata row -->
             <div
-              class="flex items-center justify-between text-sm text-indigo-200/60 pt-4 border-t border-indigo-500/20"
+              class="flex items-center justify-between text-sm text-slate-400 pt-4 border-t border-white/10"
             >
               <div class="flex items-center space-x-1.5">
-                <i class="far fa-eye text-indigo-400"></i>
+                <i class="far fa-eye text-[#0EA5E9]"></i>
                 <span>{{ post.views || 0 }}</span>
               </div>
               <div class="flex items-center space-x-1.5">
-                <i class="far fa-clock text-indigo-400"></i>
+                <i class="far fa-clock text-[#F59E0B]"></i>
                 <span>{{ post.readtime }} мин</span>
               </div>
               <div class="flex items-center space-x-1.5">
-                <i class="far fa-calendar text-indigo-400"></i>
+                <i class="far fa-calendar text-[#E879F9]"></i>
                 <span>{{
                   new Date(post.publishedAt).toLocaleDateString("ru-RU", {
                     day: "numeric",
@@ -137,15 +129,15 @@
       <!-- Empty State -->
       <div
         v-if="filteredPosts.length === 0"
-        class="text-center py-16 bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-2xl border border-indigo-500/20"
+        class="text-center py-16 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10"
       >
-        <div class="text-indigo-400 mb-4">
+        <div class="text-[#0EA5E9] mb-4">
           <i class="fas fa-search text-4xl"></i>
         </div>
         <h3 class="text-xl font-semibold text-white/90 mb-2">
           Публикации не найдены
         </h3>
-        <p class="text-indigo-200/80">
+        <p class="text-slate-300">
           В данной категории пока нет публикаций. Пожалуйста, выберите другую
           категорию.
         </p>
@@ -203,45 +195,46 @@ const filteredPosts = computed(() => {
 </script>
 
 <style scoped>
-.bg-grid-white {
-  background-image: linear-gradient(
-      rgba(255, 255, 255, 0.1) 1px,
-      transparent 1px
-    ),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-  background-size: 20px 20px;
+@keyframes slow-drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-200px, 300px);
+  }
 }
 
-@keyframes float {
+@keyframes slow-pulse {
+  0%,
+  100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes slow-float {
   0%,
   100% {
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-20px);
+    transform: translateY(-200px);
   }
 }
 
-@keyframes grid {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(-20px);
-  }
+.animate-slow-drift {
+  animation: slow-drift 15s ease-in-out infinite;
 }
 
-.animate-float {
-  animation: float 6s ease-in-out infinite;
+.animate-slow-pulse {
+  animation: slow-pulse 12s ease-in-out infinite;
 }
 
-.animate-float-delay {
-  animation: float 6s ease-in-out infinite;
-  animation-delay: -3s;
-}
-
-.animate-grid {
-  animation: grid 20s linear infinite;
+.animate-slow-float {
+  animation: slow-float 15s ease-in-out infinite;
 }
 
 /* Custom scrollbar */
@@ -250,15 +243,15 @@ const filteredPosts = computed(() => {
 }
 
 ::-webkit-scrollbar-track {
-  background: #1e1b4b;
+  background: #1a1f35;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #4f46e5;
+  background: #0ea5e9;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #6366f1;
+  background: #22d3ee;
 }
 </style>

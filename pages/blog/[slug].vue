@@ -2,20 +2,17 @@
   <div class="relative min-h-screen">
     <!-- Animated Background -->
     <div class="fixed inset-0 -z-1">
-      <div class="absolute top-0 left-0 w-full h-full bg-[#0F172A]">
+      <div class="absolute top-0 left-0 w-full h-full bg-[#1A1F35]">
         <!-- Gradient Orbs -->
         <div
-          class="absolute top-0 left-0 w-[500px] h-[500px] bg-purple-500/20 rounded-full blur-[120px] animate-float"
+          class="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-[#0EA5E9]/10 to-[#22D3EE]/10 rounded-full blur-3xl animate-slow-drift"
         ></div>
         <div
-          class="absolute bottom-0 right-0 w-[400px] h-[400px] bg-blue-500/20 rounded-full blur-[100px] animate-float-delay"
+          class="absolute bottom-1/4 right-1/3 w-80 h-80 bg-gradient-to-r from-[#F59E0B]/10 to-[#F97316]/10 rounded-full blur-3xl animate-slow-pulse"
         ></div>
-        <!-- Animated Grid -->
         <div
-          class="absolute inset-0 bg-gradient-to-b from-transparent to-[#0F172A]/80"
-        >
-          <div class="absolute inset-0 bg-grid-white/[0.02] animate-grid"></div>
-        </div>
+          class="absolute top-1/3 right-1/4 w-72 h-72 bg-gradient-to-r from-[#E879F9]/10 to-[#C084FC]/10 rounded-full blur-3xl animate-slow-float"
+        ></div>
       </div>
     </div>
 
@@ -23,7 +20,7 @@
       <!-- Back Navigation -->
       <nuxt-link
         to="/blog"
-        class="inline-flex items-center text-indigo-400 hover:text-indigo-300 transition-colors mb-8 group"
+        class="inline-flex items-center text-[#0EA5E9] hover:text-[#22D3EE] transition-colors mb-8 group"
       >
         <i
           class="fas fa-arrow-left mr-2 transform transition-transform group-hover:-translate-x-1"
@@ -33,7 +30,7 @@
 
       <article
         v-if="post"
-        class="bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-2xl border border-indigo-500/20 overflow-hidden"
+        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden"
       >
         <!-- Featured Image Container -->
         <div class="relative w-full h-[250px] sm:h-[350px]">
@@ -57,13 +54,13 @@
             :class="[
               'absolute top-4 left-4 px-3 py-1 rounded-full text-sm font-medium shadow-md backdrop-blur-sm text-white',
               {
-                'bg-emerald-500/80 border border-emerald-200':
+                'bg-[#0EA5E9]/80 border border-[#0EA5E9]/50':
                   post.category === 'Личностный рост',
-                'bg-purple-500/80 border border-purple-200':
+                'bg-[#F59E0B]/80 border border-[#F59E0B]/50':
                   post.category === 'Отношения',
-                'bg-blue-500/80 border border-blue-200':
+                'bg-[#E879F9]/80 border border-[#E879F9]/50':
                   post.category === 'Продуктивность',
-                'bg-gray-500/80 border border-gray-200': !post.category,
+                'bg-gray-500/80 border border-gray-500/50': !post.category,
               },
             ]"
           >
@@ -80,26 +77,29 @@
 
           <!-- Meta Information Row with Share Button -->
           <div
-            class="flex flex-wrap items-center justify-between mb-6 sm:mb-8 border-b border-indigo-500/20 sm:pb-8 pb-6 text-sm text-indigo-200/60"
+            class="flex flex-wrap items-center justify-between mb-6 sm:mb-8 border-b border-white/10 sm:pb-8 pb-6 text-sm text-slate-400"
           >
             <div class="flex flex-wrap items-center gap-4 sm:gap-8 text-base">
               <div class="flex items-center gap-2">
-                <i class="far fa-calendar"></i>
+                <i class="far fa-calendar text-[#0EA5E9]"></i>
                 <span>{{
-                  new Date(post.publishedAt).toLocaleDateString()
+                  new Date(post.publishedAt).toLocaleDateString("ru-RU", {
+                    day: "numeric",
+                    month: "short",
+                  })
                 }}</span>
               </div>
               <div class="flex items-center gap-2">
-                <i class="far fa-clock"></i>
+                <i class="far fa-clock text-[#F59E0B]"></i>
                 <span>{{ post.readtime }} мин чтения</span>
               </div>
               <div class="flex items-center gap-2">
-                <i class="far fa-eye"></i>
+                <i class="far fa-eye text-[#E879F9]"></i>
                 <span>{{ postViews }} просмотров</span>
               </div>
               <button
                 @click="isShareOpen = true"
-                class="flex items-center gap-2 hover:text-indigo-300 transition-colors"
+                class="flex items-center gap-2 hover:text-[#0EA5E9] transition-colors"
               >
                 <i class="fas fa-share-alt"></i>
                 <span>Поделиться</span>
@@ -120,13 +120,13 @@
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 backdrop-blur-sm"
       >
         <div
-          class="bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-2xl border border-indigo-500/20 p-6 max-w-md w-full mx-4"
+          class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-6 max-w-md w-full mx-4"
         >
           <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-bold text-white/90">Поделиться статьей</h3>
             <button
               @click="isShareOpen = false"
-              class="text-indigo-200/60 hover:text-indigo-200"
+              class="text-slate-300 hover:text-[#0EA5E9]"
             >
               <i class="fas fa-times"></i>
             </button>
@@ -155,7 +155,7 @@
             </button>
             <button
               @click="copyLink"
-              class="flex items-center gap-3 w-full p-3 rounded-lg bg-indigo-500/20 text-indigo-200 hover:bg-indigo-500/30"
+              class="flex items-center gap-3 w-full p-3 rounded-lg bg-[#0EA5E9]/20 text-[#0EA5E9] hover:bg-[#0EA5E9]/30"
             >
               <i class="fas fa-link"></i>
               Копировать ссылку
@@ -166,16 +166,16 @@
 
       <!-- Share Section -->
       <div
-        class="mt-12 bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-2xl border border-indigo-500/20 p-8"
+        class="mt-12 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8"
       >
         <div class="text-center mb-6">
           <div class="flex items-center justify-center gap-2 mb-2">
-            <i class="fas fa-share-alt text-indigo-400"></i>
+            <i class="fas fa-share-alt text-[#0EA5E9]"></i>
             <h3 class="text-xl font-semibold text-white/90">
               Поделиться статьей
             </h3>
           </div>
-          <p class="text-indigo-200/80">
+          <p class="text-slate-300">
             Понравилась статья? Поделитесь с друзьями!
           </p>
         </div>
@@ -207,7 +207,7 @@
 
           <button
             @click="copyLink"
-            class="flex items-center justify-center gap-2 p-3 rounded-lg bg-indigo-500/20 text-indigo-200 hover:bg-indigo-500/30 transition-all"
+            class="flex items-center justify-center gap-2 p-3 rounded-lg bg-[#0EA5E9]/20 text-[#0EA5E9] hover:bg-[#0EA5E9]/30 transition-all"
           >
             <i class="fas fa-link"></i>
             <span>Копировать</span>
@@ -217,12 +217,12 @@
 
       <!-- Newsletter Section -->
       <div
-        class="mt-12 bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-2xl border border-indigo-500/20 p-8 text-center"
+        class="mt-12 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8 text-center"
       >
         <h2 class="text-2xl font-bold text-white/90 mb-4">
           Понравилась статья?
         </h2>
-        <p class="text-indigo-200/80 mb-6">
+        <p class="text-slate-300 mb-6">
           Подпишитесь на нашу рассылку, чтобы получать новые статьи первыми
         </p>
         <div class="max-w-md mx-auto flex">
@@ -230,11 +230,11 @@
             type="email"
             v-model="email"
             placeholder="Ваш email"
-            class="w-full px-4 py-3 rounded-l-lg bg-white/5 border border-indigo-500/20 text-white placeholder-indigo-200/50 focus:outline-none focus:ring-2 focus:ring-pink-500"
+            class="w-full px-4 py-3 rounded-l-lg bg-white/5 border border-white/10 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]"
           />
           <button
             @click="subscribeEmail"
-            class="bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-6 py-3 rounded-r-lg hover:opacity-90 transition"
+            class="bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white px-6 py-3 rounded-r-lg hover:from-[#22D3EE] hover:to-[#C084FC] transition-all"
           >
             Подписаться
           </button>
@@ -330,45 +330,46 @@ watch(
 </script>
 
 <style scoped>
-.bg-grid-white {
-  background-image: linear-gradient(
-      rgba(255, 255, 255, 0.1) 1px,
-      transparent 1px
-    ),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-  background-size: 20px 20px;
+@keyframes slow-drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-200px, 300px);
+  }
 }
 
-@keyframes float {
+@keyframes slow-pulse {
+  0%,
+  100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes slow-float {
   0%,
   100% {
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-20px);
+    transform: translateY(-200px);
   }
 }
 
-@keyframes grid {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(-20px);
-  }
+.animate-slow-drift {
+  animation: slow-drift 15s ease-in-out infinite;
 }
 
-.animate-float {
-  animation: float 6s ease-in-out infinite;
+.animate-slow-pulse {
+  animation: slow-pulse 12s ease-in-out infinite;
 }
 
-.animate-float-delay {
-  animation: float 6s ease-in-out infinite;
-  animation-delay: -3s;
-}
-
-.animate-grid {
-  animation: grid 20s linear infinite;
+.animate-slow-float {
+  animation: slow-float 15s ease-in-out infinite;
 }
 
 /* Custom scrollbar */
@@ -377,22 +378,22 @@ watch(
 }
 
 ::-webkit-scrollbar-track {
-  background: #1e1b4b;
+  background: #1a1f35;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #4f46e5;
+  background: #0ea5e9;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #6366f1;
+  background: #22d3ee;
 }
 </style>
 
 <style>
 .prose {
-  @apply text-indigo-200/80 text-lg;
+  @apply text-slate-300 text-lg;
 }
 
 .prose h2 {
@@ -420,7 +421,7 @@ watch(
 }
 
 .prose a {
-  @apply text-indigo-400 hover:text-indigo-300 underline;
+  @apply text-[#0EA5E9] hover:text-[#22D3EE] underline;
 }
 
 .prose img {
@@ -428,7 +429,7 @@ watch(
 }
 
 .prose blockquote {
-  @apply border-l-4 border-indigo-500/50 pl-4 text-indigo-200/60 italic;
+  @apply border-l-4 border-[#0EA5E9]/50 pl-4 text-slate-300 italic;
 }
 
 .prose blockquote p {
@@ -436,11 +437,11 @@ watch(
 }
 
 .prose code {
-  @apply bg-indigo-500/20 rounded px-1 text-indigo-200;
+  @apply bg-[#0EA5E9]/20 rounded px-1 text-slate-300;
 }
 
 .prose pre {
-  @apply bg-indigo-500/20 text-indigo-200 p-4 rounded-lg my-6 overflow-x-auto;
+  @apply bg-[#0EA5E9]/20 text-slate-300 p-4 rounded-lg my-6 overflow-x-auto;
 }
 
 /* Add spacing between multi-level lists */

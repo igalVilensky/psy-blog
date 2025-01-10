@@ -2,6 +2,11 @@
   <footer
     class="relative bg-gradient-to-b from-[#1A1F35] to-[#1E293B] overflow-hidden text-white"
   >
+    <!-- Neon glow divider at the top of the footer -->
+    <div
+      class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-[#0EA5E9]/50 via-[#F59E0B]/50 to-[#E879F9]/50"
+    ></div>
+
     <div class="absolute inset-0">
       <!-- Multiple organic shapes with different colors -->
       <div

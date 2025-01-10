@@ -1,19 +1,32 @@
 <template>
-  <div class="submenu-container">
+  <div class="relative z-50">
     <ul
-      class="bg-gradient-to-br from-indigo-950 via-slate-900 to-purple-950 border-t border-indigo-500/20 overflow-y-auto transition-all duration-500 ease-in-out rounded-b-lg shadow-2xl"
+      class="bg-gradient-to-b from-[#1A1F35] to-[#1E293B] border-t border-white/10 overflow-y-auto transition-all duration-500 ease-in-out rounded-b-lg shadow-2xl"
       :class="[isOpen ? 'max-h-[400px]' : 'max-h-0']"
     >
-      <li v-for="(item, index) in menuItems" :key="index">
+      <li
+        v-for="(item, index) in menuItems"
+        :key="index"
+        class="border-b border-white/10 last:border-b-0"
+      >
         <NuxtLink
           :to="item.path"
           active-class="active-link"
-          class="submenu-item group"
+          class="flex items-center px-4 py-3 text-sm text-slate-300 relative overflow-hidden transition-all duration-300 hover:text-white hover:bg-white/5 group"
           @click="closeDropdown"
         >
-          <i :class="item.icon" class="icon-wrapper" />
-          <span class="menu-text">{{ item.label }}</span>
-          <div class="hover-indicator"></div>
+          <i
+            :class="item.icon"
+            class="flex-shrink-0 w-5 h-5 mr-3 flex items-center justify-center text-[#0EA5E9] group-hover:text-[#22D3EE] transition-transform group-hover:scale-110"
+          />
+          <span
+            class="font-medium tracking-wide transition-all duration-300 group-hover:translate-x-1 flex items-center"
+          >
+            {{ item.label }}
+          </span>
+          <div
+            class="absolute left-0 h-full w-1 bg-gradient-to-b from-[#0EA5E9] to-[#E879F9] transform -translate-x-full transition-transform duration-300 group-hover:translate-x-0"
+          ></div>
         </NuxtLink>
       </li>
     </ul>
@@ -58,53 +71,11 @@ const menuItems = [
 </script>
 
 <style scoped>
-.submenu-container {
-  @apply relative z-50;
-}
-
-.submenu-item {
-  @apply flex items-center px-4 py-3 text-sm text-slate-300
-         relative overflow-hidden transition-all duration-300
-         hover:text-white hover:bg-white/5;
-}
-
-.icon-wrapper {
-  @apply flex-shrink-0 w-5 h-5 mr-3 
-         flex items-center justify-center
-         text-indigo-400 group-hover:text-indigo-300
-         transition-transform group-hover:scale-110;
-  line-height: 1;
-}
-
-.menu-text {
-  @apply font-medium tracking-wide transition-all duration-300
-         group-hover:translate-x-1 flex items-center;
-  line-height: 1;
-}
-
-.hover-indicator {
-  @apply absolute left-0 h-full w-1 bg-indigo-500 transform -translate-x-full
-         transition-transform duration-300 group-hover:translate-x-0;
-}
-
 .active-link {
-  @apply text-white bg-indigo-500/10 font-semibold;
-}
-
-.active-link .hover-indicator {
-  @apply translate-x-0 bg-indigo-400;
+  @apply text-white bg-[#0EA5E9]/10 font-semibold;
 }
 
 .active-link .icon-wrapper {
   @apply text-white;
-}
-
-/* Fix for unwanted lines */
-ul {
-  @apply border-none; /* Remove border from the ul element */
-}
-
-li {
-  @apply border-b border-indigo-500/20 last:border-b-0; /* Add border to each li except the last one */
 }
 </style>

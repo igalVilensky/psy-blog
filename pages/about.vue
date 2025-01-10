@@ -2,36 +2,33 @@
   <div class="relative min-h-screen">
     <!-- Animated Background -->
     <div class="fixed inset-0 -z-1">
-      <div class="absolute top-0 left-0 w-full h-full bg-[#0F172A]">
+      <div class="absolute top-0 left-0 w-full h-full bg-[#1A1F35]">
         <!-- Gradient Orbs -->
         <div
-          class="absolute top-0 left-0 w-[500px] h-[500px] bg-purple-500/20 rounded-full blur-[120px] animate-float"
+          class="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-[#0EA5E9]/10 to-[#22D3EE]/10 rounded-full blur-3xl animate-slow-drift"
         ></div>
         <div
-          class="absolute bottom-0 right-0 w-[400px] h-[400px] bg-blue-500/20 rounded-full blur-[100px] animate-float-delay"
+          class="absolute bottom-1/4 right-1/3 w-80 h-80 bg-gradient-to-r from-[#F59E0B]/10 to-[#F97316]/10 rounded-full blur-3xl animate-slow-pulse"
         ></div>
-        <!-- Animated Grid -->
         <div
-          class="absolute inset-0 bg-gradient-to-b from-transparent to-[#0F172A]/80"
-        >
-          <div class="absolute inset-0 bg-grid-white/[0.02] animate-grid"></div>
-        </div>
+          class="absolute top-1/3 right-1/4 w-72 h-72 bg-gradient-to-r from-[#E879F9]/10 to-[#C084FC]/10 rounded-full blur-3xl animate-slow-float"
+        ></div>
       </div>
     </div>
 
     <div class="container mx-auto px-4 max-w-7xl relative z-10 pb-12 pt-12">
       <!-- Hero Section -->
       <header
-        class="relative text-center mb-12 bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-2xl border border-indigo-500/20 p-12"
+        class="relative text-center mb-12 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-12"
       >
         <div class="relative z-10">
           <h1
-            class="text-4xl sm:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80 tracking-tight mb-6"
+            class="text-4xl sm:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] tracking-tight mb-6"
           >
             О проекте
           </h1>
           <p
-            class="text-lg sm:text-xl text-indigo-200/80 max-w-2xl mx-auto leading-relaxed"
+            class="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed"
           >
             Добро пожаловать в пространство осознанного развития и личностного
             роста. Здесь каждый шаг ведёт к более глубокому пониманию себя и
@@ -42,16 +39,16 @@
 
       <!-- Personal Biography Section -->
       <section
-        class="relative group overflow-hidden bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-2xl border border-indigo-500/20 p-8 sm:p-12 mb-12"
+        class="relative overflow-hidden bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8 sm:p-12 mb-12"
       >
         <div class="grid md:grid-cols-2 gap-12">
           <div class="space-y-6">
             <div
-              class="px-4 py-2 bg-purple-500/10 border border-purple-500/20 rounded-full text-purple-200 font-medium inline-block"
+              class="px-4 py-2 bg-[#0EA5E9]/10 border border-[#0EA5E9]/20 rounded-full text-[#0EA5E9] font-medium inline-block"
             >
               Основатель проекта
             </div>
-            <div class="space-y-6 text-indigo-200/80">
+            <div class="space-y-6 text-slate-300">
               <p>
                 Здравствуйте! Меня зовут Анастасия, и я рада приветствовать вас
                 в пространстве осознанного развития...
@@ -66,24 +63,29 @@
                 наполнен осознанностью и пониманием.
               </p>
             </div>
+            <!-- Social Media Links with Independent Glow Effect -->
             <div class="flex gap-4 mt-8">
-              <a
-                href="#"
-                class="text-indigo-300 hover:text-white transition-colors duration-300"
-              >
-                <i class="fab fa-linkedin text-xl"></i>
+              <a href="#" class="group relative p-3" target="_blank">
+                <div
+                  class="absolute inset-0 bg-gradient-to-r from-[#F59E0B]/20 to-[#F97316]/20 rounded-lg blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                ></div>
+                <i
+                  class="fab fa-linkedin text-xl relative z-10 text-[#F59E0B] group-hover:text-white transition-all duration-300 group-hover:scale-110"
+                ></i>
               </a>
-              <a
-                href="#"
-                class="text-indigo-300 hover:text-white transition-colors duration-300"
-              >
-                <i class="fab fa-instagram text-xl"></i>
+              <a href="#" class="group relative p-3" target="_blank">
+                <div
+                  class="absolute inset-0 bg-gradient-to-r from-[#F59E0B]/20 to-[#F97316]/20 rounded-lg blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                ></div>
+                <i
+                  class="fab fa-instagram text-xl relative z-10 text-[#F59E0B] group-hover:text-white transition-all duration-300 group-hover:scale-110"
+                ></i>
               </a>
             </div>
           </div>
           <div class="relative">
             <div
-              class="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+              class="absolute inset-0 bg-gradient-to-r from-[#0EA5E9]/10 to-[#E879F9]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
             ></div>
             <img
               src="/assets/images/profile.jpg"
@@ -97,27 +99,43 @@
       <!-- Offerings Section -->
       <section class="mb-16">
         <h2
-          class="text-4xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80 tracking-tight mb-12"
+          class="text-4xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] tracking-tight mb-12"
         >
           Что вы найдете здесь?
         </h2>
         <div class="grid md:grid-cols-2 gap-6">
           <div
-            v-for="offering in offerings"
+            v-for="(offering, index) in offerings"
             :key="offering.title"
-            class="group relative bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-2xl p-8 border border-indigo-500/20 hover:shadow-xl transition-all duration-500"
+            class="group relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl p-8 border border-white/10 hover:shadow-xl transition-all duration-500"
           >
             <div class="flex gap-6">
               <div
-                class="w-12 h-12 flex items-center justify-center rounded-xl bg-purple-500/10 text-purple-200"
+                class="w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-xl"
+                :class="[
+                  index % 3 === 0
+                    ? 'bg-[#0EA5E9]/10 text-[#0EA5E9]'
+                    : index % 3 === 1
+                    ? 'bg-[#F59E0B]/10 text-[#F59E0B]'
+                    : 'bg-[#E879F9]/10 text-[#E879F9]',
+                ]"
               >
                 <i :class="offering.icon" class="text-2xl"></i>
               </div>
               <div>
-                <h3 class="text-xl font-semibold text-white/90 mb-3">
+                <h3
+                  class="text-xl font-semibold text-white/90 mb-3"
+                  :class="[
+                    index % 3 === 0
+                      ? 'text-[#0EA5E9]'
+                      : index % 3 === 1
+                      ? 'text-[#F59E0B]'
+                      : 'text-[#E879F9]',
+                  ]"
+                >
                   {{ offering.title }}
                 </h3>
-                <p class="text-indigo-200/80">{{ offering.description }}</p>
+                <p class="text-slate-300">{{ offering.description }}</p>
               </div>
             </div>
           </div>
@@ -126,21 +144,21 @@
 
       <!-- Call to Action -->
       <section
-        class="relative bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-2xl border border-indigo-500/20 p-12 text-center"
+        class="relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-12 text-center"
       >
         <div class="relative z-10">
           <h2
-            class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80 tracking-tight mb-6"
+            class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] tracking-tight mb-6"
           >
             Начните свое путешествие к гармонии сегодня
           </h2>
-          <p class="text-lg text-indigo-200/80 mb-8 max-w-2xl mx-auto">
+          <p class="text-lg text-slate-300 mb-8 max-w-2xl mx-auto">
             Присоединяйтесь к нашему сообществу и откройте для себя новые
             горизонты развития
           </p>
           <NuxtLink
             to="/courses/courses"
-            class="inline-flex items-center px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-xl font-medium hover:shadow-lg hover:shadow-indigo-500/25 transition-all duration-300"
+            class="inline-flex items-center px-8 py-3 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white rounded-xl font-medium hover:shadow-lg hover:shadow-[#0EA5E9]/25 transition-all duration-300"
           >
             Перейти к курсам
             <i class="fas fa-arrow-right ml-2"></i>
@@ -181,44 +199,45 @@ const offerings = [
 </script>
 
 <style scoped>
-.bg-grid-white {
-  background-image: linear-gradient(
-      rgba(255, 255, 255, 0.1) 1px,
-      transparent 1px
-    ),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-  background-size: 20px 20px;
+@keyframes slow-drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-200px, 300px);
+  }
 }
 
-@keyframes float {
+@keyframes slow-pulse {
+  0%,
+  100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes slow-float {
   0%,
   100% {
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-20px);
+    transform: translateY(-200px);
   }
 }
 
-@keyframes grid {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(-20px);
-  }
+.animate-slow-drift {
+  animation: slow-drift 15s ease-in-out infinite;
 }
 
-.animate-float {
-  animation: float 6s ease-in-out infinite;
+.animate-slow-pulse {
+  animation: slow-pulse 12s ease-in-out infinite;
 }
 
-.animate-float-delay {
-  animation: float 6s ease-in-out infinite;
-  animation-delay: -3s;
-}
-
-.animate-grid {
-  animation: grid 20s linear infinite;
+.animate-slow-float {
+  animation: slow-float 15s ease-in-out infinite;
 }
 </style>

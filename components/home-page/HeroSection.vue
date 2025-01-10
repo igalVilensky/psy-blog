@@ -1,60 +1,64 @@
 <template>
-  <!-- Hero Section with a Bright Layout -->
+  <!-- Hero Section -->
   <section
-    class="relative overflow-hidden bg-gradient-to-br from-indigo-50 via-blue-50 to-white"
+    class="relative bg-gradient-to-b from-[#1A1F35] to-[#1E293B] overflow-hidden text-white"
   >
-    <!-- Decorative Elements -->
+    <!-- Organic Shapes -->
+    <div class="absolute inset-0">
+      <!-- Multiple organic shapes with different colors -->
+      <div
+        class="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-[#0EA5E9]/10 to-[#22D3EE]/10 rounded-full blur-3xl animate-slow-drift"
+      ></div>
+      <div
+        class="absolute bottom-1/4 right-1/3 w-80 h-80 bg-gradient-to-r from-[#F59E0B]/10 to-[#F97316]/10 rounded-full blur-3xl animate-slow-pulse"
+      ></div>
+      <div
+        class="absolute top-1/3 right-1/4 w-72 h-72 bg-gradient-to-r from-[#E879F9]/10 to-[#C084FC]/10 rounded-full blur-3xl animate-slow-float"
+      ></div>
+    </div>
 
-    <div
-      class="absolute -top-10 right-0 w-96 h-96 bg-[#3498DB]/20 rounded-full blur-3xl animate-pulse"
-      style="animation-duration: 5s"
-    ></div>
-    <div
-      class="absolute -bottom-10 left-0 w-96 h-96 bg-[#9B59B6]/20 rounded-full blur-3xl animate-pulse"
-      style="animation-duration: 7s"
-    ></div>
-
-    <div class="container mx-auto px-4 py-16 md:py-24">
-      <div class="max-w-4xl mx-auto text-center">
-        <div class="animate-fadeIn">
-          <h1
-            class="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-[#1A1F35] to-indigo-600 mb-6 leading-tight animate-slideDown"
+    <!-- Content -->
+    <div class="relative container mx-auto px-4 max-w-6xl py-24 md:py-32">
+      <div class="text-center">
+        <!-- Heading -->
+        <h1
+          class="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] mb-6 animate-slideDown"
+        >
+          Ваш Путь к Личностному Росту
+        </h1>
+        <!-- Subheading -->
+        <p
+          class="text-lg md:text-xl text-slate-300 mb-8 leading-relaxed animate-slideUp opacity-0"
+          style="animation-delay: 0.3s"
+        >
+          Исследуйте себя, развивайтесь и достигайте своих целей с помощью наших
+          <span class="font-semibold text-[#22D3EE]"
+            >профессиональных инструментов</span
           >
-            Ваш Путь к Личностному Росту
-          </h1>
-          <p
-            class="text-lg md:text-xl text-[#2D2D2D] mb-8 leading-relaxed animate-slideUp opacity-0"
-            style="animation-delay: 0.3s"
+        </p>
+        <!-- Buttons -->
+        <div
+          class="flex flex-col sm:flex-row gap-4 justify-center animate-fadeIn opacity-0"
+          style="animation-delay: 0.6s"
+        >
+          <NuxtLink
+            to="/courses/courses"
+            class="group relative inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white font-medium rounded-lg overflow-hidden transition-all hover:from-[#22D3EE] hover:to-[#C084FC]"
           >
-            Исследуйте себя, развивайтесь и достигайте своих целей с помощью
-            наших
-            <span class="font-semibold text-[#3498DB]"
-              >профессиональных инструментов</span
-            >
-          </p>
-          <div
-            class="flex flex-col sm:flex-row gap-4 justify-center animate-fadeIn opacity-0"
-            style="animation-delay: 0.6s"
+            <span class="relative z-10">Начать обучение</span>
+            <div
+              class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-gradient-to-r from-[#22D3EE] to-[#C084FC] transition-transform duration-300"
+            ></div>
+          </NuxtLink>
+          <NuxtLink
+            to="/profile"
+            class="group inline-flex items-center justify-center px-8 py-3 bg-transparent text-[#0EA5E9] font-medium rounded-lg border-2 border-[#0EA5E9]/50 hover:bg-[#0EA5E9]/10 transition-colors"
           >
-            <NuxtLink
-              to="/courses/courses"
-              class="group relative inline-flex items-center justify-center px-8 py-3 bg-[#3498DB] text-white font-medium rounded-xl overflow-hidden transition-all hover:bg-[#2980B9]"
-            >
-              <span class="relative z-10">Начать обучение</span>
-              <div
-                class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-[#2980B9] transition-transform duration-300"
-              ></div>
-            </NuxtLink>
-            <NuxtLink
-              to="/profile"
-              class="group inline-flex items-center justify-center px-8 py-3 bg-[#FFFFFF] text-[#3498DB] font-medium rounded-xl border-2 border-[#2980B9] hover:bg-[#F8F9FA] transition-colors"
-            >
-              Открыть профиль
-              <i
-                class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"
-              ></i>
-            </NuxtLink>
-          </div>
+            Открыть профиль
+            <i
+              class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"
+            ></i>
+          </NuxtLink>
         </div>
       </div>
     </div>
@@ -96,6 +100,7 @@
     opacity: 1;
   }
 }
+
 .animate-slideDown {
   animation: slideDown 1.8s ease-out forwards;
 }
@@ -106,5 +111,48 @@
 
 .animate-fadeIn {
   animation: fadeIn 1.8s ease-out forwards;
+}
+
+/* Organic Shapes Animations */
+@keyframes slow-drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-200px, 300px);
+  }
+}
+
+@keyframes slow-pulse {
+  0%,
+  100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes slow-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-200px);
+  }
+}
+
+.animate-slow-drift {
+  animation: slow-drift 15s ease-in-out infinite;
+}
+
+.animate-slow-pulse {
+  animation: slow-pulse 12s ease-in-out infinite;
+}
+
+.animate-slow-float {
+  animation: slow-float 15s ease-in-out infinite;
 }
 </style>
