@@ -2,81 +2,71 @@
   <div class="relative min-h-screen">
     <!-- Animated Background -->
     <div class="fixed inset-0 -z-1">
-      <div class="absolute top-0 left-0 w-full h-full bg-[#0F172A]">
+      <div class="absolute top-0 left-0 w-full h-full bg-[#1A1F35]">
         <!-- Gradient Orbs -->
         <div
-          class="absolute top-0 left-0 w-[500px] h-[500px] bg-purple-500/20 rounded-full blur-[120px] animate-float"
+          class="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-[#0EA5E9]/10 to-[#22D3EE]/10 rounded-full blur-3xl animate-slow-drift"
         ></div>
         <div
-          class="absolute bottom-0 right-0 w-[400px] h-[400px] bg-blue-500/20 rounded-full blur-[100px] animate-float-delay"
+          class="absolute bottom-1/4 right-1/3 w-80 h-80 bg-gradient-to-r from-[#F59E0B]/10 to-[#F97316]/10 rounded-full blur-3xl animate-slow-pulse"
         ></div>
-        <!-- Animated Grid -->
         <div
-          class="absolute inset-0 bg-gradient-to-b from-transparent to-[#0F172A]/80"
-        >
-          <div class="absolute inset-0 bg-grid-white/[0.02] animate-grid"></div>
-        </div>
+          class="absolute top-1/3 right-1/4 w-72 h-72 bg-gradient-to-r from-[#E879F9]/10 to-[#C084FC]/10 rounded-full blur-3xl animate-slow-float"
+        ></div>
       </div>
     </div>
 
     <div class="container mx-auto px-4 max-w-7xl relative z-10 pb-12 pt-6">
       <!-- Hero Section (hidden when showStartButton is false) -->
       <section v-if="showStartButton" class="text-center">
-        <!-- <div class="relative inline-block group">
-          <div
-            class="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full blur opacity-75 group-hover:opacity-100 transition-opacity"
-          ></div>
-          <div
-            class="relative px-8 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full text-white font-medium backdrop-blur-sm border border-white/10"
-          >
-            Эмоциональный Барометр
-          </div>
-        </div> -->
         <h1
-          class="text-4xl sm:text-5xl font-bold my-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80 tracking-tight"
+          class="text-4xl sm:text-5xl font-bold my-6 bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] tracking-tight"
         >
           Понимаем ваши эмоции
         </h1>
         <p
-          class="text-lg sm:text-xl text-indigo-200/80 max-w-2xl mx-auto leading-relaxed"
+          class="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed"
         >
           Эмоциональный Барометр — это инструмент, который помогает вам лучше
           понять свои эмоции, отслеживать их интенсивность и находить способы
           справляться с ними.
         </p>
       </section>
+
+      <!-- Loading State -->
       <div
         v-if="loading"
         class="flex flex-col items-center gap-3 sm:gap-4 mt-24"
       >
-        <i class="fas fa-spinner fa-spin text-4xl text-indigo-600"></i>
-        <p class="text-gray-600 text-base sm:text-lg font-medium">
+        <i class="fas fa-spinner fa-spin text-4xl text-[#0EA5E9]"></i>
+        <p class="text-slate-300 text-base sm:text-lg font-medium">
           Пожалуйста, подождите...
         </p>
       </div>
+
       <div v-else>
         <!-- Unauthenticated Section -->
         <div
           v-if="!user"
-          class="relative group overflow-hidden bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-2xl border border-indigo-500/20 p-8 sm:p-12 mb-12 max-w-4xl mx-auto"
+          class="relative group overflow-hidden bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8 sm:p-12 mb-12 max-w-4xl mx-auto"
         >
           <div
-            class="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+            class="absolute inset-0 bg-gradient-to-r from-[#0EA5E9]/10 to-[#E879F9]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
           ></div>
-          <p class="text-xl text-indigo-100 mb-8">
+          <p class="text-xl text-slate-300 mb-8">
             Чтобы начать использовать инструмент, пожалуйста, войдите или
             зарегистрируйтесь.
           </p>
           <div class="flex justify-center gap-6 relative z-10">
             <NuxtLink
               to="/login"
-              class="px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-xl font-medium hover:shadow-lg hover:shadow-indigo-500/25 transition-all duration-300 relative z-10"
+              class="px-8 py-3 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white rounded-xl font-medium hover:shadow-lg hover:shadow-[#0EA5E9]/25 transition-all duration-300 relative z-10"
             >
               Войти
             </NuxtLink>
             <NuxtLink
               to="/register"
-              class="px-8 py-3 bg-white/10 border border-indigo-500/50 text-indigo-300 rounded-xl font-medium hover:bg-white/20 transition-all duration-300 relative z-10"
+              class="px-8 py-3 bg-white/10 border border-[#0EA5E9]/50 text-[#0EA5E9] rounded-xl font-medium hover:bg-white/20 transition-all duration-300 relative z-10"
             >
               Зарегистрироваться
             </NuxtLink>
@@ -87,7 +77,7 @@
         <div v-if="user && showStartButton" class="text-center mt-8 mb-10">
           <button
             @click="startEntry"
-            class="px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-xl font-medium hover:shadow-lg hover:shadow-indigo-500/25 transition-all duration-300"
+            class="px-8 py-3 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white rounded-xl font-medium hover:shadow-lg hover:shadow-[#0EA5E9]/25 transition-all duration-300"
           >
             Добавить запись
           </button>
@@ -96,7 +86,7 @@
         <!-- Main Barometer Section (shown only when showStartButton is false) -->
         <div
           v-if="user && !showStartButton"
-          class="relative bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-2xl border border-indigo-500/20 p-8 sm:p-12 mb-12 max-w-4xl mx-auto"
+          class="relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8 sm:p-12 mb-12 max-w-4xl mx-auto"
         >
           <!-- Step Progress -->
           <div
@@ -108,7 +98,7 @@
                   :class="[
                     'w-3 h-3 sm:w-4 sm:h-4 rounded-full transition-all duration-500',
                     currentStep >= step
-                      ? 'bg-gradient-to-r from-indigo-500 to-purple-500 scale-100'
+                      ? 'bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] scale-100'
                       : 'bg-white/20 scale-90',
                   ]"
                 ></div>
@@ -117,7 +107,7 @@
                   :class="[
                     'h-0.5 w-8 sm:w-16 transition-all duration-500',
                     currentStep > step
-                      ? 'bg-gradient-to-r from-indigo-500 to-purple-500'
+                      ? 'bg-gradient-to-r from-[#0EA5E9] to-[#E879F9]'
                       : 'bg-white/20',
                   ]"
                 ></div>
@@ -182,7 +172,7 @@
               v-if="currentStep < 5"
               @click="nextStep"
               :disabled="!canProceed"
-              class="px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/25 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none"
+              class="px-8 py-3 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-[#0EA5E9]/25 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none"
             >
               Далее
             </button>
@@ -190,7 +180,7 @@
               v-if="currentStep === 5"
               @click="handleSubmit"
               :disabled="!canSubmit"
-              class="px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/25 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none"
+              class="px-8 py-3 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-[#0EA5E9]/25 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none"
             >
               Сохранить
             </button>
@@ -205,48 +195,48 @@
           <template v-if="hasStatsData">
             <NuxtLink
               to="/awareness-tools/emotional-barometer/analysis"
-              class="group relative bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-2xl p-8 border border-indigo-500/20 hover:shadow-xl transition-all duration-500"
+              class="group relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl p-8 border border-white/10 hover:shadow-xl transition-all duration-500"
             >
               <div
-                class="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"
+                class="absolute inset-0 bg-gradient-to-r from-[#0EA5E9]/10 to-[#E879F9]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"
               ></div>
-              <h3 class="text-2xl font-semibold text-indigo-300 mb-3">
+              <h3 class="text-2xl font-semibold text-[#0EA5E9] mb-3">
                 Анализ Эмоций
               </h3>
-              <p class="text-gray-300">Изучите свои эмоциональные паттерны</p>
+              <p class="text-slate-300">Изучите свои эмоциональные паттерны</p>
             </NuxtLink>
 
             <NuxtLink
               to="/awareness-tools/emotional-barometer/journal-history"
-              class="group relative bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-2xl p-8 border border-indigo-500/20 hover:shadow-xl transition-all duration-500"
+              class="group relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl p-8 border border-white/10 hover:shadow-xl transition-all duration-500"
             >
               <div
-                class="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"
+                class="absolute inset-0 bg-gradient-to-r from-[#0EA5E9]/10 to-[#E879F9]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"
               ></div>
-              <h3 class="text-2xl font-semibold text-indigo-300 mb-3">
+              <h3 class="text-2xl font-semibold text-[#0EA5E9] mb-3">
                 История Журнала
               </h3>
-              <p class="text-gray-300">Просмотрите ваши прошлые записи</p>
+              <p class="text-slate-300">Просмотрите ваши прошлые записи</p>
             </NuxtLink>
           </template>
           <template v-else>
             <div
-              class="bg-[#1E1B4B]/70 backdrop-blur-sm rounded-2xl shadow-2xl p-6 opacity-50 cursor-not-allowed text-center border border-indigo-500/20"
+              class="bg-[#1A1F35]/70 backdrop-blur-sm rounded-2xl shadow-2xl p-6 opacity-50 cursor-not-allowed text-center border border-white/10"
             >
-              <h3 class="text-xl font-semibold text-indigo-400 mb-2">
+              <h3 class="text-xl font-semibold text-[#0EA5E9] mb-2">
                 Анализ Эмоций
               </h3>
-              <p class="text-sm text-gray-300">
+              <p class="text-sm text-slate-300">
                 Изучите свои эмоциональные паттерны
               </p>
             </div>
             <div
-              class="bg-[#1E1B4B]/70 backdrop-blur-sm rounded-2xl shadow-2xl p-6 opacity-50 cursor-not-allowed text-center border border-indigo-500/20"
+              class="bg-[#1A1F35]/70 backdrop-blur-sm rounded-2xl shadow-2xl p-6 opacity-50 cursor-not-allowed text-center border border-white/10"
             >
-              <h3 class="text-xl font-semibold text-indigo-400 mb-2">
+              <h3 class="text-xl font-semibold text-[#0EA5E9] mb-2">
                 История Журнала
               </h3>
-              <p class="text-sm text-gray-300">
+              <p class="text-sm text-slate-300">
                 Просмотрите ваши прошлые записи
               </p>
             </div>
@@ -478,47 +468,64 @@ const handleSubmit = () => {
   saveEntryToFirebase();
 };
 </script>
-
 <style scoped>
-@keyframes float {
+@keyframes slow-drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-200px, 300px);
+  }
+}
+
+@keyframes slow-pulse {
+  0%,
+  100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes slow-float {
   0%,
   100% {
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-20px);
+    transform: translateY(-200px);
   }
 }
 
-@keyframes float-delay {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-15px);
-  }
+.animate-slow-drift {
+  animation: slow-drift 15s ease-in-out infinite;
 }
 
-@keyframes grid {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(-50%);
-  }
+.animate-slow-pulse {
+  animation: slow-pulse 12s ease-in-out infinite;
 }
 
-.animate-float {
-  animation: float 20s ease-in-out infinite;
+.animate-slow-float {
+  animation: slow-float 15s ease-in-out infinite;
 }
 
-.animate-float-delay {
-  animation: float 25s ease-in-out infinite;
-  animation-delay: -10s;
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
 }
 
-.animate-grid {
-  animation: grid 20s linear infinite;
+::-webkit-scrollbar-track {
+  background: #1a1f35;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0ea5e9;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #22d3ee;
 }
 </style>

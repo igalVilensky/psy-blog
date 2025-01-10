@@ -2,13 +2,13 @@
   <div class="space-y-6 w-full max-w-2xl mx-auto">
     <!-- Original Question -->
     <div class="transition-all duration-500">
-      <p class="text-indigo-200/80 mb-3">
+      <p class="text-slate-300 mb-3">
         Опишите, что вызвало эту эмоцию и какие мысли у вас возникли:
       </p>
       <textarea
         ref="journalTextarea"
         v-model="journalEntry"
-        class="w-full p-4 text-base bg-[#1E1B4B]/40 backdrop-blur-sm border border-indigo-500/20 rounded-xl text-white/90 placeholder-indigo-300/30 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-400/50 transition-all duration-300"
+        class="w-full p-4 text-base bg-[#1A1F35]/40 backdrop-blur-sm border border-[#0EA5E9]/20 rounded-xl text-white/90 placeholder-slate-400/30 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]/50 focus:border-[#0EA5E9]/50 transition-all duration-300"
         rows="4"
         placeholder="Опишите ваши мысли и чувства..."
       ></textarea>
@@ -20,13 +20,13 @@
       :class="{ 'opacity-0 translate-y-4': !sections.perception.visible }"
       class="transition-all duration-500"
     >
-      <p class="text-indigo-200/80 mb-3">
+      <p class="text-slate-300 mb-3">
         Как эта ситуация повлияла на ваше восприятие себя и окружающих?
       </p>
       <textarea
         ref="perceptionTextarea"
         v-model="perceptionEntry"
-        class="w-full p-4 text-base bg-[#1E1B4B]/40 backdrop-blur-sm border border-indigo-500/20 rounded-xl text-white/90 placeholder-indigo-300/30 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-400/50 transition-all duration-300"
+        class="w-full p-4 text-base bg-[#1A1F35]/40 backdrop-blur-sm border border-[#0EA5E9]/20 rounded-xl text-white/90 placeholder-slate-400/30 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]/50 focus:border-[#0EA5E9]/50 transition-all duration-300"
         rows="4"
         placeholder="Опишите изменения в вашем восприятии..."
       ></textarea>
@@ -38,14 +38,14 @@
       :class="{ 'opacity-0 translate-y-4': !sections.coping.visible }"
       class="transition-all duration-500"
     >
-      <p class="text-indigo-200/80 mb-3">
+      <p class="text-slate-300 mb-3">
         Какие стратегии совладания вы использовали или могли бы использовать в
         подобной ситуации?
       </p>
       <textarea
         ref="copingTextarea"
         v-model="copingEntry"
-        class="w-full p-4 text-base bg-[#1E1B4B]/40 backdrop-blur-sm border border-indigo-500/20 rounded-xl text-white/90 placeholder-indigo-300/30 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-400/50 transition-all duration-300"
+        class="w-full p-4 text-base bg-[#1A1F35]/40 backdrop-blur-sm border border-[#0EA5E9]/20 rounded-xl text-white/90 placeholder-slate-400/30 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]/50 focus:border-[#0EA5E9]/50 transition-all duration-300"
         rows="4"
         placeholder="Опишите ваши стратегии..."
       ></textarea>
@@ -55,7 +55,7 @@
     <div v-if="showContinueButton" class="mt-6">
       <button
         @click="handleContinue"
-        class="group relative px-6 py-3 bg-gradient-to-r from-indigo-500/80 to-purple-500/80 text-white rounded-xl text-sm font-medium hover:from-indigo-500/90 hover:to-purple-500/90 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all duration-300"
+        class="group relative px-6 py-3 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white rounded-xl text-sm font-medium hover:from-[#0EA5E9]/90 hover:to-[#E879F9]/90 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]/50 transition-all duration-300"
       >
         <div class="relative z-10 flex items-center">
           Продолжить
@@ -65,7 +65,7 @@
           >
         </div>
         <div
-          class="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          class="absolute inset-0 bg-gradient-to-r from-[#0EA5E9]/20 to-[#E879F9]/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         ></div>
       </button>
     </div>
@@ -73,9 +73,9 @@
     <!-- Completion Message -->
     <div
       v-if="isCompleted"
-      class="mt-6 text-center px-6 py-4 rounded-xl backdrop-blur-sm border border-indigo-500/20 bg-[#1E1B4B]/40"
+      class="mt-6 text-center px-6 py-4 rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 bg-[#1A1F35]/40"
     >
-      <p class="text-indigo-200">
+      <p class="text-slate-300">
         <span class="mr-2">Спасибо за ваши ответы!</span>
         <span class="text-xl">✨</span>
       </p>

@@ -1,4 +1,3 @@
-<!-- Notification.vue -->
 <template>
   <div>
     <TransitionGroup
@@ -12,7 +11,7 @@
       <div
         v-if="show"
         :class="[
-          'fixed flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg border',
+          'fixed flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg border backdrop-blur-sm',
           'bottom-4 left-1/2 -translate-x-1/2 w-[90%]', // Mobile defaults
           'sm:right-4 sm:top-20 sm:left-auto sm:translate-x-0 sm:w-[400px] sm:max-h-16', // Reset mobile properties on desktop
           typeStyles[type].background,
@@ -70,32 +69,32 @@ const emit = defineEmits(["close"]);
 
 const typeStyles = {
   success: {
-    background: "bg-green-50",
-    border: "border-green-200",
-    text: "text-green-800",
+    background: "bg-green-500/10",
+    border: "border-green-500/20",
+    text: "text-green-400",
     icon: "fas fa-check-circle",
-    iconColor: "text-green-500",
+    iconColor: "text-green-400",
   },
   error: {
-    background: "bg-red-50",
-    border: "border-red-200",
-    text: "text-red-800",
+    background: "bg-red-500/10",
+    border: "border-red-500/20",
+    text: "text-red-400",
     icon: "fas fa-exclamation-circle",
-    iconColor: "text-red-500",
+    iconColor: "text-red-400",
   },
   warning: {
-    background: "bg-yellow-50",
-    border: "border-yellow-200",
-    text: "text-yellow-800",
+    background: "bg-yellow-500/10",
+    border: "border-yellow-500/20",
+    text: "text-yellow-400",
     icon: "fas fa-exclamation-triangle",
-    iconColor: "text-yellow-500",
+    iconColor: "text-yellow-400",
   },
   info: {
-    background: "bg-blue-50",
-    border: "border-blue-200",
-    text: "text-blue-800",
+    background: "bg-[#0EA5E9]/10",
+    border: "border-[#0EA5E9]/20",
+    text: "text-[#0EA5E9]",
     icon: "fas fa-info-circle",
-    iconColor: "text-blue-500",
+    iconColor: "text-[#0EA5E9]",
   },
 };
 

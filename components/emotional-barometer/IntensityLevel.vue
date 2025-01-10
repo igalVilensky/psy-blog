@@ -4,7 +4,7 @@
       <h2 class="text-2xl text-white/90 font-medium mb-3">
         Оцените силу эмоции "{{ selectedEmotion?.name }}"
       </h2>
-      <p class="text-indigo-200/80 text-lg">
+      <p class="text-slate-300 text-lg">
         Передвиньте ползунок, чтобы указать интенсивность вашего переживания
       </p>
     </div>
@@ -12,19 +12,19 @@
     <!-- Intensity Categories -->
     <div class="grid grid-cols-3 gap-4 mb-8">
       <div
-        class="flex flex-col items-center p-4 rounded-xl backdrop-blur-sm border border-indigo-500/20 bg-[#1E1B4B]/40"
+        class="flex flex-col items-center p-4 rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 bg-[#1A1F35]/40"
       >
         <div class="text-green-400 font-medium mb-1">Слабое</div>
         <div class="text-xs text-green-300/80">1-3</div>
       </div>
       <div
-        class="flex flex-col items-center p-4 rounded-xl backdrop-blur-sm border border-indigo-500/20 bg-[#1E1B4B]/40"
+        class="flex flex-col items-center p-4 rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 bg-[#1A1F35]/40"
       >
         <div class="text-yellow-400 font-medium mb-1">Умеренное</div>
         <div class="text-xs text-yellow-300/80">4-7</div>
       </div>
       <div
-        class="flex flex-col items-center p-4 rounded-xl backdrop-blur-sm border border-indigo-500/20 bg-[#1E1B4B]/40"
+        class="flex flex-col items-center p-4 rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 bg-[#1A1F35]/40"
       >
         <div class="text-red-400 font-medium mb-1">Сильное</div>
         <div class="text-xs text-red-300/80">8-10</div>
@@ -52,7 +52,7 @@
       <div class="relative w-full h-3 mt-2">
         <template v-for="n in 10" :key="n">
           <div
-            class="absolute h-3 w-px bg-indigo-400/30"
+            class="absolute h-3 w-px bg-[#0EA5E9]/30"
             :style="{
               left: `${((n - 1) / 9) * 100}%`,
               transform: 'translateX(-50%)',
@@ -67,8 +67,8 @@
           <span
             class="absolute text-xs transform -translate-x-1/2"
             :class="{
-              'text-indigo-200 font-medium': intensityLevel === n,
-              'text-indigo-300/50': intensityLevel !== n,
+              'text-[#0EA5E9] font-medium': intensityLevel === n,
+              'text-slate-400/50': intensityLevel !== n,
             }"
             :style="{
               left: `${((n - 1) / 9) * 100}%`,
@@ -83,7 +83,7 @@
     <!-- Current Value Display -->
     <div class="text-center">
       <span
-        class="inline-flex items-center px-6 py-2 rounded-xl backdrop-blur-sm border border-indigo-500/20 bg-[#1E1B4B]/40 text-indigo-200 text-sm font-medium"
+        class="inline-flex items-center px-6 py-2 rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 bg-[#1A1F35]/40 text-[#0EA5E9] text-sm font-medium"
       >
         Текущая интенсивность: {{ intensityLevel }}/10
       </span>
