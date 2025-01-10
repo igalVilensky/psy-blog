@@ -112,7 +112,7 @@
         </ul>
 
         <!-- Profile Section -->
-        <div class="relative group">
+        <div v-if="currentUser" class="relative group">
           <NuxtLink
             to="/profile"
             :class="[
@@ -160,6 +160,40 @@
               </button>
             </div>
           </div>
+        </div>
+
+        <!-- Login/Register Buttons -->
+        <div v-else class="flex items-center space-x-4">
+          <!--  Login Button -->
+          <NuxtLink
+            to="/login"
+            class="flex items-center space-x-2 px-4 py-2 rounded-lg hover:bg-white/5 transition-all duration-300"
+          >
+            <i class="fas fa-sign-in-alt text-purple-400"></i>
+            <span
+              class="text-slate-300 font-medium hover:text-white transition-colors duration-300"
+              >Войти</span
+            >
+          </NuxtLink>
+
+          <!--  Register Button -->
+          <NuxtLink
+            to="/register"
+            class="relative inline-flex items-center justify-center px-6 py-2 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group"
+          >
+            <span
+              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
+            >
+              <i class="fas fa-arrow-right ml-2"></i>
+            </span>
+            <span
+              class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
+            >
+              <i class="fas fa-user-plus mr-2"></i>
+              Регистрация
+            </span>
+            <span class="relative invisible">Регистрация</span>
+          </NuxtLink>
         </div>
       </div>
 

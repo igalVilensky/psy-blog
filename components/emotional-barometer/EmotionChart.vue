@@ -1,10 +1,9 @@
-<!-- components/EmotionChart.vue -->
 <template>
-  <div class="w-full max-w-6xl mx-auto">
-    <div class="relative w-full bg-white rounded-lg shadow-lg p-4 sm:p-6">
-      <div class="w-full" :style="{ height: computedHeight + 'px' }">
-        <canvas ref="emotionGraph" class="w-full h-full"></canvas>
-      </div>
+  <div
+    class="w-full max-w-6xl mx-auto bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-2xl border border-indigo-500/20 p-4 sm:p-6"
+  >
+    <div class="relative w-full" :style="{ height: computedHeight + 'px' }">
+      <canvas ref="emotionGraph" class="w-full h-full"></canvas>
     </div>
   </div>
 </template>
@@ -106,13 +105,14 @@ onMounted(() => {
               font: {
                 size: window.innerWidth < 640 ? 10 : 12,
               },
+              color: "#E0E7FF", // Light text color for dark background
             },
           },
           tooltip: {
-            backgroundColor: "rgba(255, 255, 255, 0.9)",
-            titleColor: "#1f2937",
-            bodyColor: "#4b5563",
-            borderColor: "#e5e7eb",
+            backgroundColor: "rgba(30, 27, 75, 0.9)", // Dark background for tooltip
+            titleColor: "#E0E7FF", // Light text color
+            bodyColor: "#A5B4FC", // Lighter text color
+            borderColor: "#4F46E5", // Border color
             borderWidth: 1,
             padding: 12,
             displayColors: true,
@@ -132,6 +132,7 @@ onMounted(() => {
               font: {
                 size: window.innerWidth < 640 ? 10 : 12,
               },
+              color: "#E0E7FF", // Light text color for dark background
               maxRotation: 45,
               minRotation: 45,
             },
@@ -139,13 +140,14 @@ onMounted(() => {
           y: {
             beginAtZero: true,
             grid: {
-              color: "#f3f4f6",
+              color: "#4F46E5", // Grid line color
             },
             ticks: {
               stepSize: 1,
               font: {
                 size: window.innerWidth < 640 ? 10 : 12,
               },
+              color: "#E0E7FF", // Light text color for dark background
             },
           },
         },
@@ -197,3 +199,23 @@ watch(
   { deep: true }
 );
 </script>
+
+<style scoped>
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e1b4b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4f46e5;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6366f1;
+}
+</style>
