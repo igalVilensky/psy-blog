@@ -30,15 +30,15 @@
 
       <article
         v-if="post"
-        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden"
+        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
       >
         <!-- Featured Image Container -->
-        <div class="relative w-full h-[250px] sm:h-[350px]">
+        <div class="relative w-full h-[250px] sm:h-[350px] overflow-hidden">
           <nuxt-img
             v-if="post.image"
             :src="urlFor(post?.image)?.width(1200).height(675).url()"
             :alt="post?.title"
-            class="w-full h-full object-cover"
+            class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
             width="1200"
             height="675"
             loading="lazy"
@@ -164,7 +164,6 @@
         </div>
       </div>
 
-      <!-- Share Section -->
       <div
         class="mt-12 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8"
       >
@@ -181,36 +180,80 @@
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <!-- Twitter Share Button with Hover Effect -->
           <button
             @click="shareOn('twitter')"
-            class="flex items-center justify-center gap-2 p-3 rounded-lg bg-[#1DA1F2] text-white hover:bg-opacity-90 transition-all"
+            class="relative inline-flex items-center justify-center px-4 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group backdrop-blur-sm border border-[#1DA1F2]/20"
           >
-            <i class="fab fa-twitter"></i>
-            <span>Twitter</span>
+            <span
+              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#1DA1F2] to-[#1DA1F2]/80 group-hover:translate-x-0 ease"
+            >
+              <i class="fab fa-twitter"></i>
+            </span>
+            <span
+              class="absolute flex items-center justify-center w-full h-full text-[#1DA1F2] transition-all duration-300 transform group-hover:translate-x-full ease"
+            >
+              <i class="fab fa-twitter mr-2"></i>
+              Twitter
+            </span>
+            <span class="relative invisible">Twitter</span>
           </button>
 
+          <!-- Facebook Share Button with Hover Effect -->
           <button
             @click="shareOn('facebook')"
-            class="flex items-center justify-center gap-2 p-3 rounded-lg bg-[#4267B2] text-white hover:bg-opacity-90 transition-all"
+            class="relative inline-flex items-center justify-center px-4 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group backdrop-blur-sm border border-[#4267B2]/20"
           >
-            <i class="fab fa-facebook"></i>
-            <span>Facebook</span>
+            <span
+              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#4267B2] to-[#4267B2]/80 group-hover:translate-x-0 ease"
+            >
+              <i class="fab fa-facebook"></i>
+            </span>
+            <span
+              class="absolute flex items-center justify-center w-full h-full text-[#4267B2] transition-all duration-300 transform group-hover:translate-x-full ease"
+            >
+              <i class="fab fa-facebook mr-2"></i>
+              Facebook
+            </span>
+            <span class="relative invisible">Facebook</span>
           </button>
 
+          <!-- Telegram Share Button with Hover Effect -->
           <button
             @click="shareOn('telegram')"
-            class="flex items-center justify-center gap-2 p-3 rounded-lg bg-[#0088cc] text-white hover:bg-opacity-90 transition-all"
+            class="relative inline-flex items-center justify-center px-4 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group backdrop-blur-sm border border-[#0088cc]/20"
           >
-            <i class="fab fa-telegram"></i>
-            <span>Telegram</span>
+            <span
+              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0088cc] to-[#0088cc]/80 group-hover:translate-x-0 ease"
+            >
+              <i class="fab fa-telegram"></i>
+            </span>
+            <span
+              class="absolute flex items-center justify-center w-full h-full text-[#0088cc] transition-all duration-300 transform group-hover:translate-x-full ease"
+            >
+              <i class="fab fa-telegram mr-2"></i>
+              Telegram
+            </span>
+            <span class="relative invisible">Telegram</span>
           </button>
 
+          <!-- Copy Link Button with Hover Effect -->
           <button
             @click="copyLink"
-            class="flex items-center justify-center gap-2 p-3 rounded-lg bg-[#0EA5E9]/20 text-[#0EA5E9] hover:bg-[#0EA5E9]/30 transition-all"
+            class="relative inline-flex items-center justify-center px-4 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group backdrop-blur-sm border border-[#0EA5E9]/20"
           >
-            <i class="fas fa-link"></i>
-            <span>Копировать</span>
+            <span
+              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
+            >
+              <i class="fas fa-link"></i>
+            </span>
+            <span
+              class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
+            >
+              <i class="fas fa-link mr-2"></i>
+              Копировать
+            </span>
+            <span class="relative invisible">Копировать</span>
           </button>
         </div>
       </div>
@@ -225,18 +268,28 @@
         <p class="text-slate-300 mb-6">
           Подпишитесь на нашу рассылку, чтобы получать новые статьи первыми
         </p>
-        <div class="max-w-md mx-auto flex">
+        <div class="flex">
           <input
             type="email"
             v-model="email"
-            placeholder="Ваш email"
-            class="w-full px-4 py-3 rounded-l-lg bg-white/5 border border-white/10 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]"
+            placeholder="Введите ваш email"
+            class="w-full px-4 py-3 rounded-l-lg bg-slate-800/50 border border-slate-700 text-white placeholder-slate-400 focus:outline-none focus:border-[#C084FC] focus:ring-1 focus:ring-[#C084FC] transition-all"
           />
           <button
             @click="subscribeEmail"
-            class="bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white px-6 py-3 rounded-r-lg hover:from-[#22D3EE] hover:to-[#C084FC] transition-all"
+            class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-r-lg group"
           >
-            Подписаться
+            <span
+              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
+            >
+              <i class="fas fa-envelope"></i>
+            </span>
+            <span
+              class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
+            >
+              Подписаться
+            </span>
+            <span class="relative invisible">Подписаться</span>
           </button>
         </div>
       </div>

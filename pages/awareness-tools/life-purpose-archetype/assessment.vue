@@ -1,22 +1,47 @@
 <template>
-  <div
-    class="bg-gradient-to-br from-indigo-50 via-blue-50 to-white min-h-screen py-12"
-  >
-    <div class="container mx-auto px-4 max-w-3xl">
+  <div class="relative min-h-screen">
+    <!-- Animated Background -->
+    <div class="fixed inset-0 -z-1">
+      <div class="absolute top-0 left-0 w-full h-full bg-[#1A1F35]">
+        <!-- Enhanced Gradient Orbs -->
+        <div
+          class="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-[#0EA5E9]/10 to-[#22D3EE]/10 rounded-full blur-3xl animate-slow-drift opacity-60"
+        ></div>
+        <div
+          class="absolute bottom-1/4 right-1/3 w-80 h-80 bg-gradient-to-r from-[#F59E0B]/10 to-[#F97316]/10 rounded-full blur-3xl animate-slow-pulse opacity-40"
+        ></div>
+        <div
+          class="absolute top-1/3 right-1/4 w-72 h-72 bg-gradient-to-r from-[#E879F9]/10 to-[#C084FC]/10 rounded-full blur-3xl animate-slow-float opacity-50"
+        ></div>
+      </div>
+    </div>
+
+    <div class="container mx-auto px-4 max-w-3xl relative z-10 py-12">
       <!-- Progress Bar -->
-      <div class="mb-8 flex justify-between items-center">
+      <div class="mb-8 flex gap-8 justify-between items-center">
         <button
           @click="previousQuestion"
           :disabled="currentQuestionIndex === 0"
-          class="px-4 py-2 bg-white text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors duration-300"
+          class="relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group backdrop-blur-sm border border-[#0EA5E9]/20"
           :class="{
             'opacity-50 cursor-not-allowed': currentQuestionIndex === 0,
           }"
         >
-          ← Назад
+          <span
+            class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
+          >
+            <i class="fas fa-arrow-left"></i>
+          </span>
+          <span
+            class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:-translate-x-full ease"
+          >
+            <i class="fas fa-arrow-left mr-2"></i>
+            Назад
+          </span>
+          <span class="relative invisible">Назад</span>
         </button>
         <div class="flex-grow">
-          <div class="flex justify-between text-sm text-gray-600 mb-2">
+          <div class="flex justify-between text-sm text-slate-300 mb-2">
             <span
               >Вопрос {{ currentQuestionIndex + 1 }} из
               {{ totalQuestions }}</span
@@ -27,9 +52,9 @@
               }}%</span
             >
           </div>
-          <div class="w-full bg-gray-200 rounded-full h-2">
+          <div class="w-full bg-[#1E293B]/60 rounded-full h-2 backdrop-blur-sm">
             <div
-              class="bg-indigo-600 h-2 rounded-full transition-all duration-300"
+              class="bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] h-2 rounded-full transition-all duration-300"
               :style="{
                 width: `${
                   ((currentQuestionIndex + 1) / totalQuestions) * 100
@@ -43,9 +68,9 @@
       <!-- Question Card -->
       <div
         v-if="currentQuestion"
-        class="bg-white rounded-xl shadow-lg p-8 mb-8"
+        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8 mb-8 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
       >
-        <h2 class="text-2xl font-bold text-gray-800 mb-6">
+        <h2 class="text-2xl font-bold text-white/90 mb-6">
           {{ currentQuestion.questionText }}
         </h2>
 
@@ -58,11 +83,11 @@
               selectAnswer(index);
               nextQuestion();
             "
-            class="w-full text-left p-4 rounded-lg border transition-all duration-200"
+            class="w-full text-left p-4 rounded-lg border transition-all duration-200 backdrop-blur-sm"
             :class="[
               selectedAnswer === index
-                ? 'border-indigo-500 bg-indigo-50'
-                : 'border-gray-200 hover:border-indigo-200 hover:bg-gray-50',
+                ? 'border-[#0EA5E9] bg-[#0EA5E9]/10'
+                : 'border-[#0EA5E9]/20 hover:border-[#0EA5E9] hover:bg-[#0EA5E9]/10',
             ]"
           >
             <div class="flex items-center">
@@ -70,16 +95,16 @@
                 class="w-6 h-6 rounded-full border-2 mr-4 flex items-center justify-center"
                 :class="[
                   selectedAnswer === index
-                    ? 'border-indigo-500'
-                    : 'border-gray-300',
+                    ? 'border-[#0EA5E9]'
+                    : 'border-[#0EA5E9]/50',
                 ]"
               >
                 <div
                   v-if="selectedAnswer === index"
-                  class="w-3 h-3 bg-indigo-500 rounded-full"
+                  class="w-3 h-3 bg-[#0EA5E9] rounded-full"
                 ></div>
               </div>
-              <span class="text-lg">{{ option.text }}</span>
+              <span class="text-lg text-slate-300">{{ option.text }}</span>
             </div>
           </button>
         </div>
@@ -264,3 +289,65 @@ watch(
   { deep: true }
 );
 </script>
+
+<style scoped>
+@keyframes slow-drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-200px, 300px);
+  }
+}
+
+@keyframes slow-pulse {
+  0%,
+  100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes slow-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-200px);
+  }
+}
+
+.animate-slow-drift {
+  animation: slow-drift 15s ease-in-out infinite;
+}
+
+.animate-slow-pulse {
+  animation: slow-pulse 12s ease-in-out infinite;
+}
+
+.animate-slow-float {
+  animation: slow-float 15s ease-in-out infinite;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1f35;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0ea5e9;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #22d3ee;
+}
+</style>

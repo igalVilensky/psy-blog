@@ -1,49 +1,67 @@
 <template>
-  <div
-    class="bg-gradient-to-br from-indigo-50 via-blue-50 to-white min-h-screen py-12"
-  >
-    <div class="container mx-auto px-4 max-w-3xl">
+  <div class="relative min-h-screen">
+    <!-- Animated Background -->
+    <div class="fixed inset-0 -z-1">
+      <div class="absolute top-0 left-0 w-full h-full bg-[#1A1F35]">
+        <!-- Enhanced Gradient Orbs -->
+        <div
+          class="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-[#0EA5E9]/10 to-[#22D3EE]/10 rounded-full blur-3xl animate-slow-drift opacity-60"
+        ></div>
+        <div
+          class="absolute bottom-1/4 right-1/3 w-80 h-80 bg-gradient-to-r from-[#F59E0B]/10 to-[#F97316]/10 rounded-full blur-3xl animate-slow-pulse opacity-40"
+        ></div>
+        <div
+          class="absolute top-1/3 right-1/4 w-72 h-72 bg-gradient-to-r from-[#E879F9]/10 to-[#C084FC]/10 rounded-full blur-3xl animate-slow-float opacity-50"
+        ></div>
+      </div>
+    </div>
+
+    <div class="container mx-auto px-4 max-w-3xl relative z-10 py-12">
       <!-- Header -->
       <div class="mb-12 text-center">
-        <h1 class="text-4xl font-bold text-gray-900 mb-4">
+        <h1
+          class="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#E879F9]"
+        >
           Понимание 12 Архетипов
         </h1>
-        <p class="text-xl text-indigo-600 font-medium mb-8">
+        <p class="text-xl text-slate-300 font-medium mb-8">
           Откройте для себя глубокий смысл и характеристики архетипических
           образов Юнга
         </p>
       </div>
 
       <!-- Introduction Card -->
-      <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
-        <div class="border-l-4 border-indigo-600 p-8">
-          <div class="flex items-start mb-6">
-            <div class="p-2 bg-indigo-100 rounded-lg mr-4">
-              <i class="fas fa-book text-indigo-600 text-xl"></i>
-            </div>
-            <p class="text-lg text-gray-900 font-medium">Теория архетипов</p>
+      <div
+        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8 mb-8 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+      >
+        <div class="flex items-start mb-6">
+          <div class="p-2 bg-[#0EA5E9]/10 rounded-lg mr-4">
+            <i class="fas fa-book text-[#0EA5E9] text-xl"></i>
           </div>
-          <p class="text-gray-700 leading-relaxed text-lg mb-6">
-            12 архетипов Карла Юнга представляют собой основные человеческие
-            переживания и мотивации, которые находят отклик в различных
-            культурах.
-          </p>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div class="bg-gray-50 rounded-lg p-4">
-              <h3 class="text-gray-900 font-medium mb-2">Уникальность</h3>
-              <p class="text-gray-600">
-                Каждый архетип воплощает уникальные черты, сильные стороны и
-                возможные области для развития.
-              </p>
-            </div>
-            <div class="bg-gray-50 rounded-lg p-4">
-              <h3 class="text-gray-900 font-medium mb-2">Самопознание</h3>
-              <p class="text-gray-600">
-                Осознание своего доминирующего архетипа может дать ценные
-                инсайты о ваших естественных склонностях и жизненном
-                предназначении.
-              </p>
-            </div>
+          <p class="text-lg text-slate-300 font-medium">Теория архетипов</p>
+        </div>
+        <p class="text-slate-300 leading-relaxed text-lg mb-6">
+          12 архетипов Карла Юнга представляют собой основные человеческие
+          переживания и мотивации, которые находят отклик в различных культурах.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div
+            class="bg-[#1A1F35]/40 p-4 rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
+          >
+            <h3 class="text-slate-300 font-medium mb-2">Уникальность</h3>
+            <p class="text-slate-400">
+              Каждый архетип воплощает уникальные черты, сильные стороны и
+              возможные области для развития.
+            </p>
+          </div>
+          <div
+            class="bg-[#1A1F35]/40 p-4 rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
+          >
+            <h3 class="text-slate-300 font-medium mb-2">Самопознание</h3>
+            <p class="text-slate-400">
+              Осознание своего доминирующего архетипа может дать ценные инсайты
+              о ваших естественных склонностях и жизненном предназначении.
+            </p>
           </div>
         </div>
       </div>
@@ -53,39 +71,39 @@
         <div
           v-for="(archetype, index) in archetypes"
           :key="index"
-          class="bg-white rounded-xl shadow-lg p-8 transition-all duration-300 hover:shadow-xl"
+          class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
         >
           <div class="flex items-center mb-6">
-            <i :class="archetype.icon" class="text-2xl text-indigo-600"></i>
-            <h2 class="ml-4 text-2xl font-bold text-gray-800">
+            <i :class="archetype.icon" class="text-2xl text-[#0EA5E9]"></i>
+            <h2 class="ml-4 text-2xl font-bold text-white/90">
               {{ archetype.name }}
             </h2>
           </div>
 
           <div class="space-y-6">
-            <p class="text-gray-700 leading-relaxed">
+            <p class="text-slate-300 leading-relaxed">
               {{ archetype.description }}
             </p>
 
             <div>
-              <h3 class="font-bold text-gray-800 mb-3">
+              <h3 class="font-bold text-white/90 mb-3">
                 Ключевые характеристики:
               </h3>
               <div class="space-y-2">
                 <div
                   v-for="trait in archetype.traits"
                   :key="trait"
-                  class="flex items-center p-3 rounded-lg bg-indigo-50"
+                  class="flex items-center p-3 rounded-lg bg-[#0EA5E9]/10 border border-[#0EA5E9]/20"
                 >
-                  <div class="w-2 h-2 bg-indigo-600 rounded-full mr-3"></div>
-                  <span class="text-gray-700">{{ trait }}</span>
+                  <div class="w-2 h-2 bg-[#0EA5E9] rounded-full mr-3"></div>
+                  <span class="text-slate-300">{{ trait }}</span>
                 </div>
               </div>
             </div>
 
             <div>
-              <h3 class="font-bold text-gray-800 mb-3">Потенциал роста:</h3>
-              <p class="text-gray-700 leading-relaxed">
+              <h3 class="font-bold text-white/90 mb-3">Потенциал роста:</h3>
+              <p class="text-slate-300 leading-relaxed">
                 {{ archetype.growth }}
               </p>
             </div>
@@ -253,8 +271,63 @@ const archetypes = ref([
 </script>
 
 <style scoped>
-.hover\:shadow-lg:hover {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+@keyframes slow-drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-200px, 300px);
+  }
+}
+
+@keyframes slow-pulse {
+  0%,
+  100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes slow-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-200px);
+  }
+}
+
+.animate-slow-drift {
+  animation: slow-drift 15s ease-in-out infinite;
+}
+
+.animate-slow-pulse {
+  animation: slow-pulse 12s ease-in-out infinite;
+}
+
+.animate-slow-float {
+  animation: slow-float 15s ease-in-out infinite;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1f35;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0ea5e9;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #22d3ee;
 }
 </style>

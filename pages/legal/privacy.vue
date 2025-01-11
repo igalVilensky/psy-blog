@@ -1,38 +1,31 @@
 <template>
-  <div
-    class="relative min-h-screen bg-gradient-to-br from-[#0F172A] to-[#1E1B4B] flex flex-col items-center justify-center py-12"
-  >
+  <div class="relative min-h-screen">
     <!-- Animated Background -->
     <div class="fixed inset-0 -z-1">
-      <div class="absolute top-0 left-0 w-full h-full bg-[#0F172A]">
-        <!-- Gradient Orbs -->
+      <div class="absolute top-0 left-0 w-full h-full bg-[#1A1F35]">
+        <!-- Enhanced Gradient Orbs -->
         <div
-          class="absolute top-0 left-0 w-[500px] h-[500px] bg-purple-500/20 rounded-full blur-[120px] animate-float"
+          class="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-[#0EA5E9]/10 to-[#22D3EE]/10 rounded-full blur-3xl animate-slow-drift opacity-60"
         ></div>
         <div
-          class="absolute bottom-0 right-0 w-[400px] h-[400px] bg-blue-500/20 rounded-full blur-[100px] animate-float-delay"
+          class="absolute bottom-1/4 right-1/3 w-80 h-80 bg-gradient-to-r from-[#F59E0B]/10 to-[#F97316]/10 rounded-full blur-3xl animate-slow-pulse opacity-40"
         ></div>
-        <!-- Animated Grid -->
         <div
-          class="absolute inset-0 bg-gradient-to-b from-transparent to-[#0F172A]/80"
-        >
-          <div class="absolute inset-0 bg-grid-white/[0.02] animate-grid"></div>
-        </div>
+          class="absolute top-1/3 right-1/4 w-72 h-72 bg-gradient-to-r from-[#E879F9]/10 to-[#C084FC]/10 rounded-full blur-3xl animate-slow-float opacity-50"
+        ></div>
       </div>
     </div>
 
-    <div
-      class="w-full max-w-4xl bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl shadow-2xl rounded-3xl overflow-hidden border border-indigo-500/20 p-10"
-    >
+    <div class="container mx-auto px-4 max-w-6xl relative z-10 pb-12 pt-12">
       <!-- Hero Section -->
       <section class="text-center mb-12">
         <h1
-          class="text-3xl sm:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-500 tracking-tight mb-6"
+          class="text-4xl sm:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] tracking-tight mb-6"
         >
           Политика конфиденциальности
         </h1>
         <p
-          class="text-lg sm:text-xl text-indigo-200/80 max-w-2xl mx-auto leading-relaxed"
+          class="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed"
         >
           Мы ценим вашу конфиденциальность и стремимся защищать ваши
           персональные данные.
@@ -41,21 +34,21 @@
 
       <!-- Privacy Policy Content -->
       <div
-        class="bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-2xl border border-indigo-500/20 p-8 mb-12"
+        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8 mb-12"
       >
         <!-- Last Updated Date -->
-        <div class="text-sm text-indigo-200/80 mb-8">
+        <div class="text-sm text-slate-300/80 mb-8">
           Последнее обновление: {{ formattedDate }}
         </div>
 
         <!-- Table of Contents -->
-        <nav class="mb-12 p-6 bg-indigo-500/10 rounded-xl">
+        <nav class="mb-12 p-6 bg-[#0EA5E9]/10 rounded-xl">
           <h2 class="text-lg font-semibold text-white/90 mb-4">Содержание</h2>
           <ul class="space-y-2">
             <li v-for="(section, index) in sections" :key="index">
               <a
                 :href="`#section-${index + 1}`"
-                class="text-indigo-400 hover:text-indigo-300 transition-colors duration-200"
+                class="text-[#0EA5E9] hover:text-[#22D3EE] transition-colors duration-200"
               >
                 {{ section.title }}
               </a>
@@ -71,27 +64,29 @@
             :id="`section-${index + 1}`"
             class="scroll-mt-24 pt-8 first:pt-0"
           >
-            <h2 class="text-2xl font-bold text-white/90 mb-6">
+            <h2
+              class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] mb-6"
+            >
               {{ index + 1 }}. {{ section.title }}
             </h2>
-            <div class="text-indigo-200/80 leading-relaxed whitespace-pre-line">
+            <div class="text-slate-300/80 leading-relaxed whitespace-pre-line">
               {{ section.content }}
             </div>
           </section>
         </div>
 
         <!-- Contact Section -->
-        <div class="mt-16 p-6 bg-indigo-500/10 rounded-xl">
+        <div class="mt-16 p-6 bg-[#0EA5E9]/10 rounded-xl">
           <h2 class="text-xl font-semibold text-white/90 mb-4">
             Свяжитесь с нами
           </h2>
-          <p class="text-indigo-200/80">
+          <p class="text-slate-300/80">
             Если у вас возникли вопросы относительно нашей политики
             конфиденциальности, пожалуйста, свяжитесь с нами:
           </p>
           <a
             href="mailto:anastasiagelmut@gmail.com"
-            class="inline-block mt-4 text-indigo-400 hover:text-indigo-300 transition-colors duration-200"
+            class="inline-block mt-4 text-[#0EA5E9] hover:text-[#22D3EE] transition-colors duration-200"
           >
             anastasiagelmut@gmail.com
           </a>
@@ -170,36 +165,46 @@ const sections = [
 </script>
 
 <style scoped>
-@keyframes float {
+@keyframes slow-drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-200px, 300px);
+  }
+}
+
+@keyframes slow-pulse {
+  0%,
+  100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes slow-float {
   0%,
   100% {
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-20px);
+    transform: translateY(-200px);
   }
 }
 
-@keyframes grid {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(-20px);
-  }
+.animate-slow-drift {
+  animation: slow-drift 15s ease-in-out infinite;
 }
 
-.animate-float {
-  animation: float 6s ease-in-out infinite;
+.animate-slow-pulse {
+  animation: slow-pulse 12s ease-in-out infinite;
 }
 
-.animate-float-delay {
-  animation: float 6s ease-in-out infinite;
-  animation-delay: -3s;
-}
-
-.animate-grid {
-  animation: grid 20s linear infinite;
+.animate-slow-float {
+  animation: slow-float 15s ease-in-out infinite;
 }
 
 /* Custom scrollbar */
@@ -208,15 +213,15 @@ const sections = [
 }
 
 ::-webkit-scrollbar-track {
-  background: #1e1b4b;
+  background: #1a1f35;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #4f46e5;
+  background: #0ea5e9;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #6366f1;
+  background: #22d3ee;
 }
 </style>

@@ -52,31 +52,41 @@
 
           <!-- Actions -->
           <div class="flex gap-4 w-full sm:w-auto">
-            <!-- Settings Button -->
+            <!-- Settings Button with Hover Effect -->
             <button
-              class="group relative inline-flex items-center justify-center w-full sm:w-auto px-4 py-2 bg-[#0EA5E9]/20 text-[#0EA5E9] rounded-lg overflow-hidden transition-colors hover:bg-[#0EA5E9]/30"
+              class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-2 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
             >
-              <span class="relative z-10">
-                <i class="fas fa-cog text-sm mr-2"></i>
+              <span
+                class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
+              >
+                <i class="fas fa-cog"></i>
+              </span>
+              <span
+                class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
+              >
+                <i class="fas fa-cog mr-2"></i>
                 Настройки
               </span>
-              <div
-                class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-[#0EA5E9]/40 transition-transform duration-300"
-              ></div>
+              <span class="relative invisible">Настройки</span>
             </button>
 
-            <!-- Logout Button -->
+            <!-- Logout Button with Hover Effect -->
             <button
               @click="logoutUser"
-              class="group relative inline-flex items-center justify-center w-full sm:w-auto px-4 py-2 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white rounded-lg overflow-hidden transition-colors"
+              class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-2 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
             >
-              <span class="relative z-10">
-                <i class="fas fa-sign-out-alt text-sm mr-2"></i>
+              <span
+                class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
+              >
+                <i class="fas fa-sign-out-alt"></i>
+              </span>
+              <span
+                class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
+              >
+                <i class="fas fa-sign-out-alt mr-2"></i>
                 Выйти
               </span>
-              <div
-                class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-[#0EA5E9]/60 transition-transform duration-300"
-              ></div>
+              <span class="relative invisible">Выйти</span>
             </button>
           </div>
         </div>
@@ -100,19 +110,24 @@
               Эмоциональный барометр
             </h2>
 
-            <!-- CTA Link -->
+            <!-- CTA Link with Hover Effect -->
             <div v-if="emotionBarometerStats.totalEntries > 0" class="mb-6">
               <NuxtLink
                 to="/awareness-tools/emotional-barometer"
-                class="group relative inline-flex items-center justify-start w-full sm:w-auto px-6 py-2 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white rounded-lg overflow-hidden transition-colors"
+                class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-2 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
               >
-                <span class="relative z-10">
-                  <i class="fas fa-arrow-right text-sm mr-2"></i>
+                <span
+                  class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
+                >
+                  <i class="fas fa-arrow-right"></i>
+                </span>
+                <span
+                  class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
+                >
+                  <i class="fas fa-arrow-right mr-2"></i>
                   Перейти к барометру
                 </span>
-                <div
-                  class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-[#0EA5E9]/60 transition-transform duration-300"
-                ></div>
+                <span class="relative invisible">Перейти к барометру</span>
               </NuxtLink>
             </div>
 
@@ -140,15 +155,20 @@
               </p>
               <NuxtLink
                 to="/awareness-tools/emotional-barometer"
-                class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-2 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white rounded-lg overflow-hidden transition-colors mt-4"
+                class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-2 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
               >
-                <span class="relative z-10">
-                  <i class="fas fa-play-circle text-sm mr-2"></i>
+                <span
+                  class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
+                >
+                  <i class="fas fa-play-circle"></i>
+                </span>
+                <span
+                  class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
+                >
+                  <i class="fas fa-play-circle mr-2"></i>
                   Перейти к барометру
                 </span>
-                <div
-                  class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-[#0EA5E9]/60 transition-transform duration-300"
-                ></div>
+                <span class="relative invisible">Перейти к барометру</span>
               </NuxtLink>
             </div>
 
@@ -221,9 +241,19 @@
                 Избранные статьи
               </h2>
               <button
-                class="text-sm text-slate-400 hover:text-[#E879F9] transition-colors"
+                class="group relative inline-flex items-center justify-center px-4 py-2 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#E879F9]/20"
               >
-                Смотреть все
+                <span
+                  class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#E879F9] to-[#C084FC] group-hover:translate-x-0 ease"
+                >
+                  <i class="fas fa-arrow-right"></i>
+                </span>
+                <span
+                  class="absolute flex items-center justify-center w-full h-full text-[#E879F9] transition-all duration-300 transform group-hover:translate-x-full ease"
+                >
+                  Смотреть все
+                </span>
+                <span class="relative invisible">Смотреть все</span>
               </button>
             </div>
 

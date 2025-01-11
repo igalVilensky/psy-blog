@@ -82,21 +82,51 @@
           <div class="pt-8 flex space-x-4">
             <a
               href="#"
-              class="p-3 bg-[#0EA5E9]/10 rounded-lg hover:bg-[#0EA5E9]/20 transition-all duration-300"
+              class="group relative inline-flex items-center justify-center p-3 bg-[#0EA5E9]/10 rounded-lg overflow-hidden transition-all duration-300"
             >
-              <i class="fab fa-telegram text-[#0EA5E9] text-xl"></i>
+              <span
+                class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] group-hover:translate-x-0 ease"
+              >
+                <i class="fab fa-telegram"></i>
+              </span>
+              <span
+                class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
+              >
+                <i class="fab fa-telegram"></i>
+              </span>
+              <span class="relative invisible">Telegram</span>
             </a>
             <a
               href="#"
-              class="p-3 bg-[#F59E0B]/10 rounded-lg hover:bg-[#F59E0B]/20 transition-all duration-300"
+              class="group relative inline-flex items-center justify-center p-3 bg-[#F59E0B]/10 rounded-lg overflow-hidden transition-all duration-300"
             >
-              <i class="fab fa-instagram text-[#F59E0B] text-xl"></i>
+              <span
+                class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#F59E0B] to-[#F97316] group-hover:translate-x-0 ease"
+              >
+                <i class="fab fa-instagram"></i>
+              </span>
+              <span
+                class="absolute flex items-center justify-center w-full h-full text-[#F59E0B] transition-all duration-300 transform group-hover:translate-x-full ease"
+              >
+                <i class="fab fa-instagram"></i>
+              </span>
+              <span class="relative invisible">Instagram</span>
             </a>
             <a
               href="#"
-              class="p-3 bg-[#E879F9]/10 rounded-lg hover:bg-[#E879F9]/20 transition-all duration-300"
+              class="group relative inline-flex items-center justify-center p-3 bg-[#E879F9]/10 rounded-lg overflow-hidden transition-all duration-300"
             >
-              <i class="fab fa-whatsapp text-[#E879F9] text-xl"></i>
+              <span
+                class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#E879F9] to-[#C084FC] group-hover:translate-x-0 ease"
+              >
+                <i class="fab fa-whatsapp"></i>
+              </span>
+              <span
+                class="absolute flex items-center justify-center w-full h-full text-[#E879F9] transition-all duration-300 transform group-hover:translate-x-full ease"
+              >
+                <i class="fab fa-whatsapp"></i>
+              </span>
+              <span class="relative invisible">WhatsApp</span>
             </a>
           </div>
         </div>
@@ -167,19 +197,26 @@
               </h4>
               <div class="flex">
                 <input
-                  v-model="subscribeEmail"
                   type="email"
-                  placeholder="Ваш Email"
-                  class="w-full px-4 py-2 bg-[#1A1F35]/40 border border-white/10 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]/50 text-white placeholder-slate-400 transition-all duration-300"
+                  v-model="email"
+                  placeholder="Введите ваш email"
+                  class="w-full px-4 py-3 rounded-l-lg bg-slate-800/50 border border-slate-700 text-white placeholder-slate-400 focus:outline-none focus:border-[#C084FC] focus:ring-1 focus:ring-[#C084FC] transition-all"
                 />
                 <button
-                  @click.prevent="subscribe"
-                  class="group relative inline-flex items-center justify-center px-6 py-2 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white font-medium rounded-r-lg overflow-hidden transition-all hover:from-[#22D3EE] hover:to-[#C084FC]"
+                  @click="subscribeEmail"
+                  class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-r-lg group"
                 >
-                  <span class="relative z-10">Подписаться</span>
-                  <div
-                    class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-gradient-to-r from-[#22D3EE] to-[#C084FC] transition-transform duration-300"
-                  ></div>
+                  <span
+                    class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
+                  >
+                    <i class="fas fa-envelope"></i>
+                  </span>
+                  <span
+                    class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
+                  >
+                    Подписаться
+                  </span>
+                  <span class="relative invisible">Подписаться</span>
                 </button>
               </div>
             </div>
@@ -188,12 +225,23 @@
             <button
               type="submit"
               :class="[
-                'w-full group relative inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white font-medium rounded-lg overflow-hidden transition-all hover:from-[#22D3EE] hover:to-[#C084FC]',
+                'w-full group relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20',
                 isSubmitting ? 'opacity-75 cursor-wait' : '',
               ]"
               :disabled="isSubmitting"
             >
-              <span class="relative z-10">
+              <span
+                class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
+              >
+                <i
+                  v-if="isSubmitting"
+                  class="fas fa-spinner fa-spin text-xl"
+                ></i>
+                <i v-else class="fas fa-paper-plane text-xl"></i>
+              </span>
+              <span
+                class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
+              >
                 <i
                   v-if="isSubmitting"
                   class="fas fa-spinner fa-spin text-xl"
@@ -203,9 +251,7 @@
                   isSubmitting ? "Отправка..." : "Отправить сообщение"
                 }}</span>
               </span>
-              <div
-                class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-gradient-to-r from-[#22D3EE] to-[#C084FC] transition-transform duration-300"
-              ></div>
+              <span class="relative invisible">Отправить сообщение</span>
             </button>
           </form>
         </div>

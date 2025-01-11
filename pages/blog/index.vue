@@ -43,7 +43,7 @@
               'px-6 py-3 rounded-full transition-all duration-300 font-medium relative overflow-hidden group backdrop-blur-sm',
               activeTab === category
                 ? 'bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white'
-                : 'bg-white/10 text-slate-300 border border-white/10',
+                : 'bg-white/10 text-white border border-white/10',
             ]"
           >
             <span class="relative z-10">{{ category }}</span>
@@ -62,14 +62,14 @@
           :key="post._id"
           :to="`/blog/${post.slug.current}`"
           @click="incrementViewCount(post._id)"
-          class="group bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden transform transition-all duration-300 hover:-translate-y-2"
+          class="group bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
         >
-          <div class="relative overflow-hidden">
+          <div class="relative overflow-hidden aspect-[4/3]">
             <nuxt-img
               v-if="post.image"
               :src="urlFor(post?.image)?.width(550).height(310).url()"
               :alt="post.title"
-              class="w-full h-52 object-cover transition-transform duration-500 group-hover:scale-110"
+              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               width="550"
               height="310"
               loading="lazy"

@@ -96,7 +96,7 @@
                     {{ podcast.title }}
                   </h3>
                   <span
-                    class="inline-block bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white px-4 py-1.5 rounded-full text-sm whitespace-nowrap backdrop-blur-sm"
+                    class="inline-block text-center bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white px-4 py-1.5 rounded-full text-sm whitespace-nowrap backdrop-blur-sm"
                   >
                     {{ podcast.category }}
                   </span>
