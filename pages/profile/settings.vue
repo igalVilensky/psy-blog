@@ -60,63 +60,69 @@
             <!-- Profile Form -->
             <form @submit.prevent="saveProfile" class="space-y-6">
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <!-- Display Name -->
                 <div class="space-y-2">
-                  <label class="block text-sm font-medium text-slate-300"
-                    >Отображаемое имя *</label
-                  >
+                  <label class="block text-sm font-medium text-slate-300">
+                    Отображаемое имя *
+                  </label>
                   <input
                     v-model="displayName"
                     type="text"
                     required
+                    placeholder="Введите ваше имя"
                     class="w-full px-4 py-3 rounded-lg bg-white/5 border border-[#0EA5E9]/20 text-white placeholder-slate-400/50 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]"
                   />
                 </div>
 
+                <!-- Profession -->
                 <div class="space-y-2">
-                  <label class="block text-sm font-medium text-slate-300"
-                    >Профессия</label
-                  >
+                  <label class="block text-sm font-medium text-slate-300">
+                    Профессия
+                  </label>
                   <input
                     v-model="profession"
                     type="text"
+                    placeholder="Введите вашу профессию"
                     class="w-full px-4 py-3 rounded-lg bg-white/5 border border-[#0EA5E9]/20 text-white placeholder-slate-400/50 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]"
                   />
                 </div>
 
+                <!-- Age -->
                 <div class="space-y-2">
-                  <label class="block text-sm font-medium text-slate-300"
-                    >Возраст</label
-                  >
+                  <label class="block text-sm font-medium text-slate-300">
+                    Возраст
+                  </label>
                   <input
                     v-model="age"
                     type="number"
                     min="13"
                     max="120"
+                    placeholder="Введите ваш возраст"
                     class="w-full px-4 py-3 rounded-lg bg-white/5 border border-[#0EA5E9]/20 text-white placeholder-slate-400/50 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]"
                   />
                 </div>
 
+                <!-- Gender -->
                 <div class="space-y-2">
-                  <label class="block text-sm font-medium text-slate-300"
-                    >Пол</label
-                  >
+                  <label class="block text-sm font-medium text-slate-300">
+                    Пол
+                  </label>
                   <select
                     v-model="gender"
                     class="w-full px-4 py-3 rounded-lg bg-white/5 border border-[#0EA5E9]/20 text-white placeholder-slate-400/50 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]"
                   >
                     <option value="" disabled>Выберите пол</option>
-                    <option value="male">Мужской</option>
-                    <option value="female">Женский</option>
-                    <option value="other">Другой</option>
+                    <option value="Мужской">Мужской</option>
+                    <option value="Женский">Женский</option>
                   </select>
                 </div>
               </div>
 
               <!-- About Section -->
               <div class="space-y-2">
-                <label class="block text-sm font-medium text-slate-300"
-                  >О себе</label
-                >
+                <label class="block text-sm font-medium text-slate-300">
+                  О себе
+                </label>
                 <textarea
                   v-model="aboutYourself"
                   class="w-full px-4 py-3 rounded-lg bg-white/5 border border-[#0EA5E9]/20 text-white placeholder-slate-400/50 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]"
@@ -125,17 +131,17 @@
                   placeholder="Расскажите немного о себе..."
                 ></textarea>
                 <div class="flex justify-end">
-                  <span class="text-sm text-slate-400"
-                    >{{ aboutYourself.length }}/300</span
-                  >
+                  <span class="text-sm text-slate-400">
+                    {{ aboutYourself.length }}/300
+                  </span>
                 </div>
               </div>
 
               <!-- Social Media Links -->
               <div class="space-y-2">
-                <label class="block text-sm font-medium text-slate-300"
-                  >Социальные сети</label
-                >
+                <label class="block text-sm font-medium text-slate-300">
+                  Социальные сети
+                </label>
                 <div class="space-y-4">
                   <div
                     v-for="(platform, index) in socialMedia"
@@ -192,6 +198,72 @@
                   Сохранить изменения
                 </span>
                 <span class="relative invisible">Сохранить изменения</span>
+              </button>
+            </form>
+          </section>
+          <!-- Feedback Section -->
+          <section
+            class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8"
+          >
+            <h2 class="text-xl font-bold text-white/90 mb-6">Обратная связь</h2>
+            <form @submit.prevent="submitFeedbackForm" class="space-y-6">
+              <!-- Name -->
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-slate-300"
+                  >Имя</label
+                >
+                <input
+                  v-model="feedbackForm.name"
+                  type="text"
+                  placeholder="Введите ваше имя"
+                  class="w-full px-4 py-3 rounded-lg bg-white/5 border border-[#0EA5E9]/20 text-white placeholder-slate-400/50 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]"
+                />
+              </div>
+
+              <!-- Email -->
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-slate-300"
+                  >Email</label
+                >
+                <input
+                  v-model="feedbackForm.email"
+                  type="email"
+                  placeholder="Введите ваш email"
+                  class="w-full px-4 py-3 rounded-lg bg-white/5 border border-[#0EA5E9]/20 text-white placeholder-slate-400/50 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]"
+                />
+              </div>
+
+              <!-- Message -->
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-slate-300"
+                  >Сообщение</label
+                >
+                <textarea
+                  v-model="feedbackForm.message"
+                  class="w-full px-4 py-3 rounded-lg bg-white/5 border border-[#0EA5E9]/20 text-white placeholder-slate-400/50 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]"
+                  rows="4"
+                  placeholder="Напишите ваш отзыв..."
+                ></textarea>
+              </div>
+
+              <!-- Submit Button -->
+              <button
+                type="submit"
+                :disabled="isSubmittingFeedback"
+                class="group relative inline-flex items-center justify-center w-full px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
+              >
+                <span
+                  class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
+                >
+                  <i class="fas fa-paper-plane"></i>
+                </span>
+                <span
+                  class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
+                >
+                  <i class="fas fa-paper-plane mr-2"></i>
+                  Отправить отзыв
+                </span>
+                <span class="relative invisible">Отправить отзыв</span>
               </button>
             </form>
           </section>
@@ -256,17 +328,41 @@
         </div>
       </div>
     </div>
+    <!-- Notification Component -->
+    <Notification
+      v-if="notificationVisible"
+      :message="notificationMessage"
+      :type="notificationType"
+      @close="hideNotification"
+      class="z-50"
+    />
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router"; // Import useRouter for navigation
-import { getAuth } from "firebase/auth";
+import { ref, reactive } from "vue";
+import { useRouter } from "vue-router";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { submitContactForm } from "@/api/firebase/contact";
 import { fetchUserData, updateUserData } from "@/api/firebase/userProfile";
+import { useNotification } from "@/composables/useNotification";
+import Notification from "@/components/base/Notification.vue";
 
 // Initialize router
 const router = useRouter();
+
+// Initialize the notification composable
+const {
+  notificationMessage,
+  notificationType,
+  notificationVisible,
+  showNotification,
+  hideNotification,
+} = useNotification();
+
+// Initialize Firestore
+const db = getFirestore();
 
 // Bio/Description Fields
 const displayName = ref("");
@@ -274,29 +370,33 @@ const profession = ref("");
 const age = ref("");
 const gender = ref("");
 const aboutYourself = ref("");
-// Social Media
-const socialMedia = ref([{ type: "telegram", url: "" }]); // Initialize with one platform
-// Feedback
-const feedback = ref("");
+const socialMedia = ref([{ type: "telegram", url: "" }]);
 
-// Fetch user data on component mount
-onMounted(async () => {
-  const auth = getAuth();
-  const user = auth.currentUser;
+// Feedback Form
+const feedbackForm = reactive({
+  name: "",
+  email: "",
+  message: "",
+});
+const isSubmittingFeedback = ref(false);
 
+// Fetch user data when authentication state changes
+onAuthStateChanged(getAuth(), async (user) => {
   if (user) {
     const userData = await fetchUserData(user.uid);
+
     if (userData) {
       displayName.value = userData.displayName || "";
       profession.value = userData.profession || "";
       age.value = userData.age || "";
       gender.value = userData.gender || "";
       aboutYourself.value = userData.aboutYourself || "";
-      // Ensure socialMedia is an array of objects
       socialMedia.value = Array.isArray(userData.socialMedia)
         ? userData.socialMedia
         : [{ type: "telegram", url: "" }];
     }
+  } else {
+    router.push("/login");
   }
 });
 
@@ -312,18 +412,17 @@ const removeSocialPlatform = (index) => {
 
 // Save Profile
 const saveProfile = async () => {
-  const auth = getAuth();
-  const user = auth.currentUser;
+  const user = getAuth().currentUser;
 
   if (!user) {
-    alert("Пользователь не авторизован.");
+    showNotification("Пользователь не авторизован.", "error");
     return;
   }
 
   const data = {
     displayName: displayName.value,
     profession: profession.value,
-    socialMedia: socialMedia.value, // Ensure this is an array of objects
+    socialMedia: socialMedia.value,
     age: age.value,
     gender: gender.value,
     aboutYourself: aboutYourself.value,
@@ -331,19 +430,22 @@ const saveProfile = async () => {
 
   const result = await updateUserData(user.uid, data);
   if (result.success) {
-    alert("Изменения сохранены!");
-    goBackToProfile(); // Redirect back to profile after saving
+    showNotification("Изменения сохранены!", "success");
+    goBackToProfile();
   } else {
-    alert("Ошибка при сохранении изменений: " + result.message);
+    showNotification(
+      "Ошибка при сохранении изменений: " + result.message,
+      "error"
+    );
   }
 };
 
 // Redirect back to profile
 const goBackToProfile = () => {
   if (displayName.value) {
-    router.push(`/profile/${displayName.value}`); // Redirect to [username].vue
+    router.push(`/profile/${displayName.value}`);
   } else {
-    router.push("/profile"); // Fallback if displayName is not set
+    router.push("/profile");
   }
 };
 
@@ -354,24 +456,39 @@ const confirmDeleteAccount = () => {
       "Вы уверены, что хотите удалить аккаунт? Это действие нельзя отменить."
     )
   ) {
-    alert("Аккаунт удален.");
+    showNotification("Аккаунт удален.", "success");
     // Add backend logic here to delete the account
   }
 };
 
 // Contact Support
 const contactSupport = () => {
-  router.push("/contact"); // Redirect to the /contact route
+  showNotification(
+    "Свяжитесь с поддержкой через форму обратной связи.",
+    "info"
+  );
+  router.push("/contact");
 };
 
 // Submit Feedback
-const submitFeedback = () => {
-  if (feedback.value.trim() === "") {
-    alert("Пожалуйста, введите ваш отзыв перед отправкой.");
+const submitFeedbackForm = async () => {
+  if (feedbackForm.message.trim() === "") {
+    showNotification("Пожалуйста, введите ваш отзыв перед отправкой.", "error");
     return;
   }
 
-  alert("Спасибо за ваш отзыв!");
-  feedback.value = "";
+  isSubmittingFeedback.value = true;
+
+  const result = await submitContactForm(db, feedbackForm);
+  if (result.success) {
+    showNotification(result.message, "success");
+    feedbackForm.name = "";
+    feedbackForm.email = "";
+    feedbackForm.message = "";
+  } else {
+    showNotification(result.message, "error");
+  }
+
+  isSubmittingFeedback.value = false;
 };
 </script>

@@ -21,7 +21,7 @@
         class="bg-gradient-to-b from-[#1A1F35]/60 to-[#1E293B]/80 backdrop-blur-xl rounded-3xl border border-white/10 p-10 mb-8 shadow-2xl"
       >
         <div
-          class="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-8"
+          class="flex flex-col sm:flex-row items-center justify-between gap-8"
         >
           <div class="flex flex-col sm:flex-row items-center gap-8 w-full">
             <!-- Enhanced Avatar Section -->
@@ -35,32 +35,23 @@
                 @update:avatarUrl="avatarUrl = $event"
                 class="w-32 h-32 rounded-full border-4 border-[#0EA5E9]/30 transition-transform duration-300 group-hover:scale-105"
               />
+              <!-- Camera Icon -->
               <div
-                class="absolute -bottom-2 right-0 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] p-2 rounded-full shadow-lg"
+                class="absolute -bottom-2 flex-shrink-0 flex right-0 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] p-2 rounded-full shadow-lg"
               >
                 <i class="fas fa-camera text-white"></i>
               </div>
             </div>
 
             <!-- Enhanced User Info -->
-            <div class="text-center sm:text-left">
-              <h1 class="text-3xl font-bold text-white/90 mb-3">
-                {{ authStore.user?.displayName || "User" }}
-              </h1>
-              <p class="text-lg text-slate-300 font-medium mb-4">
-                {{ authStore.user?.email || "Email not provided" }}
-              </p>
-              <div class="flex flex-wrap gap-3">
-                <span
-                  class="px-4 py-1.5 bg-[#0EA5E9]/20 rounded-full text-[#0EA5E9] text-sm font-medium"
-                >
-                  <i class="fas fa-user-circle mr-2"></i>Profile
-                </span>
-                <span
-                  class="px-4 py-1.5 bg-[#E879F9]/20 rounded-full text-[#E879F9] text-sm font-medium"
-                >
-                  <i class="fas fa-chart-line mr-2"></i>Analytics
-                </span>
+            <div class="text-center sm:text-left sm:flex sm:items-center">
+              <div>
+                <h1 class="text-3xl font-bold text-white/90 mb-3">
+                  {{ authStore.user?.displayName || "User" }}
+                </h1>
+                <p class="text-lg text-slate-300 font-medium mb-4">
+                  {{ authStore.user?.email || "Email not provided" }}
+                </p>
               </div>
             </div>
           </div>
@@ -94,7 +85,7 @@
                 <i class="fas fa-sign-out-alt"></i>
               </span>
               <span
-                class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
+                class="absolute flex items-center justify-center w-full h-full bg-[#E879F9]/20 text-[#E879F9] font-medium transition-all duration-300 transform group-hover:translate-x-full ease"
               >
                 <i class="fas fa-sign-out-alt mr-2"></i>Выйти
               </span>
@@ -104,7 +95,7 @@
         </div>
       </div>
 
-      <!-- Enhanced Bio Section -->
+      <!-- Bio Section -->
       <div
         class="bg-gradient-to-b from-[#1A1F35]/60 to-[#1E293B]/80 backdrop-blur-xl rounded-3xl border border-white/10 p-6 sm:p-10 mb-8 shadow-2xl"
       >
@@ -147,46 +138,14 @@
           <p class="text-slate-300 mt-4">Загрузка данных...</p>
         </div>
 
-        <!-- No Data State -->
-        <div
-          v-else-if="!bioDataExists"
-          class="flex flex-col items-center justify-center h-64 text-center"
-        >
-          <div
-            class="w-20 h-20 bg-[#0EA5E9]/20 rounded-full flex items-center justify-center mb-6"
-          >
-            <i class="fas fa-user-edit text-4xl text-[#0EA5E9]"></i>
-          </div>
-          <p class="text-xl text-slate-300 mb-4">Добавьте информацию о себе</p>
-          <p class="text-slate-400 mb-6 max-w-md">
-            Расскажите о себе, чтобы другие пользователи могли лучше узнать вас
-          </p>
-          <NuxtLink
-            to="/profile/settings"
-            class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 hover:shadow-lg"
-          >
-            <span
-              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
-            >
-              <i class="fas fa-plus"></i>
-            </span>
-            <span
-              class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
-            >
-              <i class="fas fa-plus mr-2"></i>Добавить информацию
-            </span>
-            <span class="relative invisible">Добавить информацию</span>
-          </NuxtLink>
-        </div>
-
         <!-- Bio Data -->
         <div v-else class="space-y-8">
           <!-- Info Cards Grid -->
           <div
             class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
           >
+            <!-- Profession -->
             <div
-              v-if="profession"
               class="bg-[#1A1F35]/40 p-4 sm:p-6 rounded-2xl border border-white/5 hover:border-[#0EA5E9]/30 transition-colors group"
             >
               <div class="flex items-center gap-3 sm:gap-4 mb-3">
@@ -201,11 +160,14 @@
                   Профессия
                 </p>
               </div>
-              <p class="text-white/90 text-base sm:text-lg">{{ profession }}</p>
+              <p v-if="profession" class="text-white/90 text-base sm:text-lg">
+                {{ profession }}
+              </p>
+              <p v-else class="text-slate-400 text-sm">Не указано</p>
             </div>
 
+            <!-- Social Media -->
             <div
-              v-if="socialMedia?.length > 0"
               class="bg-[#1A1F35]/40 p-4 sm:p-6 rounded-2xl border border-white/5 hover:border-[#0EA5E9]/30 transition-colors group"
             >
               <div class="flex items-center gap-3 sm:gap-4 mb-3">
@@ -220,7 +182,7 @@
                   Социальные сети
                 </p>
               </div>
-              <div class="space-y-2">
+              <div v-if="socialMedia?.length > 0" class="space-y-2">
                 <div
                   v-for="(platform, index) in socialMedia"
                   :key="index"
@@ -245,10 +207,11 @@
                   </a>
                 </div>
               </div>
+              <p v-else class="text-slate-400 text-sm">Не указано</p>
             </div>
 
+            <!-- Age -->
             <div
-              v-if="age"
               class="bg-[#1A1F35]/40 p-4 sm:p-6 rounded-2xl border border-white/5 hover:border-[#0EA5E9]/30 transition-colors group"
             >
               <div class="flex items-center gap-3 sm:gap-4 mb-3">
@@ -263,11 +226,14 @@
                   Возраст
                 </p>
               </div>
-              <p class="text-white/90 text-base sm:text-lg">{{ age }}</p>
+              <p v-if="age" class="text-white/90 text-base sm:text-lg">
+                {{ age }}
+              </p>
+              <p v-else class="text-slate-400 text-sm">Не указано</p>
             </div>
 
+            <!-- Gender -->
             <div
-              v-if="gender"
               class="bg-[#1A1F35]/40 p-4 sm:p-6 rounded-2xl border border-white/5 hover:border-[#0EA5E9]/30 transition-colors group"
             >
               <div class="flex items-center gap-3 sm:gap-4 mb-3">
@@ -282,7 +248,10 @@
                   Пол
                 </p>
               </div>
-              <p class="text-white/90 text-base sm:text-lg">{{ gender }}</p>
+              <p v-if="gender" class="text-white/90 text-base sm:text-lg">
+                {{ gender }}
+              </p>
+              <p v-else class="text-slate-400 text-sm">Не указано</p>
             </div>
           </div>
 
@@ -303,10 +272,32 @@
               </p>
             </div>
             <p
+              v-if="aboutYourself"
               class="text-white/90 text-base sm:text-lg leading-relaxed whitespace-pre-line"
             >
               {{ aboutYourself }}
             </p>
+            <p v-else class="text-slate-400 text-sm">Расскажите о себе...</p>
+          </div>
+
+          <!-- CTA to Fill Missing Data -->
+          <div v-if="bioCompletionPercentage < 100" class="text-center">
+            <NuxtLink
+              to="/profile/settings"
+              class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 hover:shadow-lg"
+            >
+              <span
+                class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
+              >
+                <i class="fas fa-plus"></i>
+              </span>
+              <span
+                class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
+              >
+                <i class="fas fa-plus mr-2"></i>Добавить информацию
+              </span>
+              <span class="relative invisible">Добавить информацию</span>
+            </NuxtLink>
           </div>
         </div>
       </div>
