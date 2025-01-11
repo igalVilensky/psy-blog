@@ -3,7 +3,6 @@
     <!-- Animated Background -->
     <div class="fixed inset-0 -z-1">
       <div class="absolute top-0 left-0 w-full h-full bg-[#1A1F35]">
-        <!-- Gradient Orbs -->
         <div
           class="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-[#0EA5E9]/10 to-[#22D3EE]/10 rounded-full blur-3xl animate-slow-drift"
         ></div>
@@ -16,46 +15,61 @@
       </div>
     </div>
 
-    <div class="container mx-auto px-4 max-w-6xl relative z-10 pb-12 pt-12">
-      <!-- Profile Header -->
+    <div class="container mx-auto px-4 max-w-7xl relative z-10 py-16">
+      <!-- Enhanced Profile Header -->
       <div
-        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8 mb-8"
+        class="bg-gradient-to-b from-[#1A1F35]/60 to-[#1E293B]/80 backdrop-blur-xl rounded-3xl border border-white/10 p-10 mb-8 shadow-2xl"
       >
         <div
-          class="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-4"
+          class="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-8"
         >
-          <div
-            class="flex flex-col items-center sm:flex-row sm:items-center gap-6 w-full"
-          >
-            <!-- Profile Avatar -->
-            <UserAvatar
-              :avatarUrl="avatarUrl"
-              :loading="loading"
-              :userInitial="
-                authStore.user?.displayName?.charAt(0).toUpperCase()
-              "
-              @update:avatarUrl="avatarUrl = $event"
-            />
+          <div class="flex flex-col sm:flex-row items-center gap-8 w-full">
+            <!-- Enhanced Avatar Section -->
+            <div class="relative group">
+              <UserAvatar
+                :avatarUrl="avatarUrl"
+                :loading="loading"
+                :userInitial="
+                  authStore.user?.displayName?.charAt(0).toUpperCase()
+                "
+                @update:avatarUrl="avatarUrl = $event"
+                class="w-32 h-32 rounded-full border-4 border-[#0EA5E9]/30 transition-transform duration-300 group-hover:scale-105"
+              />
+              <div
+                class="absolute -bottom-2 right-0 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] p-2 rounded-full shadow-lg"
+              >
+                <i class="fas fa-camera text-white"></i>
+              </div>
+            </div>
 
-            <!-- Greeting & Status -->
-            <div class="text-center sm:text-left w-full max-w-60 sm:max-w-xs">
-              <h1 class="text-2xl font-bold text-white/90 mb-2">
+            <!-- Enhanced User Info -->
+            <div class="text-center sm:text-left">
+              <h1 class="text-3xl font-bold text-white/90 mb-3">
                 {{ authStore.user?.displayName || "User" }}
               </h1>
-              <p class="text-slate-300 font-semibold">
-                <span class="truncate block">
-                  [{{ authStore.user?.email || "Email not provided" }}]
-                </span>
+              <p class="text-lg text-slate-300 font-medium mb-4">
+                {{ authStore.user?.email || "Email not provided" }}
               </p>
+              <div class="flex flex-wrap gap-3">
+                <span
+                  class="px-4 py-1.5 bg-[#0EA5E9]/20 rounded-full text-[#0EA5E9] text-sm font-medium"
+                >
+                  <i class="fas fa-user-circle mr-2"></i>Profile
+                </span>
+                <span
+                  class="px-4 py-1.5 bg-[#E879F9]/20 rounded-full text-[#E879F9] text-sm font-medium"
+                >
+                  <i class="fas fa-chart-line mr-2"></i>Analytics
+                </span>
+              </div>
             </div>
           </div>
 
-          <!-- Actions -->
-          <div class="flex gap-4 w-full sm:w-auto">
-            <!-- Settings Button with Hover Effect -->
+          <!-- Enhanced Action Buttons -->
+          <div class="flex gap-4">
             <NuxtLink
               to="/profile/settings"
-              class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-2 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
+              class="group relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 hover:shadow-lg"
             >
               <span
                 class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
@@ -65,16 +79,14 @@
               <span
                 class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
               >
-                <i class="fas fa-cog mr-2"></i>
-                Настройки
+                <i class="fas fa-cog mr-2"></i>Настройки
               </span>
               <span class="relative invisible">Настройки</span>
             </NuxtLink>
 
-            <!-- Logout Button with Hover Effect -->
             <button
               @click="logoutUser"
-              class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-2 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
+              class="group relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 hover:shadow-lg"
             >
               <span
                 class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
@@ -84,8 +96,7 @@
               <span
                 class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
               >
-                <i class="fas fa-sign-out-alt mr-2"></i>
-                Выйти
+                <i class="fas fa-sign-out-alt mr-2"></i>Выйти
               </span>
               <span class="relative invisible">Выйти</span>
             </button>
@@ -93,31 +104,56 @@
         </div>
       </div>
 
-      <!-- Bio Section -->
+      <!-- Enhanced Bio Section -->
       <div
-        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8 mb-8"
+        class="bg-gradient-to-b from-[#1A1F35]/60 to-[#1E293B]/80 backdrop-blur-xl rounded-3xl border border-white/10 p-10 mb-8 shadow-2xl"
       >
-        <h2 class="text-2xl font-bold text-white/90 mb-6">О себе</h2>
+        <div class="flex items-center justify-between mb-8">
+          <h2 class="text-2xl font-bold text-white/90">
+            <i class="fas fa-user-edit text-[#0EA5E9] mr-3"></i>О себе
+          </h2>
+          <div class="flex items-center gap-2">
+            <span class="text-slate-400 text-sm">Заполнено:</span>
+            <div class="w-32 bg-[#1A1F35]/40 rounded-full h-2">
+              <div
+                class="bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] h-2 rounded-full transition-all duration-500"
+                :style="{ width: bioCompletionPercentage + '%' }"
+              ></div>
+            </div>
+            <span class="text-slate-300 text-sm font-medium"
+              >{{ bioCompletionPercentage }}%</span
+            >
+          </div>
+        </div>
 
         <!-- Loading State -->
         <div
           v-if="loadingBio"
-          class="flex flex-col items-center justify-center h-32"
+          class="flex flex-col items-center justify-center h-40"
         >
-          <i class="fas fa-spinner fa-spin text-4xl text-[#0EA5E9] mb-4"></i>
-          <p class="text-slate-300">Загрузка данных...</p>
+          <div
+            class="w-16 h-16 border-4 border-[#0EA5E9] border-t-transparent rounded-full animate-spin"
+          ></div>
+          <p class="text-slate-300 mt-4">Загрузка данных...</p>
         </div>
 
         <!-- No Data State -->
         <div
           v-else-if="!bioDataExists"
-          class="flex flex-col items-center justify-center h-32 text-center"
+          class="flex flex-col items-center justify-center h-64 text-center"
         >
-          <i class="fas fa-user-edit text-4xl text-[#0EA5E9] mb-4"></i>
-          <p class="text-slate-300">Добавьте информацию о себе.</p>
+          <div
+            class="w-20 h-20 bg-[#0EA5E9]/20 rounded-full flex items-center justify-center mb-6"
+          >
+            <i class="fas fa-user-edit text-4xl text-[#0EA5E9]"></i>
+          </div>
+          <p class="text-xl text-slate-300 mb-4">Добавьте информацию о себе</p>
+          <p class="text-slate-400 mb-6 max-w-md">
+            Расскажите о себе, чтобы другие пользователи могли лучше узнать вас
+          </p>
           <NuxtLink
             to="/profile/settings"
-            class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-2 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20 mt-4"
+            class="group relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 hover:shadow-lg"
           >
             <span
               class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
@@ -127,78 +163,92 @@
             <span
               class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
             >
-              <i class="fas fa-plus mr-2"></i>
-              Добавить информацию
+              <i class="fas fa-plus mr-2"></i>Добавить информацию
             </span>
             <span class="relative invisible">Добавить информацию</span>
           </NuxtLink>
         </div>
 
-        <!-- Bio Data Exists -->
-        <div v-else>
-          <!-- Progress Bar -->
-          <div class="mb-6">
-            <div class="flex justify-between mb-2">
-              <span class="text-slate-300">Заполнено</span>
-              <span class="text-slate-300">{{ bioCompletionPercentage }}%</span>
-            </div>
-            <div class="w-full bg-[#1A1F35]/40 rounded-full h-2">
-              <div
-                class="bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] h-2 rounded-full"
-                :style="{ width: bioCompletionPercentage + '%' }"
-              ></div>
-            </div>
-          </div>
-
-          <!-- Bio Fields -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div v-if="profession" class="bg-[#1A1F35]/40 p-4 rounded-lg">
-              <p class="text-slate-400">Профессия</p>
-              <p class="text-white/90">{{ profession }}</p>
-            </div>
-            <div v-if="socialMedia" class="bg-[#1A1F35]/40 p-4 rounded-lg">
-              <p class="text-slate-400">Социальные сети</p>
-              <p class="text-white/90">{{ socialMedia }}</p>
-            </div>
-            <div v-if="age" class="bg-[#1A1F35]/40 p-4 rounded-lg">
-              <p class="text-slate-400">Возраст</p>
-              <p class="text-white/90">{{ age }}</p>
-            </div>
-            <div v-if="gender" class="bg-[#1A1F35]/40 p-4 rounded-lg">
-              <p class="text-slate-400">Пол</p>
-              <p class="text-white/90">{{ gender }}</p>
-            </div>
-          </div>
-
-          <!-- About Yourself (Free Text) -->
-          <div class="mt-6">
-            <div class="bg-[#1A1F35]/40 p-4 rounded-lg">
-              <p class="text-slate-400">О себе</p>
-              <p class="text-white/90 whitespace-pre-line">
-                {{ aboutYourself }}
-              </p>
-            </div>
-          </div>
-
-          <!-- CTA to Complete Profile -->
-          <div v-if="bioCompletionPercentage < 100" class="mt-6">
-            <NuxtLink
-              to="/profile/settings"
-              class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-2 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
+        <!-- Bio Data -->
+        <div v-else class="space-y-8">
+          <!-- Info Cards Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div
+              v-if="profession"
+              class="bg-[#1A1F35]/40 p-6 rounded-2xl border border-white/5 hover:border-[#0EA5E9]/30 transition-colors group"
             >
-              <span
-                class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
+              <div class="flex items-center gap-4 mb-3">
+                <div
+                  class="w-10 h-10 bg-[#0EA5E9]/20 rounded-xl flex items-center justify-center group-hover:bg-[#0EA5E9]/30 transition-colors"
+                >
+                  <i class="fas fa-briefcase text-[#0EA5E9]"></i>
+                </div>
+                <p class="text-slate-400 font-medium">Профессия</p>
+              </div>
+              <p class="text-white/90 text-lg">{{ profession }}</p>
+            </div>
+
+            <div
+              v-if="socialMedia"
+              class="bg-[#1A1F35]/40 p-6 rounded-2xl border border-white/5 hover:border-[#0EA5E9]/30 transition-colors group"
+            >
+              <div class="flex items-center gap-4 mb-3">
+                <div
+                  class="w-10 h-10 bg-[#0EA5E9]/20 rounded-xl flex items-center justify-center group-hover:bg-[#0EA5E9]/30 transition-colors"
+                >
+                  <i class="fas fa-share-alt text-[#0EA5E9]"></i>
+                </div>
+                <p class="text-slate-400 font-medium">Социальные сети</p>
+              </div>
+              <p class="text-white/90 text-lg">{{ socialMedia }}</p>
+            </div>
+
+            <div
+              v-if="age"
+              class="bg-[#1A1F35]/40 p-6 rounded-2xl border border-white/5 hover:border-[#0EA5E9]/30 transition-colors group"
+            >
+              <div class="flex items-center gap-4 mb-3">
+                <div
+                  class="w-10 h-10 bg-[#0EA5E9]/20 rounded-xl flex items-center justify-center group-hover:bg-[#0EA5E9]/30 transition-colors"
+                >
+                  <i class="fas fa-birthday-cake text-[#0EA5E9]"></i>
+                </div>
+                <p class="text-slate-400 font-medium">Возраст</p>
+              </div>
+              <p class="text-white/90 text-lg">{{ age }}</p>
+            </div>
+
+            <div
+              v-if="gender"
+              class="bg-[#1A1F35]/40 p-6 rounded-2xl border border-white/5 hover:border-[#0EA5E9]/30 transition-colors group"
+            >
+              <div class="flex items-center gap-4 mb-3">
+                <div
+                  class="w-10 h-10 bg-[#0EA5E9]/20 rounded-xl flex items-center justify-center group-hover:bg-[#0EA5E9]/30 transition-colors"
+                >
+                  <i class="fas fa-venus-mars text-[#0EA5E9]"></i>
+                </div>
+                <p class="text-slate-400 font-medium">Пол</p>
+              </div>
+              <p class="text-white/90 text-lg">{{ gender }}</p>
+            </div>
+          </div>
+
+          <!-- About Text -->
+          <div class="bg-[#1A1F35]/40 p-8 rounded-2xl border border-white/5">
+            <div class="flex items-center gap-4 mb-6">
+              <div
+                class="w-12 h-12 bg-[#0EA5E9]/20 rounded-xl flex items-center justify-center"
               >
-                <i class="fas fa-edit"></i>
-              </span>
-              <span
-                class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
-              >
-                <i class="fas fa-edit mr-2"></i>
-                Заполнить профиль
-              </span>
-              <span class="relative invisible">Заполнить профиль</span>
-            </NuxtLink>
+                <i class="fas fa-quote-right text-[#0EA5E9] text-xl"></i>
+              </div>
+              <p class="text-slate-400 font-medium text-lg">О себе</p>
+            </div>
+            <p
+              class="text-white/90 text-lg leading-relaxed whitespace-pre-line"
+            >
+              {{ aboutYourself }}
+            </p>
           </div>
         </div>
       </div>
@@ -247,15 +297,19 @@
           v-else-if="emotionBarometerStats.totalEntries === 0"
           class="flex flex-col items-center justify-center h-64 text-center"
         >
-          <i class="fas fa-chart-pie text-4xl text-[#0EA5E9] mb-4"></i>
-          <p class="text-slate-300">Нет данных для отображения.</p>
-          <p class="text-sm text-slate-400 mt-2">
+          <div
+            class="w-20 h-20 bg-[#0EA5E9]/20 rounded-full flex items-center justify-center mb-6"
+          >
+            <i class="fas fa-chart-pie text-4xl text-[#0EA5E9]"></i>
+          </div>
+          <p class="text-xl text-slate-300 mb-4">Нет данных для отображения</p>
+          <p class="text-slate-400 mb-6 max-w-md">
             Начните использовать эмоциональный барометр, чтобы отслеживать свои
-            эмоции.
+            эмоции
           </p>
           <NuxtLink
             to="/awareness-tools/emotional-barometer"
-            class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-2 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
+            class="group relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 hover:shadow-lg"
           >
             <span
               class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
@@ -265,52 +319,83 @@
             <span
               class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
             >
-              <i class="fas fa-play-circle mr-2"></i>
-              Перейти к барометру
+              <i class="fas fa-play-circle mr-2"></i>Перейти к барометру
             </span>
             <span class="relative invisible">Перейти к барометру</span>
           </NuxtLink>
         </div>
 
         <!-- Stats Grid -->
-        <div v-else class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-          <!-- Total Entries -->
+        <div v-else>
           <div
-            class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-lg p-6 border border-white/10"
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
           >
-            <div class="text-sm text-slate-400 mb-2">Всего записей</div>
-            <div class="text-2xl font-bold text-white/90">
-              {{ emotionBarometerStats.totalEntries }}
+            <!-- Total Entries -->
+            <div
+              class="bg-[#1A1F35]/40 p-6 rounded-2xl border border-white/5 hover:border-[#0EA5E9]/30 transition-colors group"
+            >
+              <div class="flex items-center gap-4 mb-3">
+                <div
+                  class="w-10 h-10 bg-[#0EA5E9]/20 rounded-xl flex items-center justify-center group-hover:bg-[#0EA5E9]/30 transition-colors"
+                >
+                  <i class="fas fa-calculator text-[#0EA5E9]"></i>
+                </div>
+                <p class="text-slate-400 font-medium">Всего записей</p>
+              </div>
+              <p class="text-white/90 text-2xl font-bold">
+                {{ emotionBarometerStats.totalEntries }}
+              </p>
             </div>
-          </div>
 
-          <!-- Most Common Emotion -->
-          <div
-            class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-lg p-6 border border-white/10"
-          >
-            <div class="text-sm text-slate-400 mb-2">Частая эмоция</div>
-            <div class="text-2xl font-bold text-white/90">
-              {{ emotionBarometerStats.mostCommonEmotion }}
+            <!-- Most Common Emotion -->
+            <div
+              class="bg-[#1A1F35]/40 p-6 rounded-2xl border border-white/5 hover:border-[#0EA5E9]/30 transition-colors group"
+            >
+              <div class="flex items-center gap-4 mb-3">
+                <div
+                  class="w-10 h-10 bg-[#0EA5E9]/20 rounded-xl flex items-center justify-center group-hover:bg-[#0EA5E9]/30 transition-colors"
+                >
+                  <i class="fas fa-heart text-[#0EA5E9]"></i>
+                </div>
+                <p class="text-slate-400 font-medium">Частая эмоция</p>
+              </div>
+              <p class="text-white/90 text-2xl font-bold">
+                {{ emotionBarometerStats.mostCommonEmotion }}
+              </p>
             </div>
-          </div>
 
-          <!-- Average Intensity -->
-          <div
-            class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-lg p-6 border border-white/10"
-          >
-            <div class="text-sm text-slate-400 mb-2">Средняя интенсивность</div>
-            <div class="text-2xl font-bold text-white/90">
-              {{ emotionBarometerStats.averageIntensity.toFixed(1) }}
+            <!-- Average Intensity -->
+            <div
+              class="bg-[#1A1F35]/40 p-6 rounded-2xl border border-white/5 hover:border-[#0EA5E9]/30 transition-colors group"
+            >
+              <div class="flex items-center gap-4 mb-3">
+                <div
+                  class="w-10 h-10 bg-[#0EA5E9]/20 rounded-xl flex items-center justify-center group-hover:bg-[#0EA5E9]/30 transition-colors"
+                >
+                  <i class="fas fa-tachometer-alt text-[#0EA5E9]"></i>
+                </div>
+                <p class="text-slate-400 font-medium">Средняя интенсивность</p>
+              </div>
+              <p class="text-white/90 text-2xl font-bold">
+                {{ emotionBarometerStats.averageIntensity.toFixed(1) }}
+              </p>
             </div>
-          </div>
 
-          <!-- Most Common Tag -->
-          <div
-            class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-lg p-6 border border-white/10"
-          >
-            <div class="text-sm text-slate-400 mb-2">Частая сфера жизни</div>
-            <div class="text-2xl font-bold text-white/90">
-              {{ emotionBarometerStats.mostCommonTag }}
+            <!-- Most Common Tag -->
+            <div
+              class="bg-[#1A1F35]/40 p-6 rounded-2xl border border-white/5 hover:border-[#0EA5E9]/30 transition-colors group"
+            >
+              <div class="flex items-center gap-4 mb-3">
+                <div
+                  class="w-10 h-10 bg-[#0EA5E9]/20 rounded-xl flex items-center justify-center group-hover:bg-[#0EA5E9]/30 transition-colors"
+                >
+                  <i class="fas fa-tags text-[#0EA5E9]"></i>
+                </div>
+                <p class="text-slate-400 font-medium">Частая сфера жизни</p>
+              </div>
+              <p class="text-white/90 text-2xl font-bold">
+                {{ emotionBarometerStats.mostCommonTag }}
+              </p>
             </div>
           </div>
         </div>
@@ -330,11 +415,11 @@
         :loading="loadingAssessments"
       />
 
-      <!-- Right Sidebar Content -->
+      <!-- Enhanced Activity Section -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Favorite Posts -->
         <div
-          class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8"
+          class="bg-gradient-to-b from-[#1A1F35]/60 to-[#1E293B]/80 backdrop-blur-xl rounded-3xl border border-white/10 p-8 shadow-2xl"
         >
           <div class="flex items-center justify-between mb-6">
             <h2 class="text-xl font-bold text-white/90">
@@ -342,7 +427,7 @@
               Избранные статьи
             </h2>
             <button
-              class="group relative inline-flex items-center justify-center px-4 py-2 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#E879F9]/20"
+              class="group relative inline-flex items-center justify-center px-4 py-2 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#E879F9]/20 hover:shadow-lg"
             >
               <span
                 class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#E879F9] to-[#C084FC] group-hover:translate-x-0 ease"
@@ -358,15 +443,20 @@
             </button>
           </div>
 
-          <div class="space-y-6">
+          <div class="space-y-4">
             <div
               v-for="i in 3"
               :key="i"
-              class="flex gap-4 p-4 rounded-lg hover:bg-[#0EA5E9]/10 transition-colors"
+              class="group flex gap-4 p-4 rounded-xl hover:bg-[#0EA5E9]/10 transition-colors border border-transparent hover:border-[#0EA5E9]/20"
             >
-              <img :src="hostImage" class="w-24 h-16 rounded-lg object-cover" />
+              <img
+                :src="hostImage"
+                class="w-24 h-16 rounded-xl object-cover group-hover:scale-105 transition-transform"
+              />
               <div>
-                <h3 class="font-medium text-white/90 mb-2">
+                <h3
+                  class="font-medium text-white/90 mb-2 group-hover:text-[#0EA5E9] transition-colors"
+                >
                   Название избранной статьи
                 </h3>
                 <div class="flex items-center text-sm text-slate-400">
@@ -384,22 +474,31 @@
 
         <!-- Recent Activity -->
         <div
-          class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8"
+          class="lg:col-span-2 bg-gradient-to-b from-[#1A1F35]/60 to-[#1E293B]/80 backdrop-blur-xl rounded-3xl border border-white/10 p-8 shadow-2xl"
         >
           <h2 class="text-xl font-bold text-white/90 mb-6">
             <i class="fas fa-history text-[#E879F9] mr-2"></i>
             Недавняя активность
           </h2>
-          <div class="space-y-4">
-            <div v-for="i in 4" :key="i" class="flex items-start gap-3">
+          <div class="space-y-6">
+            <div v-for="i in 4" :key="i" class="flex items-start gap-4 group">
               <div
-                class="w-8 h-8 rounded-full bg-[#E879F9]/20 flex items-center justify-center flex-shrink-0"
+                class="w-10 h-10 rounded-xl bg-[#E879F9]/20 flex items-center justify-center flex-shrink-0 group-hover:bg-[#E879F9]/30 transition-colors"
               >
                 <i class="fas fa-book-reader text-[#E879F9]"></i>
               </div>
-              <div>
-                <p class="text-white/90">Прочитали статью "Название статьи"</p>
+              <div class="flex-grow">
+                <p
+                  class="text-white/90 group-hover:text-[#E879F9] transition-colors"
+                >
+                  Прочитали статью "Название статьи"
+                </p>
                 <p class="text-sm text-slate-400">2 часа назад</p>
+              </div>
+              <div
+                class="w-8 h-8 rounded-lg bg-[#1A1F35]/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <i class="fas fa-chevron-right text-[#E879F9] text-sm"></i>
               </div>
             </div>
           </div>
@@ -664,19 +763,3 @@ const logoutUser = async () => {
   router.push("/login");
 };
 </script>
-
-<style scoped>
-/* Grid Animation */
-@keyframes grid {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(-20px);
-  }
-}
-
-.animate-grid {
-  animation: grid 20s linear infinite;
-}
-</style>
