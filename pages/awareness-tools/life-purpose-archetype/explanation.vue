@@ -31,90 +31,99 @@
       </div>
 
       <!-- Introduction Card -->
-      <div
-        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8 mb-8 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
-      >
-        <div class="flex items-start mb-6">
-          <div class="p-2 bg-[#0EA5E9]/10 rounded-lg mr-4">
-            <i class="fas fa-book text-[#0EA5E9] text-xl"></i>
-          </div>
-          <p class="text-lg text-slate-300 font-medium">Теория архетипов</p>
-        </div>
-        <p class="text-slate-300 leading-relaxed text-lg mb-6">
-          12 архетипов Карла Юнга представляют собой основные человеческие
-          переживания и мотивации, которые находят отклик в различных культурах.
-        </p>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <div
-            class="bg-[#1A1F35]/40 p-4 rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
-          >
-            <h3 class="text-slate-300 font-medium mb-2">Уникальность</h3>
-            <p class="text-slate-400">
-              Каждый архетип воплощает уникальные черты, сильные стороны и
-              возможные области для развития.
-            </p>
-          </div>
-          <div
-            class="bg-[#1A1F35]/40 p-4 rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
-          >
-            <h3 class="text-slate-300 font-medium mb-2">Самопознание</h3>
-            <p class="text-slate-400">
-              Осознание своего доминирующего архетипа может дать ценные инсайты
-              о ваших естественных склонностях и жизненном предназначении.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Archetypes List -->
-      <div class="space-y-6">
+      <ScrollGlowSection>
         <div
-          v-for="(archetype, index) in archetypes"
-          :key="index"
-          class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+          class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8 mb-8"
         >
-          <div class="flex items-center mb-6">
-            <i :class="archetype.icon" class="text-2xl text-[#0EA5E9]"></i>
-            <h2 class="ml-4 text-2xl font-bold text-white/90">
-              {{ archetype.name }}
-            </h2>
-          </div>
-
-          <div class="space-y-6">
-            <p class="text-slate-300 leading-relaxed">
-              {{ archetype.description }}
-            </p>
-
-            <div>
-              <h3 class="font-bold text-white/90 mb-3">
-                Ключевые характеристики:
-              </h3>
-              <div class="space-y-2">
-                <div
-                  v-for="trait in archetype.traits"
-                  :key="trait"
-                  class="flex items-center p-3 rounded-lg bg-[#0EA5E9]/10 border border-[#0EA5E9]/20"
-                >
-                  <div class="w-2 h-2 bg-[#0EA5E9] rounded-full mr-3"></div>
-                  <span class="text-slate-300">{{ trait }}</span>
-                </div>
-              </div>
+          <div class="flex items-start mb-6">
+            <div class="p-2 bg-[#0EA5E9]/10 rounded-lg mr-4">
+              <i class="fas fa-book text-[#0EA5E9] text-xl"></i>
             </div>
-
-            <div>
-              <h3 class="font-bold text-white/90 mb-3">Потенциал роста:</h3>
-              <p class="text-slate-300 leading-relaxed">
-                {{ archetype.growth }}
+            <p class="text-lg text-slate-300 font-medium">Теория архетипов</p>
+          </div>
+          <p class="text-slate-300 leading-relaxed text-lg mb-6">
+            12 архетипов Карла Юнга представляют собой основные человеческие
+            переживания и мотивации, которые находят отклик в различных
+            культурах.
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div
+              class="bg-[#1A1F35]/40 p-4 rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
+            >
+              <h3 class="text-slate-300 font-medium mb-2">Уникальность</h3>
+              <p class="text-slate-400">
+                Каждый архетип воплощает уникальные черты, сильные стороны и
+                возможные области для развития.
+              </p>
+            </div>
+            <div
+              class="bg-[#1A1F35]/40 p-4 rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
+            >
+              <h3 class="text-slate-300 font-medium mb-2">Самопознание</h3>
+              <p class="text-slate-400">
+                Осознание своего доминирующего архетипа может дать ценные
+                инсайты о ваших естественных склонностях и жизненном
+                предназначении.
               </p>
             </div>
           </div>
         </div>
+      </ScrollGlowSection>
+
+      <!-- Archetypes List -->
+      <div class="space-y-6">
+        <ScrollGlowSection
+          v-for="(archetype, index) in archetypes"
+          :key="index"
+        >
+          <div
+            class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8"
+          >
+            <div class="flex items-center mb-6">
+              <i :class="archetype.icon" class="text-2xl text-[#0EA5E9]"></i>
+              <h2 class="ml-4 text-2xl font-bold text-white/90">
+                {{ archetype.name }}
+              </h2>
+            </div>
+
+            <div class="space-y-6">
+              <p class="text-slate-300 leading-relaxed">
+                {{ archetype.description }}
+              </p>
+
+              <div>
+                <h3 class="font-bold text-white/90 mb-3">
+                  Ключевые характеристики:
+                </h3>
+                <div class="space-y-2">
+                  <div
+                    v-for="trait in archetype.traits"
+                    :key="trait"
+                    class="flex items-center p-3 rounded-lg bg-[#0EA5E9]/10 border border-[#0EA5E9]/20"
+                  >
+                    <div class="w-2 h-2 bg-[#0EA5E9] rounded-full mr-3"></div>
+                    <span class="text-slate-300">{{ trait }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3 class="font-bold text-white/90 mb-3">Потенциал роста:</h3>
+                <p class="text-slate-300 leading-relaxed">
+                  {{ archetype.growth }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </ScrollGlowSection>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import ScrollGlowSection from "~/components/ui/ScrollGlowSection.vue";
+
 const archetypes = ref([
   {
     name: "Творец",

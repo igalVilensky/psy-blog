@@ -18,83 +18,87 @@
 
     <div class="container mx-auto px-4 max-w-7xl relative z-10 pb-12 pt-12">
       <!-- Hero Section -->
-      <header
-        class="relative text-center mb-12 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-12 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
-      >
-        <div class="relative z-10">
-          <h1
-            class="text-4xl sm:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] tracking-tight mb-6"
-          >
-            О проекте
-          </h1>
-          <p
-            class="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed"
-          >
-            Добро пожаловать в пространство осознанного развития и личностного
-            роста. Здесь каждый шаг ведёт к более глубокому пониманию себя и
-            гармонии с миром.
-          </p>
-        </div>
-      </header>
+      <ScrollGlowSection>
+        <header
+          class="relative text-center mb-12 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-12 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+        >
+          <div class="relative z-10">
+            <h1
+              class="text-4xl sm:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] tracking-tight mb-6"
+            >
+              О проекте
+            </h1>
+            <p
+              class="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed"
+            >
+              Добро пожаловать в пространство осознанного развития и личностного
+              роста. Здесь каждый шаг ведёт к более глубокому пониманию себя и
+              гармонии с миром.
+            </p>
+          </div>
+        </header>
+      </ScrollGlowSection>
 
       <!-- Personal Biography Section -->
-      <section
-        class="relative overflow-hidden bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8 sm:p-12 mb-12 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
-      >
-        <div class="grid md:grid-cols-2 gap-12">
-          <div class="space-y-6">
-            <div
-              class="px-4 py-2 bg-[#0EA5E9]/10 border border-[#0EA5E9]/20 rounded-full text-[#0EA5E9] font-medium inline-block"
-            >
-              Основатель проекта
+      <ScrollGlowSection>
+        <section
+          class="relative overflow-hidden bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8 sm:p-12 mb-12 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+        >
+          <div class="grid md:grid-cols-2 gap-12">
+            <div class="space-y-6">
+              <div
+                class="px-4 py-2 bg-[#0EA5E9]/10 border border-[#0EA5E9]/20 rounded-full text-[#0EA5E9] font-medium inline-block"
+              >
+                Основатель проекта
+              </div>
+              <div class="space-y-6 text-slate-300">
+                <p>
+                  Здравствуйте! Меня зовут Анастасия, и я рада приветствовать
+                  вас в пространстве осознанного развития...
+                </p>
+                <p>
+                  Мой подход основан на синтезе современной психологии,
+                  практических методик развития и многолетнего опыта работы с
+                  людьми...
+                </p>
+                <p>
+                  Приглашаю вас в путешествие к лучшей версии себя, где каждый
+                  шаг наполнен осознанностью и пониманием.
+                </p>
+              </div>
+              <!-- Social Media Links -->
+              <div class="flex gap-4 mt-8">
+                <a href="#" class="group relative p-3" target="_blank">
+                  <div
+                    class="absolute inset-0 bg-gradient-to-r from-[#F59E0B]/20 to-[#F97316]/20 rounded-lg blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  ></div>
+                  <i
+                    class="fab fa-linkedin text-xl relative z-10 text-[#F59E0B] group-hover:text-white transition-all duration-300 group-hover:scale-110"
+                  ></i>
+                </a>
+                <a href="#" class="group relative p-3" target="_blank">
+                  <div
+                    class="absolute inset-0 bg-gradient-to-r from-[#F59E0B]/20 to-[#F97316]/20 rounded-lg blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  ></div>
+                  <i
+                    class="fab fa-instagram text-xl relative z-10 text-[#F59E0B] group-hover:text-white transition-all duration-300 group-hover:scale-110"
+                  ></i>
+                </a>
+              </div>
             </div>
-            <div class="space-y-6 text-slate-300">
-              <p>
-                Здравствуйте! Меня зовут Анастасия, и я рада приветствовать вас
-                в пространстве осознанного развития...
-              </p>
-              <p>
-                Мой подход основан на синтезе современной психологии,
-                практических методик развития и многолетнего опыта работы с
-                людьми...
-              </p>
-              <p>
-                Приглашаю вас в путешествие к лучшей версии себя, где каждый шаг
-                наполнен осознанностью и пониманием.
-              </p>
-            </div>
-            <!-- Social Media Links with Independent Glow Effect -->
-            <div class="flex gap-4 mt-8">
-              <a href="#" class="group relative p-3" target="_blank">
-                <div
-                  class="absolute inset-0 bg-gradient-to-r from-[#F59E0B]/20 to-[#F97316]/20 rounded-lg blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                ></div>
-                <i
-                  class="fab fa-linkedin text-xl relative z-10 text-[#F59E0B] group-hover:text-white transition-all duration-300 group-hover:scale-110"
-                ></i>
-              </a>
-              <a href="#" class="group relative p-3" target="_blank">
-                <div
-                  class="absolute inset-0 bg-gradient-to-r from-[#F59E0B]/20 to-[#F97316]/20 rounded-lg blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                ></div>
-                <i
-                  class="fab fa-instagram text-xl relative z-10 text-[#F59E0B] group-hover:text-white transition-all duration-300 group-hover:scale-110"
-                ></i>
-              </a>
+            <div class="relative">
+              <div
+                class="absolute inset-0 bg-gradient-to-r from-[#0EA5E9]/10 to-[#E879F9]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+              ></div>
+              <img
+                src="/assets/images/profile.jpg"
+                alt="Анастасия"
+                class="w-full h-[500px] object-cover rounded-xl shadow-lg transition-all duration-500 hover:-translate-y-2"
+              />
             </div>
           </div>
-          <div class="relative">
-            <div
-              class="absolute inset-0 bg-gradient-to-r from-[#0EA5E9]/10 to-[#E879F9]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-            ></div>
-            <img
-              src="/assets/images/profile.jpg"
-              alt="Анастасия"
-              class="w-full h-[500px] object-cover rounded-xl shadow-lg transition-all duration-500 hover:-translate-y-2"
-            />
-          </div>
-        </div>
-      </section>
+        </section>
+      </ScrollGlowSection>
 
       <!-- Offerings Section -->
       <section class="mb-16">
@@ -104,82 +108,89 @@
           Что вы найдете здесь?
         </h2>
         <div class="grid md:grid-cols-2 gap-6">
-          <div
+          <ScrollGlowSection
             v-for="(offering, index) in offerings"
             :key="offering.title"
-            class="group relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl p-8 border border-[#0EA5E9]/20 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)] transition-all duration-300"
           >
-            <div class="flex gap-6">
-              <div
-                class="w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-xl"
-                :class="[
-                  index % 3 === 0
-                    ? 'bg-[#0EA5E9]/10 text-[#0EA5E9]'
-                    : index % 3 === 1
-                    ? 'bg-[#F59E0B]/10 text-[#F59E0B]'
-                    : 'bg-[#E879F9]/10 text-[#E879F9]',
-                ]"
-              >
-                <i :class="offering.icon" class="text-2xl"></i>
-              </div>
-              <div>
-                <h3
-                  class="text-xl font-semibold text-white/90 mb-3"
+            <div
+              class="group relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl p-8 border border-[#0EA5E9]/20 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)] transition-all duration-300"
+            >
+              <div class="flex gap-6">
+                <div
+                  class="w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-xl"
                   :class="[
                     index % 3 === 0
-                      ? 'text-[#0EA5E9]'
+                      ? 'bg-[#0EA5E9]/10 text-[#0EA5E9]'
                       : index % 3 === 1
-                      ? 'text-[#F59E0B]'
-                      : 'text-[#E879F9]',
+                      ? 'bg-[#F59E0B]/10 text-[#F59E0B]'
+                      : 'bg-[#E879F9]/10 text-[#E879F9]',
                   ]"
                 >
-                  {{ offering.title }}
-                </h3>
-                <p class="text-slate-300">{{ offering.description }}</p>
+                  <i :class="offering.icon" class="text-2xl"></i>
+                </div>
+                <div>
+                  <h3
+                    class="text-xl font-semibold text-white/90 mb-3"
+                    :class="[
+                      index % 3 === 0
+                        ? 'text-[#0EA5E9]'
+                        : index % 3 === 1
+                        ? 'text-[#F59E0B]'
+                        : 'text-[#E879F9]',
+                    ]"
+                  >
+                    {{ offering.title }}
+                  </h3>
+                  <p class="text-slate-300">{{ offering.description }}</p>
+                </div>
               </div>
             </div>
-          </div>
+          </ScrollGlowSection>
         </div>
       </section>
 
       <!-- Call to Action -->
-      <section
-        class="relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-12 text-center transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
-      >
-        <div class="relative z-10">
-          <h2
-            class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] tracking-tight mb-6"
-          >
-            Начните свое путешествие к гармонии сегодня
-          </h2>
-          <p class="text-lg text-slate-300 mb-8 max-w-2xl mx-auto">
-            Присоединяйтесь к нашему сообществу и откройте для себя новые
-            горизонты развития
-          </p>
+      <ScrollGlowSection>
+        <section
+          class="relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-12 text-center transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+        >
+          <div class="relative z-10">
+            <h2
+              class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] tracking-tight mb-6"
+            >
+              Начните свое путешествие к гармонии сегодня
+            </h2>
+            <p class="text-lg text-slate-300 mb-8 max-w-2xl mx-auto">
+              Присоединяйтесь к нашему сообществу и откройте для себя новые
+              горизонты развития
+            </p>
 
-          <NuxtLink
-            to="/courses/courses"
-            class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group"
-          >
-            <span
-              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
+            <NuxtLink
+              to="/courses/courses"
+              class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group"
             >
-              <i class="fas fa-book-open"></i>
-            </span>
-            <span
-              class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
-            >
-              Перейти к курсам
-            </span>
-            <span class="relative invisible">Перейти к курсам</span>
-          </NuxtLink>
-        </div>
-      </section>
+              <span
+                class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
+              >
+                <i class="fas fa-book-open"></i>
+              </span>
+              <span
+                class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
+              >
+                Перейти к курсам
+              </span>
+              <span class="relative invisible">Перейти к курсам</span>
+            </NuxtLink>
+          </div>
+        </section>
+      </ScrollGlowSection>
     </div>
   </div>
 </template>
 
 <script setup>
+import ScrollGlowSection from "~/components/ui/ScrollGlowSection.vue";
+
 const offerings = [
   {
     title: "Курсы по личностному развитию",

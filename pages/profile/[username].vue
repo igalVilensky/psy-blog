@@ -53,7 +53,8 @@
           <!-- Actions -->
           <div class="flex gap-4 w-full sm:w-auto">
             <!-- Settings Button with Hover Effect -->
-            <button
+            <NuxtLink
+              to="/profile/settings"
               class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-2 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
             >
               <span
@@ -68,7 +69,7 @@
                 Настройки
               </span>
               <span class="relative invisible">Настройки</span>
-            </button>
+            </NuxtLink>
 
             <!-- Logout Button with Hover Effect -->
             <button
