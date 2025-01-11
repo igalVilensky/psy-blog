@@ -3,15 +3,15 @@
     <!-- Animated Background -->
     <div class="fixed inset-0 -z-1">
       <div class="absolute top-0 left-0 w-full h-full bg-[#1A1F35]">
-        <!-- Gradient Orbs -->
+        <!-- Enhanced Gradient Orbs -->
         <div
-          class="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-[#0EA5E9]/10 to-[#22D3EE]/10 rounded-full blur-3xl animate-slow-drift"
+          class="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-[#0EA5E9]/10 to-[#22D3EE]/10 rounded-full blur-3xl animate-slow-drift opacity-60"
         ></div>
         <div
-          class="absolute bottom-1/4 right-1/3 w-80 h-80 bg-gradient-to-r from-[#F59E0B]/10 to-[#F97316]/10 rounded-full blur-3xl animate-slow-pulse"
+          class="absolute bottom-1/4 right-1/3 w-80 h-80 bg-gradient-to-r from-[#F59E0B]/10 to-[#F97316]/10 rounded-full blur-3xl animate-slow-pulse opacity-40"
         ></div>
         <div
-          class="absolute top-1/3 right-1/4 w-72 h-72 bg-gradient-to-r from-[#E879F9]/10 to-[#C084FC]/10 rounded-full blur-3xl animate-slow-float"
+          class="absolute top-1/3 right-1/4 w-72 h-72 bg-gradient-to-r from-[#E879F9]/10 to-[#C084FC]/10 rounded-full blur-3xl animate-slow-float opacity-50"
         ></div>
       </div>
     </div>
@@ -44,31 +44,48 @@
         </p>
       </div>
 
-      <div v-else>
+      <div v-else class="mt-10">
         <!-- Unauthenticated Section -->
         <div
           v-if="!user"
-          class="relative group overflow-hidden bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8 sm:p-12 mb-12 max-w-4xl mx-auto"
+          class="relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8 sm:p-12 mb-12 max-w-4xl mx-auto"
         >
-          <div
-            class="absolute inset-0 bg-gradient-to-r from-[#0EA5E9]/10 to-[#E879F9]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-          ></div>
           <p class="text-xl text-slate-300 mb-8">
             Чтобы начать использовать инструмент, пожалуйста, войдите или
             зарегистрируйтесь.
           </p>
-          <div class="flex justify-center gap-6 relative z-10">
+          <div class="flex justify-center gap-6">
             <NuxtLink
               to="/login"
-              class="px-8 py-3 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white rounded-xl font-medium hover:shadow-lg hover:shadow-[#0EA5E9]/25 transition-all duration-300 relative z-10"
+              class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group"
             >
-              Войти
+              <span
+                class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
+              >
+                <i class="fas fa-sign-in-alt"></i>
+              </span>
+              <span
+                class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
+              >
+                Войти
+              </span>
+              <span class="relative invisible">Войти</span>
             </NuxtLink>
             <NuxtLink
               to="/register"
-              class="px-8 py-3 bg-white/10 border border-[#0EA5E9]/50 text-[#0EA5E9] rounded-xl font-medium hover:bg-white/20 transition-all duration-300 relative z-10"
+              class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group"
             >
-              Зарегистрироваться
+              <span
+                class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
+              >
+                <i class="fas fa-user-plus"></i>
+              </span>
+              <span
+                class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
+              >
+                Зарегистрироваться
+              </span>
+              <span class="relative invisible">Зарегистрироваться</span>
             </NuxtLink>
           </div>
         </div>
@@ -77,16 +94,26 @@
         <div v-if="user && showStartButton" class="text-center mt-8 mb-10">
           <button
             @click="startEntry"
-            class="px-8 py-3 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white rounded-xl font-medium hover:shadow-lg hover:shadow-[#0EA5E9]/25 transition-all duration-300"
+            class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group"
           >
-            Добавить запись
+            <span
+              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
+            >
+              <i class="fas fa-plus"></i>
+            </span>
+            <span
+              class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
+            >
+              Добавить запись
+            </span>
+            <span class="relative invisible">Добавить запись</span>
           </button>
         </div>
 
         <!-- Main Barometer Section (shown only when showStartButton is false) -->
         <div
           v-if="user && !showStartButton"
-          class="relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8 sm:p-12 mb-12 max-w-4xl mx-auto"
+          class="relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8 sm:p-12 mb-12 max-w-4xl mx-auto transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
         >
           <!-- Step Progress -->
           <div
@@ -164,25 +191,55 @@
             <button
               v-if="currentStep > 1"
               @click="previousStep"
-              class="px-8 py-3 bg-white/10 border border-white/20 text-white rounded-xl hover:bg-white/20 transition-all duration-300"
+              class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group"
             >
-              Назад
+              <span
+                class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
+              >
+                <i class="fas fa-arrow-left"></i>
+              </span>
+              <span
+                class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
+              >
+                Назад
+              </span>
+              <span class="relative invisible">Назад</span>
             </button>
             <button
               v-if="currentStep < 5"
               @click="nextStep"
               :disabled="!canProceed"
-              class="px-8 py-3 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-[#0EA5E9]/25 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none"
+              class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group"
             >
-              Далее
+              <span
+                class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
+              >
+                <i class="fas fa-arrow-right"></i>
+              </span>
+              <span
+                class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
+              >
+                Далее
+              </span>
+              <span class="relative invisible">Далее</span>
             </button>
             <button
               v-if="currentStep === 5"
               @click="handleSubmit"
               :disabled="!canSubmit"
-              class="px-8 py-3 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-[#0EA5E9]/25 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none"
+              class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group"
             >
-              Сохранить
+              <span
+                class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
+              >
+                <i class="fas fa-save"></i>
+              </span>
+              <span
+                class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
+              >
+                Сохранить
+              </span>
+              <span class="relative invisible">Сохранить</span>
             </button>
           </div>
         </div>
@@ -195,7 +252,7 @@
           <template v-if="hasStatsData">
             <NuxtLink
               to="/awareness-tools/emotional-barometer/analysis"
-              class="group relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl p-8 border border-white/10 hover:shadow-xl transition-all duration-500"
+              class="group relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl p-8 border border-[#0EA5E9]/20 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)] transition-all duration-300"
             >
               <div
                 class="absolute inset-0 bg-gradient-to-r from-[#0EA5E9]/10 to-[#E879F9]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"
@@ -208,7 +265,7 @@
 
             <NuxtLink
               to="/awareness-tools/emotional-barometer/journal-history"
-              class="group relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl p-8 border border-white/10 hover:shadow-xl transition-all duration-500"
+              class="group relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl p-8 border border-[#0EA5E9]/20 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)] transition-all duration-300"
             >
               <div
                 class="absolute inset-0 bg-gradient-to-r from-[#0EA5E9]/10 to-[#E879F9]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"
@@ -221,7 +278,7 @@
           </template>
           <template v-else>
             <div
-              class="bg-[#1A1F35]/70 backdrop-blur-sm rounded-2xl shadow-2xl p-6 opacity-50 cursor-not-allowed text-center border border-white/10"
+              class="bg-[#1A1F35]/70 backdrop-blur-sm rounded-2xl shadow-2xl p-6 opacity-50 cursor-not-allowed text-center border border-[#0EA5E9]/20"
             >
               <h3 class="text-xl font-semibold text-[#0EA5E9] mb-2">
                 Анализ Эмоций
@@ -231,7 +288,7 @@
               </p>
             </div>
             <div
-              class="bg-[#1A1F35]/70 backdrop-blur-sm rounded-2xl shadow-2xl p-6 opacity-50 cursor-not-allowed text-center border border-white/10"
+              class="bg-[#1A1F35]/70 backdrop-blur-sm rounded-2xl shadow-2xl p-6 opacity-50 cursor-not-allowed text-center border border-[#0EA5E9]/20"
             >
               <h3 class="text-xl font-semibold text-[#0EA5E9] mb-2">
                 История Журнала
@@ -263,6 +320,7 @@
     />
   </div>
 </template>
+
 <script setup>
 import { ref, computed } from "vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -361,8 +419,8 @@ onAuthStateChanged(auth, async (currentUser) => {
     } else {
       stats.value = null;
     }
-    loading.value = false;
   }
+  loading.value = false;
 });
 
 const canSubmit = computed(() => {
@@ -468,6 +526,7 @@ const handleSubmit = () => {
   saveEntryToFirebase();
 };
 </script>
+
 <style scoped>
 @keyframes slow-drift {
   0%,

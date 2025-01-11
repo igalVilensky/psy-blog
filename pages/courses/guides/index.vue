@@ -3,15 +3,15 @@
     <!-- Animated Background -->
     <div class="fixed inset-0 -z-1">
       <div class="absolute top-0 left-0 w-full h-full bg-[#1A1F35]">
-        <!-- Gradient Orbs -->
+        <!-- Enhanced Gradient Orbs -->
         <div
-          class="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-[#0EA5E9]/10 to-[#22D3EE]/10 rounded-full blur-3xl animate-slow-drift"
+          class="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-[#0EA5E9]/10 to-[#22D3EE]/10 rounded-full blur-3xl animate-slow-drift opacity-60"
         ></div>
         <div
-          class="absolute bottom-1/4 right-1/3 w-80 h-80 bg-gradient-to-r from-[#F59E0B]/10 to-[#F97316]/10 rounded-full blur-3xl animate-slow-pulse"
+          class="absolute bottom-1/4 right-1/3 w-80 h-80 bg-gradient-to-r from-[#F59E0B]/10 to-[#F97316]/10 rounded-full blur-3xl animate-slow-pulse opacity-40"
         ></div>
         <div
-          class="absolute top-1/3 right-1/4 w-72 h-72 bg-gradient-to-r from-[#E879F9]/10 to-[#C084FC]/10 rounded-full blur-3xl animate-slow-float"
+          class="absolute top-1/3 right-1/4 w-72 h-72 bg-gradient-to-r from-[#E879F9]/10 to-[#C084FC]/10 rounded-full blur-3xl animate-slow-float opacity-50"
         ></div>
       </div>
     </div>
@@ -34,7 +34,7 @@
 
       <!-- Filters Section -->
       <div class="mb-16">
-        <div class="flex flex-wrap justify-center gap-4">
+        <div class="flex flex-wrap justify-center gap-3">
           <button
             v-for="category in categories"
             :key="category"
@@ -43,7 +43,7 @@
               'px-6 py-3 rounded-full transition-all duration-300 font-medium relative overflow-hidden group backdrop-blur-sm',
               selectedCategory === category
                 ? 'bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white'
-                : 'bg-white/10 text-[#0EA5E9] border border-[#0EA5E9]/20',
+                : 'bg-white/10 text-[#0EA5E9] border border-[#0EA5E9]/20 hover:text-white',
             ]"
           >
             <span class="relative z-10">{{ category }}</span>
@@ -60,20 +60,20 @@
         <div
           v-for="guide in filteredGuides"
           :key="guide.id"
-          class="group bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 overflow-hidden transform transition-all duration-300 hover:-translate-y-2"
+          class="group bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)] flex flex-col"
         >
           <!-- Guide Image -->
-          <div class="relative overflow-hidden">
+          <div class="relative overflow-hidden aspect-[4/3]">
             <img
               :src="guide.image"
               :alt="guide.title"
-              class="w-full h-52 object-cover transition-transform duration-500 group-hover:scale-110"
+              class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               loading="lazy"
             />
             <!-- Category Badge -->
             <span
               :class="[
-                'absolute top-4 left-4 px-4 py-2 rounded-full text-sm font-medium shadow-md backdrop-blur-sm text-white',
+                'absolute top-4 left-4 px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm text-white',
                 {
                   'bg-green-500/80 border border-green-200':
                     guide.category === 'Самопознание',
@@ -91,28 +91,37 @@
           </div>
 
           <!-- Guide Content -->
-          <div class="p-8">
+          <div class="p-6 flex flex-col flex-grow">
             <h2
-              class="text-xl font-bold text-white/90 mb-4 line-clamp-2 group-hover:text-[#0EA5E9] transition-colors duration-300"
+              class="text-xl font-bold text-white/90 group-hover:text-[#0EA5E9] transition-colors duration-300 line-clamp-2"
             >
               {{ guide.title }}
             </h2>
-            <p class="text-slate-300 mb-4 line-clamp-3">
+            <p class="text-slate-300 line-clamp-3 mt-2">
               {{ guide.description }}
             </p>
-            <div class="flex items-center gap-4 mb-4">
-              <i :class="guide.icon" class="text-xl text-[#0EA5E9]" />
-              <p class="text-slate-400 text-sm">
-                {{ guide.iconDescription }}
-              </p>
+            <div class="flex items-center gap-4 mt-4">
+              <i :class="guide.icon" class="text-lg text-[#0EA5E9]" />
+              <p class="text-slate-400 text-sm">{{ guide.iconDescription }}</p>
             </div>
-            <div class="flex justify-between items-center">
-              <span class="text-sm text-slate-400">{{ guide.date }}</span>
+            <!-- Button Container -->
+            <div class="mt-auto pt-6">
               <a
                 :href="guide.link"
-                class="bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white px-4 py-2 rounded-lg hover:opacity-90 transition-all"
+                class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group w-full"
               >
-                Читать
+                <span
+                  class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
+                >
+                  <i class="fas fa-book-open"></i>
+                </span>
+                <span
+                  class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
+                >
+                  <i class="fas fa-arrow-right mr-2"></i>
+                  Читать
+                </span>
+                <span class="relative invisible">Читать</span>
               </a>
             </div>
           </div>
@@ -121,7 +130,7 @@
 
       <!-- Call to Action -->
       <div
-        class="mt-16 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8 text-center transform transition-all duration-300 hover:-translate-y-2"
+        class="mt-16 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8 text-center transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
       >
         <h2 class="text-2xl font-bold text-white/90 mb-4">
           Подпишитесь на новые материалы
@@ -130,18 +139,29 @@
           Получите доступ к эксклюзивным руководствам, которые помогут вам в
           путешествии к самопознанию.
         </p>
-        <div class="max-w-md mx-auto flex">
+        <div class="max-w-md mx-auto flex flex-col sm:flex-row gap-3 sm:gap-0">
           <input
             type="email"
             v-model="email"
             placeholder="Ваш email"
-            class="w-full px-4 py-3 rounded-l-lg bg-white/5 border border-[#0EA5E9]/20 text-white placeholder-slate-400/50 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]"
+            class="w-full px-6 py-3 rounded-lg sm:rounded-l-lg sm:rounded-r-none bg-white/5 border border-[#0EA5E9]/20 text-white placeholder-slate-400/50 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]"
           />
           <button
             @click="subscribeEmail"
-            class="bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white px-6 py-3 rounded-r-lg hover:opacity-90 transition-all"
+            class="relative inline-flex items-center justify-center min-w-[160px] overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg sm:rounded-l-none sm:rounded-r-lg group"
           >
-            Подписаться
+            <span
+              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
+            >
+              <i class="fas fa-bell text-lg"></i>
+            </span>
+            <span
+              class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
+            >
+              <i class="fas fa-envelope text-lg mr-2"></i>
+              Подписаться
+            </span>
+            <span class="relative invisible px-8 py-3">Подписаться</span>
           </button>
         </div>
       </div>

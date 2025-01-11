@@ -5,13 +5,13 @@
       <div class="absolute top-0 left-0 w-full h-full bg-[#1A1F35]">
         <!-- Gradient Orbs -->
         <div
-          class="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-[#0EA5E9]/10 to-[#22D3EE]/10 rounded-full blur-3xl animate-slow-drift"
+          class="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-[#0EA5E9]/10 to-[#22D3EE]/10 rounded-full blur-3xl animate-slow-drift opacity-60"
         ></div>
         <div
-          class="absolute bottom-1/4 right-1/3 w-80 h-80 bg-gradient-to-r from-[#F59E0B]/10 to-[#F97316]/10 rounded-full blur-3xl animate-slow-pulse"
+          class="absolute bottom-1/4 right-1/3 w-80 h-80 bg-gradient-to-r from-[#F59E0B]/10 to-[#F97316]/10 rounded-full blur-3xl animate-slow-pulse opacity-40"
         ></div>
         <div
-          class="absolute top-1/3 right-1/4 w-72 h-72 bg-gradient-to-r from-[#E879F9]/10 to-[#C084FC]/10 rounded-full blur-3xl animate-slow-float"
+          class="absolute top-1/3 right-1/4 w-72 h-72 bg-gradient-to-r from-[#E879F9]/10 to-[#C084FC]/10 rounded-full blur-3xl animate-slow-float opacity-50"
         ></div>
       </div>
     </div>
@@ -19,7 +19,7 @@
     <div class="container mx-auto px-4 max-w-7xl relative z-10 pb-12 pt-12">
       <!-- Hero Section -->
       <header
-        class="relative text-center mb-12 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-12"
+        class="relative text-center mb-12 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-12 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
       >
         <div class="relative z-10">
           <h1
@@ -39,7 +39,7 @@
 
       <!-- Personal Biography Section -->
       <section
-        class="relative overflow-hidden bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8 sm:p-12 mb-12"
+        class="relative overflow-hidden bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8 sm:p-12 mb-12 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
       >
         <div class="grid md:grid-cols-2 gap-12">
           <div class="space-y-6">
@@ -107,7 +107,7 @@
           <div
             v-for="(offering, index) in offerings"
             :key="offering.title"
-            class="group relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl p-8 border border-white/10 hover:shadow-xl transition-all duration-500"
+            class="group relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl p-8 border border-[#0EA5E9]/20 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)] transition-all duration-300"
           >
             <div class="flex gap-6">
               <div
@@ -144,7 +144,7 @@
 
       <!-- Call to Action -->
       <section
-        class="relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-12 text-center"
+        class="relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-12 text-center transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
       >
         <div class="relative z-10">
           <h2
@@ -156,12 +156,22 @@
             Присоединяйтесь к нашему сообществу и откройте для себя новые
             горизонты развития
           </p>
+
           <NuxtLink
             to="/courses/courses"
-            class="inline-flex items-center px-8 py-3 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white rounded-xl font-medium hover:shadow-lg hover:shadow-[#0EA5E9]/25 transition-all duration-300"
+            class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group"
           >
-            Перейти к курсам
-            <i class="fas fa-arrow-right ml-2"></i>
+            <span
+              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
+            >
+              <i class="fas fa-book-open"></i>
+            </span>
+            <span
+              class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
+            >
+              Перейти к курсам
+            </span>
+            <span class="relative invisible">Перейти к курсам</span>
           </NuxtLink>
         </div>
       </section>

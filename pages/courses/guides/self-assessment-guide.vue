@@ -1,87 +1,109 @@
 <template>
-  <div
-    class="min-h-screen bg-gradient-to-br from-purple-900 via-pink-800 to-purple-900 p-6"
-  >
-    <!-- Glass-morphism container -->
-    <div
-      class="max-w-5xl mx-auto backdrop-blur-lg bg-white/10 rounded-3xl shadow-2xl p-8 text-white my-12"
-    >
-      <!-- Floating shapes background -->
-      <div class="shapes">
-        <div class="shape shape-1"></div>
-        <div class="shape shape-2"></div>
-        <div class="shape shape-3"></div>
-      </div>
-
-      <!-- Header with animated gradient text -->
-      <div class="text-center mb-16 relative">
-        <h1
-          class="text-3xl sm:text-5xl font-bold mb-6 gradient-text animate-gradient"
-        >
-          Самооценка: "ПУТЕШЕСТВИЕ В МИР СЕБЯ"
-        </h1>
-        <p class="text-xl text-purple-100 leading-relaxed max-w-3xl mx-auto">
-          Чувствуете, что иногда сомнения и страхи мешают вам двигаться вперед?
-          <span class="block mt-2">
-            Замечаете, что внутренний критик звучит слишком громко?
-          </span>
-        </p>
-      </div>
-
-      <!-- Content Sections -->
-      <div class="grid md:grid-cols-2 gap-8">
+  <div class="relative min-h-screen">
+    <!-- Animated Background -->
+    <div class="fixed inset-0 -z-1">
+      <div class="absolute top-0 left-0 w-full h-full bg-[#1A1F35]">
+        <!-- Enhanced Gradient Orbs -->
         <div
-          v-for="(section, index) in sections"
-          :key="index"
-          class="backdrop-blur-md bg-white/20 rounded-2xl p-8 transform hover:scale-105 transition-all duration-300 hover:shadow-xl"
-        >
-          <div class="flex items-center mb-6">
-            <i
-              :class="['fas', section.icon, 'text-3xl text-purple-300 mr-4']"
-            ></i>
-            <h2 class="text-2xl font-semibold gradient-text">
-              {{ section.title }}
-            </h2>
-          </div>
-          <ul class="space-y-4">
-            <li
-              v-for="(item, itemIndex) in section.items"
-              :key="itemIndex"
-              class="flex items-start group"
-            >
-              <i
-                class="fas fa-sparkles text-purple-300 mr-3 mt-1 group-hover:text-yellow-300 transition-colors"
-              ></i>
-              <span
-                class="text-purple-100 group-hover:text-white transition-colors"
-                >{{ item }}</span
-              >
-            </li>
-          </ul>
-        </div>
+          class="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-[#0EA5E9]/10 to-[#22D3EE]/10 rounded-full blur-3xl animate-slow-drift opacity-60"
+        ></div>
+        <div
+          class="absolute bottom-1/4 right-1/3 w-80 h-80 bg-gradient-to-r from-[#F59E0B]/10 to-[#F97316]/10 rounded-full blur-3xl animate-slow-pulse opacity-40"
+        ></div>
+        <div
+          class="absolute top-1/3 right-1/4 w-72 h-72 bg-gradient-to-r from-[#E879F9]/10 to-[#C084FC]/10 rounded-full blur-3xl animate-slow-float opacity-50"
+        ></div>
       </div>
+    </div>
 
-      <!-- Download Section -->
-      <div class="text-center mt-16">
-        <button
-          @click="downloadGuide"
-          class="download-button group"
-          :disabled="isDownloading"
-        >
-          <span v-if="!isDownloading" class="relative z-10">
-            <i class="fas fa-download mr-2 group-hover:animate-bounce"></i>
-            Скачать гайд "Самооценка" прямо сейчас!
-          </span>
-          <span v-else>Загрузка...</span>
-        </button>
+    <div class="container mx-auto px-4 max-w-5xl relative z-10 pb-12 pt-12">
+      <!-- Glass-morphism container -->
+      <div
+        class="backdrop-blur-lg bg-[#1A1F35]/40 rounded-3xl border border-[#0EA5E9]/20 shadow-2xl p-8 text-white my-12 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+      >
+        <!-- Header with animated gradient text -->
+        <div class="text-center mb-16 relative">
+          <h1
+            class="text-3xl sm:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] tracking-tight"
+          >
+            Самооценка: "ПУТЕШЕСТВИЕ В МИР СЕБЯ"
+          </h1>
+          <p class="text-xl text-slate-300 leading-relaxed max-w-3xl mx-auto">
+            Чувствуете, что иногда сомнения и страхи мешают вам двигаться
+            вперед?
+            <span class="block mt-2">
+              Замечаете, что внутренний критик звучит слишком громко?
+            </span>
+          </p>
+        </div>
 
-        <p class="text-purple-200 mt-6 text-lg animate-pulse">
-          Начните путь к самопринятию и раскрытию своего истинного потенциала!
-        </p>
+        <!-- Content Sections -->
+        <div class="grid md:grid-cols-2 gap-8">
+          <div
+            v-for="(section, index) in sections"
+            :key="index"
+            class="backdrop-blur-md bg-[#1A1F35]/40 rounded-2xl border border-[#0EA5E9]/20 p-8 transform transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+          >
+            <div class="flex items-center mb-6">
+              <i
+                :class="['fas', section.icon, 'text-3xl text-[#0EA5E9] mr-4']"
+              ></i>
+              <h2
+                class="text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE]"
+              >
+                {{ section.title }}
+              </h2>
+            </div>
+            <ul class="space-y-4">
+              <li
+                v-for="(item, itemIndex) in section.items"
+                :key="itemIndex"
+                class="flex items-start group"
+              >
+                <i
+                  class="fas fa-sparkles text-[#0EA5E9] mr-3 mt-1 group-hover:text-[#E879F9] transition-colors"
+                ></i>
+                <span
+                  class="text-slate-300 group-hover:text-white transition-colors"
+                  >{{ item }}</span
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Download Section -->
+        <div class="text-center mt-16">
+          <button
+            @click="downloadGuide"
+            class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group"
+            :disabled="isDownloading"
+          >
+            <span
+              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
+            >
+              <i class="fas fa-download"></i>
+            </span>
+            <span
+              class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
+            >
+              <i class="fas fa-arrow-down mr-2"></i>
+              Скачать гайд "Самооценка" прямо сейчас!
+            </span>
+            <span class="relative invisible"
+              >Скачать гайд "Самооценка" прямо сейчас!</span
+            >
+          </button>
+
+          <p class="text-slate-300 mt-6 text-lg animate-pulse">
+            Начните путь к самопринятию и раскрытию своего истинного потенциала!
+          </p>
+        </div>
       </div>
     </div>
   </div>
 </template>
+
 <script setup>
 const sections = [
   {
@@ -143,129 +165,65 @@ const downloadGuide = async () => {
   }
 };
 </script>
+
 <style scoped>
-.shapes {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.shape {
-  position: absolute;
-  background: linear-gradient(
-    45deg,
-    rgba(255, 255, 255, 0.1),
-    rgba(255, 255, 255, 0.05)
-  );
-  border-radius: 50%;
-  animation: float 20s infinite linear;
-}
-
-.shape-1 {
-  width: 300px;
-  height: 300px;
-  top: -150px;
-  left: -150px;
-}
-
-.shape-2 {
-  width: 200px;
-  height: 200px;
-  top: 50%;
-  right: -100px;
-  animation-delay: -7s;
-}
-
-.shape-3 {
-  width: 250px;
-  height: 250px;
-  bottom: -125px;
-  left: 50%;
-  animation-delay: -14s;
-}
-
-@keyframes float {
-  0% {
-    transform: rotate(0deg) translate(0, 0);
-  }
+@keyframes slow-drift {
+  0%,
   100% {
-    transform: rotate(360deg) translate(50px, 50px);
-  }
-}
-
-.gradient-text {
-  background: linear-gradient(-45deg, #fff, #e6e6ff, #fff, #ffe6f2);
-  background-size: 400% 400%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: gradient 15s ease infinite;
-}
-
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
+    transform: translate(0, 0);
   }
   50% {
-    background-position: 100% 50%;
+    transform: translate(-200px, 300px);
   }
+}
+
+@keyframes slow-pulse {
+  0%,
   100% {
-    background-position: 0% 50%;
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.5;
   }
 }
 
-.download-button {
-  background: linear-gradient(-45deg, #7e22ce, #be185d);
-  background-size: 200% 200%;
-  padding: 1rem 3rem;
-  border-radius: 9999px;
-  font-weight: bold;
-  font-size: 1.25rem;
-  color: white;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  animation: gradient 15s ease infinite;
+@keyframes slow-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-200px);
+  }
 }
 
-.download-button::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    45deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
-  transform: translateX(-100%);
-  transition: transform 0.6s ease;
+.animate-slow-drift {
+  animation: slow-drift 15s ease-in-out infinite;
 }
 
-.download-button:hover::before {
-  transform: translateX(100%);
+.animate-slow-pulse {
+  animation: slow-pulse 12s ease-in-out infinite;
 }
 
-.download-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.3);
+.animate-slow-float {
+  animation: slow-float 15s ease-in-out infinite;
 }
 
-/* Ensure FontAwesome icons are styled correctly */
-.fas {
-  display: inline-block;
-  transition: all 0.3s ease;
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
 }
 
-/* Hover effects for list items */
-li.group:hover .fas {
-  transform: scale(1.2);
+::-webkit-scrollbar-track {
+  background: #1a1f35;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0ea5e9;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #22d3ee;
 }
 </style>

@@ -36,7 +36,7 @@
             <li v-for="(link, index) in sitemapLinks" :key="index">
               <NuxtLink
                 :to="link.to"
-                active-class="text-fuchsia-400"
+                exact-active-class="text-[#0EA5E9] font-semibold"
                 class="text-slate-300 hover:text-[#22D3EE] transition-colors duration-300 flex items-center group"
               >
                 <span
@@ -99,9 +99,19 @@
             />
             <button
               @click="subscribeEmail"
-              class="px-6 py-3 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white rounded-r-lg hover:from-[#22D3EE] hover:to-[#C084FC] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#C084FC] focus:ring-offset-2 focus:ring-offset-[#1A1F35]"
+              class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-r-lg group"
             >
-              Подписаться
+              <span
+                class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
+              >
+                <i class="fas fa-envelope"></i>
+              </span>
+              <span
+                class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
+              >
+                Подписаться
+              </span>
+              <span class="relative invisible">Подписаться</span>
             </button>
           </div>
         </div>

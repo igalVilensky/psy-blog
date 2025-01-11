@@ -1,60 +1,83 @@
 <template>
-  <div
-    class="bg-gradient-to-br from-indigo-50 via-blue-50 to-white flex-grow flex items-center justify-center px-4"
-    :style="{ minHeight: 'calc(100vh - 150px)' }"
-  >
-    <div class="w-full max-w-md">
-      <div class="perspective-1000 cursor-pointer" @click="toggleCardFlip">
+  <div class="relative min-h-screen">
+    <!-- Animated Background -->
+    <div class="fixed inset-0 -z-1">
+      <div class="absolute top-0 left-0 w-full h-full bg-[#1A1F35]">
+        <!-- Enhanced Gradient Orbs -->
         <div
-          class="transition-transform duration-700 transform-style-3d"
-          :class="{ 'rotate-y-180': isFlipped }"
-        >
-          <!-- Front of Card -->
-          <div
-            class="relative w-full h-full bg-white rounded-xl shadow-lg p-12 backface-hidden"
-          >
-            <div class="text-center">
-              <h2 class="text-2xl font-bold text-gray-800 mb-4">Карта дня</h2>
-              <p class="text-gray-600 mb-6">
-                Нажмите, чтобы открыть глубокий разговор с собой
-              </p>
-              <div
-                class="w-full h-64 bg-blue-100 rounded-lg flex items-center justify-center"
-              >
-                <img
-                  :src="currentCard.image"
-                  alt="Card Illustration"
-                  class="w-full h-48 object-cover rounded-lg mb-6"
-                />
-              </div>
-            </div>
-          </div>
+          class="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-[#0EA5E9]/10 to-[#22D3EE]/10 rounded-full blur-3xl animate-slow-drift opacity-60"
+        ></div>
+        <div
+          class="absolute bottom-1/4 right-1/3 w-80 h-80 bg-gradient-to-r from-[#F59E0B]/10 to-[#F97316]/10 rounded-full blur-3xl animate-slow-pulse opacity-40"
+        ></div>
+        <div
+          class="absolute top-1/3 right-1/4 w-72 h-72 bg-gradient-to-r from-[#E879F9]/10 to-[#C084FC]/10 rounded-full blur-3xl animate-slow-float opacity-50"
+        ></div>
+      </div>
+    </div>
 
-          <!-- Back of Card -->
-          <div
-            class="absolute top-0 w-full h-fit bg-white rounded-xl shadow-lg p-6 rotate-y-180 backface-hidden"
-          >
-            <div>
-              <h3 class="text-2xl font-bold text-blue-600 mb-4">
-                {{ currentCard.title }}
-              </h3>
-              <img
-                src="https://i.pinimg.com/originals/a7/61/9b/a7619b50601cf51ef0029c6cdf8c7bc8.jpg"
-                alt="Card Illustration"
-                class="w-full h-48 object-cover rounded-lg mb-6"
-              />
-              <div class="space-y-4">
-                <h4 class="text-lg font-semibold text-gray-700">
-                  Вопросы для размышления:
-                </h4>
-                <ul class="list-disc list-inside text-gray-600 space-y-2">
-                  <li
-                    v-for="(question, index) in currentCard.questions"
-                    :key="index"
+    <div class="container mx-auto px-4 max-w-6xl relative z-10 pb-12 pt-12">
+      <div class="flex items-center justify-center min-h-[calc(100vh-250px)]">
+        <div class="w-full max-w-md">
+          <div class="perspective-1000 cursor-pointer" @click="toggleCardFlip">
+            <div
+              class="transition-transform duration-700 transform-style-3d"
+              :class="{ 'rotate-y-180': isFlipped }"
+            >
+              <!-- Front of Card -->
+              <div
+                class="relative w-full h-full bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 backface-hidden transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+              >
+                <div class="text-center">
+                  <h2
+                    class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] mb-4"
                   >
-                    {{ question }}
-                  </li>
-                </ul>
+                    Карта дня
+                  </h2>
+                  <p class="text-slate-300 mb-6">
+                    Нажмите, чтобы открыть глубокий разговор с собой
+                  </p>
+                  <div
+                    class="w-full h-64 bg-[#1A1F35]/40 backdrop-blur-xl rounded-lg flex items-center justify-center border border-[#0EA5E9]/20"
+                  >
+                    <img
+                      :src="currentCard.image"
+                      alt="Card Illustration"
+                      class="w-full h-48 object-cover rounded-lg mb-6"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Back of Card -->
+              <div
+                class="absolute top-0 w-full h-fit bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 rotate-y-180 backface-hidden transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+              >
+                <div>
+                  <h3
+                    class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] mb-4"
+                  >
+                    {{ currentCard.title }}
+                  </h3>
+                  <img
+                    src="https://i.pinimg.com/originals/a7/61/9b/a7619b50601cf51ef0029c6cdf8c7bc8.jpg"
+                    alt="Card Illustration"
+                    class="w-full h-48 object-cover rounded-lg mb-6"
+                  />
+                  <div class="space-y-4">
+                    <h4 class="text-lg font-semibold text-slate-300">
+                      Вопросы для размышления:
+                    </h4>
+                    <ul class="list-disc list-inside text-slate-300 space-y-2">
+                      <li
+                        v-for="(question, index) in currentCard.questions"
+                        :key="index"
+                      >
+                        {{ question }}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -264,5 +287,47 @@ onMounted(() => {
 
 .rotate-y-180 {
   transform: rotateY(180deg);
+}
+
+@keyframes slow-drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-200px, 300px);
+  }
+}
+
+@keyframes slow-pulse {
+  0%,
+  100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes slow-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-200px);
+  }
+}
+
+.animate-slow-drift {
+  animation: slow-drift 15s ease-in-out infinite;
+}
+
+.animate-slow-pulse {
+  animation: slow-pulse 12s ease-in-out infinite;
+}
+
+.animate-slow-float {
+  animation: slow-float 15s ease-in-out infinite;
 }
 </style>
