@@ -1,5 +1,5 @@
 <template>
-  <div class="relative min-h-screen">
+  <div class="relative min-h-screen overflow-x-hidden">
     <!-- Animated Background -->
     <div class="fixed inset-0 -z-1">
       <div class="absolute top-0 left-0 w-full h-full bg-[#1A1F35]">
@@ -16,7 +16,9 @@
       </div>
     </div>
 
-    <div class="container mx-auto px-4 max-w-7xl relative z-10 pb-12 pt-12">
+    <div
+      class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl relative z-10 pb-12 pt-12"
+    >
       <!-- Hero Section -->
       <section class="text-center mb-12">
         <h1
@@ -33,7 +35,7 @@
       </section>
 
       <!-- Contact Information Section -->
-      <div class="grid md:grid-cols-2 gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <!-- Contact Details -->
         <div
           class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8"

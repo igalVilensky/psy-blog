@@ -93,219 +93,313 @@
         </div>
       </div>
 
-      <!-- Main Content Grid -->
+      <!-- Bio Section -->
+      <div
+        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8 mb-8"
+      >
+        <h2 class="text-2xl font-bold text-white/90 mb-6">О себе</h2>
+
+        <!-- Loading State -->
+        <div
+          v-if="loadingBio"
+          class="flex flex-col items-center justify-center h-32"
+        >
+          <i class="fas fa-spinner fa-spin text-4xl text-[#0EA5E9] mb-4"></i>
+          <p class="text-slate-300">Загрузка данных...</p>
+        </div>
+
+        <!-- No Data State -->
+        <div
+          v-else-if="!bioDataExists"
+          class="flex flex-col items-center justify-center h-32 text-center"
+        >
+          <i class="fas fa-user-edit text-4xl text-[#0EA5E9] mb-4"></i>
+          <p class="text-slate-300">Добавьте информацию о себе.</p>
+          <NuxtLink
+            to="/profile/settings"
+            class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-2 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20 mt-4"
+          >
+            <span
+              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
+            >
+              <i class="fas fa-plus"></i>
+            </span>
+            <span
+              class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
+            >
+              <i class="fas fa-plus mr-2"></i>
+              Добавить информацию
+            </span>
+            <span class="relative invisible">Добавить информацию</span>
+          </NuxtLink>
+        </div>
+
+        <!-- Bio Data Exists -->
+        <div v-else>
+          <!-- Progress Bar -->
+          <div class="mb-6">
+            <div class="flex justify-between mb-2">
+              <span class="text-slate-300">Заполнено</span>
+              <span class="text-slate-300">{{ bioCompletionPercentage }}%</span>
+            </div>
+            <div class="w-full bg-[#1A1F35]/40 rounded-full h-2">
+              <div
+                class="bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] h-2 rounded-full"
+                :style="{ width: bioCompletionPercentage + '%' }"
+              ></div>
+            </div>
+          </div>
+
+          <!-- Bio Fields -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div v-if="profession" class="bg-[#1A1F35]/40 p-4 rounded-lg">
+              <p class="text-slate-400">Профессия</p>
+              <p class="text-white/90">{{ profession }}</p>
+            </div>
+            <div v-if="socialMedia" class="bg-[#1A1F35]/40 p-4 rounded-lg">
+              <p class="text-slate-400">Социальные сети</p>
+              <p class="text-white/90">{{ socialMedia }}</p>
+            </div>
+            <div v-if="age" class="bg-[#1A1F35]/40 p-4 rounded-lg">
+              <p class="text-slate-400">Возраст</p>
+              <p class="text-white/90">{{ age }}</p>
+            </div>
+            <div v-if="gender" class="bg-[#1A1F35]/40 p-4 rounded-lg">
+              <p class="text-slate-400">Пол</p>
+              <p class="text-white/90">{{ gender }}</p>
+            </div>
+          </div>
+
+          <!-- About Yourself (Free Text) -->
+          <div class="mt-6">
+            <div class="bg-[#1A1F35]/40 p-4 rounded-lg">
+              <p class="text-slate-400">О себе</p>
+              <p class="text-white/90 whitespace-pre-line">
+                {{ aboutYourself }}
+              </p>
+            </div>
+          </div>
+
+          <!-- CTA to Complete Profile -->
+          <div v-if="bioCompletionPercentage < 100" class="mt-6">
+            <NuxtLink
+              to="/profile/settings"
+              class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-2 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
+            >
+              <span
+                class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
+              >
+                <i class="fas fa-edit"></i>
+              </span>
+              <span
+                class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
+              >
+                <i class="fas fa-edit mr-2"></i>
+                Заполнить профиль
+              </span>
+              <span class="relative invisible">Заполнить профиль</span>
+            </NuxtLink>
+          </div>
+        </div>
+      </div>
+
+      <!-- Emotional Barometer Section -->
+      <div
+        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8 mb-8"
+      >
+        <h2 class="text-xl font-bold text-white/90 mb-4">
+          <i class="fas fa-chart-line text-[#0EA5E9] mr-2"></i>
+          Эмоциональный барометр
+        </h2>
+
+        <!-- CTA Link with Hover Effect -->
+        <div v-if="emotionBarometerStats.totalEntries > 0" class="mb-6">
+          <NuxtLink
+            to="/awareness-tools/emotional-barometer"
+            class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-2 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
+          >
+            <span
+              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
+            >
+              <i class="fas fa-arrow-right"></i>
+            </span>
+            <span
+              class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
+            >
+              <i class="fas fa-arrow-right mr-2"></i>
+              Перейти к барометру
+            </span>
+            <span class="relative invisible">Перейти к барометру</span>
+          </NuxtLink>
+        </div>
+
+        <!-- Loading State -->
+        <div
+          v-if="loadingEmotionBarometer"
+          class="flex flex-col items-center justify-center h-64"
+        >
+          <i class="fas fa-spinner fa-spin text-4xl text-[#0EA5E9] mb-4"></i>
+          <p class="text-slate-300">Загрузка данных...</p>
+        </div>
+
+        <!-- No Data State -->
+        <div
+          v-else-if="emotionBarometerStats.totalEntries === 0"
+          class="flex flex-col items-center justify-center h-64 text-center"
+        >
+          <i class="fas fa-chart-pie text-4xl text-[#0EA5E9] mb-4"></i>
+          <p class="text-slate-300">Нет данных для отображения.</p>
+          <p class="text-sm text-slate-400 mt-2">
+            Начните использовать эмоциональный барометр, чтобы отслеживать свои
+            эмоции.
+          </p>
+          <NuxtLink
+            to="/awareness-tools/emotional-barometer"
+            class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-2 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
+          >
+            <span
+              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
+            >
+              <i class="fas fa-play-circle"></i>
+            </span>
+            <span
+              class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
+            >
+              <i class="fas fa-play-circle mr-2"></i>
+              Перейти к барометру
+            </span>
+            <span class="relative invisible">Перейти к барометру</span>
+          </NuxtLink>
+        </div>
+
+        <!-- Stats Grid -->
+        <div v-else class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+          <!-- Total Entries -->
+          <div
+            class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-lg p-6 border border-white/10"
+          >
+            <div class="text-sm text-slate-400 mb-2">Всего записей</div>
+            <div class="text-2xl font-bold text-white/90">
+              {{ emotionBarometerStats.totalEntries }}
+            </div>
+          </div>
+
+          <!-- Most Common Emotion -->
+          <div
+            class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-lg p-6 border border-white/10"
+          >
+            <div class="text-sm text-slate-400 mb-2">Частая эмоция</div>
+            <div class="text-2xl font-bold text-white/90">
+              {{ emotionBarometerStats.mostCommonEmotion }}
+            </div>
+          </div>
+
+          <!-- Average Intensity -->
+          <div
+            class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-lg p-6 border border-white/10"
+          >
+            <div class="text-sm text-slate-400 mb-2">Средняя интенсивность</div>
+            <div class="text-2xl font-bold text-white/90">
+              {{ emotionBarometerStats.averageIntensity.toFixed(1) }}
+            </div>
+          </div>
+
+          <!-- Most Common Tag -->
+          <div
+            class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-lg p-6 border border-white/10"
+          >
+            <div class="text-sm text-slate-400 mb-2">Частая сфера жизни</div>
+            <div class="text-2xl font-bold text-white/90">
+              {{ emotionBarometerStats.mostCommonTag }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Emotion Distribution Chart -->
+        <div v-if="emotionBarometerStats.totalEntries > 0" class="mt-8">
+          <h3 class="text-lg font-semibold text-white/90 mb-4">
+            Распределение эмоций
+          </h3>
+          <canvas ref="emotionChart" class="w-full max-h-64"></canvas>
+        </div>
+      </div>
+
+      <!-- Psychological Profile Section -->
       <PsychologicalProfile
         :archetypes="archetypeScores"
         :loading="loadingAssessments"
       />
 
+      <!-- Right Sidebar Content -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Statistics Section -->
-        <div class="lg:col-span-2 space-y-8">
-          <!-- Emotional Barometer Stats -->
-          <div
-            class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8"
-          >
-            <h2 class="text-xl font-bold text-white/90 mb-4">
-              <i class="fas fa-chart-line text-[#0EA5E9] mr-2"></i>
-              Эмоциональный барометр
+        <!-- Favorite Posts -->
+        <div
+          class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8"
+        >
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-bold text-white/90">
+              <i class="fas fa-bookmark text-[#E879F9] mr-2"></i>
+              Избранные статьи
             </h2>
-
-            <!-- CTA Link with Hover Effect -->
-            <div v-if="emotionBarometerStats.totalEntries > 0" class="mb-6">
-              <NuxtLink
-                to="/awareness-tools/emotional-barometer"
-                class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-2 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
-              >
-                <span
-                  class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
-                >
-                  <i class="fas fa-arrow-right"></i>
-                </span>
-                <span
-                  class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
-                >
-                  <i class="fas fa-arrow-right mr-2"></i>
-                  Перейти к барометру
-                </span>
-                <span class="relative invisible">Перейти к барометру</span>
-              </NuxtLink>
-            </div>
-
-            <!-- Loading State -->
-            <div
-              v-if="loadingEmotionBarometer"
-              class="flex flex-col items-center justify-center h-64"
+            <button
+              class="group relative inline-flex items-center justify-center px-4 py-2 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#E879F9]/20"
             >
-              <i
-                class="fas fa-spinner fa-spin text-4xl text-[#0EA5E9] mb-4"
-              ></i>
-              <p class="text-slate-300">Загрузка данных...</p>
-            </div>
+              <span
+                class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#E879F9] to-[#C084FC] group-hover:translate-x-0 ease"
+              >
+                <i class="fas fa-arrow-right"></i>
+              </span>
+              <span
+                class="absolute flex items-center justify-center w-full h-full text-[#E879F9] transition-all duration-300 transform group-hover:translate-x-full ease"
+              >
+                Смотреть все
+              </span>
+              <span class="relative invisible">Смотреть все</span>
+            </button>
+          </div>
 
-            <!-- No Data State -->
+          <div class="space-y-6">
             <div
-              v-else-if="emotionBarometerStats.totalEntries === 0"
-              class="flex flex-col items-center justify-center h-64 text-center"
+              v-for="i in 3"
+              :key="i"
+              class="flex gap-4 p-4 rounded-lg hover:bg-[#0EA5E9]/10 transition-colors"
             >
-              <i class="fas fa-chart-pie text-4xl text-[#0EA5E9] mb-4"></i>
-              <p class="text-slate-300">Нет данных для отображения.</p>
-              <p class="text-sm text-slate-400 mt-2">
-                Начните использовать эмоциональный барометр, чтобы отслеживать
-                свои эмоции.
-              </p>
-              <NuxtLink
-                to="/awareness-tools/emotional-barometer"
-                class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-2 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
-              >
-                <span
-                  class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
-                >
-                  <i class="fas fa-play-circle"></i>
-                </span>
-                <span
-                  class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
-                >
-                  <i class="fas fa-play-circle mr-2"></i>
-                  Перейти к барометру
-                </span>
-                <span class="relative invisible">Перейти к барометру</span>
-              </NuxtLink>
-            </div>
-
-            <!-- Stats Grid -->
-            <div v-else class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-              <!-- Total Entries -->
-              <div
-                class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-lg p-6 border border-white/10"
-              >
-                <div class="text-sm text-slate-400 mb-2">Всего записей</div>
-                <div class="text-2xl font-bold text-white/90">
-                  {{ emotionBarometerStats.totalEntries }}
+              <img :src="hostImage" class="w-24 h-16 rounded-lg object-cover" />
+              <div>
+                <h3 class="font-medium text-white/90 mb-2">
+                  Название избранной статьи
+                </h3>
+                <div class="flex items-center text-sm text-slate-400">
+                  <span class="flex items-center">
+                    <i class="far fa-clock mr-1"></i>
+                    5 мин чтения
+                  </span>
+                  <span class="mx-2">•</span>
+                  <span class="text-[#E879F9]">Личностный рост</span>
                 </div>
               </div>
-
-              <!-- Most Common Emotion -->
-              <div
-                class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-lg p-6 border border-white/10"
-              >
-                <div class="text-sm text-slate-400 mb-2">Частая эмоция</div>
-                <div class="text-2xl font-bold text-white/90">
-                  {{ emotionBarometerStats.mostCommonEmotion }}
-                </div>
-              </div>
-
-              <!-- Average Intensity -->
-              <div
-                class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-lg p-6 border border-white/10"
-              >
-                <div class="text-sm text-slate-400 mb-2">
-                  Средняя интенсивность
-                </div>
-                <div class="text-2xl font-bold text-white/90">
-                  {{ emotionBarometerStats.averageIntensity.toFixed(1) }}
-                </div>
-              </div>
-
-              <!-- Most Common Tag -->
-              <div
-                class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-lg p-6 border border-white/10"
-              >
-                <div class="text-sm text-slate-400 mb-2">
-                  Частая сфера жизни
-                </div>
-                <div class="text-2xl font-bold text-white/90">
-                  {{ emotionBarometerStats.mostCommonTag }}
-                </div>
-              </div>
-            </div>
-
-            <!-- Emotion Distribution Chart -->
-            <div v-if="emotionBarometerStats.totalEntries > 0" class="mt-8">
-              <h3 class="text-lg font-semibold text-white/90 mb-4">
-                Распределение эмоций
-              </h3>
-              <canvas ref="emotionChart" class="w-full max-h-64"></canvas>
             </div>
           </div>
         </div>
 
-        <!-- Right Sidebar Content -->
-        <div class="space-y-8">
-          <!-- Favorite Posts -->
-          <div
-            class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8"
-          >
-            <div class="flex items-center justify-between mb-6">
-              <h2 class="text-xl font-bold text-white/90">
-                <i class="fas fa-bookmark text-[#E879F9] mr-2"></i>
-                Избранные статьи
-              </h2>
-              <button
-                class="group relative inline-flex items-center justify-center px-4 py-2 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#E879F9]/20"
-              >
-                <span
-                  class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#E879F9] to-[#C084FC] group-hover:translate-x-0 ease"
-                >
-                  <i class="fas fa-arrow-right"></i>
-                </span>
-                <span
-                  class="absolute flex items-center justify-center w-full h-full text-[#E879F9] transition-all duration-300 transform group-hover:translate-x-full ease"
-                >
-                  Смотреть все
-                </span>
-                <span class="relative invisible">Смотреть все</span>
-              </button>
-            </div>
-
-            <div class="space-y-6">
+        <!-- Recent Activity -->
+        <div
+          class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8"
+        >
+          <h2 class="text-xl font-bold text-white/90 mb-6">
+            <i class="fas fa-history text-[#E879F9] mr-2"></i>
+            Недавняя активность
+          </h2>
+          <div class="space-y-4">
+            <div v-for="i in 4" :key="i" class="flex items-start gap-3">
               <div
-                v-for="i in 3"
-                :key="i"
-                class="flex gap-4 p-4 rounded-lg hover:bg-[#0EA5E9]/10 transition-colors"
+                class="w-8 h-8 rounded-full bg-[#E879F9]/20 flex items-center justify-center flex-shrink-0"
               >
-                <img
-                  :src="hostImage"
-                  class="w-24 h-16 rounded-lg object-cover"
-                />
-                <div>
-                  <h3 class="font-medium text-white/90 mb-2">
-                    Название избранной статьи
-                  </h3>
-                  <div class="flex items-center text-sm text-slate-400">
-                    <span class="flex items-center">
-                      <i class="far fa-clock mr-1"></i>
-                      5 мин чтения
-                    </span>
-                    <span class="mx-2">•</span>
-                    <span class="text-[#E879F9]">Личностный рост</span>
-                  </div>
-                </div>
+                <i class="fas fa-book-reader text-[#E879F9]"></i>
               </div>
-            </div>
-          </div>
-
-          <!-- Recent Activity -->
-          <div
-            class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8"
-          >
-            <h2 class="text-xl font-bold text-white/90 mb-6">
-              <i class="fas fa-history text-[#E879F9] mr-2"></i>
-              Недавняя активность
-            </h2>
-            <div class="space-y-4">
-              <div v-for="i in 4" :key="i" class="flex items-start gap-3">
-                <div
-                  class="w-8 h-8 rounded-full bg-[#E879F9]/20 flex items-center justify-center flex-shrink-0"
-                >
-                  <i class="fas fa-book-reader text-[#E879F9]"></i>
-                </div>
-                <div>
-                  <p class="text-white/90">
-                    Прочитали статью "Название статьи"
-                  </p>
-                  <p class="text-sm text-slate-400">2 часа назад</p>
-                </div>
+              <div>
+                <p class="text-white/90">Прочитали статью "Название статьи"</p>
+                <p class="text-sm text-slate-400">2 часа назад</p>
               </div>
             </div>
           </div>
@@ -316,6 +410,7 @@
 </template>
 
 <script setup>
+import { ref, computed, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "~/stores/auth";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -326,17 +421,24 @@ import UserAvatar from "~/components/profile/UserAvatar.vue";
 import { getEmotionBarometerStats } from "~/api/firebase/emotionBarometer";
 import PsychologicalProfile from "~/components/profile/PsychologicalProfile.vue";
 import { getLatestUserAssessment } from "~/api/firebase/assessments";
-import { ref, nextTick } from "vue";
 
 Chart.register(...registerables);
 
 const loading = ref(true);
+const loadingBio = ref(true);
 const loadingEmotionBarometer = ref(true);
-
 const loadingAssessments = ref(false);
-const avatarUrl = ref(null); // Store the uploaded avatar URL
+const avatarUrl = ref(null);
 const emotionChart = ref(null);
 
+// Bio Data
+const profession = ref("");
+const socialMedia = ref("");
+const age = ref("");
+const gender = ref("");
+const aboutYourself = ref("");
+
+// Emotion Barometer Stats
 const emotionBarometerStats = ref({
   totalEntries: 0,
   mostCommonEmotion: "",
@@ -344,6 +446,8 @@ const emotionBarometerStats = ref({
   mostCommonTag: "",
   emotionDistribution: {},
 });
+
+// Psychological Profile Data
 const latestAssessment = ref(null);
 const assessmentError = ref(null);
 const archetypeScores = ref([]);
@@ -351,6 +455,52 @@ const archetypeScores = ref([]);
 const auth = getAuth();
 const authStore = useAuthStore();
 const router = useRouter();
+
+// Fetch Bio Data
+const fetchBioData = async (userId) => {
+  const db = getFirestore();
+  const userRef = doc(db, "users", userId);
+
+  try {
+    const userSnap = await getDoc(userRef);
+    if (userSnap.exists()) {
+      const data = userSnap.data();
+      profession.value = data.profession || "";
+      socialMedia.value = data.socialMedia || "";
+      age.value = data.age || "";
+      gender.value = data.gender || "";
+      aboutYourself.value = data.aboutYourself || "";
+    }
+  } catch (error) {
+    console.error("Error fetching bio data:", error);
+  } finally {
+    loadingBio.value = false;
+  }
+};
+
+// Check if bio data exists
+const bioDataExists = computed(() => {
+  return (
+    profession.value ||
+    socialMedia.value ||
+    age.value ||
+    gender.value ||
+    aboutYourself.value
+  );
+});
+
+// Calculate bio completion percentage
+const bioCompletionPercentage = computed(() => {
+  const fields = [
+    profession.value,
+    socialMedia.value,
+    age.value,
+    gender.value,
+    aboutYourself.value,
+  ];
+  const filledFields = fields.filter((field) => field).length;
+  return (filledFields / fields.length) * 100;
+});
 
 // Fetch the latest assessment results
 const fetchLatestAssessment = async (userId) => {
@@ -420,6 +570,7 @@ const getIconForArchetype = (name) => {
   return icons[name] || "fa-question";
 };
 
+// Initialize onAuthStateChanged
 onAuthStateChanged(auth, async (currentUser) => {
   loading.value = true;
   loadingEmotionBarometer.value = true; // Set loading to true initially
@@ -434,11 +585,11 @@ onAuthStateChanged(auth, async (currentUser) => {
     // Fetch the user's avatar URL
     avatarUrl.value = await fetchUserAvatarUrl(currentUser.uid);
 
-    // Fetch the latest assessment results
-    await fetchLatestAssessment(currentUser.uid);
+    // Fetch bio data
+    await fetchBioData(currentUser.uid);
 
+    // Fetch emotion barometer stats
     try {
-      // Fetch emotion barometer stats
       const { success, stats } = await getEmotionBarometerStats(
         db,
         currentUser.uid
@@ -496,6 +647,9 @@ onAuthStateChanged(auth, async (currentUser) => {
     } finally {
       loadingEmotionBarometer.value = false; // Set loading to false after data is fetched
     }
+
+    // Fetch the latest assessment results
+    await fetchLatestAssessment(currentUser.uid);
 
     // Set loading to false after all data is fetched
     loading.value = false;

@@ -17,6 +17,25 @@
     </div>
 
     <div class="container mx-auto px-4 max-w-6xl relative z-10 pb-12 pt-12">
+      <!-- Back to Profile Button -->
+      <button
+        @click="goBackToProfile"
+        class="group relative inline-flex items-center justify-center mb-8 px-6 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
+      >
+        <span
+          class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
+        >
+          <i class="fas fa-arrow-left"></i>
+        </span>
+        <span
+          class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
+        >
+          <i class="fas fa-arrow-left mr-2"></i>
+          Назад в профиль
+        </span>
+        <span class="relative invisible">Назад в профиль</span>
+      </button>
+
       <!-- Profile Section -->
       <section
         class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8 mb-8"
@@ -27,6 +46,12 @@
         <div class="mb-6">
           <label class="block text-slate-300 mb-2">О себе</label>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <input
+              v-model="displayName"
+              type="text"
+              placeholder="Отображаемое имя"
+              class="w-full px-4 py-3 rounded-lg bg-white/5 border border-[#0EA5E9]/20 text-white placeholder-slate-400/50 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]"
+            />
             <input
               v-model="profession"
               type="text"
@@ -55,6 +80,23 @@
               <option value="other">Другой</option>
             </select>
           </div>
+        </div>
+
+        <!-- Free Text Field (About Yourself) -->
+        <div class="mb-6">
+          <label class="block text-slate-300 mb-2"
+            >О себе (до 300 символов)</label
+          >
+          <textarea
+            v-model="aboutYourself"
+            placeholder="Расскажите о себе..."
+            class="w-full px-4 py-3 rounded-lg bg-white/5 border border-[#0EA5E9]/20 text-white placeholder-slate-400/50 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]"
+            rows="4"
+            maxlength="300"
+          ></textarea>
+          <p class="text-sm text-slate-400 mt-2">
+            {{ aboutYourself.length }}/300
+          </p>
         </div>
 
         <!-- Save Button with Cool Hover Effect -->
@@ -175,20 +217,78 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router"; // Import useRouter for navigation
+import { getAuth } from "firebase/auth";
+import { fetchUserData, updateUserData } from "@/api/firebase/userProfile";
+
+// Initialize router
+const router = useRouter();
 
 // Bio/Description Fields
+const displayName = ref("");
 const profession = ref("");
 const socialMedia = ref("");
 const age = ref("");
 const gender = ref("");
+const aboutYourself = ref("");
 
 // Feedback
 const feedback = ref("");
 
+// Fetch user data on component mount
+onMounted(async () => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  if (user) {
+    const userData = await fetchUserData(user.uid);
+    if (userData) {
+      displayName.value = userData.displayName || "";
+      profession.value = userData.profession || "";
+      socialMedia.value = userData.socialMedia || "";
+      age.value = userData.age || "";
+      gender.value = userData.gender || "";
+      aboutYourself.value = userData.aboutYourself || "";
+    }
+  }
+});
+
 // Save Profile
-const saveProfile = () => {
-  alert("Изменения сохранены!");
+const saveProfile = async () => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  if (!user) {
+    alert("Пользователь не авторизован.");
+    return;
+  }
+
+  const data = {
+    displayName: displayName.value,
+    profession: profession.value,
+    socialMedia: socialMedia.value,
+    age: age.value,
+    gender: gender.value,
+    aboutYourself: aboutYourself.value,
+  };
+
+  const result = await updateUserData(user.uid, data);
+  if (result.success) {
+    alert("Изменения сохранены!");
+    goBackToProfile(); // Redirect back to profile after saving
+  } else {
+    alert("Ошибка при сохранении изменений: " + result.message);
+  }
+};
+
+// Redirect back to profile
+const goBackToProfile = () => {
+  if (displayName.value) {
+    router.push(`/profile/${displayName.value}`); // Redirect to [username].vue
+  } else {
+    router.push("/profile"); // Fallback if displayName is not set
+  }
 };
 
 // Account Deletion
@@ -205,8 +305,8 @@ const confirmDeleteAccount = () => {
 
 // Contact Support
 const contactSupport = () => {
-  alert("Перенаправление в поддержку...");
-  // Add logic to redirect or open a support form
+  // alert("Перенаправление в поддержку...");
+  router.push("/contact"); // Redirect to the /contact route
 };
 
 // Submit Feedback
@@ -215,6 +315,7 @@ const submitFeedback = () => {
     alert("Пожалуйста, введите ваш отзыв перед отправкой.");
     return;
   }
+
   alert("Спасибо за ваш отзыв!");
   feedback.value = "";
 };

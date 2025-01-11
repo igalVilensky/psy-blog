@@ -88,11 +88,9 @@
               class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
             >
               <i class="fas fa-arrow-down mr-2"></i>
-              Скачать гайд "Самооценка" прямо сейчас!
+              Скачать сейчас!
             </span>
-            <span class="relative invisible"
-              >Скачать гайд "Самооценка" прямо сейчас!</span
-            >
+            <span class="relative invisible">Скачать сейчас!</span>
           </button>
 
           <p class="text-slate-300 mt-6 text-lg animate-pulse">

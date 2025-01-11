@@ -20,7 +20,7 @@
       <!-- Hero Section -->
       <section class="text-center mb-12">
         <h1
-          class="text-4xl sm:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] tracking-tight mb-6"
+          class="text-3xl sm:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] tracking-tight mb-6"
         >
           Пользовательское соглашение
         </h1>
