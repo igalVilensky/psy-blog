@@ -1,6 +1,7 @@
 export default defineNuxtConfig({
   // Tell Nuxt to include Tailwind CSS
   css: [
+    "@/assets/css/global.css",
     "@/assets/css/tailwind.css",
     "@fortawesome/fontawesome-free/css/all.min.css",
   ],

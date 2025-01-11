@@ -1,27 +1,22 @@
 <template>
-  <div
-    class="relative min-h-screen bg-gradient-to-br from-[#0F172A] to-[#1E1B4B] py-6 sm:py-12"
-  >
+  <div class="relative min-h-screen">
     <!-- Animated Background -->
     <div class="fixed inset-0 -z-1">
-      <div class="absolute top-0 left-0 w-full h-full bg-[#0F172A]">
-        <!-- Gradient Orbs -->
+      <div class="absolute top-0 left-0 w-full h-full bg-[#1A1F35]">
+        <!-- Enhanced Gradient Orbs -->
         <div
-          class="absolute top-0 left-0 w-[500px] h-[500px] bg-purple-500/20 rounded-full blur-[120px] animate-float"
+          class="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-[#0EA5E9]/10 to-[#22D3EE]/10 rounded-full blur-3xl animate-slow-drift opacity-60"
         ></div>
         <div
-          class="absolute bottom-0 right-0 w-[400px] h-[400px] bg-blue-500/20 rounded-full blur-[100px] animate-float-delay"
+          class="absolute bottom-1/4 right-1/3 w-80 h-80 bg-gradient-to-r from-[#F59E0B]/10 to-[#F97316]/10 rounded-full blur-3xl animate-slow-pulse opacity-40"
         ></div>
-        <!-- Animated Grid -->
         <div
-          class="absolute inset-0 bg-gradient-to-b from-transparent to-[#0F172A]/80"
-        >
-          <div class="absolute inset-0 bg-grid-white/[0.02] animate-grid"></div>
-        </div>
+          class="absolute top-1/3 right-1/4 w-72 h-72 bg-gradient-to-r from-[#E879F9]/10 to-[#C084FC]/10 rounded-full blur-3xl animate-slow-float opacity-50"
+        ></div>
       </div>
     </div>
 
-    <div class="container mx-auto px-4 max-w-6xl relative z-10">
+    <div class="container mx-auto px-4 max-w-6xl relative z-10 pb-12 pt-12">
       <div class="grid grid-cols-1">
         <!-- Analysis Section -->
         <EmotionalAnalysis :patterns="emotionPatterns" :entries="entries" />
@@ -29,6 +24,7 @@
     </div>
   </div>
 </template>
+
 <script setup>
 import { ref, computed } from "vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -122,54 +118,3 @@ onAuthStateChanged(auth, async (currentUser) => {
   }
 });
 </script>
-<style scoped>
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-}
-
-@keyframes grid {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(-20px);
-  }
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-.animate-float-delay {
-  animation: float 6s ease-in-out infinite;
-  animation-delay: -3s;
-}
-
-.animate-grid {
-  animation: grid 20s linear infinite;
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #1e1b4b;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #4f46e5;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #6366f1;
-}
-</style>

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-full max-w-6xl mx-auto bg-gradient-to-b from-[#1E1B4B]/40 to-[#1E1B4B]/60 backdrop-blur-xl rounded-2xl border border-indigo-500/20 p-4 sm:p-6"
+    class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
   >
     <div class="relative w-full" :style="{ height: computedHeight + 'px' }">
       <canvas ref="emotionGraph" class="w-full h-full"></canvas>
@@ -199,23 +199,3 @@ watch(
   { deep: true }
 );
 </script>
-
-<style scoped>
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #1e1b4b;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #4f46e5;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #6366f1;
-}
-</style>

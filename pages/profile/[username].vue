@@ -666,27 +666,6 @@ const logoutUser = async () => {
 </script>
 
 <style scoped>
-/* Animated Background Grid */
-.bg-grid-white {
-  background-image: linear-gradient(
-      rgba(255, 255, 255, 0.05) 1px,
-      transparent 1px
-    ),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 20px 20px;
-}
-
-/* Floating Animation */
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-}
-
 /* Grid Animation */
 @keyframes grid {
   0% {
@@ -697,77 +676,7 @@ const logoutUser = async () => {
   }
 }
 
-/* Orb Animations */
-@keyframes slow-drift {
-  0%,
-  100% {
-    transform: translate(0, 0);
-  }
-  50% {
-    transform: translate(-200px, 300px);
-  }
-}
-
-@keyframes slow-pulse {
-  0%,
-  100% {
-    opacity: 0.1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-}
-
-@keyframes slow-float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-200px);
-  }
-}
-
-.animate-slow-drift {
-  animation: slow-drift 15s ease-in-out infinite;
-}
-
-.animate-slow-pulse {
-  animation: slow-pulse 12s ease-in-out infinite;
-}
-
-.animate-slow-float {
-  animation: slow-float 15s ease-in-out infinite;
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-.animate-float-delay {
-  animation: float 6s ease-in-out infinite;
-  animation-delay: -3s;
-}
-
 .animate-grid {
   animation: grid 20s linear infinite;
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #1a1f35;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #0ea5e9;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #22d3ee;
 }
 </style>
