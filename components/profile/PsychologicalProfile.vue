@@ -7,16 +7,18 @@
       >
         <!-- Title and Tabs -->
         <div class="flex flex-col justify-between mb-6">
-          <div class="flex items-center justify-between mb-4">
+          <div
+            class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 mb-4"
+          >
             <h2
-              class="text-xl font-bold text-white/90 text-left flex items-center"
+              class="text-xl font-bold text-white/90 text-left flex items-center whitespace-nowrap"
             >
               <i class="fas fa-brain text-[#0EA5E9] mr-2"></i>
               Психологический профиль
             </h2>
-            <span class="text-sm text-slate-400"
-              >Последнее обновление: {{ formatDate(lastUpdate) }}</span
-            >
+            <span class="text-sm text-slate-400 whitespace-nowrap">
+              Последнее обновление: {{ formatDate(lastUpdate) }}
+            </span>
           </div>
 
           <!-- Tabs with Smooth Transitions -->

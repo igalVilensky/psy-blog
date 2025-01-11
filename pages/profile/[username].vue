@@ -106,23 +106,33 @@
 
       <!-- Enhanced Bio Section -->
       <div
-        class="bg-gradient-to-b from-[#1A1F35]/60 to-[#1E293B]/80 backdrop-blur-xl rounded-3xl border border-white/10 p-10 mb-8 shadow-2xl"
+        class="bg-gradient-to-b from-[#1A1F35]/60 to-[#1E293B]/80 backdrop-blur-xl rounded-3xl border border-white/10 p-6 sm:p-10 mb-8 shadow-2xl"
       >
-        <div class="flex items-center justify-between mb-8">
-          <h2 class="text-2xl font-bold text-white/90">
+        <!-- Title and Progress Bar -->
+        <div
+          class="flex flex-col sm:flex-row items-start justify-between gap-4 sm:gap-8 mb-8"
+        >
+          <!-- Title -->
+          <h2 class="text-2xl font-bold text-white/90 flex-shrink-0">
             <i class="fas fa-user-edit text-[#0EA5E9] mr-3"></i>О себе
           </h2>
-          <div class="flex items-center gap-2">
-            <span class="text-slate-400 text-sm">Заполнено:</span>
-            <div class="w-32 bg-[#1A1F35]/40 rounded-full h-2">
+
+          <!-- Progress Bar -->
+          <div class="w-full sm:w-auto flex items-center gap-4 sm:gap-4">
+            <span class="text-slate-400 text-sm whitespace-nowrap"
+              >Заполнено:</span
+            >
+            <div
+              class="w-24 sm:w-32 bg-[#1A1F35]/40 rounded-full h-2 flex-grow"
+            >
               <div
                 class="bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] h-2 rounded-full transition-all duration-500"
                 :style="{ width: bioCompletionPercentage + '%' }"
               ></div>
             </div>
-            <span class="text-slate-300 text-sm font-medium"
-              >{{ bioCompletionPercentage }}%</span
-            >
+            <span class="text-slate-300 text-sm font-medium whitespace-nowrap">
+              {{ bioCompletionPercentage }}%
+            </span>
           </div>
         </div>
 
@@ -153,7 +163,7 @@
           </p>
           <NuxtLink
             to="/profile/settings"
-            class="group relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 hover:shadow-lg"
+            class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 hover:shadow-lg"
           >
             <span
               class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
@@ -172,80 +182,128 @@
         <!-- Bio Data -->
         <div v-else class="space-y-8">
           <!-- Info Cards Grid -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
+          >
             <div
               v-if="profession"
-              class="bg-[#1A1F35]/40 p-6 rounded-2xl border border-white/5 hover:border-[#0EA5E9]/30 transition-colors group"
+              class="bg-[#1A1F35]/40 p-4 sm:p-6 rounded-2xl border border-white/5 hover:border-[#0EA5E9]/30 transition-colors group"
             >
-              <div class="flex items-center gap-4 mb-3">
+              <div class="flex items-center gap-3 sm:gap-4 mb-3">
                 <div
-                  class="w-10 h-10 bg-[#0EA5E9]/20 rounded-xl flex items-center justify-center group-hover:bg-[#0EA5E9]/30 transition-colors"
+                  class="w-8 h-8 sm:w-10 sm:h-10 bg-[#0EA5E9]/20 rounded-xl flex items-center justify-center group-hover:bg-[#0EA5E9]/30 transition-colors"
                 >
-                  <i class="fas fa-briefcase text-[#0EA5E9]"></i>
+                  <i
+                    class="fas fa-briefcase text-[#0EA5E9] text-sm sm:text-base"
+                  ></i>
                 </div>
-                <p class="text-slate-400 font-medium">Профессия</p>
+                <p class="text-slate-400 font-medium text-sm sm:text-base">
+                  Профессия
+                </p>
               </div>
-              <p class="text-white/90 text-lg">{{ profession }}</p>
+              <p class="text-white/90 text-base sm:text-lg">{{ profession }}</p>
             </div>
 
             <div
-              v-if="socialMedia"
-              class="bg-[#1A1F35]/40 p-6 rounded-2xl border border-white/5 hover:border-[#0EA5E9]/30 transition-colors group"
+              v-if="socialMedia?.length > 0"
+              class="bg-[#1A1F35]/40 p-4 sm:p-6 rounded-2xl border border-white/5 hover:border-[#0EA5E9]/30 transition-colors group"
             >
-              <div class="flex items-center gap-4 mb-3">
+              <div class="flex items-center gap-3 sm:gap-4 mb-3">
                 <div
-                  class="w-10 h-10 bg-[#0EA5E9]/20 rounded-xl flex items-center justify-center group-hover:bg-[#0EA5E9]/30 transition-colors"
+                  class="w-8 h-8 sm:w-10 sm:h-10 bg-[#0EA5E9]/20 rounded-xl flex items-center justify-center group-hover:bg-[#0EA5E9]/30 transition-colors"
                 >
-                  <i class="fas fa-share-alt text-[#0EA5E9]"></i>
+                  <i
+                    class="fas fa-share-alt text-[#0EA5E9] text-sm sm:text-base"
+                  ></i>
                 </div>
-                <p class="text-slate-400 font-medium">Социальные сети</p>
+                <p class="text-slate-400 font-medium text-sm sm:text-base">
+                  Социальные сети
+                </p>
               </div>
-              <p class="text-white/90 text-lg">{{ socialMedia }}</p>
+              <div class="space-y-2">
+                <div
+                  v-for="(platform, index) in socialMedia"
+                  :key="index"
+                  class="flex items-center gap-2"
+                >
+                  <i
+                    :class="{
+                      'fab fa-telegram': platform.type === 'telegram',
+                      'fab fa-vk': platform.type === 'vk',
+                      'fab fa-instagram': platform.type === 'instagram',
+                      'fab fa-facebook': platform.type === 'facebook',
+                    }"
+                    class="text-[#0EA5E9] text-lg"
+                  ></i>
+                  <a
+                    :href="platform.url"
+                    target="_blank"
+                    class="text-white/90 text-base sm:text-lg hover:underline truncate max-w-[200px] sm:max-w-[300px]"
+                    :title="platform.url"
+                  >
+                    {{ platform.url }}
+                  </a>
+                </div>
+              </div>
             </div>
 
             <div
               v-if="age"
-              class="bg-[#1A1F35]/40 p-6 rounded-2xl border border-white/5 hover:border-[#0EA5E9]/30 transition-colors group"
+              class="bg-[#1A1F35]/40 p-4 sm:p-6 rounded-2xl border border-white/5 hover:border-[#0EA5E9]/30 transition-colors group"
             >
-              <div class="flex items-center gap-4 mb-3">
+              <div class="flex items-center gap-3 sm:gap-4 mb-3">
                 <div
-                  class="w-10 h-10 bg-[#0EA5E9]/20 rounded-xl flex items-center justify-center group-hover:bg-[#0EA5E9]/30 transition-colors"
+                  class="w-8 h-8 sm:w-10 sm:h-10 bg-[#0EA5E9]/20 rounded-xl flex items-center justify-center group-hover:bg-[#0EA5E9]/30 transition-colors"
                 >
-                  <i class="fas fa-birthday-cake text-[#0EA5E9]"></i>
+                  <i
+                    class="fas fa-birthday-cake text-[#0EA5E9] text-sm sm:text-base"
+                  ></i>
                 </div>
-                <p class="text-slate-400 font-medium">Возраст</p>
+                <p class="text-slate-400 font-medium text-sm sm:text-base">
+                  Возраст
+                </p>
               </div>
-              <p class="text-white/90 text-lg">{{ age }}</p>
+              <p class="text-white/90 text-base sm:text-lg">{{ age }}</p>
             </div>
 
             <div
               v-if="gender"
-              class="bg-[#1A1F35]/40 p-6 rounded-2xl border border-white/5 hover:border-[#0EA5E9]/30 transition-colors group"
+              class="bg-[#1A1F35]/40 p-4 sm:p-6 rounded-2xl border border-white/5 hover:border-[#0EA5E9]/30 transition-colors group"
             >
-              <div class="flex items-center gap-4 mb-3">
+              <div class="flex items-center gap-3 sm:gap-4 mb-3">
                 <div
-                  class="w-10 h-10 bg-[#0EA5E9]/20 rounded-xl flex items-center justify-center group-hover:bg-[#0EA5E9]/30 transition-colors"
+                  class="w-8 h-8 sm:w-10 sm:h-10 bg-[#0EA5E9]/20 rounded-xl flex items-center justify-center group-hover:bg-[#0EA5E9]/30 transition-colors"
                 >
-                  <i class="fas fa-venus-mars text-[#0EA5E9]"></i>
+                  <i
+                    class="fas fa-venus-mars text-[#0EA5E9] text-sm sm:text-base"
+                  ></i>
                 </div>
-                <p class="text-slate-400 font-medium">Пол</p>
+                <p class="text-slate-400 font-medium text-sm sm:text-base">
+                  Пол
+                </p>
               </div>
-              <p class="text-white/90 text-lg">{{ gender }}</p>
+              <p class="text-white/90 text-base sm:text-lg">{{ gender }}</p>
             </div>
           </div>
 
           <!-- About Text -->
-          <div class="bg-[#1A1F35]/40 p-8 rounded-2xl border border-white/5">
-            <div class="flex items-center gap-4 mb-6">
+          <div
+            class="bg-[#1A1F35]/40 p-6 sm:p-8 rounded-2xl border border-white/5"
+          >
+            <div class="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
               <div
-                class="w-12 h-12 bg-[#0EA5E9]/20 rounded-xl flex items-center justify-center"
+                class="w-10 h-10 sm:w-12 sm:h-12 bg-[#0EA5E9]/20 rounded-xl flex items-center justify-center"
               >
-                <i class="fas fa-quote-right text-[#0EA5E9] text-xl"></i>
+                <i
+                  class="fas fa-quote-right text-[#0EA5E9] text-lg sm:text-xl"
+                ></i>
               </div>
-              <p class="text-slate-400 font-medium text-lg">О себе</p>
+              <p class="text-slate-400 font-medium text-base sm:text-lg">
+                О себе
+              </p>
             </div>
             <p
-              class="text-white/90 text-lg leading-relaxed whitespace-pre-line"
+              class="text-white/90 text-base sm:text-lg leading-relaxed whitespace-pre-line"
             >
               {{ aboutYourself }}
             </p>
@@ -569,6 +627,7 @@ const fetchBioData = async (userId) => {
       age.value = data.age || "";
       gender.value = data.gender || "";
       aboutYourself.value = data.aboutYourself || "";
+      console.log(data);
     }
   } catch (error) {
     console.error("Error fetching bio data:", error);
