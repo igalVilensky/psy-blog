@@ -19,27 +19,33 @@
     <div class="container mx-auto px-4 max-w-6xl relative z-10 py-8">
       <!-- Navigation Bar -->
       <nav
-        class="flex items-center justify-between mb-8 bg-gradient-to-r from-[#1A1F35]/60 to-[#1E293B]/60 backdrop-blur-xl rounded-lg border border-[#0EA5E9]/20 p-4"
+        class="flex items-center justify-between mb-8 bg-gradient-to-r from-[#1A1F35]/60 to-[#1E293B]/60 backdrop-blur-xl rounded-lg border border-[#0EA5E9]/20 p-2 md:p-4"
       >
+        <!-- Back Button -->
         <NuxtLink
           to="/profile"
-          class="group relative inline-flex items-center justify-center px-6 py-2 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
+          class="group relative inline-flex items-center justify-center px-3 md:px-6 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
         >
           <span
             class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
           >
-            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-left text-xs md:text-base"></i>
           </span>
           <span
-            class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
+            class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease text-xs md:text-base"
           >
-            <i class="fas fa-arrow-left mr-2"></i>
-            Назад в профиль
+            <i class="fas fa-arrow-left mr-1 md:mr-2"></i>
+            <span class="hidden md:inline">Назад в профиль</span>
           </span>
           <span class="relative invisible">Назад в профиль</span>
         </NuxtLink>
 
-        <div class="text-white/90 font-semibold">Настройки аккаунта</div>
+        <!-- Settings Text -->
+        <div
+          class="text-white/90 font-semibold text-sm md:text-base whitespace-nowrap ml-2"
+        >
+          Настройки аккаунта
+        </div>
       </nav>
 
       <!-- Settings Grid -->
@@ -50,8 +56,10 @@
           <section
             class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8"
           >
-            <div class="flex items-center justify-between mb-6">
-              <h2 class="text-2xl font-bold text-white/90">
+            <div
+              class="flex flex-col md:flex-row md:items-center md:justify-between mb-6"
+            >
+              <h2 class="text-2xl font-bold text-white/90 mb-2 md:mb-0">
                 Настройки профиля
               </h2>
               <span class="text-sm text-slate-400">* Обязательные поля</span>
@@ -146,11 +154,11 @@
                   <div
                     v-for="(platform, index) in socialMedia"
                     :key="index"
-                    class="flex gap-4"
+                    class="flex gap-2 md:gap-4 items-center"
                   >
                     <select
                       v-model="platform.type"
-                      class="w-1/4 px-4 py-3 rounded-lg bg-white/5 border border-[#0EA5E9]/20 text-white placeholder-slate-400/50 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]"
+                      class="w-1/3 md:w-1/4 px-2 md:px-4 py-2 md:py-3 rounded-lg bg-gray-800 border border-[#0EA5E9]/20 text-white placeholder-slate-400/50 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] text-sm md:text-base"
                     >
                       <option value="telegram">Telegram</option>
                       <option value="vk">VK</option>
@@ -161,12 +169,12 @@
                       v-model="platform.url"
                       type="text"
                       :placeholder="'Ссылка на ' + platform.type"
-                      class="flex-1 px-4 py-3 rounded-lg bg-white/5 border border-[#0EA5E9]/20 text-white placeholder-slate-400/50 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]"
+                      class="w-2/3 md:flex-1 px-2 md:px-4 py-2 md:py-3 rounded-lg bg-white/5 border border-[#0EA5E9]/20 text-white placeholder-slate-400/50 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] text-sm md:text-base"
                     />
                     <button
                       type="button"
                       @click="removeSocialPlatform(index)"
-                      class="text-red-500 hover:text-red-600"
+                      class="text-red-500 hover:text-red-600 text-sm md:text-base"
                     >
                       <i class="fas fa-trash"></i>
                     </button>
@@ -180,7 +188,6 @@
                   + Добавить соц. сеть
                 </button>
               </div>
-
               <!-- Save Button -->
               <button
                 type="submit"
