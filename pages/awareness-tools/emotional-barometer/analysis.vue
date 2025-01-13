@@ -16,7 +16,7 @@
       </div>
     </div>
 
-    <div class="container mx-auto px-4 max-w-6xl relative z-10 pb-12 pt-12">
+    <div class="container mx-auto sm:px-4 max-w-6xl relative z-10 pb-12 pt-12">
       <div class="grid grid-cols-1">
         <!-- Analysis Section -->
         <EmotionalAnalysis :patterns="emotionPatterns" :entries="entries" />

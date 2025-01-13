@@ -1,11 +1,11 @@
 <template>
   <div
-    class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+    class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 py-4 sm:p-8 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
   >
     <!-- Back Navigation -->
     <nuxt-link
       to="/awareness-tools/emotional-barometer"
-      class="inline-flex items-center text-[#0EA5E9] hover:text-[#22D3EE] transition-all mb-8 group"
+      class="pl-4 sm:pl-0 inline-flex items-center text-[#0EA5E9] hover:text-[#22D3EE] transition-all mb-8 group"
     >
       <i
         class="fas fa-arrow-left mr-2 transform transition-transform group-hover:-translate-x-1"
@@ -14,7 +14,7 @@
     </nuxt-link>
 
     <!-- Header -->
-    <div class="flex items-center gap-4 mb-10">
+    <div class="px-4 sm:px-0 flex items-center gap-4 mb-10">
       <div
         class="w-12 h-12 bg-gradient-to-r from-[#0EA5E9]/10 to-[#22D3EE]/10 rounded-full flex items-center justify-center flex-shrink-0 backdrop-blur-sm"
       >
