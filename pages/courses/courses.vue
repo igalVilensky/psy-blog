@@ -90,9 +90,24 @@
             <p class="text-slate-300 line-clamp-3 mt-2">
               {{ course.description }}
             </p>
+            <!-- Dynamic Icons Section -->
             <div class="flex items-center gap-4 mt-4">
-              <i class="fas fa-clock text-[#0EA5E9]" />
-              <p class="text-slate-400 text-sm">{{ course.duration }}</p>
+              <!-- Duration or Lessons Icon -->
+              <div v-if="course.duration" class="flex items-center gap-2">
+                <i class="fas fa-clock text-[#0EA5E9]"></i>
+                <p class="text-slate-400 text-sm">{{ course.duration }}</p>
+              </div>
+              <div v-else-if="course.lessons" class="flex items-center gap-2">
+                <i class="fas fa-book text-[#0EA5E9]"></i>
+                <p class="text-slate-400 text-sm">
+                  {{ course.lessons }} уроков
+                </p>
+              </div>
+              <!-- Practical Exercises Icon -->
+              <div v-if="course.hasPractical" class="flex items-center gap-2">
+                <i class="fas fa-tasks text-[#0EA5E9]"></i>
+                <p class="text-slate-400 text-sm">Практические задания</p>
+              </div>
             </div>
             <!-- Button Container -->
             <div class="mt-auto pt-6">
@@ -180,23 +195,24 @@ const categories = [
 const courses = [
   {
     id: 1,
-    title: 'Курс "Любовь к себе"',
+    title: 'Курс "Исцеление детских травм"',
     description:
-      "Глубокое погружение в себя. Научитесь принимать и ценить себя.",
+      "Исследуйте и исцелите свои детские травмы через 21 урок, включая теоретические и практические задания. Узнайте, как травмы влияют на вашу жизнь, и научитесь их преодолевать.",
     price: 4900,
-    duration: "4 недели",
+    lessons: 21, // Number of lessons
+    hasPractical: true, // Indicates practical exercises
     participants: 250,
     category: "Саморазвитие",
     image: courseImage,
     discount: 20,
-    link: "/courses/love-yourself",
+    link: "/courses/healing-childhood-traumas",
   },
   {
     id: 2,
     title: 'Гайд "Идеальные отношения"',
     description: "Инструменты для построения гармоничных и здоровых отношений.",
     price: 2500,
-    duration: "2 недели",
+    duration: "2 недели", // Duration in time
     participants: 180,
     category: "Отношения",
     image: courseImage,
@@ -207,7 +223,7 @@ const courses = [
     title: 'Курс "Эмоциональный интеллект"',
     description: "Развитие навыков управления эмоциями и коммуникацией.",
     price: 5900,
-    duration: "6 недель",
+    duration: "6 недель", // Duration in time
     participants: 320,
     category: "Эмоциональный интеллект",
     image: courseImage,

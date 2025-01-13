@@ -48,10 +48,11 @@
       >
         <div class="space-y-8">
           <!-- Lesson Card with adjusted colors -->
-          <div
+          <NuxtLink
             v-for="(lesson, index) in lessons"
             :key="index"
-            class="flex flex-col md:flex-row gap-8 sm:p-6 relative group rounded-xl transition-all duration-300 hover:bg-slate-700/50"
+            :to="lesson.link"
+            class="flex flex-col md:flex-row gap-8 sm:p-6 relative group rounded-xl transition-all duration-300 sm:hover:bg-slate-700/50 sm:items-start no-underline"
           >
             <!-- Video Section -->
             <div class="md:w-2/5 flex-shrink-0">
@@ -93,17 +94,23 @@
 
               <!-- Metadata section -->
               <div class="flex flex-wrap gap-6 text-sm">
+                <!-- Duration (if exists) -->
                 <span
+                  v-if="lesson.duration"
                   class="inline-flex items-center gap-3 px-4 py-2 rounded-lg bg-slate-700/50 text-gray-200"
                 >
                   <span
                     class="w-5 h-5 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0"
                   >
-                    📚
+                    <i class="fas fa-hourglass text-sm"></i>
+                    <!-- FontAwesome hourglass icon -->
                   </span>
-                  <span>25 минут</span>
+                  <span>{{ lesson.duration }}</span>
                 </span>
+
+                <!-- Practical Tasks (if exists) -->
                 <span
+                  v-if="lesson.hasPractical"
                   class="inline-flex items-center gap-3 px-4 py-2 rounded-lg bg-slate-700/50 text-gray-200"
                 >
                   <span
@@ -115,7 +122,7 @@
                 </span>
               </div>
             </div>
-          </div>
+          </NuxtLink>
         </div>
       </div>
 
@@ -164,31 +171,87 @@ const lessons = [
   {
     title: "Что такое детская травма и как происходит исцеление",
     description:
-      "Приспособление к родительским потребностям зачастую приводит к превращению ребенка в «псевдоличность», развитию мнимого Я.",
+      "Приспособление к родительским потребностям зачастую приводит к превращению ребенка в «псевдоличность», развитию мнимого Я. Человек ведет себя так, как от него хотят, и постепенно этот тип поведения начинает определять все его поступки и помыслы.",
     videoUrl: "https://youtu.be/C6Cs3X8uBJQ",
+    duration: "33 минуты",
+    link: "/courses/healing-childhood-traumas/lesson-1", // Added link
   },
   {
     title: "Перенос",
     description:
-      "Перенос — феномен в психодинамической психологии, заключающийся в бессознательном перемещении ранее пережитых чувств.",
+      "Перенос — феномен в психодинамической психологии, заключающийся в бессознательном перемещении ранее пережитых (особенно в детстве) чувств и отношений, проявлявшихся к одному лицу, совсем на другое лицо.",
     videoUrl: "https://youtu.be/67tTcO8dr2w",
+    duration: "14 минут",
+    link: "/courses/healing-childhood-traumas/lesson-2", // Added link
   },
   {
     title: "Запреты, которые вам транслировали родители",
     description: "Первый запрет — «Не живи», «не чувствуй».",
     videoUrl: "https://youtu.be/FeF4PsSZVL4",
+    duration: "20 минут",
+    link: "/courses/healing-childhood-traumas/lesson-3", // Added link
   },
   {
     title: "Второй запрет — «Не будь ребёнком»",
     description: "Исследование влияния второго запрета на развитие личности.",
     videoUrl: "https://youtu.be/6RHGk8XHOJc",
+    duration: "38 минут",
+    link: "/courses/healing-childhood-traumas/lesson-4", // Added link
+  },
+  {
+    title: "Травма Отверженности или «Не бросай меня»",
+    description:
+      "Исследование травмы отверженности и ее влияния на формирование личности.",
+    videoUrl: "https://youtu.be/76HU8Tc-1gE",
+    duration: "33 минуты",
+    link: "/courses/healing-childhood-traumas/lesson-5", // Added link
+  },
+  {
+    title: "Травма недоверия и жестокого обращения «Я тебе не доверяю»",
+    description:
+      "Анализ травмы недоверия и ее последствий для межличностных отношений.",
+    videoUrl: "https://youtu.be/dDD_O_Fmgpo",
+    duration: "39 минут",
+    link: "/courses/healing-childhood-traumas/lesson-6", // Added link
+  },
+  {
+    title: "Травма Эмоциональной депривации, «Меня никогда не полюбят»",
+    description:
+      "Изучение травмы эмоциональной депривации и ее влияния на самооценку и отношения.",
+    videoUrl: "https://youtu.be/_1T6zCGxfEs",
+    duration: "33 минуты",
+    link: "/courses/healing-childhood-traumas/lesson-7", // Added link
+  },
+  {
+    title: "«Я не такой, как все». Травма Изгнания из общества",
+    description:
+      "Исследование травмы изгнания из общества и ее влияния на социальную адаптацию.",
+    videoUrl: "https://youtu.be/CSJSYUTrAV0",
+    duration: "28 минут",
+    link: "/courses/healing-childhood-traumas/lesson-8", // Added link
+  },
+  {
+    title: "«Я сам не справлюсь». Травма Зависимости",
+    description:
+      "Анализ травмы зависимости и ее влияния на формирование самостоятельности.",
+    videoUrl: "https://youtu.be/SbQduqTp4wc",
+    duration: "35 минут",
+    link: "/courses/healing-childhood-traumas/lesson-9", // Added link
+  },
+  {
+    title: "«Вот-вот случится беда». Травма Уязвимости",
+    description:
+      "Изучение травмы уязвимости и ее влияния на восприятие мира и себя.",
+    videoUrl: "https://youtu.be/pl-iEP8Qh_c",
+    duration: "31 минута",
+    link: "/courses/healing-childhood-traumas/lesson-10", // Added link
   },
 ];
 
-const getEmbedUrl = (url) => {
-  const videoId = url.split("v=")[1];
-  return `https://www.youtube.com/embed/${videoId}`;
-};
+// const getEmbedUrl = (url) => {
+//   const videoId = url.split("v=")[1];
+//   return `https://www.youtube.com/embed/${videoId}`;
+// };
 
 // Keeping your existing subscription logic
 const subscribeEmail = async () => {
