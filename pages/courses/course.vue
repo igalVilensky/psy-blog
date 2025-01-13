@@ -1,54 +1,62 @@
 <template>
-  <div class="relative min-h-screen">
-    <!-- Background remains the same -->
-    <div class="fixed inset-0 -z-1">
-      <div class="absolute top-0 left-0 w-full h-full bg-[#1A1F35]">
+  <div class="relative min-h-screen bg-slate-900">
+    <!-- Added base background color -->
+    <!-- Fixed background with proper opacity -->
+    <div class="fixed inset-0">
+      <div class="absolute top-0 left-0 w-full h-full bg-slate-900">
+        <!-- Darker background -->
+        <!-- Adjusted gradient orbs -->
         <div
-          class="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-[#0EA5E9]/10 to-[#22D3EE]/10 rounded-full blur-3xl animate-slow-drift opacity-60"
+          class="absolute top-0 left-1/4 w-[600px] h-[600px] bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-full blur-3xl animate-slow-drift"
         ></div>
         <div
-          class="absolute bottom-1/4 right-1/3 w-80 h-80 bg-gradient-to-r from-[#F59E0B]/10 to-[#F97316]/10 rounded-full blur-3xl animate-slow-pulse opacity-40"
+          class="absolute bottom-1/4 right-1/3 w-[500px] h-[500px] bg-gradient-to-r from-amber-500/20 to-orange-500/20 rounded-full blur-3xl animate-slow-pulse"
         ></div>
         <div
-          class="absolute top-1/3 right-1/4 w-72 h-72 bg-gradient-to-r from-[#E879F9]/10 to-[#C084FC]/10 rounded-full blur-3xl animate-slow-float opacity-50"
+          class="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-gradient-to-r from-fuchsia-500/20 to-purple-500/20 rounded-full blur-3xl animate-slow-float"
         ></div>
       </div>
     </div>
 
     <div class="container mx-auto px-4 max-w-6xl relative z-10 pb-12 pt-12">
-      <!-- Hero section remains the same -->
-      <section class="text-center mb-12 relative">
+      <!-- Hero Section with adjusted colors -->
+      <section class="text-center mb-16 relative">
         <div
-          class="absolute inset-0 bg-gradient-to-r from-[#0EA5E9]/5 to-[#22D3EE]/5 rounded-3xl transform -skew-y-1"
+          class="absolute -inset-2 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-3xl transform -skew-y-1"
         ></div>
-        <h1
-          class="text-4xl sm:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] tracking-tight mb-6 relative"
+        <span
+          class="inline-block px-4 py-2 rounded-full bg-blue-500/20 text-cyan-300 text-sm font-medium mb-6"
         >
-          Курс: Исцеление Детских Травм
+          Премиум Курс
+        </span>
+        <h1
+          class="text-4xl sm:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-400 tracking-tight mb-6 relative"
+        >
+          Исцеление Детских Травм
         </h1>
         <p
-          class="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed"
+          class="text-lg sm:text-xl text-gray-200 max-w-2xl mx-auto leading-relaxed"
         >
-          Погрузитесь в процесс исцеления и узнайте, как детские травмы влияют
-          на вашу жизнь и как их преодолеть.
+          Профессиональный курс по трансформации негативного опыта в ресурс для
+          личностного роста
         </p>
       </section>
 
-      <!-- Course Content Section -->
+      <!-- Course Content Section with proper contrast -->
       <div
-        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8"
+        class="bg-slate-800/80 backdrop-blur-xl rounded-2xl border border-blue-500/20 p-8 shadow-2xl"
       >
         <div class="space-y-8">
-          <!-- Modified Lesson Card -->
+          <!-- Lesson Card with adjusted colors -->
           <div
             v-for="(lesson, index) in lessons"
             :key="index"
-            class="flex flex-col md:flex-row gap-6 p-4 relative group rounded-xl hover:bg-[#0EA5E9]/5"
+            class="flex flex-col md:flex-row gap-8 sm:p-6 relative group rounded-xl transition-all duration-300 hover:bg-slate-700/50"
           >
-            <!-- Video Section - Fixed width container -->
+            <!-- Video Section -->
             <div class="md:w-2/5 flex-shrink-0">
               <div
-                class="w-full aspect-video bg-[#1A1F35] rounded-xl overflow-hidden"
+                class="w-full aspect-video bg-slate-900 rounded-xl overflow-hidden border border-blue-500/20 shadow-lg"
               >
                 <iframe
                   :src="`https://www.youtube.com/embed/${getYouTubeId(
@@ -63,36 +71,43 @@
             </div>
 
             <!-- Content Section -->
-            <div class="flex-1">
-              <div class="flex items-center gap-3 mb-3">
+            <div class="flex-1 flex flex-col justify-center">
+              <div class="flex items-center gap-3 mb-4">
                 <span
-                  class="px-3 py-1 rounded-full bg-[#0EA5E9]/10 text-[#22D3EE] text-sm"
+                  class="px-4 py-1.5 rounded-full bg-blue-500/20 text-cyan-300 text-sm font-medium"
                 >
                   Урок {{ index + 1 }}
                 </span>
                 <div
-                  class="h-px flex-1 bg-gradient-to-r from-[#0EA5E9]/20 to-transparent"
+                  class="h-px flex-1 bg-gradient-to-r from-blue-500/20 to-transparent"
                 ></div>
               </div>
               <h2
-                class="text-2xl font-bold text-white/90 mb-4 group-hover:text-[#22D3EE] transition-colors duration-300"
+                class="text-2xl font-bold text-white mb-4 group-hover:text-cyan-300 transition-colors duration-300"
               >
                 {{ lesson.title }}
               </h2>
-              <p class="text-slate-300 mb-4">{{ lesson.description }}</p>
-              <!-- Modified metadata section for better mobile responsiveness -->
-              <div class="flex flex-wrap gap-4 text-sm text-slate-400">
-                <span class="inline-flex items-center gap-2 whitespace-nowrap">
+              <p class="text-gray-300 mb-6 leading-relaxed">
+                {{ lesson.description }}
+              </p>
+
+              <!-- Metadata section -->
+              <div class="flex flex-wrap gap-6 text-sm">
+                <span
+                  class="inline-flex items-center gap-3 px-4 py-2 rounded-lg bg-slate-700/50 text-gray-200"
+                >
                   <span
-                    class="w-4 h-4 rounded-full bg-[#0EA5E9]/20 flex items-center justify-center flex-shrink-0"
+                    class="w-5 h-5 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0"
                   >
                     📚
                   </span>
                   <span>25 минут</span>
                 </span>
-                <span class="inline-flex items-center gap-2 whitespace-nowrap">
+                <span
+                  class="inline-flex items-center gap-3 px-4 py-2 rounded-lg bg-slate-700/50 text-gray-200"
+                >
                   <span
-                    class="w-4 h-4 rounded-full bg-[#0EA5E9]/20 flex items-center justify-center flex-shrink-0"
+                    class="w-5 h-5 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0"
                   >
                     ✍️
                   </span>
@@ -104,40 +119,32 @@
         </div>
       </div>
 
-      <!-- Subscription section remains the same -->
+      <!-- Subscription Section with fixed contrast -->
       <div
-        class="mt-16 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8 text-center transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+        class="mt-16 bg-slate-800/80 backdrop-blur-xl rounded-2xl border border-blue-500/20 p-12 text-center relative overflow-hidden"
       >
-        <h2 class="text-2xl font-bold text-white/90 mb-4">
+        <h2 class="text-3xl font-bold text-white mb-4 relative">
           Подпишитесь на новые материалы
         </h2>
-        <p class="text-slate-300 mb-6 max-w-2xl mx-auto">
-          Получите доступ к эксклюзивным курсам, которые помогут вам в
-          путешествии к самопознанию.
+        <p class="text-lg text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
+          Получите доступ к эксклюзивным материалам курса и будьте в курсе новых
+          обновлений
         </p>
         <div class="max-w-md mx-auto flex flex-col sm:flex-row gap-3 sm:gap-0">
           <input
             type="email"
             v-model="email"
             placeholder="Ваш email"
-            class="w-full px-6 py-3 rounded-lg sm:rounded-l-lg sm:rounded-r-none bg-white/5 border border-[#0EA5E9]/20 text-white placeholder-slate-400/50 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]"
+            class="w-full px-6 py-4 rounded-lg sm:rounded-l-lg sm:rounded-r-none bg-slate-900/50 border border-blue-500/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button
             @click="subscribeEmail"
-            class="relative inline-flex items-center justify-center min-w-[160px] overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg sm:rounded-l-none sm:rounded-r-lg group"
+            class="relative inline-flex items-center justify-center overflow-hidden font-medium transition-all duration-300 rounded-lg sm:rounded-l-none sm:rounded-r-lg bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-8 py-4 text-white"
           >
-            <span
-              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
-            >
-              <i class="fas fa-bell text-lg"></i>
-            </span>
-            <span
-              class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
-            >
-              <i class="fas fa-envelope text-lg mr-2"></i>
+            <span class="flex items-center gap-2">
+              <i class="fas fa-envelope text-lg"></i>
               Подписаться
             </span>
-            <span class="relative invisible px-8 py-3">Подписаться</span>
           </button>
         </div>
       </div>
