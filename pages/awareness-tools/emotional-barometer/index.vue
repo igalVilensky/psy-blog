@@ -16,7 +16,9 @@
       </div>
     </div>
 
-    <div class="container mx-auto px-4 max-w-7xl relative z-10 pb-12 sm:pt-6">
+    <div
+      class="container mx-auto sm:px-4 max-w-6xl relative z-10 pb-12 sm:pt-6"
+    >
       <!-- Hero Section (hidden when showStartButton is false) -->
       <section v-if="showStartButton" class="text-center">
         <h1
@@ -54,7 +56,7 @@
             Чтобы начать использовать инструмент, пожалуйста, войдите или
             зарегистрируйтесь.
           </p>
-          <div class="flex justify-center gap-6">
+          <div class="flex justify-center gap-6 flex-col sm:flex-row">
             <NuxtLink
               to="/login"
               class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group"

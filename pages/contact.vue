@@ -17,10 +17,10 @@
     </div>
 
     <div
-      class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl relative z-10 pb-12 pt-12"
+      class="container mx-auto sm:px-4 lg:px-8 max-w-6xl relative z-10 pb-12 pt-12"
     >
       <!-- Hero Section -->
-      <section class="text-center mb-12">
+      <section class="text-center mb-12 px-8">
         <h1
           class="text-4xl sm:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] tracking-tight mb-6"
         >

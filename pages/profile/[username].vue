@@ -15,7 +15,7 @@
       </div>
     </div>
 
-    <div class="container mx-auto px-4 max-w-7xl relative z-10 py-16">
+    <div class="container mx-auto max-w-6xl relative z-10 py-16">
       <!-- Enhanced Profile Header -->
       <div
         class="bg-gradient-to-b from-[#1A1F35]/60 to-[#1E293B]/80 backdrop-blur-xl rounded-3xl border border-white/10 p-10 mb-8 shadow-2xl"

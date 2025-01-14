@@ -16,10 +16,10 @@
       </div>
     </div>
 
-    <div class="container mx-auto px-4 max-w-6xl relative z-10 pb-12 pt-12">
+    <div class="container mx-auto max-w-6xl relative z-10 pb-12 pt-12">
       <!-- Login Form Section -->
       <div
-        class="w-full max-w-4xl bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 overflow-hidden grid md:grid-cols-2 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+        class="w-full max-w-4xl bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 overflow-hidden grid md:grid-cols-2 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)] mx-auto"
       >
         <!-- Login Form -->
         <div class="p-10">

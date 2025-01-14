@@ -16,7 +16,7 @@
     </div>
 
     <!-- Main Content -->
-    <div class="container mx-auto px-4 max-w-6xl relative z-10 py-8">
+    <div class="container mx-auto max-w-6xl relative z-10 py-8">
       <!-- Navigation Bar -->
       <nav
         class="flex items-center justify-between mb-8 bg-gradient-to-r from-[#1A1F35]/60 to-[#1E293B]/60 backdrop-blur-xl rounded-lg border border-[#0EA5E9]/20 p-2 md:p-4"

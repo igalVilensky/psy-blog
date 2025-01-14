@@ -16,11 +16,11 @@
       </div>
     </div>
 
-    <div class="container mx-auto px-4 max-w-3xl relative z-10 pb-12 pt-12">
+    <div class="container mx-auto sm:px-4 max-w-3xl relative z-10 pb-12 pt-12">
       <!-- Back Navigation -->
       <nuxt-link
         to="/blog"
-        class="inline-flex items-center text-[#0EA5E9] hover:text-[#22D3EE] transition-colors mb-8 group"
+        class="inline-flex items-center text-[#0EA5E9] hover:text-[#22D3EE] transition-colors mb-8 group pl-6 sm:pl-0"
       >
         <i
           class="fas fa-arrow-left mr-2 transform transition-transform group-hover:-translate-x-1"
@@ -30,7 +30,7 @@
 
       <article
         v-if="post"
-        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl sm:rounded-2xl border border-white/10 overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
       >
         <!-- Featured Image Container -->
         <div class="relative w-full h-[250px] sm:h-[350px] overflow-hidden">
@@ -165,7 +165,7 @@
       </div>
 
       <div
-        class="mt-12 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8"
+        class="mt-12 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl sn:rounded-2xl border border-white/10 p-8"
       >
         <div class="text-center mb-6">
           <div class="flex items-center justify-center gap-2 mb-2">
@@ -260,7 +260,7 @@
 
       <!-- Newsletter Section -->
       <div
-        class="mt-12 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8 text-center"
+        class="mt-12 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl sm:rounded-2xl border border-white/10 p-8 text-center"
       >
         <h2 class="text-2xl font-bold text-white/90 mb-4">
           Понравилась статья?

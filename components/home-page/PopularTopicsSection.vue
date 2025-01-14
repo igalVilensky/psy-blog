@@ -1,5 +1,7 @@
 <template>
-  <section class="py-20 bg-[#2C3E50] relative overflow-hidden">
+  <section
+    class="py-20 bg-[#2C3E50] relative overflow-hidden max-w-6xl w-full mx-auto"
+  >
     <div
       class="absolute inset-0 bg-gradient-to-b from-transparent to-[#34495E]/50"
     ></div>

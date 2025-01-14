@@ -20,7 +20,7 @@
       ></div>
     </div>
 
-    <div class="relative container mx-auto px-4 max-w-6xl py-16">
+    <div class="relative container mx-auto px-8 sm:px-0 max-w-6xl py-16">
       <div class="grid md:grid-cols-4 gap-12">
         <!-- Sitemap Section -->
         <div>
@@ -124,7 +124,7 @@
             © {{ new Date().getFullYear() }} Путь к Личностному Росту. Все права
             защищены.
           </p>
-          <div class="flex space-x-6">
+          <div class="flex space-x-2">
             <NuxtLink
               v-for="(link, index) in [
                 'Политика конфиденциальности',

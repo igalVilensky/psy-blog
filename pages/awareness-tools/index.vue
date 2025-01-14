@@ -16,7 +16,7 @@
       </div>
     </div>
 
-    <div class="container mx-auto px-4 max-w-6xl relative z-10 pb-12 pt-12">
+    <div class="container mx-auto max-w-6xl relative z-10 pb-12 pt-12">
       <!-- Hero Section -->
       <section class="text-center mb-12">
         <h1
@@ -25,7 +25,7 @@
           Инструменты осознанности
         </h1>
         <p
-          class="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed"
+          class="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed px-8"
         >
           Откройте для себя мир самопознания и эмоционального роста с нашими
           инструментами. Каждый инструмент - это шаг к более осознанной жизни.
@@ -50,7 +50,7 @@
           </div>
 
           <!-- Tool Content -->
-          <div class="p-6 flex flex-col flex-grow">
+          <div class="p-8 flex flex-col flex-grow">
             <h2
               class="text-xl font-bold text-white/90 group-hover:text-[#0EA5E9] transition-colors duration-300 line-clamp-2"
             >

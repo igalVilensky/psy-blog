@@ -9,7 +9,7 @@
 
     <!-- Container for topbar content -->
     <div
-      class="container max-w-6xl w-full mx-auto flex justify-between items-center p-4 relative z-10"
+      class="container max-w-6xl px-4 sm:px-0 w-full mx-auto flex justify-between items-center py-4 relative z-10"
     >
       <!-- Brand/Logo -->
       <NuxtLink to="/" class="group relative" @click="closeDropdown">
@@ -116,7 +116,7 @@
           <NuxtLink
             to="/profile"
             :class="[
-              'flex cursor-pointer items-center space-x-2  rounded-lg px-4 py-2 hover:bg-white/10 transition-all duration-300',
+              'flex cursor-pointer items-center space-x-2  rounded-lg pl-4 py-2 hover:bg-white/10 transition-all duration-300',
               $route.path.startsWith('/profile') ? 'bg-white/15' : '', // Active for /profile and /profile/*
             ]"
           >

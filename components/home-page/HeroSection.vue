@@ -18,7 +18,7 @@
     </div>
 
     <!-- Content -->
-    <div class="relative container mx-auto px-4 max-w-6xl py-24 md:py-32">
+    <div class="relative container mx-auto px-8 max-w-6xl py-24 md:py-32">
       <div class="text-center">
         <!-- Heading -->
         <h1

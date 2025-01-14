@@ -1,35 +1,37 @@
 <template>
-  <!-- Loading State -->
-  <Loading v-if="isLoading" />
+  <div class="">
+    <!-- Loading State -->
+    <Loading v-if="isLoading" />
 
-  <main class="min-h-screen bg-gray-900">
-    <!-- Hero Section - Modified for dark theme -->
-    <HeroSection />
+    <main class="min-h-screen bg-gray-900">
+      <!-- Hero Section - Modified for dark theme -->
+      <HeroSection />
 
-    <!-- Psychological Tools Section - NEW -->
-    <PsychologicalTools />
+      <!-- Psychological Tools Section - NEW -->
+      <!-- <PsychologicalTools /> -->
 
-    <!-- Features Section -->
-    <FeaturesSection />
+      <!-- Features Section -->
+      <!-- <FeaturesSection /> -->
 
-    <!-- Popular Topics Section - NEW -->
-    <PopularTopicsSection />
+      <!-- Popular Topics Section - NEW -->
+      <PopularTopicsSection />
 
-    <!-- Courses Section -->
-    <CoursesSection />
+      <!-- Courses Section -->
+      <!-- <CoursesSection /> -->
 
-    <!-- Free Materials Section - NEW -->
-    <FreeMaterialsSection />
+      <!-- Free Materials Section - NEW -->
+      <!-- <FreeMaterialsSection /> -->
 
-    <!-- Blog Section -->
-    <BlogSection />
+      <!-- Blog Section -->
+      <!-- <BlogSection /> -->
 
-    <!-- Testimonials Section -->
-    <TestimonialsSection />
+      <!-- Testimonials Section -->
+      <!-- <TestimonialsSection /> -->
 
-    <!-- CTA Section -->
-    <CTASection />
-  </main>
+      <!-- CTA Section -->
+      <CTASection />
+    </main>
+  </div>
 </template>
 
 <script setup>
