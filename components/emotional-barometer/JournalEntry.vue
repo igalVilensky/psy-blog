@@ -2,7 +2,7 @@
   <div class="space-y-6 w-full max-w-2xl mx-auto">
     <!-- Original Question -->
     <div class="transition-all duration-500">
-      <p class="text-slate-300 mb-3">
+      <p class="text-slate-300 my-4 md:mb-8">
         Опишите, что вызвало эту эмоцию и какие мысли у вас возникли:
       </p>
       <textarea

@@ -16,7 +16,7 @@
       </div>
     </div>
 
-    <div class="container mx-auto px-4 max-w-7xl relative z-10 pb-12 pt-6">
+    <div class="container mx-auto px-4 max-w-7xl relative z-10 pb-12 sm:pt-6">
       <!-- Hero Section (hidden when showStartButton is false) -->
       <section v-if="showStartButton" class="text-center">
         <h1
@@ -116,9 +116,7 @@
           class="relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8 sm:p-12 mb-12 max-w-4xl mx-auto transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
         >
           <!-- Step Progress -->
-          <div
-            class="flex items-center justify-center gap-2 sm:gap-3 mb-6 px-4"
-          >
+          <div class="flex items-center justify-center gap-2 sm:gap-3 px-4">
             <template v-for="step in 5" :key="step">
               <div class="flex items-center">
                 <div

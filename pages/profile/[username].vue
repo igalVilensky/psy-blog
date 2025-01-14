@@ -130,12 +130,10 @@
         <!-- Loading State -->
         <div
           v-if="loadingBio"
-          class="flex flex-col items-center justify-center h-40"
+          class="flex flex-col items-center justify-center h-64"
         >
-          <div
-            class="w-16 h-16 border-4 border-[#0EA5E9] border-t-transparent rounded-full animate-spin"
-          ></div>
-          <p class="text-slate-300 mt-4">Загрузка данных...</p>
+          <i class="fas fa-spinner fa-spin text-4xl text-[#0EA5E9] mb-4"></i>
+          <p class="text-slate-300">Загрузка данных...</p>
         </div>
 
         <!-- Bio Data -->
@@ -342,7 +340,7 @@
         </div>
 
         <!-- No Data State -->
-        <div
+        <!-- <div
           v-else-if="emotionBarometerStats.totalEntries === 0"
           class="flex flex-col items-center justify-center h-64 text-center"
         >
@@ -372,6 +370,30 @@
             </span>
             <span class="relative invisible">Перейти к барометру</span>
           </NuxtLink>
+        </div> -->
+        <div
+          v-else-if="emotionBarometerStats.totalEntries === 0"
+          class="empty-state"
+        >
+          <div
+            class="flex flex-col items-center justify-center h-64 text-center"
+          >
+            <i
+              class="fas fa-chart-pie text-4xl text-[#0EA5E9] mb-4 animate-bounce"
+            ></i>
+            <p class="text-slate-300">Нет данных для отображения.</p>
+            <p class="text-sm text-slate-400 mt-2">
+              Начните использовать эмоциональный барометр, чтобы отслеживать
+              свои эмоции
+            </p>
+            <NuxtLink
+              to="/awareness-tools/emotional-barometer"
+              class="mt-4 relative inline-flex items-center justify-center px-6 py-2 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-[#0EA5E9]/20"
+            >
+              <i class="fas fa-play-circle text-sm mr-2"></i>
+              Пройти тест
+            </NuxtLink>
+          </div>
         </div>
 
         <!-- Stats Grid -->

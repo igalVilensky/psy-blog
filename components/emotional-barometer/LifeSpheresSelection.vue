@@ -1,9 +1,6 @@
 <template>
   <div class="w-full max-w-2xl mx-auto">
-    <div class="text-center mb-8">
-      <h2 class="text-2xl text-white/90 font-medium mb-3">
-        Выберите сферы жизни
-      </h2>
+    <div class="text-center my-4 sm:mb-8">
       <p class="text-slate-300 text-lg">
         Отметьте, к каким сферам жизни относится эта эмоция:
       </p>

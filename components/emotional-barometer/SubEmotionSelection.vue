@@ -1,10 +1,7 @@
 <template>
   <div class="w-full max-w-2xl mx-auto">
     <!-- Header Section -->
-    <div class="text-center mb-8">
-      <h2 class="text-2xl text-white/90 font-medium mb-3">
-        Выберите подэмоцию:
-      </h2>
+    <div class="text-center my-4">
       <p class="text-slate-300 text-lg">
         Уточните ваше эмоциональное состояние, выбрав один из вариантов ниже.
       </p>
