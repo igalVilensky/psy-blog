@@ -6,12 +6,12 @@
       <header class="pt-8 px-4 relative">
         <!-- Animated Background Gradient -->
         <div
-          class="absolute inset-0 bg-gradient-to-r from-[#0EA5E9]/10 via-[#E879F9]/10 to-[#0EA5E9]/10 animate-gradient-x"
+          class="absolute -bottom-2 sm:bottom-0 inset-0 bg-gradient-to-r from-[#0EA5E9]/10 via-[#E879F9]/10 to-[#0EA5E9]/10 animate-gradient-x"
         ></div>
 
         <div class="container mx-auto max-w-6xl relative">
           <!-- Enhanced Breadcrumb -->
-          <nav class="mb-8">
+          <nav class="mb-6">
             <ol class="flex items-center space-x-2 text-sm">
               <li class="flex items-center group">
                 <NuxtLink
@@ -35,7 +35,7 @@
           </nav>
 
           <!-- Enhanced Title Section -->
-          <div class="mb-8">
+          <div class="mb-6">
             <div class="md:inline-block w-full md:w-auto">
               <div
                 class="bg-[#0EA5E9]/20 md:bg-transparent px-6 py-4 md:p-0 rounded-lg"
@@ -53,7 +53,7 @@
             ></div>
 
             <!-- Mobile Dropdown Button -->
-            <div class="block md:hidden relative mb-4">
+            <div class="block md:hidden relative">
               <button
                 type="button"
                 @click="isOpen = !isOpen"
