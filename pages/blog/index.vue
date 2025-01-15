@@ -47,10 +47,67 @@
 
           <!-- Enhanced Category Navigation -->
           <nav class="relative" aria-label="Категории блога">
+            <!-- Gradient border -->
             <div
               class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"
             ></div>
-            <ul class="flex flex-wrap -mb-px relative">
+
+            <!-- Mobile Dropdown Button -->
+            <div class="block md:hidden relative mb-4">
+              <button
+                type="button"
+                @click="isOpen = !isOpen"
+                class="w-full px-4 py-3 bg-white/5 rounded-lg text-white flex items-center justify-between border border-white/10"
+              >
+                <span>{{ activeCategory || "Все категории" }}</span>
+                <i
+                  class="fas fa-chevron-down transition-transform duration-300"
+                  :class="{ 'rotate-180': isOpen }"
+                ></i>
+              </button>
+
+              <!-- Mobile Dropdown Menu -->
+              <transition
+                enter-active-class="transition duration-200 ease-out"
+                enter-from-class="transform scale-y-0 opacity-0"
+                enter-to-class="transform scale-y-100 opacity-100"
+                leave-active-class="transition duration-200 ease-in"
+                leave-from-class="transform scale-y-100 opacity-100"
+                leave-to-class="transform scale-y-0 opacity-0"
+              >
+                <div
+                  v-if="isOpen"
+                  class="absolute top-full left-0 right-0 z-20 mt-2 bg-[#1A1F35] border border-white/10 rounded-lg shadow-lg origin-top"
+                >
+                  <div class="py-2">
+                    <button
+                      v-for="category in categories"
+                      :key="category"
+                      @click="selectCategory(category)"
+                      class="w-full px-4 py-3 text-left text-sm font-medium transition-colors duration-300"
+                      :class="[
+                        activeCategory === category
+                          ? 'text-white bg-[#0EA5E9]/20'
+                          : 'text-slate-200 hover:text-white hover:bg-white/5',
+                      ]"
+                    >
+                      <span class="flex items-center justify-between">
+                        {{ category }}
+                        <span
+                          v-if="getCategoryCount(category)"
+                          class="ml-2 text-xs px-2 py-0.5 rounded-full bg-[#0EA5E9]/10 border border-[#0EA5E9]/20"
+                        >
+                          {{ getCategoryCount(category) }}
+                        </span>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </transition>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <ul class="hidden md:flex flex-wrap -mb-px relative">
               <li v-for="category in categories" :key="category" class="mr-2">
                 <button
                   type="button"
@@ -201,6 +258,13 @@ const initialPosts = await fetchPosts();
 const posts = ref(initialPosts.data || []);
 const { projectId, dataset } = useSanity().client.config();
 const urlFor = getImageUrl(projectId, dataset);
+
+const isOpen = ref(false);
+
+const selectCategory = (category) => {
+  setActiveCategory(category);
+  isOpen.value = false;
+};
 
 const categories = ref([
   "Все",

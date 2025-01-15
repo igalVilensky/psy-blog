@@ -46,10 +46,67 @@
 
           <!-- Enhanced Category Navigation -->
           <nav class="relative" aria-label="Категории курсов">
+            <!-- Gradient border -->
             <div
               class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"
             ></div>
-            <ul class="flex flex-wrap -mb-px relative">
+
+            <!-- Mobile Dropdown Button -->
+            <div class="block md:hidden relative mb-4">
+              <button
+                type="button"
+                @click="isOpen = !isOpen"
+                class="w-full px-4 py-3 bg-white/5 rounded-lg text-white flex items-center justify-between border border-white/10"
+              >
+                <span>{{ selectedCategory || "Все категории" }}</span>
+                <i
+                  class="fas fa-chevron-down transition-transform duration-300"
+                  :class="{ 'rotate-180': isOpen }"
+                ></i>
+              </button>
+
+              <!-- Mobile Dropdown Menu -->
+              <transition
+                enter-active-class="transition duration-200 ease-out"
+                enter-from-class="transform scale-y-0 opacity-0"
+                enter-to-class="transform scale-y-100 opacity-100"
+                leave-active-class="transition duration-200 ease-in"
+                leave-from-class="transform scale-y-100 opacity-100"
+                leave-to-class="transform scale-y-0 opacity-0"
+              >
+                <div
+                  v-if="isOpen"
+                  class="absolute top-full left-0 right-0 z-20 mt-2 bg-[#1A1F35] border border-white/10 rounded-lg shadow-lg origin-top"
+                >
+                  <div class="py-2">
+                    <button
+                      v-for="category in categories"
+                      :key="category"
+                      @click="handleCategorySelect(category)"
+                      class="w-full px-4 py-3 text-left text-sm font-medium transition-colors duration-300"
+                      :class="[
+                        selectedCategory === category
+                          ? 'text-white bg-[#0EA5E9]/20'
+                          : 'text-slate-200 hover:text-white hover:bg-white/5',
+                      ]"
+                    >
+                      <span class="flex items-center justify-between">
+                        {{ category }}
+                        <span
+                          v-if="getCategoryCount(category)"
+                          class="ml-2 text-xs px-2 py-0.5 rounded-full bg-[#0EA5E9]/10 border border-[#0EA5E9]/20"
+                        >
+                          {{ getCategoryCount(category) }}
+                        </span>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </transition>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <ul class="hidden md:flex flex-wrap -mb-px relative">
               <li v-for="category in categories" :key="category" class="mr-2">
                 <button
                   type="button"
@@ -85,14 +142,17 @@
         </div>
       </header>
 
-      <!-- Courses Grid -->
+      <!-- Rest of your existing content -->
       <main class="container mx-auto max-w-6xl px-4 sm:px-0 pb-24 mt-4 sm:mt-8">
+        <!-- Your existing course grid -->
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Your existing course cards -->
           <div
             v-for="course in filteredCourses"
             :key="course.id"
             class="group bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)] flex flex-col"
           >
+            <!-- Your existing course card content -->
             <!-- Course Image -->
             <div class="relative overflow-hidden aspect-[4/3]">
               <img
@@ -113,6 +173,7 @@
 
             <!-- Course Content -->
             <div class="p-8 flex flex-col flex-grow">
+              <!-- Rest of your course card content -->
               <h2
                 class="text-xl font-bold text-white/90 group-hover:text-[#0EA5E9] transition-colors duration-300 line-clamp-2"
               >
@@ -123,7 +184,6 @@
               </p>
               <!-- Dynamic Icons Section -->
               <div class="flex items-center gap-4 mt-4">
-                <!-- Duration or Lessons Icon -->
                 <div v-if="course.duration" class="flex items-center gap-2">
                   <i class="fas fa-clock text-[#0EA5E9]"></i>
                   <p class="text-slate-400 text-sm">{{ course.duration }}</p>
@@ -134,7 +194,6 @@
                     {{ course.lessons }} уроков
                   </p>
                 </div>
-                <!-- Practical Exercises Icon -->
                 <div v-if="course.hasPractical" class="flex items-center gap-2">
                   <i class="fas fa-tasks text-[#0EA5E9]"></i>
                   <p class="text-slate-400 text-sm">Практические задания</p>
@@ -186,6 +245,7 @@
       <div
         class="mt-16 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8 text-center transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
       >
+        <!-- Your existing CTA content -->
         <h2 class="text-2xl font-bold text-white/90 mb-4">
           Подпишитесь на новые материалы
         </h2>
@@ -229,6 +289,12 @@ import courseImage from "~/assets/images/courses/loveyourself.webp";
 import { getFirestore } from "firebase/firestore";
 import { subscribeUser } from "@/api/firebase/contact";
 
+const isOpen = ref(false);
+
+const handleCategorySelect = (category) => {
+  selectCategory(category);
+  isOpen.value = false;
+};
 const db = getFirestore();
 const email = ref("");
 const selectedCategory = ref("Все");
