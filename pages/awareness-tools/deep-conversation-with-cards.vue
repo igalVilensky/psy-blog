@@ -1,5 +1,5 @@
 <template>
-  <div class="relative min-h-screen">
+  <div class="relative min-h-screen mb-24 sm:-mb-24">
     <!-- Animated Background -->
     <div class="fixed inset-0 -z-1">
       <div class="absolute top-0 left-0 w-full h-full bg-[#1A1F35]">
@@ -16,70 +16,111 @@
       </div>
     </div>
 
-    <div class="container mx-auto px-4 max-w-6xl relative z-10 pb-12 pt-12">
+    <div class="container mx-auto px-4 max-w-6xl relative z-10 mb-12">
       <div class="flex items-center justify-center min-h-[calc(100vh-250px)]">
         <div class="w-full max-w-md">
-          <div class="perspective-1000 cursor-pointer" @click="toggleCardFlip">
-            <div
-              class="transition-transform duration-700 transform-style-3d"
-              :class="{ 'rotate-y-180': isFlipped }"
+          <!-- Shuffle Button -->
+          <div class="flex justify-center mt-12 sm:mt-0">
+            <button
+              @click="shuffleCards"
+              class="px-6 py-3 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white rounded-full font-medium hover:opacity-90 transition-opacity"
             >
-              <!-- Front of Card -->
+              Перемешать карту
+            </button>
+          </div>
+          <!-- Card Stack Container -->
+          <div class="relative h-[500px] w-full mt-12">
+            <!-- Stacked Cards -->
+            <TransitionGroup
+              name="card-stack"
+              tag="div"
+              class="relative w-full h-full"
+            >
               <div
-                class="relative w-full h-full bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 backface-hidden transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+                v-for="(card, index) in visibleCards"
+                :key="card.id"
+                :style="{
+                  transform: `translateY(${index * -4}px) translateX(${
+                    index * -2
+                  }px) rotate(${index * -0.5}deg)`,
+                  zIndex: visibleCards.length - index,
+                }"
+                class="absolute top-0 left-0 w-full perspective-1000 cursor-pointer transition-all duration-300"
+                @click="handleCardClick(card.id)"
               >
-                <div class="text-center">
-                  <h2
-                    class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] mb-4"
-                  >
-                    Карта дня
-                  </h2>
-                  <p class="text-slate-300 mb-6">
-                    Нажмите, чтобы открыть глубокий разговор с собой
-                  </p>
+                <div
+                  class="transition-transform duration-700 transform-style-3d h-[600px]"
+                  :class="{
+                    'rotate-y-180': card.id === activeCard?.id && isFlipped,
+                  }"
+                >
+                  <!-- Front of Card -->
                   <div
-                    class="w-full h-64 bg-[#1A1F35]/40 backdrop-blur-xl rounded-lg flex items-center justify-center border border-[#0EA5E9]/20"
+                    class="absolute w-full h-full bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 backface-hidden"
+                    :class="{
+                      'shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]':
+                        card.id === activeCard?.id,
+                    }"
                   >
-                    <img
-                      :src="currentCard.image"
-                      alt="Card Illustration"
-                      class="w-full h-48 object-cover rounded-lg mb-6"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <!-- Back of Card -->
-              <div
-                class="absolute top-0 w-full h-fit bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 rotate-y-180 backface-hidden transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
-              >
-                <div>
-                  <h3
-                    class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] mb-4"
-                  >
-                    {{ currentCard.title }}
-                  </h3>
-                  <img
-                    src="https://i.pinimg.com/originals/a7/61/9b/a7619b50601cf51ef0029c6cdf8c7bc8.jpg"
-                    alt="Card Illustration"
-                    class="w-full h-48 object-cover rounded-lg mb-6"
-                  />
-                  <div class="space-y-4">
-                    <h4 class="text-lg font-semibold text-slate-300">
-                      Вопросы для размышления:
-                    </h4>
-                    <ul class="list-disc list-inside text-slate-300 space-y-2">
-                      <li
-                        v-for="(question, index) in currentCard.questions"
-                        :key="index"
+                    <div class="flex flex-col h-full">
+                      <h2
+                        class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] mb-4"
                       >
-                        {{ question }}
-                      </li>
-                    </ul>
+                        Карта дня
+                      </h2>
+                      <p class="text-slate-300 mb-6">
+                        Нажмите, чтобы открыть глубокий разговор с собой
+                      </p>
+                      <div
+                        class="flex-grow flex items-center justify-center bg-[#1A1F35]/40 backdrop-blur-xl rounded-lg border border-[#0EA5E9]/20"
+                      >
+                        <img
+                          :src="card.image"
+                          alt="Card Illustration"
+                          class="w-full h-auto max-h-[400px] object-cover rounded-lg"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Back of Card -->
+                  <div
+                    class="absolute w-full h-full bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 rotate-y-180 backface-hidden overflow-y-auto custom-scrollbar"
+                  >
+                    <div class="flex flex-col h-full">
+                      <h3
+                        class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] mb-4"
+                      >
+                        {{ card.title }}
+                      </h3>
+                      <div class="relative w-full h-48 mb-6">
+                        <img
+                          :src="card.image"
+                          alt="Card Illustration"
+                          class="absolute inset-0 w-full h-full object-cover rounded-lg"
+                        />
+                      </div>
+                      <div class="flex-grow">
+                        <h4 class="text-lg font-semibold text-slate-300 mb-4">
+                          Вопросы для размышления:
+                        </h4>
+                        <ul
+                          class="list-disc list-inside text-slate-300 space-y-3"
+                        >
+                          <li
+                            v-for="(question, index) in card.questions"
+                            :key="index"
+                            class="leading-relaxed"
+                          >
+                            {{ question }}
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </TransitionGroup>
           </div>
         </div>
       </div>
@@ -88,11 +129,12 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 
 // Define the cards array
-const cards = [
+const allCards = ref([
   {
+    id: 1,
     title: "Путешествие внутрь себя",
     image:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZtzVUfvPZSpqunyUw1omIHJ0n1tlZWs13_g&s",
@@ -103,9 +145,10 @@ const cards = [
     ],
   },
   {
+    id: 2,
     title: "Связи и отношения",
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZtzVUfvPZSpqunyUw1omIHJ0n1tlZWs13_g&s",
+      "https://play-lh.googleusercontent.com/De2qPOwtHCUMwFdSoEKH0hZ7iSTPMtAXMPWhTba9lnm22qIs5fs1FvYX2RX1VHEzvbQ=w240-h480-rw",
     questions: [
       "Какие отношения для меня важны?",
       "Что я могу улучшить в общении?",
@@ -113,9 +156,10 @@ const cards = [
     ],
   },
   {
+    id: 3,
     title: "Личный рост",
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZtzVUfvPZSpqunyUw1omIHJ0n1tlZWs13_g&s",
+      "https://www.oh-cards-institute.org/wp-content/uploads/2012/07/metaphoric-cards-9458-rnd.jpg",
     questions: [
       "Чему я хочу научиться?",
       "Какие у меня есть страхи?",
@@ -123,9 +167,10 @@ const cards = [
     ],
   },
   {
+    id: 4,
     title: "Цели и мечты",
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZtzVUfvPZSpqunyUw1omIHJ0n1tlZWs13_g&s",
+      "https://www.oh-cards-institute.org/wp-content/uploads/2012/06/cope-cyring-woman-9462-225-rnd.jpg",
     questions: [
       "Какие у меня долгосрочные цели?",
       "Как я могу приблизиться к своей мечте?",
@@ -133,9 +178,10 @@ const cards = [
     ],
   },
   {
+    id: 5,
     title: "Здоровье и благополучие",
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZtzVUfvPZSpqunyUw1omIHJ0n1tlZWs13_g&s",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQut-J6ZAH2wr-epxAp1Ry3V10gduXkXJE4r-Xnn8_rtYqVHFZUlsgtbfZIc2g2CMoQTUw&usqp=CAU",
     questions: [
       "Что я могу сделать для улучшения своего здоровья?",
       "Как я могу заботиться о своем теле?",
@@ -143,9 +189,10 @@ const cards = [
     ],
   },
   {
+    id: 6,
     title: "Творчество и вдохновение",
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZtzVUfvPZSpqunyUw1omIHJ0n1tlZWs13_g&s",
+      "https://www.oh-cards-institute.org/wp-content/uploads/2014/11/tandoo-30-250.jpg",
     questions: [
       "Что меня вдохновляет?",
       "Как я могу развивать свое творчество?",
@@ -153,9 +200,10 @@ const cards = [
     ],
   },
   {
+    id: 7,
     title: "Прощение и отпускание",
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZtzVUfvPZSpqunyUw1omIHJ0n1tlZWs13_g&s",
+      "https://www.oh-cards-institute.org/wp-content/uploads/2012/08/20120808-cope-78-9459-rnd.jpg",
     questions: [
       "Кого или что мне нужно простить?",
       "Что я могу отпустить, чтобы двигаться дальше?",
@@ -163,9 +211,9 @@ const cards = [
     ],
   },
   {
+    id: 8,
     title: "Мудрость и самоосознание",
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZtzVUfvPZSpqunyUw1omIHJ0n1tlZWs13_g&s",
+    image: "https://i.redd.it/it3vw1rvm6zb1.jpg",
     questions: [
       "Что мне важно понять о себе?",
       "Как я могу стать более осознанным?",
@@ -173,9 +221,10 @@ const cards = [
     ],
   },
   {
+    id: 9,
     title: "День благодарности",
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZtzVUfvPZSpqunyUw1omIHJ0n1tlZWs13_g&s",
+      "https://i.pinimg.com/236x/4c/6b/68/4c6b688c601505f34044db488587ece0.jpg",
     questions: [
       "За что я благодарен сегодня?",
       "Какие моменты наполняют меня радостью?",
@@ -183,9 +232,10 @@ const cards = [
     ],
   },
   {
+    id: 10,
     title: "Окружение и энергия",
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZtzVUfvPZSpqunyUw1omIHJ0n1tlZWs13_g&s",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_ZcVA1AtY0_o7xncJZy32fndUHsCW29qRKg&s",
     questions: [
       "Какое окружение поддерживает меня?",
       "Какие люди в моей жизни поднимают мой дух?",
@@ -193,6 +243,7 @@ const cards = [
     ],
   },
   {
+    id: 11,
     title: "Управление временем",
     image:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZtzVUfvPZSpqunyUw1omIHJ0n1tlZWs13_g&s",
@@ -203,6 +254,7 @@ const cards = [
     ],
   },
   {
+    id: 12,
     title: "Позитивное мышление",
     image:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZtzVUfvPZSpqunyUw1omIHJ0n1tlZWs13_g&s",
@@ -213,6 +265,7 @@ const cards = [
     ],
   },
   {
+    id: 13,
     title: "Риски и изменения",
     image:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZtzVUfvPZSpqunyUw1omIHJ0n1tlZWs13_g&s",
@@ -223,6 +276,7 @@ const cards = [
     ],
   },
   {
+    id: 14,
     title: "Прошлое и будущее",
     image:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZtzVUfvPZSpqunyUw1omIHJ0n1tlZWs13_g&s",
@@ -233,6 +287,7 @@ const cards = [
     ],
   },
   {
+    id: 15,
     title: "Финансовая осознанность",
     image:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZtzVUfvPZSpqunyUw1omIHJ0n1tlZWs13_g&s",
@@ -242,33 +297,55 @@ const cards = [
       "Какие шаги я могу предпринять для улучшения финансового благополучия?",
     ],
   },
-];
+]);
 
 // Flip logic
 const isFlipped = ref(false);
+const activeCard = ref(null);
+const visibleCards = ref([]);
 
-// Set the current card index based on the current day
-const currentCardIndex = ref(0);
-
-const currentCard = computed(() => cards[currentCardIndex.value]);
-
-// Function to calculate the current card index based on the current date
-const setCardOfTheDay = () => {
-  const currentDate = new Date();
-  const dayOfYear = Math.floor(
-    (currentDate - new Date(currentDate.getFullYear(), 0, 0)) / 86400000
-  );
-  currentCardIndex.value = dayOfYear % cards.length; // Ensure it loops back to the first card after the last one
+// Show top 3 cards in the stack
+const updateVisibleCards = () => {
+  visibleCards.value = allCards.value.slice(0, 5);
 };
 
-// Toggle card flip
-const toggleCardFlip = () => {
-  isFlipped.value = !isFlipped.value;
+// Handle card click
+const handleCardClick = (cardId) => {
+  if (cardId === visibleCards.value[0]?.id) {
+    isFlipped.value = !isFlipped.value;
+  }
 };
 
-// Set the card of the day when the component is mounted
+// Shuffle cards with animation
+const shuffleCards = () => {
+  isFlipped.value = false;
+
+  // Animate cards flying out
+  visibleCards.value = visibleCards.value.map((card) => ({
+    ...card,
+    isExiting: true,
+  }));
+
+  // After animation, shuffle and update cards
+  setTimeout(() => {
+    const shuffledCards = [...allCards.value];
+    for (let i = shuffledCards.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledCards[i], shuffledCards[j]] = [
+        shuffledCards[j],
+        shuffledCards[i],
+      ];
+    }
+    allCards.value = shuffledCards;
+    updateVisibleCards();
+    activeCard.value = visibleCards.value[0];
+  }, 500); // Adjust the delay to match the animation duration
+};
+
+// Initialize on mount
 onMounted(() => {
-  setCardOfTheDay();
+  updateVisibleCards();
+  activeCard.value = visibleCards.value[0];
 });
 </script>
 
@@ -287,5 +364,32 @@ onMounted(() => {
 
 .rotate-y-180 {
   transform: rotateY(180deg);
+}
+
+/* Card stack transitions */
+.card-stack-move {
+  transition: all 0.5s ease;
+}
+
+.card-stack-enter-active,
+.card-stack-leave-active {
+  transition: all 0.3s ease;
+}
+
+.card-stack-enter-from,
+.card-stack-leave-to {
+  opacity: 0;
+  transform: translateY(30px) rotate(10deg);
+}
+
+/* Shuffle animation */
+.card-stack-leave-active {
+  position: absolute;
+  transition: all 0.5s ease;
+}
+
+.card-stack-leave-to {
+  opacity: 0;
+  transform: translateX(100%) rotate(30deg);
 }
 </style>
