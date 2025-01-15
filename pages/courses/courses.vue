@@ -1,137 +1,186 @@
 <template>
-  <div class="relative min-h-screen">
-    <!-- Animated Background -->
-    <div class="fixed inset-0 -z-1">
-      <div class="absolute top-0 left-0 w-full h-full bg-[#1A1F35]">
-        <!-- Enhanced Gradient Orbs -->
+  <div class="relative min-h-screen bg-[#1A1F35]">
+    <div class="relative z-10">
+      <!-- Header Section -->
+      <header class="pt-8 px-4 relative">
+        <!-- Animated Background Gradient -->
         <div
-          class="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-[#0EA5E9]/10 to-[#22D3EE]/10 rounded-full blur-3xl animate-slow-drift opacity-60"
+          class="absolute inset-0 bg-gradient-to-r from-[#0EA5E9]/10 via-[#E879F9]/10 to-[#0EA5E9]/10 animate-gradient-x"
         ></div>
-        <div
-          class="absolute bottom-1/4 right-1/3 w-80 h-80 bg-gradient-to-r from-[#F59E0B]/10 to-[#F97316]/10 rounded-full blur-3xl animate-slow-pulse opacity-40"
-        ></div>
-        <div
-          class="absolute top-1/3 right-1/4 w-72 h-72 bg-gradient-to-r from-[#E879F9]/10 to-[#C084FC]/10 rounded-full blur-3xl animate-slow-float opacity-50"
-        ></div>
-      </div>
-    </div>
 
-    <div class="container mx-auto max-w-6xl relative z-10 pb-12 pt-12">
-      <!-- Hero Section -->
-      <section class="text-center mb-12">
-        <h1
-          class="text-4xl sm:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] tracking-tight mb-6"
-        >
-          Ваш Путь к Личностному Расцвету
-        </h1>
-        <p
-          class="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed px-8"
-        >
-          Откройте для себя инструменты трансформации и личностного роста.
-          Каждый курс - это путешествие к лучшей версии себя.
-        </p>
-      </section>
+        <div class="container mx-auto max-w-6xl relative">
+          <!-- Enhanced Breadcrumb -->
+          <nav class="mb-8">
+            <ol class="flex items-center space-x-2 text-sm">
+              <li class="flex items-center group">
+                <NuxtLink
+                  to="/"
+                  class="text-slate-300 hover:text-[#0EA5E9] transition-all duration-300 flex items-center"
+                >
+                  <i class="fas fa-home mr-2 text-[#0EA5E9]"></i>
+                  <span
+                    class="group-hover:translate-x-1 transition-transform duration-300"
+                    >Главная</span
+                  >
+                </NuxtLink>
+              </li>
+              <li class="flex items-center">
+                <i class="fas fa-chevron-right text-slate-400 mx-3 text-xs"></i>
+                <span class="text-white font-medium" aria-current="page"
+                  >Курсы</span
+                >
+              </li>
+            </ol>
+          </nav>
 
-      <!-- Filters Section -->
-      <div class="mb-16">
-        <div class="flex flex-wrap justify-center gap-3">
-          <button
-            v-for="category in categories"
-            :key="category"
-            @click="selectCategory(category)"
-            :class="[
-              'px-6 py-3 rounded-full transition-all duration-300 font-medium relative overflow-hidden group backdrop-blur-sm',
-              selectedCategory === category
-                ? 'bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white'
-                : 'bg-white/10 text-[#0EA5E9] border border-[#0EA5E9]/20 hover:text-white',
-            ]"
-          >
-            <span class="relative z-10">{{ category }}</span>
+          <!-- Enhanced Title Section -->
+          <div class="mb-8">
+            <div class="md:inline-block w-full md:w-auto">
+              <div
+                class="bg-[#0EA5E9]/20 md:bg-transparent px-6 py-4 md:p-0 rounded-lg"
+              >
+                <h1 class="text-3xl md:text-4xl font-bold text-white">Курсы</h1>
+              </div>
+            </div>
+          </div>
+
+          <!-- Enhanced Category Navigation -->
+          <nav class="relative" aria-label="Категории курсов">
             <div
-              class="absolute inset-0 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"
-              :class="{ 'scale-x-100': selectedCategory === category }"
+              class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"
             ></div>
-          </button>
+            <ul class="flex flex-wrap -mb-px relative">
+              <li v-for="category in categories" :key="category" class="mr-2">
+                <button
+                  type="button"
+                  @click="selectCategory(category)"
+                  class="px-6 py-3 text-sm font-medium transition-all duration-300 relative group"
+                  :class="[
+                    selectedCategory === category
+                      ? 'text-white'
+                      : 'text-slate-200 hover:text-white',
+                  ]"
+                >
+                  <span class="relative z-10">{{ category }}</span>
+                  <span
+                    v-if="getCategoryCount(category)"
+                    class="ml-2 text-xs px-2 py-0.5 rounded-full bg-[#0EA5E9]/10 border border-[#0EA5E9]/20"
+                  >
+                    {{ getCategoryCount(category) }}
+                  </span>
+                  <!-- Active Indicator -->
+                  <div
+                    v-if="selectedCategory === category"
+                    class="absolute bottom-0 left-0 right-0 h-0.5 bg-[#0EA5E9]"
+                  ></div>
+                  <!-- Hover Indicator -->
+                  <div
+                    v-else
+                    class="absolute bottom-0 left-0 right-0 h-0.5 bg-[#0EA5E9] opacity-0 transform scale-x-0 transition-all duration-300 group-hover:opacity-100 group-hover:scale-x-100"
+                  ></div>
+                </button>
+              </li>
+            </ul>
+          </nav>
         </div>
-      </div>
+      </header>
 
       <!-- Courses Grid -->
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div
-          v-for="course in filteredCourses"
-          :key="course.id"
-          class="group bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)] flex flex-col"
-        >
-          <!-- Course Image -->
-          <div class="relative overflow-hidden aspect-[4/3]">
-            <img
-              :src="course.image"
-              :alt="course.title"
-              class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-              loading="lazy"
-            />
-            <!-- Discount Badge -->
-            <div v-if="course.discount" class="absolute top-4 right-4">
-              <span
-                class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium backdrop-blur-sm"
-              >
-                -{{ course.discount }}%
-              </span>
+      <main class="container mx-auto max-w-6xl px-4 sm:px-0 pb-24 mt-4 sm:mt-8">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div
+            v-for="course in filteredCourses"
+            :key="course.id"
+            class="group bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)] flex flex-col"
+          >
+            <!-- Course Image -->
+            <div class="relative overflow-hidden aspect-[4/3]">
+              <img
+                :src="course.image"
+                :alt="course.title"
+                class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                loading="lazy"
+              />
+              <!-- Discount Badge -->
+              <div v-if="course.discount" class="absolute top-4 right-4">
+                <span
+                  class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium backdrop-blur-sm"
+                >
+                  -{{ course.discount }}%
+                </span>
+              </div>
             </div>
-          </div>
 
-          <!-- Course Content -->
-          <div class="p-8 flex flex-col flex-grow">
-            <h2
-              class="text-xl font-bold text-white/90 group-hover:text-[#0EA5E9] transition-colors duration-300 line-clamp-2"
-            >
-              {{ course.title }}
-            </h2>
-            <p class="text-slate-300 line-clamp-3 mt-2">
-              {{ course.description }}
-            </p>
-            <!-- Dynamic Icons Section -->
-            <div class="flex items-center gap-4 mt-4">
-              <!-- Duration or Lessons Icon -->
-              <div v-if="course.duration" class="flex items-center gap-2">
-                <i class="fas fa-clock text-[#0EA5E9]"></i>
-                <p class="text-slate-400 text-sm">{{ course.duration }}</p>
-              </div>
-              <div v-else-if="course.lessons" class="flex items-center gap-2">
-                <i class="fas fa-book text-[#0EA5E9]"></i>
-                <p class="text-slate-400 text-sm">
-                  {{ course.lessons }} уроков
-                </p>
-              </div>
-              <!-- Practical Exercises Icon -->
-              <div v-if="course.hasPractical" class="flex items-center gap-2">
-                <i class="fas fa-tasks text-[#0EA5E9]"></i>
-                <p class="text-slate-400 text-sm">Практические задания</p>
-              </div>
-            </div>
-            <!-- Button Container -->
-            <div class="mt-auto pt-6">
-              <a
-                :href="course.link"
-                class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group w-full"
+            <!-- Course Content -->
+            <div class="p-8 flex flex-col flex-grow">
+              <h2
+                class="text-xl font-bold text-white/90 group-hover:text-[#0EA5E9] transition-colors duration-300 line-clamp-2"
               >
-                <span
-                  class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
+                {{ course.title }}
+              </h2>
+              <p class="text-slate-300 line-clamp-3 mt-2">
+                {{ course.description }}
+              </p>
+              <!-- Dynamic Icons Section -->
+              <div class="flex items-center gap-4 mt-4">
+                <!-- Duration or Lessons Icon -->
+                <div v-if="course.duration" class="flex items-center gap-2">
+                  <i class="fas fa-clock text-[#0EA5E9]"></i>
+                  <p class="text-slate-400 text-sm">{{ course.duration }}</p>
+                </div>
+                <div v-else-if="course.lessons" class="flex items-center gap-2">
+                  <i class="fas fa-book text-[#0EA5E9]"></i>
+                  <p class="text-slate-400 text-sm">
+                    {{ course.lessons }} уроков
+                  </p>
+                </div>
+                <!-- Practical Exercises Icon -->
+                <div v-if="course.hasPractical" class="flex items-center gap-2">
+                  <i class="fas fa-tasks text-[#0EA5E9]"></i>
+                  <p class="text-slate-400 text-sm">Практические задания</p>
+                </div>
+              </div>
+              <!-- Button Container -->
+              <div class="mt-auto pt-6">
+                <a
+                  :href="course.link"
+                  class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group w-full"
                 >
-                  <i class="fas fa-book-open"></i>
-                </span>
-                <span
-                  class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
-                >
-                  <i class="fas fa-arrow-right mr-2"></i>
-                  Подробнее
-                </span>
-                <span class="relative invisible">Подробнее</span>
-              </a>
+                  <span
+                    class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
+                  >
+                    <i class="fas fa-book-open"></i>
+                  </span>
+                  <span
+                    class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
+                  >
+                    <i class="fas fa-arrow-right mr-2"></i>
+                    Подробнее
+                  </span>
+                  <span class="relative invisible">Подробнее</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+
+        <!-- Empty State -->
+        <div
+          v-if="filteredCourses.length === 0"
+          class="text-center py-16 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10"
+        >
+          <div class="text-[#0EA5E9] mb-4">
+            <i class="fas fa-search text-4xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-white/90 mb-2">
+            Курсы не найдены
+          </h3>
+          <p class="text-slate-300">
+            В данной категории пока нет курсов. Пожалуйста, выберите другую
+            категорию.
+          </p>
+        </div>
+      </main>
 
       <!-- Call to Action -->
       <div
@@ -199,8 +248,8 @@ const courses = [
     description:
       "Исследуйте и исцелите свои детские травмы через 21 урок, включая теоретические и практические задания. Узнайте, как травмы влияют на вашу жизнь, и научитесь их преодолевать.",
     price: 4900,
-    lessons: 21, // Number of lessons
-    hasPractical: true, // Indicates practical exercises
+    lessons: 21,
+    hasPractical: true,
     participants: 250,
     category: "Саморазвитие",
     image: courseImage,
@@ -212,7 +261,7 @@ const courses = [
     title: 'Гайд "Идеальные отношения"',
     description: "Инструменты для построения гармоничных и здоровых отношений.",
     price: 2500,
-    duration: "2 недели", // Duration in time
+    duration: "2 недели",
     participants: 180,
     category: "Отношения",
     image: courseImage,
@@ -223,7 +272,7 @@ const courses = [
     title: 'Курс "Эмоциональный интеллект"',
     description: "Развитие навыков управления эмоциями и коммуникацией.",
     price: 5900,
-    duration: "6 недель", // Duration in time
+    duration: "6 недель",
     participants: 320,
     category: "Эмоциональный интеллект",
     image: courseImage,
@@ -241,6 +290,11 @@ const filteredCourses = computed(() => {
     ? courses
     : courses.filter((course) => course.category === selectedCategory.value);
 });
+
+const getCategoryCount = (category) => {
+  if (category === "Все") return courses.length;
+  return courses.filter((course) => course.category === category).length;
+};
 
 const subscribeEmail = async () => {
   if (!validateEmail(email.value)) {
@@ -262,3 +316,20 @@ const validateEmail = (email) => {
   return re.test(String(email).toLowerCase());
 };
 </script>
+
+<style scoped>
+@keyframes gradient-x {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient-x {
+  animation: gradient-x 15s ease infinite;
+  background-size: 200% 200%;
+}
+</style>
