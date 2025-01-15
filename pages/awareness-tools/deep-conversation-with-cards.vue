@@ -1,7 +1,54 @@
 <template>
-  <div class="relative min-h-screen mb-24 sm:-mb-24">
+  <div class="relative min-h-screen">
+    <!-- Header Section -->
+    <header class="pt-8 px-4 relative z-20">
+      <!-- Animated Background Gradient -->
+      <div
+        class="absolute -bottom-4 sm:-bottom-8 inset-0 bg-gradient-to-r from-[#0EA5E9]/10 via-[#E879F9]/10 to-[#0EA5E9]/10 animate-gradient-x"
+      ></div>
+
+      <div class="container mx-auto max-w-6xl relative">
+        <!-- Breadcrumb -->
+        <nav class="mb-6">
+          <ol class="flex items-center space-x-2 text-sm">
+            <li class="flex items-center group">
+              <NuxtLink
+                to="/"
+                class="text-slate-300 hover:text-[#0EA5E9] transition-all duration-300 flex items-center"
+              >
+                <i class="fas fa-home mr-2 text-[#0EA5E9]"></i>
+                <span
+                  class="group-hover:translate-x-1 transition-transform duration-300"
+                  >Главная</span
+                >
+              </NuxtLink>
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-chevron-right text-slate-400 mx-3 text-xs"></i>
+              <span class="text-white font-medium" aria-current="page"
+                >Карты</span
+              >
+            </li>
+          </ol>
+        </nav>
+
+        <!-- Enhanced Title Section -->
+        <div>
+          <div class="md:inline-block w-full md:w-auto">
+            <div
+              class="bg-[#0EA5E9]/20 md:bg-transparent px-4 sm:px-6 py-4 md:p-0 rounded-lg"
+            >
+              <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
+                Карты для саморазвития
+              </h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
     <!-- Animated Background -->
-    <div class="fixed inset-0 -z-1">
+    <div class="fixed inset-0 -z-10">
       <div class="absolute top-0 left-0 w-full h-full bg-[#1A1F35]">
         <!-- Enhanced Gradient Orbs -->
         <div
@@ -16,11 +63,14 @@
       </div>
     </div>
 
-    <div class="container mx-auto px-4 max-w-6xl relative z-10 mb-12">
+    <!-- Main Content -->
+    <div
+      class="container mx-auto px-4 max-w-6xl relative z-10 pb-24 sm:pt-6 md:pt-20 2xl:pt-0 -mt-4 sm:mt-0"
+    >
       <div class="flex items-center justify-center min-h-[calc(100vh-250px)]">
         <div class="w-full max-w-md">
           <!-- Shuffle Button -->
-          <div class="flex justify-center mt-12 sm:mt-0">
+          <div class="flex justify-center -mt-6">
             <button
               @click="shuffleCards"
               class="px-6 py-3 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white rounded-full font-medium hover:opacity-90 transition-opacity"
@@ -29,7 +79,7 @@
             </button>
           </div>
           <!-- Card Stack Container -->
-          <div class="relative h-[500px] w-full mt-12">
+          <div class="relative h-[400px] w-full mt-8 sm:mt-12">
             <!-- Stacked Cards -->
             <TransitionGroup
               name="card-stack"
@@ -49,7 +99,7 @@
                 @click="handleCardClick(card.id)"
               >
                 <div
-                  class="transition-transform duration-700 transform-style-3d h-[600px]"
+                  class="transition-transform duration-700 transform-style-3d h-[400px]"
                   :class="{
                     'rotate-y-180': card.id === activeCard?.id && isFlipped,
                   }"
@@ -77,7 +127,7 @@
                         <img
                           :src="card.image"
                           alt="Card Illustration"
-                          class="w-full h-auto max-h-[400px] object-cover rounded-lg"
+                          class="w-full h-auto max-h-[200px] object-cover rounded-lg"
                         />
                       </div>
                     </div>
@@ -391,5 +441,20 @@ onMounted(() => {
 .card-stack-leave-to {
   opacity: 0;
   transform: translateX(100%) rotate(30deg);
+}
+
+@keyframes gradient-x {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient-x {
+  animation: gradient-x 15s ease infinite;
+  background-size: 200% 200%;
 }
 </style>
