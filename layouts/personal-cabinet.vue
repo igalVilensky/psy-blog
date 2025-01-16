@@ -4,8 +4,8 @@
     <aside
       :class="[
         'bg-gray-800 text-white fixed h-full overflow-y-auto transition-all duration-300 shadow-xl z-20',
-        isSidebarCollapsed ? 'w-16' : 'w-64',
       ]"
+      :style="{ width: isSidebarCollapsed ? '4rem' : '16rem' }"
     >
       <div class="p-4">
         <!-- Collapse/Expand Button -->
@@ -105,10 +105,8 @@
 
     <!-- Main Content -->
     <main
-      :class="[
-        'flex-grow transition-all duration-300 bg-gray-50',
-        isSidebarCollapsed ? 'ml-16' : 'ml-64',
-      ]"
+      class="flex-grow transition-all duration-300 bg-gray-50"
+      :style="{ marginLeft: isSidebarCollapsed ? '4rem' : '16rem' }"
     >
       <!-- Top Navigation Bar -->
       <div

@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <div class="max-w-4xl mx-auto px-4 py-8">
+    <div class="mx-auto px-4 py-8">
       <!-- Header Section -->
       <div
         class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6"
