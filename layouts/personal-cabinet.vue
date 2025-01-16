@@ -1,5 +1,5 @@
 <template>
-  <div class="flex min-h-screen bg-gray-50">
+  <div class="flex min-h-[100dvh] bg-gray-50">
     <!-- Sidebar -->
     <aside
       :class="[
@@ -130,18 +130,16 @@
               </li>
               <li v-for="(crumb, index) in breadcrumbs" :key="index">
                 <span class="text-gray-400 mx-2">/</span>
-                <component
-                  :is="crumb.link ? 'NuxtLink' : 'span'"
+                <NuxtLink
+                  v-if="crumb.link"
                   :to="crumb.link"
-                  :class="[
-                    crumb.link
-                      ? 'text-gray-500 hover:text-gray-700'
-                      : 'text-gray-900 font-medium',
-                    'transition-colors',
-                  ]"
+                  class="text-gray-500 hover:text-gray-700 transition-colors"
                 >
                   {{ crumb.text }}
-                </component>
+                </NuxtLink>
+                <span v-else class="text-gray-900 font-medium">
+                  {{ crumb.text }}
+                </span>
               </li>
             </ol>
           </nav>
@@ -203,14 +201,18 @@ const topNavWidth = computed(() => {
 });
 
 const breadcrumbs = computed(() => {
-  const paths = route.path.split("/").filter(Boolean);
-  return paths.map((path, index) => ({
-    text: path.charAt(0).toUpperCase() + path.slice(1),
-    link:
-      index < paths.length - 1
-        ? `/${paths.slice(0, index + 1).join("/")}`
-        : null,
-  }));
+  const paths = route.path.split("/").filter(Boolean); // Split the path and remove empty strings
+  return paths.map((path, index) => {
+    const text = path
+      .split("-")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" "); // Convert "course-1" to "Course 1"
+    const link = `/${paths.slice(0, index + 1).join("/")}`; // Generate the full path
+    return {
+      text,
+      link: index < paths.length - 1 ? link : null, // Only add link for non-last items
+    };
+  });
 });
 
 // Methods
