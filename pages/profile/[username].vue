@@ -20,9 +20,7 @@
       <div
         class="bg-gradient-to-b from-[#1A1F35]/60 to-[#1E293B]/80 backdrop-blur-xl rounded-3xl border border-white/10 p-10 mb-8 shadow-2xl"
       >
-        <div
-          class="flex flex-col sm:flex-row items-center justify-between gap-8"
-        >
+        <div class="flex flex-col sm:flex-row items-center justify-between">
           <div class="flex flex-col sm:flex-row items-center gap-8 w-full">
             <!-- Enhanced Avatar Section -->
             <div class="relative group">
@@ -52,6 +50,22 @@
                 <p class="text-lg text-slate-300 font-medium mb-4">
                   {{ authStore.user?.email || "Email not provided" }}
                 </p>
+                <NuxtLink
+                  to="/personal-cabinet"
+                  class="group relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 hover:shadow-lg"
+                >
+                  <span
+                    class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
+                  >
+                    <i class="fas fa-cog"></i>
+                  </span>
+                  <span
+                    class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
+                  >
+                    <i class="fas fa-cog mr-2"></i>Личный кабинет
+                  </span>
+                  <span class="relative invisible">Настройки</span>
+                </NuxtLink>
               </div>
             </div>
           </div>
