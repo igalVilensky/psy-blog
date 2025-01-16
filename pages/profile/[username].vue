@@ -18,97 +18,109 @@
     <div class="container mx-auto max-w-6xl relative z-10 py-16">
       <!-- Enhanced Profile Header -->
       <div
-        class="bg-gradient-to-b from-[#1A1F35]/60 to-[#1E293B]/80 backdrop-blur-xl rounded-3xl border border-white/10 p-10 mb-8 shadow-2xl"
+        class="min-h-[300px] bg-gradient-to-br from-[#1A1F35]/80 to-[#1E293B]/90 backdrop-blur-xl rounded-3xl border border-white/10 p-6 sm:p-8 lg:p-12 mb-8 shadow-2xl relative overflow-hidden"
       >
-        <div class="flex flex-col sm:flex-row items-center justify-between">
-          <div class="flex flex-col sm:flex-row items-center gap-8 w-full">
-            <!-- Enhanced Avatar Section -->
-            <div class="relative group">
-              <UserAvatar
-                :avatarUrl="avatarUrl"
-                :loading="loading"
-                :userInitial="
-                  authStore.user?.displayName?.charAt(0).toUpperCase()
-                "
-                @update:avatarUrl="avatarUrl = $event"
-                class="w-32 h-32 rounded-full border-4 border-[#0EA5E9]/30 transition-transform duration-300 group-hover:scale-105"
-              />
-              <!-- Camera Icon -->
-              <div
-                class="absolute -bottom-2 flex-shrink-0 flex right-0 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] p-2 rounded-full shadow-lg"
-              >
-                <i class="fas fa-camera text-white"></i>
-              </div>
-            </div>
+        <!-- Background Pattern -->
+        <div
+          class="absolute inset-0 bg-grid-white/[0.02] bg-[size:30px_30px]"
+        ></div>
 
-            <!-- Enhanced User Info -->
-            <div class="text-center sm:text-left sm:flex sm:items-center">
-              <div>
-                <h1 class="text-3xl font-bold text-white/90 mb-3">
-                  {{ authStore.user?.displayName || "User" }}
-                </h1>
-                <p class="text-lg text-slate-300 font-medium mb-4">
-                  {{ authStore.user?.email || "Email not provided" }}
-                </p>
-                <NuxtLink
-                  to="/personal-cabinet"
-                  class="group relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 hover:shadow-lg"
-                >
-                  <span
-                    class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
-                  >
-                    <i class="fas fa-cog"></i>
-                  </span>
-                  <span
-                    class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
-                  >
-                    <i class="fas fa-cog mr-2"></i>Личный кабинет
-                  </span>
-                  <span class="relative invisible">Настройки</span>
-                </NuxtLink>
-              </div>
+        <div
+          class="relative flex flex-col items-center lg:items-start lg:flex-row gap-8 lg:gap-12"
+        >
+          <!-- Avatar Section - Centered on mobile -->
+          <div class="relative group">
+            <UserAvatar
+              :avatarUrl="avatarUrl"
+              :loading="loading"
+              :userInitial="
+                authStore.user?.displayName?.charAt(0).toUpperCase()
+              "
+              @update:avatarUrl="avatarUrl = $event"
+              class="w-48 h-48 sm:w-56 sm:h-56 rounded-full border-4 border-[#0EA5E9]/30 transition-all duration-300 group-hover:scale-105 shadow-xl"
+            />
+            <div
+              class="absolute -bottom-2 right-0 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] p-3 rounded-full shadow-lg cursor-pointer transition-transform duration-300 hover:scale-110"
+            >
+              <i class="fas fa-camera text-white text-lg"></i>
             </div>
           </div>
 
-          <!-- Enhanced Action Buttons -->
-          <div class="flex gap-4">
-            <NuxtLink
-              to="/profile/settings"
-              class="group relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 hover:shadow-lg"
-            >
-              <span
-                class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
-              >
-                <i class="fas fa-cog"></i>
-              </span>
-              <span
-                class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
-              >
-                <i class="fas fa-cog mr-2"></i>Настройки
-              </span>
-              <span class="relative invisible">Настройки</span>
-            </NuxtLink>
+          <!-- User Info & Actions -->
+          <div
+            class="flex-1 flex flex-col items-center lg:items-start space-y-6 lg:space-y-8 w-full"
+          >
+            <!-- User Details - Centered on mobile -->
+            <div class="text-center lg:text-left">
+              <h1 class="text-3xl sm:text-4xl font-bold text-white/90 mb-3">
+                {{ authStore.user?.displayName || "User" }}
+              </h1>
+              <p class="text-lg sm:text-xl text-slate-300 font-medium">
+                {{ authStore.user?.email || "Email not provided" }}
+              </p>
+            </div>
 
-            <button
-              @click="logoutUser"
-              class="group relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 hover:shadow-lg"
+            <!-- Action Buttons - Full width on mobile -->
+            <div
+              class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full lg:w-auto"
             >
-              <span
-                class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
+              <!-- Personal Cabinet - Primary Button -->
+              <NuxtLink
+                to="/personal-cabinet"
+                class="flex-1 lg:flex-initial group relative inline-flex items-center justify-center px-6 py-4 overflow-hidden font-medium transition-all duration-300 ease-out rounded-xl bg-gradient-to-r from-[#0EA5E9]/10 to-[#E879F9]/10 border border-[#0EA5E9]/20 hover:shadow-lg"
               >
-                <i class="fas fa-sign-out-alt"></i>
-              </span>
-              <span
-                class="absolute flex items-center justify-center w-full h-full bg-[#E879F9]/20 text-[#E879F9] font-medium transition-all duration-300 transform group-hover:translate-x-full ease"
+                <span
+                  class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
+                >
+                  <i class="fas fa-user-cog"></i>
+                </span>
+                <span
+                  class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
+                >
+                  <i class="fas fa-user-cog mr-2"></i>Личный кабинет
+                </span>
+                <span class="relative invisible">Личный кабинет</span>
+              </NuxtLink>
+
+              <!-- Settings Button -->
+              <NuxtLink
+                to="/profile/settings"
+                class="flex-1 lg:flex-initial group relative inline-flex items-center justify-center px-6 py-4 overflow-hidden font-medium transition-all duration-300 ease-out rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 hover:shadow-lg"
               >
-                <i class="fas fa-sign-out-alt mr-2"></i>Выйти
-              </span>
-              <span class="relative invisible">Выйти</span>
-            </button>
+                <span
+                  class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
+                >
+                  <i class="fas fa-cog"></i>
+                </span>
+                <span
+                  class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
+                >
+                  <i class="fas fa-cog mr-2"></i>Настройки
+                </span>
+                <span class="relative invisible">Настройки</span>
+              </NuxtLink>
+
+              <!-- Logout Button -->
+              <button
+                @click="logoutUser"
+                class="flex-1 lg:flex-initial group relative inline-flex items-center justify-center px-6 py-4 overflow-hidden font-medium transition-all duration-300 ease-out rounded-xl backdrop-blur-sm border border-rose-500/20 hover:shadow-lg"
+              >
+                <span
+                  class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-rose-500 to-[#E879F9] group-hover:translate-x-0 ease"
+                >
+                  <i class="fas fa-sign-out-alt"></i>
+                </span>
+                <span
+                  class="absolute flex items-center justify-center w-full h-full text-rose-500 transition-all duration-300 transform group-hover:translate-x-full ease"
+                >
+                  <i class="fas fa-sign-out-alt mr-2"></i>Выйти
+                </span>
+                <span class="relative invisible">Выйти</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
-
       <!-- Bio Section -->
       <div
         class="bg-gradient-to-b from-[#1A1F35]/60 to-[#1E293B]/80 backdrop-blur-xl rounded-3xl border border-white/10 p-6 sm:p-10 mb-8 shadow-2xl"

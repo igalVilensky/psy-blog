@@ -1,39 +1,42 @@
 <template>
   <div class="relative group">
+    <!-- Avatar with Image -->
     <div
       v-if="avatarUrl && !loading"
-      class="w-24 h-24 rounded-full overflow-hidden ring-2 ring-offset-2 ring-gray-100"
+      class="w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden ring-4 ring-offset-4 ring-offset-[#1A1F35] ring-[#0EA5E9]/30 transition-all duration-300"
     >
-      <!-- Replace <img> with <nuxt-img> -->
       <nuxt-img
         :src="avatarUrl"
         alt="Avatar"
         class="w-full h-full object-cover"
-        width="96"
-        height="96"
+        :width="loading ? 160 : 96"
+        :height="loading ? 160 : 96"
         loading="lazy"
         format="webp"
-        quality="80"
+        quality="90"
       />
     </div>
 
+    <!-- Loading State -->
     <div
       v-else-if="loading"
-      class="w-24 h-24 rounded-full bg-indigo-100 flex items-center justify-center ring-2 ring-offset-2 ring-gray-100"
+      class="w-32 h-32 sm:w-40 sm:h-40 rounded-full bg-gradient-to-r from-[#0EA5E9]/10 to-[#E879F9]/10 flex items-center justify-center ring-4 ring-offset-4 ring-offset-[#1A1F35] ring-[#0EA5E9]/30"
     >
-      <i class="fas fa-spinner fa-spin fa-2x text-indigo-600"></i>
+      <i class="fas fa-spinner fa-spin fa-3x text-[#0EA5E9]"></i>
     </div>
 
+    <!-- Initial State -->
     <div
       v-else
-      class="w-24 h-24 rounded-full bg-indigo-100 flex items-center justify-center ring-2 ring-offset-2 ring-gray-100"
+      class="w-32 h-32 sm:w-40 sm:h-40 rounded-full bg-gradient-to-r from-[#0EA5E9]/10 to-[#E879F9]/10 flex items-center justify-center ring-4 ring-offset-4 ring-offset-[#1A1F35] ring-[#0EA5E9]/30"
     >
-      <span class="text-3xl font-semibold text-indigo-600">
+      <span class="text-5xl font-bold text-[#0EA5E9]">
         {{ userInitial }}
       </span>
     </div>
 
-    <label class="absolute inset-0 w-24 h-24 cursor-pointer">
+    <!-- Upload Overlay -->
+    <label class="absolute inset-0 w-full h-full cursor-pointer">
       <input
         type="file"
         @change="onFileChange"
@@ -41,12 +44,30 @@
         class="hidden"
       />
       <div
-        class="absolute inset-0 bg-black/30 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+        class="absolute inset-0 bg-gradient-to-r from-[#0EA5E9]/80 to-[#E879F9]/80 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center backdrop-blur-sm"
       >
-        <i class="fas fa-camera text-white text-xl"></i>
+        <div class="text-white flex flex-col items-center gap-2">
+          <i class="fas fa-camera text-2xl"></i>
+          <span class="text-sm font-medium">Change Photo</span>
+        </div>
       </div>
     </label>
+
+    <!-- PRO Badge -->
+    <div class="absolute -top-2 -right-2">
+      <div class="relative">
+        <div
+          class="absolute inset-0 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] rounded-full blur opacity-75"
+        ></div>
+        <div
+          class="relative px-3 py-1 rounded-full text-sm font-bold bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white shadow-lg border border-white/20"
+        >
+          PRO
+        </div>
+      </div>
+    </div>
   </div>
+
   <Notification
     v-if="notificationMessage"
     :message="notificationMessage"

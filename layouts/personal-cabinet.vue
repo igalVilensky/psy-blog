@@ -159,7 +159,7 @@
       </div>
 
       <!-- Page Content -->
-      <div class="mt-16 p-6">
+      <div class="mt-16 py-6">
         <slot />
       </div>
     </main>
