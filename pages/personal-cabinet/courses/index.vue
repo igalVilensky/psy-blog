@@ -182,7 +182,7 @@
         >
           <div class="relative">
             <img
-              :src="course.image"
+              :src="getImageUrl(course.image)"
               :alt="course.title"
               class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500"
             />
@@ -231,13 +231,11 @@
                   >
                 </div>
               </div>
-              <button
+              <NuxtLink
+                :to="`/personal-cabinet/courses/${course.slug}`"
                 class="p-2 text-gray-400 hover:text-blue-600 transition-colors duration-200"
               >
                 <i class="fas fa-arrow-right text-lg"></i>
-              </button>
-              <NuxtLink :to="`/personal-cabinet/courses/${course.slug}`">
-                {{ course.title }}
               </NuxtLink>
             </div>
           </div>
@@ -259,55 +257,41 @@
 
 <script setup>
 import { ref, computed } from "vue";
-import courseImage from "~/assets/images/courses/loveyourself.webp";
-import guideImage from "~/assets/images/podcasts/podcasts.jpeg";
+import { course as healingChildhoodTraumasCourse } from "~/data/courses/healingChildhoodTraumas";
 
 definePageMeta({
   layout: "personal-cabinet",
 });
 
-const stats = ref({
-  activeCourses: 4,
-  completedCourses: 2,
-  totalHours: 45,
-  certificates: 1,
-  totalCourses: 6,
+// Hardcoded courses
+const courses = ref([healingChildhoodTraumasCourse]);
+
+const stats = computed(() => {
+  // Calculate total hours by summing up the duration of all courses
+  const totalHours = courses.value.reduce(
+    (sum, course) => sum + course.duration,
+    0
+  );
+
+  return {
+    activeCourses: courses.value.length, // Number of active courses
+    completedCourses: courses.value.filter(
+      (course) => course.status === "Completed"
+    ).length, // Number of completed courses
+    totalHours, // Total hours for all courses
+    certificates: 1, // Placeholder for certificates
+    totalCourses: courses.value.length, // Total number of courses
+  };
 });
 
+// Categories for filtering
 const categories = ref([
   { id: "all", name: "Все курсы", icon: "fas fa-th-large" },
   { id: "active", name: "Активные", icon: "fas fa-play-circle" },
   { id: "completed", name: "Завершённые", icon: "fas fa-check-circle" },
 ]);
 
-const courses = ref([
-  {
-    id: 1,
-    slug: "Исцеление детских травм",
-    title: "Исцеление детских травм",
-    description:
-      "Исследуйте и исцелите свои детские травмы через 21 урок, включая теоретические и практические задания. Узнайте, как травмы влияют на вашу жизнь, и научитесь их преодолевать.",
-    image: courseImage,
-    progress: 75,
-    status: "In Progress",
-    lessons: 12,
-    duration: 8,
-    category: "active",
-  },
-  {
-    id: 2,
-    slug: "course-2",
-    title: "Идеальные отношения",
-    description: "Инструменты для построения гармоничных и здоровых отношений.",
-    image: guideImage,
-    progress: 100,
-    status: "Completed",
-    lessons: 15,
-    duration: 10,
-    category: "completed",
-  },
-]);
-
+// Search and filter logic
 const searchQuery = ref("");
 const selectedCategory = ref("all");
 
@@ -325,6 +309,7 @@ const filteredCourses = computed(() => {
   });
 });
 
+// Helper function to get status class
 const getStatusClass = (status) => {
   switch (status) {
     case "In Progress":
@@ -334,5 +319,9 @@ const getStatusClass = (status) => {
     default:
       return "bg-gray-100 text-gray-800";
   }
+};
+
+const getImageUrl = (imageName) => {
+  return new URL(`/assets/images/courses/${imageName}`, import.meta.url).href;
 };
 </script>
