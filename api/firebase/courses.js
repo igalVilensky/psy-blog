@@ -1,10 +1,11 @@
+// api/firebase/courses.js
 import {
   doc,
   setDoc,
   getDoc,
+  getDocs,
   updateDoc,
   collection,
-  getDocs,
   query,
   where,
 } from "firebase/firestore";
@@ -63,6 +64,7 @@ export const purchaseCourse = async (
     };
   }
 };
+
 /**
  * Get user's purchased courses
  * @param {Firestore} firestore - Firestore instance
@@ -70,22 +72,26 @@ export const purchaseCourse = async (
  * @returns {Promise<{success: boolean, data: Array, message: string}>}
  */
 export const getPurchasedCourses = async (firestore, userId) => {
-  const coursesRef = collection(firestore, "courses");
+  const courseId = "course_1"; // Hardcoded for now
+  const courseRef = doc(firestore, "courses", `${userId}_${courseId}`);
 
   try {
-    // Query courses for the user
-    const q = query(coursesRef, where("userId", "==", userId));
-    const querySnapshot = await getDocs(q);
+    // Get the course document
+    const docSnap = await getDoc(courseRef);
 
-    const courses = [];
-    querySnapshot.forEach((doc) => {
-      courses.push(doc.data());
-    });
-
-    return {
-      success: true,
-      data: courses,
-    };
+    if (docSnap.exists()) {
+      // Return the course data
+      return {
+        success: true,
+        data: [docSnap.data()], // Return as an array for consistency
+      };
+    } else {
+      // Return an empty array if the course is not found
+      return {
+        success: true,
+        data: [],
+      };
+    }
   } catch (error) {
     console.error("Ошибка при получении купленных курсов:", error);
     return {
