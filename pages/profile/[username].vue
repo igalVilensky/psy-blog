@@ -666,7 +666,6 @@ const fetchBioData = async (userId) => {
       age.value = data.age || "";
       gender.value = data.gender || "";
       aboutYourself.value = data.aboutYourself || "";
-      console.log(data);
     }
   } catch (error) {
     console.error("Error fetching bio data:", error);

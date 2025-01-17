@@ -1,5 +1,4 @@
 export default defineNuxtConfig({
-  // Tell Nuxt to include Tailwind CSS
   css: [
     "@/assets/css/global.css",
     "@/assets/css/tailwind.css",
@@ -15,7 +14,10 @@ export default defineNuxtConfig({
 
   compatibilityDate: "2024-12-14",
   modules: ["@nuxtjs/sanity", "@pinia/nuxt", "@nuxt/image"],
-  plugins: ["../plugins/firebase.js", "../plugins/initAuth.js"],
+  plugins: [
+    "~/plugins/firebase.js", // Firebase initialization
+    "~/plugins/initAuth.js", // Auth initialization (must come after firebase.js)
+  ],
   sanity: {
     projectId: "wlg2lkvy",
     dataset: "production",

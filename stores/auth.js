@@ -1,12 +1,6 @@
 // stores/auth.js
 import { defineStore } from "pinia";
-import { useNuxtApp } from "#app";
-import {
-  getAuth,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signOut,
-} from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getUserProfile } from "~/utils/firebase";
 
 export const useAuthStore = defineStore("auth", {
@@ -26,7 +20,10 @@ export const useAuthStore = defineStore("auth", {
             if (currentUser) {
               try {
                 const userProfile = await getUserProfile(currentUser.uid);
-                this.user = userProfile;
+                this.user = {
+                  ...userProfile,
+                  uid: currentUser.uid, // Add the uid to the user object
+                };
               } catch (err) {
                 this.error = "Failed to load user profile";
                 console.error(err);
@@ -34,12 +31,12 @@ export const useAuthStore = defineStore("auth", {
             } else {
               this.user = null;
             }
-            this.isLoading = false;
+            this.loading = false;
             resolve(); // Resolve the promise after the auth state is set
           },
           (error) => {
             this.error = "Error initializing authentication";
-            this.isLoading = false;
+            this.loading = false;
             console.error(error);
             resolve(); // Ensure the promise resolves even if there's an error
           }
@@ -58,8 +55,7 @@ export const useAuthStore = defineStore("auth", {
     },
 
     async login(email, password) {
-      const nuxtApp = useNuxtApp();
-      const auth = nuxtApp.$auth;
+      const auth = getAuth();
 
       try {
         const userCredential = await signInWithEmailAndPassword(
@@ -85,8 +81,7 @@ export const useAuthStore = defineStore("auth", {
     },
 
     async logout() {
-      const nuxtApp = useNuxtApp();
-      const auth = nuxtApp.$auth;
+      const auth = getAuth();
 
       try {
         await signOut(auth);
