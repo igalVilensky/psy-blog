@@ -1,17 +1,3 @@
-export const course = {
-  id: 1,
-  slug: "healing-childhood-traumas", // Unique slug for the course
-  title: "Исцеление детских травм",
-  description:
-    "Исследуйте и исцелите свои детские травмы через 21 урок, включая теоретические и практические задания. Узнайте, как травмы влияют на вашу жизнь, и научитесь их преодолевать.",
-  image: "loveyourself.webp", // Path to the image
-  progress: 75,
-  status: "In Progress",
-  lessons: 12,
-  duration: 8,
-  category: "active",
-};
-
 const generateSlug = (title) => {
   return title
     .toLowerCase()
@@ -103,4 +89,120 @@ export const lessons = [
     duration: "31 минута",
     slug: generateSlug("«Вот-вот случится беда». Травма Уязвимости"),
   },
+  {
+    title: "«Я никуда не гожусь». Травма Неполноценности",
+    description:
+      "Исследование травмы неполноценности и ее влияния на самооценку и поведение.",
+    videoUrl: "https://youtu.be/dDhmDl6i_xo",
+    duration: "30 минут",
+    slug: generateSlug("«Я никуда не гожусь». Травма Неполноценности"),
+  },
+  {
+    title: "«Я чувствую себя неудачником». Травма Несостоятельности",
+    description:
+      "Изучение травмы несостоятельности и ее влияния на мотивацию и достижения.",
+    videoUrl: "https://youtu.be/7YdoSq4a8l0",
+    duration: "30 минут",
+    slug: generateSlug(
+      "«Я чувствую себя неудачником». Травма Несостоятельности"
+    ),
+  },
+  {
+    title: "«Я всё делаю по-твоему!» Травма Покорности",
+    description:
+      "Анализ травмы покорности и ее влияния на принятие решений и личные границы.",
+    videoUrl: "https://youtu.be/54Vl1Tf1wlE",
+    duration: "30 минут",
+    slug: generateSlug("«Я всё делаю по-твоему!» Травма Покорности"),
+  },
+  {
+    title: "«Всегда можно сделать еще лучше». Травма Завышенных Стандартов",
+    description:
+      "Исследование травмы завышенных стандартов и ее влияния на перфекционизм и самооценку.",
+    videoUrl: "https://youtu.be/Ur-SC8vcvKE",
+    duration: "30 минут",
+    slug: generateSlug(
+      "«Всегда можно сделать еще лучше». Травма Завышенных Стандартов"
+    ),
+  },
+  {
+    title: "«Я получаю все, что хочу». Травма Избранности",
+    description:
+      "Изучение травмы избранности и ее влияния на отношения и восприятие реальности.",
+    videoUrl: "https://youtu.be/qyZUSPNZ23M",
+    duration: "30 минут",
+    slug: generateSlug("«Я получаю все, что хочу». Травма Избранности"),
+  },
+  {
+    title: "Практический урок 16",
+    description:
+      "Практические упражнения для закрепления материала и самопознания.",
+    videoUrl: "https://youtu.be/YYjhbapjIug",
+    duration: "30 минут",
+    slug: generateSlug("Практический урок 16"),
+  },
+  {
+    title: "Практический урок 17",
+    description:
+      "Практические упражнения для закрепления материала и самопознания.",
+    videoUrl: "https://youtu.be/55cFqXwBArU",
+    duration: "30 минут",
+    slug: generateSlug("Практический урок 17"),
+  },
+  {
+    title: "Практический урок 18",
+    description:
+      "Практические упражнения для закрепления материала и самопознания.",
+    videoUrl: "https://youtu.be/WC2pCSWdFz8",
+    duration: "30 минут",
+    slug: generateSlug("Практический урок 18"),
+  },
+  {
+    title: "Практический урок 19",
+    description:
+      "Практические упражнения для закрепления материала и самопознания.",
+    videoUrl: "https://youtu.be/dvPcKeJFy2Y",
+    duration: "30 минут",
+    slug: generateSlug("Практический урок 19"),
+  },
+  {
+    title: "Практический урок 20",
+    description:
+      "Практические упражнения для закрепления материала и самопознания.",
+    videoUrl: "https://youtu.be/NkRFEwTsd9E",
+    duration: "30 минут",
+    slug: generateSlug("Практический урок 20"),
+  },
+  {
+    title: "Практический урок 21",
+    description:
+      "Практические упражнения для закрепления материала и самопознания.",
+    videoUrl: "https://youtu.be/E_YTCQ0zQ5U",
+    duration: "30 минут",
+    slug: generateSlug("Практический урок 21"),
+  },
 ];
+
+// Calculate total duration of the course
+const totalMinutes = lessons.reduce((sum, lesson) => {
+  // Extract the numeric value from the duration string (e.g., "33 минуты" -> 33)
+  const durationValue = parseInt(lesson.duration);
+  return sum + durationValue;
+}, 0);
+
+// Convert total minutes to hours
+const totalHours = Math.round(totalMinutes / 60);
+
+export const course = {
+  id: 1,
+  slug: "healing-childhood-traumas", // Unique slug for the course
+  title: "Исцеление детских травм",
+  description:
+    "Исследуйте и исцелите свои детские травмы через 21 урок, включая теоретические и практические задания. Узнайте, как травмы влияют на вашу жизнь, и научитесь их преодолевать.",
+  image: "loveyourself.webp", // Path to the image
+  progress: 75,
+  status: "In Progress",
+  lessons: lessons.length, // Total number of lessons
+  duration: totalHours, // Total duration in hours
+  category: "active",
+};
