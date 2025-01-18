@@ -112,6 +112,14 @@ export const getPurchasedCourses = async (firestore, userId) => {
  * @param {string} lessonId - Lesson ID
  * @returns {Promise<{success: boolean, message: string}>}
  */
+/**
+ * Update course progress (e.g., mark a lesson as completed)
+ * @param {Firestore} firestore - Firestore instance
+ * @param {string} userId - User ID
+ * @param {string} courseId - Course ID
+ * @param {string} lessonId - Lesson ID (slug)
+ * @returns {Promise<{success: boolean, message: string}>}
+ */
 export const updateCourseProgress = async (
   firestore,
   userId,
@@ -168,6 +176,48 @@ export const updateCourseProgress = async (
     return {
       success: false,
       message: "Ошибка при обновлении прогресса курса",
+    };
+  }
+};
+/**
+ * Check if a lesson is completed
+ * @param {Firestore} firestore - Firestore instance
+ * @param {string} userId - User ID
+ * @param {string} courseId - Course ID
+ * @param {string} lessonId - Lesson ID (slug)
+ * @returns {Promise<{success: boolean, isCompleted: boolean, message: string}>}
+ */
+export const checkLessonCompletion = async (
+  firestore,
+  userId,
+  courseId,
+  lessonId
+) => {
+  const courseRef = doc(firestore, "courses", `${userId}_${courseId}`);
+
+  try {
+    const docSnap = await getDoc(courseRef);
+
+    if (docSnap.exists()) {
+      const completedLessons = docSnap.data().progress.completedLessons || [];
+      return {
+        success: true,
+        isCompleted: completedLessons.includes(lessonId),
+        message: "Проверка завершена",
+      };
+    } else {
+      return {
+        success: false,
+        isCompleted: false,
+        message: "Курс не найден",
+      };
+    }
+  } catch (error) {
+    console.error("Ошибка при проверке завершенности урока:", error);
+    return {
+      success: false,
+      isCompleted: false,
+      message: "Ошибка при проверке завершенности урока",
     };
   }
 };
