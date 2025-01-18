@@ -36,10 +36,11 @@ export const purchaseCourse = async (
       };
     }
 
-    // Create a new course document
+    // Create a new course document with full course data
     await setDoc(courseRef, {
       userId,
       courseId,
+      ...courseData, // Include all course data (title, description, price, etc.)
       purchaseDate: new Date().toISOString(),
       status: "purchased",
       progress: {
@@ -71,6 +72,8 @@ export const purchaseCourse = async (
  * @param {string} userId - User ID
  * @returns {Promise<{success: boolean, data: Array, message: string}>}
  */
+
+// api/firebase/courses.js
 export const getPurchasedCourses = async (firestore, userId) => {
   const courseId = "course_1"; // Hardcoded for now
   const courseRef = doc(firestore, "courses", `${userId}_${courseId}`);

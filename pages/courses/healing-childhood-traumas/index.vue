@@ -210,9 +210,20 @@ const handlePurchase = async () => {
       return;
     }
 
-    const courseId = "course_1"; // Replace with the actual course ID
+    const courseId = "course_1";
     const courseData = {
-      totalLessons: 21, // Replace with the actual total lessons
+      id: courseId,
+      title: 'Курс "Исцеление детских травм"',
+      description:
+        "Исследуйте и исцелите свои детские травмы через 21 урок, включая теоретические и практические задания. Узнайте, как травмы влияют на вашу жизнь, и научитесь их преодолевать.",
+      price: 4900,
+      lessons: 21,
+      hasPractical: true,
+      category: "Саморазвитие",
+      image: "course-placeholder.jpg", // Replace with actual image URL
+      discount: 20,
+      link: "/courses/healing-childhood-traumas",
+      totalLessons: 21, // Add totalLessons for progress tracking
     };
 
     const { success, message } = await purchaseCourse(

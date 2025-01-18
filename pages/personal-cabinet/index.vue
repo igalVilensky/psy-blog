@@ -172,26 +172,53 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, onMounted } from "vue";
+import { getFirestore } from "firebase/firestore";
+import { useAuthStore } from "~/stores/auth";
+import { getPurchasedCourses } from "~/api/firebase/courses";
 
 definePageMeta({
   layout: "personal-cabinet",
 });
 
-// Mock data
-const userName = ref("Иван Иванов");
-const activeCourses = ref(3);
-const completedTasks = ref(48);
-const studyHours = ref(76);
-const lastVisit = ref(new Date(Date.now() - 24 * 60 * 60 * 1000)); // yesterday
+const authStore = useAuthStore();
+const db = getFirestore(); // Initialize Firestore
+const userName = ref(authStore.user?.displayName || "Гость");
+const activeCourses = ref(0);
+const completedTasks = ref(0);
+const studyHours = ref(0);
+const lastVisit = ref(new Date());
 
+// Fetch purchased courses and update stats
+const fetchPurchasedCourses = async () => {
+  if (authStore.user) {
+    const { success, data } = await getPurchasedCourses(db, authStore.user.uid);
+    if (success) {
+      activeCourses.value = data.length;
+      completedTasks.value = data.reduce(
+        (acc, course) => acc + (course.progress?.completedLessons?.length || 0),
+        0
+      );
+      studyHours.value = data.reduce(
+        (acc, course) => acc + parseInt(course.progress?.timeSpent || 0),
+        0
+      );
+      lastVisit.value = new Date(data[0]?.lastAccessed || new Date());
+    }
+  }
+};
+
+// Greeting based on time of day
 const getCurrentTimeGreeting = () => {
   const hour = new Date().getHours();
+  if (hour >= 22 || hour < 6)
+    return "Доброй ночи! Самое время для отдыха и восстановления.";
   if (hour < 12) return "Доброе утро! Готовы к новым знаниям?";
   if (hour < 17) return "Добрый день! Продолжим обучение?";
   return "Добрый вечер! Время для новых достижений!";
 };
 
+// Format date for display
 const formatDate = (date) => {
   return new Intl.DateTimeFormat("ru-RU", {
     day: "numeric",
@@ -200,4 +227,9 @@ const formatDate = (date) => {
     minute: "2-digit",
   }).format(date);
 };
+
+// Fetch data on mounted
+onMounted(async () => {
+  await fetchPurchasedCourses();
+});
 </script>
