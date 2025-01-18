@@ -181,6 +181,7 @@
     </div>
   </div>
 </template>
+
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { useAuthStore } from "~/stores/auth";
@@ -226,12 +227,30 @@ const progress = computed(() => {
 });
 
 const remainingTime = computed(() => {
-  const remainingLessons = lessons.length - completedLessons.value.length;
-  const averageDuration = 30; // Average duration of a lesson in minutes
-  const totalMinutes = remainingLessons * averageDuration;
+  // Helper function to parse duration strings like "33 минуты" or "1 час 30 минут"
+  const parseDuration = (duration) => {
+    const hoursMatch = duration.match(/(\d+)\s*час/);
+    const minutesMatch = duration.match(/(\d+)\s*минут/);
+    const hours = hoursMatch ? parseInt(hoursMatch[1], 10) : 0;
+    const minutes = minutesMatch ? parseInt(minutesMatch[1], 10) : 0;
+    return hours * 60 + minutes; // Convert everything to minutes
+  };
+
+  // Calculate total duration of remaining lessons
+  const totalMinutes = lessons
+    .filter((lesson) => !completedLessons.value.includes(lesson.slug)) // Filter incomplete lessons
+    .reduce((sum, lesson) => sum + parseDuration(lesson.duration), 0); // Sum up durations
+
+  // Convert total minutes to hours and minutes
   const hours = Math.floor(totalMinutes / 60);
   const minutes = totalMinutes % 60;
-  return `${hours}ч ${minutes}мин`;
+
+  // Format the result
+  if (hours > 0) {
+    return `${hours}ч ${minutes}мин`;
+  } else {
+    return `${minutes}мин`;
+  }
 });
 
 // Next lesson is the first incomplete lesson or the first lesson

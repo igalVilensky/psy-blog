@@ -304,8 +304,9 @@ onMounted(async () => {
           status: course.status === "purchased" ? "In Progress" : "Completed",
           progress: course.progress?.progressPercentage || 0,
           lessons: course.progress?.totalLessons || 0,
-          duration: parseInt(course.progress?.timeSpent || 0),
-          slug: course.link?.replace("/courses/", "") || "default-slug", // Generate slug from link
+          duration: parseInt(course.duration) || 0, // Use duration from local data
+          slug: course.link?.replace("/courses/", "") || "default-slug",
+          completedLessons: course.progress?.completedLessons || [], // Add completed lessons
         }));
       }
     } catch (error) {
