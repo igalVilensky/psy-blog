@@ -15,7 +15,7 @@ export const course2 = {
   price: 8900,
   hasPractical: false,
   category: "Саморазвитие",
-  image: "mindfulness.webp", // Path to the image
+  image: "loveyourself.webp", // Path to the image
   // Lessons are now nested inside the course object
   lessons: [
     {

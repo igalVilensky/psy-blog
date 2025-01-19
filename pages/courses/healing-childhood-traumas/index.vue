@@ -157,7 +157,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { getFirestore } from "firebase/firestore";
 import { subscribeUser } from "@/api/firebase/contact";
 import { useAuthStore } from "~/stores/auth";

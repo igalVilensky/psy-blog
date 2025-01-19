@@ -49,10 +49,10 @@
               <div>
                 <p class="text-sm font-medium text-gray-500">Активные курсы</p>
                 <p class="text-2xl font-bold text-gray-900 mt-1">
-                  {{ courses.length }}
+                  {{ stats.activeCourses }}
                 </p>
                 <p class="text-sm text-gray-500 mt-1">
-                  + {{ courses.length }} на этой неделе
+                  + {{ stats.activeCourses }} на этой неделе
                 </p>
               </div>
               <div
@@ -199,9 +199,7 @@
                 class="absolute top-4 right-4 px-3 py-1.5 rounded-xl text-sm font-medium shadow-sm"
                 :class="getStatusClass(course.status)"
               >
-                {{
-                  course.status === "In Progress" ? "В процессе" : "Завершено"
-                }}
+                {{ course.status === "purchased" ? "В процессе" : "Завершено" }}
               </div>
             </div>
             <div class="p-6">
@@ -217,12 +215,14 @@
                   class="flex items-center justify-between text-sm text-gray-500 mb-2"
                 >
                   <span>Прогресс курса</span>
-                  <span class="font-medium">{{ course.progress }}%</span>
+                  <span class="font-medium"
+                    >{{ course.progress.progressPercentage }}%</span
+                  >
                 </div>
                 <div class="w-full bg-gray-100 rounded-full h-2.5">
                   <div
                     class="bg-blue-500 h-2.5 rounded-full transition-all duration-500"
-                    :style="{ width: `${course.progress}%` }"
+                    :style="{ width: `${course.progress.progressPercentage}%` }"
                   ></div>
                 </div>
               </div>
@@ -270,9 +270,8 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import Loading from "~/components/base/Loading.vue";
-import { getFirestore } from "firebase/firestore";
 import { useAuthStore } from "~/stores/auth";
-import { getPurchasedCourses } from "~/api/firebase/courses";
+import { getPurchasedCourses } from "~/api/firebase/coursesApi";
 import { course as healingChildhoodTraumasCourse } from "~/data/courses/healingChildhoodTraumas";
 
 definePageMeta({
@@ -280,7 +279,6 @@ definePageMeta({
 });
 
 const authStore = useAuthStore();
-const db = getFirestore(); // Initialize Firestore
 const courses = ref([]); // Dynamic courses array
 const searchQuery = ref("");
 const selectedCategory = ref("all");
@@ -290,23 +288,23 @@ const loading = ref(true); // Loading state
 onMounted(async () => {
   if (authStore.user) {
     try {
-      const { success, data } = await getPurchasedCourses(
-        db,
-        authStore.user.uid
-      );
+      const { success, data } = await getPurchasedCourses(authStore.user.uid);
       if (success) {
         courses.value = data.map((course) => ({
           id: course.courseId,
           title: course.title || "Название курса",
           description: course.description || "Описание курса",
-          image:
-            healingChildhoodTraumasCourse.image || "course-placeholder.jpg", // Use the stored image URL
-          status: course.status === "purchased" ? "In Progress" : "Completed",
-          progress: course.progress?.progressPercentage || 0,
-          lessons: course.progress?.totalLessons || 0,
-          duration: parseInt(course.duration) || 0, // Use duration from local data
+          image: course.image || "course-placeholder.jpg",
+          status: course.status === "purchased" ? "purchased" : "completed",
+          progress: {
+            progressPercentage: course.progress?.progressPercentage || 0,
+            completedLessons: course.progress?.completedLessons || [],
+            totalLessons: course.progress?.totalLessons || 0,
+          },
+          lessons: course.lessons || 0,
+          duration: parseInt(course.duration) || 0,
           slug: course.link?.replace("/courses/", "") || "default-slug",
-          completedLessons: course.progress?.completedLessons || [], // Add completed lessons
+          certificateEarned: course.certificateEarned || false,
         }));
       }
     } catch (error) {
@@ -322,16 +320,16 @@ onMounted(async () => {
 // Calculate stats
 const stats = computed(() => {
   const totalHours = courses.value.reduce(
-    (sum, course) => sum + course.duration,
+    (sum, course) => sum + (course.duration || 0),
     0
   );
 
   return {
     activeCourses: courses.value.filter(
-      (course) => course.status === "In Progress"
+      (course) => course.status === "purchased"
     ).length,
     completedCourses: courses.value.filter(
-      (course) => course.status === "Completed"
+      (course) => course.status === "completed"
     ).length,
     totalHours,
     certificates: courses.value.filter((course) => course.certificateEarned)
@@ -357,9 +355,8 @@ const filteredCourses = computed(() => {
         .includes(searchQuery.value.toLowerCase());
     const matchesCategory =
       selectedCategory.value === "all" ||
-      (selectedCategory.value === "active" &&
-        course.status === "In Progress") ||
-      (selectedCategory.value === "completed" && course.status === "Completed");
+      (selectedCategory.value === "active" && course.status === "purchased") ||
+      (selectedCategory.value === "completed" && course.status === "completed");
     return matchesSearch && matchesCategory;
   });
 });
@@ -367,9 +364,9 @@ const filteredCourses = computed(() => {
 // Helper function to get status class
 const getStatusClass = (status) => {
   switch (status) {
-    case "In Progress":
+    case "purchased":
       return "bg-blue-100 text-blue-800";
-    case "Completed":
+    case "completed":
       return "bg-green-100 text-green-800";
     default:
       return "bg-gray-100 text-gray-800";
