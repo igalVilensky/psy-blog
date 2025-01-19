@@ -58,8 +58,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useAuthStore } from "~/stores/auth"; // Import the auth store
-import { course } from "~/data/courses/testCourse";
-import { course2 } from "~/data/courses/secondTestCourse";
+import { course } from "~/data/courses/healing-childhood-traumas";
+import { course as course2 } from "~/data/courses/mindfulness-and-stress-relief";
 import { purchaseCourse, getPurchasedCourses } from "~/api/firebase/coursesApi"; // Import the purchase function
 
 const authStore = useAuthStore();

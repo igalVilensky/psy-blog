@@ -76,13 +76,12 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
-import { lessons } from "~/data/courses/healingChildhoodTraumas";
+import { useAuthStore } from "~/stores/auth";
+import { getFirestore } from "firebase/firestore";
 import {
   getPurchasedCourses,
   updateCourseProgress,
-} from "~/api/firebase/courses";
-import { useAuthStore } from "~/stores/auth";
-import { getFirestore } from "firebase/firestore";
+} from "~/api/firebase/coursesApi";
 
 definePageMeta({
   layout: "personal-cabinet",
@@ -95,64 +94,41 @@ const db = getFirestore();
 const courseSlug = route.params.course; // Course slug from URL
 const lessonSlug = route.params.lesson; // Lesson slug from URL
 const loading = ref(true);
-const courseData = ref(null);
-const completedLessons = ref([]);
+const course = ref(null); // Static course data
+const lesson = ref(null); // Current lesson data
+const completedLessons = ref([]); // Completed lessons from backend
+const isLessonCompleted = ref(false); // Whether the lesson is completed
 
-// Find the current lesson by matching the slug
-const lesson = computed(() => {
-  const lessonSlug = route.params.lesson || ""; // Fallback to empty string if undefined
-  const decodedLessonSlug = decodeURIComponent(lessonSlug).toLowerCase().trim();
-  console.log("route.params:", route.params);
-
-  // Log each lesson being checked
-  const foundLesson = lessons.find((l) => {
-    const lessonSlugNormalized = l.slug.toLowerCase().trim();
-    console.log("Checking Lesson:", lessonSlugNormalized); // Log the slug of each lesson
-    return lessonSlugNormalized === decodedLessonSlug;
-  });
-
-  console.log("Found Lesson:", foundLesson); // Log the final result
-  return foundLesson;
-});
-
-// Find the current lesson index
-const currentLessonIndex = computed(() => {
-  return lessons.findIndex((l) => l.slug === lessonSlug);
-});
-
-// Find the previous and next lessons
-const previousLesson = computed(() => {
-  return currentLessonIndex.value > 0
-    ? lessons[currentLessonIndex.value - 1]
-    : null;
-});
-
-const nextLesson = computed(() => {
-  return currentLessonIndex.value < lessons.length - 1
-    ? lessons[currentLessonIndex.value + 1]
-    : null;
-});
-
-// Extract YouTube video ID from URL
-const getYouTubeVideoId = (url) => {
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-  const match = url.match(regExp);
-  return match && match[2].length === 11 ? match[2] : null;
-};
-
-// Fetch course data
+// Fetch course and lesson data
 const fetchCourseData = async () => {
   if (!authStore.user) return;
 
   try {
-    const response = await getPurchasedCourses(db, authStore.user.uid);
-    if (response.success && response.data.length > 0) {
-      courseData.value = response.data[0]; // Assuming only one course for now
-      completedLessons.value = courseData.value.progress.completedLessons || [];
+    // Fetch static course data from data/courses folder
+    const courseModule = await import(`~/data/courses/${courseSlug}.js`);
+    course.value = courseModule.course;
+
+    // Log the course data and lessons
+    console.log("Course Data:", course.value);
+    console.log("Total Lessons:", course.value?.lessons.length);
+    console.log("All Lessons:", course.value?.lessons);
+
+    // Find the current lesson by matching the slug
+    lesson.value = course.value.lessons.find((l) => l.slug === lessonSlug);
+
+    // Fetch purchased courses from backend
+    const { success, data } = await getPurchasedCourses(authStore.user.uid);
+    if (success && data.length > 0) {
+      const backendCourse = data.find((c) => c.courseId === course.value.id);
+      if (backendCourse) {
+        completedLessons.value = backendCourse.progress.completedLessons || [];
+        isLessonCompleted.value = completedLessons.value.includes(lessonSlug);
+      }
     }
-    console.log(response.data);
   } catch (error) {
-    console.error("Ошибка при получении данных курса:", error);
+    console.error("Ошибка при загрузке данных курса:", error);
+  } finally {
+    loading.value = false;
   }
 };
 
@@ -161,30 +137,76 @@ const markLessonAsCompleted = async () => {
   if (!authStore.user) return;
 
   try {
-    const response = await updateCourseProgress(
-      db,
+    const { success } = await updateCourseProgress(
       authStore.user.uid,
-      "course_1", // Hardcoded course ID
-      lesson.value.slug // Lesson ID (slug)
+      course.value.id,
+      lesson.value.slug
     );
 
-    if (response.success) {
+    if (success) {
       // Update local state
       completedLessons.value.push(lesson.value.slug);
+      isLessonCompleted.value = true;
     }
   } catch (error) {
     console.error("Ошибка при обновлении прогресса:", error);
   }
 };
 
-// Check if the lesson is completed
-const isLessonCompleted = computed(() => {
-  return completedLessons.value.includes(lesson.value?.slug);
+// Extract YouTube video ID from URL
+const getYouTubeVideoId = (url) => {
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return match && match[2].length === 11 ? match[2] : null;
+};
+
+// Normalize slugs for comparison
+const normalizeSlug = (slug) => slug.trim().toLowerCase().replace(/\s+/g, "-");
+
+// Find the current lesson index
+const currentLessonIndex = computed(() => {
+  const lessons = course.value?.lessons || [];
+
+  // Log the slugs of the lessons
+  lessons.forEach((lesson) => {
+    console.log("Lesson Slug:", lesson.slug);
+  });
+
+  console.log("URL Lesson Slug:", lessonSlug);
+
+  const normalizedLessonSlug = normalizeSlug(lessonSlug);
+  console.log("Normalized URL Lesson Slug:", normalizedLessonSlug);
+
+  const index = lessons.findIndex(
+    (l) => normalizeSlug(l.slug) === normalizedLessonSlug
+  );
+  console.log("Found Index:", index);
+
+  return index;
+});
+
+// Find the previous and next lessons
+const previousLesson = computed(() => {
+  const prevLesson =
+    currentLessonIndex.value > 0
+      ? course.value.lessons[currentLessonIndex.value - 1]
+      : null;
+
+  console.log("Previous Lesson:", prevLesson);
+  return prevLesson;
+});
+
+const nextLesson = computed(() => {
+  const nextLesson =
+    currentLessonIndex.value < course.value.lessons.length - 1
+      ? course.value.lessons[currentLessonIndex.value + 1]
+      : null;
+
+  console.log("Next Lesson:", nextLesson);
+  return nextLesson;
 });
 
 onMounted(async () => {
   await fetchCourseData();
-  loading.value = false;
-  console.log("Current Lesson:", lesson.value);
 });
 </script>

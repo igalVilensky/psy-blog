@@ -215,6 +215,48 @@ export const course = {
     },
   ],
 
+  // Course modules
+  modules: [
+    {
+      id: 1,
+      title: "Основы и теория",
+      description:
+        "Базовые концепции детских травм и их влияние на развитие личности",
+      icon: "fas fa-book",
+    },
+    {
+      id: 2,
+      title: "Типы травм",
+      description:
+        "Исследование различных видов травм и их специфических проявлений",
+      icon: "fas fa-brain",
+    },
+    {
+      id: 3,
+      title: "Практика исцеления",
+      description: "Техники и методики для проработки и исцеления травм",
+      icon: "fas fa-heart",
+    },
+    {
+      id: 4,
+      title: "Интеграция",
+      description: "Применение полученных знаний в повседневной жизни",
+      icon: "fas fa-puzzle-piece",
+    },
+    {
+      id: 5,
+      title: "Отношения",
+      description: "Влияние травм на построение здоровых отношений",
+      icon: "fas fa-users",
+    },
+    {
+      id: 6,
+      title: "Самоподдержка",
+      description: "Инструменты для поддержания долгосрочных результатов",
+      icon: "fas fa-seedling",
+    },
+  ],
+
   // Calculate total duration of the course
   get duration() {
     const totalMinutes = this.lessons.reduce((sum, lesson) => {

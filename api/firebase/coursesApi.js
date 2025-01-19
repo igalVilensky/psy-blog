@@ -3,7 +3,9 @@ import {
   getFirestore,
   doc,
   setDoc,
+  getDoc,
   getDocs,
+  updateDoc,
   serverTimestamp,
   collection,
   query,
@@ -82,6 +84,110 @@ export const getPurchasedCourses = async (userId) => {
     return {
       success: false,
       message: "Ошибка при получении купленных курсов",
+    };
+  }
+};
+
+/**
+ * Update course progress (e.g., mark a lesson as completed)
+ * @param {string} userId - The ID of the user.
+ * @param {string} courseId - The ID of the course.
+ * @param {string} lessonId - The ID (slug) of the lesson to mark as completed.
+ * @returns {Promise<{ success: boolean, message: string }>} - Result of the operation.
+ */
+export const updateCourseProgress = async (userId, courseId, lessonId) => {
+  try {
+    // Reference to the course document
+    const courseRef = doc(db, "coursesData", `${userId}_${courseId}`);
+
+    // Get the course document
+    const docSnap = await getDoc(courseRef);
+
+    if (!docSnap.exists()) {
+      return {
+        success: false,
+        message: "Курс не найден",
+      };
+    }
+
+    const courseData = docSnap.data();
+    const completedLessons = courseData.progress.completedLessons || [];
+
+    // Check if the lesson is already completed
+    if (completedLessons.includes(lessonId)) {
+      return {
+        success: false,
+        message: "Урок уже завершен",
+      };
+    }
+
+    // Add the lesson to completedLessons
+    completedLessons.push(lessonId);
+
+    // Calculate progress percentage
+    const totalLessons = courseData.progress.totalLessons || 1;
+    const progressPercentage = Math.round(
+      (completedLessons.length / totalLessons) * 100
+    );
+
+    // Update the course document
+    await updateDoc(courseRef, {
+      progress: {
+        ...courseData.progress,
+        completedLessons,
+        progressPercentage,
+      },
+      lastAccessed: serverTimestamp(),
+    });
+
+    return {
+      success: true,
+      message: "Прогресс курса обновлен",
+    };
+  } catch (error) {
+    console.error("Ошибка при обновлении прогресса курса:", error);
+    return {
+      success: false,
+      message: "Ошибка при обновлении прогресса курса",
+    };
+  }
+};
+
+/**
+ * Check if a lesson is completed
+ * @param {string} userId - The ID of the user.
+ * @param {string} courseId - The ID of the course.
+ * @param {string} lessonId - The ID (slug) of the lesson to check.
+ * @returns {Promise<{ success: boolean, isCompleted: boolean, message: string }>} - Result of the operation.
+ */
+export const checkLessonCompletion = async (userId, courseId, lessonId) => {
+  try {
+    // Reference to the course document
+    const courseRef = doc(db, "coursesData", `${userId}_${courseId}`);
+
+    // Get the course document
+    const docSnap = await getDoc(courseRef);
+
+    if (docSnap.exists()) {
+      const completedLessons = docSnap.data().progress.completedLessons || [];
+      return {
+        success: true,
+        isCompleted: completedLessons.includes(lessonId),
+        message: "Проверка завершена",
+      };
+    } else {
+      return {
+        success: false,
+        isCompleted: false,
+        message: "Курс не найден",
+      };
+    }
+  } catch (error) {
+    console.error("Ошибка при проверке завершенности урока:", error);
+    return {
+      success: false,
+      isCompleted: false,
+      message: "Ошибка при проверке завершенности урока",
     };
   }
 };

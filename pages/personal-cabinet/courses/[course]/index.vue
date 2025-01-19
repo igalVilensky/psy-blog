@@ -13,11 +13,11 @@
               <h1
                 class="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent"
               >
-                {{ course.title }}
+                {{ course?.title }}
               </h1>
             </div>
             <p class="text-gray-600 text-lg mb-6">
-              {{ course.description }}
+              {{ course?.description }}
             </p>
           </div>
         </div>
@@ -34,7 +34,8 @@
                   {{ progress }}%
                 </p>
                 <p class="text-sm text-gray-500 mt-1">
-                  {{ completedLessons.length }} из {{ lessons.length }} уроков
+                  {{ completedLessons?.length }} из
+                  {{ course?.lessons?.length }} уроков
                 </p>
               </div>
               <div
@@ -73,7 +74,7 @@
               <div>
                 <p class="text-sm font-medium text-gray-500">Всего материала</p>
                 <p class="text-2xl font-bold text-gray-900 mt-1">
-                  {{ lessons.length }}
+                  {{ course?.lessons?.length }}
                 </p>
                 <p class="text-sm text-gray-500 mt-1">Видео-урок</p>
               </div>
@@ -94,7 +95,7 @@
                   Общая длительность
                 </p>
                 <p class="text-2xl font-bold text-gray-900 mt-1">
-                  {{ course.duration }}ч
+                  {{ course?.duration }}ч
                 </p>
                 <p class="text-sm text-gray-500 mt-1">Видео-контента</p>
               </div>
@@ -121,8 +122,8 @@
                   class="aspect-video bg-gray-100 rounded-xl overflow-hidden"
                 >
                   <img
-                    :src="getImageUrl(course.image)"
-                    :alt="nextLesson.title"
+                    :src="getImageUrl(course?.image)"
+                    :alt="nextLesson?.title"
                     class="w-full h-full object-cover"
                   />
                 </div>
@@ -132,20 +133,20 @@
                   <span
                     class="px-4 py-1.5 rounded-xl bg-blue-50 text-blue-600 text-sm font-medium"
                   >
-                    Урок {{ nextLesson.number }}
+                    Урок {{ nextLesson?.number }}
                   </span>
                   <span
                     class="px-4 py-1.5 rounded-xl bg-gray-50 text-gray-600 text-sm"
                   >
-                    {{ nextLesson.duration }}
+                    {{ nextLesson?.duration }}
                   </span>
                 </div>
                 <h3 class="text-xl font-bold text-gray-900 mb-3">
-                  {{ nextLesson.title }}
+                  {{ nextLesson?.title }}
                 </h3>
-                <p class="text-gray-600 mb-4">{{ nextLesson.description }}</p>
+                <p class="text-gray-600 mb-4">{{ nextLesson?.description }}</p>
                 <NuxtLink
-                  :to="`/personal-cabinet/courses/healing-childhood-traumas/${nextLesson.slug}`"
+                  :to="`/personal-cabinet/courses/${course?.slug}/${nextLesson?.slug}`"
                   class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors duration-200"
                 >
                   <i class="fas fa-play mr-2"></i>
@@ -161,7 +162,7 @@
           <h2 class="text-xl font-bold text-gray-900 mb-6">Структура курса</h2>
           <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div
-              v-for="module in courseModules"
+              v-for="module in course.modules"
               :key="module.id"
               class="bg-gray-50 rounded-xl p-6 hover:shadow-md transition-all duration-300"
             >
@@ -184,36 +185,103 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
+import { useRoute } from "vue-router";
 import { useAuthStore } from "~/stores/auth";
-import { getFirestore } from "firebase/firestore";
-import {
-  getPurchasedCourses,
-  updateCourseProgress,
-} from "~/api/firebase/courses";
-import { course, lessons } from "~/data/courses/healingChildhoodTraumas";
+import { getPurchasedCourses } from "~/api/firebase/coursesApi";
 
 definePageMeta({
   layout: "personal-cabinet",
 });
 
+const route = useRoute();
 const authStore = useAuthStore();
-const db = getFirestore();
 
-const completedLessons = ref([]); // Completed lessons from Firebase
+const course = ref({}); // Combined course data (backend + static)
+const completedLessons = ref([]); // Completed lessons from backend
 const loading = ref(true);
 
-// Fetch progress data from Firebase
-const fetchProgressData = async () => {
-  if (!authStore.user) return;
+// Fetch course data from backend and combine with static data
+const fetchCourseData = async () => {
+  const courseSlug = route.params.course;
+  console.log("Course Slug:", courseSlug); // Debug: Check the slug
 
   try {
-    const response = await getPurchasedCourses(db, authStore.user.uid);
-    if (response.success && response.data.length > 0) {
-      completedLessons.value =
-        response.data[0].progress?.completedLessons || [];
+    // Fetch purchased courses from backend
+    const { success, data } = await getPurchasedCourses(authStore.user.uid);
+    console.log("Backend Data:", data); // Debug: Check backend data
+
+    if (success) {
+      // Fetch static course data from data/courses folder
+      try {
+        const courseModule = await import(`~/data/courses/${courseSlug}.js`);
+        console.log("Static Course Module:", courseModule); // Debug: Check static data
+
+        if (!courseModule || !courseModule.course) {
+          throw new Error(
+            "Static course data is undefined or not exported correctly."
+          );
+        }
+
+        const staticCourse = courseModule.course;
+        console.log("Static Course Data:", staticCourse); // Debug: Check static data
+
+        // Find the corresponding backend course using courseId or another unique identifier
+        const backendCourse = data.find((c) => c.courseId === staticCourse.id);
+        console.log("Backend Course:", backendCourse); // Debug: Check matched backend course
+
+        if (backendCourse) {
+          // Combine backend and static data
+          course.value = {
+            ...staticCourse,
+            progress: {
+              progressPercentage:
+                backendCourse.progress?.progressPercentage || 0,
+              completedLessons: backendCourse.progress?.completedLessons || [],
+              totalLessons: staticCourse.lessons.length,
+            },
+            status: backendCourse.status || "purchased",
+            certificateEarned: backendCourse.certificateEarned || false,
+          };
+
+          // Set completed lessons
+          completedLessons.value =
+            backendCourse.progress?.completedLessons || [];
+        } else {
+          console.error(
+            "No matching backend course found for static course ID:",
+            staticCourse.id
+          );
+          // Fallback: Use static data only if no backend data is found
+          course.value = {
+            ...staticCourse,
+            progress: {
+              progressPercentage: 0,
+              completedLessons: [],
+              totalLessons: staticCourse.lessons.length,
+            },
+            status: "purchased",
+            certificateEarned: false,
+          };
+        }
+      } catch (error) {
+        console.error("Ошибка при загрузке статических данных курса:", error);
+        // Fallback: Use backend data only if static data fails to load
+        const backendCourse = data.find((c) => c.courseId === courseSlug); // Fallback to courseSlug as ID
+        if (backendCourse) {
+          course.value = {
+            ...backendCourse,
+            lessons: [], // No static lessons available
+          };
+        } else {
+          console.error(
+            "No backend or static data found for course:",
+            courseSlug
+          );
+        }
+      }
     }
   } catch (error) {
-    console.error("Ошибка при получении данных прогресса:", error);
+    console.error("Ошибка при загрузке данных курса:", error);
   } finally {
     loading.value = false;
   }
@@ -221,31 +289,28 @@ const fetchProgressData = async () => {
 
 // Course progress
 const progress = computed(() => {
-  const totalLessons = lessons.length;
+  const totalLessons = course.value.lessons?.length || 0;
   const completed = completedLessons.value.length;
-  return Math.round((completed / totalLessons) * 100);
+  return totalLessons > 0 ? Math.round((completed / totalLessons) * 100) : 0;
 });
 
 const remainingTime = computed(() => {
-  // Helper function to parse duration strings like "33 минуты" or "1 час 30 минут"
   const parseDuration = (duration) => {
     const hoursMatch = duration.match(/(\d+)\s*час/);
     const minutesMatch = duration.match(/(\d+)\s*минут/);
     const hours = hoursMatch ? parseInt(hoursMatch[1], 10) : 0;
     const minutes = minutesMatch ? parseInt(minutesMatch[1], 10) : 0;
-    return hours * 60 + minutes; // Convert everything to minutes
+    return hours * 60 + minutes;
   };
 
-  // Calculate total duration of remaining lessons
-  const totalMinutes = lessons
-    .filter((lesson) => !completedLessons.value.includes(lesson.slug)) // Filter incomplete lessons
-    .reduce((sum, lesson) => sum + parseDuration(lesson.duration), 0); // Sum up durations
+  const totalMinutes =
+    course.value.lessons
+      ?.filter((lesson) => !completedLessons.value.includes(lesson.slug))
+      .reduce((sum, lesson) => sum + parseDuration(lesson.duration), 0) || 0;
 
-  // Convert total minutes to hours and minutes
   const hours = Math.floor(totalMinutes / 60);
   const minutes = totalMinutes % 60;
 
-  // Format the result
   if (hours > 0) {
     return `${hours}ч ${minutes}мин`;
   } else {
@@ -255,10 +320,12 @@ const remainingTime = computed(() => {
 
 // Next lesson is the first incomplete lesson or the first lesson
 const nextLesson = computed(() => {
-  const firstIncompleteLesson = lessons.find(
+  if (!course.value.lessons) return null;
+
+  const firstIncompleteLesson = course.value.lessons.find(
     (lesson) => !completedLessons.value.includes(lesson.slug)
   );
-  return firstIncompleteLesson || lessons[0]; // Fallback to the first lesson
+  return firstIncompleteLesson || course.value.lessons[0];
 });
 
 // Function to dynamically resolve image URLs
@@ -266,70 +333,7 @@ const getImageUrl = (imageName) => {
   return new URL(`/assets/images/courses/${imageName}`, import.meta.url).href;
 };
 
-// Mark lesson as completed
-const markLessonAsCompleted = async (lessonSlug) => {
-  if (!authStore.user) return;
-
-  try {
-    const response = await updateCourseProgress(
-      db,
-      authStore.user.uid,
-      "course_1", // Hardcoded course ID
-      lessonSlug // Lesson ID (slug)
-    );
-
-    if (response.success) {
-      // Update local state
-      completedLessons.value.push(lessonSlug);
-    }
-  } catch (error) {
-    console.error("Ошибка при обновлении прогресса:", error);
-  }
-};
-
-// Course structure
-const courseModules = ref([
-  {
-    id: 1,
-    title: "Основы и теория",
-    description:
-      "Базовые концепции детских травм и их влияние на развитие личности",
-    icon: "fas fa-book",
-  },
-  {
-    id: 2,
-    title: "Типы травм",
-    description:
-      "Исследование различных видов травм и их специфических проявлений",
-    icon: "fas fa-brain",
-  },
-  {
-    id: 3,
-    title: "Практика исцеления",
-    description: "Техники и методики для проработки и исцеления травм",
-    icon: "fas fa-heart",
-  },
-  {
-    id: 4,
-    title: "Интеграция",
-    description: "Применение полученных знаний в повседневной жизни",
-    icon: "fas fa-puzzle-piece",
-  },
-  {
-    id: 5,
-    title: "Отношения",
-    description: "Влияние травм на построение здоровых отношений",
-    icon: "fas fa-users",
-  },
-  {
-    id: 6,
-    title: "Самоподдержка",
-    description: "Инструменты для поддержания долгосрочных результатов",
-    icon: "fas fa-seedling",
-  },
-]);
-
 onMounted(async () => {
-  await fetchProgressData();
+  await fetchCourseData();
 });
 </script>
