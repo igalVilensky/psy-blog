@@ -23,8 +23,17 @@
         </div>
       </div>
 
+      <!-- Loading State -->
+      <div v-if="loading" class="text-center py-8">
+        <i class="fas fa-spinner fa-spin text-2xl text-blue-500"></i>
+        <p class="mt-2 text-gray-600">Загрузка данных...</p>
+      </div>
+
       <!-- Quick Stats -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      <div
+        v-else
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"
+      >
         <div
           class="bg-white rounded-2xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition-all duration-300 group"
         >
@@ -34,7 +43,9 @@
               <p class="text-2xl font-bold text-gray-900 mt-1">
                 {{ activeCourses }}
               </p>
-              <p class="text-sm text-gray-500 mt-1">+5% с прошлой недели</p>
+              <p class="text-sm text-gray-500 mt-1">
+                Прогресс: {{ lastWeekProgress.progressPercentage.toFixed(1) }}%
+              </p>
             </div>
             <div
               class="bg-blue-50 p-4 rounded-xl group-hover:scale-110 transition-transform duration-300"
@@ -46,7 +57,7 @@
             <div class="w-full bg-gray-100 rounded-full h-2.5">
               <div
                 class="bg-blue-500 h-2.5 rounded-full"
-                :style="{ width: '65%' }"
+                :style="{ width: `${lastWeekProgress.progressPercentage}%` }"
               ></div>
             </div>
           </div>
@@ -62,7 +73,7 @@
                 {{ completedTasks }}
               </p>
               <p class="text-sm text-gray-500 mt-1">
-                12 заданий на этой неделе
+                {{ completedTasks }} заданий на этой неделе
               </p>
             </div>
             <div
@@ -110,7 +121,7 @@
       </div>
 
       <!-- Quick Actions -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <div v-if="!loading" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <NuxtLink
           to="/personal-cabinet/courses"
           class="group bg-white rounded-2xl shadow-sm p-6 border border-gray-100 hover:shadow-lg transition-all duration-300"
@@ -172,10 +183,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { getFirestore } from "firebase/firestore";
 import { useAuthStore } from "~/stores/auth";
-import { getPurchasedCourses } from "~/api/firebase/courses";
+import { getPurchasedCourses } from "~/api/firebase/coursesApi";
 
 definePageMeta({
   layout: "personal-cabinet",
@@ -188,22 +199,46 @@ const activeCourses = ref(0);
 const completedTasks = ref(0);
 const studyHours = ref(0);
 const lastVisit = ref(new Date());
+const loading = ref(true); // Add a loading state
+const course = ref(null); // Add a course ref to store course data
 
 // Fetch purchased courses and update stats
 const fetchPurchasedCourses = async () => {
   if (authStore.user) {
-    const { success, data } = await getPurchasedCourses(db, authStore.user.uid);
-    if (success) {
-      activeCourses.value = data.length;
-      completedTasks.value = data.reduce(
-        (acc, course) => acc + (course.progress?.completedLessons?.length || 0),
-        0
-      );
-      studyHours.value = data.reduce(
-        (acc, course) => acc + parseInt(course.progress?.timeSpent || 0),
-        0
-      );
-      lastVisit.value = new Date(data[0]?.lastAccessed || new Date());
+    try {
+      const { success, data } = await getPurchasedCourses(authStore.user.uid);
+
+      if (success) {
+        activeCourses.value = data.length;
+        completedTasks.value = data.reduce(
+          (acc, course) =>
+            acc + (course.progress?.completedLessons?.length || 0),
+          0
+        );
+        studyHours.value = data.reduce(
+          (acc, course) => acc + parseInt(course.progress?.timeSpent || 0),
+          0
+        );
+
+        // Ensure lastVisit is a valid date
+        const lastAccessed = data[0]?.lastAccessed;
+        lastVisit.value =
+          lastAccessed && !isNaN(new Date(lastAccessed))
+            ? new Date(lastAccessed)
+            : new Date(); // Fallback to current date
+
+        // Store all course data for progress calculation
+        course.value = data; // Updated to store all courses
+
+        // Debugging: Log the lastAccessed value and lastVisit
+        console.log("Fetched Data:", data);
+        console.log("Last Accessed:", lastAccessed);
+        console.log("Last Visit:", lastVisit.value);
+      }
+    } catch (error) {
+      console.error("Ошибка при загрузке данных курсов:", error);
+    } finally {
+      loading.value = false; // Set loading to false after fetching
     }
   }
 };
@@ -220,6 +255,9 @@ const getCurrentTimeGreeting = () => {
 
 // Format date for display
 const formatDate = (date) => {
+  if (!date || !(date instanceof Date) || isNaN(date)) {
+    return "Дата недоступна"; // Fallback message for invalid dates
+  }
   return new Intl.DateTimeFormat("ru-RU", {
     day: "numeric",
     month: "long",
@@ -227,6 +265,43 @@ const formatDate = (date) => {
     minute: "2-digit",
   }).format(date);
 };
+
+// Calculate progress for the last week
+// Calculate progress for the last week across all courses
+const lastWeekProgress = computed(() => {
+  console.log("Calculating lastWeekProgress...");
+
+  // Check if course data exists
+  if (!course.value || !Array.isArray(course.value)) {
+    console.error("Course data is missing or invalid.");
+    return { progressPercentage: 0 };
+  }
+
+  let totalLessonsCompleted = 0;
+  let totalLessons = 0;
+
+  // Iterate through all courses to calculate total progress
+  course.value.forEach((course) => {
+    const { progress } = course;
+    const { completedLessons } = progress || {};
+
+    // Sum up completed lessons and total lessons
+    totalLessonsCompleted += completedLessons?.length || 0;
+    totalLessons += course.totalLessons || 0;
+  });
+
+  console.log("Total Lessons Completed:", totalLessonsCompleted);
+  console.log("Total Lessons Across All Courses:", totalLessons);
+
+  // Calculate the progress percentage
+  const progressPercentage =
+    totalLessons > 0 ? (totalLessonsCompleted / totalLessons) * 100 : 0;
+  console.log("Overall Progress Percentage:", progressPercentage);
+
+  return {
+    progressPercentage: Math.min(progressPercentage, 100), // Ensure it doesn't exceed 100%
+  };
+});
 
 // Fetch data on mounted
 onMounted(async () => {
