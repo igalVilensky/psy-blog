@@ -184,7 +184,6 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import { getFirestore } from "firebase/firestore";
 import { useAuthStore } from "~/stores/auth";
 import { getPurchasedCourses } from "~/api/firebase/coursesApi";
 
@@ -193,7 +192,6 @@ definePageMeta({
 });
 
 const authStore = useAuthStore();
-const db = getFirestore(); // Initialize Firestore
 const userName = ref(authStore.user?.displayName || "Гость");
 const activeCourses = ref(0);
 const completedTasks = ref(0);

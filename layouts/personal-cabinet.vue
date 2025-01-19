@@ -143,17 +143,20 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from "vue";
 import { useRoute } from "vue-router";
+import { useAuthStore } from "~/stores/auth";
 
 definePageMeta({
   layout: "personal-cabinet",
 });
+
+const authStore = useAuthStore();
 
 // State
 const isSidebarCollapsed = ref(false);
 const route = useRoute();
 
 // User data
-const userName = ref("Иван Иванов");
+const userName = ref(authStore.user?.displayName || "Гость");
 const userAvatar = ref("https://ui-avatars.com/api/?name=Иван+Иванов");
 
 // Navigation items
@@ -171,7 +174,11 @@ const navigationItems = [
   { name: "Гайды", route: "/guides", icon: "fa-book-open" },
   { name: "Инструменты", route: "/tools", icon: "fa-tools" },
   { name: "Профиль", route: "/profile", icon: "fa-user" },
-  { name: "Прогресс", route: "/progress", icon: "fa-chart-line" },
+  {
+    name: "Прогресс",
+    route: "/personal-cabinet/progress",
+    icon: "fa-chart-line",
+  },
   { name: "Настройки", route: "/settings", icon: "fa-cog" },
 ];
 
