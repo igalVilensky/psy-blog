@@ -3,7 +3,7 @@
     <!-- Sidebar -->
     <aside
       :class="[
-        'bg-gray-800 text-white fixed h-full overflow-y-auto transition-all duration-300 shadow-xl z-20',
+        'fixed h-full overflow-y-auto transition-all duration-300 shadow-xl z-20 bg-gradient-to-b from-[#1A1F35] to-[#1E293B]',
       ]"
       :style="{ width: isSidebarCollapsed ? '4rem' : '16rem' }"
     >
@@ -11,7 +11,7 @@
         <!-- Collapse/Expand Button -->
         <button
           @click="toggleSidebar"
-          class="w-full p-2 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+          class="w-full p-2 rounded-lg hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
           :aria-label="
             isSidebarCollapsed
               ? 'Развернуть боковую панель'
@@ -22,7 +22,7 @@
             :class="[
               'fas',
               isSidebarCollapsed ? 'fa-chevron-right' : 'fa-chevron-left',
-              'text-xl',
+              'text-xl text-white',
             ]"
           ></i>
         </button>
@@ -30,15 +30,15 @@
         <!-- User Profile Section -->
         <div
           v-if="!isSidebarCollapsed"
-          class="flex items-center space-x-3 my-6 p-3 bg-gray-700 rounded-lg"
+          class="flex items-center space-x-3 my-6 p-3 bg-white/10 rounded-lg"
         >
           <img
             :src="userAvatar"
             :alt="`Аватар ${userName}`"
-            class="w-10 h-10 rounded-full object-cover border-2 border-gray-600"
+            class="w-10 h-10 rounded-full object-cover border-2 border-white/20"
           />
           <div>
-            <p class="font-semibold text-sm">{{ userName }}</p>
+            <p class="font-semibold text-sm text-white">{{ userName }}</p>
             <button
               @click="navigateToProfile"
               class="text-xs text-blue-300 hover:text-blue-200 transition-colors focus:outline-none focus:underline"
@@ -48,12 +48,12 @@
           </div>
         </div>
 
-        <!-- Collapsed Avatar (Small Icon) -->
+        <!-- Collapsed Avatar -->
         <img
           v-else
           :src="userAvatar"
           :alt="`Аватар ${userName}`"
-          class="w-6 h-6 rounded-full object-cover border-2 border-gray-600 mx-auto mt-6"
+          class="w-6 h-6 rounded-full object-cover border-2 border-white/20 mx-auto mt-6"
         />
 
         <!-- Navigation Links -->
@@ -66,8 +66,8 @@
                 class="flex items-center p-3 rounded-lg transition-colors relative"
                 :class="[
                   isActiveRoute(item.route)
-                    ? 'bg-blue-600 text-white'
-                    : 'hover:bg-gray-700 text-gray-300 hover:text-white',
+                    ? 'bg-white/20 text-white'
+                    : 'text-white hover:bg-white/10',
                   isSidebarCollapsed ? 'justify-center' : '',
                 ]"
               >
@@ -86,21 +86,6 @@
           </ul>
         </nav>
       </div>
-
-      <!-- Bottom Section -->
-      <div
-        v-if="!isSidebarCollapsed"
-        class="fixed bottom-0 left-0 p-4 bg-gray-900"
-        :style="{ width: isSidebarCollapsed ? '64px' : '256px' }"
-      >
-        <button
-          @click="logout"
-          class="w-full flex items-center p-2 text-sm text-gray-400 hover:text-white transition-colors"
-        >
-          <i class="fas fa-sign-out-alt mr-2"></i>
-          Выйти
-        </button>
-      </div>
     </aside>
 
     <!-- Main Content -->
@@ -108,56 +93,47 @@
       class="flex-grow transition-all duration-300 bg-gray-50"
       :style="{ marginLeft: isSidebarCollapsed ? '4rem' : '16rem' }"
     >
-      <!-- Top Navigation Bar -->
-      <div
-        class="fixed top-0 right-0 bg-white h-16 shadow-sm z-10"
-        :class="topNavWidth"
-      >
-        <div class="h-full px-6 flex justify-between items-center">
-          <!-- Breadcrumb -->
-          <nav
-            aria-label="Хлебные крошки"
-            class="flex items-center space-x-2 text-sm"
-          >
-            <ol class="flex items-center space-x-2">
+      <!-- Breadcrumbs -->
+      <div class="relative bg-white border-b border-gray-200 py-3">
+        <nav class="px-4">
+          <ol class="flex flex-wrap items-center gap-2 text-sm">
+            <li>
+              <NuxtLink
+                to="/"
+                class="text-gray-600 hover:text-gray-900 transition-colors inline-flex items-center"
+              >
+                <i class="fas fa-home text-gray-400 hover:text-gray-600"></i>
+                <span class="ml-2 hidden sm:inline">Главная</span>
+              </NuxtLink>
+            </li>
+            <template v-for="(crumb, index) in breadcrumbs" :key="index">
               <li>
-                <NuxtLink
-                  to="/"
-                  class="text-gray-500 hover:text-gray-700 transition-colors"
-                >
-                  <i class="fas fa-home"></i>
-                </NuxtLink>
+                <i class="fas fa-chevron-right mx-2 text-gray-400 text-xs"></i>
               </li>
-              <li v-for="(crumb, index) in breadcrumbs" :key="index">
-                <span class="text-gray-400 mx-2">/</span>
+              <li>
                 <NuxtLink
                   v-if="crumb.link"
                   :to="crumb.link"
-                  class="text-gray-500 hover:text-gray-700 transition-colors"
+                  class="text-gray-600 hover:text-gray-900 transition-colors truncate"
+                  :title="crumb.text"
                 >
                   {{ crumb.text }}
                 </NuxtLink>
-                <span v-else class="text-gray-900 font-medium">
+                <span
+                  v-else
+                  class="text-gray-900 font-medium truncate"
+                  :title="crumb.text"
+                >
                   {{ crumb.text }}
                 </span>
               </li>
-            </ol>
-          </nav>
-
-          <!-- User Actions -->
-          <div class="flex items-center space-x-4">
-            <button
-              class="p-2 text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-full"
-              aria-label="Уведомления"
-            >
-              <i class="fas fa-bell"></i>
-            </button>
-          </div>
-        </div>
+            </template>
+          </ol>
+        </nav>
       </div>
 
       <!-- Page Content -->
-      <div class="mt-16 py-6">
+      <div>
         <slot />
       </div>
     </main>
@@ -168,15 +144,19 @@
 import { ref, computed, onMounted, onUnmounted } from "vue";
 import { useRoute } from "vue-router";
 
+definePageMeta({
+  layout: "personal-cabinet",
+});
+
 // State
 const isSidebarCollapsed = ref(false);
 const route = useRoute();
 
-// User data (replace with your auth system)
+// User data
 const userName = ref("Иван Иванов");
 const userAvatar = ref("https://ui-avatars.com/api/?name=Иван+Иванов");
 
-// Navigation items with Font Awesome icons
+// Navigation items
 const navigationItems = [
   {
     name: "Главная",
@@ -201,16 +181,16 @@ const topNavWidth = computed(() => {
 });
 
 const breadcrumbs = computed(() => {
-  const paths = route.path.split("/").filter(Boolean); // Split the path and remove empty strings
+  const paths = route.path.split("/").filter(Boolean);
   return paths.map((path, index) => {
     const text = path
       .split("-")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" "); // Convert "course-1" to "Course 1"
-    const link = `/${paths.slice(0, index + 1).join("/")}`; // Generate the full path
+      .join(" ");
+    const link = `/${paths.slice(0, index + 1).join("/")}`;
     return {
       text,
-      link: index < paths.length - 1 ? link : null, // Only add link for non-last items
+      link: index < paths.length - 1 ? link : null,
     };
   });
 });
@@ -225,11 +205,7 @@ const isActiveRoute = (path) => {
 };
 
 const navigateToProfile = () => {
-  // Логика перехода к профилю
-};
-
-const logout = () => {
-  // Логика выхода
+  // Navigation logic
 };
 
 // Responsive behavior
