@@ -6,7 +6,12 @@ export default {
     "./components/**/*.{vue,js,ts}", // Include all components
   ],
   theme: {
-    extend: {}, // Extend default Tailwind theme if needed
+    extend: {
+      animation: {
+        "spin-slow": "spin 5s linear infinite",
+        // "ping-slow": "ping 0.5s linear infinite",
+      },
+    }, // Extend default Tailwind theme if needed
   },
   plugins: [], // Add Tailwind plugins here if required
 };

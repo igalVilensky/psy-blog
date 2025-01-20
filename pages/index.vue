@@ -25,7 +25,10 @@
           <h1
             class="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] mb-6 animate-slideDown"
           >
-            Ваш Путь к Личностному Росту
+            Ваш Путь к Личностному Р<i
+              class="fas fa-compass text-2xl sm:text-4xl text-[#0EA5E9] animate-spin-slow relative sm:bottom-1"
+            ></i
+            >сту
           </h1>
           <!-- Subheading -->
           <p
@@ -38,6 +41,7 @@
               >профессиональных инструментов</span
             >
           </p>
+
           <!-- Buttons -->
           <div
             class="flex flex-col sm:flex-row gap-4 justify-center animate-fadeIn opacity-0"
@@ -47,7 +51,7 @@
               to="/courses/courses"
               class="group relative inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white font-medium rounded-lg overflow-hidden transition-all hover:from-[#22D3EE] hover:to-[#C084FC]"
             >
-              <span class="relative z-10">Начать обучение</span>
+              <span class="relative z-10">Начать обучение </span>
               <div
                 class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-gradient-to-r from-[#22D3EE] to-[#C084FC] transition-transform duration-300"
               ></div>
