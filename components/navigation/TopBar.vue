@@ -116,7 +116,7 @@
           <NuxtLink
             to="/profile"
             :class="[
-              'flex cursor-pointer items-center space-x-2  rounded-lg pl-4 py-2 hover:bg-white/10 transition-all duration-300',
+              'flex cursor-pointer items-center space-x-2  rounded-lg p-2 hover:bg-white/10 transition-all duration-300',
               $route.path.startsWith('/profile') ? 'bg-white/15' : '', // Active for /profile and /profile/*
             ]"
           >

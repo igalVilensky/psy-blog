@@ -39,11 +39,6 @@
               @update:avatarUrl="avatarUrl = $event"
               class="w-48 h-48 sm:w-56 sm:h-56 rounded-full border-4 border-[#0EA5E9]/30 transition-all duration-300 group-hover:scale-105 shadow-xl"
             />
-            <div
-              class="absolute -bottom-2 right-0 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] p-3 rounded-full shadow-lg cursor-pointer transition-transform duration-300 hover:scale-110"
-            >
-              <i class="fas fa-camera text-white text-lg"></i>
-            </div>
           </div>
 
           <!-- User Info & Actions -->
@@ -366,37 +361,7 @@
         </div>
 
         <!-- No Data State -->
-        <!-- <div
-          v-else-if="emotionBarometerStats.totalEntries === 0"
-          class="flex flex-col items-center justify-center h-64 text-center"
-        >
-          <div
-            class="w-20 h-20 bg-[#0EA5E9]/20 rounded-full flex items-center justify-center mb-6"
-          >
-            <i class="fas fa-chart-pie text-4xl text-[#0EA5E9]"></i>
-          </div>
-          <p class="text-xl text-slate-300 mb-4">Нет данных для отображения</p>
-          <p class="text-slate-400 mb-6 max-w-md">
-            Начните использовать эмоциональный барометр, чтобы отслеживать свои
-            эмоции
-          </p>
-          <NuxtLink
-            to="/awareness-tools/emotional-barometer"
-            class="group relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 hover:shadow-lg"
-          >
-            <span
-              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
-            >
-              <i class="fas fa-play-circle"></i>
-            </span>
-            <span
-              class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
-            >
-              <i class="fas fa-play-circle mr-2"></i>Перейти к барометру
-            </span>
-            <span class="relative invisible">Перейти к барометру</span>
-          </NuxtLink>
-        </div> -->
+
         <div
           v-else-if="emotionBarometerStats.totalEntries === 0"
           class="empty-state"
@@ -511,96 +476,6 @@
         :archetypes="archetypeScores"
         :loading="loadingAssessments"
       />
-
-      <!-- Enhanced Activity Section -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Favorite Posts -->
-        <div
-          class="bg-gradient-to-b from-[#1A1F35]/60 to-[#1E293B]/80 backdrop-blur-xl rounded-3xl border border-white/10 p-8 shadow-2xl"
-        >
-          <div class="flex items-center justify-between mb-6">
-            <h2 class="text-xl font-bold text-white/90">
-              <i class="fas fa-bookmark text-[#E879F9] mr-2"></i>
-              Избранные статьи
-            </h2>
-            <button
-              class="group relative inline-flex items-center justify-center px-4 py-2 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#E879F9]/20 hover:shadow-lg"
-            >
-              <span
-                class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#E879F9] to-[#C084FC] group-hover:translate-x-0 ease"
-              >
-                <i class="fas fa-arrow-right"></i>
-              </span>
-              <span
-                class="absolute flex items-center justify-center w-full h-full text-[#E879F9] transition-all duration-300 transform group-hover:translate-x-full ease"
-              >
-                Смотреть все
-              </span>
-              <span class="relative invisible">Смотреть все</span>
-            </button>
-          </div>
-
-          <div class="space-y-4">
-            <div
-              v-for="i in 3"
-              :key="i"
-              class="group flex gap-4 p-4 rounded-xl hover:bg-[#0EA5E9]/10 transition-colors border border-transparent hover:border-[#0EA5E9]/20"
-            >
-              <img
-                :src="hostImage"
-                class="w-24 h-16 rounded-xl object-cover group-hover:scale-105 transition-transform"
-              />
-              <div>
-                <h3
-                  class="font-medium text-white/90 mb-2 group-hover:text-[#0EA5E9] transition-colors"
-                >
-                  Название избранной статьи
-                </h3>
-                <div class="flex items-center text-sm text-slate-400">
-                  <span class="flex items-center">
-                    <i class="far fa-clock mr-1"></i>
-                    5 мин чтения
-                  </span>
-                  <span class="mx-2">•</span>
-                  <span class="text-[#E879F9]">Личностный рост</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Recent Activity -->
-        <div
-          class="lg:col-span-2 bg-gradient-to-b from-[#1A1F35]/60 to-[#1E293B]/80 backdrop-blur-xl rounded-3xl border border-white/10 p-8 shadow-2xl"
-        >
-          <h2 class="text-xl font-bold text-white/90 mb-6">
-            <i class="fas fa-history text-[#E879F9] mr-2"></i>
-            Недавняя активность
-          </h2>
-          <div class="space-y-6">
-            <div v-for="i in 4" :key="i" class="flex items-start gap-4 group">
-              <div
-                class="w-10 h-10 rounded-xl bg-[#E879F9]/20 flex items-center justify-center flex-shrink-0 group-hover:bg-[#E879F9]/30 transition-colors"
-              >
-                <i class="fas fa-book-reader text-[#E879F9]"></i>
-              </div>
-              <div class="flex-grow">
-                <p
-                  class="text-white/90 group-hover:text-[#E879F9] transition-colors"
-                >
-                  Прочитали статью "Название статьи"
-                </p>
-                <p class="text-sm text-slate-400">2 часа назад</p>
-              </div>
-              <div
-                class="w-8 h-8 rounded-lg bg-[#1A1F35]/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-              >
-                <i class="fas fa-chevron-right text-[#E879F9] text-sm"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -609,7 +484,6 @@
 import { ref, computed, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "~/stores/auth";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { Chart, registerables } from "chart.js";
 import { fetchUserAvatarUrl } from "~/api/firebase/userProfile";
@@ -618,8 +492,10 @@ import { getEmotionBarometerStats } from "~/api/firebase/emotionBarometer";
 import PsychologicalProfile from "~/components/profile/PsychologicalProfile.vue";
 import { getLatestUserAssessment } from "~/api/firebase/assessments";
 
+// Register Chart.js plugins
 Chart.register(...registerables);
 
+// Refs for loading states and data
 const loading = ref(true);
 const loadingBio = ref(true);
 const loadingEmotionBarometer = ref(true);
@@ -648,7 +524,7 @@ const latestAssessment = ref(null);
 const assessmentError = ref(null);
 const archetypeScores = ref([]);
 
-const auth = getAuth();
+// Initialize auth store
 const authStore = useAuthStore();
 const router = useRouter();
 
@@ -674,30 +550,6 @@ const fetchBioData = async (userId) => {
   }
 };
 
-// Check if bio data exists
-const bioDataExists = computed(() => {
-  return (
-    profession.value ||
-    socialMedia.value ||
-    age.value ||
-    gender.value ||
-    aboutYourself.value
-  );
-});
-
-// Calculate bio completion percentage
-const bioCompletionPercentage = computed(() => {
-  const fields = [
-    profession.value,
-    socialMedia.value,
-    age.value,
-    gender.value,
-    aboutYourself.value,
-  ];
-  const filledFields = fields.filter((field) => field).length;
-  return (filledFields / fields.length) * 100;
-});
-
 // Fetch the latest assessment results
 const fetchLatestAssessment = async (userId) => {
   loadingAssessments.value = true;
@@ -715,7 +567,6 @@ const fetchLatestAssessment = async (userId) => {
         ([name, level]) => ({
           name,
           level: parseFloat(level), // Ensure level is a number
-          color: getColorForArchetype(name), // Add a function to assign colors
           icon: getIconForArchetype(name), // Add a function to assign icons
         })
       );
@@ -730,65 +581,42 @@ const fetchLatestAssessment = async (userId) => {
   }
 };
 
-const getColorForArchetype = (name) => {
-  const colors = {
-    творец: "purple", // Creative and imaginative
-    исследователь: "blue", // Adventurous and curious
-    мудрец: "green", // Knowledgeable and wise
-    воин: "red", // Bold and strong
-    маг: "indigo", // Mystical and powerful
-    заботливый: "pink", // Caring and empathetic
-    наставник: "teal", // Stable and grounded
-    правитель: "yellow", // Regal and authoritative
-    друг: "orange", // Warm and friendly
-    шут: "yellow", // Playful and vibrant
-    мятежник: "gray", // Rebellious and unconventional
-    герой: "emerald", // Heroic and passionate
-  };
-  return colors[name] || "gray"; // Default to gray if not found
-};
-
+// Get icon for archetype
 const getIconForArchetype = (name) => {
   const icons = {
-    творец: "fa-paint-brush",
-    исследователь: "fa-compass",
-    мудрец: "fa-book",
-    воин: "fa-shield-alt",
-    маг: "fa-magic",
-    заботливый: "fa-heart",
-    наставник: "fa-chalkboard-teacher",
-    правитель: "fa-crown",
-    друг: "fa-handshake",
-    шут: "fa-laugh",
-    мятежник: "fa-fire",
-    герой: "fa-shield-alt",
+    творец: "fa-paint-brush", // Painter's brush for creators
+    исследователь: "fa-compass", // Compass for explorers
+    мудрец: "fa-book-open", // Open book for sages
+    воин: "fa-shield-alt", // Shield for warriors
+    маг: "fa-magic", // Magic wand for magicians
+    заботливый: "fa-heart", // Hands with a heart for caregivers
+    наставник: "fa-chalkboard-teacher", // Chalkboard teacher for mentors
+    правитель: "fa-crown", // Crown for rulers
+    друг: "fa-handshake", // Handshake for friends
+    шут: "fa-laugh", // Laughing face for jesters
+    мятежник: "fa-fire", // Fire for rebels
+    герой: "fa-medal", // Medal for heroes (unique icon)
   };
-  return icons[name] || "fa-question";
+  return icons[name] || "fa-question"; // Default to question mark if not found
 };
 
-// Initialize onAuthStateChanged
-onAuthStateChanged(auth, async (currentUser) => {
-  loading.value = true;
-  loadingEmotionBarometer.value = true; // Set loading to true initially
+// Initialize auth and fetch data
+onMounted(async () => {
+  await authStore.initAuth(); // Initialize auth
 
-  // Initialize Firestore
-  const db = getFirestore();
-
-  if (currentUser) {
-    // Store user data in the auth store
-    authStore.user = currentUser;
-
+  if (authStore.user) {
     // Fetch the user's avatar URL
-    avatarUrl.value = await fetchUserAvatarUrl(currentUser.uid);
+    avatarUrl.value = await fetchUserAvatarUrl(authStore.user.uid);
 
     // Fetch bio data
-    await fetchBioData(currentUser.uid);
+    await fetchBioData(authStore.user.uid);
 
     // Fetch emotion barometer stats
     try {
+      const db = getFirestore();
       const { success, stats } = await getEmotionBarometerStats(
         db,
-        currentUser.uid
+        authStore.user.uid
       );
 
       if (success) {
@@ -845,7 +673,7 @@ onAuthStateChanged(auth, async (currentUser) => {
     }
 
     // Fetch the latest assessment results
-    await fetchLatestAssessment(currentUser.uid);
+    await fetchLatestAssessment(authStore.user.uid);
 
     // Set loading to false after all data is fetched
     loading.value = false;
@@ -855,6 +683,31 @@ onAuthStateChanged(auth, async (currentUser) => {
   }
 });
 
+// Check if bio data exists
+const bioDataExists = computed(() => {
+  return (
+    profession.value ||
+    socialMedia.value ||
+    age.value ||
+    gender.value ||
+    aboutYourself.value
+  );
+});
+
+// Calculate bio completion percentage
+const bioCompletionPercentage = computed(() => {
+  const fields = [
+    profession.value,
+    socialMedia.value,
+    age.value,
+    gender.value,
+    aboutYourself.value,
+  ];
+  const filledFields = fields.filter((field) => field).length;
+  return (filledFields / fields.length) * 100;
+});
+
+// Logout user
 const logoutUser = async () => {
   await authStore.logout();
   router.push("/login");

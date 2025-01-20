@@ -107,14 +107,17 @@
           <!-- Purchase CTA -->
           <div class="text-center mt-8">
             <button
-              @click="handlePurchase"
-              class="relative inline-flex items-center justify-center overflow-hidden font-medium transition-all duration-300 rounded-lg bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-8 py-4 text-white"
+              @click="purchaseCourseHandler(course.id)"
+              :disabled="isPurchasing || isCoursePurchased(course.id)"
+              class="relative inline-flex items-center justify-center overflow-hidden font-medium transition-all duration-300 rounded-lg bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-8 py-4 text-white disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
               <span class="flex items-center gap-2">
                 <i class="fas fa-shopping-cart text-lg"></i>
                 {{
-                  hasPurchasedCourse
-                    ? "Перейти к курсу"
+                  isCoursePurchased(course.id)
+                    ? "Курс уже приобретен"
+                    : isPurchasing
+                    ? "Обработка..."
                     : "Купить курс за 4900₽"
                 }}
               </span>
@@ -158,15 +161,14 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { getFirestore } from "firebase/firestore";
-import { subscribeUser } from "@/api/firebase/contact";
 import { useAuthStore } from "~/stores/auth";
-import { purchaseCourse, getPurchasedCourses } from "~/api/firebase/courses";
+import { course } from "~/data/courses/healing-childhood-traumas";
+import { purchaseCourse, getPurchasedCourses } from "~/api/firebase/coursesApi";
 
 const authStore = useAuthStore();
-const db = getFirestore();
 const email = ref("");
-const hasPurchasedCourse = ref(false); // Track if the user has purchased the course
+const isPurchasing = ref(false); // Loading state for purchase
+const purchasedCourses = ref([]); // Array to store purchased courses
 
 // Teaser lesson (first lesson)
 const teaserLesson = {
@@ -177,75 +179,48 @@ const teaserLesson = {
   duration: "33 минуты",
 };
 
-// Check if the user has purchased the course
-const checkIfCoursePurchased = async (userId) => {
-  try {
-    const { success, data } = await getPurchasedCourses(db, userId);
-    if (success) {
-      // Check if the course with ID "course_1" is in the purchased courses
-      hasPurchasedCourse.value = data.some(
-        (course) => course.courseId === "course_1"
-      );
+// Fetch purchased courses when the component mounts
+onMounted(async () => {
+  await authStore.initAuth();
+  if (authStore.user) {
+    try {
+      const result = await getPurchasedCourses(authStore.user.uid);
+      if (result.success) {
+        purchasedCourses.value = result.data;
+      }
+    } catch (error) {
+      console.error("Error fetching purchased courses:", error);
     }
-  } catch (error) {
-    console.error("Error checking purchased courses:", error);
   }
+});
+
+// Check if a course is already purchased
+const isCoursePurchased = (courseId) => {
+  return purchasedCourses.value.some((course) => course.courseId === courseId);
 };
 
-// Handle purchase button click
-const handlePurchase = async () => {
+// Function to handle purchase
+const purchaseCourseHandler = async (courseId) => {
+  if (!authStore.user) {
+    alert("Пожалуйста, войдите в систему, чтобы приобрести курс.");
+    return;
+  }
+
+  isPurchasing.value = true; // Start loading
+
   try {
-    const db = getFirestore();
-
-    // Ensure authStore is initialized
-    if (!authStore) {
-      alert("Ошибка при инициализации. Пожалуйста, перезагрузите страницу.");
-      return;
-    }
-
-    const userId = authStore.user?.uid; // Use optional chaining to avoid errors
-
-    if (!userId) {
-      alert("Пожалуйста, войдите в систему, чтобы купить курс.");
-      return;
-    }
-
-    const courseId = "course_1";
-    const courseData = {
-      id: courseId,
-      title: 'Курс "Исцеление детских травм"',
-      description:
-        "Исследуйте и исцелите свои детские травмы через 21 урок, включая теоретические и практические задания. Узнайте, как травмы влияют на вашу жизнь, и научитесь их преодолевать.",
-      price: 4900,
-      lessons: 21,
-      hasPractical: true,
-      category: "Саморазвитие",
-      image: "course-placeholder.jpg", // Replace with actual image URL
-      discount: 20,
-      link: "/courses/healing-childhood-traumas",
-      totalLessons: 21, // Add totalLessons for progress tracking
-    };
-
-    const { success, message } = await purchaseCourse(
-      db,
-      userId,
-      courseId,
-      courseData
-    );
-
-    if (success) {
-      alert(message);
-      hasPurchasedCourse.value = true; // Update the purchase status
-      // Redirect to the personal cabinet or course page
-      navigateTo("/personal-cabinet");
-    } else if (message === "Курс уже куплен") {
-      // If the course is already purchased, redirect to /personal-cabinet
-      navigateTo("/personal-cabinet");
-    } else {
-      alert(message);
+    await purchaseCourse(authStore.user.uid, course);
+    alert("Курс успешно приобретен!");
+    // Refresh the list of purchased courses
+    const result = await getPurchasedCourses(authStore.user.uid);
+    if (result.success) {
+      purchasedCourses.value = result.data;
     }
   } catch (error) {
+    console.error("Ошибка при покупке курса:", error);
     alert("Произошла ошибка при покупке курса. Пожалуйста, попробуйте снова.");
+  } finally {
+    isPurchasing.value = false; // Stop loading
   }
 };
 
@@ -275,11 +250,4 @@ const getYouTubeId = (url) => {
   const match = url.match(regExp);
   return match && match[2].length === 11 ? match[2] : null;
 };
-
-// On mounted, check if the user has purchased the course
-onMounted(async () => {
-  if (authStore.user) {
-    await checkIfCoursePurchased(authStore.user.uid);
-  }
-});
 </script>

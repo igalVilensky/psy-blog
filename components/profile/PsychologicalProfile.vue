@@ -22,7 +22,7 @@
           </div>
 
           <!-- Tabs with Smooth Transitions -->
-          <div class="flex flex-wrap gap-2 w-full">
+          <div class="flex flex-wrap gap-2 sm:gap-4 w-full">
             <button
               v-for="tab in tabs"
               :key="tab.id"
@@ -91,14 +91,14 @@
                   <div
                     :class="[
                       'w-16 h-16 rounded-full flex items-center justify-center transition-transform hover:scale-110',
-                      `bg-${archetype.color}-500/20`,
+                      `bg-[#0EA5E9]/20`,
                     ]"
                   >
                     <i
                       :class="[
                         'fas',
                         archetype.icon,
-                        `text-${archetype.color}-400 text-2xl`,
+                        `text-[#E879F9] text-2xl`,
                       ]"
                     ></i>
                   </div>
