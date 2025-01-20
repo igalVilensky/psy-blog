@@ -13,7 +13,7 @@ export default defineNuxtConfig({
   },
 
   compatibilityDate: "2024-12-14",
-  modules: ["@nuxtjs/sanity", "@pinia/nuxt", "@nuxt/image"],
+  modules: ["@nuxtjs/sanity", "@pinia/nuxt", "@nuxt/image", "@vueuse/nuxt"],
   plugins: [
     "~/plugins/firebase.js", // Firebase initialization
     "~/plugins/initAuth.js", // Auth initialization (must come after firebase.js)
