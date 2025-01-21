@@ -171,7 +171,10 @@
           </div>
 
           <!-- Navigation -->
-          <div class="flex justify-end mt-12 gap-4">
+          <div
+            class="flex justify-between sm:justify-end mt-12 gap-4 w-full max-w-2xl mx-auto"
+          >
+            <!-- Previous Button -->
             <button
               v-if="currentStep > 1"
               @click="previousStep"
@@ -189,29 +192,33 @@
               </span>
               <span class="relative invisible">Назад</span>
             </button>
+
+            <!-- Next Button -->
             <button
               v-if="currentStep < 5"
               @click="nextStep"
               :disabled="!canProceed"
-              class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group"
+              class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group ml-auto sm:ml-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gradient-to-r disabled:hover:from-purple-500 disabled:hover:to-cyan-500"
             >
               <span
-                class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
+                class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease disabled:translate-x-0"
               >
                 <i class="fas fa-arrow-right"></i>
               </span>
               <span
-                class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
+                class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease disabled:translate-x-0"
               >
                 Далее
               </span>
               <span class="relative invisible">Далее</span>
             </button>
+
+            <!-- Save Button -->
             <button
               v-if="currentStep === 5"
               @click="handleSubmit"
               :disabled="!canSubmit"
-              class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group"
+              class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group ml-auto sm:ml-0"
             >
               <span
                 class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
@@ -505,8 +512,24 @@ const saveEntryToFirebase = async () => {
 };
 
 // HandleSubmit with the Firebase version
-const handleSubmit = () => {
+const handleSubmit = async () => {
   if (!canSubmit.value) return;
-  saveEntryToFirebase();
+
+  // Save the entry to Firebase
+  await saveEntryToFirebase();
+
+  // Reset all state variables to their initial values
+  currentStep.value = 1;
+  selectedEmotion.value = null;
+
+  journalEntry.value = "";
+  perceptionEntry.value = "";
+  copingEntry.value = "";
+  selectedTags.value = [];
+
+  subEmotions.value = [];
+
+  // Show the "Добавить запись" button again
+  showStartButton.value = true;
 };
 </script>

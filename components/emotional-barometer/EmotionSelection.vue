@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full max-w-3xl mx-auto px-4 py-6">
+  <div class="w-full max-w-3xl mx-auto py-6">
     <!-- Header Section -->
     <div class="text-center mb-8">
       <p class="text-slate-300 text-base md:text-lg max-w-xl mx-auto">
@@ -9,7 +9,7 @@
 
     <!-- Emotions Grid - Single column on mobile, grid on larger screens -->
     <div
-      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-lg sm:max-w-none mx-auto"
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-lg sm:max-w-2xl mx-auto"
     >
       <button
         v-for="emotion in emotions"
