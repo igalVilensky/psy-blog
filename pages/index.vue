@@ -25,10 +25,13 @@
           <h1
             class="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] mb-6 animate-slideDown"
           >
-            Ваш Путь к Личностному Р<i
-              class="fas fa-compass text-2xl sm:text-4xl text-[#0EA5E9] animate-spin-slow relative sm:bottom-1"
-            ></i
-            >сту
+            Ваш Путь к Личностному
+            <span class="whitespace-nowrap">
+              Р<i
+                class="fas fa-compass text-2xl sm:text-4xl text-[#0EA5E9] animate-spin-slow relative sm:bottom-1"
+              ></i
+              >сту
+            </span>
           </h1>
           <!-- Subheading -->
           <p
@@ -179,6 +182,7 @@
     </section>
   </div>
 </template>
+
 <style scoped>
 @keyframes slideDown {
   0% {
