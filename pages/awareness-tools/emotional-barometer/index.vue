@@ -1,8 +1,6 @@
 <template>
   <div class="relative min-h-screen">
-    <div
-      class="container mx-auto sm:px-4 max-w-6xl relative z-10 pb-12 sm:pt-6"
-    >
+    <div class="container mx-auto sm:px-4 max-w-6xl relative z-10 pb-12 pt-6">
       <!-- Hero Section (hidden when showStartButton is false) -->
       <section v-if="showStartButton" class="text-center">
         <h1
@@ -11,7 +9,7 @@
           Понимаем ваши эмоции
         </h1>
         <p
-          class="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed"
+          class="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed px-2"
         >
           Эмоциональный Барометр — это инструмент, который помогает вам лучше
           понять свои эмоции, отслеживать их интенсивность и находить способы
