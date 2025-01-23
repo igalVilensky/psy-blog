@@ -349,10 +349,19 @@
 <script setup>
 import { ref, reactive } from "vue";
 import { useRouter } from "vue-router";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import {
+  getAuth,
+  onAuthStateChanged,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+} from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { submitContactForm } from "@/api/firebase/contact";
-import { fetchUserData, updateUserData } from "@/api/firebase/userProfile";
+import {
+  fetchUserData,
+  updateUserData,
+  deleteUserAccount,
+} from "@/api/firebase/userProfile";
 import { useNotification } from "@/composables/useNotification";
 import Notification from "@/components/base/Notification.vue";
 
@@ -457,14 +466,59 @@ const goBackToProfile = () => {
 };
 
 // Account Deletion
-const confirmDeleteAccount = () => {
-  if (
-    confirm(
-      "Вы уверены, что хотите удалить аккаунт? Это действие нельзя отменить."
-    )
-  ) {
-    showNotification("Аккаунт удален.", "success");
-    // Add backend logic here to delete the account
+const confirmDeleteAccount = async () => {
+  const confirmationMessage = `
+    Вы уверены, что хотите удалить аккаунт? 
+    Это действие нельзя отменить. 
+    После удаления:
+    - Все ваши данные будут безвозвратно удалены.
+    - Вы не сможете использовать этот email для создания нового аккаунта.
+    - Все ваши настройки, профиль и связанные данные будут утеряны.
+  `;
+
+  if (confirm(confirmationMessage)) {
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (user) {
+      // Prompt the user to enter their password
+      const password = prompt(
+        "Для подтверждения удаления аккаунта, введите ваш пароль:"
+      );
+
+      if (password) {
+        try {
+          // Create credentials for reauthentication
+          const credential = EmailAuthProvider.credential(user.email, password);
+
+          // Reauthenticate the user
+          await reauthenticateWithCredential(user, credential);
+
+          // Proceed with account deletion
+          const result = await deleteUserAccount(user.uid);
+
+          if (result.success) {
+            showNotification("Аккаунт успешно удален.", "success");
+            router.push("/"); // Redirect to home or login page
+          } else {
+            showNotification(
+              "Ошибка при удалении аккаунта: " + result.message,
+              "error"
+            );
+          }
+        } catch (error) {
+          console.error("Error during reauthentication or deletion:", error);
+          showNotification(
+            "Ошибка при удалении аккаунта: " + error.message,
+            "error"
+          );
+        }
+      } else {
+        showNotification("Пароль не введен. Удаление отменено.", "error");
+      }
+    } else {
+      showNotification("Пользователь не авторизован.", "error");
+    }
   }
 };
 

@@ -174,10 +174,30 @@ const handleLogin = async () => {
 
   try {
     const auth = getAuth();
-    await signInWithEmailAndPassword(auth, email.value, password.value);
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email.value,
+      password.value
+    );
+    const user = userCredential.user;
+
+    // Check if the user's email is verified
+    // if (!user.emailVerified) {
+    // Log out the user if their email is not verified
+    // Redirect to the "Verify Email" page
+    // return router.push("/verify-email");
+    // }
+
+    // If email is verified, redirect to the profile page
     router.push("/profile");
   } catch (err) {
-    error.value = err.message;
+    if (err.message === "Please verify your email before logging in.") {
+      // Redirect to the "Verify Email" page
+      router.push("/verify-email");
+    } else {
+      // Show other errors
+      error.value = err.message;
+    }
   } finally {
     isLoading.value = false;
   }

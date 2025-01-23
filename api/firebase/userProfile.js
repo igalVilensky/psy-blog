@@ -12,6 +12,7 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
   deleteUser,
+  sendEmailVerification,
 } from "firebase/auth";
 
 // Fetch user avatar URL
@@ -80,6 +81,9 @@ export const registerUser = async (email, password, displayName) => {
       acceptedPrivacyPolicy: true,
       acceptedTerms: true,
     });
+
+    // Send verification email
+    await sendEmailVerification(user);
 
     return { success: true, message: "User registered successfully" };
   } catch (error) {

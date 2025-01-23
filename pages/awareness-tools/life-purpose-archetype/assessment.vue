@@ -2,7 +2,7 @@
   <div class="relative min-h-screen">
     <div class="container mx-auto px-4 max-w-3xl relative z-10 py-12">
       <!-- Progress Bar -->
-      <div class="mb-8 flex gap-8 justify-between items-center">
+      <div class="mb-8 flex gap-4 sm:gap-8 justify-between items-center">
         <button
           @click="previousQuestion"
           :disabled="currentQuestionIndex === 0"
@@ -63,10 +63,7 @@
           <button
             v-for="(option, index) in answerOptions"
             :key="index"
-            @click="
-              selectAnswer(index);
-              nextQuestion();
-            "
+            @click="handleAnswerSelection(index)"
             class="w-full text-left p-4 rounded-lg border transition-all duration-200 backdrop-blur-sm"
             :class="[
               selectedAnswer === index
@@ -76,7 +73,7 @@
           >
             <div class="flex items-center">
               <div
-                class="w-6 h-6 rounded-full border-2 mr-4 flex items-center justify-center"
+                class="min-w-6 min-h-6 w-6 h-6 rounded-full border-2 mr-4 flex items-center justify-center"
                 :class="[
                   selectedAnswer === index
                     ? 'border-[#0EA5E9]'
@@ -143,6 +140,13 @@ const isLastQuestion = computed(
 const selectAnswer = (index) => {
   selectedAnswer.value = index;
   userAnswers.value[currentQuestion.value.id] = answerOptions[index].value;
+};
+
+const handleAnswerSelection = (index) => {
+  selectAnswer(index);
+  setTimeout(() => {
+    nextQuestion();
+  }, 300); // 300ms delay before moving to the next question
 };
 
 const previousQuestion = () => {
