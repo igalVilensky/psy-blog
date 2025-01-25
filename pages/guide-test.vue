@@ -96,7 +96,7 @@
         <div
           role="status"
           aria-live="polite"
-          v-if="filteredGuides.length === 0"
+          v-if="filteredGuides?.length === 0"
           class="text-center py-16 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10"
         >
           <div class="text-[#0EA5E9] mb-4">
