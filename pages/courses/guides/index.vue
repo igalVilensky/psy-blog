@@ -300,7 +300,7 @@ const filteredGuides = computed(() => {
 // Get count of guides in each category
 const getCategoryCount = (category) => {
   if (category === "Все") return guides.value?.length;
-  return guides.value.filter((guide) => guide.category === category)?.length;
+  return guides.value?.filter((guide) => guide.category === category)?.length;
 };
 
 // Select category
