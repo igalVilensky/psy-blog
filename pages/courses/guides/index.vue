@@ -1,5 +1,5 @@
 <template>
-  <div class="relative min-h-screen bg-[#1A1F35]">
+  <div class="relative min-h-screen">
     <div class="relative z-10">
       <!-- Header Section -->
       <header class="pt-8 px-4 relative">
@@ -225,16 +225,15 @@
                 </div>
               </div>
 
-              <!-- Download PDF Button -->
-              <a
-                v-if="guide.pdfFile?.asset?.url"
-                :href="guide.pdfFile.asset.url"
-                class="mt-4 inline-flex items-center px-6 py-2 bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] text-white font-semibold rounded-lg hover:shadow-lg transition-all duration-300"
-                download
+              <!-- Читать далее -->
+              <NuxtLink
+                v-if="guide.slug?.current"
+                :to="`/courses/guides/${guide.slug.current}`"
+                class="mt-4 inline-flex justify-center items-center px-6 py-2 bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] text-white w-full font-semibold rounded-lg hover:shadow-lg transition-all duration-300"
               >
-                <i class="fas fa-download mr-2"></i>
-                {{ guide.callToAction }}
-              </a>
+                <i class="fas fa-book-open mr-2"></i>
+                {{ "Читать далее" }}
+              </NuxtLink>
             </div>
           </article>
         </div>
