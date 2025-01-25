@@ -1,7 +1,7 @@
 <template>
   <div class="relative min-h-screen bg-[#1A1F35]">
     <div class="relative z-10">
-      <!-- Enhanced Header Section -->
+      <!-- Header Section -->
       <header class="pt-8 px-4 relative">
         <!-- Animated Background Gradient -->
         <div
@@ -9,7 +9,7 @@
         ></div>
 
         <div class="container mx-auto max-w-6xl relative">
-          <!-- Enhanced Breadcrumb -->
+          <!-- Breadcrumb -->
           <nav class="mb-6">
             <ol class="flex items-center space-x-2 text-sm">
               <li class="flex items-center group">
@@ -33,7 +33,7 @@
             </ol>
           </nav>
 
-          <!-- Enhanced Title Section -->
+          <!-- Title Section -->
           <div class="mb-6">
             <div class="md:inline-block w-full md:w-auto">
               <div
@@ -46,7 +46,7 @@
             </div>
           </div>
 
-          <!-- Enhanced Category Navigation -->
+          <!-- Category Navigation -->
           <nav class="relative" aria-label="Категории руководств">
             <!-- Gradient border -->
             <div
@@ -149,16 +149,21 @@
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           <article
             v-for="guide in filteredGuides"
-            :key="guide.id"
+            :key="guide._id"
             class="group bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
           >
             <!-- Image Container -->
             <div class="relative aspect-[4/3] overflow-hidden">
-              <img
-                :src="guide.image"
+              <nuxt-img
+                v-if="guide.image"
+                :src="urlFor(guide.image).width(550).height(310).url()"
                 :alt="guide.title"
                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                width="550"
+                height="310"
                 loading="lazy"
+                format="webp"
+                quality="80"
               />
               <!-- Category Badge -->
               <span
@@ -188,17 +193,49 @@
               <p class="text-slate-300 line-clamp-3 mb-4">
                 {{ guide.description }}
               </p>
+
+              <!-- Icon and Description -->
               <div
                 class="flex items-center justify-between text-sm text-slate-400 pt-4 border-t border-white/10"
               >
                 <div class="flex items-center space-x-1.5">
-                  <i :class="guide.icon" class="text-[#0EA5E9]"></i>
-                  <span>{{ guide.iconDescription }}</span>
+                  <i
+                    :class="
+                      guide.category === 'Самопознание'
+                        ? 'fas fa-star'
+                        : guide.category === 'Эмоциональный интеллект'
+                        ? 'fas fa-heart'
+                        : guide.category === 'Отношения'
+                        ? 'fas fa-users'
+                        : 'fas fa-mountain'
+                    "
+                    class="text-[#0EA5E9]"
+                  ></i>
+                  <span>
+                    {{
+                      guide.category === "Самопознание"
+                        ? "Упражнения для глубокого самоанализа"
+                        : guide.category === "Эмоциональный интеллект"
+                        ? "Техники для развития эмпатии и самоконтроля"
+                        : guide.category === "Отношения"
+                        ? "Инструменты для укрепления связи с близкими"
+                        : "Стратегии для достижения карьерных и личных целей"
+                    }}
+                  </span>
                 </div>
               </div>
-            </div>
 
-            <NuxtLink :to="guide.link" class="absolute inset-0 z-10"></NuxtLink>
+              <!-- Download PDF Button -->
+              <a
+                v-if="guide.pdfFile?.asset?.url"
+                :href="guide.pdfFile.asset.url"
+                class="mt-4 inline-flex items-center px-6 py-2 bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] text-white font-semibold rounded-lg hover:shadow-lg transition-all duration-300"
+                download
+              >
+                <i class="fas fa-download mr-2"></i>
+                {{ guide.callToAction }}
+              </a>
+            </div>
           </article>
         </div>
 
@@ -220,64 +257,27 @@
             категорию.
           </p>
         </div>
-        <!-- Call to Action -->
-        <div
-          class="mt-16 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8 text-center transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
-        >
-          <h2 class="text-2xl font-bold text-white/90 mb-4">
-            Подпишитесь на новые материалы
-          </h2>
-          <p class="text-slate-300 mb-6 max-w-2xl mx-auto">
-            Получите доступ к эксклюзивным руководствам, которые помогут вам в
-            путешествии к самопознанию.
-          </p>
-          <div
-            class="max-w-md mx-auto flex flex-col sm:flex-row gap-3 sm:gap-0"
-          >
-            <input
-              type="email"
-              v-model="email"
-              placeholder="Ваш email"
-              class="w-full px-6 py-3 rounded-lg sm:rounded-l-lg sm:rounded-r-none bg-white/5 border border-[#0EA5E9]/20 text-white placeholder-slate-400/50 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]"
-            />
-            <button
-              @click="subscribeEmail"
-              class="relative inline-flex items-center justify-center min-w-[160px] overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg sm:rounded-l-none sm:rounded-r-lg group"
-            >
-              <span
-                class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
-              >
-                <i class="fas fa-bell text-lg"></i>
-              </span>
-              <span
-                class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
-              >
-                <i class="fas fa-envelope text-lg mr-2"></i>
-                Подписаться
-              </span>
-              <span class="relative invisible px-8 py-3">Подписаться</span>
-            </button>
-          </div>
-        </div>
       </main>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
-import guideImage from "~/assets/images/podcasts/podcasts.jpeg";
-import selfguideImage from "~/assets/images/self-love.webp";
-import courseImage from "~/assets/images/courses/loveyourself.webp";
-
+import { ref, computed, onMounted } from "vue";
+import { fetchGuides } from "~/api/sanity/guides";
+import { getImageUrl } from "~/api/sanity/client";
 import { getFirestore } from "firebase/firestore";
 import { subscribeUser } from "@/api/firebase/contact";
 
-const db = getFirestore();
-const email = ref("");
-const selectedCategory = ref("Все");
-const isOpen = ref(false);
+// Fetch guides
+const initialGuides = await fetchGuides();
+const guides = ref(initialGuides.data || []);
 
+// Image URL builder
+const { projectId, dataset } = useSanity().client.config();
+const urlFor = getImageUrl(projectId, dataset);
+
+// Categories
 const categories = [
   "Все",
   "Самопознание",
@@ -286,69 +286,32 @@ const categories = [
   "Карьерный рост",
 ];
 
-const guides = [
-  {
-    id: 1,
-    title: "Самооценка: Путешествие в мир себя",
-    description:
-      "Практики для укрепления самоценности, улучшения внутреннего диалога и самопринятия.",
-    date: "12 января 2025",
-    category: "Самопознание",
-    image: selfguideImage,
-    icon: "fas fa-star",
-    iconDescription: "Упражнения для глубокого самоанализа.",
-    link: "guides/self-assessment-guide",
-  },
-  {
-    id: 3,
-    title: "Управление Эмоциями",
-    description:
-      "Эффективные техники для работы с эмоциями и улучшения эмоционального интеллекта.",
-    date: "10 декабря 2024",
-    category: "Эмоциональный интеллект",
-    image: courseImage,
-    icon: "fas fa-heart",
-    iconDescription: "Техники для развития эмпатии и самоконтроля.",
-  },
-  {
-    id: 4,
-    title: "Гармоничные Отношения",
-    description:
-      "Понимание ваших и чужих потребностей для создания доверительных отношений.",
-    date: "5 декабря 2024",
-    category: "Отношения",
-    image: guideImage,
-    icon: "fas fa-users",
-    iconDescription: "Инструменты для укрепления связи с близкими.",
-  },
-  {
-    id: 5,
-    title: "Мотивация и Цели",
-    description:
-      "Найдите свой источник мотивации и научитесь ставить реалистичные цели.",
-    date: "1 декабря 2024",
-    category: "Карьерный рост",
-    image: guideImage,
-    icon: "fas fa-mountain",
-    iconDescription: "Стратегии для достижения карьерных и личных целей.",
-  },
-];
+// Selected category
+const selectedCategory = ref("Все");
+const isOpen = ref(false);
 
+// Filtered guides
+const filteredGuides = computed(() => {
+  return selectedCategory.value === "Все"
+    ? guides.value
+    : guides.value.filter((guide) => guide.category === selectedCategory.value);
+});
+
+// Get count of guides in each category
+const getCategoryCount = (category) => {
+  if (category === "Все") return guides.value.length;
+  return guides.value.filter((guide) => guide.category === category).length;
+};
+
+// Select category
 const selectCategory = (category) => {
   selectedCategory.value = category;
   isOpen.value = false;
 };
 
-const filteredGuides = computed(() => {
-  return selectedCategory.value === "Все"
-    ? guides
-    : guides.filter((guide) => guide.category === selectedCategory.value);
-});
-
-const getCategoryCount = (category) => {
-  if (category === "Все") return guides.length;
-  return guides.filter((guide) => guide.category === category).length;
-};
+// Email subscription
+const email = ref("");
+const db = getFirestore();
 
 const subscribeEmail = async () => {
   if (!validateEmail(email.value)) {
@@ -370,6 +333,7 @@ const validateEmail = (email) => {
   return re.test(String(email).toLowerCase());
 };
 </script>
+
 <style scoped>
 @keyframes gradient-x {
   0%,

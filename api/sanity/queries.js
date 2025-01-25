@@ -22,10 +22,16 @@ export const GUIDES_QUERY = `*[
     slug,
     publishedAt,
     description,
+    category,
     benefits,
     whatYouGet,
     targetAudience,
     whyDownload,
     callToAction,
-    image
+    image,
+    pdfFile {
+      asset -> {
+        url
+      }
+    }
   }`;

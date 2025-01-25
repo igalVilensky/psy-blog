@@ -132,20 +132,4 @@ const urlFor = getImageUrl(projectId, dataset);
 const filteredGuides = computed(() => {
   return guides.value; // Add filtering logic if needed
 });
-
-// Handle loading and error states
-const loading = ref(true);
-const error = ref(null);
-
-// onMounted(async () => {
-//   try {
-//     const data = await fetchGuides();
-//     guides.value = data || []; // Ensure guides is an array
-//   } catch (err) {
-//     error.value = err;
-//     console.error("Error fetching guides:", err);
-//   } finally {
-//     loading.value = false;
-//   }
-// });
 </script>
