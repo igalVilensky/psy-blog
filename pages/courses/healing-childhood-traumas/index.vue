@@ -1,21 +1,5 @@
 <template>
-  <div class="relative min-h-screen bg-slate-900">
-    <!-- Fixed background with proper opacity -->
-    <div class="fixed inset-0">
-      <div class="absolute top-0 left-0 w-full h-full bg-slate-900">
-        <!-- Adjusted gradient orbs -->
-        <div
-          class="absolute top-0 left-1/4 w-[600px] h-[600px] bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-full blur-3xl animate-slow-drift"
-        ></div>
-        <div
-          class="absolute bottom-1/4 right-1/3 w-[500px] h-[500px] bg-gradient-to-r from-amber-500/20 to-orange-500/20 rounded-full blur-3xl animate-slow-pulse"
-        ></div>
-        <div
-          class="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-gradient-to-r from-fuchsia-500/20 to-purple-500/20 rounded-full blur-3xl animate-slow-float"
-        ></div>
-      </div>
-    </div>
-
+  <div class="relative min-h-screen">
     <div class="container mx-auto px-4 max-w-6xl relative z-10 pb-12 pt-12">
       <!-- Hero Section with adjusted colors -->
       <section class="text-center mb-16 relative">
@@ -104,24 +88,31 @@
             </div>
           </div>
 
-          <!-- Purchase CTA -->
+          <!-- Purchase CTA or Go to Personal Cabinet Link -->
           <div class="text-center mt-8">
-            <button
-              @click="purchaseCourseHandler(course.id)"
-              :disabled="isPurchasing || isCoursePurchased(course.id)"
-              class="relative inline-flex items-center justify-center overflow-hidden font-medium transition-all duration-300 rounded-lg bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-8 py-4 text-white disabled:bg-gray-400 disabled:cursor-not-allowed"
-            >
-              <span class="flex items-center gap-2">
-                <i class="fas fa-shopping-cart text-lg"></i>
-                {{
-                  isCoursePurchased(course.id)
-                    ? "Курс уже приобретен"
-                    : isPurchasing
-                    ? "Обработка..."
-                    : "Купить курс за 4900₽"
-                }}
-              </span>
-            </button>
+            <div v-if="isCoursePurchased(course.id)">
+              <NuxtLink
+                to="/personal-cabinet"
+                class="relative inline-flex items-center justify-center overflow-hidden font-medium transition-all duration-300 rounded-lg bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 px-8 py-4 text-white"
+              >
+                <span class="flex items-center gap-2">
+                  <i class="fas fa-tachometer-alt text-lg"></i>
+                  Перейти в личный кабинет
+                </span>
+              </NuxtLink>
+            </div>
+            <div v-else>
+              <button
+                @click="purchaseCourseHandler(course.id)"
+                :disabled="isPurchasing"
+                class="relative inline-flex items-center justify-center overflow-hidden font-medium transition-all duration-300 rounded-lg bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-8 py-4 text-white disabled:bg-gray-400 disabled:cursor-not-allowed"
+              >
+                <span class="flex items-center gap-2">
+                  <i class="fas fa-shopping-cart text-lg"></i>
+                  {{ isPurchasing ? "Обработка..." : "Купить курс за 4900₽" }}
+                </span>
+              </button>
+            </div>
           </div>
         </div>
       </div>

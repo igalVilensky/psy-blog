@@ -1,5 +1,5 @@
 <template>
-  <div class="relative min-h-screen bg-[#1A1F35]">
+  <div class="relative min-h-screen">
     <div class="relative z-10">
       <!-- Header Section -->
       <header class="pt-8 px-4 relative">
@@ -320,29 +320,6 @@ const courses = [
     image: courseImage,
     discount: 20,
     link: "/courses/healing-childhood-traumas",
-  },
-  {
-    id: 2,
-    title: 'Гайд "Идеальные отношения"',
-    description: "Инструменты для построения гармоничных и здоровых отношений.",
-    price: 2500,
-    duration: "2 недели",
-    participants: 180,
-    category: "Отношения",
-    image: courseImage,
-    link: "/courses/perfect-relationships",
-  },
-  {
-    id: 3,
-    title: 'Курс "Эмоциональный интеллект"',
-    description: "Развитие навыков управления эмоциями и коммуникацией.",
-    price: 5900,
-    duration: "6 недель",
-    participants: 320,
-    category: "Эмоциональный интеллект",
-    image: courseImage,
-    discount: 15,
-    link: "/courses/emotional-intelligence",
   },
 ];
 

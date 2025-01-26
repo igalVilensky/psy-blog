@@ -45,25 +45,38 @@
             >
           </p>
 
+          <!-- Greeting Message for Logged-in Users -->
+          <div
+            v-if="isLoggedIn"
+            class="mb-8 animate-fadeIn opacity-0"
+            style="animation-delay: 0.6s"
+          >
+            <p class="text-lg md:text-xl text-slate-300">
+              Добро пожаловать, {{ userName }}!
+            </p>
+          </div>
+
           <!-- Buttons -->
           <div
             class="flex flex-col sm:flex-row gap-4 justify-center animate-fadeIn opacity-0"
             style="animation-delay: 0.6s"
           >
             <NuxtLink
-              to="/courses/courses"
+              :to="isLoggedIn ? '/personal-cabinet' : '/courses/courses'"
               class="group relative inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white font-medium rounded-lg overflow-hidden transition-all hover:from-[#22D3EE] hover:to-[#C084FC]"
             >
-              <span class="relative z-10">Начать обучение </span>
+              <span class="relative z-10">
+                {{ isLoggedIn ? "Продолжить обучение" : "Начать обучение" }}
+              </span>
               <div
                 class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-gradient-to-r from-[#22D3EE] to-[#C084FC] transition-transform duration-300"
               ></div>
             </NuxtLink>
             <NuxtLink
-              to="/profile"
+              :to="isLoggedIn ? '/profile' : '/profile'"
               class="group inline-flex items-center justify-center px-8 py-3 bg-transparent text-[#0EA5E9] font-medium rounded-lg border-2 border-[#0EA5E9]/50 hover:bg-[#0EA5E9]/10 transition-colors"
             >
-              Создать профиль
+              {{ isLoggedIn ? "Перейти в профиль" : "Создать профиль" }}
               <i
                 class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"
               ></i>
@@ -182,6 +195,17 @@
     </section>
   </div>
 </template>
+
+<script setup>
+import { useAuthStore } from "~/stores/auth";
+import { computed } from "vue";
+
+const authStore = useAuthStore();
+
+// Computed properties to reactively check the logged-in state
+const isLoggedIn = computed(() => !!authStore.user);
+const userName = computed(() => authStore.user?.displayName || "Гость");
+</script>
 
 <style scoped>
 @keyframes slideDown {

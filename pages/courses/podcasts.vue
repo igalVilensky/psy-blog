@@ -1,5 +1,5 @@
 <template>
-  <div class="relative min-h-screen bg-[#1A1F35]">
+  <div class="relative min-h-screen">
     <div class="relative z-10">
       <!-- Enhanced Header Section -->
       <header class="pt-8 px-4 relative">
@@ -195,65 +195,25 @@
                   </p>
                 </div>
 
-                <!-- Meta Information -->
-                <div class="space-y-6">
-                  <!-- Stats -->
-                  <div class="flex flex-wrap items-center gap-6">
-                    <div class="flex items-center whitespace-nowrap">
-                      <i class="fas fa-clock text-[#0EA5E9] text-lg mr-3"></i>
-                      <span class="text-slate-400">{{ podcast.duration }}</span>
-                    </div>
-                    <div class="flex items-center whitespace-nowrap">
-                      <i
-                        class="fas fa-headphones text-[#0EA5E9] text-lg mr-3"
-                      ></i>
-                      <span class="text-slate-400"
-                        >{{ podcast.listens }} прослушиваний</span
-                      >
-                    </div>
-                  </div>
-
-                  <!-- Bottom Section -->
-                  <div
-                    class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"
-                  >
-                    <div class="flex items-center">
-                      <img
-                        :src="podcast.hostImage"
-                        :alt="podcast.host"
-                        class="w-10 h-10 rounded-full mr-3 border-2 border-[#0EA5E9]/20"
-                      />
-                      <span class="text-slate-300 font-medium">{{
-                        podcast.host
-                      }}</span>
-                    </div>
-
-                    <!-- Play Button -->
-                    <NuxtLink
-                      to="/podcast-player"
-                      class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group w-full sm:w-auto"
-                    >
-                      <span
-                        class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
-                      >
-                        <i class="fas fa-play ml-2"></i>
-                      </span>
-                      <span
-                        class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
-                      >
-                        <i class="fas fa-headphones mr-2"></i>
-                        Слушать
-                      </span>
-                      <span class="relative invisible">Слушать</span>
-                    </NuxtLink>
-                  </div>
+                <!-- SoundCloud Player -->
+                <div class="w-full">
+                  <iframe
+                    width="100%"
+                    height="166"
+                    scrolling="no"
+                    frameborder="no"
+                    allow="autoplay"
+                    :src="`https://w.soundcloud.com/player/?url=${encodeURIComponent(
+                      podcast.soundcloudUrl
+                    )}&color=%23507caf&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true`"
+                  ></iframe>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Empty State -->
+        <!-- Empty State (Unchanged) -->
         <div
           role="status"
           aria-live="polite"
@@ -275,7 +235,7 @@
 
       <!-- Subscribe Section (Unchanged) -->
       <div
-        class="mt-16 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-4 sm:p-8 text-center transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+        class="mb-16 max-w-6xl mx-auto bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-4 sm:p-8 text-center transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
       >
         <h2 class="text-2xl font-bold text-white/90 mb-4">
           Не пропускайте новые выпуски
@@ -343,48 +303,9 @@ const podcasts = [
     title: "Путь к уверенности",
     description:
       "Как преодолеть самосомнения и развить уверенность в себе. Практические техники и реальные истории.",
-    duration: "45 минут",
-    listens: 1240,
     category: "Личностный рост",
-    host: "Анна Петрова",
     image: podcastImage,
-    hostImage: hostImage,
-  },
-  {
-    id: 2,
-    title: "Гармония в отношениях",
-    description:
-      "Секреты построения здоровых отношений. Разбор типичных проблем и способы их решения.",
-    duration: "38 минут",
-    listens: 890,
-    category: "Отношения",
-    host: "Мария Иванова",
-    image: podcastImage,
-    hostImage: hostImage,
-  },
-  {
-    id: 3,
-    title: "Карьерный взлёт",
-    description:
-      "Стратегии профессионального роста и развития. Советы от успешных предпринимателей.",
-    duration: "52 минуты",
-    listens: 1560,
-    category: "Карьера",
-    host: "Елена Соколова",
-    image: podcastImage,
-    hostImage: hostImage,
-  },
-  {
-    id: 4,
-    title: "Эмоциональный баланс",
-    description:
-      "Как управлять эмоциями и использовать их для личностного роста. Техники самоконтроля.",
-    duration: "41 минута",
-    listens: 980,
-    category: "Психология",
-    host: "Ольга Романова",
-    image: podcastImage,
-    hostImage: hostImage,
+    soundcloudUrl: "https://api.soundcloud.com/playlists/1464853522", // Add the SoundCloud URL here
   },
 ];
 
