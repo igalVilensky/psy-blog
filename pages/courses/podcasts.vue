@@ -300,12 +300,13 @@ const categories = [
 const podcasts = [
   {
     id: 1,
-    title: "Путь к уверенности",
+    title: "Эмоции и чувства",
     description:
-      "Как преодолеть самосомнения и развить уверенность в себе. Практические техники и реальные истории.",
+      "Разбираем эмоции и чувства: как они влияют на нас, помогают или мешают, и что с этим делать.",
     category: "Личностный рост",
-    image: podcastImage,
-    soundcloudUrl: "https://api.soundcloud.com/playlists/1464853522", // Add the SoundCloud URL here
+    image:
+      "https://cdn.pixabay.com/photo/2016/07/16/01/35/smilies-1520867_640.jpg",
+    soundcloudUrl: "https://api.soundcloud.com/playlists/1464853522",
   },
 ];
 

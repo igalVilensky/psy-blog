@@ -16,6 +16,7 @@
           самопознания.
         </p>
         <div class="flex justify-center gap-4">
+          <!-- Primary Button -->
           <button
             @click="startAssessment"
             class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group"
@@ -23,7 +24,7 @@
             <span
               class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
             >
-              <i class="fas fa-play"></i>
+              <i class="fas fa-clipboard-list"></i>
             </span>
             <span
               class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
@@ -32,15 +33,20 @@
             </span>
             <span class="relative invisible">Начать исследование</span>
           </button>
+
+          <!-- Secondary Button (Learn More) -->
           <button
             @click="showInfo"
-            class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group bg-white/10 border border-[#0EA5E9]/20"
+            class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group bg-gray-500 hover:bg-gray-600"
           >
             <span
-              class="absolute inset-0 flex items-center justify-center w-full h-full text-[#0EA5E9] duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9]/10 to-[#22D3EE]/10 group-hover:translate-x-0 ease"
-            ></span>
+              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gray-600 group-hover:translate-x-0 ease"
+            >
+              <i class="fas fa-info-circle"></i>
+              <!-- Icon for Learn More -->
+            </span>
             <span
-              class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
+              class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gray-500 group-hover:translate-x-full ease"
             >
               Узнать больше
             </span>

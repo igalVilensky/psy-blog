@@ -112,29 +112,21 @@
         </ul>
 
         <!-- Profile Section -->
-        <div v-if="currentUser" class="relative group">
+
+        <div v-if="auth.user" class="relative group">
           <NuxtLink
             to="/profile"
-            :class="[
-              'flex cursor-pointer items-center space-x-2  rounded-lg p-2 hover:bg-white/10 transition-all duration-300',
-              $route.path.startsWith('/profile') ? 'bg-white/15' : '', // Active for /profile and /profile/*
-            ]"
+            class="flex cursor-pointer items-center space-x-2 rounded-lg p-2 hover:bg-white/10 transition-all duration-300"
           >
             <i class="fas fa-user text-[#0EA5E9]"></i>
-            <span
-              class="font-medium text-slate-300 group-hover:text-white relative"
-            >
-              {{ currentUser?.displayName }}
-              <span
-                class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:w-full transition-all duration-300"
-              ></span>
+            <span class="font-medium text-slate-300 group-hover:text-white">
+              {{ auth.user.displayName || auth.user.email }}
             </span>
             <i
               class="fas fa-chevron-down text-xs text-slate-400 group-hover:rotate-180 transition-transform duration-300"
             ></i>
           </NuxtLink>
-
-          <!-- Adjusted auth dropdown position -->
+          <!-- Dropdown for Profile and Logout -->
           <div
             class="absolute top-full right-0 pt-4 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300"
           >
@@ -143,16 +135,13 @@
             >
               <NuxtLink
                 to="/profile"
-                :class="[
-                  'flex items-center space-x-2 px-4 py-2.5 text-sm text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-300',
-                  $route.path.startsWith('/profile') ? 'bg-white/10' : '', // Active for /profile and /profile/*
-                ]"
+                class="flex items-center space-x-2 px-4 py-2.5 text-sm text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-300"
               >
                 <i class="fas fa-user-circle text-[#0EA5E9]"></i>
                 <span>Профиль</span>
               </NuxtLink>
               <button
-                @click="handleLogout"
+                @click="auth.logout"
                 class="w-full flex items-center space-x-2 px-4 py-2.5 text-sm text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-300"
               >
                 <i class="fas fa-sign-out-alt text-red-400"></i>
@@ -162,21 +151,17 @@
           </div>
         </div>
 
-        <!-- Login/Register Buttons -->
+        <!-- Logged-out State -->
         <div v-else class="flex items-center space-x-4">
-          <!--  Login Button -->
           <NuxtLink
             to="/login"
             class="flex items-center space-x-2 px-4 py-2 rounded-lg hover:bg-white/5 transition-all duration-300"
           >
             <i class="fas fa-sign-in-alt text-purple-400"></i>
-            <span
-              class="text-slate-300 font-medium hover:text-white transition-colors duration-300"
-              >Войти</span
-            >
+            <span class="text-slate-300 font-medium hover:text-white">
+              Войти
+            </span>
           </NuxtLink>
-
-          <!--  Register Button -->
           <NuxtLink
             to="/register"
             class="relative inline-flex items-center justify-center px-6 py-2 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group"
@@ -369,12 +354,12 @@
 
           <!-- Auth Section -->
           <div class="pt-4 border-t border-white/10">
-            <template v-if="currentUser">
+            <template v-if="auth.user">
               <!-- User Profile Card -->
               <div class="mb-4 p-4 rounded-xl bg-white/5">
                 <span class="text-sm text-slate-400">Вы вошли как</span>
                 <div class="text-white font-medium mt-1">
-                  {{ currentUser.displayName || currentUser.email }}
+                  {{ auth.user.displayName || auth.user.email }}
                 </div>
               </div>
 
@@ -394,7 +379,7 @@
                 </NuxtLink>
 
                 <button
-                  @click="handleLogout"
+                  @click="auth.logout"
                   class="w-full flex items-center space-x-3 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-300 group"
                 >
                   <i class="fas fa-sign-out-alt text-red-400 text-lg"></i>
@@ -435,36 +420,29 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
-import { useRouter, useRoute } from "vue-router";
-import { useNuxtApp } from "#app";
-import { signOut } from "firebase/auth";
+import { ref, onMounted, onUnmounted, computed } from "vue";
+import { useRoute } from "vue-router";
+import { useAuthStore } from "~/stores/auth";
 import DesktopSubmenu from "@/components/navigation/DesktopSubmenu.vue";
 import MobileSubmenu from "@/components/navigation/MobileSubmenu.vue";
 import AwarenessToolsDesktopSubmenu from "./AwarenessToolsDesktopSubmenu.vue";
 import AwarenessToolsMobileSubmenu from "./AwarenessToolsMobileSubmenu.vue";
 
-const nuxtApp = useNuxtApp();
-const auth = nuxtApp.$auth;
-const router = useRouter();
+const auth = useAuthStore();
 const route = useRoute();
 
-// Reactive references
 const isDropdownOpen = ref(false);
 const openSubmenu = ref(null);
-const currentUser = ref(auth.currentUser);
 const isManuallyClosed = ref(false);
 const mobileSubmenuStates = ref({
   courses: false,
   awarenessTools: false,
 });
-
 const isMobileManuallyClosed = ref({
   courses: false,
   awarenessTools: false,
 });
 
-// Check if the current route is inside the "Courses" submenu
 const isCoursesRouteActive = computed(() => {
   const submenuRoutes = [
     "/courses/free-resources",
@@ -486,19 +464,13 @@ const isAwarenessToolsRouteActive = computed(() => {
   return submenuRoutes.includes(route.path);
 });
 
-// Update currentUser when auth state changes
-onMounted(() => {
-  const unsubscribe = auth.onAuthStateChanged((user) => {
-    currentUser.value = user;
-  });
-
+onMounted(async () => {
+  await auth.initAuth(); // Initialize auth state from the store
   document.addEventListener("click", handleOutsideClick);
+});
 
-  // Cleanup
-  onUnmounted(() => {
-    unsubscribe();
-    document.removeEventListener("click", handleOutsideClick);
-  });
+onUnmounted(() => {
+  document.removeEventListener("click", handleOutsideClick);
 });
 
 const toggleDropdown = () => {
@@ -531,16 +503,6 @@ const closeDropdown = () => {
   isDropdownOpen.value = false;
   openSubmenu.value = null;
   isManuallyClosed.value = false; // Reset the manual close state
-};
-
-const handleLogout = async () => {
-  try {
-    await signOut(auth);
-    closeDropdown();
-    router.push("/");
-  } catch (error) {
-    console.error("Error logging out:", error);
-  }
 };
 
 const handleOutsideClick = (event) => {

@@ -17,7 +17,7 @@
         >
           <i
             :class="item.icon"
-            class="flex-shrink-0 w-5 h-5 mr-3 flex items-center justify-center text-[#0EA5E9] group-hover:text-[#22D3EE] transition-transform group-hover:scale-110"
+            class="flex-shrink-0 w-5 h-5 mr-3 relative top-1 text-[#0EA5E9] group-hover:text-[#22D3EE] transition-transform group-hover:scale-110"
           />
           <span
             class="font-medium tracking-wide transition-all duration-300 group-hover:translate-x-1 flex items-center"
@@ -47,11 +47,11 @@ const menuItems = [
     label: "Эмоциональный барометр",
     path: "/awareness-tools/emotional-barometer",
   },
-  {
-    icon: "fas fa-comments",
-    label: "Глубокий разговор с картами",
-    path: "/awareness-tools/deep-conversation-with-cards",
-  },
+  // {
+  //   icon: "fas fa-comments",
+  //   label: "Глубокий разговор с картами",
+  //   path: "/awareness-tools/deep-conversation-with-cards",
+  // },
   {
     icon: "fas fa-compass",
     label: "Открытие Архетипа Жизни",

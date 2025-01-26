@@ -158,10 +158,10 @@ const sitemapLinks = [
     label: "Эмоциональный барометр",
     to: "/awareness-tools/emotional-barometer",
   },
-  {
-    label: "Глубокий разговор с картами",
-    to: "/awareness-tools/deep-conversation-with-cards",
-  },
+  // {
+  //   label: "Глубокий разговор с картами",
+  //   to: "/awareness-tools/deep-conversation-with-cards",
+  // },
   {
     label: "Открытие Архетипа Жизни",
     to: "/awareness-tools/life-purpose-archetype",

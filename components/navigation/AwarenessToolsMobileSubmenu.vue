@@ -57,11 +57,11 @@ const menuItems = [
     label: "Эмоциональный барометр",
     path: "/awareness-tools/emotional-barometer",
   },
-  {
-    icon: "fas fa-comments",
-    label: "Глубокий разговор с картами",
-    path: "/awareness-tools/deep-conversation-with-cards",
-  },
+  // {
+  //   icon: "fas fa-comments",
+  //   label: "Глубокий разговор с картами",
+  //   path: "/awareness-tools/deep-conversation-with-cards",
+  // },
   {
     icon: "fas fa-compass",
     label: "Открытие Архетипа Жизни",

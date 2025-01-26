@@ -1,6 +1,18 @@
 <template>
   <div class="relative min-h-screen">
     <div class="container mx-auto px-4 max-w-3xl relative z-10 py-12">
+      <!-- Back Navigation -->
+      <div>
+        <NuxtLink
+          to="/awareness-tools/life-purpose-archetype"
+          class="inline-flex items-center text-[#0EA5E9] hover:text-[#22D3EE] transition-colors mb-8 group pl-6 sm:pl-0"
+        >
+          <i
+            class="fas fa-arrow-left mr-2 transform group-hover:-translate-x-1 transition-transform text-current"
+          ></i>
+          Вернуться к инструментам осознанности
+        </NuxtLink>
+      </div>
       <!-- Header -->
       <div class="mb-12 text-center">
         <h1

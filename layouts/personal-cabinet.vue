@@ -39,12 +39,12 @@
           />
           <div>
             <p class="font-semibold text-sm text-white">{{ userName }}</p>
-            <button
-              @click="navigateToProfile"
-              class="text-xs text-blue-300 hover:text-blue-200 transition-colors focus:outline-none focus:underline"
+            <NuxtLink
+              to="/profile"
+              class="text-xs text-blue-400 hover:text-white transition-colors"
             >
-              Редактировать профиль
-            </button>
+              Редактировать профиль</NuxtLink
+            >
           </div>
         </div>
 
@@ -171,21 +171,16 @@ const navigationItems = [
     route: "/personal-cabinet/courses",
     icon: "fa-graduation-cap",
   },
-  { name: "Гайды", route: "/guides", icon: "fa-book-open" },
-  { name: "Инструменты", route: "/tools", icon: "fa-tools" },
+  { name: "Гайды", route: "/courses/guides", icon: "fa-book-open" },
+  { name: "Инструменты", route: "/awareness-tools", icon: "fa-tools" },
   { name: "Профиль", route: "/profile", icon: "fa-user" },
   {
     name: "Прогресс",
     route: "/personal-cabinet/progress",
     icon: "fa-chart-line",
   },
-  { name: "Настройки", route: "/settings", icon: "fa-cog" },
+  { name: "Настройки", route: "/profile/settings", icon: "fa-cog" },
 ];
-
-// Computed properties
-const topNavWidth = computed(() => {
-  return isSidebarCollapsed.value ? "left-16" : "left-64";
-});
 
 const breadcrumbs = computed(() => {
   const paths = route.path.split("/").filter(Boolean);
@@ -202,17 +197,12 @@ const breadcrumbs = computed(() => {
   });
 });
 
-// Methods
 const toggleSidebar = () => {
   isSidebarCollapsed.value = !isSidebarCollapsed.value;
 };
 
 const isActiveRoute = (path) => {
   return route.path === path;
-};
-
-const navigateToProfile = () => {
-  // Navigation logic
 };
 
 // Responsive behavior
