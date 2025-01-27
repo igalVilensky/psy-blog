@@ -31,14 +31,24 @@
             Дата прохождения: {{ formatDate(result.timestamp) }}
           </p>
 
-          <!-- Dominant Archetype -->
+          <!-- 3 Dominant Archetypes -->
+
           <div class="mt-6">
             <h2 class="text-xl font-semibold mb-3 text-slate-300">
-              Ваш доминирующий архетип:
+              Ваши три доминирующих архетипа:
             </h2>
-            <p class="text-2xl font-bold text-[#0EA5E9]">
-              {{ dominantArchetype }}
-            </p>
+            <ul class="space-y-2">
+              <li
+                v-for="({ archetype, score }, index) in topArchetypes"
+                :key="archetype"
+                class="flex items-center justify-between bg-[#1A1F35]/40 p-4 rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
+              >
+                <span class="font-medium capitalize text-slate-300">
+                  {{ index + 1 }}. {{ archetype }}
+                </span>
+                <span class="text-slate-400">{{ score }}</span>
+              </li>
+            </ul>
           </div>
 
           <!-- Scores Breakdown -->
@@ -56,12 +66,12 @@
                   <span class="font-medium capitalize text-slate-300">{{
                     archetype
                   }}</span>
-                  <span class="text-slate-400">{{ Math.round(score) }}%</span>
+                  <span class="text-slate-400">{{ Math.round(score) }}</span>
                 </div>
                 <div class="w-full bg-[#1E293B]/60 rounded-full h-2.5 mt-2">
                   <div
                     class="bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] h-2.5 rounded-full"
-                    :style="{ width: `${score}%` }"
+                    :style="{ width: `${((score - 6) / (30 - 6)) * 100}%` }"
                   ></div>
                 </div>
               </div>
@@ -133,11 +143,30 @@ const error = ref(null);
 
 // Computed value for the dominant archetype
 const dominantArchetype = computed(() => {
-  if (!result.value?.scores) return null;
+  if (!result.value?.scores) {
+    console.warn("No scores found in result:", result.value); // Debug: Log if scores are missing
+    return null;
+  }
 
-  return Object.entries(result.value.scores).reduce((a, b) =>
+  const dominant = Object.entries(result.value.scores).reduce((a, b) =>
     parseFloat(a[1]) > parseFloat(b[1]) ? a : b
   )[0];
+
+  return dominant === "unknown" ? "Не определено" : dominant;
+});
+
+// Computed value for the top 3 dominant archetypes
+const topArchetypes = computed(() => {
+  if (!result.value?.scores) return [];
+
+  // Convert the scores object to an array of [archetype, score] pairs
+  const scoresArray = Object.entries(result.value.scores);
+
+  // Sort the array in descending order by score and take the top 3
+  return scoresArray
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 3)
+    .map(([archetype, score]) => ({ archetype, score: Math.round(score) }));
 });
 
 // Format timestamp
@@ -179,7 +208,7 @@ const loadAssessmentResult = async () => {
 
     result.value = assessment;
   } catch (err) {
-    console.error("Error loading assessment result:", err);
+    console.error("Error loading assessment result:", err); // Debug: Log errors
     error.value = err.message || "Произошла ошибка при загрузке результатов";
 
     // Redirect to main page if result not found or unauthorized

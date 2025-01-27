@@ -113,12 +113,16 @@
                       <div class="h-2 bg-[#0EA5E9]/20 rounded-full flex-1">
                         <div
                           class="h-2 rounded-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] transition-all duration-1000"
-                          :style="{ width: `${archetype.level}%` }"
+                          :style="{
+                            width: `${
+                              ((archetype.level - 6) / (30 - 6)) * 100
+                            }%`,
+                          }"
                         ></div>
                       </div>
-                      <span class="ml-2 text-sm font-medium text-slate-400"
-                        >{{ archetype.level }}%</span
-                      >
+                      <span class="ml-2 text-sm font-medium text-slate-400">{{
+                        archetype.level
+                      }}</span>
                     </div>
                   </div>
                 </div>

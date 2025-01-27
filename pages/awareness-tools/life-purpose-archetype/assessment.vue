@@ -13,6 +13,7 @@
           Вернуться к инструментам осознанности
         </NuxtLink>
       </div>
+
       <!-- Progress Bar -->
       <div class="mb-8 flex gap-4 sm:gap-8 justify-between items-center">
         <button
@@ -76,6 +77,7 @@
             v-for="(option, index) in answerOptions"
             :key="index"
             @click="handleAnswerSelection(index)"
+            :disabled="isAnswering"
             class="w-full text-left p-4 rounded-lg border transition-all duration-200 backdrop-blur-sm"
             :class="[
               selectedAnswer === index
@@ -127,8 +129,9 @@ const selectedAnswer = ref(null);
 const userAnswers = ref({});
 const isLoading = ref(false);
 const error = ref(null);
+const isAnswering = ref(false); // Prevent fast clicks
 
-// Questions data with all 12 Jungian Archetypes
+// Questions data
 const questionsRef = ref(questions);
 
 const answerOptions = [
@@ -155,10 +158,14 @@ const selectAnswer = (index) => {
 };
 
 const handleAnswerSelection = (index) => {
+  if (isAnswering.value) return; // Prevent multiple clicks
+  isAnswering.value = true; // Disable further clicks
+
   selectAnswer(index);
   setTimeout(() => {
     nextQuestion();
-  }, 300); // 300ms delay before moving to the next question
+    isAnswering.value = false; // Re-enable clicks after moving to the next question
+  }, 300); // 300ms delay
 };
 
 const previousQuestion = () => {
@@ -177,6 +184,11 @@ const previousQuestion = () => {
 };
 
 const nextQuestion = async () => {
+  if (selectedAnswer.value === null || selectedAnswer.value === undefined) {
+    console.warn("No answer selected for the current question.");
+    return; // Don't proceed if no answer is selected
+  }
+
   if (isLastQuestion.value) {
     await submitAssessmentHandler();
   } else {
@@ -195,31 +207,36 @@ const nextQuestion = async () => {
 
 const calculateArchetypeScores = (answers) => {
   const scores = {
-    творец: 0,
-    исследователь: 0,
-    мудрец: 0,
+    простодушный: 0,
+    сирота: 0,
     воин: 0,
+    опекун: 0,
+    искатель: 0,
+    любовник: 0,
+    бунтарь: 0,
+    творец: 0,
     маг: 0,
-    заботливый: 0,
-    наставник: 0,
     правитель: 0,
-    друг: 0,
+    мудрец: 0,
     шут: 0,
-    мятежник: 0,
-    герой: 0,
   };
 
   questionsRef.value.forEach((question) => {
-    const answer = answers[question.id] || 0;
-    Object.keys(question.relatedArchetypes).forEach((archetype) => {
-      scores[archetype] += answer * question.relatedArchetypes[archetype];
-    });
-  });
+    const answer = answers[question.id] || 0; // Get the user's answer or default to 0
+    const archetype = question.relatedArchetype?.toLowerCase();
 
-  const totalPossibleScore = totalQuestions.value * 5;
-  Object.keys(scores).forEach((archetype) => {
-    let adjustedScore = (scores[archetype] / totalPossibleScore) * 100;
-    scores[archetype] = Math.min(Math.max(adjustedScore, 0), 100).toFixed(1);
+    if (!archetype) {
+      console.warn(`Undefined archetype for question ID: ${question.id}`);
+      return; // Skip questions without archetype mappings
+    }
+
+    if (scores.hasOwnProperty(archetype)) {
+      scores[archetype] += answer; // Add the score to the appropriate archetype
+    } else {
+      console.warn(
+        `Invalid archetype: ${archetype} for question ID: ${question.id}`
+      );
+    }
   });
 
   return scores;
@@ -258,7 +275,7 @@ const submitAssessmentHandler = async () => {
       throw new Error(result.message || "Не удалось сохранить результаты");
     }
   } catch (err) {
-    console.error("Error submitting assessment:", err);
+    console.error("Error submitting assessment:", err); // Debug: Log errors
     error.value = err.message || "Произошла ошибка при сохранении результатов";
   } finally {
     isLoading.value = false;
