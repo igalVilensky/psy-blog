@@ -2,17 +2,16 @@
   <div class="relative min-h-screen">
     <div class="container mx-auto px-4 max-w-3xl relative z-10 py-12">
       <!-- Back Navigation -->
-      <div class="mb-8">
-        <NuxtLink
-          to="/awareness-tools/life-purpose-archetype"
-          class="inline-flex items-center text-[#0EA5E9] hover:text-[#22D3EE] transition-colors mb-8 group pl-6 sm:pl-0"
-        >
-          <i
-            class="fas fa-arrow-left mr-2 transform group-hover:-translate-x-1 transition-transform text-current"
-          ></i>
-          Вернуться к инструментам осознанности
-        </NuxtLink>
-      </div>
+
+      <NuxtLink
+        to="/awareness-tools/life-purpose-archetype"
+        class="inline-flex items-center text-[#0EA5E9] hover:text-[#22D3EE] transition-colors mb-8 group sm:pl-0"
+      >
+        <i
+          class="fas fa-arrow-left mr-2 transform group-hover:-translate-x-1 transition-transform text-current"
+        ></i>
+        Вернуться к инструментам осознанности
+      </NuxtLink>
 
       <!-- Progress Bar -->
       <div class="mb-8 flex gap-4 sm:gap-8 justify-between items-center">
@@ -65,11 +64,18 @@
       <!-- Question Card -->
       <div
         v-if="currentQuestion"
-        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8 mb-8 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-4 sm:p-8 mb-8 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
       >
-        <h2 class="text-2xl font-bold text-white/90 mb-6">
-          {{ currentQuestion.questionText }}
-        </h2>
+        <div class="flex items-center gap-4 mb-6">
+          <div
+            class="border-2 border-slate-300 flex sm:text-2xl items-center justify-center w-12 h-12 flex-shrink-0 rounded-full bg-gradient-to-r from-[#0EA5E9]/60 to-[#E879F9]/60 text-white font-bold"
+          >
+            {{ currentQuestionIndex + 1 }}
+          </div>
+          <h2 class="sm:text-2xl font-bold text-white/90">
+            {{ currentQuestion.questionText }}
+          </h2>
+        </div>
 
         <!-- Answer Options -->
         <div class="space-y-4">
@@ -99,7 +105,7 @@
                   class="w-3 h-3 bg-[#0EA5E9] rounded-full"
                 ></div>
               </div>
-              <span class="text-lg text-slate-300">{{ option.text }}</span>
+              <span class="sm:text-lg text-slate-300">{{ option.text }}</span>
             </div>
           </button>
         </div>
