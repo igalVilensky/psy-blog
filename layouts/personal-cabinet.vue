@@ -1,101 +1,140 @@
 <template>
-  <div class="flex min-h-[100dvh] bg-gray-50">
-    <!-- Sidebar -->
-    <aside
-      :class="[
-        'fixed h-full overflow-y-auto transition-all duration-300 shadow-xl z-20 bg-gradient-to-b from-[#1A1F35] to-[#1E293B]',
-      ]"
-      :style="{ width: isSidebarCollapsed ? '4rem' : '16rem' }"
+  <div class="min-h-[100dvh] bg-gray-50">
+    <!-- Fixed Top Navbar -->
+    <nav
+      class="fixed top-0 left-0 right-0 bg-gradient-to-r from-[#1A1F35] to-[#1E293B] z-50"
     >
-      <div class="p-4">
-        <!-- Collapse/Expand Button -->
-        <button
-          @click="toggleSidebar"
-          class="w-full p-2 rounded-lg hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
-          :aria-label="
-            isSidebarCollapsed
-              ? 'Развернуть боковую панель'
-              : 'Свернуть боковую панель'
-          "
-        >
-          <i
-            :class="[
-              'fas',
-              isSidebarCollapsed ? 'fa-chevron-right' : 'fa-chevron-left',
-              'text-xl text-white',
-            ]"
-          ></i>
-        </button>
-
-        <!-- User Profile Section -->
-        <div
-          v-if="!isSidebarCollapsed"
-          class="flex items-center space-x-3 my-6 p-3 bg-white/10 rounded-lg"
-        >
-          <img
-            :src="userAvatar"
-            :alt="`Аватар ${userName}`"
-            class="w-10 h-10 rounded-full object-cover border-2 border-white/20"
-          />
-          <div>
-            <p class="font-semibold text-sm text-white">{{ userName }}</p>
+      <div class="mx-auto max-w-6xl px-4">
+        <div class="flex justify-between items-center h-16">
+          <!-- Left side - Logo/User -->
+          <div class="flex items-center space-x-3">
             <NuxtLink
               to="/profile"
-              class="text-xs text-blue-400 hover:text-white transition-colors"
+              class="flex items-center hover:opacity-80 transition-opacity"
             >
-              Редактировать профиль</NuxtLink
+              <img
+                :src="userAvatar"
+                :alt="`Аватар ${userName}`"
+                class="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover border-2 border-white/20"
+              />
+            </NuxtLink>
+            <div class="text-white hidden md:block">
+              <p class="font-semibold text-sm">{{ userName }}</p>
+              <NuxtLink
+                to="/profile"
+                class="text-xs text-blue-400 hover:text-white transition-colors"
+              >
+                Редактировать профиль
+              </NuxtLink>
+            </div>
+          </div>
+
+          <!-- Desktop Navigation -->
+          <div class="hidden md:flex items-center space-x-1">
+            <NuxtLink
+              v-for="item in navigationItems"
+              :key="item.name"
+              :to="item.route"
+              class="px-4 py-2 rounded-lg text-white text-sm transition-colors relative group"
+              :class="{
+                'bg-white/10': isRouteActive(item.route),
+                'hover:bg-white/5': !isRouteActive(item.route),
+              }"
             >
+              <div class="flex items-center gap-2">
+                <i :class="['fas', item.icon]"></i>
+                <span>{{ item.name }}</span>
+              </div>
+              <!-- Hover/Active indicator -->
+              <div
+                class="absolute bottom-0 left-0 w-full h-0.5 bg-blue-400 transform scale-x-0 group-hover:scale-x-100 transition-transform"
+                :class="{ 'scale-x-100': isRouteActive(item.route) }"
+              ></div>
+            </NuxtLink>
+          </div>
+
+          <!-- Mobile Menu Button -->
+          <button
+            @click="toggleMobileMenu"
+            class="md:hidden p-2 rounded-lg hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+          >
+            <i
+              :class="[
+                'fas',
+                isMobileMenuOpen ? 'fa-times' : 'fa-bars',
+                'text-xl text-white',
+              ]"
+            ></i>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Mobile Navigation Menu -->
+    <div
+      v-if="isMobileMenuOpen"
+      class="fixed inset-0 bg-black bg-opacity-50 z-40"
+      @click="closeMobileMenu"
+    >
+      <div
+        class="absolute right-0 top-16 w-64 max-h-[calc(100vh-4rem)] overflow-y-auto bg-gradient-to-b from-[#1A1F35] to-[#1E293B] shadow-xl"
+        @click.stop
+      >
+        <!-- Mobile User Profile -->
+        <div class="p-4 border-b border-white/10">
+          <div class="flex items-center space-x-3">
+            <NuxtLink
+              to="/profile"
+              class="flex items-center hover:opacity-80 transition-opacity"
+            >
+              <img
+                :src="userAvatar"
+                :alt="`Аватар ${userName}`"
+                class="w-10 h-10 rounded-full object-cover border-2 border-white/20"
+              />
+            </NuxtLink>
+            <div class="text-white">
+              <p class="font-semibold text-sm">{{ userName }}</p>
+              <NuxtLink
+                to="/profile"
+                class="text-xs text-blue-400 hover:text-white transition-colors"
+                @click="closeMobileMenu"
+              >
+                Редактировать профиль
+              </NuxtLink>
+            </div>
           </div>
         </div>
 
-        <!-- Collapsed Avatar -->
-        <img
-          v-else
-          :src="userAvatar"
-          :alt="`Аватар ${userName}`"
-          class="w-6 h-6 rounded-full object-cover border-2 border-white/20 mx-auto mt-6"
-        />
-
-        <!-- Navigation Links -->
-        <nav class="mt-6">
-          <ul class="space-y-2">
-            <li v-for="item in navigationItems" :key="item.name">
-              <NuxtLink
-                :to="item.route"
-                :title="isSidebarCollapsed ? item.name : ''"
-                class="flex items-center p-3 rounded-lg transition-colors relative"
-                :class="[
-                  isActiveRoute(item.route)
-                    ? 'bg-white/20 text-white'
-                    : 'text-white hover:bg-white/10',
-                  isSidebarCollapsed ? 'justify-center' : '',
-                ]"
-              >
-                <i
-                  :class="[
-                    'fas',
-                    item.icon,
-                    isSidebarCollapsed ? 'text-center w-5' : 'mr-3 w-5',
-                  ]"
-                ></i>
-                <span v-if="!isSidebarCollapsed" class="text-sm">
-                  {{ item.name }}
-                </span>
-              </NuxtLink>
-            </li>
-          </ul>
-        </nav>
+        <!-- Mobile Navigation Links -->
+        <div class="py-2">
+          <NuxtLink
+            v-for="item in navigationItems"
+            :key="item.name"
+            :to="item.route"
+            class="flex items-center space-x-3 px-4 py-3 text-white transition-colors relative"
+            :class="{
+              'bg-white/10': isRouteActive(item.route),
+              'hover:bg-white/5': !isRouteActive(item.route),
+            }"
+            @click="closeMobileMenu"
+          >
+            <i :class="['fas', item.icon, 'w-5']"></i>
+            <span>{{ item.name }}</span>
+            <!-- Active indicator -->
+            <div
+              v-if="isRouteActive(item.route)"
+              class="absolute left-0 top-0 bottom-0 w-1 bg-blue-400"
+            ></div>
+          </NuxtLink>
+        </div>
       </div>
-    </aside>
+    </div>
 
-    <!-- Main Content -->
-    <main
-      class="flex-grow transition-all duration-300 bg-gray-50"
-      :style="{ marginLeft: isSidebarCollapsed ? '4rem' : '16rem' }"
-    >
-      <!-- Breadcrumbs -->
-      <div class="relative bg-white border-b border-gray-200 py-3">
-        <nav class="px-4">
+    <!-- Breadcrumbs - adjusted for fixed header -->
+    <div class="bg-white border-b border-gray-200 mt-16">
+      <div class="mx-auto max-w-6xl px-4">
+        <nav class="py-3 overflow-hidden">
           <ol class="flex flex-wrap items-center gap-2 text-sm">
             <li>
               <NuxtLink
@@ -110,38 +149,38 @@
               <li>
                 <i class="fas fa-chevron-right mx-2 text-gray-400 text-xs"></i>
               </li>
-              <li>
+              <li class="min-w-0">
                 <NuxtLink
                   v-if="crumb.link"
                   :to="crumb.link"
-                  class="text-gray-600 hover:text-gray-900 transition-colors truncate"
+                  class="text-gray-600 hover:text-gray-900 transition-colors block truncate max-w-[120px] sm:max-w-[200px] md:max-w-xs"
                   :title="crumb.text"
                 >
-                  {{ crumb.text }}
+                  {{ formatBreadcrumbText(crumb.text) }}
                 </NuxtLink>
                 <span
                   v-else
-                  class="text-gray-900 font-medium truncate"
+                  class="text-gray-900 font-medium block truncate max-w-[120px] sm:max-w-[200px] md:max-w-xs"
                   :title="crumb.text"
                 >
-                  {{ crumb.text }}
+                  {{ formatBreadcrumbText(crumb.text) }}
                 </span>
               </li>
             </template>
           </ol>
         </nav>
       </div>
+    </div>
 
-      <!-- Page Content -->
-      <div>
-        <slot />
-      </div>
+    <!-- Page Content - adjusted for fixed header -->
+    <main class="p-4 mx-auto max-w-6xl">
+      <slot />
     </main>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from "vue";
+import { ref, computed, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useAuthStore } from "~/stores/auth";
 
@@ -150,10 +189,8 @@ definePageMeta({
 });
 
 const authStore = useAuthStore();
-
-// State
-const isSidebarCollapsed = ref(false);
 const route = useRoute();
+const isMobileMenuOpen = ref(false);
 
 // User data
 const userName = ref(authStore.user?.displayName || "Гость");
@@ -173,7 +210,6 @@ const navigationItems = [
   },
   { name: "Гайды", route: "/courses/guides", icon: "fa-book-open" },
   { name: "Инструменты", route: "/awareness-tools", icon: "fa-tools" },
-  { name: "Профиль", route: "/profile", icon: "fa-user" },
   {
     name: "Прогресс",
     route: "/personal-cabinet/progress",
@@ -182,41 +218,48 @@ const navigationItems = [
   { name: "Настройки", route: "/profile/settings", icon: "fa-cog" },
 ];
 
-const breadcrumbs = computed(() => {
-  const paths = route.path.split("/").filter(Boolean);
-  return paths.map((path, index) => {
-    const text = path
+// Fix for route active state
+const isRouteActive = (itemRoute) => {
+  if (itemRoute === "/personal-cabinet" && route.path !== "/personal-cabinet") {
+    return false;
+  }
+  return route.path.startsWith(itemRoute);
+};
+
+// Format breadcrumb text - decode URI components and handle Cyrillic
+const formatBreadcrumbText = (text) => {
+  try {
+    const decodedText = decodeURIComponent(text);
+    return decodedText
       .split("-")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
+  } catch (e) {
+    return text;
+  }
+};
+
+const breadcrumbs = computed(() => {
+  const paths = route.path.split("/").filter(Boolean);
+  return paths.map((path, index) => {
     const link = `/${paths.slice(0, index + 1).join("/")}`;
     return {
-      text,
+      text: path,
       link: index < paths.length - 1 ? link : null,
     };
   });
 });
 
-const toggleSidebar = () => {
-  isSidebarCollapsed.value = !isSidebarCollapsed.value;
+const toggleMobileMenu = () => {
+  isMobileMenuOpen.value = !isMobileMenuOpen.value;
 };
 
-const isActiveRoute = (path) => {
-  return route.path === path;
+const closeMobileMenu = () => {
+  isMobileMenuOpen.value = false;
 };
 
-// Responsive behavior
-const checkScreenSize = () => {
-  isSidebarCollapsed.value = window.innerWidth < 768;
-};
-
-// Lifecycle hooks
-onMounted(() => {
-  checkScreenSize();
-  window.addEventListener("resize", checkScreenSize);
-});
-
-onUnmounted(() => {
-  window.removeEventListener("resize", checkScreenSize);
+// Close mobile menu on route change
+watch(route, () => {
+  isMobileMenuOpen.value = false;
 });
 </script>

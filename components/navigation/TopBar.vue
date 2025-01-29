@@ -141,7 +141,7 @@
                 <span>Профиль</span>
               </NuxtLink>
               <button
-                @click="auth.logout"
+                @click="logoutUser"
                 class="w-full flex items-center space-x-2 px-4 py-2.5 text-sm text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-300"
               >
                 <i class="fas fa-sign-out-alt text-red-400"></i>
@@ -379,7 +379,7 @@
                 </NuxtLink>
 
                 <button
-                  @click="auth.logout"
+                  @click="logoutUser"
                   class="w-full flex items-center space-x-3 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-300 group"
                 >
                   <i class="fas fa-sign-out-alt text-red-400 text-lg"></i>
@@ -517,6 +517,12 @@ const handleOutsideClick = (event) => {
   ) {
     closeDropdown();
   }
+};
+
+// Logout user
+const logoutUser = async () => {
+  await authStore.logout();
+  router.push("/login");
 };
 </script>
 

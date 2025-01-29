@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100/50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <div class="max-w-6xl mx-auto py-8 sm:py-12">
       <!-- Loading State with Skeleton -->
       <div v-if="loading" class="space-y-8">
         <div class="animate-pulse space-y-4">
@@ -77,7 +77,9 @@
         </div>
 
         <!-- Video Player Card -->
-        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+        <div
+          class="bg-white rounded-xl sm:p-6 shadow-sm border border-gray-100"
+        >
           <div class="aspect-w-16 aspect-h-9">
             <iframe
               :src="`https://www.youtube.com/embed/${getYouTubeVideoId(
@@ -118,7 +120,7 @@
           <NuxtLink
             v-if="nextLesson"
             :to="`/personal-cabinet/courses/${courseSlug}/${nextLesson.slug}`"
-            class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 shadow-sm transition-all duration-200 group sm:ml-auto"
+            class="inline-flex justify-end items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 shadow-sm transition-all duration-200 group sm:ml-auto"
           >
             Следующий урок
             <i

@@ -1,6 +1,6 @@
 <template>
   <div class="w-full min-h-screen bg-gray-50/30">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+    <div class="max-w-6xl mx-auto py-8 sm:py-12">
       <!-- Header Section -->
       <div
         class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 space-y-4 sm:space-y-0"
