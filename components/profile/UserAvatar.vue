@@ -3,14 +3,15 @@
     <!-- Avatar with Image -->
     <div
       v-if="avatarUrl && !loading"
-      class="w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden ring-4 ring-offset-4 ring-offset-[#1A1F35] ring-[#0EA5E9]/30 transition-all duration-300"
+      class="rounded-full overflow-hidden ring-4 ring-offset-4 ring-offset-[#1A1F35] ring-[#0EA5E9]/30 transition-all duration-300"
+      :style="{ width: size + 'px', height: size + 'px' }"
     >
       <nuxt-img
         :src="avatarUrl"
         alt="Avatar"
         class="w-full h-full object-cover"
-        :width="loading ? 160 : 96"
-        :height="loading ? 160 : 96"
+        :width="loading ? size * 1.5 : size"
+        :height="loading ? size * 1.5 : size"
         loading="lazy"
         format="webp"
         quality="90"
@@ -20,23 +21,31 @@
     <!-- Loading State -->
     <div
       v-else-if="loading"
-      class="w-32 h-32 sm:w-40 sm:h-40 rounded-full bg-gradient-to-r from-[#0EA5E9]/10 to-[#E879F9]/10 flex items-center justify-center ring-4 ring-offset-4 ring-offset-[#1A1F35] ring-[#0EA5E9]/30"
+      class="rounded-full bg-gradient-to-r from-[#0EA5E9]/10 to-[#E879F9]/10 flex items-center justify-center ring-4 ring-offset-4 ring-offset-[#1A1F35] ring-[#0EA5E9]/30"
+      :style="{ width: size + 'px', height: size + 'px' }"
     >
-      <i class="fas fa-spinner fa-spin fa-3x text-[#0EA5E9]"></i>
+      <i
+        class="fas fa-spinner fa-spin text-[#0EA5E9]"
+        :style="{ fontSize: Math.max(size * 0.5) + 'px' }"
+      ></i>
     </div>
 
     <!-- Initial State -->
     <div
       v-else
-      class="w-32 h-32 sm:w-40 sm:h-40 rounded-full bg-gradient-to-r from-[#0EA5E9]/10 to-[#E879F9]/10 flex items-center justify-center ring-4 ring-offset-4 ring-offset-[#1A1F35] ring-[#0EA5E9]/30"
+      class="rounded-full bg-gradient-to-r from-[#0EA5E9]/10 to-[#E879F9]/10 flex items-center justify-center ring-4 ring-offset-4 ring-offset-[#1A1F35] ring-[#0EA5E9]/30"
+      :style="{ width: size + 'px', height: size + 'px' }"
     >
       <span class="text-5xl font-bold text-[#0EA5E9]">
         {{ userInitial }}
       </span>
     </div>
 
-    <!-- Upload Overlay -->
-    <label class="absolute inset-0 w-full h-full cursor-pointer">
+    <!-- Upload Overlay (Conditional) -->
+    <label
+      v-if="!noUpload"
+      class="absolute inset-0 w-full h-full cursor-pointer"
+    >
       <input
         type="file"
         @change="onFileChange"
@@ -53,8 +62,8 @@
       </div>
     </label>
 
-    <!-- PRO Badge -->
-    <div class="absolute -top-2 -right-2">
+    <!-- PRO Badge (Conditional) -->
+    <div v-if="!noUpload" class="absolute -top-2 -right-2">
       <div class="relative">
         <div
           class="absolute inset-0 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] rounded-full blur opacity-75"
@@ -94,6 +103,14 @@ const props = defineProps({
   avatarUrl: String,
   loading: Boolean,
   userInitial: String,
+  size: {
+    type: Number,
+    default: 170, // Default size if not provided
+  },
+  noUpload: {
+    type: Boolean,
+    default: false, // Default to allowing upload
+  },
 });
 
 const emit = defineEmits(["update:avatarUrl"]);

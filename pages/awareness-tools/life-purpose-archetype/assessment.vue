@@ -1,20 +1,22 @@
 <template>
   <div class="relative min-h-screen">
-    <div class="container mx-auto px-4 max-w-3xl relative z-10 py-12">
+    <div class="container mx-auto max-w-3xl relative z-10 pt-12">
       <!-- Back Navigation -->
 
       <NuxtLink
         to="/awareness-tools/life-purpose-archetype"
-        class="inline-flex items-center text-[#0EA5E9] hover:text-[#22D3EE] transition-colors mb-8 group sm:pl-0"
+        class="px-4 inline-flex items-center text-[#0EA5E9] hover:text-[#22D3EE] transition-colors mb-8 group sm:pl-0"
       >
         <i
           class="fas fa-arrow-left mr-2 transform group-hover:-translate-x-1 transition-transform text-current"
         ></i>
-        Вернуться к инструментам осознанности
+        Вернуться
       </NuxtLink>
 
       <!-- Progress Bar -->
-      <div class="mb-8 flex gap-4 sm:gap-8 justify-between items-center">
+      <div
+        class="px-4 sm:px-0 mb-8 flex gap-4 sm:gap-8 justify-between items-center"
+      >
         <button
           @click="previousQuestion"
           :disabled="currentQuestionIndex === 0"

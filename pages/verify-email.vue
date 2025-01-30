@@ -2,7 +2,7 @@
   <div class="relative h-[80dvh]">
     <div class="container mx-auto max-w-6xl relative z-10 pb-12 pt-12">
       <div
-        class="w-full max-w-4xl bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-10 mx-auto"
+        class="w-full max-w-4xl bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-8 mx-auto"
       >
         <h2
           class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] mb-6"

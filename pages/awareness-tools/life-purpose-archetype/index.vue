@@ -1,8 +1,8 @@
 <template>
   <div class="relative min-h-screen">
-    <div class="container mx-auto px-4 max-w-4xl relative z-10 pb-12 pt-12">
+    <div class="container mx-auto max-w-6xl relative z-10 pb-12 pt-12">
       <!-- Hero Section -->
-      <section class="text-center mb-12">
+      <section class="text-center mb-12 px-4">
         <h1
           class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] tracking-tight mb-6"
         >
@@ -120,7 +120,7 @@
 
       <!-- Process Section -->
       <section
-        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8 mb-12 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-8 mb-12 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
       >
         <h2
           class="text-2xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] mb-8"

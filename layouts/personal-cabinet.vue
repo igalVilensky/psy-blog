@@ -12,10 +12,12 @@
               to="/profile"
               class="flex items-center hover:opacity-80 transition-opacity"
             >
-              <img
-                :src="userAvatar"
-                :alt="`Аватар ${userName}`"
-                class="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover border-2 border-white/20"
+              <UserAvatar
+                :avatarUrl="userAvatar"
+                :loading="loadingAvatar"
+                :userInitial="userName.charAt(0).toUpperCase()"
+                :size="32"
+                :noUpload="true"
               />
             </NuxtLink>
             <div class="text-white hidden md:block">
@@ -56,7 +58,7 @@
           <!-- Mobile Menu Button -->
           <button
             @click="toggleMobileMenu"
-            class="md:hidden p-2 rounded-lg hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+            class="md:hidden p-2 flex justify-center items-center rounded-lg hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
           >
             <i
               :class="[
@@ -73,11 +75,11 @@
     <!-- Mobile Navigation Menu -->
     <div
       v-if="isMobileMenuOpen"
-      class="fixed inset-0 bg-black bg-opacity-50 z-40"
+      class="relative inset-0 bg-black bg-opacity-50 z-40"
       @click="closeMobileMenu"
     >
       <div
-        class="absolute right-0 top-16 w-64 max-h-[calc(100vh-4rem)] overflow-y-auto bg-gradient-to-b from-[#1A1F35] to-[#1E293B] shadow-xl"
+        class="absolute right-0 top-16 w-64 overflow-y-auto bg-gradient-to-b from-[#1A1F35] to-[#1E293B] shadow-xl"
         @click.stop
       >
         <!-- Mobile User Profile -->
@@ -87,10 +89,12 @@
               to="/profile"
               class="flex items-center hover:opacity-80 transition-opacity"
             >
-              <img
-                :src="userAvatar"
-                :alt="`Аватар ${userName}`"
-                class="w-10 h-10 rounded-full object-cover border-2 border-white/20"
+              <UserAvatar
+                :avatarUrl="userAvatar"
+                :loading="loadingAvatar"
+                :userInitial="userName.charAt(0).toUpperCase()"
+                :size="32"
+                :noUpload="true"
               />
             </NuxtLink>
             <div class="text-white">
@@ -173,16 +177,18 @@
     </div>
 
     <!-- Page Content - adjusted for fixed header -->
-    <main class="p-4 mx-auto max-w-6xl">
+    <main class="px-4 mx-auto max-w-6xl">
       <slot />
     </main>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useAuthStore } from "~/stores/auth";
+import { fetchUserAvatarUrl } from "~/api/firebase/userProfile";
+import UserAvatar from "~/components/profile/UserAvatar.vue"; // Import the UserAvatar component
 
 definePageMeta({
   layout: "personal-cabinet",
@@ -194,7 +200,8 @@ const isMobileMenuOpen = ref(false);
 
 // User data
 const userName = ref(authStore.user?.displayName || "Гость");
-const userAvatar = ref("https://ui-avatars.com/api/?name=Иван+Иванов");
+const userAvatar = ref(null);
+const loadingAvatar = ref(true);
 
 // Navigation items
 const navigationItems = [
@@ -217,6 +224,21 @@ const navigationItems = [
   },
   { name: "Настройки", route: "/profile/settings", icon: "fa-cog" },
 ];
+
+// Fetch user avatar URL
+const fetchAvatar = async () => {
+  if (authStore.user?.uid) {
+    loadingAvatar.value = true;
+    try {
+      userAvatar.value = await fetchUserAvatarUrl(authStore.user.uid);
+    } catch (error) {
+      console.error("Error fetching avatar URL:", error);
+      userAvatar.value = "https://ui-avatars.com/api/?name=Иван+Иванов"; // Fallback
+    } finally {
+      loadingAvatar.value = false;
+    }
+  }
+};
 
 // Fix for route active state
 const isRouteActive = (itemRoute) => {
@@ -261,5 +283,10 @@ const closeMobileMenu = () => {
 // Close mobile menu on route change
 watch(route, () => {
   isMobileMenuOpen.value = false;
+});
+
+// Fetch avatar on mount
+onMounted(() => {
+  fetchAvatar();
 });
 </script>

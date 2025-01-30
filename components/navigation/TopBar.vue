@@ -421,7 +421,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useAuthStore } from "~/stores/auth";
 import DesktopSubmenu from "@/components/navigation/DesktopSubmenu.vue";
 import MobileSubmenu from "@/components/navigation/MobileSubmenu.vue";
@@ -430,6 +430,7 @@ import AwarenessToolsMobileSubmenu from "./AwarenessToolsMobileSubmenu.vue";
 
 const auth = useAuthStore();
 const route = useRoute();
+const router = useRouter();
 
 const isDropdownOpen = ref(false);
 const openSubmenu = ref(null);
@@ -521,7 +522,7 @@ const handleOutsideClick = (event) => {
 
 // Logout user
 const logoutUser = async () => {
-  await authStore.logout();
+  await auth.logout();
   router.push("/login");
 };
 </script>

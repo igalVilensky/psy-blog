@@ -6,7 +6,7 @@
         class="w-full max-w-4xl bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 overflow-hidden grid md:grid-cols-2 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)] mx-auto"
       >
         <!-- Login Form -->
-        <div class="p-10">
+        <div class="p-6 sm:p-8">
           <h2
             class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] mb-6"
           >
@@ -113,7 +113,7 @@
 
         <!-- Info Section -->
         <div
-          class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl p-10 flex flex-col justify-center border-l border-[#0EA5E9]/20"
+          class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl p-6 sm:p-8 flex flex-col justify-center border-l border-[#0EA5E9]/20"
         >
           <h2
             class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] mb-8"

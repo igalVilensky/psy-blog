@@ -143,7 +143,7 @@
       </header>
 
       <!-- Rest of your existing content -->
-      <main class="container mx-auto max-w-6xl px-4 sm:px-0 pb-24 mt-4 sm:mt-8">
+      <main class="container mx-auto max-w-6xl px-4 sm:px-0 mt-4 sm:mt-8">
         <!-- Your existing course grid -->
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           <!-- Your existing course cards -->
@@ -171,7 +171,7 @@
             </div>
 
             <!-- Course Content -->
-            <div class="p-8 flex flex-col flex-grow">
+            <div class="p-6 sm:p-8 flex flex-col flex-grow">
               <!-- Rest of your course card content -->
               <h2
                 class="text-xl font-bold text-white/90 group-hover:text-[#0EA5E9] transition-colors duration-300 line-clamp-2"
@@ -242,7 +242,7 @@
 
       <!-- Call to Action -->
       <div
-        class="mt-16 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8 text-center transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+        class="mt-16 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-8 text-center transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
       >
         <!-- Your existing CTA content -->
         <h2 class="text-2xl font-bold text-white/90 mb-4">

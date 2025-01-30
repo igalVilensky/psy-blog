@@ -68,7 +68,7 @@
                 class="flex-1 lg:flex-initial group relative inline-flex items-center justify-center px-6 py-4 overflow-hidden font-medium transition-all duration-300 ease-out rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 hover:shadow-lg"
               >
                 <span
-                  class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
+                  class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-[101%] bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
                 >
                   <i class="fas fa-cog"></i>
                 </span>
@@ -103,7 +103,7 @@
       </div>
       <!-- Bio Section -->
       <div
-        class="bg-gradient-to-b from-[#1A1F35]/60 to-[#1E293B]/80 backdrop-blur-xl rounded-3xl border border-white/10 p-6 sm:p-10 mb-8 shadow-2xl"
+        class="bg-gradient-to-b from-[#1A1F35]/60 to-[#1E293B]/80 backdrop-blur-xl rounded-3xl border border-white/10 p-6 sm:p-8 mb-8 shadow-2xl"
       >
         <!-- Title and Progress Bar -->
         <div
@@ -308,7 +308,7 @@
 
       <!-- Emotional Barometer Section -->
       <div
-        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8 mb-8"
+        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-6 sm:p-8 mb-8"
       >
         <h2 class="text-xl font-bold text-white/90 mb-4">
           <i class="fas fa-chart-line text-[#0EA5E9] mr-2"></i>

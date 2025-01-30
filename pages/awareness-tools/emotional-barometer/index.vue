@@ -32,7 +32,7 @@
         <!-- Unauthenticated Section -->
         <div
           v-if="!user"
-          class="relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8 sm:p-12 mb-12 max-w-4xl mx-auto"
+          class="relative text-center bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-12 mb-12 max-w-2xl mx-auto"
         >
           <p class="text-xl text-slate-300 mb-8">
             Чтобы начать использовать инструмент, пожалуйста, войдите или
@@ -97,7 +97,7 @@
         <!-- Main Barometer Section (shown only when showStartButton is false) -->
         <div
           v-if="user && !showStartButton"
-          class="relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8 sm:p-12 mb-12 max-w-4xl mx-auto transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+          class="relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-12 mb-12 max-w-4xl mx-auto transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
         >
           <!-- Step Progress -->
           <div class="flex items-center justify-center gap-2 sm:gap-3 px-4">
@@ -241,7 +241,7 @@
           <template v-if="hasStatsData">
             <NuxtLink
               to="/awareness-tools/emotional-barometer/analysis"
-              class="group relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl p-8 border border-[#0EA5E9]/20 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)] transition-all duration-300"
+              class="group relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl p-6 sm:p-8 border border-[#0EA5E9]/20 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)] transition-all duration-300"
             >
               <div
                 class="absolute inset-0 bg-gradient-to-r from-[#0EA5E9]/10 to-[#E879F9]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"
@@ -254,7 +254,7 @@
 
             <NuxtLink
               to="/awareness-tools/emotional-barometer/journal-history"
-              class="group relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl p-8 border border-[#0EA5E9]/20 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)] transition-all duration-300"
+              class="group relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl p-6 sm:p-8 border border-[#0EA5E9]/20 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)] transition-all duration-300"
             >
               <div
                 class="absolute inset-0 bg-gradient-to-r from-[#0EA5E9]/10 to-[#E879F9]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"

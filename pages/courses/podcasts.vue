@@ -145,7 +145,7 @@
       </header>
 
       <!-- Podcasts Grid -->
-      <main class="container mx-auto max-w-6xl px-4 sm:px-0 pb-24 mt-4 sm:mt-8">
+      <main class="container mx-auto max-w-6xl px-4 sm:px-0 pb-16 mt-4 sm:mt-8">
         <div v-if="loading" class="flex justify-center items-center py-12">
           <div
             class="w-12 h-12 rounded-full border-4 border-[#0EA5E9]/20 border-t-[#0EA5E9] animate-spin"

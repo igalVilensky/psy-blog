@@ -20,7 +20,7 @@
       ></div>
     </div>
 
-    <div class="relative container mx-auto px-8 sm:px-0 max-w-6xl py-16">
+    <div class="relative container mx-auto px-6 sm:px-0 max-w-6xl py-16">
       <div class="grid md:grid-cols-4 gap-12">
         <!-- Sitemap Section -->
         <div>

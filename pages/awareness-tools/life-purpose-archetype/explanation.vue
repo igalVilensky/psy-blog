@@ -1,20 +1,20 @@
 <template>
   <div class="relative min-h-screen">
-    <div class="container mx-auto px-4 max-w-3xl relative z-10 py-12">
+    <div class="container mx-auto max-w-3xl relative z-10 pt-12">
       <!-- Back Navigation -->
       <div>
         <NuxtLink
           to="/awareness-tools/life-purpose-archetype"
-          class="inline-flex items-center text-[#0EA5E9] hover:text-[#22D3EE] transition-colors mb-8 group pl-6 sm:pl-0"
+          class="inline-flex px-4 sm:px-0 items-center text-[#0EA5E9] hover:text-[#22D3EE] transition-colors mb-8 group pl-6 sm:pl-0"
         >
           <i
             class="fas fa-arrow-left mr-2 transform group-hover:-translate-x-1 transition-transform text-current"
           ></i>
-          Вернуться к инструментам осознанности
+          Вернуться
         </NuxtLink>
       </div>
       <!-- Header -->
-      <div class="mb-12 text-center">
+      <div class="mb-12 text-center px-4">
         <h1
           class="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#E879F9]"
         >
@@ -29,7 +29,7 @@
       <!-- Introduction Card -->
       <ScrollGlowSection>
         <div
-          class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8 mb-8"
+          class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-8 mb-8"
         >
           <div class="flex items-start mb-6">
             <div class="p-2 bg-[#0EA5E9]/10 rounded-lg mr-4">
@@ -73,7 +73,7 @@
           :key="index"
         >
           <div
-            class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8"
+            class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-8"
           >
             <div class="flex items-center mb-6">
               <i :class="archetype.icon" class="text-2xl text-[#0EA5E9]"></i>

@@ -22,7 +22,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <!-- Contact Details -->
         <div
-          class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8"
+          class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-6 sm:p-8"
         >
           <h2 class="text-2xl font-bold text-white/90 mb-6">Контакты</h2>
           <div class="space-y-6">
@@ -119,7 +119,7 @@
 
         <!-- Contact Form -->
         <div
-          class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8"
+          class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-6 sm:p-8"
         >
           <h3 class="text-2xl font-semibold text-white/90 mb-6">
             Напишите нам

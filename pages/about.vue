@@ -4,7 +4,7 @@
       <!-- Hero Section -->
       <ScrollGlowSection>
         <header
-          class="relative text-center mb-12 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8 sm:p-12 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+          class="relative text-center mb-12 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-12 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
         >
           <div class="relative z-10">
             <h1
@@ -13,7 +13,7 @@
               О проекте
             </h1>
             <p
-              class="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed"
+              class="sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed"
             >
               Добро пожаловать в пространство осознанного развития и личностного
               роста. Здесь каждый шаг ведёт к более глубокому пониманию себя и
@@ -26,7 +26,7 @@
       <!-- Personal Biography Section -->
       <ScrollGlowSection>
         <section
-          class="relative overflow-hidden bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8 sm:p-12 mb-12 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+          class="relative overflow-hidden bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-12 mb-12 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
         >
           <div class="grid md:grid-cols-2 gap-12">
             <div class="space-y-6">
@@ -97,7 +97,7 @@
             :key="offering.title"
           >
             <div
-              class="group relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl p-8 border border-[#0EA5E9]/20 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)] transition-all duration-300"
+              class="group relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl p-6 sm:p-8 border border-[#0EA5E9]/20 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)] transition-all duration-300"
             >
               <div class="flex gap-6">
                 <div
@@ -136,7 +136,7 @@
       <!-- Call to Action -->
       <ScrollGlowSection>
         <section
-          class="relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-12 text-center transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+          class="relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-12 text-center transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
         >
           <div class="relative z-10">
             <h2

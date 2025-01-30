@@ -3,7 +3,7 @@
     <!-- Main Content -->
     <div class="lg:col-span-2 space-y-8">
       <div
-        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8 transition-all duration-300"
+        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-6 sm:p-8 transition-all duration-300"
       >
         <!-- Title and Tabs -->
         <div class="flex flex-col justify-between mb-6">
@@ -224,7 +224,7 @@
     <!-- Right Sidebar Stats -->
     <div class="space-y-8">
       <div
-        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8"
+        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-6 sm:p-8"
       >
         <h2 class="text-xl font-bold text-white/90 mb-6 flex items-center">
           <i class="fas fa-chart-line text-[#0EA5E9] mr-2"></i>
@@ -253,7 +253,7 @@
 
       <!-- Additional Stats Card -->
       <div
-        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-8"
+        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-6 sm:p-8"
       >
         <h3 class="text-lg font-semibold text-white/90 mb-4">Прогресс</h3>
         <div class="space-y-4">

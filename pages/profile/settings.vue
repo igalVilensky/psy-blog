@@ -1,20 +1,5 @@
 <template>
   <div class="relative min-h-screen">
-    <!-- Animated Background - Keeping the original stunning effect -->
-    <div class="fixed inset-0 -z-1">
-      <div class="absolute top-0 left-0 w-full h-full bg-[#1A1F35]">
-        <div
-          class="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-[#0EA5E9]/10 to-[#22D3EE]/10 rounded-full blur-3xl animate-slow-drift opacity-60"
-        ></div>
-        <div
-          class="absolute bottom-1/4 right-1/3 w-80 h-80 bg-gradient-to-r from-[#F59E0B]/10 to-[#F97316]/10 rounded-full blur-3xl animate-slow-pulse opacity-40"
-        ></div>
-        <div
-          class="absolute top-1/3 right-1/4 w-72 h-72 bg-gradient-to-r from-[#E879F9]/10 to-[#C084FC]/10 rounded-full blur-3xl animate-slow-float opacity-50"
-        ></div>
-      </div>
-    </div>
-
     <!-- Main Content -->
     <div class="container mx-auto max-w-6xl relative z-10 py-8">
       <!-- Navigation Bar -->
@@ -42,7 +27,7 @@
 
         <!-- Settings Text -->
         <div
-          class="text-white/90 font-semibold text-sm md:text-base whitespace-nowrap ml-2"
+          class="text-white/90 font-semibold text-sm md:text-base whitespace-nowrap"
         >
           Настройки аккаунта
         </div>
@@ -54,7 +39,7 @@
         <div class="lg:col-span-2 space-y-8">
           <!-- Profile Settings -->
           <section
-            class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8"
+            class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-8"
           >
             <div
               class="flex flex-col md:flex-row md:items-center md:justify-between mb-6"
@@ -210,7 +195,7 @@
           </section>
           <!-- Feedback Section -->
           <section
-            class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8"
+            class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-8"
           >
             <h2 class="text-xl font-bold text-white/90 mb-6">Обратная связь</h2>
             <form @submit.prevent="submitFeedbackForm" class="space-y-6">
@@ -280,7 +265,7 @@
         <div class="space-y-8">
           <!-- Account Management -->
           <section
-            class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8"
+            class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-8"
           >
             <h2 class="text-xl font-bold text-white/90 mb-6">
               Управление аккаунтом
@@ -312,7 +297,7 @@
 
           <!-- Support & Help -->
           <section
-            class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8"
+            class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-8"
           >
             <h2 class="text-xl font-bold text-white/90 mb-6">Поддержка</h2>
             <div class="space-y-4">

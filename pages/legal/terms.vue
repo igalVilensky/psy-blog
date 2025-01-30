@@ -17,7 +17,7 @@
 
       <!-- Terms Content -->
       <div
-        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-8 mb-12"
+        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-8 mb-12"
       >
         <!-- Last Updated Date -->
         <div class="text-sm text-slate-300/80 mb-8">
