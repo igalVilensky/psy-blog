@@ -45,58 +45,42 @@
               class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full lg:w-auto"
             >
               <!-- Personal Cabinet - Primary Button -->
-              <NuxtLink
+              <Button
                 to="/personal-cabinet"
-                class="flex-1 lg:flex-initial group relative inline-flex items-center justify-center px-6 py-4 overflow-hidden font-medium transition-all duration-300 ease-out rounded-xl bg-gradient-to-r from-[#0EA5E9]/10 to-[#E879F9]/10 border border-[#0EA5E9]/20 hover:shadow-lg"
-              >
-                <span
-                  class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
-                >
-                  <i class="fas fa-user-cog"></i>
-                </span>
-                <span
-                  class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
-                >
-                  <i class="fas fa-user-cog mr-2"></i>Личный кабинет
-                </span>
-                <span class="relative invisible">Личный кабинет</span>
-              </NuxtLink>
+                text="Личный кабинет"
+                iconClass="fas fa-user-cog"
+                gradientStart="#0EA5E9"
+                gradientEnd="#E879F9"
+                textColor="#0EA5E9"
+                borderColor="#0EA5E9"
+                customClass="flex-1 lg:flex-initial border-[#0EA5E9]/20"
+              />
 
               <!-- Settings Button -->
-              <NuxtLink
+              <Button
                 to="/profile/settings"
-                class="flex-1 lg:flex-initial group relative inline-flex items-center justify-center px-6 py-4 overflow-hidden font-medium transition-all duration-300 ease-out rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 hover:shadow-lg"
-              >
-                <span
-                  class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-[101%] bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
-                >
-                  <i class="fas fa-cog"></i>
-                </span>
-                <span
-                  class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
-                >
-                  <i class="fas fa-cog mr-2"></i>Настройки
-                </span>
-                <span class="relative invisible">Настройки</span>
-              </NuxtLink>
+                text="Настройки"
+                iconClass="fas fa-cog"
+                gradientStart="#0EA5E9"
+                gradientEnd="#E879F9"
+                textColor="#0EA5E9"
+                borderColor="#0EA5E9"
+                customClass="flex-1 lg:flex-initial border-[#0EA5E9]/20"
+                :translateClass="'-translate-x-[101%]'"
+              />
 
               <!-- Logout Button -->
-              <button
+              <Button
+                text="Выйти"
+                iconClass="fas fa-sign-out-alt"
+                gradientStart="#E879F9"
+                gradientEnd="#E11D48"
+                textColor="#E11D48"
+                borderColor="#E11D48"
+                customClass="flex-1 lg:flex-initial border-[#E11D48]/20"
+                :isLink="false"
                 @click="logoutUser"
-                class="flex-1 lg:flex-initial group relative inline-flex items-center justify-center px-6 py-4 overflow-hidden font-medium transition-all duration-300 ease-out rounded-xl backdrop-blur-sm border border-rose-500/20 hover:shadow-lg"
-              >
-                <span
-                  class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-rose-500 to-[#E879F9] group-hover:translate-x-0 ease"
-                >
-                  <i class="fas fa-sign-out-alt"></i>
-                </span>
-                <span
-                  class="absolute flex items-center justify-center w-full h-full text-rose-500 transition-all duration-300 transform group-hover:translate-x-full ease"
-                >
-                  <i class="fas fa-sign-out-alt mr-2"></i>Выйти
-                </span>
-                <span class="relative invisible">Выйти</span>
-              </button>
+              />
             </div>
           </div>
         </div>
@@ -317,23 +301,15 @@
 
         <!-- CTA Link with Hover Effect -->
         <div v-if="emotionBarometerStats.totalEntries > 0" class="mb-6">
-          <NuxtLink
+          <Button
             to="/awareness-tools/emotional-barometer"
-            class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-2 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
-          >
-            <span
-              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
-            >
-              <i class="fas fa-arrow-right"></i>
-            </span>
-            <span
-              class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
-            >
-              <i class="fas fa-arrow-right mr-2"></i>
-              Перейти к барометру
-            </span>
-            <span class="relative invisible">Перейти к барометру</span>
-          </NuxtLink>
+            text="Перейти к барометру"
+            iconClass="fas fa-arrow-right"
+            gradientStart="#0EA5E9"
+            gradientEnd="#E879F9"
+            textColor="#0EA5E9"
+            customClass="flex-1 lg:flex-initial border-[#0EA5E9]/20"
+          />
         </div>
 
         <!-- Loading State -->
@@ -473,6 +449,7 @@ import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { Chart, registerables } from "chart.js";
 import { fetchUserAvatarUrl } from "~/api/firebase/userProfile";
 import UserAvatar from "~/components/profile/UserAvatar.vue";
+import Button from "~/components/base/Button.vue";
 import { getEmotionBarometerStats } from "~/api/firebase/emotionBarometer";
 import PsychologicalProfile from "~/components/profile/PsychologicalProfile.vue";
 import { getLatestUserAssessment } from "~/api/firebase/assessments";

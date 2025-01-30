@@ -39,59 +39,41 @@
             зарегистрируйтесь.
           </p>
           <div class="flex justify-center gap-6 flex-col sm:flex-row">
-            <NuxtLink
+            <Button
+              text="Войти"
+              iconClass="fas fa-sign-in-alt"
+              gradientStart="#8B5CF6"
+              gradientEnd="#06B6D4"
+              textColor="#FFFFFF"
+              customClass="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group border-[#0EA5E9]"
+              :isLink="true"
               to="/login"
-              class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group"
-            >
-              <span
-                class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
-              >
-                <i class="fas fa-sign-in-alt"></i>
-              </span>
-              <span
-                class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
-              >
-                Войти
-              </span>
-              <span class="relative invisible">Войти</span>
-            </NuxtLink>
-            <NuxtLink
+            />
+            <Button
+              text="Зарегистрироваться"
+              iconClass="fas fa-user-plus"
+              gradientStart="#8B5CF6"
+              gradientEnd="#06B6D4"
+              textColor="#FFFFFF"
+              customClass="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group border-[#0EA5E9]"
+              :isLink="true"
               to="/register"
-              class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group"
-            >
-              <span
-                class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
-              >
-                <i class="fas fa-user-plus"></i>
-              </span>
-              <span
-                class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
-              >
-                Зарегистрироваться
-              </span>
-              <span class="relative invisible">Зарегистрироваться</span>
-            </NuxtLink>
+            />
           </div>
         </div>
 
         <!-- Start Button (shown only when showStartButton is true) -->
         <div v-if="user && showStartButton" class="text-center mt-8 mb-10">
-          <button
+          <Button
+            text="Добавить запись"
+            iconClass="fas fa-plus"
+            gradientStart="#8B5CF6"
+            gradientEnd="#06B6D4"
+            textColor="#FFFFFF"
+            customClass="relative bg-gradient-to-r from-purple-500 to-cyan-500 border-[#06B6D4] inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group"
+            :isLink="false"
             @click="startEntry"
-            class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group"
-          >
-            <span
-              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
-            >
-              <i class="fas fa-plus"></i>
-            </span>
-            <span
-              class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
-            >
-              Добавить запись
-            </span>
-            <span class="relative invisible">Добавить запись</span>
-          </button>
+          />
         </div>
 
         <!-- Main Barometer Section (shown only when showStartButton is false) -->
@@ -173,63 +155,45 @@
             class="flex justify-between sm:justify-end mt-12 gap-4 w-full max-w-2xl mx-auto"
           >
             <!-- Previous Button -->
-            <button
+            <Button
               v-if="currentStep > 1"
+              text="Назад"
+              iconClass="fas fa-arrow-left"
+              gradientStart="#8B5CF6"
+              gradientEnd="#06B6D4"
+              textColor="#FFFFFF"
+              customClass="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group border-[#0EA5E9]"
+              :isLink="false"
               @click="previousStep"
-              class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group"
-            >
-              <span
-                class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
-              >
-                <i class="fas fa-arrow-left"></i>
-              </span>
-              <span
-                class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
-              >
-                Назад
-              </span>
-              <span class="relative invisible">Назад</span>
-            </button>
+            />
 
             <!-- Next Button -->
-            <button
+            <Button
               v-if="currentStep < 5"
-              @click="nextStep"
+              text="Далее"
+              iconClass="fas fa-arrow-right"
+              gradientStart="#8B5CF6"
+              gradientEnd="#06B6D4"
+              textColor="#FFFFFF"
+              customClass="relative bg-gradient-to-r from-purple-500 to-cyan-500 inline-flex border-[#0EA5E9] items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group ml-auto sm:ml-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gradient-to-r disabled:hover:from-purple-500 disabled:hover:to-cyan-500"
+              :isLink="false"
               :disabled="!canProceed"
-              class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group ml-auto sm:ml-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gradient-to-r disabled:hover:from-purple-500 disabled:hover:to-cyan-500"
-            >
-              <span
-                class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease disabled:translate-x-0"
-              >
-                <i class="fas fa-arrow-right"></i>
-              </span>
-              <span
-                class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease disabled:translate-x-0"
-              >
-                Далее
-              </span>
-              <span class="relative invisible">Далее</span>
-            </button>
+              @click="nextStep"
+            />
 
             <!-- Save Button -->
-            <button
+            <Button
               v-if="currentStep === 5"
-              @click="handleSubmit"
+              text="Сохранить"
+              iconClass="fas fa-save"
+              gradientStart="#8B5CF6"
+              gradientEnd="#06B6D4"
+              textColor="#FFFFFF"
+              customClass="relative inline-flex items-center border-[#0EA5E9] bg-gradient-to-r from-purple-500 to-cyan-500 justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group ml-auto sm:ml-0"
+              :isLink="false"
               :disabled="!canSubmit"
-              class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group ml-auto sm:ml-0"
-            >
-              <span
-                class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
-              >
-                <i class="fas fa-save"></i>
-              </span>
-              <span
-                class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
-              >
-                Сохранить
-              </span>
-              <span class="relative invisible">Сохранить</span>
-            </button>
+              @click="handleSubmit"
+            />
           </div>
         </div>
 
@@ -334,6 +298,7 @@ import { emotions } from "~/data/emotionalBarometer/emotions.js";
 import { subEmotionsMap } from "~/data/emotionalBarometer/subEmotionsMap";
 import { lifeSpheres } from "~/data/emotionalBarometer/lifeSpheres";
 import { recommendations } from "~/data/emotionalBarometer/recommendations";
+import Button from "~/components/base/Button.vue";
 
 const {
   notificationMessage,

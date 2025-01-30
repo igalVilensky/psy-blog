@@ -12,18 +12,25 @@
             найдите свой путь к гармоничной жизни
           </p>
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <NuxtLink
+            <Button
               to="/awareness-tools/life-purpose-archetype/assessment"
-              class="relative overflow-hidden rounded-lg group px-8 py-3 bg-gradient-to-r from-pink-500 to-purple-500 text-white font-medium transition-all duration-300 hover:opacity-90"
-            >
-              Пройти тест
-            </NuxtLink>
-            <NuxtLink
+              text="Пройти тест"
+              iconClass="fas fa-play"
+              gradientStart="#EC4899"
+              gradientEnd="#A855F7"
+              textColor="#FFFFFF"
+              customClass="px-8 py-3 hover:opacity-90 border-[#EC4899]/20"
+              :translateClass="'-translate-x-[101%]'"
+            />
+            <Button
               to="/awareness-tools/life-purpose-archetype/explanation"
-              class="relative overflow-hidden rounded-lg px-8 py-3 bg-white/10 text-white font-medium transition-all duration-300 hover:bg-white/20"
-            >
-              Подробнее
-            </NuxtLink>
+              text="Подробнее"
+              iconClass="fas fa-info-circle"
+              gradientStart="#FFFFFF10"
+              gradientEnd="#FFFFFF10"
+              textColor="#FFFFFF"
+              customClass="px-8 py-3 hover:bg-white/20 border-[#FFFFFF10]/20"
+            />
           </div>
         </div>
       </section>
@@ -147,4 +154,6 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import Button from "~/components/base/Button.vue";
+</script>

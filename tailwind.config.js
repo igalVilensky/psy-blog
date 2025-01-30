@@ -7,6 +7,26 @@ export default {
   ],
   theme: {
     extend: {
+      typography: {
+        DEFAULT: {
+          css: {
+            h1: {
+              fontSize: "2.25rem",
+              fontWeight: "bold",
+              marginBottom: "1.5rem",
+            },
+            h2: {
+              fontSize: "1.875rem",
+              fontWeight: "semibold",
+              marginBottom: "1.25rem",
+            },
+            p: {
+              fontSize: "1rem",
+              marginBottom: "1rem",
+            },
+          },
+        },
+      },
       colors: {
         // Base background color
         background: "#1A1F35",
@@ -27,13 +47,9 @@ export default {
           },
         },
       },
+
       backgroundImage: {
-        // Define reusable gradients
-        "gradient-blue": "linear-gradient(to right, var(--tw-gradient-stops))",
-        "gradient-orange":
-          "linear-gradient(to right, var(--tw-gradient-stops))",
-        "gradient-purple":
-          "linear-gradient(to right, var(--tw-gradient-stops))",
+        "gradient-blue-purple": "linear-gradient(to right, #0EA5E9, #E879F9)",
       },
       animation: {
         "spin-slow": "spin 5s linear infinite",

@@ -93,19 +93,6 @@
           </button>
         </div>
       </div>
-
-      <!-- Return to Main Page Link -->
-      <div class="flex justify-center">
-        <NuxtLink
-          to="/awareness-tools/life-purpose-archetype"
-          class="inline-flex items-center gap-2 text-slate-200 hover:text-white transition-colors group"
-        >
-          <i
-            class="fas fa-arrow-left transform group-hover:-translate-x-1 transition-transform"
-          ></i>
-          Вернуться к началу теста
-        </NuxtLink>
-      </div>
     </div>
   </div>
 </template>
