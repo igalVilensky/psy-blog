@@ -1,165 +1,145 @@
 <template>
   <div class="relative min-h-screen">
-    <div class="container mx-auto max-w-6xl relative z-10 pb-12 pt-12">
-      <!-- Hero Section -->
-      <section class="text-center mb-12 px-4">
-        <h1
-          class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] tracking-tight mb-6"
-        >
-          Откройте Ваше Истинное Предназначение
-        </h1>
-        <p
-          class="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed mb-8"
-        >
-          Погрузитесь в глубокое исследование архетипов вашей личности и
-          раскройте истинную цель вашей жизни через трансформационный процесс
-          самопознания.
-        </p>
-        <div class="flex justify-center gap-4">
-          <!-- Primary Button -->
-          <button
-            @click="startAssessment"
-            class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group"
-          >
-            <span
-              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
+    <div class="container mx-auto max-w-6xl px-4 py-8 sm:py-12">
+      <!-- Hero Section with centered alignment -->
+      <section class="mb-16">
+        <div class="max-w-3xl mx-auto text-center">
+          <h1 class="text-3xl sm:text-4xl font-bold text-white mb-4">
+            Раскройте Свою Уникальную Историю
+          </h1>
+          <p class="text-lg text-slate-300 mb-8 leading-relaxed">
+            Познайте себя глубже через современный подход к самопознанию и
+            найдите свой путь к гармоничной жизни
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <NuxtLink
+              to="/awareness-tools/life-purpose-archetype/assessment"
+              class="relative overflow-hidden rounded-lg group px-8 py-3 bg-gradient-to-r from-pink-500 to-purple-500 text-white font-medium transition-all duration-300 hover:opacity-90"
             >
-              <i class="fas fa-clipboard-list"></i>
-            </span>
-            <span
-              class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
+              Пройти тест
+            </NuxtLink>
+            <NuxtLink
+              to="/awareness-tools/life-purpose-archetype/explanation"
+              class="relative overflow-hidden rounded-lg px-8 py-3 bg-white/10 text-white font-medium transition-all duration-300 hover:bg-white/20"
             >
-              Начать исследование
-            </span>
-            <span class="relative invisible">Начать исследование</span>
-          </button>
-
-          <!-- Secondary Button (Learn More) -->
-          <button
-            @click="showInfo"
-            class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group bg-gray-500 hover:bg-gray-600"
-          >
-            <span
-              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gray-600 group-hover:translate-x-0 ease"
-            >
-              <i class="fas fa-info-circle"></i>
-              <!-- Icon for Learn More -->
-            </span>
-            <span
-              class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gray-500 group-hover:translate-x-full ease"
-            >
-              Узнать больше
-            </span>
-            <span class="relative invisible">Узнать больше</span>
-          </button>
+              Подробнее
+            </NuxtLink>
+          </div>
         </div>
       </section>
 
-      <!-- Features Section -->
-      <section class="grid md:grid-cols-2 gap-8 mb-12">
+      <!-- Features Section with modern cards -->
+      <section class="grid sm:grid-cols-2 gap-6 mb-16">
         <div
-          class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+          class="bg-white/5 rounded-xl p-6 hover:bg-white/10 transition-all duration-300"
         >
-          <h2
-            class="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] mb-4"
-          >
-            Для личного развития
+          <h2 class="text-xl font-semibold text-white mb-4">
+            Персональный путь
           </h2>
-          <ul class="space-y-3">
-            <li class="flex items-start">
-              <span class="text-[#0EA5E9] mr-2">✦</span>
+          <ul class="space-y-4">
+            <li class="flex items-start gap-3">
+              <span class="text-pink-400 text-lg">✦</span>
               <span class="text-slate-300"
-                >Раскройте глубинные темы и роли вашей жизни</span
+                >Откройте свои скрытые таланты и истинные желания</span
               >
             </li>
-            <li class="flex items-start">
-              <span class="text-[#0EA5E9] mr-2">✦</span>
+            <li class="flex items-start gap-3">
+              <span class="text-pink-400 text-lg">✦</span>
               <span class="text-slate-300"
-                >Поймите свои природные таланты и предназначение</span
+                >Найдите баланс между карьерой и личной жизнью</span
               >
             </li>
-            <li class="flex items-start">
-              <span class="text-[#0EA5E9] mr-2">✦</span>
+            <li class="flex items-start gap-3">
+              <span class="text-pink-400 text-lg">✦</span>
               <span class="text-slate-300"
-                >Получите руководство для важных жизненных решений</span
+                >Создайте жизнь, которая отражает ваши ценности</span
               >
             </li>
           </ul>
         </div>
 
         <div
-          class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+          class="bg-white/5 rounded-xl p-6 hover:bg-white/10 transition-all duration-300"
         >
-          <h2
-            class="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] mb-4"
-          >
-            Для экспертов
+          <h2 class="text-xl font-semibold text-white mb-4">
+            Профессиональный рост
           </h2>
-          <ul class="space-y-3">
-            <li class="flex items-start">
-              <span class="text-[#0EA5E9] mr-2">✦</span>
+          <ul class="space-y-4">
+            <li class="flex items-start gap-3">
+              <span class="text-pink-400 text-lg">✦</span>
               <span class="text-slate-300"
-                >Помогайте клиентам найти их истинное призвание</span
+                >Определите свой идеальный карьерный путь</span
               >
             </li>
-            <li class="flex items-start">
-              <span class="text-[#0EA5E9] mr-2">✦</span>
+            <li class="flex items-start gap-3">
+              <span class="text-pink-400 text-lg">✦</span>
               <span class="text-slate-300"
-                >Используйте глубинные инсайты в коучинге</span
+                >Развивайте уверенность в принятии решений</span
               >
             </li>
-            <li class="flex items-start">
-              <span class="text-[#0EA5E9] mr-2">✦</span>
+            <li class="flex items-start gap-3">
+              <span class="text-pink-400 text-lg">✦</span>
               <span class="text-slate-300"
-                >Создавайте индивидуальные планы развития</span
+                >Создайте стратегию личностного роста</span
               >
             </li>
           </ul>
         </div>
       </section>
 
-      <!-- Process Section -->
-      <section
-        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-8 mb-12 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
-      >
-        <h2
-          class="text-2xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] mb-8"
-        >
-          Процесс исследования
+      <!-- Process Section with elegant steps -->
+      <section class="bg-white/5 rounded-xl p-6 sm:p-8">
+        <h2 class="text-2xl font-bold text-white mb-8 text-center">
+          Как это работает
         </h2>
-        <div class="grid md:grid-cols-3 gap-6">
-          <div class="text-center">
-            <div
-              class="w-12 h-12 bg-[#0EA5E9]/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-[#0EA5E9]/20"
-            >
-              <span class="text-[#0EA5E9] font-bold">1</span>
+        <div class="grid sm:grid-cols-3 gap-8">
+          <div class="relative">
+            <div class="flex items-start gap-4">
+              <div
+                class="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center flex-shrink-0"
+              >
+                <span class="text-white font-medium">1</span>
+              </div>
+              <div>
+                <h3 class="font-medium text-white mb-2">Познание себя</h3>
+                <p class="text-slate-300">
+                  Пройдите увлекательный тест, раскрывающий ваши уникальные
+                  черты
+                </p>
+              </div>
             </div>
-            <h3 class="font-semibold mb-2 text-slate-300">Глубокая оценка</h3>
-            <p class="text-slate-300">
-              Ответьте на тщательно разработанные вопросы о вашей личности
-            </p>
           </div>
-          <div class="text-center">
-            <div
-              class="w-12 h-12 bg-[#0EA5E9]/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-[#0EA5E9]/20"
-            >
-              <span class="text-[#0EA5E9] font-bold">2</span>
+
+          <div class="relative">
+            <div class="flex items-start gap-4">
+              <div
+                class="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center flex-shrink-0"
+              >
+                <span class="text-white font-medium">2</span>
+              </div>
+              <div>
+                <h3 class="font-medium text-white mb-2">Глубокий анализ</h3>
+                <p class="text-slate-300">
+                  Получите персональный отчет о вашем архетипе и потенциале
+                </p>
+              </div>
             </div>
-            <h3 class="font-semibold mb-2 text-slate-300">Анализ архетипов</h3>
-            <p class="text-slate-300">
-              Получите подробный анализ ваших ключевых архетипов
-            </p>
           </div>
-          <div class="text-center">
-            <div
-              class="w-12 h-12 bg-[#0EA5E9]/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-[#0EA5E9]/20"
-            >
-              <span class="text-[#0EA5E9] font-bold">3</span>
+
+          <div class="relative">
+            <div class="flex items-start gap-4">
+              <div
+                class="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center flex-shrink-0"
+              >
+                <span class="text-white font-medium">3</span>
+              </div>
+              <div>
+                <h3 class="font-medium text-white mb-2">Путь вперед</h3>
+                <p class="text-slate-300">
+                  Следуйте практическим рекомендациям для достижения целей
+                </p>
+              </div>
             </div>
-            <h3 class="font-semibold mb-2 text-slate-300">Практические шаги</h3>
-            <p class="text-slate-300">
-              Узнайте, как применить эти знания в жизни
-            </p>
           </div>
         </div>
       </section>
@@ -167,16 +147,4 @@
   </div>
 </template>
 
-<script setup>
-import { useRouter } from "vue-router";
-
-const router = useRouter();
-
-const startAssessment = () => {
-  router.push("/awareness-tools/life-purpose-archetype/assessment");
-};
-
-const showInfo = () => {
-  router.push("/awareness-tools/life-purpose-archetype/explanation");
-};
-</script>
+<script setup></script>

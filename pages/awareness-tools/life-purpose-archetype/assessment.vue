@@ -1,45 +1,21 @@
 <template>
   <div class="relative min-h-screen">
-    <div class="container mx-auto max-w-3xl relative z-10 pt-12">
-      <!-- Back Navigation -->
-
-      <NuxtLink
-        to="/awareness-tools/life-purpose-archetype"
-        class="px-4 inline-flex items-center text-[#0EA5E9] hover:text-[#22D3EE] transition-colors mb-8 group sm:pl-0"
-      >
-        <i
-          class="fas fa-arrow-left mr-2 transform group-hover:-translate-x-1 transition-transform text-current"
-        ></i>
-        Вернуться
-      </NuxtLink>
-
-      <!-- Progress Bar -->
+    <div class="container mx-auto max-w-3xl px-4 py-8 sm:py-12">
+      <!-- Question Card -->
       <div
-        class="px-4 sm:px-0 mb-8 flex gap-4 sm:gap-8 justify-between items-center"
+        v-if="currentQuestion"
+        class="bg-slate-900/60 backdrop-blur-xl rounded-xl transition-all duration-300 hover:bg-slate-900/80 mb-12 border border-white/5"
       >
-        <button
-          @click="previousQuestion"
-          :disabled="currentQuestionIndex === 0"
-          class="relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group backdrop-blur-sm border border-[#0EA5E9]/20"
-          :class="{
-            'opacity-50 cursor-not-allowed': currentQuestionIndex === 0,
-          }"
-        >
-          <span
-            class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
-          >
-            <i class="fas fa-arrow-left"></i>
-          </span>
-          <span
-            class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:-translate-x-full ease"
-          >
-            <i class="fas fa-arrow-left mr-2"></i>
-            Назад
-          </span>
-          <span class="relative invisible">Назад</span>
-        </button>
-        <div class="flex-grow">
-          <div class="flex justify-between text-sm text-slate-300 mb-2">
+        <!-- Question Header -->
+        <div class="p-6 sm:p-8 border-b border-white/5">
+          <h2 class="text-xl sm:text-2xl font-bold text-white">
+            {{ currentQuestion.questionText }}
+          </h2>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="px-6 sm:px-8 py-4 border-b border-white/5">
+          <div class="flex justify-between text-sm text-slate-200 mb-2">
             <span
               >Вопрос {{ currentQuestionIndex + 1 }} из
               {{ totalQuestions }}</span
@@ -50,9 +26,9 @@
               }}%</span
             >
           </div>
-          <div class="w-full bg-[#1E293B]/60 rounded-full h-2 backdrop-blur-sm">
+          <div class="w-full bg-slate-800/50 rounded-full h-2">
             <div
-              class="bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] h-2 rounded-full transition-all duration-300"
+              class="bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 h-2 rounded-full transition-all duration-300"
               :style="{
                 width: `${
                   ((currentQuestionIndex + 1) / totalQuestions) * 100
@@ -61,56 +37,74 @@
             ></div>
           </div>
         </div>
-      </div>
-
-      <!-- Question Card -->
-      <div
-        v-if="currentQuestion"
-        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-4 sm:p-8 mb-8 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
-      >
-        <div class="flex items-center gap-4 mb-6">
-          <div
-            class="border-2 border-slate-300 flex sm:text-2xl items-center justify-center w-12 h-12 flex-shrink-0 rounded-full bg-gradient-to-r from-[#0EA5E9]/60 to-[#E879F9]/60 text-white font-bold"
-          >
-            {{ currentQuestionIndex + 1 }}
-          </div>
-          <h2 class="sm:text-2xl font-bold text-white/90">
-            {{ currentQuestion.questionText }}
-          </h2>
-        </div>
 
         <!-- Answer Options -->
-        <div class="space-y-4">
+        <div class="p-6 sm:p-8 space-y-4">
           <button
             v-for="(option, index) in answerOptions"
             :key="index"
             @click="handleAnswerSelection(index)"
             :disabled="isAnswering"
-            class="w-full text-left p-4 rounded-lg border transition-all duration-200 backdrop-blur-sm"
+            class="w-full text-left p-4 rounded-lg transition-all duration-200 group"
             :class="[
               selectedAnswer === index
-                ? 'border-[#0EA5E9] bg-[#0EA5E9]/10'
-                : 'border-[#0EA5E9]/20 hover:border-[#0EA5E9] hover:bg-[#0EA5E9]/10',
+                ? 'bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-blue-500/10 border-pink-500/50'
+                : 'bg-slate-800/50 hover:bg-slate-800/80 border-white/5',
+              'border',
             ]"
           >
-            <div class="flex items-center">
+            <div class="flex items-center gap-4">
               <div
-                class="min-w-6 min-h-6 w-6 h-6 rounded-full border-2 mr-4 flex items-center justify-center"
+                class="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors"
                 :class="[
                   selectedAnswer === index
-                    ? 'border-[#0EA5E9]'
-                    : 'border-[#0EA5E9]/50',
+                    ? 'border-pink-400'
+                    : 'border-slate-400 group-hover:border-pink-400/50',
                 ]"
               >
                 <div
                   v-if="selectedAnswer === index"
-                  class="w-3 h-3 bg-[#0EA5E9] rounded-full"
+                  class="w-3 h-3 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full"
                 ></div>
               </div>
-              <span class="sm:text-lg text-slate-300">{{ option.text }}</span>
+              <span
+                class="text-base sm:text-lg"
+                :class="[
+                  selectedAnswer === index
+                    ? 'text-white'
+                    : 'text-slate-200 group-hover:text-white',
+                ]"
+              >
+                {{ option.text }}
+              </span>
             </div>
           </button>
         </div>
+
+        <!-- Navigation Controls -->
+        <div class="px-6 sm:px-8 pb-6 sm:pb-8 pt-2">
+          <button
+            @click="previousQuestion"
+            :disabled="currentQuestionIndex === 0"
+            class="w-full px-6 py-3 rounded-lg font-medium transition-all duration-300 bg-slate-800/50 hover:bg-slate-800/80 text-white disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 border border-white/5"
+          >
+            <i class="fas fa-arrow-left"></i>
+            Предыдущий вопрос
+          </button>
+        </div>
+      </div>
+
+      <!-- Return to Main Page Link -->
+      <div class="flex justify-center">
+        <NuxtLink
+          to="/awareness-tools/life-purpose-archetype"
+          class="inline-flex items-center gap-2 text-slate-200 hover:text-white transition-colors group"
+        >
+          <i
+            class="fas fa-arrow-left transform group-hover:-translate-x-1 transition-transform"
+          ></i>
+          Вернуться к началу теста
+        </NuxtLink>
       </div>
     </div>
   </div>

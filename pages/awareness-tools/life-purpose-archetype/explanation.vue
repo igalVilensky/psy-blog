@@ -1,6 +1,6 @@
 <template>
   <div class="relative min-h-screen">
-    <div class="container mx-auto max-w-3xl relative z-10 pt-12">
+    <div class="container mx-auto max-w-3xl relative z-10 py-12">
       <!-- Back Navigation -->
       <div>
         <NuxtLink
