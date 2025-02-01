@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-[#1A1F35] to-[#1E293B] shadow-[0_2px_20px_rgba(123,97,255,0.15)]"
+    class="fixed top-0 left-0 right-0 z-50 bg-background shadow-[0_2px_20px_rgba(123,97,255,0.15)]"
   >
     <!-- Neon glow divider -->
     <div
@@ -214,7 +214,7 @@
       <div
         data-menu="mobile"
         :class="[
-          'lg:hidden absolute top-full left-0 right-0 bg-gradient-to-b from-[#1A1F35] to-[#1E293B] border-t border-white/10 transform transition-all duration-300 shadow-[0_10px_20px_rgba(0,0,0,0.3)] backdrop-blur-sm overflow-y-auto',
+          'lg:hidden absolute top-full left-0 right-0 bg-background border-t border-white/10 transform transition-all duration-300 shadow-[0_10px_20px_rgba(0,0,0,0.3)] backdrop-blur-sm overflow-y-auto',
           isDropdownOpen
             ? 'translate-y-0 opacity-100 visible max-h-[80vh]'
             : '-translate-y-4 opacity-0 invisible max-h-0',

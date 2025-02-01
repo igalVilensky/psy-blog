@@ -157,8 +157,7 @@
               gradientEnd="#00B0FF"
               textColor="#FFF"
               customClass=" bg-gradient-to-r from-purple-500 to-cyan-500 border-[#FFF]"
-              isLink="true"
-              isClickable="true"
+              :isLink="true"
             />
           </div>
         </section>

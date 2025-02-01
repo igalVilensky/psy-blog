@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="min-h-screen text-white font-sans"
-    :style="{ minHeight: 'calc(100vh - 250px)' }"
-  >
-    <!-- Hero Section with Value Proposition -->
+  <div class="min-h-screen" :style="{ minHeight: 'calc(100vh - 250px)' }">
     <section
       class="relative h-[100vh] flex items-center justify-center overflow-hidden"
       :style="{ minHeight: 'calc(100vh - 250px)' }"
@@ -165,9 +161,8 @@
               text="Создать профиль"
               iconClass="fas fa-arrow-right"
               class=""
-              isLink="true"
+              :isLink="true"
               textColor="#F59E0B"
-              isClickable="true"
             />
           </div>
           <div class="relative">

@@ -29,21 +29,26 @@ export default {
       },
       colors: {
         // Base background color
-        background: "#1A1F35",
+        background: "#161C2E", // Slightly adjusted darker blue-grey
 
         // Gradient colors
         gradient: {
           blue: {
-            start: "#0EA5E9", // Start color for blue gradient
-            end: "#22D3EE", // End color for blue gradient
+            start: "#3A1CFF", // Deep electric blue
+            end: "#00E6FF", // Bright cyan
           },
           orange: {
-            start: "#F59E0B", // Start color for orange gradient
-            end: "#F97316", // End color for orange gradient
+            start: "#FF3D00", // Vivid orange-red
+            end: "#FF9E00", // Bright orange
           },
           purple: {
-            start: "#E879F9", // Start color for purple gradient
-            end: "#C084FC", // End color for purple gradient
+            start: "#B44CFF", // Rich purple
+            end: "#FF4DFF", // Bright magenta
+          },
+          // New gradient option
+          mint: {
+            start: "#00FF88", // Bright mint
+            end: "#70FF94", // Light green
           },
         },
       },
