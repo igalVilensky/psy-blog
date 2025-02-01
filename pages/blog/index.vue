@@ -1,6 +1,6 @@
 <!-- pages/blog/index.vue -->
 <template>
-  <div class="relative min-h-screen bg-[#1A1F35]">
+  <div class="relative min-h-screen">
     <div class="relative z-10">
       <!-- Enhanced Header Section -->
       <header class="pt-8 px-4 relative">

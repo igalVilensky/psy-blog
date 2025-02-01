@@ -4,7 +4,7 @@
       <!-- Hero Section -->
       <ScrollGlowSection>
         <header
-          class="relative text-center mb-12 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-12 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+          class="relative text-center mb-12 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl sm:rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-12 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
         >
           <div class="relative z-10">
             <h1
@@ -26,10 +26,10 @@
       <!-- Personal Biography Section -->
       <ScrollGlowSection>
         <section
-          class="relative overflow-hidden bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-12 mb-12 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+          class="relative overflow-hidden bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl sm:rounded-2xl border border-[#0EA5E9]/20 py-6 sm:p-12 mb-12 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
         >
-          <div class="grid md:grid-cols-2 gap-12">
-            <div class="space-y-6">
+          <div class="grid md:grid-cols-2 gap-8 sm:gap-12">
+            <div class="space-y-6 px-6">
               <div
                 class="px-4 py-2 bg-[#0EA5E9]/10 border border-[#0EA5E9]/20 rounded-full text-[#0EA5E9] font-medium inline-block"
               >
@@ -77,7 +77,7 @@
               <img
                 src="/assets/images/profile.jpg"
                 alt="Анастасия"
-                class="w-full h-[500px] object-cover rounded-xl shadow-lg transition-all duration-500 hover:-translate-y-2"
+                class="w-full sm:h-[400px] object-cover sm:rounded-xl shadow-lg transition-all duration-500 hover:-translate-y-2"
               />
             </div>
           </div>
@@ -97,7 +97,7 @@
             :key="offering.title"
           >
             <div
-              class="group relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl p-6 sm:p-8 border border-[#0EA5E9]/20 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)] transition-all duration-300"
+              class="group relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl sm:rounded-2xl p-6 sm:p-8 border border-[#0EA5E9]/20 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)] transition-all duration-300"
             >
               <div class="flex gap-6">
                 <div
@@ -136,7 +136,7 @@
       <!-- Call to Action -->
       <ScrollGlowSection>
         <section
-          class="relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-12 text-center transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+          class="relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl sm:rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-12 text-center transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
         >
           <div class="relative z-10">
             <h2
@@ -149,22 +149,17 @@
               горизонты развития
             </p>
 
-            <NuxtLink
+            <Button
               to="/courses/courses"
-              class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group"
-            >
-              <span
-                class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
-              >
-                <i class="fas fa-book-open"></i>
-              </span>
-              <span
-                class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
-              >
-                Перейти к курсам
-              </span>
-              <span class="relative invisible">Перейти к курсам</span>
-            </NuxtLink>
+              text="Перейти к курсам"
+              iconClass="fas fa-book-open"
+              gradientStart="#9B4DFF"
+              gradientEnd="#00B0FF"
+              textColor="#FFF"
+              customClass=" bg-gradient-to-r from-purple-500 to-cyan-500 border-[#FFF]"
+              isLink="true"
+              isClickable="true"
+            />
           </div>
         </section>
       </ScrollGlowSection>
@@ -174,6 +169,7 @@
 
 <script setup>
 import ScrollGlowSection from "~/components/ui/ScrollGlowSection.vue";
+import Button from "~/components/base/Button.vue";
 
 const offerings = [
   {

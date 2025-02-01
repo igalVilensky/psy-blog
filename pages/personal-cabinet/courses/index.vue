@@ -2,7 +2,14 @@
   <div class="w-full min-h-screen bg-gray-50/30">
     <div class="max-w-6xl mx-auto py-8 sm:py-12">
       <!-- Loading State -->
-      <Loading v-if="loading" />
+      <!-- <Loading v-if="loading" /> -->
+      <div v-if="loading" class="space-y-8">
+        <div class="animate-pulse space-y-4">
+          <div class="h-8 bg-gray-200 rounded-md w-3/4"></div>
+          <div class="h-4 bg-gray-200 rounded-md w-1/2"></div>
+          <div class="h-96 bg-gray-200 rounded-2xl"></div>
+        </div>
+      </div>
 
       <!-- Content when not loading -->
       <div v-else>

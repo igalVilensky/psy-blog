@@ -1,25 +1,17 @@
 <template>
   <div
-    class="min-h-screen bg-[#1A1F35] text-white font-sans"
+    class="min-h-screen text-white font-sans"
     :style="{ minHeight: 'calc(100vh - 250px)' }"
   >
     <!-- Hero Section with Value Proposition -->
     <section
-      class="relative h-[100dvh] flex items-center justify-center overflow-hidden"
+      class="relative h-[100vh] flex items-center justify-center overflow-hidden"
       :style="{ minHeight: 'calc(100vh - 250px)' }"
     >
-      <!-- Animated Background -->
-      <div class="absolute inset-0 z-0">
-        <div
-          class="absolute w-96 h-96 bg-[#0EA5E9]/10 rounded-full blur-3xl animate-slow-drift top-1/4 -left-12"
-        ></div>
-        <div
-          class="absolute w-80 h-80 bg-[#E879F9]/10 rounded-full blur-3xl animate-slow-float top-1/3 right-0"
-        ></div>
-      </div>
-
       <!-- Content -->
-      <div class="relative container mx-auto px-8 max-w-3xl pb-24 md:pb-32">
+      <div
+        class="relative container mx-auto px-6 sm:px-8 max-w-3xl pb-24 md:pb-32"
+      >
         <div class="text-center">
           <!-- Heading -->
           <h1
@@ -56,31 +48,26 @@
             </p>
           </div>
 
-          <!-- Buttons -->
+          <!-- Buttons (only shown after fetching auth) -->
           <div
             class="flex flex-col sm:flex-row gap-4 justify-center animate-fadeIn opacity-0"
-            style="animation-delay: 0.6s"
+            style="animation-delay: 2s"
           >
-            <NuxtLink
+            <Button
               :to="isLoggedIn ? '/personal-cabinet' : '/courses/courses'"
-              class="group relative inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white font-medium rounded-lg overflow-hidden transition-all hover:from-[#22D3EE] hover:to-[#C084FC]"
-            >
-              <span class="relative z-10">
-                {{ isLoggedIn ? "Продолжить обучение" : "Начать обучение" }}
-              </span>
-              <div
-                class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-gradient-to-r from-[#22D3EE] to-[#C084FC] transition-transform duration-300"
-              ></div>
-            </NuxtLink>
-            <NuxtLink
-              :to="isLoggedIn ? '/profile' : '/profile'"
-              class="group inline-flex items-center justify-center px-8 py-3 bg-transparent text-[#0EA5E9] font-medium rounded-lg border-2 border-[#0EA5E9]/50 hover:bg-[#0EA5E9]/10 transition-colors"
-            >
-              {{ isLoggedIn ? "Перейти в профиль" : "Создать профиль" }}
-              <i
-                class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"
-              ></i>
-            </NuxtLink>
+              :text="isLoggedIn ? 'Продолжить обучение' : 'Начать обучение'"
+              iconClass="fas fa-book-open"
+              textColor="#FFFFFF"
+              customClass="bg-gradient-to-r from-purple-500 to-cyan-500 border-[#0EA5E9]/20"
+            />
+
+            <Button
+              :to="isLoggedIn ? '/profile' : '/login'"
+              :text="isLoggedIn ? 'Перейти в профиль' : 'Создать профиль'"
+              iconClass="fas fa-user"
+              textColor="#0EA5E9"
+              customClass="bg-transparent border-2 border-[#0EA5E9]/50 hover:bg-[#0EA5E9]/10 transition-colors"
+            />
           </div>
         </div>
       </div>
@@ -173,12 +160,15 @@
                 <span class="text-slate-300">Карта потенциала развития</span>
               </li>
             </ul>
-            <button
-              class="group relative px-8 py-4 rounded-xl bg-white/10 hover:bg-white/20 transition-all duration-300"
-            >
-              Создать профиль
-              <i class="fas fa-arrow-right ml-2"></i>
-            </button>
+            <Button
+              to="/profile"
+              text="Создать профиль"
+              iconClass="fas fa-arrow-right"
+              class=""
+              isLink="true"
+              textColor="#F59E0B"
+              isClickable="true"
+            />
           </div>
           <div class="relative">
             <div
@@ -199,6 +189,7 @@
 <script setup>
 import { useAuthStore } from "~/stores/auth";
 import { computed } from "vue";
+import Button from "~/components/base/Button.vue";
 
 const authStore = useAuthStore();
 
@@ -234,7 +225,7 @@ const userName = computed(() => authStore.user?.displayName || "Гость");
     opacity: 0;
   }
   60% {
-    opacity: 0.3;
+    opacity: 0.5;
   }
   100% {
     opacity: 1;
@@ -250,6 +241,6 @@ const userName = computed(() => authStore.user?.displayName || "Гость");
 }
 
 .animate-fadeIn {
-  animation: fadeIn 1.8s ease-out forwards;
+  animation: fadeIn 2s ease-out forwards;
 }
 </style>

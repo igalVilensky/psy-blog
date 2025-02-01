@@ -4,7 +4,7 @@
     <div class="container mx-auto max-w-6xl relative z-10 py-8">
       <!-- Navigation Bar -->
       <nav
-        class="flex items-center justify-between mb-8 bg-gradient-to-r from-[#1A1F35]/60 to-[#1E293B]/60 backdrop-blur-xl rounded-lg border border-[#0EA5E9]/20 p-2 md:p-4"
+        class="flex items-center justify-between mb-8 bg-gradient-to-r from-[#1A1F35]/60 to-[#1E293B]/60 backdrop-blur-xl rounded-lg border border-[#0EA5E9]/20 p-4"
       >
         <!-- Back Button -->
         <NuxtLink
@@ -242,7 +242,7 @@
               <button
                 type="submit"
                 :disabled="isSubmittingFeedback"
-                class="group relative inline-flex items-center justify-center w-full px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
+                class="group relative inline-flex items-center justify-center w-full sm:w-fit px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
               >
                 <span
                   class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"

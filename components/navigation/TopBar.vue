@@ -9,14 +9,14 @@
 
     <!-- Container for topbar content -->
     <div
-      class="container max-w-6xl px-4 w-full mx-auto flex justify-between items-center py-4 relative z-10"
+      class="container max-w-6xl px-4 sm:px-0 w-full mx-auto flex justify-between items-center py-4 relative z-10"
     >
       <!-- Brand/Logo -->
       <NuxtLink to="/" class="group relative" @click="closeDropdown">
         <span
           class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:from-[#E879F9] group-hover:to-[#0EA5E9] transition-all duration-500"
         >
-          Anastasia
+          Psy-Blog
         </span>
         <span
           class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:w-full transition-all duration-500"
