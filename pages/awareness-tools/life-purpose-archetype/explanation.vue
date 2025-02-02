@@ -5,7 +5,7 @@
       <div>
         <NuxtLink
           to="/awareness-tools/life-purpose-archetype"
-          class="inline-flex px-4 sm:px-0 items-center text-[#00E6FF] hover:text-[#3A1CFF] transition-colors mb-8 group pl-6 sm:pl-0"
+          class="inline-flex px-4 sm:px-0 items-center text-pink-500 hover:text-purple-500 transition-colors mb-8 group pl-6 sm:pl-0"
         >
           <i
             class="fas fa-arrow-left mr-2 transform group-hover:-translate-x-1 transition-transform text-current"
