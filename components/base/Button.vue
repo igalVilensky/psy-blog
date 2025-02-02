@@ -53,7 +53,7 @@ const emit = defineEmits(["click"]);
 // ✅ Computed class for styling
 const buttonClasses = computed(
   () =>
-    `flex-1 lg:flex-initial group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden font-medium transition-all duration-300 ease-out rounded-xl border hover:shadow-lg ${props.customClass}`
+    `flex-1 lg:flex-initial group relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-xl border hover:shadow-lg ${props.customClass}`
 );
 
 // ✅ Handle click (works for both links & buttons)

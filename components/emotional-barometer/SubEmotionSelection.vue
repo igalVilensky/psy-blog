@@ -23,7 +23,7 @@
         <!-- Main Button Content -->
         <div
           :class="[
-            'relative py-6 sm:py-8 px-3 sm:px-4 rounded-xl transition-all duration-300',
+            'relative p-4 rounded-xl transition-all duration-300',
             'backdrop-blur-sm border w-full h-full',
             selectedSubEmotion === emotion
               ? 'bg-gradient-to-r from-[#0EA5E9]/40 to-[#E879F9]/40 border-[#0EA5E9]/50 shadow-lg shadow-[#0EA5E9]/20'

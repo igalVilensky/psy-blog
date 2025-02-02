@@ -2,26 +2,24 @@
   <div class="relative min-h-screen">
     <div class="container mx-auto max-w-6xl relative z-10 pb-12 pt-12">
       <!-- Hero Section -->
-      <ScrollGlowSection>
+      <!-- <ScrollGlowSection>
         <header
           class="relative text-center mb-12 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl sm:rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-12 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
         >
           <div class="relative z-10">
             <h1
-              class="text-4xl sm:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] tracking-tight mb-6"
+              class="text-4xl sm:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] tracking-tight mb-6"
             >
               О проекте
             </h1>
-            <p
-              class="sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed"
-            >
+            <p class="text-slate-300 max-w-2xl mx-auto leading-relaxed">
               Добро пожаловать в пространство осознанного развития и личностного
               роста. Здесь каждый шаг ведёт к более глубокому пониманию себя и
               гармонии с миром.
             </p>
           </div>
         </header>
-      </ScrollGlowSection>
+      </ScrollGlowSection> -->
 
       <!-- Personal Biography Section -->
       <ScrollGlowSection>

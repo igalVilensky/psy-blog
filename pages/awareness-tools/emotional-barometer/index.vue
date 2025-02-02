@@ -6,14 +6,12 @@
         <h1
           class="text-4xl sm:text-5xl font-bold my-6 bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] tracking-tight"
         >
-          Понимаем ваши эмоции
+          Анализ и понимание эмоций
         </h1>
-        <p
-          class="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed px-2"
-        >
-          Эмоциональный Барометр — это инструмент, который помогает вам лучше
-          понять свои эмоции, отслеживать их интенсивность и находить способы
-          справляться с ними.
+        <p class="text-slate-300 max-w-2xl mx-auto leading-relaxed px-2">
+          Эмоциональный Барометр — инструмент для оценки и осознания
+          эмоционального состояния. Он помогает отслеживать динамику эмоций,
+          анализировать их влияние и находить эффективные стратегии управления.
         </p>
       </section>
 
@@ -152,7 +150,7 @@
 
           <!-- Navigation -->
           <div
-            class="flex justify-between sm:justify-end mt-12 gap-4 w-full max-w-2xl mx-auto"
+            class="flex justify-between sm:justify-end mt-6 gap-4 w-full max-w-2xl mx-auto"
           >
             <!-- Previous Button -->
             <Button
@@ -189,7 +187,7 @@
               gradientStart="#8B5CF6"
               gradientEnd="#06B6D4"
               textColor="#FFFFFF"
-              customClass="relative inline-flex items-center border-[#0EA5E9] bg-gradient-to-r from-purple-500 to-cyan-500 justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group ml-auto sm:ml-0"
+              customClass="relative inline-flex disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gradient-to-r disabled:hover:from-purple-500 disabled:hover:to-cyan-500 items-center border-[#0EA5E9] bg-gradient-to-r from-purple-500 to-cyan-500 justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group ml-auto sm:ml-0"
               :isLink="false"
               :disabled="!canSubmit"
               @click="handleSubmit"

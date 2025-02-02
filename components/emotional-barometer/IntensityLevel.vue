@@ -14,7 +14,7 @@
     <div class="grid grid-cols-3 gap-2 md:gap-4 mb-6 md:mb-8">
       <!-- Weak -->
       <div
-        class="flex flex-col items-center justify-center min-h-[72px] p-2 md:p-4 rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 bg-[#1A1F35]/40 group hover:bg-[#1A1F35]/60 transition-all duration-300"
+        class="flex flex-col items-center justify-center min-h-[72px] px-2 py-1 md:py-2 rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 bg-[#1A1F35]/40 group hover:bg-[#1A1F35]/60 transition-all duration-300"
       >
         <div
           class="text-green-400 font-medium text-sm md:text-base flex items-center gap-2"
@@ -23,7 +23,7 @@
           <span class="hidden md:inline">Слабое</span>
           <span class="inline md:hidden">1-3</span>
         </div>
-        <div class="text-[10px] md:text-xs text-green-300/80">
+        <div class="text-[10px] sm:text-sm text-green-300/80">
           <span class="inline md:hidden">Слабое</span>
           <span class="hidden md:inline">1-3</span>
         </div>
@@ -31,7 +31,7 @@
 
       <!-- Medium -->
       <div
-        class="flex flex-col items-center justify-center min-h-[72px] p-2 md:p-4 rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 bg-[#1A1F35]/40 group hover:bg-[#1A1F35]/60 transition-all duration-300"
+        class="flex flex-col items-center justify-center min-h-[72px] px-2 py-1 md:py-2 rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 bg-[#1A1F35]/40 group hover:bg-[#1A1F35]/60 transition-all duration-300"
       >
         <div
           class="text-yellow-400 font-medium text-sm md:text-base flex items-center gap-2"
@@ -40,7 +40,7 @@
           <span class="hidden md:inline">Умеренное</span>
           <span class="inline md:hidden">4-7</span>
         </div>
-        <div class="text-[10px] md:text-xs text-yellow-300/80">
+        <div class="text-[10px] sm:text-sm text-yellow-300/80">
           <span class="inline md:hidden">Умеренное</span>
           <span class="hidden md:inline">4-7</span>
         </div>
@@ -48,7 +48,7 @@
 
       <!-- Strong -->
       <div
-        class="flex flex-col items-center justify-center min-h-[72px] p-2 md:p-4 rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 bg-[#1A1F35]/40 group hover:bg-[#1A1F35]/60 transition-all duration-300"
+        class="flex flex-col items-center justify-center min-h-[72px] px-2 py-1 md:py-2 rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 bg-[#1A1F35]/40 group hover:bg-[#1A1F35]/60 transition-all duration-300"
       >
         <div
           class="text-red-400 font-medium text-sm md:text-base flex items-center gap-2"
@@ -57,7 +57,7 @@
           <span class="hidden md:inline">Сильное</span>
           <span class="inline md:hidden">8-10</span>
         </div>
-        <div class="text-[10px] md:text-xs text-red-300/80">
+        <div class="text-[10px] sm:text-sm text-red-300/80">
           <span class="inline md:hidden">Сильное</span>
           <span class="hidden md:inline">8-10</span>
         </div>

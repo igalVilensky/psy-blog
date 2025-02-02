@@ -21,7 +21,7 @@
         <!-- Main Button Content -->
         <div
           :class="[
-            'relative px-4 py-2 rounded-xl transition-all duration-300',
+            'relative p-4 rounded-xl transition-all duration-300',
             'backdrop-blur-sm border',
             'group-hover:transform group-hover:-translate-y-0.5',
             selectedTags.includes(sphere.name)

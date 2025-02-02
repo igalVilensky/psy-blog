@@ -109,32 +109,22 @@
 
       <!-- Footer -->
       <div class="p-6 flex justify-end gap-3 border-t border-[#0EA5E9]/20">
-        <button
-          type="button"
+        <Button
+          :text="'Закрыть'"
+          :iconClass="'fas fa-times'"
+          :textColor="'#CBD5E1'"
+          customClass="'px-4 py-2 text-sm font-medium border border-[#0EA5E9]/20 bg-[#1A1F35]/40 hover:bg-[#1A1F35]/60 backdrop-blur-sm'"
+          :isLink="false"
           @click="onClose"
-          class="px-4 py-2 rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 bg-[#1A1F35]/40 text-slate-300 text-sm font-medium hover:bg-[#1A1F35]/60 transition-all duration-300"
-        >
-          Закрыть
-        </button>
-        <button
-          type="button"
-          @click="onClose"
-          class="group relative px-6 py-2 rounded-xl text-sm font-medium transition-all duration-300"
-        >
-          <div class="relative z-10 text-white">Понятно</div>
-          <div
-            class="absolute inset-0 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] rounded-xl"
-          />
-          <div
-            class="absolute inset-0 bg-gradient-to-r from-[#0EA5E9]/20 to-[#E879F9]/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-          />
-        </button>
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import Button from "~/components/base/Button.vue";
+
 defineProps({
   isOpen: {
     type: Boolean,

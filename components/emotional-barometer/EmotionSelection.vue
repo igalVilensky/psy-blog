@@ -26,7 +26,7 @@
         <div
           :class="[
             'relative rounded-xl transition-all duration-300 h-full',
-            'backdrop-blur-sm border flex items-center gap-4 p-4',
+            'backdrop-blur-sm border flex items-center gap-4 px-4 py-2',
             selectedEmotion?.id === emotion.id
               ? 'bg-gradient-to-r from-[#0EA5E9]/40 to-[#E879F9]/40 border-[#0EA5E9]/50 shadow-lg shadow-[#0EA5E9]/20'
               : 'bg-[#1A1F35]/40 border-[#0EA5E9]/20 group-hover:border-[#0EA5E9]/30',

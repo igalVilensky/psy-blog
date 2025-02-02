@@ -37,8 +37,7 @@
 
     <!-- Original Question -->
     <div class="transition-all duration-500">
-      <p class="text-slate-300 my-4 md:mb-8 flex items-center gap-2">
-        <i class="fas fa-pen-fancy text-[#0EA5E9]"></i>
+      <p class="text-slate-300 flex items-center gap-2 mb-3">
         Опишите, что вызвало эту эмоцию и какие мысли у вас возникли:
       </p>
       <div class="relative">
@@ -50,6 +49,7 @@
           placeholder="Опишите ваши мысли и чувства..."
           @input="handleInput('journal')"
         ></textarea>
+        <i class="fas fa-pen-fancy text-[#0EA5E9] absolute top-2 right-2"></i>
         <div class="absolute bottom-2 right-2 text-xs text-slate-400">
           {{ journalEntry.length }}/{{ minCharacters }} минимум
         </div>
@@ -63,7 +63,6 @@
       class="transition-all duration-500"
     >
       <p class="text-slate-300 mb-3 flex items-center gap-2">
-        <i class="fas fa-eye text-[#0EA5E9]"></i>
         Как эта ситуация повлияла на ваше восприятие себя и окружающих?
       </p>
       <div class="relative">
@@ -75,6 +74,8 @@
           placeholder="Опишите изменения в вашем восприятии..."
           @input="handleInput('perception')"
         ></textarea>
+        <i class="fas fa-eye text-[#0EA5E9] absolute top-2 right-2"></i>
+
         <div class="absolute bottom-2 right-2 text-xs text-slate-400">
           {{ perceptionEntry.length }}/{{ minCharacters }} минимум
         </div>
@@ -88,7 +89,6 @@
       class="transition-all duration-500"
     >
       <p class="text-slate-300 mb-3 flex items-center gap-2">
-        <i class="fas fa-shield-alt text-[#0EA5E9]"></i>
         Какие стратегии совладания вы использовали или могли бы использовать в
         подобной ситуации?
       </p>
@@ -101,6 +101,8 @@
           placeholder="Опишите ваши стратегии..."
           @input="handleInput('coping')"
         ></textarea>
+        <i class="fas fa-shield-alt text-[#0EA5E9] absolute top-2 right-2"></i>
+
         <div class="absolute bottom-2 right-2 text-xs text-slate-400">
           {{ copingEntry.length }}/{{ minCharacters }} минимум
         </div>
@@ -109,26 +111,22 @@
 
     <!-- Continue Button -->
     <div v-if="showContinueButton" class="mt-6">
-      <button
+      <Button
+        :text="'Продолжить'"
+        :iconClass="'fas fa-arrow-right'"
+        :gradientStart="'#0EA5E9'"
+        :gradientEnd="'#E879F9'"
+        :textColor="'#ffffff'"
+        customClass="bg-gradient-to-r from-purple-500 to-cyan-500 border-[#0EA5E9]/20"
+        :isLink="false"
         @click="handleContinue"
-        class="group relative px-6 py-3 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white rounded-xl text-sm font-medium hover:from-[#0EA5E9]/90 hover:to-[#E879F9]/90 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]/50 transition-all duration-300 w-full sm:w-auto"
-      >
-        <div class="relative z-10 flex items-center justify-center">
-          Продолжить
-          <i
-            class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform duration-300"
-          ></i>
-        </div>
-        <div
-          class="absolute inset-0 bg-gradient-to-r from-[#0EA5E9]/20 to-[#E879F9]/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-        ></div>
-      </button>
+      />
     </div>
 
     <!-- Completion Message -->
     <div
       v-if="isCompleted"
-      class="mt-6 text-center px-6 py-4 rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 bg-[#1A1F35]/40 transform transition-all duration-500"
+      class="mt-6 text-center px-4 py-2 rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 bg-[#1A1F35]/40 transform transition-all duration-500"
     >
       <p class="text-slate-300 flex items-center justify-center gap-2">
         <i class="fas fa-check-circle text-green-400"></i>
@@ -141,6 +139,7 @@
 
 <script setup>
 import { ref, watch, reactive, computed } from "vue";
+import Button from "~/components/base/Button.vue";
 
 const props = defineProps({
   journalEntry: {

@@ -17,7 +17,7 @@
       <!-- Guide Content Container -->
       <div
         v-if="guide"
-        class="bg-gray-800/50 backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl border border-gray-700/50 p-8 sm:p-12 space-y-8"
+        class="bg-gray-800/50 backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl border border-gray-700/50 p-4 sm:p-8 space-y-8"
       >
         <!-- Image Section -->
         <div
@@ -133,7 +133,7 @@
         <a
           v-if="guide.pdfFile?.asset?.url"
           :href="guide.pdfFile.asset.url"
-          class="relative inline-flex items-center justify-center mt-4 px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group w-full"
+          class="relative inline-flex items-center justify-center mt-4 px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group w-full sm:w-fit"
           download
         >
           <span

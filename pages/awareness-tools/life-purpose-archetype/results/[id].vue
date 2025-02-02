@@ -1,123 +1,139 @@
 <template>
   <div class="relative min-h-screen">
-    <div class="container mx-auto px-4 max-w-4xl relative z-10 py-12">
-      <!-- Loading state -->
-      <div v-if="isLoading" class="text-center py-12">
-        <div
-          class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0EA5E9] mx-auto"
-        ></div>
-        <p class="mt-4 text-slate-300">Загрузка результатов...</p>
+    <div class="container mx-auto px-4 max-w-5xl relative z-10 py-8 lg:py-16">
+      <!-- Loading State -->
+      <div
+        v-if="isLoading"
+        class="flex flex-col items-center justify-center min-h-[60vh]"
+      >
+        <div class="relative">
+          <div
+            class="w-16 h-16 border-4 border-[#3A1CFF]/20 rounded-full animate-spin"
+          ></div>
+          <div
+            class="w-16 h-16 border-4 border-t-[#00E6FF] rounded-full animate-spin absolute top-0 left-0"
+          ></div>
+        </div>
+        <p class="mt-6 text-slate-300 text-lg animate-pulse">
+          Анализируем ваши результаты...
+        </p>
       </div>
 
-      <!-- Error state -->
+      <!-- Error State -->
       <div
         v-else-if="error"
-        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6"
+        class="rounded-2xl bg-[#1A2038] backdrop-blur-xl border-2 border-[#FF3D00]/20 p-8"
       >
-        <p class="text-red-400">{{ error }}</p>
+        <div class="flex items-center gap-3">
+          <i class="fas fa-exclamation-circle text-[#FF3D00] text-xl"></i>
+          <p class="text-[#FF3D00]">{{ error }}</p>
+        </div>
       </div>
 
-      <!-- Results display -->
-      <div v-else-if="result" class="space-y-8">
-        <div
-          class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-8 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
-        >
+      <!-- Results Display -->
+      <div v-else-if="result" class="space-y-10">
+        <!-- Header Section -->
+        <div class="text-center">
           <h1
-            class="text-2xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#E879F9]"
+            class="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#3A1CFF] to-[#00E6FF] mb-4"
           >
-            Результаты архетипа жизненного предназначения
+            Ваш Архетип Жизненного Предназначения
           </h1>
-          <p class="text-slate-300 mb-2">
-            Дата прохождения: {{ formatDate(result.timestamp) }}
+          <p class="text-slate-300">
+            <i class="fas fa-calendar-alt mr-2"></i>
+            {{ formatDate(result.timestamp) }}
           </p>
+        </div>
 
-          <!-- 3 Dominant Archetypes -->
+        <!-- Top 3 Archetypes Card -->
+        <div
+          class="bg-[#1A2038] backdrop-blur-xl rounded-2xl border-2 border-[#3A1CFF]/30 p-6 lg:p-8 transform transition-all duration-300 hover:shadow-[0_0_30px_rgba(58,28,255,0.2)]"
+        >
+          <h2
+            class="text-2xl font-semibold text-white mb-6 flex items-center gap-3"
+          >
+            <i class="fas fa-crown text-[#F59E0B]"></i>
+            Ваши Доминирующие Архетипы
+          </h2>
 
-          <div class="mt-6">
-            <h2 class="text-xl font-semibold mb-3 text-slate-300">
-              Ваши три доминирующих архетипа:
-            </h2>
-            <ul class="space-y-2">
-              <li
-                v-for="({ archetype, score }, index) in topArchetypes"
-                :key="archetype"
-                class="flex items-center justify-between bg-[#1A1F35]/40 p-4 rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
-              >
-                <span class="font-medium capitalize text-slate-300">
-                  {{ index + 1 }}. {{ archetype }}
-                </span>
-                <span class="text-slate-400">{{ score }}</span>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Scores Breakdown -->
-          <div class="mt-8">
-            <h2 class="text-xl font-semibold mb-4 text-slate-300">
-              Распределение баллов:
-            </h2>
-            <div class="space-y-4">
+          <div class="grid gap-4 md:grid-cols-3">
+            <div
+              v-for="({ archetype, score }, index) in topArchetypes"
+              :key="archetype"
+              class="relative bg-[#252B45] rounded-xl p-6 border-2 border-[#3A1CFF]/20 transform transition-all duration-300 hover:-translate-y-1"
+            >
               <div
-                v-for="(score, archetype) in result.scores"
-                :key="archetype"
-                class="bg-[#1A1F35]/40 p-4 rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
+                class="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-gradient-to-r from-[#B44CFF] to-[#FF4DFF] flex items-center justify-center text-white font-bold shadow-lg"
               >
-                <div class="flex justify-between items-center">
-                  <span class="font-medium capitalize text-slate-300">{{
-                    archetype
-                  }}</span>
-                  <span class="text-slate-400">{{ Math.round(score) }}</span>
-                </div>
-                <div class="w-full bg-[#1E293B]/60 rounded-full h-2.5 mt-2">
-                  <div
-                    class="bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] h-2.5 rounded-full"
-                    :style="{ width: `${((score - 6) / (30 - 6)) * 100}%` }"
-                  ></div>
+                {{ index + 1 }}
+              </div>
+              <h3 class="text-xl font-medium text-white mt-2 capitalize">
+                {{ archetype }}
+              </h3>
+              <div class="mt-3 flex items-end justify-between">
+                <div class="text-sm text-slate-300">Балл</div>
+                <div class="text-2xl font-semibold text-[#00E6FF]">
+                  {{ score }}
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Navigation buttons -->
-        <div class="flex justify-between mt-8">
-          <NuxtLink
-            to="/awareness-tools/life-purpose-archetype"
-            class="relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group backdrop-blur-sm border border-[#0EA5E9]/20"
+        <!-- Detailed Scores -->
+        <div
+          class="bg-[#1A2038] backdrop-blur-xl rounded-2xl border-2 border-[#3A1CFF]/30 p-6 lg:p-8"
+        >
+          <h2
+            class="text-2xl font-semibold text-white mb-6 flex items-center gap-3"
           >
-            <span
-              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
-            >
-              <i class="fas fa-arrow-left"></i>
-            </span>
-            <span
-              class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:-translate-x-full ease"
-            >
-              <i class="fas fa-arrow-left mr-2"></i>
-              Назад к тесту
-            </span>
-            <span class="relative invisible">Назад к тесту</span>
-          </NuxtLink>
+            <i class="fas fa-chart-bar text-[#00FF88]"></i>
+            Подробный Анализ
+          </h2>
 
-          <NuxtLink
-            to="/awareness-tools/life-purpose-archetype/explanation"
-            class="relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group backdrop-blur-sm border border-[#0EA5E9]/20"
-          >
-            <span
-              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
+          <div class="space-y-6">
+            <div
+              v-for="(score, archetype) in result.scores"
+              :key="archetype"
+              class="group bg-[#252B45] rounded-xl p-5 border-2 border-[#3A1CFF]/20 transition-all duration-300 hover:border-[#00E6FF]/30"
             >
-              <i class="fas fa-book"></i>
-            </span>
-            <span
-              class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
-            >
-              <i class="fas fa-book mr-2"></i>
-              Подробное объяснение архетипов
-            </span>
-            <span class="relative invisible"
-              >Подробное объяснение архетипов</span
-            >
-          </NuxtLink>
+              <div class="flex flex-wrap justify-between items-center mb-3">
+                <span class="font-medium capitalize text-lg text-white">{{
+                  archetype
+                }}</span>
+                <span class="text-[#00E6FF] font-semibold text-xl"
+                  >{{ Math.round(score) }}/30</span
+                >
+              </div>
+              <div class="w-full bg-[#1A2038] rounded-full h-3">
+                <div
+                  class="h-full rounded-full bg-gradient-to-r from-[#FF3D00] to-[#FF9E00] transition-all duration-500 group-hover:shadow-[0_0_10px_rgba(255,61,0,0.5)]"
+                  :style="{ width: `${(score / 30) * 100}%` }"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="flex flex-col sm:flex-row justify-between gap-4 mt-8">
+          <Button
+            :text="'Вернуться к тесту'"
+            :iconClass="'fas fa-arrow-left'"
+            :textColor="'#CBD5E1'"
+            :customClass="'flex-1 p-4 bg-[#1A2038] hover:bg-[#252B45] border-2 border-[#3A1CFF]/20 transition-all duration-300'"
+            :to="'/awareness-tools/life-purpose-archetype'"
+            :isLink="true"
+          />
+
+          <Button
+            :text="'Изучить описания архетипов'"
+            :iconClass="'fas fa-book'"
+            :textColor="'#ffffff'"
+            :customClass="'flex-1 p-4 bg-gradient-to-r from-purple-500 to-cyan-500 inline-flex border-[#0EA5E9]'"
+            :to="'/awareness-tools/life-purpose-archetype/explanation'"
+            :isLink="true"
+          />
         </div>
       </div>
     </div>
@@ -129,6 +145,7 @@ import { ref, onMounted, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { getAuth } from "firebase/auth";
 import { useFirestore } from "~/plugins/firebase";
+import Button from "~/components/base/Button.vue";
 import { getAssessment } from "~/api/firebase/assessments";
 
 const route = useRoute();
@@ -225,3 +242,18 @@ onMounted(() => {
   loadAssessmentResult();
 });
 </script>
+<style scoped>
+@keyframes bounceLeft {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-50px);
+  }
+}
+
+.animate-bounceLeft {
+  animation: bounceLeft 1s infinite;
+}
+</style>
