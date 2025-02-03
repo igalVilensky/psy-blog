@@ -231,6 +231,48 @@ const calculateArchetypeScores = (answers) => {
   return scores;
 };
 
+// const submitAssessmentHandler = async () => {
+//   if (isLoading.value) return;
+
+//   isLoading.value = true;
+//   error.value = null;
+
+//   try {
+//     const currentUser = auth.currentUser;
+//     if (!currentUser) {
+//       throw new Error(
+//         "Пожалуйста, войдите в систему для сохранения результатов"
+//       );
+//     }
+
+//     // Calculate scores
+//     const scores = calculateArchetypeScores(userAnswers.value);
+
+//     // Submit assessment
+//     const result = await submitAssessment(
+//       db,
+//       currentUser.uid,
+//       userAnswers.value,
+//       scores
+//     );
+
+//     if (result.success && result.assessmentId) {
+//       router.push(
+//         `/awareness-tools/life-purpose-archetype/results/${result.assessmentId}`
+//       );
+//     } else {
+//       throw new Error(result.message || "Не удалось сохранить результаты");
+//     }
+//   } catch (err) {
+//     console.error("Error submitting assessment:", err); // Debug: Log errors
+//     error.value = err.message || "Произошла ошибка при сохранении результатов";
+//   } finally {
+//     isLoading.value = false;
+//   }
+// };
+
+// Save progress function
+
 const submitAssessmentHandler = async () => {
   if (isLoading.value) return;
 
@@ -239,11 +281,7 @@ const submitAssessmentHandler = async () => {
 
   try {
     const currentUser = auth.currentUser;
-    if (!currentUser) {
-      throw new Error(
-        "Пожалуйста, войдите в систему для сохранения результатов"
-      );
-    }
+    const userId = currentUser ? currentUser.uid : null; // Get userId or allow null
 
     // Calculate scores
     const scores = calculateArchetypeScores(userAnswers.value);
@@ -251,7 +289,7 @@ const submitAssessmentHandler = async () => {
     // Submit assessment
     const result = await submitAssessment(
       db,
-      currentUser.uid,
+      userId,
       userAnswers.value,
       scores
     );
@@ -264,23 +302,31 @@ const submitAssessmentHandler = async () => {
       throw new Error(result.message || "Не удалось сохранить результаты");
     }
   } catch (err) {
-    console.error("Error submitting assessment:", err); // Debug: Log errors
+    console.error("Error submitting assessment:", err);
     error.value = err.message || "Произошла ошибка при сохранении результатов";
   } finally {
     isLoading.value = false;
   }
 };
 
-// Save progress function
 const saveProgress = async () => {
   try {
     const currentUser = auth.currentUser;
-    if (!currentUser) return;
-
-    await saveAssessmentProgress(db, currentUser.uid, {
-      currentQuestionIndex: currentQuestionIndex.value,
-      answers: userAnswers.value,
-    });
+    if (currentUser) {
+      await saveAssessmentProgress(db, currentUser.uid, {
+        currentQuestionIndex: currentQuestionIndex.value,
+        answers: userAnswers.value,
+      });
+    } else {
+      // Save progress to localStorage for anonymous users
+      localStorage.setItem(
+        "assessmentProgress",
+        JSON.stringify({
+          currentQuestionIndex: currentQuestionIndex.value,
+          answers: userAnswers.value,
+        })
+      );
+    }
   } catch (err) {
     console.error("Error saving progress:", err);
   }

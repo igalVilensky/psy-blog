@@ -202,13 +202,6 @@ const loadAssessmentResult = async () => {
   error.value = null;
 
   try {
-    const currentUser = auth.currentUser;
-    if (!currentUser) {
-      throw new Error(
-        "Пожалуйста, войдите в систему для просмотра результатов"
-      );
-    }
-
     const { success, assessment, message } = await getAssessment(
       db,
       route.params.id
@@ -218,17 +211,17 @@ const loadAssessmentResult = async () => {
       throw new Error(message);
     }
 
-    // Verify the result belongs to the current user
-    if (assessment.userId !== currentUser.uid) {
+    // If userId exists, enforce ownership check
+    if (assessment.userId && auth.currentUser?.uid !== assessment.userId) {
       throw new Error("У вас нет доступа к этим результатам");
     }
 
     result.value = assessment;
   } catch (err) {
-    console.error("Error loading assessment result:", err); // Debug: Log errors
+    console.error("Error loading assessment result:", err);
     error.value = err.message || "Произошла ошибка при загрузке результатов";
 
-    // Redirect to main page if result not found or unauthorized
+    // Redirect only if unauthorized or not found
     if (err.message.includes("не найдены") || err.message.includes("доступа")) {
       router.push("/tools/life-purpose-archetype");
     }

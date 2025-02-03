@@ -14,10 +14,39 @@ import {
 } from "firebase/firestore";
 
 // Submit a new assessment
+// export const submitAssessment = async (firestore, userId, answers, scores) => {
+//   try {
+//     const resultData = {
+//       userId,
+//       timestamp: serverTimestamp(),
+//       answers,
+//       scores,
+//       status: "completed",
+//     };
+
+//     const docRef = await addDoc(
+//       collection(firestore, "archetypeResults"),
+//       resultData
+//     );
+//     return {
+//       success: true,
+//       assessmentId: docRef.id,
+//       message: "Assessment submitted successfully",
+//     };
+//   } catch (error) {
+//     console.error("Error submitting assessment:", error);
+//     return {
+//       success: false,
+//       message: "Failed to submit assessment",
+//     };
+//   }
+// };
+
 export const submitAssessment = async (firestore, userId, answers, scores) => {
   try {
     const resultData = {
-      userId,
+      userId: userId || null, // Store userId if available, otherwise store null
+      sessionId: !userId ? generateSessionId() : null, // Generate a session ID for anonymous users
       timestamp: serverTimestamp(),
       answers,
       scores,
@@ -40,6 +69,11 @@ export const submitAssessment = async (firestore, userId, answers, scores) => {
       message: "Failed to submit assessment",
     };
   }
+};
+
+// Function to generate a session ID for anonymous users
+const generateSessionId = () => {
+  return `anon-${Math.random().toString(36).substr(2, 9)}`;
 };
 
 // Get all assessments for a user
