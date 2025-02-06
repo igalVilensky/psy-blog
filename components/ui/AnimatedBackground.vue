@@ -1,6 +1,6 @@
 <template>
-  <div class="fixed inset-0 -z-1">
-    <div class="absolute top-0 left-0 w-full h-full bg-background">
+  <div class="fixed inset-0 -z-1 overflow-hidden">
+    <div class="absolute top-0 left-0 w-full h-screen bg-background">
       <!-- Neural Gradient Circle -->
       <div
         class="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-gradient-blue-start/10 to-gradient-blue-end/10 rounded-full blur-3xl animate-slow-drift"

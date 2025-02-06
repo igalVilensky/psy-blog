@@ -1,5 +1,5 @@
 <template>
-  <div class="relative min-h-screen">
+  <div class="relative min-h-screen px-4 sm:px-0">
     <div class="container mx-auto max-w-6xl relative z-10 py-16">
       <!-- Enhanced Profile Header -->
       <div

@@ -1,38 +1,7 @@
 <template>
-  <div class="relative min-h-screen">
+  <div class="relative min-h-screen px-4 sm:px-0">
     <!-- Main Content -->
     <div class="container mx-auto max-w-6xl relative z-10 py-8">
-      <!-- Navigation Bar -->
-      <nav
-        class="flex items-center justify-between mb-8 bg-gradient-to-r from-[#1A1F35]/60 to-[#1E293B]/60 backdrop-blur-xl rounded-lg border border-[#0EA5E9]/20 p-4"
-      >
-        <!-- Back Button -->
-        <NuxtLink
-          to="/profile"
-          class="group relative inline-flex items-center justify-center px-3 md:px-6 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
-        >
-          <span
-            class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
-          >
-            <i class="fas fa-arrow-left text-xs md:text-base"></i>
-          </span>
-          <span
-            class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease text-xs md:text-base"
-          >
-            <i class="fas fa-arrow-left mr-1 md:mr-2"></i>
-            <span class="hidden md:inline">Назад в профиль</span>
-          </span>
-          <span class="relative invisible">Назад в профиль</span>
-        </NuxtLink>
-
-        <!-- Settings Text -->
-        <div
-          class="text-white/90 font-semibold text-sm md:text-base whitespace-nowrap"
-        >
-          Настройки аккаунта
-        </div>
-      </nav>
-
       <!-- Settings Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Main Settings Column -->
@@ -328,6 +297,28 @@
       @close="hideNotification"
       class="z-50"
     />
+    <!-- Navigation Bar -->
+    <nav
+      class="fixed bottom-4 left-4 right-4 sm:left-8 sm:right-8 bg-gradient-to-r from-[#1A1F35]/60 to-[#1E293B]/60 backdrop-blur-xl rounded-lg border border-[#0EA5E9]/20 p-4 z-50"
+    >
+      <NuxtLink
+        to="/profile"
+        class="group inline-flex items-center justify-center w-full px-6 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
+      >
+        <span
+          class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
+        >
+          <i class="fas fa-arrow-left"></i>
+        </span>
+        <span
+          class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
+        >
+          <i class="fas fa-arrow-left mr-1 md:mr-2"></i>
+          <span>Назад в профиль</span>
+        </span>
+        <span class="relative invisible">Назад в профиль</span>
+      </NuxtLink>
+    </nav>
   </div>
 </template>
 
