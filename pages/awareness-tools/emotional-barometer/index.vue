@@ -1,6 +1,6 @@
 <template>
   <div class="relative min-h-screen">
-    <div class="container mx-auto sm:px-4 max-w-6xl relative z-10 pb-12 pt-6">
+    <div class="container mx-auto px-5 sm:px-0 max-w-6xl relative z-10 pt-6">
       <!-- Hero Section (hidden when showStartButton is false) -->
       <section v-if="showStartButton" class="text-center">
         <h1
@@ -26,7 +26,7 @@
         </p>
       </div>
 
-      <div v-else class="mt-10">
+      <div v-else class="mt-8">
         <!-- Unauthenticated Section -->
         <div
           v-if="!user"
@@ -61,7 +61,7 @@
         </div>
 
         <!-- Start Button (shown only when showStartButton is true) -->
-        <div v-if="user && showStartButton" class="text-center mt-8 mb-10">
+        <div v-if="user && showStartButton" class="text-center mb-8">
           <Button
             text="Добавить запись"
             iconClass="fas fa-plus"
@@ -197,8 +197,8 @@
 
         <!-- Tools Section -->
         <div
-          v-if="user"
-          class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto mb-20"
+          v-if="user && showStartButton"
+          class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto"
         >
           <template v-if="hasStatsData">
             <NuxtLink

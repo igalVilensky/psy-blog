@@ -1,6 +1,6 @@
 <template>
   <div class="relative min-h-screen">
-    <div class="container mx-auto max-w-3xl px-4 py-8 sm:py-12">
+    <div class="container mx-auto max-w-3xl px-4 sm:px-0 py-8 sm:py-12">
       <!-- Question Card -->
       <div
         v-if="currentQuestion"

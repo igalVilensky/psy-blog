@@ -1,11 +1,12 @@
 <template>
   <div
-    class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 py-4 sm:p-8 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+    class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 py-4 sm:p-8 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)] min-h-screen"
   >
-    <!-- Back Navigation -->
+    <!-- Back Navigation with Enhanced Accessibility -->
     <nuxt-link
       to="/awareness-tools/emotional-barometer"
-      class="pl-4 sm:pl-0 inline-flex items-center text-[#0EA5E9] hover:text-[#22D3EE] transition-all mb-8 group"
+      class="pl-4 sm:pl-0 inline-flex items-center text-[#0EA5E9] hover:text-[#22D3EE] transition-all mb-4 sm:mb-8 group"
+      aria-label="Вернуться назад"
     >
       <i
         class="fas fa-arrow-left mr-2 transform transition-transform group-hover:-translate-x-1"
@@ -13,36 +14,45 @@
       <span class="text-sm font-medium">Вернуться</span>
     </nuxt-link>
 
-    <!-- Header -->
-    <div class="px-4 sm:px-0 flex items-center gap-4 mb-10">
+    <!-- Header with Enhanced Layout -->
+    <div class="px-4 sm:px-0 flex items-center gap-4 mb-4 sm:mb-10">
       <div
-        class="w-12 h-12 bg-gradient-to-r from-[#0EA5E9]/10 to-[#22D3EE]/10 rounded-full flex items-center justify-center flex-shrink-0 backdrop-blur-sm"
+        class="w-12 h-12 bg-gradient-to-r from-[#0EA5E9]/10 to-[#22D3EE]/10 rounded-full flex items-center justify-center flex-shrink-0 backdrop-blur-sm shadow-md transition-all"
       >
         <i class="far fa-face-smile text-xl text-[#0EA5E9]"></i>
       </div>
-      <h2 class="text-2xl sm:text-3xl font-bold text-white/90">
+      <h2 class="text-2xl sm:text-3xl font-bold text-white/90 tracking-tight">
         Анализ Эмоций
       </h2>
     </div>
 
-    <!-- Loading State -->
-    <div v-if="loading" class="flex flex-col items-center gap-4 py-12">
-      <i class="fas fa-spinner fa-spin fa-2x text-[#0EA5E9]"></i>
+    <!-- Loading State with Improved Animation -->
+    <div
+      v-if="loading"
+      class="flex flex-col items-center gap-4 py-12 animate-pulse"
+      aria-live="polite"
+    >
+      <i class="fas fa-spinner fa-spin fa-2x text-[#0EA5E9] animate-spin"></i>
       <p class="text-slate-300 text-base font-medium">
         Пожалуйста, подождите...
       </p>
     </div>
 
-    <!-- Content Grid -->
-    <div v-else class="grid sm:grid-cols-2 gap-6">
+    <!-- Content Grid with Responsive and Animated Layout -->
+    <TransitionGroup
+      v-else
+      tag="div"
+      name="emotion-grid"
+      class="grid grid-cols-1 sm:grid-cols-2 gap-6"
+    >
       <div
         v-for="(pattern, emotion) in patterns"
         :key="emotion"
         class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
       >
-        <!-- Emotion Header -->
+        <!-- Emotion Header with Enhanced Interactivity -->
         <div class="flex items-center justify-between mb-6">
-          <div>
+          <div class="flex items-center gap-3">
             <h3 class="font-bold text-lg text-white/90">{{ emotion }}</h3>
           </div>
           <span
@@ -58,37 +68,44 @@
           </span>
         </div>
 
-        <!-- Sub-emotions -->
-        <div v-if="Object.keys(pattern.subEmotions || {}).length">
+        <!-- Sub-emotions with Improved Readability -->
+        <div
+          v-if="pattern.subEmotions && Object.keys(pattern.subEmotions).length"
+        >
           <p class="text-sm font-medium text-white/90 mb-3">Подэмоции:</p>
-          <ul>
+          <ul class="space-y-2">
             <li
               v-for="(subPattern, subEmotion) in pattern.subEmotions"
               :key="subEmotion"
-              class="text-sm text-slate-300 mb-2"
+              class="text-sm text-slate-300 bg-[#1A1F35]/20 rounded-lg p-2 flex justify-between items-center"
             >
-              <span class="font-semibold">{{ subEmotion }}</span> —
-              {{
-                subPattern.count === 1
-                  ? `${subPattern.count} раз`
-                  : subPattern.count >= 2 && subPattern.count <= 4
-                  ? `${subPattern.count} раза`
-                  : `${subPattern.count} раз`
-              }}, средняя интенсивность:
-              {{ subPattern.avgIntensity.toFixed(1) }}/10
+              <span>
+                <span class="font-semibold mr-2">{{ subEmotion }}</span
+                >—
+                {{
+                  subPattern.count === 1
+                    ? `${subPattern.count} раз`
+                    : subPattern.count >= 2 && subPattern.count <= 4
+                    ? `${subPattern.count} раза`
+                    : `${subPattern.count} раз`
+                }}
+              </span>
+              <span class="text-[#0EA5E9] font-bold">
+                {{ subPattern.avgIntensity.toFixed(1) }}/10
+              </span>
             </li>
           </ul>
         </div>
 
-        <!-- Intensity Meter -->
-        <div class="mb-6">
+        <!-- Intensity Meter with Enhanced Visualization -->
+        <div class="mt-6">
           <div class="flex justify-between items-center mb-2.5">
             <span class="text-sm font-medium text-slate-300"
               >Средняя интенсивность</span
             >
-            <span class="font-semibold text-white/90"
-              >{{ pattern.avgIntensity.toFixed(1) }}/10</span
-            >
+            <span class="font-semibold text-white/90">
+              {{ pattern.avgIntensity.toFixed(1) }}/10
+            </span>
           </div>
           <div class="h-2 bg-[#1A1F35]/40 rounded-full overflow-hidden">
             <div
@@ -99,8 +116,8 @@
           </div>
         </div>
 
-        <!-- Common Spheres -->
-        <div v-if="Object.keys(pattern.commonSpheres).length">
+        <!-- Common Spheres with Hover Effects -->
+        <div v-if="Object.keys(pattern.commonSpheres).length" class="mt-6">
           <p class="text-sm font-medium text-white/90 mb-3">
             Чаще всего в сферах:
           </p>
@@ -109,56 +126,51 @@
               v-for="(count, sphere) in pattern.commonSpheres"
               :key="sphere"
               :class="getSphereColor(sphere)"
-              class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium text-white backdrop-blur-sm"
+              class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium text-white backdrop-blur-sm hover:scale-105 transition-transform"
             >
               {{ sphere }} ({{ count }})
             </span>
           </div>
         </div>
       </div>
-    </div>
+    </TransitionGroup>
   </div>
 </template>
 
 <script setup>
 import { computed } from "vue";
 
+// Comprehensive Emotion and Sphere Definitions
 const emotions = [
   {
     id: 1,
     name: "Радость",
-    color: "bg-yellow-100",
-    activeColor: "bg-gradient-to-r from-[#F59E0B] to-[#F97316]",
+    color: "bg-gradient-to-r from-[#F59E0B] to-[#F97316]",
   },
   {
     id: 2,
     name: "Тревога",
-    color: "bg-purple-100",
-    activeColor: "bg-gradient-to-r from-[#E879F9] to-[#C084FC]",
+    color: "bg-gradient-to-r from-[#E879F9] to-[#C084FC]",
   },
   {
     id: 3,
     name: "Злость",
-    color: "bg-red-100",
-    activeColor: "bg-gradient-to-r from-[#EF4444] to-[#F87171]",
+    color: "bg-gradient-to-r from-[#EF4444] to-[#F87171]",
   },
   {
     id: 4,
     name: "Грусть",
-    color: "bg-blue-100",
-    activeColor: "bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE]",
+    color: "bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE]",
   },
   {
     id: 5,
     name: "Вдохновение",
-    color: "bg-green-100",
-    activeColor: "bg-gradient-to-r from-[#10B981] to-[#34D399]",
+    color: "bg-gradient-to-r from-[#10B981] to-[#34D399]",
   },
   {
     id: 6,
     name: "Спокойствие",
-    color: "bg-teal-100",
-    activeColor: "bg-gradient-to-r from-[#14B8A6] to-[#2DD4BF]",
+    color: "bg-gradient-to-r from-[#14B8A6] to-[#2DD4BF]",
   },
 ];
 
@@ -212,13 +224,15 @@ const props = defineProps({
   },
 });
 
+// Computed property for enhanced loading state detection
 const loading = computed(
   () => !props.patterns || Object.keys(props.patterns).length === 0
 );
 
+// Enhanced Color and Icon Selection Methods
 const getEmotionActiveColor = (emotionName) => {
   const emotion = emotions.find((e) => e.name === emotionName);
-  return emotion?.activeColor || "bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE]";
+  return emotion?.color || "bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE]";
 };
 
 const getSphereColor = (sphereName) => {

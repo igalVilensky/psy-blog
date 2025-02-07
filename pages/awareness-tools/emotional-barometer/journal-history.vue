@@ -1,8 +1,19 @@
 <template>
   <div class="relative min-h-screen">
-    <div class="container mx-auto sm:px-4 max-w-6xl relative z-10 py-12">
-      <div class="grid grid-cols-1 gap-8">
+    <div class="container mx-auto px-4 sm:px-0 max-w-6xl relative z-10 py-8">
+      <div class="grid grid-cols-1 gap-4 sm:gap-8">
+        <!-- Back Navigation -->
+        <nuxt-link
+          to="/awareness-tools/emotional-barometer"
+          class="inline-flex items-center text-[#0EA5E9] hover:text-[#22D3EE] transition-colors group"
+        >
+          <i
+            class="fas fa-arrow-left mr-2 transform transition-transform group-hover:-translate-x-1"
+          ></i>
+          <span class="text-sm font-medium">Вернуться</span>
+        </nuxt-link>
         <!-- Journal History Section -->
+
         <div
           class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 sm:p-8 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
         >

@@ -8,7 +8,7 @@
     </div>
 
     <!-- Sub-emotions Grid -->
-    <div class="grid grid-cols-2 gap-3 sm:gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6">
       <button
         v-for="emotion in subEmotions"
         :key="emotion"
@@ -23,8 +23,8 @@
         <!-- Main Button Content -->
         <div
           :class="[
-            'relative p-4 rounded-xl transition-all duration-300',
-            'backdrop-blur-sm border w-full h-full',
+            'relative p-4 rounded-xl transition-all duration-300 backdrop-blur-sm border w-full h-full flex items-center justify-center',
+
             selectedSubEmotion === emotion
               ? 'bg-gradient-to-r from-[#0EA5E9]/40 to-[#E879F9]/40 border-[#0EA5E9]/50 shadow-lg shadow-[#0EA5E9]/20'
               : 'bg-[#1A1F35]/40 border-[#0EA5E9]/20 group-hover:border-[#0EA5E9]/30',

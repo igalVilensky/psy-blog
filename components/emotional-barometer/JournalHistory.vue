@@ -1,18 +1,7 @@
 <template>
   <div class="relative min-h-screen">
-    <!-- Back Navigation -->
-    <nuxt-link
-      to="/awareness-tools/emotional-barometer"
-      class="pl-4 sm:pl-0 inline-flex items-center text-[#0EA5E9] hover:text-[#22D3EE] transition-colors mb-8 group"
-    >
-      <i
-        class="fas fa-arrow-left mr-2 transform transition-transform group-hover:-translate-x-1"
-      ></i>
-      <span class="text-sm font-medium">Вернуться</span>
-    </nuxt-link>
-
     <!-- Header with Icon -->
-    <div class="flex items-center gap-4 mb-10 px-4 sm:px-0">
+    <div class="flex items-center gap-4 my-8 px-4 sm:px-0">
       <div
         class="w-12 h-12 bg-gradient-to-r from-[#0EA5E9]/10 to-[#22D3EE]/10 rounded-full flex items-center justify-center flex-shrink-0 backdrop-blur-sm"
       >
