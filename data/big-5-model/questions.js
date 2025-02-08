@@ -1,5 +1,45 @@
 // data/bog-5-model/questions.js
 
+// Нейротизм (Neuroticism)
+// Тревожность (Anxiety)
+// Злость (Anger)
+// Депрессия (Depression)
+// Самосознание (Self-Consciousness)
+// Неумеренность (Immoderation)
+// Ранимость (Vulnerability)
+
+// Экстраверсия (Extraversion)
+// Дружелюбие (Warmth)
+// Общительность (Gregariousness)
+// Настойчивость (Assertiveness)
+// Уровень активности (Activity Level)
+// Азартность (Excitement-Seeking)
+// Жизнерадостность (Positive Emotions)
+
+// Открытость опыту (Openness to Experience)
+// Воображение (Imagination)
+// Творческие интересы (Artistic Interests)
+// Эмоциональность (Emotionality)
+// Авантюрность (Adventurousness)
+// Интеллект (Intellect)
+// Либерализм (Liberalism)
+
+// Доброжелательность (Agreeableness)
+// Доверие (Trust)
+// Нравственность (Morality)
+// Альтруизм (Altruism)
+// Сотрудничество (Cooperation)
+// Скромность (Modesty)
+// Сочувствие (Sympathy)
+
+// Добросовестность (Conscientiousness)
+// Самоэффективность (Self-Efficacy)
+// Организованность (Orderliness)
+// Ответственность (Duty)
+// Целеустремленность (Achievement Striving)
+// Самодисциплина (Self-Discipline)
+// Осторожность (Cautiousness)
+
 export const questions = ref([
   {
     id: 1,
