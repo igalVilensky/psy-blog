@@ -1,4 +1,4 @@
-// data/bog-5-model/questions.js
+// data/big-5-model/questions.js
 
 // Нейротизм (Neuroticism)
 // Тревожность (Anxiety)
