@@ -67,6 +67,11 @@ const menuItems = [
     label: "Открытие Архетипа Жизни",
     path: "/awareness-tools/life-purpose-archetype",
   },
+  {
+    icon: "fas fa-chart-pie",
+    label: "Большая пятёрка",
+    path: "/awareness-tools/big-5-model",
+  },
 ];
 
 defineComponent({

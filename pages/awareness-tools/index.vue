@@ -1,6 +1,6 @@
 <template>
   <div class="relative min-h-screen">
-    <div class="container mx-auto max-w-6xl relative z-10 pb-12 pt-12">
+    <div class="container mx-auto max-w-6xl relative z-10 py-12 px-4 sm:px-0">
       <!-- Hero Section -->
       <section class="text-center mb-12">
         <h1
@@ -9,7 +9,7 @@
           Инструменты осознанности
         </h1>
         <p
-          class="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed px-8"
+          class="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed"
         >
           Откройте для себя мир самопознания и эмоционального роста с нашими
           инструментами. Каждый инструмент - это шаг к более осознанной жизни.
@@ -88,6 +88,7 @@ import { ref } from "vue";
 import EmotionalBarometerImage from "@/assets/images/awarenessTools/emotional-barometer.jpeg";
 import DeepConversationWithCardsImage from "@/assets/images/awarenessTools/deep-conversation-with-cards.jpeg";
 import LifeArchetypeImage from "@/assets/images/awarenessTools/life-archetype.jpg";
+import big5Image from "@/assets/images/awarenessTools/big5.jpg";
 
 const tools = ref([
   {
@@ -96,6 +97,13 @@ const tools = ref([
     description:
       "Погрузитесь в глубокое исследование архетипов вашей личности и раскройте истинную цель вашей жизни через трансформационный процесс самопознания.",
     image: LifeArchetypeImage,
+  },
+  {
+    name: "Большая пятёрка",
+    path: "/awareness-tools/big-5-model",
+    description:
+      "Узнайте себя лучше через проверенную модель 'Большой Пятёрки' и откройте новые перспективы для личного и профессионального роста.",
+    image: big5Image,
   },
   {
     name: "Эмоциональный барометр",

@@ -461,6 +461,7 @@ const isAwarenessToolsRouteActive = computed(() => {
     "/awareness-tools/emotional-barometer",
     "/awareness-tools/deep-conversation-with-cards",
     "/awareness-tools/life-purpose-archetype",
+    "/awareness-tools/big-5-model",
   ];
   return submenuRoutes.includes(route.path);
 });

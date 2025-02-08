@@ -5,7 +5,7 @@
       class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-[#0EA5E9]/50 via-[#F59E0B]/50 to-[#E879F9]/50"
     ></div>
 
-    <div class="relative container mx-auto px-6 sm:px-0 max-w-6xl py-16">
+    <div class="relative container mx-auto px-4 sm:px-0 max-w-6xl py-16">
       <div class="grid md:grid-cols-4 gap-12">
         <!-- Sitemap Section -->
         <div>
@@ -150,6 +150,10 @@ const sitemapLinks = [
   {
     label: "Открытие Архетипа Жизни",
     to: "/awareness-tools/life-purpose-archetype",
+  },
+  {
+    label: "Большая пятёрка",
+    to: "/awareness-tools/big-5",
   },
   { label: "О проекте", to: "/about" },
   { label: "Блог", to: "/blog" },

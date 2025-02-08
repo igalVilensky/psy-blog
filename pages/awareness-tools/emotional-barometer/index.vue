@@ -1,6 +1,6 @@
 <template>
   <div class="relative min-h-screen">
-    <div class="container mx-auto px-5 sm:px-0 max-w-6xl relative z-10 pt-6">
+    <div class="container mx-auto px-4 sm:px-0 max-w-6xl relative z-10 pt-6">
       <!-- Hero Section (hidden when showStartButton is false) -->
       <section v-if="showStartButton" class="text-center">
         <h1

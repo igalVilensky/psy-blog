@@ -1,11 +1,11 @@
 <template>
   <div class="relative min-h-screen">
-    <div class="container mx-auto max-w-4xl relative z-10 py-12">
+    <div class="container mx-auto max-w-4xl relative z-10 py-12 px-4 sm:px-0">
       <!-- Back Navigation -->
       <div>
         <NuxtLink
           to="/awareness-tools/life-purpose-archetype"
-          class="inline-flex px-4 sm:px-0 items-center text-pink-500 hover:text-purple-500 transition-colors mb-8 group pl-6 sm:pl-0"
+          class="inline-flex items-center text-pink-500 hover:text-purple-500 transition-colors mb-8 group"
         >
           <i
             class="fas fa-arrow-left mr-2 transform group-hover:-translate-x-1 transition-transform text-current"
