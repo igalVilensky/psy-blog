@@ -11,6 +11,10 @@
           <h2 class="text-xl sm:text-2xl font-bold text-white">
             {{ currentQuestion.questionText }}
           </h2>
+          <!-- Display Trait Name -->
+          <p class="text-sm text-slate-300 mt-2">
+            <strong>Текущий аспект:</strong> {{ currentQuestion.trait }}
+          </p>
         </div>
 
         <!-- Progress Bar -->
@@ -93,12 +97,48 @@
           </button>
         </div>
       </div>
+
+      <!-- Final Scores Section (when all questions are answered) -->
+      <!-- Final Scores Section (when all questions are answered) -->
+      <div
+        v-if="isLastQuestion"
+        class="bg-slate-900/60 rounded-xl p-8 mt-12 border border-white/5"
+      >
+        <h3 class="text-2xl font-bold text-white">Ваши результаты</h3>
+
+        <!-- Display Trait Scores -->
+        <div
+          v-for="(score, trait) in calculatedScores.traitScores"
+          :key="trait"
+          class="mt-4"
+        >
+          <p class="text-lg text-slate-200">
+            <strong>{{ trait }}:</strong> {{ score.toFixed(2) }}
+          </p>
+        </div>
+
+        <!-- Display Facet Scores -->
+        <div
+          v-for="(facets, trait) in calculatedScores.facetScores"
+          :key="trait"
+          class="mt-6"
+        >
+          <h4 class="text-xl text-slate-200">
+            <strong>{{ trait }} Facets:</strong>
+          </h4>
+          <div v-for="(facetScore, facet) in facets" :key="facet" class="mt-2">
+            <p class="text-sm text-slate-300">
+              <strong>{{ facet }}:</strong> {{ facetScore.toFixed(2) }}
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { questions } from "@/data/big-5-model/questions.js";
 
 // State
@@ -106,6 +146,7 @@ const currentQuestionIndex = ref(0);
 const selectedAnswer = ref(null);
 const userAnswers = ref({});
 const isAnswering = ref(false); // Prevent fast clicks
+const calculatedScores = ref({}); // Store the final calculated scores
 
 // Questions data
 const questionsRef = ref(questions); // Use the imported questions directly
@@ -166,8 +207,8 @@ const nextQuestion = () => {
   }
 
   if (isLastQuestion.value) {
-    // If it's the last question, do nothing (for now)
-    console.log("Last question reached.");
+    // If it's the last question, calculate the results
+    calculateTraitScores();
   } else {
     currentQuestionIndex.value++;
     selectedAnswer.value = userAnswers.value[
@@ -180,5 +221,104 @@ const nextQuestion = () => {
         )
       : null;
   }
+};
+
+// Calculate the scores for each trait based on the user's answers
+const calculateTraitScores = () => {
+  // Initialize scores for traits and facets
+  let traitScores = {
+    нейротизм: 0,
+    экстраверсия: 0,
+    открытость_опыту: 0,
+    доброжелательность: 0,
+    добросовестность: 0,
+  };
+
+  let facetScores = {
+    нейротизм: {
+      тревожность: { raw: 0, count: 0 },
+      злость: { raw: 0, count: 0 },
+      депрессия: { raw: 0, count: 0 },
+      самосознание: { raw: 0, count: 0 },
+      неумеренность: { raw: 0, count: 0 },
+      ранимость: { raw: 0, count: 0 },
+    },
+    экстраверсия: {
+      дружелюбие: { raw: 0, count: 0 },
+      общительность: { raw: 0, count: 0 },
+      настойчивость: { raw: 0, count: 0 },
+      уровень_активности: { raw: 0, count: 0 },
+      азартность: { raw: 0, count: 0 },
+      жизнерадостность: { raw: 0, count: 0 },
+    },
+    открытость_опыту: {
+      воображение: { raw: 0, count: 0 },
+      творческие_интересы: { raw: 0, count: 0 },
+      эмоциональность: { raw: 0, count: 0 },
+      авантюрность: { raw: 0, count: 0 },
+      интеллект: { raw: 0, count: 0 },
+      либерализм: { raw: 0, count: 0 },
+    },
+    доброжелательность: {
+      доверие: { raw: 0, count: 0 },
+      нравственность: { raw: 0, count: 0 },
+      альтруизм: { raw: 0, count: 0 },
+      сотрудничество: { raw: 0, count: 0 },
+      скромность: { raw: 0, count: 0 },
+      сочувствие: { raw: 0, count: 0 },
+    },
+    добросовестность: {
+      самоэффективность: { raw: 0, count: 0 },
+      организованность: { raw: 0, count: 0 },
+      ответственность: { raw: 0, count: 0 },
+      целеустремленность: { raw: 0, count: 0 },
+      самодисциплина: { raw: 0, count: 0 },
+      осторожность: { raw: 0, count: 0 },
+    },
+  };
+
+  // Iterate through each question to calculate the scores
+  questionsRef.value.forEach((question) => {
+    const answer = userAnswers.value[question.id];
+    const reversed = question.keyed;
+
+    // Reverse the score if necessary
+    const score = reversed ? 6 - answer : answer;
+
+    // Update the facet and trait scores
+    if (
+      question.trait in facetScores &&
+      question.facet in facetScores[question.trait]
+    ) {
+      facetScores[question.trait][question.facet].raw += score;
+      facetScores[question.trait][question.facet].count += 1;
+      traitScores[question.trait] += score;
+    }
+  });
+
+  // Calculate the total score for each trait (0 to 120 scale)
+  Object.keys(traitScores).forEach((trait) => {
+    const totalQuestions = questionsRef.value.filter(
+      (q) => q.trait === trait
+    ).length;
+    traitScores[trait] = Math.round(
+      (traitScores[trait] / totalQuestions) * 120
+    );
+  });
+
+  // Calculate the total score for each facet (0 to 20 scale)
+  Object.keys(facetScores).forEach((trait) => {
+    Object.keys(facetScores[trait]).forEach((facet) => {
+      const { raw, count } = facetScores[trait][facet];
+      if (count > 0) {
+        facetScores[trait][facet] = Math.round((raw / count) * 5); // Scale to 0–20
+      } else {
+        facetScores[trait][facet] = 0; // No questions for this facet
+      }
+    });
+  });
+
+  // Store the final calculated scores
+  calculatedScores.value = { traitScores, facetScores };
 };
 </script>
