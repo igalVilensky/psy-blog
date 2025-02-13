@@ -46,7 +46,7 @@ export const questions = ref([
     questionText: "Я не переживаю по пустякам.",
     trait: "нейротизм",
     facet: "тревожность",
-    keyed: false,
+    keyed: true,
   },
   {
     id: 2,
@@ -74,14 +74,14 @@ export const questions = ref([
     questionText: "Я неправильно оцениваю ситуации.",
     trait: "нейротизм",
     facet: "ранимость",
-    keyed: true,
+    keyed: false,
   },
   {
     id: 6,
     questionText: "Я легко выхожу из себя.",
     trait: "нейротизм",
     facet: "злость",
-    keyed: true,
+    keyed: false,
   },
   {
     id: 7,
@@ -130,7 +130,7 @@ export const questions = ref([
     questionText: "Я очень эмоциональный(-ая).",
     trait: "нейротизм",
     facet: "эмоциональность",
-    keyed: true,
+    keyed: false,
   },
   {
     id: 14,
@@ -151,7 +151,7 @@ export const questions = ref([
     questionText: "Я чувствую неловкость при общении с незнакомыми людьми.",
     trait: "нейротизм",
     facet: "самосознание",
-    keyed: true,
+    keyed: false,
   },
   {
     id: 17,
@@ -206,7 +206,7 @@ export const questions = ref([
     id: 24,
     questionText: "Я имею высокое мнение о себе.",
     trait: "экстраверсия",
-    facet: "дружелюбие",
+    facet: "неумеренность",
     keyed: false,
   },
   {
@@ -312,7 +312,7 @@ export const questions = ref([
     id: 39,
     questionText: "Я притворяюсь, что беспокоюсь о других.",
     trait: "доброжелательность",
-    facet: "сочувствие",
+    facet: "сотрудничество",
     keyed: true,
   },
   {
@@ -332,7 +332,7 @@ export const questions = ref([
   {
     id: 43,
     questionText: "Я держу эмоции под контролем.",
-    trait: "нейротизм",
+    trait: "открытость_опыту",
     facet: "эмоциональность",
     keyed: false,
   },
@@ -495,7 +495,7 @@ export const questions = ref([
     id: 66,
     questionText: "Я сохраняю хладнокровие.",
     trait: "нейротизм",
-    facet: "самосознание",
+    facet: "злость",
     keyed: false,
   },
   {
@@ -551,7 +551,7 @@ export const questions = ref([
     id: 74,
     questionText: "Равнодушен к чувствам других.",
     trait: "доброжелательность",
-    facet: "сочувствие",
+    facet: "сотрудничество",
     keyed: true,
   },
   {
@@ -580,7 +580,7 @@ export const questions = ref([
     id: 78,
     questionText: "Не люблю перемены.",
     trait: "открытость_опыту",
-    facet: "авантюрность",
+    facet: "азартность",
     keyed: true,
   },
   {
@@ -594,7 +594,7 @@ export const questions = ref([
     id: 80,
     questionText: "Стараюсь делать только необходимый минимум работы.",
     trait: "добросовестность",
-    facet: "самодисциплина",
+    facet: "осторожность",
     keyed: true,
   },
   {
@@ -629,7 +629,7 @@ export const questions = ref([
     id: 85,
     questionText: "Я трачу свое время впустую.",
     trait: "добросовестность",
-    facet: "целеустремленность",
+    facet: "осторожность",
     keyed: true,
   },
   {
@@ -678,7 +678,7 @@ export const questions = ref([
     id: 92,
     questionText: "Я не особо заинтересован(-а) в дружеских отношениях.",
     trait: "экстраверсия",
-    facet: "общительность",
+    facet: "неумеренность",
     keyed: true,
   },
   {
@@ -762,7 +762,7 @@ export const questions = ref([
     id: 104,
     questionText: "Я не трачу время на других людей.",
     trait: "доброжелательность",
-    facet: "альтруизм",
+    facet: "азартность",
     keyed: false,
   },
   {
@@ -853,8 +853,8 @@ export const questions = ref([
     id: 117,
     questionText: "Я смотрю на светлую сторону жизни.",
     trait: "экстраверсия",
-    facet: "жизнерадостность",
-    keyed: false,
+    facet: "депрессия",
+    keyed: true,
   },
   {
     id: 118,
