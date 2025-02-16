@@ -153,7 +153,7 @@ const sitemapLinks = [
   },
   {
     label: "Большая пятёрка",
-    to: "/awareness-tools/big-5",
+    to: "/awareness-tools/big-5-model",
   },
   { label: "О проекте", to: "/about" },
   { label: "Блог", to: "/blog" },

@@ -299,7 +299,7 @@
     />
     <!-- Navigation Bar -->
     <nav
-      class="fixed bottom-4 left-4 right-4 sm:left-8 sm:right-8 bg-gradient-to-r from-[#1A1F35]/60 to-[#1E293B]/60 backdrop-blur-xl rounded-lg border border-[#0EA5E9]/20 p-4 z-50"
+      class="fixed sm:hidden bottom-4 left-4 right-4 sm:left-8 sm:right-8 bg-gradient-to-r from-[#1A1F35]/60 to-[#1E293B]/60 backdrop-blur-xl rounded-lg border border-[#0EA5E9]/20 p-4 z-50"
     >
       <NuxtLink
         to="/profile"

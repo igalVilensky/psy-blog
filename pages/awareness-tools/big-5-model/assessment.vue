@@ -3,7 +3,7 @@
     <div class="container mx-auto max-w-3xl px-4 sm:px-0 py-8 sm:py-12">
       <!-- Question Card -->
       <div
-        v-if="currentQuestion"
+        v-if="currentQuestion && !showAgeInput && !showResults"
         class="bg-slate-900/60 backdrop-blur-xl rounded-xl transition-all duration-300 hover:bg-slate-900/80 mb-12 border border-white/5"
       >
         <!-- Question Header -->
@@ -98,10 +98,33 @@
         </div>
       </div>
 
-      <!-- Final Scores Section (when all questions are answered) -->
-      <!-- Final Scores Section (when all questions are answered) -->
+      <!-- Age Input Section -->
       <div
-        v-if="isLastQuestion"
+        v-if="showAgeInput"
+        class="bg-slate-900/60 backdrop-blur-xl rounded-xl transition-all duration-300 hover:bg-slate-900/80 mb-12 border border-white/5 p-8"
+      >
+        <h2 class="text-xl sm:text-2xl font-bold text-white mb-4">
+          Пожалуйста, укажите ваш возраст:
+        </h2>
+        <input
+          v-model="userAge"
+          type="number"
+          min="10"
+          max="100"
+          class="w-full p-3 rounded-lg bg-slate-800/50 border border-white/5 text-white focus:outline-none focus:border-blue-500"
+          placeholder="Введите ваш возраст"
+        />
+        <button
+          @click="submitAge"
+          class="mt-4 w-full px-6 py-3 rounded-lg font-medium transition-all duration-300 bg-slate-800/50 hover:bg-slate-800/80 text-white flex items-center justify-center gap-2 border border-white/5"
+        >
+          Подтвердить
+        </button>
+      </div>
+
+      <!-- Final Scores Section -->
+      <div
+        v-if="showResults"
         class="bg-slate-900/60 rounded-xl p-8 mt-12 border border-white/5"
       >
         <h3 class="text-2xl font-bold text-white">Ваши результаты</h3>
@@ -113,7 +136,7 @@
           class="mt-4"
         >
           <p class="text-lg text-slate-200">
-            <strong>{{ trait }}:</strong> {{ score.toFixed(2) }}
+            <strong>{{ trait }}:</strong> {{ Math.round(score) }} из 120
           </p>
         </div>
 
@@ -128,7 +151,7 @@
           </h4>
           <div v-for="(facetScore, facet) in facets" :key="facet" class="mt-2">
             <p class="text-sm text-slate-300">
-              <strong>{{ facet }}:</strong> {{ facetScore.toFixed(2) }}
+              <strong>{{ facet }}:</strong> {{ Math.round(facetScore) }} из 20
             </p>
           </div>
         </div>
@@ -138,18 +161,21 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from "vue";
+import { ref, computed } from "vue";
 import { questions } from "@/data/big-5-model/questions.js";
 
 // State
 const currentQuestionIndex = ref(0);
 const selectedAnswer = ref(null);
 const userAnswers = ref({});
-const isAnswering = ref(false); // Prevent fast clicks
-const calculatedScores = ref({}); // Store the final calculated scores
+const isAnswering = ref(false);
+const calculatedScores = ref({});
+const showAgeInput = ref(false);
+const userAge = ref(null);
+const showResults = ref(false);
 
 // Questions data
-const questionsRef = ref(questions); // Use the imported questions directly
+const questionsRef = ref(questions);
 
 const answerOptions = [
   { text: "Совершенно не согласен", value: 1 },
@@ -175,14 +201,14 @@ const selectAnswer = (index) => {
 };
 
 const handleAnswerSelection = (index) => {
-  if (isAnswering.value) return; // Prevent multiple clicks
-  isAnswering.value = true; // Disable further clicks
+  if (isAnswering.value) return;
+  isAnswering.value = true;
 
   selectAnswer(index);
   setTimeout(() => {
     nextQuestion();
-    isAnswering.value = false; // Re-enable clicks after moving to the next question
-  }, 300); // 300ms delay
+    isAnswering.value = false;
+  }, 300);
 };
 
 const previousQuestion = () => {
@@ -203,12 +229,11 @@ const previousQuestion = () => {
 const nextQuestion = () => {
   if (selectedAnswer.value === null || selectedAnswer.value === undefined) {
     console.warn("No answer selected for the current question.");
-    return; // Don't proceed if no answer is selected
+    return;
   }
 
   if (isLastQuestion.value) {
-    // If it's the last question, calculate the results
-    calculateTraitScores();
+    showAgeInput.value = true;
   } else {
     currentQuestionIndex.value++;
     selectedAnswer.value = userAnswers.value[
@@ -223,9 +248,19 @@ const nextQuestion = () => {
   }
 };
 
-// Calculate the scores for each trait based on the user's answers
+const submitAge = () => {
+  if (!userAge.value || userAge.value < 10 || userAge.value > 100) {
+    alert("Пожалуйста, введите корректный возраст (от 10 до 100).");
+    return;
+  }
+  showAgeInput.value = false;
+  calculateTraitScores();
+};
+
 const calculateTraitScores = () => {
-  // Initialize scores for traits and facets
+  console.log("🔹 Starting score calculation...");
+
+  // Initialize trait and facet scores
   let traitScores = {
     нейротизм: 0,
     экстраверсия: 0,
@@ -277,48 +312,77 @@ const calculateTraitScores = () => {
     },
   };
 
-  // Iterate through each question to calculate the scores
+  // Calculate scores
   questionsRef.value.forEach((question) => {
     const answer = userAnswers.value[question.id];
-    const reversed = question.keyed;
+    if (!answer) {
+      console.warn(`⚠️ Missing answer for question ${question.id}`);
+      return;
+    }
 
-    // Reverse the score if necessary
+    const reversed = question.keyed;
     const score = reversed ? 6 - answer : answer;
 
-    // Update the facet and trait scores
+    console.log(
+      `🟢 Q${question.id} | Trait: ${question.trait}, Facet: ${question.facet} | Answer: ${answer}, Reversed: ${reversed}, Final Score: ${score}`
+    );
+
+    // Update facet scores
     if (
-      question.trait in facetScores &&
-      question.facet in facetScores[question.trait]
+      facetScores[question.trait] &&
+      facetScores[question.trait][question.facet]
     ) {
       facetScores[question.trait][question.facet].raw += score;
       facetScores[question.trait][question.facet].count += 1;
-      traitScores[question.trait] += score;
+
+      console.log(
+        `✅ Updated ${question.trait} - ${question.facet}: Raw ${
+          facetScores[question.trait][question.facet].raw
+        }, Count ${facetScores[question.trait][question.facet].count}`
+      );
+    } else {
+      console.warn(
+        `⚠️ Facet "${question.facet}" not found in trait "${question.trait}"`
+      );
     }
   });
 
-  // Calculate the total score for each trait (0 to 120 scale)
-  Object.keys(traitScores).forEach((trait) => {
-    const totalQuestions = questionsRef.value.filter(
-      (q) => q.trait === trait
-    ).length;
-    traitScores[trait] = Math.round(
-      (traitScores[trait] / totalQuestions) * 120
-    );
-  });
-
-  // Calculate the total score for each facet (0 to 20 scale)
+  // Calculate final facet scores (scaled to 20)
   Object.keys(facetScores).forEach((trait) => {
     Object.keys(facetScores[trait]).forEach((facet) => {
       const { raw, count } = facetScores[trait][facet];
-      if (count > 0) {
-        facetScores[trait][facet] = Math.round((raw / count) * 5); // Scale to 0–20
-      } else {
-        facetScores[trait][facet] = 0; // No questions for this facet
-      }
+      facetScores[trait][facet] = count > 0 ? Math.round((raw / count) * 5) : 0;
     });
   });
 
+  // Calculate trait scores (sum of facet scores)
+  Object.keys(traitScores).forEach((trait) => {
+    traitScores[trait] = Object.values(facetScores[trait]).reduce(
+      (sum, facetScore) => sum + facetScore,
+      0
+    );
+  });
+
+  // Apply age adjustments
+  const adjustScoresBasedOnAge = (trait, score) => {
+    const ageAdjustment = {
+      нейротизм: -0.5 * (userAge.value / 10),
+      экстраверсия: -0.3 * (userAge.value / 10),
+      открытость_опыту: -0.2 * (userAge.value / 10),
+      доброжелательность: 0.5 * (userAge.value / 10),
+      добросовестность: 0.7 * (userAge.value / 10),
+    };
+    return Math.min(Math.max(score + ageAdjustment[trait], 0), 120);
+  };
+
+  Object.keys(traitScores).forEach((trait) => {
+    traitScores[trait] = adjustScoresBasedOnAge(trait, traitScores[trait]);
+  });
+
+  console.log("🔹 Final Scores:", { traitScores, facetScores });
+
   // Store the final calculated scores
   calculatedScores.value = { traitScores, facetScores };
+  showResults.value = true;
 };
 </script>

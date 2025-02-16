@@ -4,10 +4,12 @@
     <AnimatedBackground />
 
     <!-- TopBar (Fixed) -->
-    <TopBar />
+    <div class="mb-16">
+      <TopBar />
+    </div>
 
     <!-- Page Content (Main Content) -->
-    <main class="flex-grow mt-16 relative z-10">
+    <main class="flex-1 relative z-10">
       <div class="bg-background w-full h-full z-0"></div>
       <!-- Content -->
       <NuxtPage />

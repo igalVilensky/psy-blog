@@ -1,44 +1,49 @@
 // data/big-5-model/questions.js
 
-// Нейротизм (Neuroticism)
-// Тревожность (Anxiety)
-// Злость (Anger)
-// Депрессия (Depression)
-// Самосознание (Self-Consciousness)
-// Неумеренность (Immoderation)
-// Ранимость (Vulnerability)
+// Нейротизм (Neuroticism) 24
 
-// Экстраверсия (Extraversion)
-// Дружелюбие (Warmth)
-// Общительность (Gregariousness)
-// Настойчивость (Assertiveness)
-// Уровень_активности (Activity Level)
-// Азартность (Excitement-Seeking)
-// Жизнерадостность (Positive Emotions)
+// Тревожность (Anxiety) 4
+// Злость (Anger) 4
+// Депрессия (Depression) 4
+// Самосознание (Self-Consciousness) 4
+// Неумеренность (Immoderation) 4
+// Ранимость (Vulnerability) 4
 
-// Открытость опыту (Openness to Experience)
-// Воображение (Imagination)
-// Творческие_интересы (Artistic Interests)
-// Эмоциональность (Emotionality)
-// Авантюрность (Adventurousness)
-// Интеллект (Intellect)
-// Либерализм (Liberalism)
+// Экстраверсия (Extraversion) 24
 
-// Доброжелательность (Agreeableness)
-// Доверие (Trust)
-// Нравственность (Morality)
-// Альтруизм (Altruism)
-// Сотрудничество (Cooperation)
-// Скромность (Modesty)
-// Сочувствие (Sympathy)
+// Дружелюбие (Warmth) 4
+// Общительность (Gregariousness) 4
+// Настойчивость (Assertiveness) 4
+// Уровень_активности (Activity Level) 4
+// Азартность (Excitement-Seeking) 4
+// Жизнерадостность (Positive Emotions) 4
 
-// Добросовестность (Conscientiousness)
-// Самоэффективность (Self-Efficacy)
-// Организованность (Orderliness)
-// Ответственность (Duty)
-// Целеустремленность (Achievement Striving)
-// Самодисциплина (Self-Discipline)
-// Осторожность (Cautiousness)
+// Открытость_опыту (Openness to Experience) 24
+
+// Воображение (Imagination) 4
+// Творческие_интересы (Artistic Interests) 4
+// Эмоциональность (Emotionality) 4
+// Авантюрность (Adventurousness) 4
+// Интеллект (Intellect) 4
+// Либерализм (Liberalism) 4
+
+// Доброжелательность (Agreeableness) 24
+
+// Доверие (Trust) 4
+// Нравственность (Morality) 4
+// Альтруизм (Altruism) 4
+// Сотрудничество (Cooperation) 4
+// Скромность (Modesty) 4
+// Сочувствие (Sympathy) 4
+
+// Добросовестность (Conscientiousness) 24
+
+// Самоэффективность (Self-Efficacy) 4
+// Организованность (Orderliness) 4
+// Ответственность (Duty) 4
+// Целеустремленность (Achievement Striving) 4
+// Самодисциплина (Self-Discipline) 4
+// Осторожность (Cautiousness) 4
 
 export const questions = ref([
   {
@@ -127,9 +132,9 @@ export const questions = ref([
   },
   {
     id: 13,
-    questionText: "Я очень эмоциональный(-ая).",
+    questionText: "Я часто чувствую себя беспомощным(-ой).",
     trait: "нейротизм",
-    facet: "эмоциональность",
+    facet: "депрессия",
     keyed: false,
   },
   {
@@ -204,10 +209,10 @@ export const questions = ref([
   },
   {
     id: 24,
-    questionText: "Я имею высокое мнение о себе.",
+    questionText: "Я избегаю шумных и оживленных мест.",
     trait: "экстраверсия",
-    facet: "неумеренность",
-    keyed: false,
+    facet: "азартность",
+    keyed: true,
   },
   {
     id: 25,
@@ -218,14 +223,14 @@ export const questions = ref([
   },
   {
     id: 26,
-    questionText: "Я легко впадаю в панику.",
+    questionText: "Я сохраняю хладнокровие в стрессовых ситуациях.",
     trait: "нейротизм",
     facet: "ранимость",
-    keyed: false,
+    keyed: true,
   },
   {
     id: 27,
-    questionText: "Я излучаю радость.",
+    questionText: "Я часто выражаю радость и позитивные эмоции.",
     trait: "экстраверсия",
     facet: "жизнерадостность",
     keyed: false,
@@ -233,31 +238,31 @@ export const questions = ref([
   {
     id: 28,
     questionText:
-      "Я считаю, что преступники должны получать помощь, а не наказание.",
+      "Я считаю, что людям, совершившим преступления, нужна поддержка и помощь.",
     trait: "доброжелательность",
     facet: "сочувствие",
     keyed: false,
   },
   {
     id: 29,
-    questionText: "Я сочувствую бездомным.",
+    questionText: "Я не испытываю желания помогать нуждающимся.",
     trait: "доброжелательность",
     facet: "сочувствие",
-    keyed: false,
+    keyed: true,
   },
   {
     id: 30,
     questionText: "Я сначала делаю, потом думаю.",
     trait: "добросовестность",
     facet: "осторожность",
-    keyed: false,
+    keyed: true,
   },
   {
     id: 31,
     questionText: "Я ожидаю худшего.",
     trait: "нейротизм",
     facet: "депрессия",
-    keyed: true,
+    keyed: false,
   },
   {
     id: 32,
@@ -303,16 +308,23 @@ export const questions = ref([
   },
   {
     id: 38,
-    questionText: "Я не люблю искусство.",
+    questionText: "Я получаю удовольствие от искусства.",
     trait: "открытость_опыту",
     facet: "творческие_интересы",
-    keyed: true,
+    keyed: false,
   },
   {
     id: 39,
     questionText: "Я притворяюсь, что беспокоюсь о других.",
     trait: "доброжелательность",
     facet: "сотрудничество",
+    keyed: true,
+  },
+  {
+    id: 40,
+    questionText: "Я не придаю значения мелким деталям.",
+    trait: "добросовестность",
+    facet: "организованность",
     keyed: true,
   },
   {
@@ -334,7 +346,7 @@ export const questions = ref([
     questionText: "Я держу эмоции под контролем.",
     trait: "открытость_опыту",
     facet: "эмоциональность",
-    keyed: false,
+    keyed: true,
   },
   {
     id: 44,
@@ -366,10 +378,10 @@ export const questions = ref([
   },
   {
     id: 48,
-    questionText: "Я люблю начинать что-то новое.",
+    questionText: "Мне трудно начинать что-то новое.",
     trait: "открытость_опыту",
     facet: "авантюрность",
-    keyed: false,
+    keyed: true,
   },
   {
     id: 49,
@@ -401,7 +413,7 @@ export const questions = ref([
   },
   {
     id: 53,
-    questionText: "Я избегаю философских рассуждений.",
+    questionText: "Я предпочитаю факты, а не теории.",
     trait: "открытость_опыту",
     facet: "интеллект",
     keyed: true,
@@ -437,7 +449,7 @@ export const questions = ref([
   {
     id: 58,
     questionText:
-      "Я считаю, что государство слишком много нянчится с преступниками.",
+      "Я считаю, что важно всегда говорить правду, независимо от обстоятельств.",
     trait: "доброжелательность",
     facet: "нравственность",
     keyed: false,
@@ -523,7 +535,7 @@ export const questions = ref([
     id: 70,
     questionText: "Я следую распорядку и графику.",
     trait: "добросовестность",
-    facet: "организованность",
+    facet: "самоэффективность",
     keyed: false,
   },
   {
@@ -542,14 +554,14 @@ export const questions = ref([
   },
   {
     id: 73,
-    questionText: "Очень редко испытываю резкую смену эмоций.",
+    questionText: "Мне бывает трудно отказать себе в желаемом.",
     trait: "нейротизм",
-    facet: "эмоциональность",
+    facet: "неумеренность",
     keyed: false,
   },
   {
     id: 74,
-    questionText: "Равнодушен к чувствам других.",
+    questionText: "Я равнодушен к чувствам других.",
     trait: "доброжелательность",
     facet: "сотрудничество",
     keyed: true,
@@ -559,43 +571,43 @@ export const questions = ref([
     questionText:
       "Выполняю взятые на себя обязательства в установленные сроки.",
     trait: "добросовестность",
-    facet: "целеустремленность",
+    facet: "ответственность",
     keyed: false,
   },
   {
     id: 76,
-    questionText: "Часто смущаюсь.",
+    questionText: "Я часто потакаю своим слабостям.",
     trait: "нейротизм",
-    facet: "самосознание",
+    facet: "неумеренность",
     keyed: false,
   },
   {
     id: 77,
     questionText: "Не люблю медлительность.",
-    trait: "доброжелательность",
-    facet: "скромность",
-    keyed: true,
+    trait: "добросовестность",
+    facet: "целеустремленность",
+    keyed: false,
   },
   {
     id: 78,
-    questionText: "Не люблю перемены.",
+    questionText: "Я не люблю перемены.",
     trait: "открытость_опыту",
-    facet: "азартность",
+    facet: "либерализм",
     keyed: true,
   },
   {
     id: 79,
-    questionText: "Не иду на компромисс.",
+    questionText: "Я не иду на компромисс.",
     trait: "доброжелательность",
     facet: "сотрудничество",
     keyed: true,
   },
   {
     id: 80,
-    questionText: "Стараюсь делать только необходимый минимум работы.",
+    questionText: "Я принимаю решения после тщательного обдумывания.",
     trait: "добросовестность",
     facet: "осторожность",
-    keyed: true,
+    keyed: false,
   },
   {
     id: 81,
@@ -627,10 +639,10 @@ export const questions = ref([
   },
   {
     id: 85,
-    questionText: "Я трачу свое время впустую.",
+    questionText: "Я избегаю спонтанных решений.",
     trait: "добросовестность",
     facet: "осторожность",
-    keyed: true,
+    keyed: false,
   },
   {
     id: 86,
@@ -641,17 +653,17 @@ export const questions = ref([
   },
   {
     id: 87,
-    questionText: "Я люблю жизнь.",
+    questionText: "Я часто чувствую себя унылым(-ой) и безрадостным(-ой).",
     trait: "экстраверсия",
     facet: "жизнерадостность",
-    keyed: false,
+    keyed: true,
   },
   {
     id: 88,
     questionText: "Я считаю, что законы должны быть строгими.",
     trait: "открытость_опыту",
     facet: "либерализм",
-    keyed: false,
+    keyed: true,
   },
   {
     id: 89,
@@ -678,15 +690,15 @@ export const questions = ref([
     id: 92,
     questionText: "Я не особо заинтересован(-а) в дружеских отношениях.",
     trait: "экстраверсия",
-    facet: "неумеренность",
+    facet: "дружелюбие",
     keyed: true,
   },
   {
     id: 93,
-    questionText: "Я часто с головой погружаюсь в размышления.",
+    questionText: "Я предпочитаю реальность, а не воображаемые миры.",
     trait: "открытость_опыту",
     facet: "воображение",
-    keyed: false,
+    keyed: true,
   },
   {
     id: 94,
@@ -697,7 +709,7 @@ export const questions = ref([
   },
   {
     id: 95,
-    questionText: "Я умею добиваться своего.",
+    questionText: "Я охотно помогаю другим, даже если это мне невыгодно.",
     trait: "доброжелательность",
     facet: "альтруизм",
     keyed: false,
@@ -725,7 +737,8 @@ export const questions = ref([
   },
   {
     id: 99,
-    questionText: "Использует лесть, чтобы преуспеть.",
+    questionText:
+      "Я готов(-а) идти на обман, если это поможет мне избежать проблем.",
     trait: "доброжелательность",
     facet: "нравственность",
     keyed: true,
@@ -735,7 +748,7 @@ export const questions = ref([
     questionText: "Я бросаю кругом свои вещи.",
     trait: "добросовестность",
     facet: "организованность",
-    keyed: false,
+    keyed: true,
   },
   {
     id: 101,
@@ -748,21 +761,21 @@ export const questions = ref([
     id: 102,
     questionText: "Я жду, когда другие возьмут инициативу в свои руки.",
     trait: "экстраверсия",
-    facet: "дружелюбие",
+    facet: "настойчивость",
     keyed: false,
   },
   {
     id: 103,
     questionText: "Я не иду на поводу своих эмоций.",
-    trait: "добросовестность",
-    facet: "самоэффективность",
+    trait: "открытость_опыту",
+    facet: "эмоциональность",
     keyed: false,
   },
   {
     id: 104,
-    questionText: "Я не трачу время на других людей.",
+    questionText: "Я не считаю себя лучше других людей.",
     trait: "доброжелательность",
-    facet: "азартность",
+    facet: "скромность",
     keyed: false,
   },
   {
@@ -784,18 +797,19 @@ export const questions = ref([
     questionText: "Я предпочитаю медлительный образ жизни.",
     trait: "экстраверсия",
     facet: "уровень_активности",
-    keyed: false,
+    keyed: true,
   },
   {
     id: 108,
-    questionText: "Я предпочитаю стабильность вместо нового опыта.",
+    questionText:
+      "Я поддерживаю свободу самовыражения, даже если это вызывает разногласия.",
     trait: "открытость_опыту",
     facet: "либерализм",
     keyed: false,
   },
   {
     id: 109,
-    questionText: "Я не считаюсь с мнением других.",
+    questionText: "Я редко хвастаюсь своими достижениями.",
     trait: "доброжелательность",
     facet: "скромность",
     keyed: false,
@@ -805,7 +819,7 @@ export const questions = ref([
     questionText: "Я уделяю мало времени и сил своей работе.",
     trait: "добросовестность",
     facet: "целеустремленность",
-    keyed: false,
+    keyed: true,
   },
   {
     id: 111,
@@ -833,14 +847,14 @@ export const questions = ref([
     questionText: "Я веду себя довольно вызывающе.",
     trait: "экстраверсия",
     facet: "настойчивость",
-    keyed: false,
+    keyed: true,
   },
   {
     id: 115,
     questionText: "Мне нужен толчок, чтобы начать работу.",
     trait: "добросовестность",
     facet: "самоэффективность",
-    keyed: false,
+    keyed: true,
   },
   {
     id: 116,
@@ -851,17 +865,18 @@ export const questions = ref([
   },
   {
     id: 117,
-    questionText: "Я смотрю на светлую сторону жизни.",
+    questionText: "Я часто стремлюсь к новым и захватывающим впечатлениям.",
     trait: "экстраверсия",
-    facet: "депрессия",
-    keyed: true,
+    facet: "азартность",
+    keyed: false,
   },
   {
     id: 118,
-    questionText: "Я считаю, что стоит ужесточить наказания за преступления.",
+    questionText:
+      "Я считаю, что общество должно придерживаться традиционных ценностей.",
     trait: "открытость_опыту",
     facet: "либерализм",
-    keyed: false,
+    keyed: true,
   },
   {
     id: 119,
@@ -875,6 +890,6 @@ export const questions = ref([
     questionText: "Я строю планы в последний момент.",
     trait: "добросовестность",
     facet: "организованность",
-    keyed: false,
+    keyed: true,
   },
 ]);
