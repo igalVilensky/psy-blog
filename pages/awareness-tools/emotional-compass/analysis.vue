@@ -14,7 +14,7 @@ import { ref, computed } from "vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getEmotionBarometerData } from "~/api/firebase/emotionBarometer";
-import EmotionalAnalysis from "~/components/emotional-barometer/EmotionalAnalysis.vue";
+import EmotionalAnalysis from "~/components/emotional-compass/EmotionalAnalysis.vue";
 
 const user = ref(null);
 const auth = getAuth();

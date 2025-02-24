@@ -85,7 +85,7 @@
 
 <script setup>
 import { ref } from "vue";
-import EmotionalBarometerImage from "@/assets/images/awarenessTools/emotional-barometer.jpeg";
+import EmotionalBarometerImage from "@/assets/images/awarenessTools/emotional-compass.jpeg";
 import DeepConversationWithCardsImage from "@/assets/images/awarenessTools/deep-conversation-with-cards.jpeg";
 import LifeArchetypeImage from "@/assets/images/awarenessTools/life-archetype.jpg";
 import big5Image from "@/assets/images/awarenessTools/big5.jpg";
@@ -106,8 +106,8 @@ const tools = ref([
     image: big5Image,
   },
   {
-    name: "Эмоциональный барометр",
-    path: "/awareness-tools/emotional-barometer",
+    name: "Эмоциональный компас",
+    path: "/awareness-tools/emotional-compass",
     description:
       "Измерьте и отслеживайте ваши эмоции в реальном времени. Научитесь лучше понимать свои чувства и управлять ими.",
     image: EmotionalBarometerImage,

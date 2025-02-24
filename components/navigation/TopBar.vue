@@ -458,7 +458,7 @@ const isCoursesRouteActive = computed(() => {
 const isAwarenessToolsRouteActive = computed(() => {
   const submenuRoutes = [
     "/awareness-tools",
-    "/awareness-tools/emotional-barometer",
+    "/awareness-tools/emotional-compass",
     "/awareness-tools/deep-conversation-with-cards",
     "/awareness-tools/life-purpose-archetype",
     "/awareness-tools/big-5-model",

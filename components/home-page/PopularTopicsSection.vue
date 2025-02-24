@@ -51,7 +51,7 @@
 </template>
 
 <script setup>
-import EmotionalBarometerImage from "@/assets/images/awarenessTools/emotional-barometer.jpeg";
+import EmotionalBarometerImage from "@/assets/images/awarenessTools/emotional-compass.jpeg";
 import DeepConversationWithCardsImage from "@/assets/images/awarenessTools/deep-conversation-with-cards.jpeg";
 import EmotionaDiaryImage from "@/assets/images/awarenessTools/emotion-diary.jpeg";
 import LifeArchetypeImage from "@/assets/images/awarenessTools/life-archetype.jpg";

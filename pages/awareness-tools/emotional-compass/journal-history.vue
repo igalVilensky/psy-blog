@@ -4,7 +4,7 @@
       <div class="grid grid-cols-1 gap-4 sm:gap-8">
         <!-- Back Navigation -->
         <nuxt-link
-          to="/awareness-tools/emotional-barometer"
+          to="/awareness-tools/emotional-compass"
           class="inline-flex items-center text-[#0EA5E9] hover:text-[#22D3EE] transition-colors group"
         >
           <i
@@ -40,8 +40,8 @@ import { ref } from "vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getEmotionBarometerData } from "~/api/firebase/emotionBarometer";
-import JournalHistory from "~/components/emotional-barometer/JournalHistory.vue";
-import EmotionChart from "~/components/emotional-barometer/EmotionChart.vue";
+import JournalHistory from "~/components/emotional-compass/JournalHistory.vue";
+import EmotionChart from "~/components/emotional-compass/EmotionChart.vue";
 
 // Assuming these are defined in a separate file or passed from a store
 const emotions = [

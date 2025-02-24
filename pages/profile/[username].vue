@@ -296,13 +296,13 @@
       >
         <h2 class="text-xl font-bold text-white/90 mb-4">
           <i class="fas fa-chart-line text-[#0EA5E9] mr-2"></i>
-          Эмоциональный барометр
+          Эмоциональный компас
         </h2>
 
         <!-- CTA Link with Hover Effect -->
         <div v-if="emotionBarometerStats.totalEntries > 0" class="mb-6">
           <Button
-            to="/awareness-tools/emotional-barometer"
+            to="/awareness-tools/emotional-compass"
             text="Перейти к барометру"
             iconClass="fas fa-arrow-right"
             gradientStart="#0EA5E9"
@@ -335,11 +335,11 @@
             ></i>
             <p class="text-slate-300">Нет данных для отображения.</p>
             <p class="text-sm text-slate-400 mt-2">
-              Начните использовать эмоциональный барометр, чтобы отслеживать
-              свои эмоции
+              Начните использовать Эмоциональный компас, чтобы отслеживать свои
+              эмоции
             </p>
             <NuxtLink
-              to="/awareness-tools/emotional-barometer"
+              to="/awareness-tools/emotional-compass"
               class="mt-4 relative inline-flex items-center justify-center px-6 py-2 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-[#0EA5E9]/20"
             >
               <i class="fas fa-play-circle text-sm mr-2"></i>

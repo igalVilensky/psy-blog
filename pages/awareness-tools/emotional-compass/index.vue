@@ -9,9 +9,11 @@
           Анализ и понимание эмоций
         </h1>
         <p class="text-slate-300 max-w-2xl mx-auto leading-relaxed px-2">
-          Эмоциональный Барометр — инструмент для оценки и осознания
-          эмоционального состояния. Он помогает отслеживать динамику эмоций,
-          анализировать их влияние и находить эффективные стратегии управления.
+          Эмоциональный компас — это твой личный дневник эмоций. Здесь ты можешь
+          записать ситуацию, выбрать свою эмоцию и её интенсивность, а затем
+          получить шаги для осознания своих потребностей и полезные советы. Это
+          инструмент, который поможет лучше понимать себя, управлять своими
+          чувствами и находить баланс в жизни.
         </p>
       </section>
 
@@ -202,7 +204,7 @@
         >
           <template v-if="hasStatsData">
             <NuxtLink
-              to="/awareness-tools/emotional-barometer/analysis"
+              to="/awareness-tools/emotional-compass/analysis"
               class="group relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl p-6 sm:p-8 border border-[#0EA5E9]/20 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)] transition-all duration-300"
             >
               <div
@@ -215,7 +217,7 @@
             </NuxtLink>
 
             <NuxtLink
-              to="/awareness-tools/emotional-barometer/journal-history"
+              to="/awareness-tools/emotional-compass/journal-history"
               class="group relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl p-6 sm:p-8 border border-[#0EA5E9]/20 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)] transition-all duration-300"
             >
               <div
@@ -283,12 +285,12 @@ import {
   updateDoc,
   arrayUnion,
 } from "firebase/firestore";
-import RecommendationsModal from "~/components/emotional-barometer/RecommendationsModal.vue";
-import EmotionSelection from "~/components/emotional-barometer/EmotionSelection.vue";
-import IntensityLevel from "~/components/emotional-barometer/IntensityLevel.vue";
-import JournalEntry from "~/components/emotional-barometer/JournalEntry.vue";
-import LifeSpheresSelection from "~/components/emotional-barometer/LifeSpheresSelection.vue";
-import SubEmotionSelection from "~/components/emotional-barometer/SubEmotionSelection.vue";
+import RecommendationsModal from "~/components/emotional-compass/RecommendationsModal.vue";
+import EmotionSelection from "~/components/emotional-compass/EmotionSelection.vue";
+import IntensityLevel from "~/components/emotional-compass/IntensityLevel.vue";
+import JournalEntry from "~/components/emotional-compass/JournalEntry.vue";
+import LifeSpheresSelection from "~/components/emotional-compass/LifeSpheresSelection.vue";
+import SubEmotionSelection from "~/components/emotional-compass/SubEmotionSelection.vue";
 import Notification from "~/components/base/Notification.vue";
 import { useNotification } from "@/composables/useNotification";
 import { getEmotionBarometerStats } from "~/api/firebase/emotionBarometer";

@@ -25,13 +25,13 @@
             Анализ и понимание эмоций
           </h2>
           <p class="text-slate-300 mb-6">
-            <strong>Эмоциональный Барометр</strong> — инструмент для оценки и
+            <strong>Эмоциональный компас</strong> — инструмент для оценки и
             осознания эмоционального состояния. Он помогает отслеживать динамику
             эмоций, анализировать их влияние и находить эффективные стратегии
             управления.
           </p>
           <NuxtLink
-            to="/tools/emotional-barometer"
+            to="/tools/emotional-compass"
             class="inline-block px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white rounded-xl font-medium text-center transition-all duration-300 shadow-lg shadow-blue-900/30"
           >
             Подробнее

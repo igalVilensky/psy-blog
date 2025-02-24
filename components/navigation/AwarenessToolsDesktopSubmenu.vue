@@ -44,8 +44,8 @@ defineProps({
 const menuItems = [
   {
     icon: "fas fa-thermometer-half",
-    label: "Эмоциональный барометр",
-    path: "/awareness-tools/emotional-barometer",
+    label: "Эмоциональный компас",
+    path: "/awareness-tools/emotional-compass",
   },
   // {
   //   icon: "fas fa-comments",

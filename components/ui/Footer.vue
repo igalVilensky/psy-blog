@@ -140,8 +140,8 @@ const sitemapLinks = [
   { label: "Подкасты", to: "/courses/podcasts" },
   { label: "Инструменты осознанности", to: "/awareness-tools" },
   {
-    label: "Эмоциональный барометр",
-    to: "/awareness-tools/emotional-barometer",
+    label: "Эмоциональный компас",
+    to: "/awareness-tools/emotional-compass",
   },
   // {
   //   label: "Глубокий разговор с картами",
