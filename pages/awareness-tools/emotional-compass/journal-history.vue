@@ -12,14 +12,14 @@
           ></i>
           <span class="text-sm font-medium">Вернуться</span>
         </nuxt-link>
-        <!-- Journal History Section -->
 
+        <!-- Journal History Section -->
         <div
           class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 sm:p-8 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
         >
           <JournalHistory
             :emotions="emotions"
-            :lifeSpheres="lifeSpheres"
+            :life-spheres="lifeSpheres"
             :entries="entries"
           />
         </div>
@@ -43,8 +43,8 @@ import { getEmotionBarometerData } from "~/api/firebase/emotionBarometer";
 import JournalHistory from "~/components/emotional-compass/JournalHistory.vue";
 import EmotionChart from "~/components/emotional-compass/EmotionChart.vue";
 
-// Assuming these are defined in a separate file or passed from a store
-const emotions = [
+// Static data for emotions and life spheres
+const emotions = ref([
   {
     id: 1,
     name: "Радость",
@@ -75,33 +75,19 @@ const emotions = [
     color: "bg-green-100",
     activeColor: "bg-gradient-to-r from-[#10B981] to-[#34D399]",
   },
-];
-const lifeSpheres = [
-  {
-    name: "Работа",
-    color: "bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE]",
-  },
-  {
-    name: "Семья",
-    color: "bg-gradient-to-r from-[#E879F9] to-[#C084FC]",
-  },
-  {
-    name: "Здоровье",
-    color: "bg-gradient-to-r from-[#F59E0B] to-[#F97316]",
-  },
+]);
+
+const lifeSpheres = ref([
+  { name: "Работа", color: "bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE]" },
+  { name: "Семья", color: "bg-gradient-to-r from-[#E879F9] to-[#C084FC]" },
+  { name: "Здоровье", color: "bg-gradient-to-r from-[#F59E0B] to-[#F97316]" },
   {
     name: "Личностный рост",
     color: "bg-gradient-to-r from-[#10B981] to-[#34D399]",
   },
-  {
-    name: "Отношения",
-    color: "bg-gradient-to-r from-[#EF4444] to-[#F87171]",
-  },
-  {
-    name: "Хобби",
-    color: "bg-gradient-to-r from-[#14B8A6] to-[#2DD4BF]",
-  },
-];
+  { name: "Отношения", color: "bg-gradient-to-r from-[#EF4444] to-[#F87171]" },
+  { name: "Хобби", color: "bg-gradient-to-r from-[#14B8A6] to-[#2DD4BF]" },
+]);
 
 const user = ref(null);
 const auth = getAuth();
@@ -110,13 +96,29 @@ const entries = ref([]);
 
 // Fetch entries using API method
 const fetchEntries = async (userId) => {
-  const result = await getEmotionBarometerData(db, userId);
-  console.log(result);
-
-  if (result.success) {
-    entries.value = result.data;
-  } else {
-    console.error(result.message);
+  try {
+    const result = await getEmotionBarometerData(db, userId);
+    console.log("Fetched entries:", result.data); // Log to verify data structure
+    if (result.success) {
+      entries.value = result.data.map((entry) => ({
+        ...entry,
+        // Ensure field names match what JournalHistory expects
+        entry: entry.entry || "", // Maps journalEntry
+        perception: entry.perception || "",
+        coping: entry.coping || "",
+        action: entry.action || "", // New field
+        emotion: entry.emotion || "",
+        subEmotion: entry.subEmotion || "",
+        intensity: entry.intensity || 0,
+        timestamp: entry.timestamp || "",
+        tags: entry.tags || [],
+      }));
+    } else {
+      console.error("Failed to fetch entries:", result.message);
+      entries.value = [];
+    }
+  } catch (error) {
+    console.error("Error fetching entries:", error);
     entries.value = [];
   }
 };
@@ -126,6 +128,9 @@ onAuthStateChanged(auth, async (currentUser) => {
   if (currentUser) {
     user.value = currentUser;
     await fetchEntries(currentUser.uid);
+  } else {
+    user.value = null;
+    entries.value = []; // Clear entries if user logs out
   }
 });
 </script>

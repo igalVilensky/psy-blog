@@ -139,6 +139,7 @@
               v-model:journal-entry="journalEntry"
               v-model:perception-entry="perceptionEntry"
               v-model:coping-entry="copingEntry"
+              v-model:action-entry="actionEntry"
             />
           </div>
 
@@ -321,13 +322,14 @@ const showModal = ref(false);
 const selectedEmotion = ref(null);
 const intensityLevel = ref(5);
 const journalEntry = ref("");
+const perceptionEntry = ref("");
+const copingEntry = ref("");
+const actionEntry = ref(""); // Added actionEntry
 const selectedTags = ref([]);
 const stats = ref(null);
 const subEmotions = ref([]);
 const selectedSubEmotion = ref(null);
-const perceptionEntry = ref("");
-const copingEntry = ref("");
-const showStartButton = ref(true); // Initially show the "Добавить запись" button
+const showStartButton = ref(true);
 
 // Validation for each step
 const canProceed = computed(() => {
@@ -342,7 +344,8 @@ const canProceed = computed(() => {
       return (
         journalEntry.value.trim().length > 0 &&
         perceptionEntry.value.trim().length > 0 &&
-        copingEntry.value.trim().length > 0
+        copingEntry.value.trim().length > 0 &&
+        actionEntry.value.trim().length > 0 // Added actionEntry validation
       );
     case 5:
       return selectedTags.value.length > 0;
@@ -352,8 +355,8 @@ const canProceed = computed(() => {
 });
 
 const startEntry = () => {
-  showStartButton.value = false; // Hide the button and show the steps
-  currentStep.value = 1; // Start from the first step
+  showStartButton.value = false;
+  currentStep.value = 1;
 };
 
 // Recommendations based on patterns
@@ -404,9 +407,13 @@ const closeModal = () => {
   selectedEmotion.value = null;
   intensityLevel.value = 5;
   journalEntry.value = "";
+  perceptionEntry.value = "";
+  copingEntry.value = "";
+  actionEntry.value = ""; // Reset actionEntry
   selectedTags.value = [];
 };
 
+// Emotion and tag selection
 const selectEmotion = (emotion) => {
   selectedEmotion.value = emotion;
   subEmotions.value = subEmotionsMapRef.value[emotion.name] || [];
@@ -439,6 +446,7 @@ const saveEntryToFirebase = async () => {
     entry: journalEntry.value,
     perception: perceptionEntry.value,
     coping: copingEntry.value,
+    action: actionEntry.value, // Added action field
     tags: [...selectedTags.value],
     timestamp: new Date().toISOString(),
   };
@@ -474,25 +482,21 @@ const saveEntryToFirebase = async () => {
   }
 };
 
-// HandleSubmit with the Firebase version
+// Handle submit with Firebase version
 const handleSubmit = async () => {
   if (!canSubmit.value) return;
 
-  // Save the entry to Firebase
   await saveEntryToFirebase();
 
-  // Reset all state variables to their initial values
+  // Reset all state variables
   currentStep.value = 1;
   selectedEmotion.value = null;
-
   journalEntry.value = "";
   perceptionEntry.value = "";
   copingEntry.value = "";
+  actionEntry.value = ""; // Reset actionEntry
   selectedTags.value = [];
-
   subEmotions.value = [];
-
-  // Show the "Добавить запись" button again
   showStartButton.value = true;
 };
 </script>

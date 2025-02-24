@@ -101,6 +101,12 @@
           <p class="text-sm text-slate-300">{{ entry.coping }}</p>
         </div>
 
+        <!-- Action Entry (New) -->
+        <div class="mb-4">
+          <p class="font-semibold text-sm text-slate-300">Действия:</p>
+          <p class="text-sm text-slate-300">{{ entry.action }}</p>
+        </div>
+
         <!-- Tags -->
         <div class="flex flex-wrap gap-2">
           <span
