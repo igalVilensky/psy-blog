@@ -1,16 +1,22 @@
 <template>
-  <div>
-    <HeroSection />
-    <FeaturesSection />
-    <TestimonialsSection />
-    <CTASection />
+  <div class="mt-24 text-white">
+    <h1>Blog Posts</h1>
+    <ul>
+      <li v-for="post in posts.data" :key="post.id">
+        {{ post.title }}
+      </li>
+    </ul>
   </div>
 </template>
 
 <script setup>
-import HeroSection from "@/components/landing/HeroSection.vue";
-import FeaturesSection from "@/components/landing/FeaturesSection.vue";
-definePageMeta({
-  layout: "landing", // Use the new landing layout
-});
+const { data: posts, error } = await useFetch(
+  "http://localhost:8055/items/posts"
+);
+
+console.log(posts.value);
+
+if (error.value) {
+  console.error("Error fetching posts:", error.value);
+}
 </script>
