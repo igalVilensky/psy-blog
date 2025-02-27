@@ -246,24 +246,53 @@
             </a>
 
             <!-- Share Options -->
+            <!-- Replace the existing Share Options div with this -->
             <div class="flex gap-3">
+              <!-- WhatsApp -->
               <button
+                @click="shareViaWhatsApp"
+                class="w-10 h-10 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center transition-colors"
+                title="Share via WhatsApp"
+              >
+                <i class="fab fa-whatsapp text-gray-300 hover:text-white"></i>
+              </button>
+
+              <!-- Telegram -->
+              <button
+                @click="shareViaTelegram"
+                class="w-10 h-10 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center transition-colors"
+                title="Share via Telegram"
+              >
+                <i
+                  class="fab fa-telegram-plane text-gray-300 hover:text-white"
+                ></i>
+              </button>
+
+              <!-- Email -->
+              <button
+                @click="shareViaEmail"
                 class="w-10 h-10 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center transition-colors"
                 title="Share via Email"
               >
                 <i class="fas fa-envelope text-gray-300 hover:text-white"></i>
               </button>
+
+              <!-- Facebook -->
               <button
-                class="w-10 h-10 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center transition-colors"
-                title="Share on Twitter"
-              >
-                <i class="fab fa-twitter text-gray-300 hover:text-white"></i>
-              </button>
-              <button
+                @click="shareViaFacebook"
                 class="w-10 h-10 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center transition-colors"
                 title="Share on Facebook"
               >
                 <i class="fab fa-facebook-f text-gray-300 hover:text-white"></i>
+              </button>
+
+              <!-- Instagram (Note: Instagram doesn't have a direct share API, we'll use a URL copy approach) -->
+              <button
+                @click="shareViaInstagram"
+                class="w-10 h-10 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center transition-colors"
+                title="Share on Instagram"
+              >
+                <i class="fab fa-instagram text-gray-300 hover:text-white"></i>
               </button>
             </div>
           </div>
@@ -306,4 +335,48 @@ const urlFor = (source: SanityImageSource) =>
   projectId && dataset
     ? imageUrlBuilder({ projectId, dataset }).image(source)
     : null;
+
+// Add these methods inside script setup
+const shareViaWhatsApp = () => {
+  const shareUrl = encodeURIComponent(window.location.href);
+  const text = encodeURIComponent(
+    `${guide.value?.title} - Check out this guide!`
+  );
+  window.open(
+    `https://api.whatsapp.com/send?text=${text}%20${shareUrl}`,
+    "_blank"
+  );
+};
+
+const shareViaTelegram = () => {
+  const shareUrl = encodeURIComponent(window.location.href);
+  const text = encodeURIComponent(
+    guide.value?.title || "Check out this guide!"
+  );
+  window.open(`https://t.me/share/url?url=${shareUrl}&text=${text}`, "_blank");
+};
+
+const shareViaEmail = () => {
+  const subject = encodeURIComponent(guide.value?.title || "Interesting Guide");
+  const body = encodeURIComponent(
+    `Check out this guide: ${window.location.href}`
+  );
+  window.location.href = `mailto:?subject=${subject}&body=${body}`;
+};
+
+const shareViaFacebook = () => {
+  const shareUrl = encodeURIComponent(window.location.href);
+  window.open(
+    `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`,
+    "_blank"
+  );
+};
+
+const shareViaInstagram = () => {
+  // Instagram doesn't have a direct sharing API via web
+  // We'll copy the URL to clipboard and alert the user
+  navigator.clipboard.writeText(window.location.href).then(() => {
+    alert("URL copied to clipboard! Paste it in Instagram to share.");
+  });
+};
 </script>
