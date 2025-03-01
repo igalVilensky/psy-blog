@@ -1,10 +1,12 @@
 <template>
   <div class="relative min-h-screen">
-    <div class="container mx-auto sm:px-4 max-w-3xl relative z-10 pb-12 pt-12">
+    <div
+      class="container mx-auto px-4 sm:px-4 max-w-3xl relative z-10 pb-12 pt-12"
+    >
       <!-- Back Navigation -->
       <nuxt-link
         to="/blog"
-        class="inline-flex items-center text-[#0EA5E9] hover:text-[#22D3EE] transition-colors mb-8 group pl-6 sm:pl-0"
+        class="inline-flex items-center text-[#0EA5E9] hover:text-[#22D3EE] transition-colors mb-8 group pl-3 sm:pl-0"
       >
         <i
           class="fas fa-arrow-left mr-2 transform transition-transform group-hover:-translate-x-1"
@@ -17,7 +19,9 @@
         class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl sm:rounded-2xl border border-white/10 overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
       >
         <!-- Featured Image Container -->
-        <div class="relative w-full h-[250px] sm:h-[350px] overflow-hidden">
+        <div
+          class="relative w-full h-[200px] sm:h-[250px] md:h-[350px] overflow-hidden"
+        >
           <nuxt-img
             v-if="post.image"
             :src="urlFor(post?.image)?.width(1200).height(675).url()"
@@ -53,17 +57,21 @@
         </div>
 
         <!-- Content Container -->
-        <div class="px-8 py-6 sm:py-8">
+        <div class="px-4 sm:px-6 md:px-8 py-6 sm:py-8">
           <!-- Title -->
-          <h1 class="text-4xl font-bold text-white/90 mb-6">
+          <h1
+            class="text-2xl sm:text-3xl md:text-4xl font-bold text-white/90 mb-6"
+          >
             {{ post.title }}
           </h1>
 
           <!-- Meta Information Row with Share Button -->
           <div
-            class="flex flex-wrap items-center justify-between mb-6 sm:mb-8 border-b border-white/10 sm:pb-8 pb-6 text-sm text-slate-400"
+            class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 sm:mb-8 border-b border-white/10 pb-6 sm:pb-8 text-sm text-slate-400"
           >
-            <div class="flex flex-wrap items-center gap-4 sm:gap-8 text-base">
+            <div
+              class="flex flex-wrap items-center gap-3 sm:gap-4 md:gap-8 text-sm sm:text-base mb-4 sm:mb-0"
+            >
               <div class="flex items-center gap-2">
                 <i class="far fa-calendar text-[#0EA5E9]"></i>
                 <span>{{
@@ -81,35 +89,39 @@
                 <i class="far fa-eye text-[#E879F9]"></i>
                 <span>{{ postViews }} просмотров</span>
               </div>
-              <button
-                @click="isShareOpen = true"
-                class="flex items-center gap-2 hover:text-[#0EA5E9] transition-colors"
-              >
-                <i class="fas fa-share-alt"></i>
-                <span>Поделиться</span>
-              </button>
             </div>
+            <button
+              @click="isShareOpen = true"
+              class="flex items-center gap-2 hover:text-[#0EA5E9] transition-colors"
+            >
+              <i class="fas fa-share-alt"></i>
+              <span>Поделиться</span>
+            </button>
           </div>
 
           <!-- Article Content -->
-          <div class="prose prose-invert max-w-none">
+          <div
+            class="prose prose-invert max-w-none prose-img:rounded-lg prose-img:mx-auto"
+          >
             <SanityContent v-if="post.body" :blocks="post.body" />
           </div>
         </div>
       </article>
 
-      <!-- Comments Section -->
+      <!-- Comments Section - Improved for responsiveness -->
       <div
         v-if="post"
-        class="mt-12 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl sm:rounded-2xl border border-white/10 p-8"
+        class="mt-8 sm:mt-12 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl sm:rounded-2xl border border-white/10 p-4 sm:p-6 md:p-8"
       >
-        <h2 class="text-2xl font-bold text-white/90 mb-6 flex items-center">
+        <h2
+          class="text-xl sm:text-2xl font-bold text-white/90 mb-4 sm:mb-6 flex items-center"
+        >
           <i class="fas fa-comments text-[#0EA5E9] mr-3"></i>
           Комментарии
         </h2>
 
-        <!-- Comment Form -->
-        <form @submit.prevent="addNewComment" class="mb-8">
+        <!-- Comment Form - Improved for mobile -->
+        <form @submit.prevent="addNewComment" class="mb-6 sm:mb-8">
           <div class="flex flex-col gap-4">
             <div class="flex flex-col sm:flex-row gap-4">
               <input
@@ -130,33 +142,39 @@
             <textarea
               v-model="newComment.text"
               placeholder="Ваш комментарий"
-              class="px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 text-white placeholder-slate-400 min-h-[120px] focus:outline-none focus:border-[#0EA5E9] focus:ring-1 focus:ring-[#0EA5E9] transition-all"
+              class="px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 text-white placeholder-slate-400 min-h-[100px] sm:min-h-[120px] focus:outline-none focus:border-[#0EA5E9] focus:ring-1 focus:ring-[#0EA5E9] transition-all"
               required
             ></textarea>
             <button
               type="submit"
               :disabled="isSubmitting"
-              class="self-start px-6 py-3 bg-[#0EA5E9] hover:bg-[#22D3EE] rounded-lg text-white font-medium transition-colors disabled:bg-gray-600"
+              class="self-start px-4 sm:px-6 py-2 sm:py-3 bg-[#0EA5E9] hover:bg-[#22D3EE] rounded-lg text-white font-medium transition-colors disabled:bg-gray-600"
             >
               {{ isSubmitting ? "Отправка..." : "Отправить" }}
             </button>
           </div>
         </form>
 
-        <!-- Comments List -->
-        <div class="space-y-6">
+        <!-- Comments List - Improved for mobile -->
+        <div class="space-y-4 sm:space-y-6">
           <div
             v-for="comment in comments"
             :key="comment.id"
-            class="bg-[#1A1F35]/60 rounded-lg p-4 border border-white/10"
+            class="bg-[#1A1F35]/60 rounded-lg p-3 sm:p-4 border border-white/10"
           >
-            <div class="flex items-center justify-between mb-2">
-              <span class="font-medium text-[#0EA5E9]">{{ comment.name }}</span>
-              <span class="text-sm text-slate-400">
+            <div
+              class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2"
+            >
+              <span class="font-medium text-[#0EA5E9] mb-1 sm:mb-0">{{
+                comment.name
+              }}</span>
+              <span class="text-xs sm:text-sm text-slate-400">
                 {{ formatDate(comment.createdAt) }}
               </span>
             </div>
-            <p class="text-slate-300">{{ comment.text }}</p>
+            <p class="text-slate-300 text-sm sm:text-base">
+              {{ comment.text }}
+            </p>
           </div>
           <p v-if="comments.length === 0" class="text-slate-400 text-center">
             Пока нет комментариев. Будьте первым!
@@ -164,19 +182,21 @@
         </div>
       </div>
 
-      <!-- Share Modal -->
+      <!-- Share Modal - Improved for mobile -->
       <div
         v-if="isShareOpen"
-        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 backdrop-blur-sm"
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 backdrop-blur-sm p-4"
       >
         <div
-          class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-6 max-w-md w-full mx-4"
+          class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-4 sm:p-6 max-w-md w-full"
         >
           <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-bold text-white/90">Поделиться статьей</h3>
+            <h3 class="text-lg sm:text-xl font-bold text-white/90">
+              Поделиться статьей
+            </h3>
             <button
               @click="isShareOpen = false"
-              class="text-slate-300 hover:text-[#0EA5E9]"
+              class="text-slate-300 hover:text-[#0EA5E9] p-2"
             >
               <i class="fas fa-times"></i>
             </button>
@@ -214,26 +234,27 @@
         </div>
       </div>
 
+      <!-- Bottom Share Section - Improved for mobile -->
       <div
-        class="mt-12 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl sn:rounded-2xl border border-white/10 p-8"
+        class="mt-8 sm:mt-12 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl sm:rounded-2xl border border-white/10 p-4 sm:p-6 md:p-8"
       >
-        <div class="text-center mb-6">
+        <div class="text-center mb-4 sm:mb-6">
           <div class="flex items-center justify-center gap-2 mb-2">
             <i class="fas fa-share-alt text-[#0EA5E9]"></i>
-            <h3 class="text-xl font-semibold text-white/90">
+            <h3 class="text-lg sm:text-xl font-semibold text-white/90">
               Поделиться статьей
             </h3>
           </div>
-          <p class="text-slate-300">
+          <p class="text-slate-300 text-sm sm:text-base">
             Понравилась статья? Поделитесь с друзьями!
           </p>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
           <!-- Twitter Share Button with Hover Effect -->
           <button
             @click="shareOn('twitter')"
-            class="relative inline-flex items-center justify-center px-4 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group backdrop-blur-sm border border-[#1DA1F2]/20"
+            class="relative inline-flex items-center justify-center px-2 sm:px-4 py-2 sm:py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group backdrop-blur-sm border border-[#1DA1F2]/20"
           >
             <span
               class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#1DA1F2] to-[#1DA1F2]/80 group-hover:translate-x-0 ease"
@@ -241,10 +262,11 @@
               <i class="fab fa-twitter"></i>
             </span>
             <span
-              class="absolute flex items-center justify-center w-full h-full text-[#1DA1F2] transition-all duration-300 transform group-hover:translate-x-full ease"
+              class="absolute flex items-center justify-center w-full h-full text-[#1DA1F2] transition-all duration-300 transform group-hover:translate-x-full ease text-xs sm:text-base"
             >
-              <i class="fab fa-twitter mr-2"></i>
-              Twitter
+              <i class="fab fa-twitter mr-1 sm:mr-2"></i>
+              <span class="hidden sm:inline">Twitter</span>
+              <span class="inline sm:hidden">Twitter</span>
             </span>
             <span class="relative invisible">Twitter</span>
           </button>
@@ -252,7 +274,7 @@
           <!-- Facebook Share Button with Hover Effect -->
           <button
             @click="shareOn('facebook')"
-            class="relative inline-flex items-center justify-center px-4 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group backdrop-blur-sm border border-[#4267B2]/20"
+            class="relative inline-flex items-center justify-center px-2 sm:px-4 py-2 sm:py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group backdrop-blur-sm border border-[#4267B2]/20"
           >
             <span
               class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#4267B2] to-[#4267B2]/80 group-hover:translate-x-0 ease"
@@ -260,10 +282,11 @@
               <i class="fab fa-facebook"></i>
             </span>
             <span
-              class="absolute flex items-center justify-center w-full h-full text-[#4267B2] transition-all duration-300 transform group-hover:translate-x-full ease"
+              class="absolute flex items-center justify-center w-full h-full text-[#4267B2] transition-all duration-300 transform group-hover:translate-x-full ease text-xs sm:text-base"
             >
-              <i class="fab fa-facebook mr-2"></i>
-              Facebook
+              <i class="fab fa-facebook mr-1 sm:mr-2"></i>
+              <span class="hidden sm:inline">Facebook</span>
+              <span class="inline sm:hidden">FB</span>
             </span>
             <span class="relative invisible">Facebook</span>
           </button>
@@ -271,7 +294,7 @@
           <!-- Telegram Share Button with Hover Effect -->
           <button
             @click="shareOn('telegram')"
-            class="relative inline-flex items-center justify-center px-4 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group backdrop-blur-sm border border-[#0088cc]/20"
+            class="relative inline-flex items-center justify-center px-2 sm:px-4 py-2 sm:py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group backdrop-blur-sm border border-[#0088cc]/20"
           >
             <span
               class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0088cc] to-[#0088cc]/80 group-hover:translate-x-0 ease"
@@ -279,10 +302,11 @@
               <i class="fab fa-telegram"></i>
             </span>
             <span
-              class="absolute flex items-center justify-center w-full h-full text-[#0088cc] transition-all duration-300 transform group-hover:translate-x-full ease"
+              class="absolute flex items-center justify-center w-full h-full text-[#0088cc] transition-all duration-300 transform group-hover:translate-x-full ease text-xs sm:text-base"
             >
-              <i class="fab fa-telegram mr-2"></i>
-              Telegram
+              <i class="fab fa-telegram mr-1 sm:mr-2"></i>
+              <span class="hidden sm:inline">Telegram</span>
+              <span class="inline sm:hidden">TG</span>
             </span>
             <span class="relative invisible">Telegram</span>
           </button>
@@ -290,7 +314,7 @@
           <!-- Copy Link Button with Hover Effect -->
           <button
             @click="copyLink"
-            class="relative inline-flex items-center justify-center px-4 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group backdrop-blur-sm border border-[#0EA5E9]/20"
+            class="relative inline-flex items-center justify-center px-2 sm:px-4 py-2 sm:py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group backdrop-blur-sm border border-[#0EA5E9]/20"
           >
             <span
               class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
@@ -298,36 +322,37 @@
               <i class="fas fa-link"></i>
             </span>
             <span
-              class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
+              class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease text-xs sm:text-base"
             >
-              <i class="fas fa-link mr-2"></i>
-              Копировать
+              <i class="fas fa-link mr-1 sm:mr-2"></i>
+              <span class="hidden sm:inline">Копировать</span>
+              <span class="inline sm:hidden">Копировать</span>
             </span>
             <span class="relative invisible">Копировать</span>
           </button>
         </div>
       </div>
 
-      <!-- Newsletter Section -->
+      <!-- Newsletter Section - Improved for mobile -->
       <div
-        class="mt-12 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl sm:rounded-2xl border border-white/10 p-8 text-center"
+        class="mt-8 sm:mt-12 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl sm:rounded-2xl border border-white/10 p-4 sm:p-6 md:p-8 text-center"
       >
-        <h2 class="text-2xl font-bold text-white/90 mb-4">
+        <h2 class="text-xl sm:text-2xl font-bold text-white/90 mb-2 sm:mb-4">
           Понравилась статья?
         </h2>
-        <p class="text-slate-300 mb-6">
+        <p class="text-slate-300 text-sm sm:text-base mb-4 sm:mb-6">
           Подпишитесь на нашу рассылку, чтобы получать новые статьи первыми
         </p>
-        <div class="flex">
+        <div class="flex flex-col sm:flex-row">
           <input
             type="email"
             v-model="email"
             placeholder="Введите ваш email"
-            class="w-full px-4 py-3 rounded-l-lg bg-slate-800/50 border border-slate-700 text-white placeholder-slate-400 focus:outline-none focus:border-[#C084FC] focus:ring-1 focus:ring-[#C084FC] transition-all"
+            class="w-full px-4 py-3 rounded-lg sm:rounded-r-none sm:rounded-l-lg bg-slate-800/50 border border-slate-700 text-white placeholder-slate-400 focus:outline-none focus:border-[#C084FC] focus:ring-1 focus:ring-[#C084FC] transition-all mb-3 sm:mb-0"
           />
           <button
             @click="subscribeEmail"
-            class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-r-lg group"
+            class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg sm:rounded-l-none sm:rounded-r-lg group"
           >
             <span
               class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"

@@ -22,7 +22,7 @@
         <!-- Hero Section -->
         <div class="relative">
           <!-- Image with Overlay -->
-          <div class="relative h-64 sm:h-80 md:h-96 overflow-hidden">
+          <div class="relative h-48 sm:h-64 md:h-80 lg:h-96 overflow-hidden">
             <div
               class="absolute inset-0 bg-gradient-to-b from-gray-900/20 to-gray-900/90 z-10"
             ></div>
@@ -40,10 +40,10 @@
           </div>
 
           <!-- Title Overlay -->
-          <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-8 z-20">
+          <div class="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-8 z-20">
             <div class="max-w-3xl">
               <h1
-                class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight"
+                class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight"
               >
                 {{ guide.title }}
               </h1>
@@ -52,10 +52,10 @@
         </div>
 
         <!-- Content Sections -->
-        <div class="p-4 sm:p-8 space-y-8">
+        <div class="p-4 sm:p-6 md:p-8 space-y-6 sm:space-y-8">
           <!-- Description -->
           <div class="max-w-3xl">
-            <p class="text-lg text-gray-300 leading-relaxed">
+            <p class="text-base sm:text-lg text-gray-300 leading-relaxed">
               {{ guide.description }}
             </p>
           </div>
@@ -63,45 +63,45 @@
           <!-- Progress Indicator -->
           <div class="py-4 flex justify-center">
             <div class="flex space-x-2 items-center">
-              <span class="h-1 w-16 bg-cyan-500 rounded-full"></span>
+              <span class="h-1 w-12 sm:w-16 bg-cyan-500 rounded-full"></span>
               <span
                 class="h-2 w-2 bg-cyan-400 rounded-full animate-pulse"
               ></span>
-              <span class="h-1 w-16 bg-cyan-500 rounded-full"></span>
+              <span class="h-1 w-12 sm:w-16 bg-cyan-500 rounded-full"></span>
             </div>
           </div>
 
           <!-- Key Sections Grid -->
-          <div class="grid md:grid-cols-2 gap-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             <!-- Benefits -->
             <div
-              class="bg-gray-700/30 rounded-2xl p-6 backdrop-blur-sm border border-white/10 transition-all duration-300 hover:border-cyan-500/30 hover:bg-gray-700/40 h-full"
+              class="bg-gray-700/30 rounded-2xl p-4 sm:p-6 backdrop-blur-sm border border-white/10 transition-all duration-300 hover:border-cyan-500/30 hover:bg-gray-700/40 h-full"
             >
               <h3
-                class="text-xl font-bold text-cyan-400 mb-4 flex items-center"
+                class="text-lg sm:text-xl font-bold text-cyan-400 mb-3 sm:mb-4 flex items-center"
               >
                 <span
-                  class="flex items-center justify-center w-8 h-8 rounded-full bg-cyan-500/20 mr-3"
+                  class="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-cyan-500/20 mr-2 sm:mr-3"
                 >
                   <i class="fas fa-star text-cyan-500"></i>
                 </span>
                 Как это поможет вам?
               </h3>
-              <ul class="space-y-4">
+              <ul class="space-y-3 sm:space-y-4">
                 <li
                   v-for="(benefit, index) in guide.benefits"
                   :key="index"
                   class="flex items-start group"
                 >
                   <span
-                    class="flex-shrink-0 mt-1 mr-3 h-5 w-5 rounded-full bg-cyan-500/10 flex items-center justify-center group-hover:bg-cyan-500/20 transition-colors"
+                    class="flex-shrink-0 mt-1 mr-2 sm:mr-3 h-4 w-4 sm:h-5 sm:w-5 rounded-full bg-cyan-500/10 flex items-center justify-center group-hover:bg-cyan-500/20 transition-colors"
                   >
                     <i
                       class="fas fa-check text-xs text-cyan-400 group-hover:text-cyan-300 transition-colors"
                     ></i>
                   </span>
                   <span
-                    class="text-gray-300 group-hover:text-white transition-colors"
+                    class="text-sm sm:text-base text-gray-300 group-hover:text-white transition-colors"
                   >
                     {{ benefit }}
                   </span>
@@ -111,33 +111,33 @@
 
             <!-- Target Audience -->
             <div
-              class="bg-gray-700/30 rounded-2xl p-6 backdrop-blur-sm border border-white/10 transition-all duration-300 hover:border-cyan-500/30 hover:bg-gray-700/40 h-full"
+              class="bg-gray-700/30 rounded-2xl p-4 sm:p-6 backdrop-blur-sm border border-white/10 transition-all duration-300 hover:border-cyan-500/30 hover:bg-gray-700/40 h-full"
             >
               <h3
-                class="text-xl font-bold text-cyan-400 mb-4 flex items-center"
+                class="text-lg sm:text-xl font-bold text-cyan-400 mb-3 sm:mb-4 flex items-center"
               >
                 <span
-                  class="flex items-center justify-center w-8 h-8 rounded-full bg-cyan-500/20 mr-3"
+                  class="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-cyan-500/20 mr-2 sm:mr-3"
                 >
                   <i class="fas fa-users text-cyan-500"></i>
                 </span>
                 Для кого это руководство?
               </h3>
-              <ul class="space-y-4">
+              <ul class="space-y-3 sm:space-y-4">
                 <li
                   v-for="(audience, index) in guide.targetAudience"
                   :key="index"
                   class="flex items-start group"
                 >
                   <span
-                    class="flex-shrink-0 mt-1 mr-3 h-5 w-5 rounded-full bg-cyan-500/10 flex items-center justify-center group-hover:bg-cyan-500/20 transition-colors"
+                    class="flex-shrink-0 mt-1 mr-2 sm:mr-3 h-4 w-4 sm:h-5 sm:w-5 rounded-full bg-cyan-500/10 flex items-center justify-center group-hover:bg-cyan-500/20 transition-colors"
                   >
                     <i
                       class="fas fa-user text-xs text-cyan-400 group-hover:text-cyan-300 transition-colors"
                     ></i>
                   </span>
                   <span
-                    class="text-gray-300 group-hover:text-white transition-colors"
+                    class="text-sm sm:text-base text-gray-300 group-hover:text-white transition-colors"
                   >
                     {{ audience }}
                   </span>
@@ -147,16 +147,16 @@
           </div>
 
           <!-- Content Sections -->
-          <div class="grid md:grid-cols-2 gap-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             <!-- What You Get -->
             <div
-              class="bg-gray-700/30 rounded-2xl p-6 sm:p-8 backdrop-blur-sm border border-white/10 transition-all duration-300 hover:border-cyan-500/30 hover:bg-gray-700/40"
+              class="bg-gray-700/30 rounded-2xl p-4 sm:p-6 md:p-8 backdrop-blur-sm border border-white/10 transition-all duration-300 hover:border-cyan-500/30 hover:bg-gray-700/40"
             >
               <h3
-                class="text-xl font-bold text-cyan-400 mb-4 flex items-center"
+                class="text-lg sm:text-xl font-bold text-cyan-400 mb-3 sm:mb-4 flex items-center"
               >
                 <span
-                  class="flex items-center justify-center w-8 h-8 rounded-full bg-cyan-500/20 mr-3"
+                  class="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-cyan-500/20 mr-2 sm:mr-3"
                 >
                   <i class="fas fa-box-open text-cyan-500"></i>
                 </span>
@@ -166,17 +166,17 @@
                 <div
                   v-for="(item, index) in guide.whatYouGet"
                   :key="index"
-                  class="flex items-start group p-3 rounded-lg hover:bg-gray-600/20 transition-colors"
+                  class="flex items-start group p-2 sm:p-3 rounded-lg hover:bg-gray-600/20 transition-colors"
                 >
                   <span
-                    class="flex-shrink-0 mt-1 mr-3 h-5 w-5 rounded-full bg-cyan-500/10 flex items-center justify-center group-hover:bg-cyan-500/20 transition-colors"
+                    class="flex-shrink-0 mt-1 mr-2 sm:mr-3 h-4 w-4 sm:h-5 sm:w-5 rounded-full bg-cyan-500/10 flex items-center justify-center group-hover:bg-cyan-500/20 transition-colors"
                   >
                     <i
                       class="fas fa-check text-xs text-cyan-400 group-hover:text-cyan-300 transition-colors"
                     ></i>
                   </span>
                   <span
-                    class="text-gray-300 group-hover:text-white transition-colors"
+                    class="text-sm sm:text-base text-gray-300 group-hover:text-white transition-colors"
                   >
                     {{ item }}
                   </span>
@@ -186,13 +186,13 @@
 
             <!-- Why Download -->
             <div
-              class="bg-gray-700/30 rounded-2xl p-6 sm:p-8 backdrop-blur-sm border border-white/10 transition-all duration-300 hover:border-cyan-500/30 hover:bg-gray-700/40"
+              class="bg-gray-700/30 rounded-2xl p-4 sm:p-6 md:p-8 backdrop-blur-sm border border-white/10 transition-all duration-300 hover:border-cyan-500/30 hover:bg-gray-700/40"
             >
               <h3
-                class="text-xl font-bold text-cyan-400 mb-4 flex items-center"
+                class="text-lg sm:text-xl font-bold text-cyan-400 mb-3 sm:mb-4 flex items-center"
               >
                 <span
-                  class="flex items-center justify-center w-8 h-8 rounded-full bg-cyan-500/20 mr-3"
+                  class="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-cyan-500/20 mr-2 sm:mr-3"
                 >
                   <i class="fas fa-download text-cyan-500"></i>
                 </span>
@@ -202,17 +202,17 @@
                 <div
                   v-for="(item, index) in guide.whyDownload"
                   :key="index"
-                  class="flex items-start group p-3 rounded-lg hover:bg-gray-600/20 transition-colors"
+                  class="flex items-start group p-2 sm:p-3 rounded-lg hover:bg-gray-600/20 transition-colors"
                 >
                   <span
-                    class="flex-shrink-0 mt-1 mr-3 h-5 w-5 rounded-full bg-cyan-500/10 flex items-center justify-center group-hover:bg-cyan-500/20 transition-colors"
+                    class="flex-shrink-0 mt-1 mr-2 sm:mr-3 h-4 w-4 sm:h-5 sm:w-5 rounded-full bg-cyan-500/10 flex items-center justify-center group-hover:bg-cyan-500/20 transition-colors"
                   >
                     <i
                       class="fas fa-check text-xs text-cyan-400 group-hover:text-cyan-300 transition-colors"
                     ></i>
                   </span>
                   <span
-                    class="text-gray-300 group-hover:text-white transition-colors"
+                    class="text-sm sm:text-base text-gray-300 group-hover:text-white transition-colors"
                   >
                     {{ item }}
                   </span>
@@ -223,12 +223,12 @@
 
           <!-- Download Button and Share Options -->
           <div
-            class="flex flex-col sm:flex-row justify-between items-center gap-6 pt-6"
+            class="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-6 pt-4 sm:pt-6"
           >
             <a
               v-if="guide.pdfFile?.asset?.url"
               :href="guide.pdfFile.asset.url"
-              class="relative inline-flex items-center justify-center px-8 py-4 overflow-hidden font-medium text-lg transition-all duration-300 ease-out rounded-xl group w-full sm:w-auto"
+              class="relative inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 overflow-hidden font-medium text-base sm:text-lg transition-all duration-300 ease-out rounded-xl group w-full sm:w-auto"
               download
             >
               <span
@@ -246,12 +246,13 @@
             </a>
 
             <!-- Share Options -->
-            <!-- Replace the existing Share Options div with this -->
-            <div class="flex gap-3">
+            <div
+              class="flex flex-wrap justify-center gap-2 sm:gap-3 mt-4 sm:mt-0"
+            >
               <!-- WhatsApp -->
               <button
                 @click="shareViaWhatsApp"
-                class="w-10 h-10 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center transition-colors"
+                class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center transition-colors"
                 title="Share via WhatsApp"
               >
                 <i class="fab fa-whatsapp text-gray-300 hover:text-white"></i>
@@ -260,7 +261,7 @@
               <!-- Telegram -->
               <button
                 @click="shareViaTelegram"
-                class="w-10 h-10 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center transition-colors"
+                class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center transition-colors"
                 title="Share via Telegram"
               >
                 <i
@@ -271,7 +272,7 @@
               <!-- Email -->
               <button
                 @click="shareViaEmail"
-                class="w-10 h-10 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center transition-colors"
+                class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center transition-colors"
                 title="Share via Email"
               >
                 <i class="fas fa-envelope text-gray-300 hover:text-white"></i>
@@ -280,16 +281,16 @@
               <!-- Facebook -->
               <button
                 @click="shareViaFacebook"
-                class="w-10 h-10 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center transition-colors"
+                class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center transition-colors"
                 title="Share on Facebook"
               >
                 <i class="fab fa-facebook-f text-gray-300 hover:text-white"></i>
               </button>
 
-              <!-- Instagram (Note: Instagram doesn't have a direct share API, we'll use a URL copy approach) -->
+              <!-- Instagram -->
               <button
                 @click="shareViaInstagram"
-                class="w-10 h-10 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center transition-colors"
+                class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center transition-colors"
                 title="Share on Instagram"
               >
                 <i class="fab fa-instagram text-gray-300 hover:text-white"></i>
@@ -298,12 +299,17 @@
           </div>
         </div>
       </div>
-      <!-- Add Comments Section after Download/Share section -->
-      <div v-if="guide" class="mt-8">
-        <div class="bg-gray-800/50 rounded-2xl p-6 border border-gray-700/50">
-          <h2 class="text-2xl font-bold text-cyan-400 mb-6 flex items-center">
+
+      <!-- Comments Section - Significantly Improved -->
+      <div v-if="guide" class="mt-6 sm:mt-8">
+        <div
+          class="bg-gray-800/50 rounded-2xl p-4 sm:p-6 border border-gray-700/50"
+        >
+          <h2
+            class="text-xl sm:text-2xl font-bold text-cyan-400 mb-4 sm:mb-6 flex items-center"
+          >
             <span
-              class="flex items-center justify-center w-8 h-8 rounded-full bg-cyan-500/20 mr-3"
+              class="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-cyan-500/20 mr-2 sm:mr-3"
             >
               <i class="fas fa-comments text-cyan-500"></i>
             </span>
@@ -311,34 +317,34 @@
           </h2>
 
           <!-- Comment Form -->
-          <form @submit.prevent="addNewComment" class="mb-8">
-            <div class="flex flex-col gap-4">
-              <div class="flex gap-4">
+          <form @submit.prevent="addNewComment" class="mb-6 sm:mb-8">
+            <div class="flex flex-col gap-3 sm:gap-4">
+              <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
                 <input
                   v-model="newComment.name"
                   type="text"
                   placeholder="Ваше имя"
-                  class="flex-1 bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 focus:outline-none focus:border-cyan-500/50 transition-colors"
+                  class="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg p-2 sm:p-3 text-sm sm:text-base text-gray-300 focus:outline-none focus:border-cyan-500/50 transition-colors"
                   required
                 />
                 <input
                   v-model="newComment.email"
                   type="email"
                   placeholder="Ваш email (не публикуется)"
-                  class="flex-1 bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 focus:outline-none focus:border-cyan-500/50 transition-colors"
+                  class="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg p-2 sm:p-3 text-sm sm:text-base text-gray-300 focus:outline-none focus:border-cyan-500/50 transition-colors"
                   required
                 />
               </div>
               <textarea
                 v-model="newComment.text"
                 placeholder="Ваш комментарий"
-                class="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 min-h-[100px] focus:outline-none focus:border-cyan-500/50 transition-colors"
+                class="bg-gray-700/50 border border-gray-600/50 rounded-lg p-2 sm:p-3 text-sm sm:text-base text-gray-300 min-h-[80px] sm:min-h-[100px] focus:outline-none focus:border-cyan-500/50 transition-colors"
                 required
               ></textarea>
               <button
                 type="submit"
                 :disabled="isSubmitting"
-                class="self-start px-6 py-2 bg-cyan-600 hover:bg-cyan-700 rounded-lg text-white font-medium transition-colors disabled:bg-gray-600"
+                class="self-start px-4 sm:px-6 py-2 bg-cyan-600 hover:bg-cyan-700 rounded-lg text-sm sm:text-base text-white font-medium transition-colors disabled:bg-gray-600"
               >
                 {{ isSubmitting ? "Отправка..." : "Отправить" }}
               </button>
@@ -346,23 +352,30 @@
           </form>
 
           <!-- Comments List -->
-          <div class="space-y-6">
+          <div class="space-y-4 sm:space-y-6">
             <div
               v-for="comment in comments"
               :key="comment.id"
-              class="bg-gray-700/30 rounded-xl p-4 border border-gray-600/20"
+              class="bg-gray-700/30 rounded-xl p-3 sm:p-4 border border-gray-600/20"
             >
-              <div class="flex items-center justify-between mb-2">
+              <div
+                class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-0 mb-2"
+              >
                 <span class="font-medium text-cyan-400">{{
                   comment.name
                 }}</span>
-                <span class="text-sm text-gray-400">
+                <span class="text-xs sm:text-sm text-gray-400">
                   {{ formatDate(comment.createdAt) }}
                 </span>
               </div>
-              <p class="text-gray-300">{{ comment.text }}</p>
+              <p class="text-sm sm:text-base text-gray-300">
+                {{ comment.text }}
+              </p>
             </div>
-            <p v-if="comments.length === 0" class="text-gray-400 text-center">
+            <p
+              v-if="comments.length === 0"
+              class="text-sm sm:text-base text-gray-400 text-center py-4"
+            >
               Пока нет комментариев. Будьте первым!
             </p>
           </div>
@@ -372,9 +385,9 @@
       <!-- Loading State -->
       <div
         v-else
-        class="flex flex-col items-center justify-center py-16 text-center"
+        class="flex flex-col items-center justify-center py-12 sm:py-16 text-center"
       >
-        <div class="relative w-20 h-20">
+        <div class="relative w-16 h-16 sm:w-20 sm:h-20">
           <div
             class="absolute inset-0 border-4 border-cyan-500/20 rounded-full"
           ></div>
@@ -382,7 +395,9 @@
             class="absolute inset-0 border-4 border-t-transparent border-cyan-500 rounded-full animate-spin"
           ></div>
         </div>
-        <p class="text-gray-300 text-lg mt-6">Загрузка руководства...</p>
+        <p class="text-gray-300 text-base sm:text-lg mt-4 sm:mt-6">
+          Загрузка руководства...
+        </p>
       </div>
     </div>
   </div>
