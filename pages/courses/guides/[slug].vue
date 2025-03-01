@@ -52,7 +52,7 @@
         </div>
 
         <!-- Content Sections -->
-        <div class="p-6 sm:p-8 space-y-8">
+        <div class="p-4 sm:p-8 space-y-8">
           <!-- Description -->
           <div class="max-w-3xl">
             <p class="text-lg text-gray-300 leading-relaxed">
@@ -298,6 +298,76 @@
           </div>
         </div>
       </div>
+      <!-- Add Comments Section after Download/Share section -->
+      <div v-if="guide" class="mt-8">
+        <div class="bg-gray-800/50 rounded-2xl p-6 border border-gray-700/50">
+          <h2 class="text-2xl font-bold text-cyan-400 mb-6 flex items-center">
+            <span
+              class="flex items-center justify-center w-8 h-8 rounded-full bg-cyan-500/20 mr-3"
+            >
+              <i class="fas fa-comments text-cyan-500"></i>
+            </span>
+            Комментарии
+          </h2>
+
+          <!-- Comment Form -->
+          <form @submit.prevent="addNewComment" class="mb-8">
+            <div class="flex flex-col gap-4">
+              <div class="flex gap-4">
+                <input
+                  v-model="newComment.name"
+                  type="text"
+                  placeholder="Ваше имя"
+                  class="flex-1 bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 focus:outline-none focus:border-cyan-500/50 transition-colors"
+                  required
+                />
+                <input
+                  v-model="newComment.email"
+                  type="email"
+                  placeholder="Ваш email (не публикуется)"
+                  class="flex-1 bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 focus:outline-none focus:border-cyan-500/50 transition-colors"
+                  required
+                />
+              </div>
+              <textarea
+                v-model="newComment.text"
+                placeholder="Ваш комментарий"
+                class="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 min-h-[100px] focus:outline-none focus:border-cyan-500/50 transition-colors"
+                required
+              ></textarea>
+              <button
+                type="submit"
+                :disabled="isSubmitting"
+                class="self-start px-6 py-2 bg-cyan-600 hover:bg-cyan-700 rounded-lg text-white font-medium transition-colors disabled:bg-gray-600"
+              >
+                {{ isSubmitting ? "Отправка..." : "Отправить" }}
+              </button>
+            </div>
+          </form>
+
+          <!-- Comments List -->
+          <div class="space-y-6">
+            <div
+              v-for="comment in comments"
+              :key="comment.id"
+              class="bg-gray-700/30 rounded-xl p-4 border border-gray-600/20"
+            >
+              <div class="flex items-center justify-between mb-2">
+                <span class="font-medium text-cyan-400">{{
+                  comment.name
+                }}</span>
+                <span class="text-sm text-gray-400">
+                  {{ formatDate(comment.createdAt) }}
+                </span>
+              </div>
+              <p class="text-gray-300">{{ comment.text }}</p>
+            </div>
+            <p v-if="comments.length === 0" class="text-gray-400 text-center">
+              Пока нет комментариев. Будьте первым!
+            </p>
+          </div>
+        </div>
+      </div>
 
       <!-- Loading State -->
       <div
@@ -321,22 +391,90 @@
 <script setup lang="ts">
 import type { SanityDocument } from "@sanity/client";
 import imageUrlBuilder from "@sanity/image-url";
+import { useFirestore } from "~/plugins/firebase";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { GUIDE_BY_SLUG_QUERY } from "~/api/sanity/queries";
+import { addGuideComment, getGuideComments } from "@/api/firebase/comments";
 
+const firestore = useFirestore();
 const { params } = useRoute();
 const { data: guide } = (await useSanityQuery)<SanityDocument>(
   GUIDE_BY_SLUG_QUERY,
   params
 );
-console.log(guide);
 const { projectId, dataset } = useSanity().client.config();
 const urlFor = (source: SanityImageSource) =>
   projectId && dataset
     ? imageUrlBuilder({ projectId, dataset }).image(source)
     : null;
 
-// Add these methods inside script setup
+// Define Comment interface
+interface Comment {
+  id: string;
+  name: string;
+  text: string;
+  createdAt: Date; // Changed from 'date' to match Firebase field
+}
+
+// Comments state
+const comments = ref<Comment[]>([]);
+const newComment = reactive({
+  name: "",
+  email: "",
+  text: "",
+});
+const isSubmitting = ref(false);
+
+// Fetch comments
+const fetchComments = async () => {
+  if (!params.slug) return;
+  const response = await getGuideComments(firestore, params.slug);
+  if (response.success) {
+    comments.value = response.comments;
+  }
+};
+
+// Add new comment
+const addNewComment = async () => {
+  if (!params.slug) return;
+
+  isSubmitting.value = true;
+  const commentData = {
+    name: newComment.name,
+    email: newComment.email,
+    text: newComment.text,
+    // Remove local id and date generation - let Firebase handle these
+  };
+
+  const response = await addGuideComment(firestore, params.slug, commentData);
+  if (response.success) {
+    await fetchComments(); // Refresh comments list from Firebase
+    newComment.name = "";
+    newComment.email = "";
+    newComment.text = "";
+  }
+  isSubmitting.value = false;
+};
+
+// Load comments on mount
+onMounted(async () => {
+  if (guide.value) {
+    await fetchComments();
+  }
+});
+
+// Date formatting function
+const formatDate = (date: Date) => {
+  return new Date(date).toLocaleDateString("ru-RU", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
+
+// Share methods
 const shareViaWhatsApp = () => {
   const shareUrl = encodeURIComponent(window.location.href);
   const text = encodeURIComponent(
@@ -373,8 +511,6 @@ const shareViaFacebook = () => {
 };
 
 const shareViaInstagram = () => {
-  // Instagram doesn't have a direct sharing API via web
-  // We'll copy the URL to clipboard and alert the user
   navigator.clipboard.writeText(window.location.href).then(() => {
     alert("URL copied to clipboard! Paste it in Instagram to share.");
   });

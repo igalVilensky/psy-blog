@@ -98,6 +98,72 @@
         </div>
       </article>
 
+      <!-- Comments Section -->
+      <div
+        v-if="post"
+        class="mt-12 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl sm:rounded-2xl border border-white/10 p-8"
+      >
+        <h2 class="text-2xl font-bold text-white/90 mb-6 flex items-center">
+          <i class="fas fa-comments text-[#0EA5E9] mr-3"></i>
+          Комментарии
+        </h2>
+
+        <!-- Comment Form -->
+        <form @submit.prevent="addNewComment" class="mb-8">
+          <div class="flex flex-col gap-4">
+            <div class="flex flex-col sm:flex-row gap-4">
+              <input
+                v-model="newComment.name"
+                type="text"
+                placeholder="Ваше имя"
+                class="flex-1 px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 text-white placeholder-slate-400 focus:outline-none focus:border-[#0EA5E9] focus:ring-1 focus:ring-[#0EA5E9] transition-all"
+                required
+              />
+              <input
+                v-model="newComment.email"
+                type="email"
+                placeholder="Ваш email (не публикуется)"
+                class="flex-1 px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 text-white placeholder-slate-400 focus:outline-none focus:border-[#0EA5E9] focus:ring-1 focus:ring-[#0EA5E9] transition-all"
+                required
+              />
+            </div>
+            <textarea
+              v-model="newComment.text"
+              placeholder="Ваш комментарий"
+              class="px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 text-white placeholder-slate-400 min-h-[120px] focus:outline-none focus:border-[#0EA5E9] focus:ring-1 focus:ring-[#0EA5E9] transition-all"
+              required
+            ></textarea>
+            <button
+              type="submit"
+              :disabled="isSubmitting"
+              class="self-start px-6 py-3 bg-[#0EA5E9] hover:bg-[#22D3EE] rounded-lg text-white font-medium transition-colors disabled:bg-gray-600"
+            >
+              {{ isSubmitting ? "Отправка..." : "Отправить" }}
+            </button>
+          </div>
+        </form>
+
+        <!-- Comments List -->
+        <div class="space-y-6">
+          <div
+            v-for="comment in comments"
+            :key="comment.id"
+            class="bg-[#1A1F35]/60 rounded-lg p-4 border border-white/10"
+          >
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-medium text-[#0EA5E9]">{{ comment.name }}</span>
+              <span class="text-sm text-slate-400">
+                {{ formatDate(comment.createdAt) }}
+              </span>
+            </div>
+            <p class="text-slate-300">{{ comment.text }}</p>
+          </div>
+          <p v-if="comments.length === 0" class="text-slate-400 text-center">
+            Пока нет комментариев. Будьте первым!
+          </p>
+        </div>
+      </div>
+
       <!-- Share Modal -->
       <div
         v-if="isShareOpen"
@@ -287,8 +353,10 @@ import imageUrlBuilder from "@sanity/image-url";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { ref } from "vue";
 import { getFirestore } from "firebase/firestore";
+import { useFirestore } from "~/plugins/firebase";
 import { subscribeUser } from "@/api/firebase/contact";
 import { getPostViewCount } from "@/api/firebase/views";
+import { addPostComment, getPostComments } from "@/api/firebase/comments";
 
 const POST_QUERY = groq`*[_type == "post" && slug.current == $slug][0]`;
 const { params } = useRoute();
@@ -302,16 +370,90 @@ const urlFor = (source: SanityImageSource) =>
     ? imageUrlBuilder({ projectId, dataset }).image(source)
     : null;
 
+const db = getFirestore();
+const firestore = useFirestore();
 const isShareOpen = ref(false);
 const postViews = ref(0);
-const db = getFirestore();
 const email = ref("");
 
-const shareOn = (platform: string) => {
+// Comments state
+interface Comment {
+  id: string;
+  name: string;
+  text: string;
+  createdAt: Date;
+}
+const comments = ref<Comment[]>([]);
+const newComment = ref({
+  name: "",
+  email: "",
+  text: "",
+});
+const isSubmitting = ref(false);
+
+// Fetch comments
+const fetchComments = async () => {
+  if (!params.slug) return;
+  const response = await getPostComments(firestore, params.slug);
+  if (response.success) {
+    comments.value = response.comments;
+  }
+};
+
+// Add new comment
+const addNewComment = async () => {
+  if (!params.slug) return;
+
+  isSubmitting.value = true;
+  const commentData = {
+    name: newComment.value.name,
+    email: newComment.value.email,
+    text: newComment.value.text,
+  };
+
+  const response = await addPostComment(firestore, params.slug, commentData);
+  if (response.success) {
+    await fetchComments();
+    newComment.value = { name: "", email: "", text: "" };
+  }
+  isSubmitting.value = false;
+};
+
+// Date formatting
+const formatDate = (date: Date) => {
+  return new Date(date).toLocaleDateString("ru-RU", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
+
+// Load comments and views on mount
+onMounted(async () => {
+  if (post.value) {
+    await fetchComments();
+    postViews.value = await getPostViewCount(db, post.value._id);
+  }
+});
+
+// Watch for post changes
+watch(
+  () => post.value,
+  async (newPost) => {
+    if (newPost) {
+      await fetchComments();
+      postViews.value = await getPostViewCount(db, newPost._id);
+    }
+  }
+);
+
+const shareOn = (platform: "twitter" | "facebook" | "telegram") => {
   const url = window.location.href;
   const title = post.value?.title;
 
-  const shareUrls = {
+  const shareUrls: { [key in "twitter" | "facebook" | "telegram"]: string } = {
     twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(
       url
     )}&text=${encodeURIComponent(title)}`,
@@ -354,16 +496,6 @@ const validateEmail = (email: string) => {
   const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   return re.test(String(email).toLowerCase());
 };
-
-watch(
-  () => post.value,
-  async (newPost) => {
-    if (newPost && newPost._id) {
-      postViews.value = await getPostViewCount(db, newPost._id);
-    }
-  },
-  { immediate: true }
-);
 </script>
 
 <style>
