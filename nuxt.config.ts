@@ -17,6 +17,7 @@ export default defineNuxtConfig({
   plugins: [
     "~/plugins/firebase.js", // Firebase initialization
     "~/plugins/initAuth.js", // Auth initialization (must come after firebase.js)
+    "~/plugins/inAppReminder.js", // In-app reminder
   ],
   sanity: {
     projectId: "wlg2lkvy",

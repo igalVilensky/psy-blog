@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen text-gray-100 bg-gray-900">
-    <div class="container mx-auto max-w-6xl py-8 px-4 sm:px-6 sm:py-12">
+    <div class="container mx-auto max-w-6xl py-8 px-4 sm:px-0 sm:py-12">
       <!-- Back Navigation -->
       <div class="mb-8">
         <NuxtLink

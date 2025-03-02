@@ -4,10 +4,12 @@ import {
   getAuth,
   setPersistence,
   browserLocalPersistence,
-} from "firebase/auth"; // Import setPersistence and persistence modes
-import { getFirestore } from "firebase/firestore"; // Import Firestore
-import { getAnalytics, isSupported } from "firebase/analytics"; // Optional (if you're using analytics)
+  onAuthStateChanged,
+} from "firebase/auth"; // Добавляем onAuthStateChanged для отслеживания состояния
+import { getFirestore } from "firebase/firestore";
+import { getAnalytics, isSupported } from "firebase/analytics";
 
+// Конфигурация Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyBDAcXz1bPfNsZABO3IEGJALknCshuwFTo",
   authDomain: "psy-blog-2e076.firebaseapp.com",
@@ -18,31 +20,48 @@ const firebaseConfig = {
   measurementId: "G-0R4CT7M1RY",
 };
 
-// Initialize Firebase app
+// Инициализация Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Firebase Auth and Firestore
+// Инициализация сервисов
 const auth = getAuth(app);
 const firestore = getFirestore(app);
 
-// Set persistence for Firebase Auth (use localStorage for persistence)
+// Установка persistence для Auth
 setPersistence(auth, browserLocalPersistence).catch((error) => {
-  console.error("Failed to set persistence:", error);
+  console.error("Ошибка установки persistence:", error);
 });
 
-// Initialize Firebase Analytics only if it's supported (client-side check)
+// Инициализация Analytics (только на клиенте)
 let analytics = null;
 if (typeof window !== "undefined" && isSupported()) {
   analytics = getAnalytics(app);
 }
+
+// Экспорт Firestore как утилита (опционально)
 export const useFirestore = () => firestore;
-// Export Firebase services for use in your app
+
 export default defineNuxtPlugin((nuxtApp) => {
-  // Provide Firebase services to the app
+  // Переменная для хранения текущего userId
+  let userId = ref(null);
+
+  // Отслеживание состояния аутентификации
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      userId.value = user.uid; // Обновляем userId, если пользователь вошёл
+      console.log("Пользователь вошёл:", userId.value);
+    } else {
+      userId.value = null; // Сбрасываем, если пользователь вышел
+      console.log("Пользователь вышел");
+    }
+  });
+
+  // Предоставляем сервисы и userId через Nuxt
   nuxtApp.provide("auth", auth);
   nuxtApp.provide("firestore", firestore);
+  nuxtApp.provide("userId", () => userId.value); // Динамический доступ к userId
 
-  // Only provide analytics on the client-side
+  // Analytics только на клиенте
   if (analytics) {
     nuxtApp.provide("analytics", analytics);
   }

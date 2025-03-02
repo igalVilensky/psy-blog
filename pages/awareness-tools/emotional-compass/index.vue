@@ -278,14 +278,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import {
-  getFirestore,
-  doc,
-  getDoc,
-  setDoc,
-  updateDoc,
-  arrayUnion,
-} from "firebase/firestore";
+import { getFirestore } from "firebase/firestore"; // Убираем лишние импорты, так как они не нужны
 import RecommendationsModal from "~/components/emotional-compass/RecommendationsModal.vue";
 import EmotionSelection from "~/components/emotional-compass/EmotionSelection.vue";
 import IntensityLevel from "~/components/emotional-compass/IntensityLevel.vue";
@@ -294,7 +287,10 @@ import LifeSpheresSelection from "~/components/emotional-compass/LifeSpheresSele
 import SubEmotionSelection from "~/components/emotional-compass/SubEmotionSelection.vue";
 import Notification from "~/components/base/Notification.vue";
 import { useNotification } from "@/composables/useNotification";
-import { getEmotionBarometerStats } from "~/api/firebase/emotionBarometer";
+import {
+  getEmotionBarometerStats,
+  saveEmotionBarometerEntry,
+} from "~/api/firebase/emotionBarometer"; // Импортируем новую функцию
 import { emotions } from "~/data/emotionalBarometer/emotions.js";
 import { subEmotionsMap } from "~/data/emotionalBarometer/subEmotionsMap";
 import { lifeSpheres } from "~/data/emotionalBarometer/lifeSpheres";
@@ -324,12 +320,15 @@ const intensityLevel = ref(5);
 const journalEntry = ref("");
 const perceptionEntry = ref("");
 const copingEntry = ref("");
-const actionEntry = ref(""); // Added actionEntry
+const actionEntry = ref("");
 const selectedTags = ref([]);
 const stats = ref(null);
 const subEmotions = ref([]);
 const selectedSubEmotion = ref(null);
 const showStartButton = ref(true);
+
+// Получаем доступ к $markEntry через NuxtApp
+const { $markEntry } = useNuxtApp();
 
 // Validation for each step
 const canProceed = computed(() => {
@@ -345,7 +344,7 @@ const canProceed = computed(() => {
         journalEntry.value.trim().length > 0 &&
         perceptionEntry.value.trim().length > 0 &&
         copingEntry.value.trim().length > 0 &&
-        actionEntry.value.trim().length > 0 // Added actionEntry validation
+        actionEntry.value.trim().length > 0
       );
     case 5:
       return selectedTags.value.length > 0;
@@ -409,7 +408,7 @@ const closeModal = () => {
   journalEntry.value = "";
   perceptionEntry.value = "";
   copingEntry.value = "";
-  actionEntry.value = ""; // Reset actionEntry
+  actionEntry.value = "";
   selectedTags.value = [];
 };
 
@@ -433,70 +432,47 @@ const toggleTag = (tag) => {
   }
 };
 
-// Save emotion entry to Firebase
-const saveEntryToFirebase = async () => {
-  if (!user.value || !canSubmit.value) return;
+// Handle submit with Firebase version
+const handleSubmit = async () => {
+  if (!canSubmit.value || !user.value) return;
 
-  const userRef = doc(db, "emotion_barometer", user.value.uid);
-
-  const newEntry = {
+  const entryData = {
     emotion: selectedEmotion.value.name,
     subEmotion: selectedSubEmotion.value,
     intensity: intensityLevel.value,
     entry: journalEntry.value,
     perception: perceptionEntry.value,
     coping: copingEntry.value,
-    action: actionEntry.value, // Added action field
-    tags: [...selectedTags.value],
-    timestamp: new Date().toISOString(),
+    action: actionEntry.value,
+    tags: selectedTags.value,
   };
 
-  try {
-    const docSnap = await getDoc(userRef);
+  const response = await saveEmotionBarometerEntry(
+    db,
+    user.value.uid,
+    entryData,
+    showNotification
+  );
 
-    if (docSnap.exists()) {
-      await updateDoc(userRef, {
-        entries: arrayUnion(newEntry),
-        lastUpdated: new Date().toISOString(),
-      });
-    } else {
-      await setDoc(userRef, {
-        entries: [newEntry],
-        lastUpdated: new Date().toISOString(),
-      });
-    }
-
-    showNotification("Запись успешно сохранена!", "success");
+  if (response.success) {
+    $markEntry(); // Сбрасываем уведомление из inAppReminder
 
     if (currentRecommendations.value.length > 0) {
       showModal.value = true;
     } else {
       closeModal();
     }
-  } catch (error) {
-    console.error("Error saving entry to Firebase:", error);
-    showNotification(
-      "Ошибка сохранения записи. Пожалуйста, попробуйте еще раз.",
-      "error"
-    );
+
+    // Reset all state variables
+    currentStep.value = 1;
+    selectedEmotion.value = null;
+    journalEntry.value = "";
+    perceptionEntry.value = "";
+    copingEntry.value = "";
+    actionEntry.value = "";
+    selectedTags.value = [];
+    subEmotions.value = [];
+    showStartButton.value = true;
   }
-};
-
-// Handle submit with Firebase version
-const handleSubmit = async () => {
-  if (!canSubmit.value) return;
-
-  await saveEntryToFirebase();
-
-  // Reset all state variables
-  currentStep.value = 1;
-  selectedEmotion.value = null;
-  journalEntry.value = "";
-  perceptionEntry.value = "";
-  copingEntry.value = "";
-  actionEntry.value = ""; // Reset actionEntry
-  selectedTags.value = [];
-  subEmotions.value = [];
-  showStartButton.value = true;
 };
 </script>
