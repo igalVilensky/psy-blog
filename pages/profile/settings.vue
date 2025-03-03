@@ -405,16 +405,27 @@ const removeSocialPlatform = (index) => {
 // Save Profile
 const saveProfile = async () => {
   const user = getAuth().currentUser;
-
   if (!user) {
     showNotification("Пользователь не авторизован.", "error");
     return;
   }
 
+  // Normalize social media URLs
+  const normalizedSocialMedia = socialMedia.value.map((platform) => {
+    let url = platform.url.trim();
+    if (platform.type === "telegram" && url) {
+      // If it's not already a full URL, prepend Telegram base URL
+      if (!url.startsWith("http://") && !url.startsWith("https://")) {
+        url = `https://t.me/${url.replace("@", "")}`; // Remove @ if present and add base URL
+      }
+    }
+    return { type: platform.type, url };
+  });
+
   const data = {
     displayName: displayName.value,
     profession: profession.value,
-    socialMedia: socialMedia.value,
+    socialMedia: normalizedSocialMedia,
     age: age.value,
     gender: gender.value,
     aboutYourself: aboutYourself.value,
