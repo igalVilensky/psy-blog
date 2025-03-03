@@ -1,17 +1,19 @@
 <template>
-  <div class="relative group">
+  <div
+    class="relative group rounded-full"
+    :style="{ width: size + 'px', height: size + 'px' }"
+  >
     <!-- Avatar with Image -->
     <div
       v-if="avatarUrl && !loading"
-      class="rounded-full overflow-hidden ring-4 ring-offset-4 ring-offset-[#1A1F35] ring-[#0EA5E9]/30 transition-all duration-300"
-      :style="{ width: size + 'px', height: size + 'px' }"
+      class="w-full h-full rounded-full overflow-hidden ring-4 ring-offset-4 ring-offset-[#1A1F35] ring-[#0EA5E9]/30 transition-all duration-300"
     >
       <nuxt-img
         :src="avatarUrl"
         alt="Avatar"
         class="w-full h-full object-cover"
-        :width="loading ? size * 1.5 : size"
-        :height="loading ? size * 1.5 : size"
+        :width="size"
+        :height="size"
         loading="lazy"
         format="webp"
         quality="90"
@@ -21,22 +23,23 @@
     <!-- Loading State -->
     <div
       v-else-if="loading"
-      class="rounded-full bg-gradient-to-r from-[#0EA5E9]/10 to-[#E879F9]/10 flex items-center justify-center ring-4 ring-offset-4 ring-offset-[#1A1F35] ring-[#0EA5E9]/30"
-      :style="{ width: size + 'px', height: size + 'px' }"
+      class="w-full h-full rounded-full bg-gradient-to-r from-[#0EA5E9]/10 to-[#E879F9]/10 flex items-center justify-center ring-4 ring-offset-4 ring-offset-[#1A1F35] ring-[#0EA5E9]/30"
     >
       <i
         class="fas fa-spinner fa-spin text-[#0EA5E9]"
-        :style="{ fontSize: Math.max(size * 0.5) + 'px' }"
+        :style="{ fontSize: Math.max(size * 0.3) + 'px' }"
       ></i>
     </div>
 
     <!-- Initial State -->
     <div
       v-else
-      class="rounded-full bg-gradient-to-r from-[#0EA5E9]/10 to-[#E879F9]/10 flex items-center justify-center ring-4 ring-offset-4 ring-offset-[#1A1F35] ring-[#0EA5E9]/30"
-      :style="{ width: size + 'px', height: size + 'px' }"
+      class="w-full h-full rounded-full bg-gradient-to-r from-[#0EA5E9]/10 to-[#E879F9]/10 flex items-center justify-center ring-4 ring-offset-4 ring-offset-[#1A1F35] ring-[#0EA5E9]/30"
     >
-      <span class="text-5xl font-bold text-[#0EA5E9]">
+      <span
+        class="font-bold text-[#0EA5E9]"
+        :style="{ fontSize: Math.max(size * 0.4) + 'px' }"
+      >
         {{ userInitial }}
       </span>
     </div>
@@ -44,7 +47,7 @@
     <!-- Upload Overlay (Conditional) -->
     <label
       v-if="!noUpload"
-      class="absolute inset-0 w-full h-full cursor-pointer"
+      class="absolute inset-0 w-full h-full cursor-pointer rounded-full"
     >
       <input
         type="file"
@@ -76,28 +79,11 @@
       </div>
     </div>
   </div>
-
-  <Notification
-    v-if="notificationMessage"
-    :message="notificationMessage"
-    :type="notificationType"
-    @close="hideNotification"
-    class="z-50"
-  />
 </template>
 
 <script setup>
 import { getAuth } from "firebase/auth";
-import Notification from "~/components/base/Notification.vue";
 import { updateUserAvatarUrl } from "~/api/firebase/userProfile";
-import { useNotification } from "@/composables/useNotification";
-
-const {
-  notificationMessage,
-  notificationType,
-  showNotification,
-  hideNotification,
-} = useNotification();
 
 const props = defineProps({
   avatarUrl: String,
@@ -105,15 +91,15 @@ const props = defineProps({
   userInitial: String,
   size: {
     type: Number,
-    default: 170, // Default size if not provided
+    default: 170,
   },
   noUpload: {
     type: Boolean,
-    default: false, // Default to allowing upload
+    default: false,
   },
 });
 
-const emit = defineEmits(["update:avatarUrl"]);
+const emit = defineEmits(["update:avatarUrl", "notify"]);
 
 const onFileChange = async (event) => {
   const file = event.target.files[0];
@@ -146,17 +132,18 @@ const uploadAvatar = async (file) => {
     );
 
     if (success) {
-      showNotification("Аватар успешно обновлен!", "success");
+      emit("notify", { message: "Аватар успешно обновлен!", type: "success" });
       return result.data.url;
     } else {
       console.error("Avatar update failed:", message);
+      emit("notify", { message: `Ошибка: ${message}`, type: "error" });
     }
   } catch (error) {
     console.error("Avatar upload error:", error.message);
-    showNotification(
-      "Ошибка обновления аватара. Пожалуйста, попробуйте еще раз.",
-      "error"
-    );
+    emit("notify", {
+      message: "Ошибка обновления аватара. Пожалуйста, попробуйте еще раз.",
+      type: "error",
+    });
   }
 };
 </script>
