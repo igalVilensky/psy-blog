@@ -300,13 +300,33 @@ const categories = [
 const podcasts = [
   {
     id: 1,
-    title: "Эмоции и чувства",
+    title: "Эмоции и чувства: Часть 1",
     description:
       "Разбираем эмоции и чувства: как они влияют на нас, помогают или мешают, и что с этим делать.",
     category: "Личностный рост",
     image:
       "https://cdn.pixabay.com/photo/2016/07/16/01/35/smilies-1520867_640.jpg",
-    soundcloudUrl: "https://api.soundcloud.com/playlists/1464853522",
+    soundcloudUrl: "https://api.soundcloud.com/tracks/1301040925",
+  },
+  {
+    id: 2,
+    title: "Эмоции и чувства: Часть 2",
+    description:
+      "Разбираем эмоции и чувства: как они влияют на нас, помогают или мешают, и что с этим делать.",
+    category: "Личностный рост",
+    image:
+      "https://cdn.pixabay.com/photo/2016/07/16/01/35/smilies-1520867_640.jpg",
+    soundcloudUrl: "https://api.soundcloud.com/tracks/1300415452",
+  },
+  {
+    id: 3,
+    title: "Эмоции и чувства: Часть 3",
+    description:
+      "Разбираем эмоции и чувства: как они влияют на нас, помогают или мешают, и что с этим делать.",
+    category: "Личностный рост",
+    image:
+      "https://cdn.pixabay.com/photo/2016/07/16/01/35/smilies-1520867_640.jpg",
+    soundcloudUrl: "https://api.soundcloud.com/tracks/1303757872",
   },
 ];
 
