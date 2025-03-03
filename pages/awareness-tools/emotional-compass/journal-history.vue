@@ -98,15 +98,13 @@ const entries = ref([]);
 const fetchEntries = async (userId) => {
   try {
     const result = await getEmotionBarometerData(db, userId);
-    console.log("Fetched entries:", result.data); // Log to verify data structure
     if (result.success) {
-      entries.value = result.data.map((entry) => ({
+      entries.value = result.data.entries.map((entry) => ({
         ...entry,
-        // Ensure field names match what JournalHistory expects
-        entry: entry.entry || "", // Maps journalEntry
+        entry: entry.entry || "",
         perception: entry.perception || "",
         coping: entry.coping || "",
-        action: entry.action || "", // New field
+        action: entry.action || "",
         emotion: entry.emotion || "",
         subEmotion: entry.subEmotion || "",
         intensity: entry.intensity || 0,

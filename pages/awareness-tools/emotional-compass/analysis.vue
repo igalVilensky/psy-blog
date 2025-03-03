@@ -24,28 +24,24 @@ const entries = ref([]);
 // Emotion pattern analysis
 const emotionPatterns = computed(() => {
   const patterns = entries.value.reduce((acc, entry) => {
-    // Ensure the emotion exists in the accumulator
     if (!acc[entry.emotion]) {
       acc[entry.emotion] = {
         count: 0,
         avgIntensity: 0,
         commonSpheres: {},
-        subEmotions: {}, // Add subEmotions field
+        subEmotions: {},
       };
     }
 
-    // Increment main emotion count and intensity
     acc[entry.emotion].count++;
     const intensity = parseFloat(entry.intensity) || 0;
     acc[entry.emotion].avgIntensity += intensity;
 
-    // Count the common spheres
     (entry.tags || []).forEach((tag) => {
       acc[entry.emotion].commonSpheres[tag] =
         (acc[entry.emotion].commonSpheres[tag] || 0) + 1;
     });
 
-    // Handle subEmotion (single sub-emotion field)
     if (entry.subEmotion) {
       if (!acc[entry.emotion].subEmotions[entry.subEmotion]) {
         acc[entry.emotion].subEmotions[entry.subEmotion] = {
@@ -61,13 +57,11 @@ const emotionPatterns = computed(() => {
     return acc;
   }, {});
 
-  // Calculate the average intensity for each emotion and sub-emotion
   Object.keys(patterns).forEach((emotion) => {
     if (patterns[emotion].count > 0) {
       patterns[emotion].avgIntensity /= patterns[emotion].count;
     }
 
-    // Calculate average intensity for sub-emotions
     if (patterns[emotion].subEmotions) {
       Object.keys(patterns[emotion].subEmotions).forEach((subEmotion) => {
         const subEmotionPattern = patterns[emotion].subEmotions[subEmotion];
@@ -87,7 +81,7 @@ const fetchEntries = async (userId) => {
   console.log(result);
 
   if (result.success) {
-    entries.value = result.data;
+    entries.value = result.data.entries; // Fix: Use result.data.entries
   } else {
     console.error(result.message);
     entries.value = [];
