@@ -12,7 +12,27 @@
           >
             Регистрация
           </h2>
-          <form @submit.prevent="handleRegister" class="space-y-4">
+
+          <!-- Success Message -->
+          <div
+            v-if="successMessage"
+            class="text-sm text-green-400 bg-green-500/10 p-3 rounded-lg mb-4"
+          >
+            {{ successMessage }}
+            <NuxtLink
+              to="/profile"
+              class="text-[#0EA5E9] hover:text-[#22D3EE] font-medium transition-colors duration-200 underline ml-1"
+            >
+              Перейти в профилъ
+            </NuxtLink>
+          </div>
+
+          <!-- Registration Form (shown only if no success message) -->
+          <form
+            v-if="!successMessage"
+            @submit.prevent="handleRegister"
+            class="space-y-4"
+          >
             <!-- Display Name input -->
             <div>
               <label
@@ -207,7 +227,10 @@
             </button>
           </form>
 
-          <p class="mt-6 text-center text-sm text-slate-400">
+          <p
+            v-if="!successMessage"
+            class="mt-6 text-center text-sm text-slate-400"
+          >
             Уже есть аккаунт?
             <NuxtLink
               to="/login"
@@ -263,7 +286,6 @@
 
 <script setup>
 import { ref, computed } from "vue";
-import { useRouter } from "vue-router";
 import { registerUser } from "~/api/firebase/userProfile";
 
 // Refs for form inputs and state
@@ -272,12 +294,12 @@ const password = ref("");
 const confirmPassword = ref("");
 const displayName = ref("");
 const error = ref("");
+const successMessage = ref("");
 const acceptPrivacy = ref(false);
 const acceptTerms = ref(false);
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
-const isLoading = ref(false); // Added loading state
-const router = useRouter();
+const isLoading = ref(false);
 
 // Computed property to check if all fields are filled and valid
 const isFormValid = computed(() => {
@@ -322,8 +344,14 @@ const handleRegister = async () => {
     );
 
     if (response.success) {
-      // Redirect to login page after successful registration
-      router.push("/login");
+      successMessage.value = "Регистрация прошла успешно! Теперь вы можете";
+      // Clear form fields
+      email.value = "";
+      password.value = "";
+      confirmPassword.value = "";
+      displayName.value = "";
+      acceptPrivacy.value = false;
+      acceptTerms.value = false;
     } else {
       error.value = response.message || "Ошибка при регистрации";
     }
