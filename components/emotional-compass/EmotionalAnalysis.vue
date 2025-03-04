@@ -53,6 +53,11 @@
         <!-- Emotion Header with Enhanced Interactivity -->
         <div class="flex items-center justify-between mb-6">
           <div class="flex items-center gap-3">
+            <i
+              :class="getEmotionIcon(emotion)"
+              class="text-xl mr-2"
+              :style="{ color: getEmotionColor(emotion) }"
+            ></i>
             <h3 class="font-bold text-lg text-white/90">{{ emotion }}</h3>
           </div>
           <span
@@ -140,37 +145,60 @@
 <script setup>
 import { computed } from "vue";
 
+const props = defineProps({
+  patterns: {
+    type: Object,
+    required: false,
+    validator(value) {
+      return (
+        value &&
+        Object.values(value).every(
+          (pattern) =>
+            "count" in pattern &&
+            "avgIntensity" in pattern &&
+            "commonSpheres" in pattern &&
+            (!pattern.subEmotions ||
+              Object.values(pattern.subEmotions).every(
+                (subPattern) =>
+                  "count" in subPattern && "avgIntensity" in subPattern
+              ))
+        )
+      );
+    },
+  },
+});
+
 // Comprehensive Emotion and Sphere Definitions
 const emotions = [
   {
     id: 1,
     name: "Радость",
-    color: "bg-gradient-to-r from-[#F59E0B] to-[#F97316]",
+    color: "#F97316", // Warm orange
+    icon: "fas fa-laugh-beam",
   },
   {
     id: 2,
-    name: "Тревога",
-    color: "bg-gradient-to-r from-[#E879F9] to-[#C084FC]",
+    name: "Грусть",
+    color: "#0EA5E9", // Soft blue
+    icon: "fas fa-sad-cry",
   },
   {
     id: 3,
-    name: "Злость",
-    color: "bg-gradient-to-r from-[#EF4444] to-[#F87171]",
+    name: "Страх",
+    color: "#C084FC", // Lavender purple
+    icon: "fas fa-ghost",
   },
   {
     id: 4,
-    name: "Грусть",
-    color: "bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE]",
+    name: "Гнев",
+    color: "#EF4444", // Vivid red
+    icon: "fas fa-angry",
   },
   {
     id: 5,
-    name: "Вдохновение",
-    color: "bg-gradient-to-r from-[#10B981] to-[#34D399]",
-  },
-  {
-    id: 6,
-    name: "Спокойствие",
-    color: "bg-gradient-to-r from-[#14B8A6] to-[#2DD4BF]",
+    name: "Удивление",
+    color: "#10B981", // Emerald green
+    icon: "fas fa-surprise",
   },
 ];
 
@@ -201,42 +229,27 @@ const lifeSpheres = [
   },
 ];
 
-const props = defineProps({
-  patterns: {
-    type: Object,
-    required: false,
-    validator(value) {
-      return (
-        value &&
-        Object.values(value).every(
-          (pattern) =>
-            "count" in pattern &&
-            "avgIntensity" in pattern &&
-            "commonSpheres" in pattern &&
-            (!pattern.subEmotions ||
-              Object.values(pattern.subEmotions).every(
-                (subPattern) =>
-                  "count" in subPattern && "avgIntensity" in subPattern
-              ))
-        )
-      );
-    },
-  },
-});
+const getEmotionColor = (emotionName) => {
+  const emotion = emotions.find((e) => e.name === emotionName);
+  return emotion?.color || "#0EA5E9";
+};
 
-// Computed property for enhanced loading state detection
-const loading = computed(
-  () => !props.patterns || Object.keys(props.patterns).length === 0
-);
+const getEmotionIcon = (emotionName) => {
+  const emotion = emotions.find((e) => e.name === emotionName);
+  return emotion?.icon || "fas fa-smile";
+};
 
-// Enhanced Color and Icon Selection Methods
 const getEmotionActiveColor = (emotionName) => {
   const emotion = emotions.find((e) => e.name === emotionName);
-  return emotion?.color || "bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE]";
+  return emotion?.color ? `bg-[${emotion.color}]` : "bg-[#0EA5E9]";
 };
 
 const getSphereColor = (sphereName) => {
   const sphere = lifeSpheres.find((s) => s.name === sphereName);
-  return sphere?.color || "bg-gradient-to-r from-[#0EA5E9]/60 to-[#22D3EE]/60";
+  return sphere?.color || "bg-[#0EA5E9]/60";
 };
+
+const loading = computed(
+  () => !props.patterns || Object.keys(props.patterns).length === 0
+);
 </script>
