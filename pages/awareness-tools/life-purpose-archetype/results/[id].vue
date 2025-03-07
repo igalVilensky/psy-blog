@@ -58,7 +58,7 @@
 
           <div class="grid gap-4 md:grid-cols-3">
             <div
-              v-for="({ archetype, score }, index) in topArchetypes"
+              v-for="({ archetype, score, guideUrl }, index) in topArchetypes"
               :key="archetype"
               class="relative bg-[#252B45] rounded-xl p-6 border-2 border-[#3A1CFF]/20 transform transition-all duration-300 hover:-translate-y-1"
             >
@@ -76,6 +76,12 @@
                   {{ score }}
                 </div>
               </div>
+              <button
+                @click="handleDownload(guideUrl)"
+                class="mt-4 inline-block text-[#00E6FF] hover:text-[#3A1CFF] transition-colors duration-200"
+              >
+                <i class="fas fa-download mr-2"></i>Скачать гайд
+              </button>
             </div>
           </div>
         </div>
@@ -90,7 +96,6 @@
             <i class="fas fa-chart-bar text-[#00FF88]"></i>
             Подробный Анализ
           </h2>
-
           <div class="space-y-6">
             <div
               v-for="(score, archetype) in result.scores"
@@ -125,7 +130,6 @@
             :to="'/awareness-tools/life-purpose-archetype'"
             :isLink="true"
           />
-
           <Button
             :text="'Изучить описания архетипов'"
             :iconClass="'fas fa-book'"
@@ -148,6 +152,31 @@ import { useFirestore } from "~/plugins/firebase";
 import Button from "~/components/base/Button.vue";
 import { getAssessment } from "~/api/firebase/assessments";
 
+// Google Drive links for the 12 archetypes (using Russian names from your data)
+const archetypeGuides = {
+  воин: "https://drive.google.com/uc?export=download&id=1Z9XqjKfmXtIuPkpqFjlZf0UeK5uZd4-7", // Warrior
+  мудрец:
+    "https://drive.google.com/uc?export=download&id=1jRFDKQh_LeSy_hFS-rBic-qOXhwN1w9d", // Sage
+  искатель:
+    "https://drive.google.com/uc?export=download&id=1t9Eyq6mPBA-Zh1YPkDjtnoAicYIYdnSL", // Explorer
+  творец:
+    "https://drive.google.com/uc?export=download&id=1EB-sU__obr0nar984wxVEOWvMGU3LWNg", // Creator
+  правитель:
+    "https://drive.google.com/uc?export=download&id=1kC5TMJUWRAy5pKXOlW4qlAx6PXoe--2g", // Ruler
+  маг: "https://drive.google.com/uc?export=download&id=1r-5W_RuCHRXJX6QOXmmQT8TL7asKvGAQ", // Magician
+  любовник:
+    "https://drive.google.com/uc?export=download&id=1NzU0BGyZGTTqx_1kCnyr97CFbRIg72PN", // Lover
+  шут: "https://drive.google.com/uc?export=download&id=1Vecj9bKoGI2iRulAjBSMAAe_A0A526BV", // Jester
+  сирота:
+    "https://drive.google.com/uc?export=download&id=1lqXNJNpE2S96t4bioP5ZUHd-tsu_To0B", // Orphan (Everyman)
+  опекун:
+    "https://drive.google.com/uc?export=download&id=1MjruEXhQa24RGxpEHiuLszqbu3_1OBeY", // Caregiver
+  простодушный:
+    "https://drive.google.com/uc?export=download&id=1JLFEcqtBb6rT7QWW6BAwbRi0o17tAJ6E", // Innocent
+  бунтарь:
+    "https://drive.google.com/uc?export=download&id=1nET_NObXciLQlL44TB_Jo6qPEmR-4Nd4",
+};
+
 const route = useRoute();
 const router = useRouter();
 const db = useFirestore();
@@ -158,32 +187,19 @@ const result = ref(null);
 const isLoading = ref(true);
 const error = ref(null);
 
-// Computed value for the dominant archetype
-const dominantArchetype = computed(() => {
-  if (!result.value?.scores) {
-    console.warn("No scores found in result:", result.value); // Debug: Log if scores are missing
-    return null;
-  }
-
-  const dominant = Object.entries(result.value.scores).reduce((a, b) =>
-    parseFloat(a[1]) > parseFloat(b[1]) ? a : b
-  )[0];
-
-  return dominant === "unknown" ? "Не определено" : dominant;
-});
-
-// Computed value for the top 3 dominant archetypes
+// Computed value for the top 3 dominant archetypes with guide URLs
 const topArchetypes = computed(() => {
   if (!result.value?.scores) return [];
 
-  // Convert the scores object to an array of [archetype, score] pairs
   const scoresArray = Object.entries(result.value.scores);
-
-  // Sort the array in descending order by score and take the top 3
   return scoresArray
     .sort((a, b) => b[1] - a[1])
     .slice(0, 3)
-    .map(([archetype, score]) => ({ archetype, score: Math.round(score) }));
+    .map(([archetype, score]) => ({
+      archetype,
+      score: Math.round(score),
+      guideUrl: archetypeGuides[archetype] || "#",
+    }));
 });
 
 // Format timestamp
@@ -196,6 +212,21 @@ const formatDate = (timestamp) => {
   });
 };
 
+// Handle download programmatically
+const handleDownload = (url) => {
+  if (url === "#") {
+    console.log("No guide available for this archetype");
+    return; // Ignore if no guide exists
+  }
+  console.log("Downloading from:", url);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = ""; // Optional: Set a specific filename here if desired (e.g., "Сирота_Гайд.pdf")
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
 // Load assessment results
 const loadAssessmentResult = async () => {
   isLoading.value = true;
@@ -206,22 +237,14 @@ const loadAssessmentResult = async () => {
       db,
       route.params.id
     );
-
-    if (!success) {
-      throw new Error(message);
-    }
-
-    // If userId exists, enforce ownership check
+    if (!success) throw new Error(message);
     if (assessment.userId && auth.currentUser?.uid !== assessment.userId) {
       throw new Error("У вас нет доступа к этим результатам");
     }
-
     result.value = assessment;
   } catch (err) {
     console.error("Error loading assessment result:", err);
     error.value = err.message || "Произошла ошибка при загрузке результатов";
-
-    // Redirect only if unauthorized or not found
     if (err.message.includes("не найдены") || err.message.includes("доступа")) {
       router.push("/tools/life-purpose-archetype");
     }
@@ -230,11 +253,11 @@ const loadAssessmentResult = async () => {
   }
 };
 
-// Lifecycle hooks
 onMounted(() => {
   loadAssessmentResult();
 });
 </script>
+
 <style scoped>
 @keyframes bounceLeft {
   0%,

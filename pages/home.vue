@@ -5,10 +5,10 @@
       :recent-actions="recentActions"
       :recommendations="recommendations"
     />
-    <section class="py-20 px-4 relative overflow-hidden">
-      <div class="container mx-auto max-w-4xl relative z-10">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <BlogPosts :posts="blogPosts" />
+    <section class="pb-20 pt-16 px-4 sm:px-6 lg:px-0 relative overflow-hidden">
+      <div class="container mx-auto max-w-6xl relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <BlogPosts :posts="latestBlogPosts" />
           <RecentUpdates :updates="recentUpdates" />
         </div>
         <SuccessStories v-if="!isLoggedIn" :stories="successStories" />
@@ -22,6 +22,9 @@
 <script setup>
 import { useAuthStore } from "~/stores/auth";
 import { computed, ref, onMounted } from "vue";
+import { useFirestore } from "~/plugins/firebase";
+import { fetchPosts } from "~/api/sanity/posts";
+import { getPostViewCount } from "~/api/firebase/views";
 import HeroSection from "~/components/home-page/HeroSection.vue";
 import BlogPosts from "~/components/home-page/BlogPosts.vue";
 import RecentUpdates from "~/components/home-page/RecentUpdates.vue";
@@ -30,8 +33,8 @@ import ProfilingReasons from "~/components/home-page/ProfilingReasons.vue";
 import CTASection from "~/components/home-page/CTASection.vue";
 
 const authStore = useAuthStore();
+const firestore = useFirestore();
 const isLoggedIn = computed(() => !!authStore.user);
-const userName = computed(() => authStore.user?.displayName || "Гость");
 
 const stats = ref({ testsCompleted: 0, totalTests: 5, streakDays: 0 });
 const recentActions = ref([]);
@@ -41,7 +44,34 @@ const recentUpdates = ref([]);
 const successStories = ref([]);
 const profilingReasons = ref([]);
 
-// Mock fetch functions (unchanged)
+const latestBlogPosts = computed(() => {
+  return blogPosts.value
+    .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
+    .slice(0, 3);
+});
+
+const loadBlogPosts = async () => {
+  try {
+    const initialPosts = await fetchPosts();
+    console.log("fetchPosts response:", initialPosts);
+    blogPosts.value = Array.isArray(initialPosts.data.value)
+      ? initialPosts.data.value
+      : [];
+    if (blogPosts.value.length > 0) {
+      await Promise.all(
+        blogPosts.value.map(async (post) => {
+          post.views = await getPostViewCount(firestore, post._id);
+        })
+      );
+    }
+  } catch (error) {
+    console.error("Failed to fetch blog posts or views:", error);
+    blogPosts.value = [];
+  }
+};
+
+await loadBlogPosts();
+
 const fetchUserStats = async () => {
   return new Promise((resolve) => {
     setTimeout(
@@ -77,26 +107,6 @@ const fetchRecommendations = async () => {
         resolve([
           { id: 1, text: "Завершите тест: Эмоциональный компас" },
           { id: 2, text: "Попробуйте курс: Основы осознанности" },
-        ]),
-      500
-    );
-  });
-};
-const fetchBlogPosts = async () => {
-  return new Promise((resolve) => {
-    setTimeout(
-      () =>
-        resolve([
-          {
-            id: 1,
-            title: "Как найти свой Архетип",
-            excerpt: "Простые шаги к пониманию себя.",
-          },
-          {
-            id: 2,
-            title: "Осознанность каждый день",
-            excerpt: "Советы для начинающих.",
-          },
         ]),
       500
     );
@@ -163,9 +173,7 @@ const fetchProfilingReasons = async () => {
   });
 };
 
-// Load data on mount
 onMounted(async () => {
-  blogPosts.value = await fetchBlogPosts();
   recentUpdates.value = await fetchRecentUpdates();
   profilingReasons.value = await fetchProfilingReasons();
   if (isLoggedIn.value) {

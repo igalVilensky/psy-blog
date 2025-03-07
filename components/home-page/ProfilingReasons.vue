@@ -1,7 +1,7 @@
 <template>
-  <section class="py-20 px-4 relative overflow-hidden">
+  <section class="pb-20 px-4 relative overflow-hidden">
     <div class="container mx-auto max-w-4xl relative z-10">
-      <h2 class="text-2xl font-bold text-white mb-6 text-center">
+      <h2 class="text-2xl font-bold text-white mb-6 sm:text-center">
         Почему важно знать свой психологический профиль?
       </h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

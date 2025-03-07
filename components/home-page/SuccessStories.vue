@@ -1,6 +1,6 @@
 <template>
   <div class="mt-12">
-    <h2 class="text-2xl font-bold text-white mb-6 text-center">
+    <h2 class="text-2xl font-bold text-white mb-6 sm:text-center">
       Истории успеха
     </h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
