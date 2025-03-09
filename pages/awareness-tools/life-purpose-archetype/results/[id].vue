@@ -39,43 +39,17 @@
 
       <!-- Results Display -->
       <div v-else-if="result" class="space-y-12">
-        <!-- Header Section - Redesigned -->
-        <div class="text-center relative">
-          <div
-            class="absolute -top-24 left-1/2 -translate-x-1/2 w-full h-40 bg-gradient-to-r from-[#3A1CFF]/10 to-[#00E6FF]/10 blur-3xl rounded-full"
-          ></div>
-          <div class="inline-block mb-6">
-            <div class="relative">
-              <div
-                class="absolute inset-0 bg-gradient-to-r from-[#3A1CFF] to-[#00E6FF] blur opacity-50 rounded-full"
-              ></div>
-              <div
-                class="relative z-10 bg-[#1A2038] rounded-full p-4 border-2 border-[#3A1CFF]/40"
-              >
-                <i
-                  class="fas fa-dna text-3xl bg-clip-text text-transparent bg-gradient-to-r from-[#3A1CFF] to-[#00E6FF]"
-                ></i>
-              </div>
-            </div>
-          </div>
-
-          <h1 class="text-3xl md:text-5xl font-bold mb-4">
-            <span
-              class="bg-clip-text text-transparent bg-gradient-to-r from-[#3A1CFF] to-[#00E6FF]"
-            >
-              Ваш Архетип Жизненного Предназначения
-            </span>
-          </h1>
-          <p class="text-slate-300 text-lg max-w-2xl mx-auto">
-            Результаты вашего теста раскрывают уникальную комбинацию архетипов,
-            формирующих ваше жизненное предназначение
-          </p>
-          <div
-            class="flex items-center justify-center mt-4 text-slate-400 text-sm"
+        <!-- Header Section -->
+        <div class="text-center">
+          <h1
+            class="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#3A1CFF] to-[#00E6FF] mb-4"
           >
+            Ваш Архетип Жизненного Предназначения
+          </h1>
+          <p class="text-slate-300">
             <i class="fas fa-calendar-alt mr-2"></i>
             {{ formatDate(result.timestamp) }}
-          </div>
+          </p>
         </div>
 
         <!-- Top 3 Archetypes Card -->
@@ -83,7 +57,7 @@
           class="bg-[#1A2038]/80 backdrop-blur-xl rounded-2xl border border-[#3A1CFF]/30 py-8 px-4 sm:px-8 shadow-lg"
         >
           <h2
-            class="text-2xl font-semibold text-white mb-8 flex items-center gap-3"
+            class="text-2xl font-semibold text-white mb-8 flex items-center gap-3 flex-col text-center sm:flex-row sm:text-left"
           >
             <i class="fas fa-crown text-[#F59E0B]"></i>
             Ваши Доминирующие Архетипы
@@ -109,14 +83,45 @@
                 </div>
 
                 <div class="grid md:grid-cols-2 gap-8 items-center">
-                  <div>
+                  <!-- CTA Section -->
+                  <div
+                    class="bg-[#1A2038] p-6 rounded-lg border border-[#3A1CFF]/30 shadow-xl text-center order-1 md:order-2"
+                  >
+                    <div class="inline-block mb-4">
+                      <div
+                        class="w-16 h-16 bg-gradient-to-r from-[#3A1CFF]/20 to-[#00E6FF]/20 rounded-xl flex items-center justify-center"
+                      >
+                        <i
+                          class="fas fa-unlock-alt text-2xl text-[#00E6FF]"
+                        ></i>
+                      </div>
+                    </div>
+                    <h4 class="text-xl font-semibold text-white mb-2">
+                      Хотите получить подробные гайды?
+                    </h4>
+                    <p class="text-slate-400 mb-6">
+                      Зарегистрируйтесь и скачайте их бесплатно!
+                    </p>
+                    <RouterLink
+                      :to="{
+                        path: '/register',
+                        query: { assessmentId: assessmentId },
+                      }"
+                      class="w-full inline-block bg-gradient-to-r from-[#3A1CFF] to-[#00E6FF] text-white font-semibold py-3 px-6 rounded-lg hover:shadow-lg hover:from-[#2A15CC] hover:to-[#00B8D4] transition-all duration-300"
+                    >
+                      <i class="fas fa-user-plus mr-2"></i>
+                      Создать бесплатный аккаунт
+                    </RouterLink>
+                  </div>
+
+                  <!-- Benefits Section -->
+                  <div class="order-2 md:order-1 hidden sm:block">
                     <h3 class="text-2xl font-bold text-white mb-4">
-                      Разблокируйте полный потенциал
+                      Преимущества регистрации
                     </h3>
                     <p class="text-slate-300 mb-6">
-                      Получите доступ к углубленному анализу ваших архетипов и
-                      персонализированным рекомендациям для развития вашего
-                      потенциала
+                      Получите доступ к дополнительным возможностям для
+                      раскрытия вашего потенциала:
                     </p>
                     <ul class="space-y-3 text-left text-slate-200">
                       <li class="flex items-start gap-3">
@@ -146,37 +151,6 @@
                         <span>История тестов для отслеживания прогресса</span>
                       </li>
                     </ul>
-                  </div>
-
-                  <div
-                    class="bg-[#1A2038] p-6 rounded-lg border border-[#3A1CFF]/30 shadow-xl text-center"
-                  >
-                    <div class="inline-block mb-4">
-                      <div
-                        class="w-16 h-16 bg-gradient-to-r from-[#3A1CFF]/20 to-[#00E6FF]/20 rounded-xl flex items-center justify-center"
-                      >
-                        <i
-                          class="fas fa-unlock-alt text-2xl text-[#00E6FF]"
-                        ></i>
-                      </div>
-                    </div>
-                    <h4 class="text-xl font-semibold text-white mb-2">
-                      Бесплатная регистрация
-                    </h4>
-                    <p class="text-slate-400 mb-6">
-                      Создайте аккаунт прямо сейчас и получите доступ ко всем
-                      возможностям
-                    </p>
-                    <RouterLink
-                      :to="{
-                        path: '/register',
-                        query: { assessmentId: assessmentId },
-                      }"
-                      class="w-full inline-block bg-gradient-to-r from-[#3A1CFF] to-[#00E6FF] text-white font-semibold py-3 px-6 rounded-lg hover:shadow-lg hover:from-[#2A15CC] hover:to-[#00B8D4] transition-all duration-300"
-                    >
-                      <i class="fas fa-user-plus mr-2"></i>
-                      Создать бесплатный аккаунт
-                    </RouterLink>
                   </div>
                 </div>
               </div>

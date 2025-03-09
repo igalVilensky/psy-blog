@@ -103,11 +103,11 @@
                     ></i>
                   </div>
                   <div class="flex-1">
-                    <h3 class="font-semibold text-white/90 mb-1">
+                    <h3 class="font-semibold text-white/90 mb-1 capitalize">
                       {{ archetype.name }}
                     </h3>
                     <p class="text-sm text-slate-400 mb-2">
-                      {{ archetype.description }}
+                      {{ archetype.description || "Описание отсутствует" }}
                     </p>
                     <div class="flex items-center">
                       <div class="h-2 bg-[#0EA5E9]/20 rounded-full flex-1">
@@ -124,6 +124,15 @@
                         archetype.level
                       }}</span>
                     </div>
+                    <!-- Download Button -->
+                    <button
+                      v-if="isAuthenticated && archetype.guideUrl !== '#'"
+                      @click="handleDownload(archetype.guideUrl)"
+                      class="mt-4 w-full bg-[#1A2038] hover:bg-[#0EA5E9]/20 text-[#0EA5E9] py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition-all duration-300 border border-[#0EA5E9]/20"
+                    >
+                      <i class="fas fa-download"></i>
+                      <span>Скачать гайд</span>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -279,6 +288,9 @@
 
 <script setup>
 import { ref, computed, watch } from "vue";
+import { useAuthStore } from "~/stores/auth";
+
+const authStore = useAuthStore();
 
 const props = defineProps({
   archetypes: {
@@ -306,6 +318,9 @@ const props = defineProps({
 const activeTab = ref("archetypes");
 const showMore = ref(false);
 const isInitialLoading = ref(true);
+
+// Check if user is authenticated
+const isAuthenticated = computed(() => !!authStore.user);
 
 const tabs = [
   { id: "archetypes", name: "Архетипы", icon: "fa-masks-theater" },
@@ -409,6 +424,7 @@ const personalStats = [
   },
 ];
 
+// Format date function
 const formatDate = (date) => {
   return new Intl.DateTimeFormat("ru-RU", {
     day: "numeric",
@@ -417,14 +433,32 @@ const formatDate = (date) => {
   }).format(date);
 };
 
+// Switch tab function
 const switchTab = (tabId) => {
   activeTab.value = tabId;
 };
 
+// Toggle show more function
 const toggleShowMore = () => {
   showMore.value = !showMore.value;
 };
 
+// Handle download logic
+const handleDownload = (url) => {
+  if (url === "#") {
+    console.log("No guide available for this archetype");
+    return;
+  }
+  console.log("Downloading from:", url);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
+// Watch loading prop to handle initial loading state
 watch(
   () => props.loading,
   (newLoading) => {

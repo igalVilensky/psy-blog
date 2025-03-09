@@ -200,6 +200,31 @@ import { fetchUserAvatarUrl } from "~/api/firebase/userProfile";
 // Register Chart.js plugins
 Chart.register(...registerables);
 
+// Google Drive links for the 12 archetypes
+const archetypeGuides = {
+  воин: "https://drive.google.com/uc?export=download&id=1Z9XqjKfmXtIuPkpqFjlZf0UeK5uZd4-7",
+  мудрец:
+    "https://drive.google.com/uc?export=download&id=1jRFDKQh_LeSy_hFS-rBic-qOXhwN1w9d",
+  искатель:
+    "https://drive.google.com/uc?export=download&id=1t9Eyq6mPBA-Zh1YPkDjtnoAicYIYdnSL",
+  творец:
+    "https://drive.google.com/uc?export=download&id=1EB-sU__obr0nar984wxVEOWvMGU3LWNg",
+  правитель:
+    "https://drive.google.com/uc?export=download&id=1kC5TMJUWRAy5pKXOlW4qlAx6PXoe--2g",
+  маг: "https://drive.google.com/uc?export=download&id=1r-5W_RuCHRXJX6QOXmmQT8TL7asKvGAQ",
+  любовник:
+    "https://drive.google.com/uc?export=download&id=1NzU0BGyZGTTqx_1kCnyr97CFbRIg72PN",
+  шут: "https://drive.google.com/uc?export=download&id=1Vecj9bKoGI2iRulAjBSMAAe_A0A526BV",
+  сирота:
+    "https://drive.google.com/uc?export=download&id=1lqXNJNpE2S96t4bioP5ZUHd-tsu_To0B",
+  опекун:
+    "https://drive.google.com/uc?export=download&id=1MjruEXhQa24RGxpEHiuLszqbu3_1OBeY",
+  простодушный:
+    "https://drive.google.com/uc?export=download&id=1JLFEcqtBb6rT7QWW6BAwbRi0o17tAJ6E",
+  бунтарь:
+    "https://drive.google.com/uc?export=download&id=1nET_NObXciLQlL44TB_Jo6qPEmR-4Nd4",
+};
+
 const {
   notificationMessage,
   notificationType,
@@ -275,12 +300,13 @@ const fetchLatestAssessment = async (userId) => {
     if (success) {
       latestAssessment.value = assessment;
 
-      // Transform the scores into the format expected by the component
+      // Transform the scores into the format expected by the component, including guide URLs
       archetypeScores.value = Object.entries(assessment.scores).map(
         ([name, level]) => ({
           name,
-          level: parseFloat(level), // Ensure level is a number
-          icon: getIconForArchetype(name), // Add a function to assign icons
+          level: parseFloat(level),
+          icon: getIconForArchetype(name),
+          guideUrl: archetypeGuides[name] || "#", // Add guide URL
         })
       );
     } else {
