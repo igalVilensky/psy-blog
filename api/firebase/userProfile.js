@@ -60,7 +60,6 @@ export const registerUser = async (email, password, displayName) => {
   const db = getFirestore();
 
   try {
-    // Create user in Firebase Auth
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
@@ -68,12 +67,8 @@ export const registerUser = async (email, password, displayName) => {
     );
     const user = userCredential.user;
 
-    // Update Firebase Auth profile with display name
-    await updateProfile(user, {
-      displayName: displayName,
-    });
+    await updateProfile(user, { displayName: displayName });
 
-    // Save user details to Firestore
     await setDoc(doc(db, "users", user.uid), {
       email: user.email,
       displayName: displayName,
@@ -82,10 +77,13 @@ export const registerUser = async (email, password, displayName) => {
       acceptedTerms: true,
     });
 
-    // Send verification email
     await sendEmailVerification(user);
 
-    return { success: true, message: "User registered successfully" };
+    return {
+      success: true,
+      message: "User registered successfully",
+      user: user, // Add the user object to the response
+    };
   } catch (error) {
     console.error("Error registering user:", error);
     return { success: false, message: error.message };

@@ -96,6 +96,8 @@
                   :type="showPassword ? 'text' : 'password'"
                   id="password"
                   v-model="password"
+                  aria-label="Password"
+                  aria-describedby="password-helper"
                   autocomplete="new-password"
                   required
                   class="w-full pl-10 pr-12 py-2 bg-white/5 border border-[#0EA5E9]/20 rounded-lg text-slate-300 placeholder-slate-400/50 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] focus:border-transparent transition-colors duration-200"
@@ -287,6 +289,13 @@
 <script setup>
 import { ref, computed } from "vue";
 import { registerUser } from "~/api/firebase/userProfile";
+import { useRoute, useRouter } from "vue-router";
+import { getFirestore, doc, updateDoc } from "firebase/firestore";
+
+const route = useRoute();
+const router = useRouter();
+const firestore = getFirestore();
+const assessmentId = ref(route.query.assessmentId); // Get assessmentId from query
 
 // Refs for form inputs and state
 const email = ref("");
@@ -301,7 +310,7 @@ const showPassword = ref(false);
 const showConfirmPassword = ref(false);
 const isLoading = ref(false);
 
-// Computed property to check if all fields are filled and valid
+// Computed property to check if form is valid
 const isFormValid = computed(() => {
   return (
     displayName.value.trim() !== "" &&
@@ -325,6 +334,23 @@ const togglePassword = (field) => {
   }
 };
 
+// Associate assessment with user
+const associateAssessmentWithUser = async (userId) => {
+  if (!assessmentId.value) return;
+
+  try {
+    const assessmentRef = doc(
+      firestore,
+      "archetypeResults",
+      assessmentId.value
+    );
+    await updateDoc(assessmentRef, { userId: userId });
+  } catch (err) {
+    console.error("Error associating assessment:", err);
+    error.value = "Failed to link your test results. Please contact support.";
+  }
+};
+
 // Handle registration
 const handleRegister = async () => {
   if (!isFormValid.value) {
@@ -333,8 +359,8 @@ const handleRegister = async () => {
     return;
   }
 
-  error.value = ""; // Clear any previous errors
-  isLoading.value = true; // Set loading state
+  error.value = "";
+  isLoading.value = true;
 
   try {
     const response = await registerUser(
@@ -342,9 +368,15 @@ const handleRegister = async () => {
       password.value,
       displayName.value
     );
+    console.log("Register response:", response);
 
     if (response.success) {
+      const userId = response.user.uid; // Now works because user is included
+      if (assessmentId.value) {
+        await associateAssessmentWithUser(userId);
+      }
       successMessage.value = "Регистрация прошла успешно! Теперь вы можете";
+
       // Clear form fields
       email.value = "";
       password.value = "";
@@ -356,9 +388,10 @@ const handleRegister = async () => {
       error.value = response.message || "Ошибка при регистрации";
     }
   } catch (err) {
+    console.error("Registration error:", err);
     error.value = err.message || "Произошла ошибка при регистрации";
   } finally {
-    isLoading.value = false; // Reset loading state
+    isLoading.value = false;
   }
 };
 </script>

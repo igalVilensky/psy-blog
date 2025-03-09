@@ -47,7 +47,7 @@
 
         <!-- Top 3 Archetypes Card -->
         <div
-          class="bg-[#1A2038] backdrop-blur-xl rounded-2xl border-2 border-[#3A1CFF]/30 p-6 lg:p-8 transform transition-all duration-300 hover:shadow-[0_0_30px_rgba(58,28,255,0.2)]"
+          class="bg-[#1A2038] backdrop-blur-xl rounded-2xl border-2 border-[#3A1CFF]/30 p-6 lg:p-8"
         >
           <h2
             class="text-2xl font-semibold text-white mb-6 flex items-center gap-3"
@@ -55,6 +55,22 @@
             <i class="fas fa-crown text-[#F59E0B]"></i>
             Ваши Доминирующие Архетипы
           </h2>
+
+          <div v-if="!auth.currentUser" class="text-center text-slate-300 mb-8">
+            Хотите получить подробные гайды по вашим 3 доминирующим архетипам?
+            <span class="block mt-2">
+              <RouterLink
+                :to="{
+                  path: '/register',
+                  query: { assessmentId: assessmentId },
+                }"
+                class="text-[#00E6FF] hover:text-[#3A1CFF] font-semibold"
+              >
+                Зарегистрируйтесь
+              </RouterLink>
+              и скачайте их бесплатно!
+            </span>
+          </div>
 
           <div class="grid gap-4 md:grid-cols-3">
             <div
@@ -77,6 +93,7 @@
                 </div>
               </div>
               <button
+                v-if="auth.currentUser"
                 @click="handleDownload(guideUrl)"
                 class="mt-4 inline-block text-[#00E6FF] hover:text-[#3A1CFF] transition-colors duration-200"
               >
@@ -186,6 +203,7 @@ const auth = getAuth();
 const result = ref(null);
 const isLoading = ref(true);
 const error = ref(null);
+const assessmentId = ref(route.params.id);
 
 // Computed value for the top 3 dominant archetypes with guide URLs
 const topArchetypes = computed(() => {
