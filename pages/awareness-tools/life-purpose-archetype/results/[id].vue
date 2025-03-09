@@ -1,6 +1,8 @@
 <template>
   <div class="relative min-h-screen">
-    <div class="container mx-auto px-4 max-w-5xl relative z-10 py-8 lg:py-16">
+    <div
+      class="container mx-auto px-4 sm:px-0 max-w-6xl relative z-10 py-8 lg:py-16"
+    >
       <!-- Loading State -->
       <div
         v-if="isLoading"
@@ -57,19 +59,47 @@
           </h2>
 
           <div v-if="!auth.currentUser" class="text-center text-slate-300 mb-8">
-            Хотите получить подробные гайды по вашим 3 доминирующим архетипам?
-            <span class="block mt-2">
+            <p class="text-lg font-medium text-white mb-4">
+              Разблокируйте полный потенциал ваших результатов
+            </p>
+            <div
+              class="bg-[#252B45]/50 border border-[#3A1CFF]/20 rounded-lg p-4 sm:p-6 max-w-2xl mx-auto shadow-md"
+            >
+              <ul
+                class="space-y-3 text-left text-slate-200 text-sm sm:text-base"
+              >
+                <li class="flex items-start gap-3">
+                  <i class="fas fa-download text-[#00E6FF] mt-1"></i>
+                  <span
+                    >Скачивайте подробные гайды по вашим доминирующим
+                    архетипам</span
+                  >
+                </li>
+                <li class="flex items-start gap-3">
+                  <i class="fas fa-clock text-[#00E6FF] mt-1"></i>
+                  <span>Проверяйте свои результаты в любое время</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <i class="fas fa-history text-[#00E6FF] mt-1"></i>
+                  <span
+                    >Сохраняйте историю тестов для отслеживания прогресса</span
+                  >
+                </li>
+                <li class="flex items-start gap-3">
+                  <i class="fas fa-star text-[#00E6FF] mt-1"></i>
+                  <span>Получайте персонализированные рекомендации</span>
+                </li>
+              </ul>
               <RouterLink
                 :to="{
                   path: '/register',
                   query: { assessmentId: assessmentId },
                 }"
-                class="text-[#00E6FF] hover:text-[#3A1CFF] font-semibold"
+                class="mt-6 inline-block bg-gradient-to-r from-[#3A1CFF] to-[#00E6FF] text-white font-semibold py-2 px-6 rounded-lg hover:shadow-lg hover:from-[#2A15CC] hover:to-[#00B8D4] transition-all duration-300"
               >
-                Зарегистрируйтесь
+                Зарегистрироваться бесплатно
               </RouterLink>
-              и скачайте их бесплатно!
-            </span>
+            </div>
           </div>
 
           <div class="grid gap-4 md:grid-cols-3">
