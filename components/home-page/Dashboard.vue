@@ -37,11 +37,11 @@
           </li>
         </ul>
         <a
-          v-if="stats.tests.ctas.length"
-          :href="stats.tests.ctas[0].link"
+          v-if="stats?.tests?.ctas?.length"
+          :href="stats?.tests?.ctas[0]?.link"
           class="text-sky-400 hover:text-sky-300 text-sm font-medium mt-2 inline-block"
         >
-          Пройти {{ stats.tests.ctas[0].name }}
+          Пройти {{ stats?.tests?.ctas[0]?.name }}
           <i class="fas fa-arrow-right ml-2"></i>
         </a>
       </div>
@@ -51,12 +51,12 @@
         </div>
         <div class="space-y-2">
           <a
-            v-for="cta in stats.tests.ctas"
-            :key="cta.name"
-            :href="cta.link"
+            v-for="cta in stats?.tests?.ctas"
+            :key="cta?.name"
+            :href="cta?.link"
             class="text-sky-400 hover:text-sky-300 text-sm font-medium block"
           >
-            {{ cta.name }} <i class="fas fa-arrow-right ml-2"></i>
+            {{ cta?.name }} <i class="fas fa-arrow-right ml-2"></i>
           </a>
         </div>
       </div>
@@ -100,7 +100,7 @@
           <span>Начните обучение с наших курсов!</span>
         </div>
         <a
-          :href="stats.courses.cta.link"
+          :href="stats?.courses?.cta?.link"
           class="text-emerald-400 hover:text-emerald-300 text-sm font-medium"
         >
           Перейти к курсам <i class="fas fa-arrow-right ml-2"></i>
@@ -185,7 +185,7 @@
           <span>Попробуйте эмоциональный барометр!</span>
         </div>
         <a
-          :href="stats.tools.cta.link"
+          :href="stats?.tools?.cta?.link"
           class="text-pink-400 hover:text-pink-300 text-sm font-medium"
         >
           Начать <i class="fas fa-arrow-right ml-2"></i>
