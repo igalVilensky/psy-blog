@@ -61,7 +61,7 @@
                 Узнайте свои сильные стороны за 5 минут
               </p>
               <a
-                href="#"
+                href="/tests/archetype"
                 class="text-sky-400 hover:text-sky-300 text-sm font-medium"
               >
                 Начать <i class="fas fa-arrow-right ml-2"></i>
@@ -84,7 +84,7 @@
                 Сохраняйте результаты и получайте персональные рекомендации
               </p>
               <a
-                href="#"
+                href="/register"
                 class="text-purple-400 hover:text-purple-300 text-sm font-medium"
               >
                 Регистрация <i class="fas fa-arrow-right ml-2"></i>

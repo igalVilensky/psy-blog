@@ -1,3 +1,4 @@
+// api/firebase/emotionBarometer.js.js
 import { doc, getDoc, updateDoc, setDoc, arrayUnion } from "firebase/firestore";
 
 // Fetch user emotion data from `emotion_barometer` document

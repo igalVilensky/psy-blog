@@ -25,6 +25,9 @@ import { computed, ref, onMounted } from "vue";
 import { useFirestore } from "~/plugins/firebase";
 import { fetchPosts } from "~/api/sanity/posts";
 import { getPostViewCount } from "~/api/firebase/views";
+import { getLatestUserAssessment } from "~/api/firebase/assessments";
+import { getPurchasedCourses } from "~/api/firebase/coursesApi";
+import { getEmotionBarometerStats } from "~/api/firebase/emotionBarometer";
 import HeroSection from "~/components/home-page/HeroSection.vue";
 import BlogPosts from "~/components/home-page/BlogPosts.vue";
 import RecentUpdates from "~/components/home-page/RecentUpdates.vue";
@@ -36,7 +39,11 @@ const authStore = useAuthStore();
 const firestore = useFirestore();
 const isLoggedIn = computed(() => !!authStore.user);
 
-const stats = ref({ testsCompleted: 0, totalTests: 5, streakDays: 0 });
+const stats = ref({
+  tests: null, // { completedTest: { name, topArchetypes }, ctas: [{ name, link }] }
+  courses: null, // { purchasedCourses: [{ name, progressPercentage }], cta: { link } }
+  tools: null, // { emotionStats: { totalEntries }, reminder: { link }, cta: { link } }
+});
 const recentActions = ref([]);
 const recommendations = ref([]);
 const blogPosts = ref([]);
@@ -53,7 +60,6 @@ const latestBlogPosts = computed(() => {
 const loadBlogPosts = async () => {
   try {
     const initialPosts = await fetchPosts();
-    console.log("fetchPosts response:", initialPosts);
     blogPosts.value = Array.isArray(initialPosts.data.value)
       ? initialPosts.data.value
       : [];
@@ -72,115 +78,154 @@ const loadBlogPosts = async () => {
 
 await loadBlogPosts();
 
-const fetchUserStats = async () => {
-  return new Promise((resolve) => {
-    setTimeout(
-      () => resolve({ testsCompleted: 2, totalTests: 5, streakDays: 5 }),
-      500
-    );
-  });
+// Fetch stats for logged-in users
+const fetchUserStats = async (userId) => {
+  // Assessments (Archetype Test)
+  const assessmentResponse = await getLatestUserAssessment(firestore, userId);
+  if (assessmentResponse.success) {
+    const scores = assessmentResponse.assessment.scores;
+    const topArchetypes = Object.entries(scores)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 3)
+      .map(([name, score]) => ({ name, score }));
+    stats.value.tests = {
+      completedTest: { name: "Archetype Test", topArchetypes },
+      ctas: [{ name: "Big 5 Test", link: "/tests/big-5" }],
+    };
+  } else {
+    stats.value.tests = {
+      completedTest: null,
+      ctas: [
+        { name: "Archetype Test", link: "/tests/archetype" },
+        { name: "Big 5 Test", link: "/tests/big-5" },
+      ],
+    };
+  }
+
+  // Courses
+  const coursesResponse = await getPurchasedCourses(userId);
+  if (coursesResponse.success && coursesResponse.data.length > 0) {
+    stats.value.courses = {
+      purchasedCourses: coursesResponse.data.map((course) => ({
+        name: course.title,
+        progressPercentage: course.progress.progressPercentage,
+      })),
+      cta: null,
+    };
+  } else {
+    stats.value.courses = {
+      purchasedCourses: [],
+      cta: { link: "/courses" },
+    };
+  }
+
+  // Emotion Barometer
+  const emotionStatsResponse = await getEmotionBarometerStats(
+    firestore,
+    userId
+  );
+  if (
+    emotionStatsResponse.success &&
+    emotionStatsResponse.stats.totalEntries > 0
+  ) {
+    stats.value.tools = {
+      emotionStats: { totalEntries: emotionStatsResponse.stats.totalEntries },
+      reminder: { link: "/tools/emotion-barometer" },
+      cta: null,
+    };
+  } else {
+    stats.value.tools = {
+      emotionStats: null,
+      reminder: null,
+      cta: { link: "/tools/emotion-barometer" },
+    };
+  }
 };
+
+// Mock fetch functions for non-logged-in users
 const fetchRecentActions = async () => {
-  return new Promise((resolve) => {
-    setTimeout(
-      () =>
-        resolve([
-          {
-            id: 1,
-            description: "Завершили тест: Большая пятёрка",
-            date: "02.03.2025",
-          },
-          {
-            id: 2,
-            description: "Начали тест: Эмоциональный компас",
-            date: "01.03.2025",
-          },
-        ]),
-      500
-    );
-  });
+  return [
+    {
+      id: 1,
+      description: "Завершили тест: Большая пятёрка",
+      date: "02.03.2025",
+    },
+    {
+      id: 2,
+      description: "Начали тест: Эмоциональный компас",
+      date: "01.03.2025",
+    },
+  ];
 };
 const fetchRecommendations = async () => {
-  return new Promise((resolve) => {
-    setTimeout(
-      () =>
-        resolve([
-          { id: 1, text: "Завершите тест: Эмоциональный компас" },
-          { id: 2, text: "Попробуйте курс: Основы осознанности" },
-        ]),
-      500
-    );
-  });
+  return [
+    { id: 1, text: "Завершите тест: Эмоциональный компас" },
+    { id: 2, text: "Попробуйте курс: Основы осознанности" },
+  ];
 };
 const fetchRecentUpdates = async () => {
-  return new Promise((resolve) => {
-    setTimeout(
-      () =>
-        resolve([
-          {
-            id: 1,
-            title: "Новый тест",
-            description: "Добавлен тест на стрессоустойчивость.",
-          },
-          {
-            id: 2,
-            title: "Обновление",
-            description: "Большая пятёрка теперь с пояснениями.",
-          },
-        ]),
-      500
-    );
-  });
+  return [
+    {
+      id: 1,
+      title: "Новый тест",
+      description: "Добавлен тест на стрессоустойчивость.",
+    },
+    {
+      id: 2,
+      title: "Обновление",
+      description: "Большая пятёрка теперь с пояснениями.",
+    },
+  ];
 };
 const fetchSuccessStories = async () => {
-  return new Promise((resolve) => {
-    setTimeout(
-      () =>
-        resolve([
-          {
-            id: 1,
-            quote: "Тесты помогли мне понять себя.",
-            author: "Анна, 34",
-          },
-          {
-            id: 2,
-            quote: "Я стала увереннее благодаря профилю.",
-            author: "Мария, 28",
-          },
-        ]),
-      500
-    );
-  });
+  return [
+    { id: 1, quote: "Тесты помогли мне понять себя.", author: "Анна, 34" },
+    {
+      id: 2,
+      quote: "Я стала увереннее благодаря профилю.",
+      author: "Мария, 28",
+    },
+  ];
 };
 const fetchProfilingReasons = async () => {
-  return new Promise((resolve) => {
-    setTimeout(
-      () =>
-        resolve([
-          {
-            id: 1,
-            title: "Самопознание",
-            description: "Узнайте свои сильные и слабые стороны.",
-          },
-          {
-            id: 2,
-            title: "Развитие",
-            description: "Ставьте цели, основанные на вашем профиле.",
-          },
-        ]),
-      500
-    );
-  });
+  return [
+    {
+      id: 1,
+      title: "Самопознание",
+      description: "Узнайте свои сильные и слабые стороны.",
+    },
+    {
+      id: 2,
+      title: "Развитие",
+      description: "Ставьте цели, основанные на вашем профиле.",
+    },
+  ];
 };
 
 onMounted(async () => {
   recentUpdates.value = await fetchRecentUpdates();
   profilingReasons.value = await fetchProfilingReasons();
   if (isLoggedIn.value) {
-    stats.value = await fetchUserStats();
+    const userId = authStore.user.uid;
+    await fetchUserStats(userId);
     recentActions.value = await fetchRecentActions();
     recommendations.value = await fetchRecommendations();
   } else {
+    stats.value = {
+      tests: {
+        completedTest: null,
+        ctas: [
+          { name: "Archetype Test", link: "/tests/archetype" },
+          { name: "Big 5 Test", link: "/tests/big-5" },
+        ],
+      },
+      courses: { purchasedCourses: [], cta: { link: "/courses" } },
+      tools: {
+        emotionStats: null,
+        reminder: null,
+        cta: { link: "/tools/emotion-barometer" },
+      },
+    };
     successStories.value = await fetchSuccessStories();
   }
 });

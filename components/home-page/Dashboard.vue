@@ -1,5 +1,6 @@
 <template>
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Tests Section -->
     <div
       class="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-sky-500/20 space-y-4"
     >
@@ -20,26 +21,48 @@
             />
           </svg>
         </div>
-        <h3 class="text-lg font-semibold text-white/90">Личностный рост</h3>
+        <h3 class="text-lg font-semibold text-white/90">Тесты</h3>
       </div>
-      <div>
-        <div class="flex justify-between text-sm text-slate-300 mb-2">
-          <span>Пройдено тестов</span>
-          <span class="font-bold text-white">
-            {{ stats.testsCompleted }} / {{ stats.totalTests }}
-          </span>
+      <div v-if="stats.tests?.completedTest">
+        <div class="text-sm text-slate-300 mb-2">
+          <span>Завершён: {{ stats.tests.completedTest.name }}</span>
         </div>
-        <div class="w-full bg-white/10 rounded-full h-2.5">
-          <div
-            class="bg-sky-500 h-2.5 rounded-full"
-            :style="{
-              width: `${(stats.testsCompleted / stats.totalTests) * 100}%`,
-            }"
-          ></div>
+        <ul class="text-sm text-slate-300 space-y-1">
+          <li
+            v-for="(archetype, index) in stats.tests.completedTest
+              .topArchetypes"
+            :key="index"
+          >
+            {{ archetype.name }} ({{ archetype.score }})
+          </li>
+        </ul>
+        <a
+          v-if="stats.tests.ctas.length"
+          :href="stats.tests.ctas[0].link"
+          class="text-sky-400 hover:text-sky-300 text-sm font-medium mt-2 inline-block"
+        >
+          Пройти {{ stats.tests.ctas[0].name }}
+          <i class="fas fa-arrow-right ml-2"></i>
+        </a>
+      </div>
+      <div v-else>
+        <div class="text-sm text-slate-300 mb-2">
+          <span>Пройдите тесты, чтобы узнать себя лучше!</span>
+        </div>
+        <div class="space-y-2">
+          <a
+            v-for="cta in stats.tests.ctas"
+            :key="cta.name"
+            :href="cta.link"
+            class="text-sky-400 hover:text-sky-300 text-sm font-medium block"
+          >
+            {{ cta.name }} <i class="fas fa-arrow-right ml-2"></i>
+          </a>
         </div>
       </div>
     </div>
 
+    <!-- Courses Section -->
     <div
       class="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-sky-500/20 space-y-4"
     >
@@ -60,26 +83,32 @@
             />
           </svg>
         </div>
-        <h3 class="text-lg font-semibold text-white/90">Ваша траектория</h3>
+        <h3 class="text-lg font-semibold text-white/90">Курсы</h3>
       </div>
-      <div>
-        <div class="flex justify-between text-sm text-slate-300 mb-2">
-          <span>Активность</span>
-          <span class="font-bold text-white">
-            {{ stats.streakDays }} дней подряд
-          </span>
+      <div v-if="stats.courses?.purchasedCourses.length > 0">
+        <ul class="text-sm text-slate-300 space-y-1">
+          <li
+            v-for="(course, index) in stats.courses.purchasedCourses"
+            :key="index"
+          >
+            {{ course.name }} ({{ course.progressPercentage }}% завершено)
+          </li>
+        </ul>
+      </div>
+      <div v-else>
+        <div class="text-sm text-slate-300 mb-2">
+          <span>Начните обучение с наших курсов!</span>
         </div>
-        <div class="w-full bg-white/10 rounded-full h-2.5">
-          <div
-            class="bg-emerald-500 h-2.5 rounded-full"
-            :style="{
-              width: `${Math.min((stats.streakDays / 30) * 100, 100)}%`,
-            }"
-          ></div>
-        </div>
+        <a
+          :href="stats.courses.cta.link"
+          class="text-emerald-400 hover:text-emerald-300 text-sm font-medium"
+        >
+          Перейти к курсам <i class="fas fa-arrow-right ml-2"></i>
+        </a>
       </div>
     </div>
 
+    <!-- Recent Actions Section -->
     <div
       class="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-sky-500/20 space-y-4"
     >
@@ -108,12 +137,13 @@
           :key="action.id"
           class="flex justify-between"
         >
-          <span class="">{{ action.description }}</span>
+          <span>{{ action.description }}</span>
           <span class="text-white/50 ml-4">{{ action.date }}</span>
         </li>
       </ul>
     </div>
 
+    <!-- Tools Section -->
     <div
       class="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-sky-500/20 space-y-4"
     >
@@ -128,37 +158,39 @@
           >
             <path
               stroke-linecap="round"
-              stroke-lienjoin="round"
-              stroke-width="2"
-              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-        </div>
-        <h3 class="text-lg font-semibold text-white/90">Рекомендации</h3>
-      </div>
-      <ul class="space-y-2 text-sm text-slate-300">
-        <li
-          v-for="recommendation in recommendations.slice(0, 3)"
-          :key="recommendation.id"
-          class="flex items-start"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-4 w-4 text-pink-500 mr-2 mt-1 flex-shrink-0"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
               d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          <span>{{ recommendation.text }}</span>
-        </li>
-      </ul>
+        </div>
+        <h3 class="text-lg font-semibold text-white/90">Инструменты</h3>
+      </div>
+      <div v-if="stats.tools?.emotionStats">
+        <div class="text-sm text-slate-300 mb-2">
+          <span>
+            Записей в эмоциональном барометре:
+            {{ stats.tools.emotionStats.totalEntries }}
+          </span>
+        </div>
+        <a
+          :href="stats.tools.reminder.link"
+          class="text-pink-400 hover:text-pink-300 text-sm font-medium"
+        >
+          Добавить запись <i class="fas fa-arrow-right ml-2"></i>
+        </a>
+      </div>
+      <div v-else>
+        <div class="text-sm text-slate-300 mb-2">
+          <span>Попробуйте эмоциональный барометр!</span>
+        </div>
+        <a
+          :href="stats.tools.cta.link"
+          class="text-pink-400 hover:text-pink-300 text-sm font-medium"
+        >
+          Начать <i class="fas fa-arrow-right ml-2"></i>
+        </a>
+      </div>
     </div>
   </div>
 </template>
@@ -168,9 +200,9 @@ defineProps({
   stats: {
     type: Object,
     default: () => ({
-      testsCompleted: 0,
-      totalTests: 0,
-      streakDays: 0,
+      tests: null,
+      courses: null,
+      tools: null,
     }),
   },
   actions: {
