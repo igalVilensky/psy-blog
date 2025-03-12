@@ -257,12 +257,21 @@
     </div>
 
     <!-- Modals -->
-    <RecommendationsModal
+    <!-- <RecommendationsModal
       :is-open="showModal"
       :emotion="{ name: selectedSubEmotion }"
       :intensity="intensityLevel"
       :recommendations="currentRecommendations"
       @close="closeModal"
+    /> -->
+    <!-- New AI Typing Box -->
+    <AITypingBox
+      :is-visible="showModal"
+      :text="formattedRecommendations"
+      :delay="0"
+      :typing-speed="30"
+      :thinking-duration="1000"
+      v-model:is-visible="showModal"
     />
 
     <Notification
@@ -286,6 +295,7 @@ import JournalEntry from "~/components/emotional-compass/JournalEntry.vue";
 import LifeSpheresSelection from "~/components/emotional-compass/LifeSpheresSelection.vue";
 import SubEmotionSelection from "~/components/emotional-compass/SubEmotionSelection.vue";
 import Notification from "~/components/base/Notification.vue";
+import AITypingBox from "~/components/base/AITypingBox.vue";
 import { useNotification } from "@/composables/useNotification";
 import {
   getEmotionBarometerStats,
@@ -362,6 +372,24 @@ const startEntry = () => {
 const currentRecommendations = computed(() => {
   if (!selectedSubEmotion.value) return [];
   return recommendationsRef.value[selectedSubEmotion.value] || [];
+});
+
+const formattedRecommendations = computed(() => {
+  if (!selectedSubEmotion.value || !currentRecommendations.value.length) {
+    return "Нет рекомендаций для выбранной эмоции.";
+  }
+
+  const emotion = selectedSubEmotion.value;
+  const intensity = intensityLevel.value;
+  const recs = currentRecommendations.value;
+
+  return (
+    `Эмоция: ${emotion}\n` +
+    `Интенсивность: ${intensity}/10\n\n` +
+    "Рекомендации:\n" +
+    recs.map((rec, index) => ` ${index + 1}. ${rec}`).join("\n") +
+    "\n\nЭти шаги помогут вам осознать и управлять своими эмоциями."
+  );
 });
 
 // Listen for auth state changes
