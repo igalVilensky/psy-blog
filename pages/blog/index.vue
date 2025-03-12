@@ -282,27 +282,34 @@ const filteredPosts = computed(() => {
   if (activeCategory.value === "Все") {
     return posts.value;
   }
-  return posts.value.filter((post) => post.category === activeCategory.value);
+  return posts.value?.filter((post) => post.category === activeCategory.value);
 });
 
 // Get count of posts in each category
 const getCategoryCount = (category) => {
   if (category === "Все") return posts.value?.length;
-  return posts.value.filter((post) => post.category === category)?.length;
+  return posts.value?.filter((post) => post.category === category)?.length;
 };
 
 onMounted(async () => {
   try {
-    console.log("Posts before fetching views:", posts.value); // Debugging
-    if (!posts.value || !Array.isArray(posts.value)) {
-      console.error("Posts is not an array:", posts.value);
-      return;
+    console.log("Before fetching views:", posts.value);
+
+    // Ensure posts.value is an array
+    if (!Array.isArray(posts.value)) {
+      console.error("Posts is not an array, resetting to empty array.");
+      posts.value = []; // Reset to an empty array to prevent errors
+      return; // Exit early to avoid further errors
     }
+
+    // Fetch view counts for posts
     await Promise.all(
       posts.value.map(async (post) => {
         post.views = await getPostViewCount(firestore, post._id);
       })
     );
+
+    console.log("After fetching views:", posts.value);
   } catch (error) {
     console.error("Failed to fetch views:", error);
   }

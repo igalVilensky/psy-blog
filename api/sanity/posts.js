@@ -2,6 +2,12 @@
 import { POSTS_QUERY } from "./queries";
 
 export const fetchPosts = () => {
-  // Return the query result directly, don't destructure
-  return useSanityQuery(POSTS_QUERY);
+  const { data, error } = useSanityQuery(POSTS_QUERY);
+
+  if (error) {
+    console.error("Failed to fetch posts:", error);
+    return [];
+  }
+
+  return data?.value || []; // Ensure it always returns an array
 };
