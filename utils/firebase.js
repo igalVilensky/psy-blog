@@ -2,23 +2,27 @@
 import { useNuxtApp } from "#app"; // Import Nuxt's app context
 import { doc, getDoc } from "firebase/firestore"; // Import necessary Firestore functions
 
-// Use Nuxt to access firestore
 export const getUserProfile = async (userId) => {
   const nuxtApp = useNuxtApp();
-  const firestore = nuxtApp.$firestore; // Get Firestore instance from Nuxt context
+  const firestore = nuxtApp.$firestore;
+
+  if (!firestore) {
+    console.error("Firestore is not initialized");
+    return null;
+  }
 
   try {
-    const userDocRef = doc(firestore, "users", userId); // Access user document in Firestore
+    const userDocRef = doc(firestore, "users", userId);
     const userDocSnap = await getDoc(userDocRef);
 
     if (userDocSnap.exists()) {
-      return userDocSnap.data(); // Return user data if document exists
+      return userDocSnap.data();
     } else {
       console.log("No such document!");
-      return null; // Return null if the document does not exist
+      return null;
     }
   } catch (error) {
     console.error("Error getting user profile:", error);
-    throw error; // Rethrow the error to handle it later if necessary
+    return null;
   }
 };

@@ -222,7 +222,7 @@
         <div
           role="status"
           aria-live="polite"
-          v-if="filteredPosts.length === 0"
+          v-if="filteredPosts?.length === 0"
           class="text-center py-16 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10"
         >
           <div class="text-[#0EA5E9] mb-4">
@@ -287,12 +287,17 @@ const filteredPosts = computed(() => {
 
 // Get count of posts in each category
 const getCategoryCount = (category) => {
-  if (category === "Все") return posts.value.length;
-  return posts.value.filter((post) => post.category === category).length;
+  if (category === "Все") return posts.value?.length;
+  return posts.value.filter((post) => post.category === category)?.length;
 };
 
 onMounted(async () => {
   try {
+    console.log("Posts before fetching views:", posts.value); // Debugging
+    if (!posts.value || !Array.isArray(posts.value)) {
+      console.error("Posts is not an array:", posts.value);
+      return;
+    }
     await Promise.all(
       posts.value.map(async (post) => {
         post.views = await getPostViewCount(firestore, post._id);
