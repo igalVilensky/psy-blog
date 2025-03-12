@@ -132,6 +132,7 @@
                   :type="showConfirmPassword ? 'text' : 'password'"
                   id="confirmPassword"
                   v-model="confirmPassword"
+                  autocomplete="new-password"
                   required
                   class="w-full pl-10 pr-12 py-2 bg-white/5 border border-[#0EA5E9]/20 rounded-lg text-slate-300 placeholder-slate-400/50 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] focus:border-transparent transition-colors duration-200"
                   placeholder="••••••••"
@@ -285,17 +286,20 @@
     </div>
   </div>
 </template>
-
 <script setup>
 import { ref, computed } from "vue";
-import { registerUser } from "~/api/firebase/userProfile";
-import { useRoute, useRouter } from "vue-router";
+import { registerUser } from "~/api/firebase/userProfile"; // Firebase
+import { registerDirectusUser } from "~/api/directus"; // Directus
+import { useRoute } from "vue-router";
 import { getFirestore, doc, updateDoc } from "firebase/firestore";
 
 const route = useRoute();
-const router = useRouter();
 const firestore = getFirestore();
-const assessmentId = ref(route.query.assessmentId); // Get assessmentId from query
+const assessmentId = ref(route.query.assessmentId);
+
+// Access runtime config
+const { useDirectus, directusAdminToken, directusCustomerRoleId } =
+  useRuntimeConfig().public;
 
 // Refs for form inputs and state
 const email = ref("");
@@ -309,6 +313,36 @@ const acceptTerms = ref(false);
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
 const isLoading = ref(false);
+
+// SEO metadata with useHead
+useHead({
+  title: "Регистрация - Присоединяйтесь к нашему сообществу",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Зарегистрируйтесь, чтобы получить доступ к эксклюзивному контенту, обучению и общению с единомышленниками.",
+    },
+    {
+      name: "keywords",
+      content: "регистрация, создать аккаунт, сообщество, обучение",
+    },
+    {
+      name: "robots",
+      content: "index, follow",
+    },
+    {
+      charset: "utf-8",
+    },
+    {
+      name: "viewport",
+      content: "width=device-width, initial-scale=1",
+    },
+  ],
+  htmlAttrs: {
+    lang: "ru",
+  },
+});
 
 // Computed property to check if form is valid
 const isFormValid = computed(() => {
@@ -334,7 +368,7 @@ const togglePassword = (field) => {
   }
 };
 
-// Associate assessment with user
+// Associate assessment with user (Firebase-specific)
 const associateAssessmentWithUser = async (userId) => {
   if (!assessmentId.value) return;
 
@@ -344,7 +378,7 @@ const associateAssessmentWithUser = async (userId) => {
       "archetypeResults",
       assessmentId.value
     );
-    await updateDoc(assessmentRef, { userId: userId });
+    await updateDoc(assessmentRef, { userId });
   } catch (err) {
     console.error("Error associating assessment:", err);
     error.value = "Failed to link your test results. Please contact support.";
@@ -363,18 +397,42 @@ const handleRegister = async () => {
   isLoading.value = true;
 
   try {
-    const response = await registerUser(
+    // Register with Firebase (always)
+    const firebaseResponse = await registerUser(
       email.value,
       password.value,
       displayName.value
     );
-    console.log("Register response:", response);
+    console.log("Firebase register response:", firebaseResponse);
 
-    if (response.success) {
-      const userId = response.user.uid; // Now works because user is included
+    if (firebaseResponse.success) {
+      const userId = firebaseResponse.user.uid;
       if (assessmentId.value) {
         await associateAssessmentWithUser(userId);
       }
+
+      // Register with Directus (only if USE_DIRECTUS=true)
+      if (useDirectus) {
+        const directusResponse = await registerDirectusUser({
+          email: email.value,
+          password: password.value,
+          firstName: displayName.value,
+          adminToken: directusAdminToken,
+          customerRoleId: directusCustomerRoleId,
+        });
+        if (directusResponse.success) {
+          console.log(
+            "Directus registration successful:",
+            directusResponse.user
+          );
+        } else {
+          console.warn(
+            "Directus registration failed but proceeding with Firebase:",
+            directusResponse.message
+          );
+        }
+      }
+
       successMessage.value = "Регистрация прошла успешно! Теперь вы можете";
 
       // Clear form fields
@@ -385,7 +443,8 @@ const handleRegister = async () => {
       acceptPrivacy.value = false;
       acceptTerms.value = false;
     } else {
-      error.value = response.message || "Ошибка при регистрации";
+      error.value =
+        firebaseResponse.message || "Ошибка при регистрации в Firebase";
     }
   } catch (err) {
     console.error("Registration error:", err);
