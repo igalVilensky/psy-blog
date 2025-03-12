@@ -145,7 +145,25 @@
 
       <!-- Blog Posts Grid -->
       <main class="container mx-auto max-w-6xl px-4 sm:px-0 pb-24 mt-4 sm:mt-8">
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Loading State -->
+        <div
+          v-if="isLoading"
+          class="text-center py-16 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10"
+        >
+          <div class="text-[#0EA5E9] mb-4">
+            <i class="fas fa-spinner fa-spin text-4xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-white/90 mb-2">Загрузка...</h3>
+          <p class="text-slate-300">
+            Пожалуйста, подождите, пока загружаются посты.
+          </p>
+        </div>
+
+        <!-- Posts Grid -->
+        <div
+          v-else-if="filteredPosts.length > 0"
+          class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
           <article
             v-for="post in filteredPosts"
             :key="post._id"
@@ -220,9 +238,9 @@
 
         <!-- Empty State -->
         <div
+          v-else
           role="status"
           aria-live="polite"
-          v-if="filteredPosts?.length === 0"
           class="text-center py-16 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10"
         >
           <div class="text-[#0EA5E9] mb-4">
@@ -240,30 +258,23 @@
     </div>
   </div>
 </template>
-
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useFirestore } from "~/plugins/firebase";
 import { fetchPosts } from "~/api/sanity/posts";
 import { getImageUrl } from "~/api/sanity/client";
 import { incrementPostViewCount, getPostViewCount } from "~/api/firebase/views";
 
 const firestore = useFirestore();
-
-const incrementViewCount = async (postId) => {
-  await incrementPostViewCount(firestore, postId);
-};
-
-const initialPosts = await fetchPosts();
-const posts = ref(initialPosts.data || []);
+const posts = ref([]);
+const isLoading = ref(true); // Loading state
 const { projectId, dataset } = useSanity().client.config();
 const urlFor = getImageUrl(projectId, dataset);
 
 const isOpen = ref(false);
 
-const selectCategory = (category) => {
-  setActiveCategory(category);
-  isOpen.value = false;
+const incrementViewCount = async (postId) => {
+  await incrementPostViewCount(firestore, postId);
 };
 
 const categories = ref([
@@ -278,41 +289,48 @@ const setActiveCategory = (category) => {
   activeCategory.value = category;
 };
 
+const selectCategory = (category) => {
+  setActiveCategory(category);
+  isOpen.value = false;
+};
+
 const filteredPosts = computed(() => {
   if (activeCategory.value === "Все") {
     return posts.value;
   }
-  return posts.value?.filter((post) => post.category === activeCategory.value);
+  return posts.value.filter((post) => post.category === activeCategory.value);
 });
 
-// Get count of posts in each category
 const getCategoryCount = (category) => {
-  if (category === "Все") return posts.value?.length;
-  return posts.value?.filter((post) => post.category === category)?.length;
+  if (category === "Все") return posts.value.length;
+  return posts.value.filter((post) => post.category === category).length;
 };
 
-onMounted(async () => {
+// Fetch posts and views
+const loadPosts = async () => {
   try {
-    console.log("Before fetching views:", posts.value);
+    isLoading.value = true;
+    const fetchedPosts = await fetchPosts(); // Fetch posts from Sanity
+    posts.value = Array.isArray(fetchedPosts) ? fetchedPosts : []; // Ensure it's an array
 
-    // Ensure posts.value is an array
-    if (!Array.isArray(posts.value)) {
-      console.error("Posts is not an array, resetting to empty array.");
-      posts.value = []; // Reset to an empty array to prevent errors
-      return; // Exit early to avoid further errors
+    if (posts.value.length > 0) {
+      // Fetch view counts for all posts
+      await Promise.all(
+        posts.value.map(async (post) => {
+          post.views = await getPostViewCount(firestore, post._id);
+        })
+      );
     }
-
-    // Fetch view counts for posts
-    await Promise.all(
-      posts.value.map(async (post) => {
-        post.views = await getPostViewCount(firestore, post._id);
-      })
-    );
-
-    console.log("After fetching views:", posts.value);
   } catch (error) {
-    console.error("Failed to fetch views:", error);
+    console.error("Error loading posts:", error);
+    posts.value = []; // Reset to empty array on error
+  } finally {
+    isLoading.value = false; // Set loading to false regardless of success or failure
   }
+};
+
+onMounted(() => {
+  loadPosts(); // Load posts when component mounts
 });
 </script>
 <style scoped>
