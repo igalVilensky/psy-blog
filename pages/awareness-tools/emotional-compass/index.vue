@@ -257,22 +257,22 @@
     </div>
 
     <!-- Modals -->
-    <!-- <RecommendationsModal
+    <RecommendationsModal
       :is-open="showModal"
       :emotion="{ name: selectedSubEmotion }"
       :intensity="intensityLevel"
       :recommendations="currentRecommendations"
       @close="closeModal"
-    /> -->
+    />
     <!-- New AI Typing Box -->
-    <AITypingBox
+    <!-- <AITypingBox
       :is-visible="showModal"
       :text="formattedRecommendations"
       :delay="0"
       :typing-speed="30"
       :thinking-duration="1000"
       v-model:is-visible="showModal"
-    />
+    /> -->
 
     <Notification
       v-if="notificationMessage"
@@ -295,7 +295,7 @@ import JournalEntry from "~/components/emotional-compass/JournalEntry.vue";
 import LifeSpheresSelection from "~/components/emotional-compass/LifeSpheresSelection.vue";
 import SubEmotionSelection from "~/components/emotional-compass/SubEmotionSelection.vue";
 import Notification from "~/components/base/Notification.vue";
-import AITypingBox from "~/components/base/AITypingBox.vue";
+// import AITypingBox from "~/components/base/AITypingBox.vue";
 import { useNotification } from "@/composables/useNotification";
 import {
   getEmotionBarometerStats,

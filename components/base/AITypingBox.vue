@@ -9,8 +9,10 @@
       <i class="fas fa-times"></i>
     </button>
     <div class="typing-container">
-      <span v-if="isThinking" class="thinking-dots">...</span>
-      <span v-else class="typed-text">{{ displayedText }}</span>
+      <slot :is-thinking="isThinking" :displayed-text="displayedText">
+        <span v-if="isThinking" class="thinking-dots">...</span>
+        <span v-else class="typed-text">{{ displayedText }}</span>
+      </slot>
     </div>
   </div>
 </template>
@@ -19,7 +21,7 @@
 import { ref, watch, onMounted } from "vue";
 
 const props = defineProps({
-  text: { type: String, required: true },
+  text: { type: String, default: "" },
   isVisible: { type: Boolean, default: false },
   delay: { type: Number, default: 3000 },
   typingSpeed: { type: Number, default: 30 },
@@ -31,7 +33,6 @@ const emit = defineEmits(["update:isVisible"]);
 const isThinking = ref(true);
 const displayedText = ref("");
 
-// Watch for changes in isVisible prop to start typing animation
 watch(
   () => props.isVisible,
   (newVal) => {
@@ -41,14 +42,12 @@ watch(
         typeText();
       }, props.thinkingDuration);
     } else {
-      // Reset when hidden
       isThinking.value = true;
       displayedText.value = "";
     }
   }
 );
 
-// Optional: Keep the initial delay behavior on mount
 onMounted(() => {
   if (props.delay && !props.isVisible) {
     setTimeout(() => {
@@ -58,6 +57,7 @@ onMounted(() => {
 });
 
 const typeText = () => {
+  if (!props.text) return;
   let index = 0;
   const interval = setInterval(() => {
     if (index < props.text.length) {
@@ -77,7 +77,7 @@ const closeBox = () => {
 <style scoped>
 .ai-typing-box {
   position: fixed;
-  bottom: 10rem;
+  bottom: 0rem;
   left: 50%;
   transform: translateX(-50%);
   width: 90%;
@@ -89,12 +89,13 @@ const closeBox = () => {
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 60;
+  height: auto;
   @media (min-width: 640px) {
     top: 5rem;
     left: 2rem;
     transform: none;
     width: 400px;
-    max-height: 28rem;
+    height: auto;
   }
 }
 
@@ -112,7 +113,7 @@ const closeBox = () => {
 }
 
 .typed-text {
-  white-space: pre-wrap;
+  white-space: pre-wrap; /* Preserve newlines and wrapping */
 }
 
 .close-button {
