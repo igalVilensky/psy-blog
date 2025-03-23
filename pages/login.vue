@@ -156,23 +156,36 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useDirectusAuthStore } from "~/stores/auth2";
+import { useRuntimeConfig } from "#app/nuxt";
+import { getCurrentDirectusUser } from "~/api/directus";
 
 const router = useRouter();
+const directusAuthStore = useDirectusAuthStore();
+
+// Form state
 const email = ref("");
 const password = ref("");
 const error = ref("");
 const showPassword = ref(false);
 const isLoading = ref(false);
 
+// Runtime config for Directus settings
+const { useDirectus, directusUrl } = useRuntimeConfig().public;
+const API_URL = directusUrl || "http://localhost:8055";
+
+// Toggle password visibility
 const togglePassword = () => {
   showPassword.value = !showPassword.value;
 };
 
+// Handle login with Firebase and Directus (local only)
 const handleLogin = async () => {
   isLoading.value = true;
   error.value = "";
 
   try {
+    // Step 1: Firebase Authentication
     const auth = getAuth();
     const userCredential = await signInWithEmailAndPassword(
       auth,
@@ -181,22 +194,55 @@ const handleLogin = async () => {
     );
     const user = userCredential.user;
 
-    // Check if the user's email is verified
+    // Optional: Check email verification
     // if (!user.emailVerified) {
-    // Log out the user if their email is not verified
-    // Redirect to the "Verify Email" page
-    // return router.push("/verify-email");
+    //   await auth.signOut();
+    //   throw new Error("Please verify your email before logging in.");
     // }
 
-    // If email is verified, redirect to the profile page
+    // Step 2: Directus Authentication (local only)
+    if (useDirectus) {
+      // Directus login request
+      const loginResponse = await fetch(`${API_URL}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email.value,
+          password: password.value,
+        }),
+      });
+
+      const loginData = await loginResponse.json();
+      if (!loginResponse.ok) {
+        throw new Error(
+          loginData.errors?.[0]?.message || "Ошибка входа в Directus"
+        );
+      }
+
+      // Store tokens in directusAuthStore
+      directusAuthStore.setTokens(
+        loginData.data.access_token,
+        loginData.data.refresh_token
+      );
+
+      // Fetch current Directus user (optional, for immediate user data)
+      const userResponse = await getCurrentDirectusUser();
+      if (userResponse.success) {
+        directusAuthStore.user = userResponse.user;
+      } else {
+        console.warn("Failed to fetch Directus user:", userResponse.message);
+      }
+    }
+
+    // Redirect to profile page on success
     router.push("/profile");
   } catch (err) {
+    console.error("Login error:", err);
     if (err.message === "Please verify your email before logging in.") {
-      // Redirect to the "Verify Email" page
       router.push("/verify-email");
     } else {
-      // Show other errors
-      error.value = err.message;
+      error.value =
+        err.message || "Произошла ошибка при входе. Проверьте данные.";
     }
   } finally {
     isLoading.value = false;

@@ -8,7 +8,7 @@
     </div>
 
     <!-- Content Container -->
-    <div class="container mx-auto px-6 sm:px-0 relative z-10 py-16 sm:py-24">
+    <div class="container mx-auto px-6 xl:px-0 relative z-10 py-16 sm:py-24">
       <!-- Heading Section -->
       <div class="text-center mb-12">
         <h1 class="text-4xl lg:text-5xl font-bold text-white leading-tight">

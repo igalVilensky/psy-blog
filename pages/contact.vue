@@ -1,6 +1,6 @@
 <template>
   <div class="relative min-h-screen overflow-x-hidden">
-    <div class="container mx-auto px-4 sm:px-0 max-w-6xl relative z-10 py-12">
+    <div class="container mx-auto px-4 xl:px-0 max-w-6xl relative z-10 py-12">
       <!-- Hero Section -->
       <section class="text-center mb-12">
         <h1

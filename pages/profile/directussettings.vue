@@ -99,7 +99,7 @@
                 </div>
               </div>
 
-              <!-- Social Media Links -->
+              <!-- Social Media Links (UI only, not updated in Directus) -->
               <div class="space-y-2">
                 <label class="block text-sm font-medium text-slate-300">
                   Социальные сети
@@ -142,6 +142,7 @@
                   + Добавить соц. сеть
                 </button>
               </div>
+
               <!-- Save Button -->
               <button
                 type="submit"
@@ -168,7 +169,6 @@
           >
             <h2 class="text-xl font-bold text-white/90 mb-6">Обратная связь</h2>
             <form @submit.prevent="submitFeedbackForm" class="space-y-6">
-              <!-- Name -->
               <div class="space-y-2">
                 <label class="block text-sm font-medium text-slate-300"
                   >Имя</label
@@ -180,8 +180,6 @@
                   class="w-full px-4 py-3 rounded-lg bg-white/5 border border-[#0EA5E9]/20 text-white placeholder-slate-400/50 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]"
                 />
               </div>
-
-              <!-- Email -->
               <div class="space-y-2">
                 <label class="block text-sm font-medium text-slate-300"
                   >Email</label
@@ -193,8 +191,6 @@
                   class="w-full px-4 py-3 rounded-lg bg-white/5 border border-[#0EA5E9]/20 text-white placeholder-slate-400/50 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]"
                 />
               </div>
-
-              <!-- Message -->
               <div class="space-y-2">
                 <label class="block text-sm font-medium text-slate-300"
                   >Сообщение</label
@@ -203,11 +199,9 @@
                   v-model="feedbackForm.message"
                   class="w-full px-4 py-3 rounded-lg bg-white/5 border border-[#0EA5E9]/20 text-white placeholder-slate-400/50 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]"
                   rows="4"
-                  placeholder="Напишите ваш отзыв..."
+                  placeholder="Напишите вашего отзыва..."
                 ></textarea>
               </div>
-
-              <!-- Submit Button -->
               <button
                 type="submit"
                 :disabled="isSubmittingFeedback"
@@ -232,7 +226,6 @@
 
         <!-- Sidebar -->
         <div class="space-y-8">
-          <!-- Account Management -->
           <section
             class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-8"
           >
@@ -263,8 +256,6 @@
               </button>
             </div>
           </section>
-
-          <!-- Support & Help -->
           <section
             class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-8"
           >
@@ -289,7 +280,6 @@
         </div>
       </div>
     </div>
-    <!-- Notification Component -->
     <Notification
       v-if="notificationVisible"
       :message="notificationMessage"
@@ -297,7 +287,6 @@
       @close="hideNotification"
       class="z-50"
     />
-    <!-- Navigation Bar -->
     <nav
       class="fixed sm:hidden bottom-4 left-4 right-4 sm:left-8 sm:right-8 bg-gradient-to-r from-[#1A1F35]/60 to-[#1E293B]/60 backdrop-blur-xl rounded-lg border border-[#0EA5E9]/20 p-4 z-50"
     >
@@ -323,28 +312,22 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import {
-  getAuth,
-  onAuthStateChanged,
-  reauthenticateWithCredential,
-  EmailAuthProvider,
-} from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { submitContactForm } from "@/api/firebase/contact";
-import {
-  fetchUserData,
-  updateUserData,
-  deleteUserAccount,
-} from "@/api/firebase/userProfile";
 import { useNotification } from "@/composables/useNotification";
 import Notification from "@/components/base/Notification.vue";
+import {
+  updateDirectusUserProfile,
+  fetchDirectusUserProfile,
+  getCurrentDirectusUser,
+} from "@/api/directus";
+import { useDirectusAuthStore } from "~/stores/auth2";
 
-// Initialize router
+// Initialize router and store
 const router = useRouter();
+const directusAuthStore = useDirectusAuthStore();
 
-// Initialize the notification composable
+// Notification composable
 const {
   notificationMessage,
   notificationType,
@@ -353,16 +336,14 @@ const {
   hideNotification,
 } = useNotification();
 
-// Initialize Firestore
-const db = getFirestore();
-
-// Bio/Description Fields
+// Profile Fields
+const userId = ref(null);
 const displayName = ref("");
 const profession = ref("");
 const age = ref("");
 const gender = ref("");
 const aboutYourself = ref("");
-const socialMedia = ref([{ type: "telegram", url: "" }]);
+const socialMedia = ref([{ type: "telegram", url: "" }]); // UI only, not updated in Directus
 
 // Feedback Form
 const feedbackForm = reactive({
@@ -372,66 +353,84 @@ const feedbackForm = reactive({
 });
 const isSubmittingFeedback = ref(false);
 
-// Fetch user data when authentication state changes
-onAuthStateChanged(getAuth(), async (user) => {
-  if (user) {
-    const userData = await fetchUserData(user.uid);
+// Fetch current user and profile data on mount
+onMounted(async () => {
+  // Check if access token exists; if not, attempt to refresh it
+  if (!directusAuthStore.accessToken) {
+    const refreshToken = localStorage.getItem("refresh_token");
+    if (refreshToken) {
+      const newAccessToken = await directusAuthStore.refreshToken();
+      if (!newAccessToken) {
+        showNotification("Сессия истекла. Пожалуйста, войдите снова.", "error");
+        directusAuthStore.clearAuth();
+        router.push("/login");
+        return;
+      }
+    } else {
+      showNotification("Пользователь не авторизован.", "error");
+      router.push("/login");
+      return;
+    }
+  }
 
-    if (userData) {
-      displayName.value = userData.displayName || "";
-      profession.value = userData.profession || "";
-      age.value = userData.age || "";
-      gender.value = userData.gender || "";
-      aboutYourself.value = userData.aboutYourself || "";
-      socialMedia.value = Array.isArray(userData.socialMedia)
-        ? userData.socialMedia
-        : [{ type: "telegram", url: "" }];
+  // Get current user from Directus
+  const userResult = await getCurrentDirectusUser();
+  if (userResult.success) {
+    userId.value = userResult.user.id;
+    displayName.value = userResult.user.first_name || ""; // Set initial displayName from user
+
+    // Fetch profile data
+    const profileResult = await fetchDirectusUserProfile({
+      userId: userId.value,
+    });
+    console.log(profileResult, "profileResult");
+
+    if (profileResult.success && profileResult.profile) {
+      displayName.value = profileResult.profile.first_name || displayName.value;
+      profession.value = profileResult.profile.profession || "";
+      age.value = profileResult.profile.age || "";
+      gender.value = profileResult.profile.gender || "";
+      aboutYourself.value = profileResult.profile.about_yourself || "";
+      console.log("Profile data loaded:", profileResult.profile);
     }
   } else {
+    showNotification(
+      "Ошибка при загрузке данных пользователя: " + userResult.message,
+      "error"
+    );
+    directusAuthStore.clearAuth(); // Clear auth state if user fetch fails
     router.push("/login");
   }
 });
 
-// Add a new social platform
+// Add a new social platform (UI only)
 const addSocialPlatform = () => {
   socialMedia.value.push({ type: "telegram", url: "" });
 };
 
-// Remove a social platform
+// Remove a social platform (UI only)
 const removeSocialPlatform = (index) => {
   socialMedia.value.splice(index, 1);
 };
 
 // Save Profile
 const saveProfile = async () => {
-  const user = getAuth().currentUser;
-  if (!user) {
+  if (!directusAuthStore.accessToken || !userId.value) {
     showNotification("Пользователь не авторизован.", "error");
+    router.push("/login");
     return;
   }
 
-  // Normalize social media URLs
-  const normalizedSocialMedia = socialMedia.value.map((platform) => {
-    let url = platform.url.trim();
-    if (platform.type === "telegram" && url) {
-      // If it's not already a full URL, prepend Telegram base URL
-      if (!url.startsWith("http://") && !url.startsWith("https://")) {
-        url = `https://t.me/${url.replace("@", "")}`; // Remove @ if present and add base URL
-      }
-    }
-    return { type: platform.type, url };
-  });
-
   const data = {
-    displayName: displayName.value,
+    userId: userId.value,
+    first_name: displayName.value,
     profession: profession.value,
-    socialMedia: normalizedSocialMedia,
     age: age.value,
     gender: gender.value,
-    aboutYourself: aboutYourself.value,
+    about_yourself: aboutYourself.value,
   };
 
-  const result = await updateUserData(user.uid, data);
+  const result = await updateDirectusUserProfile(data);
   if (result.success) {
     showNotification("Изменения сохранены!", "success");
     goBackToProfile();
@@ -452,64 +451,19 @@ const goBackToProfile = () => {
   }
 };
 
-// Account Deletion
-const confirmDeleteAccount = async () => {
-  const confirmationMessage = `
-    Вы уверены, что хотите удалить аккаунт? 
-    Это действие нельзя отменить. 
-    После удаления:
-    - Все ваши данные будут безвозвратно удалены.
-    - Вы не сможете использовать этот email для создания нового аккаунта.
-    - Все ваши настройки, профиль и связанные данные будут утеряны.
-  `;
-
-  if (confirm(confirmationMessage)) {
-    const auth = getAuth();
-    const user = auth.currentUser;
-
-    if (user) {
-      // Prompt the user to enter their password
-      const password = prompt(
-        "Для подтверждения удаления аккаунта, введите ваш пароль:"
-      );
-
-      if (password) {
-        try {
-          // Create credentials for reauthentication
-          const credential = EmailAuthProvider.credential(user.email, password);
-
-          // Reauthenticate the user
-          await reauthenticateWithCredential(user, credential);
-
-          // Proceed with account deletion
-          const result = await deleteUserAccount(user.uid);
-
-          if (result.success) {
-            showNotification("Аккаунт успешно удален.", "success");
-            router.push("/"); // Redirect to home or login page
-          } else {
-            showNotification(
-              "Ошибка при удалении аккаунта: " + result.message,
-              "error"
-            );
-          }
-        } catch (error) {
-          console.error("Error during reauthentication or deletion:", error);
-          showNotification(
-            "Ошибка при удалении аккаунта: " + error.message,
-            "error"
-          );
-        }
-      } else {
-        showNotification("Пароль не введен. Удаление отменено.", "error");
-      }
-    } else {
-      showNotification("Пользователь не авторизован.", "error");
-    }
-  }
+// Placeholder methods
+const changePassword = () => {
+  showNotification("Функция смены пароля пока не реализована.", "info");
 };
 
-// Contact Support
+const exportData = () => {
+  showNotification("Функция экспорта данных пока не реализована.", "info");
+};
+
+const confirmDeleteAccount = () => {
+  showNotification("Функция удаления аккаунта пока не реализована.", "info");
+};
+
 const contactSupport = () => {
   showNotification(
     "Свяжитесь с поддержкой через форму обратной связи.",
@@ -518,25 +472,11 @@ const contactSupport = () => {
   router.push("/contact");
 };
 
-// Submit Feedback
 const submitFeedbackForm = async () => {
   if (feedbackForm.message.trim() === "") {
     showNotification("Пожалуйста, введите ваш отзыв перед отправкой.", "error");
     return;
   }
-
-  isSubmittingFeedback.value = true;
-
-  const result = await submitContactForm(db, feedbackForm);
-  if (result.success) {
-    showNotification(result.message, "success");
-    feedbackForm.name = "";
-    feedbackForm.email = "";
-    feedbackForm.message = "";
-  } else {
-    showNotification(result.message, "error");
-  }
-
-  isSubmittingFeedback.value = false;
+  showNotification("Функция отправки отзыва пока не реализована.", "info");
 };
 </script>

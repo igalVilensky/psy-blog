@@ -15,7 +15,7 @@
     </nuxt-link>
 
     <!-- Header with Enhanced Layout -->
-    <div class="px-4 sm:px-0 flex items-center gap-4 mb-4 sm:mb-10">
+    <div class="px-4 xl:px-0 flex items-center gap-4 mb-4 sm:mb-10">
       <div
         class="w-12 h-12 bg-gradient-to-r from-[#0EA5E9]/10 to-[#22D3EE]/10 rounded-full flex items-center justify-center flex-shrink-0 backdrop-blur-sm shadow-md transition-all"
       >

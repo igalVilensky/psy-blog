@@ -136,7 +136,7 @@
     </div>
 
     <!-- Main Content -->
-    <div class="container mx-auto px-6 sm:px-0 relative z-10 py-16 sm:py-24">
+    <div class="container mx-auto px-6 xl:px-0 relative z-10 py-16 sm:py-24">
       <div class="grid lg:grid-cols-2 gap-16 items-center">
         <!-- Left Column - Main Content -->
         <div class="space-y-10">

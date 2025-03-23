@@ -145,7 +145,7 @@
       </header>
 
       <!-- Guides Grid -->
-      <main class="container mx-auto max-w-6xl px-4 sm:px-0 pb-24 mt-4 sm:mt-8">
+      <main class="container mx-auto max-w-6xl px-4 xl:px-0 pb-24 mt-4 sm:mt-8">
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           <article
             v-for="guide in filteredGuides"

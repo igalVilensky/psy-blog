@@ -1,7 +1,7 @@
 <template>
   <nav class="fixed top-0 left-0 w-full bg-[#EAEFF2] shadow-sm z-50">
     <div
-      class="container mx-auto px-6 sm:px-0 flex justify-between items-center py-4"
+      class="container mx-auto px-6 xl:px-0 flex justify-between items-center py-4"
     >
       <!-- Логотип -->
       <NuxtLink

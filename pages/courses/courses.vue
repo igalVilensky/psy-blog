@@ -143,7 +143,7 @@
       </header>
 
       <!-- Rest of your existing content -->
-      <main class="container mx-auto max-w-6xl px-4 sm:px-0 mt-4 sm:mt-8">
+      <main class="container mx-auto max-w-6xl px-4 xl:px-0 mt-4 sm:mt-8">
         <!-- Your existing course grid -->
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           <!-- Your existing course cards -->

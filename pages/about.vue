@@ -1,6 +1,6 @@
 <template>
   <div class="relative min-h-screen">
-    <div class="container mx-auto max-w-6xl relative z-10 py-12 px-4 sm:px-0">
+    <div class="container mx-auto max-w-6xl relative z-10 py-12 px-4 xl:px-0">
       <!-- Personal Biography Section -->
       <ScrollGlowSection>
         <section

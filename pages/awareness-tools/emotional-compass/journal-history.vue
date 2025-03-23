@@ -1,6 +1,6 @@
 <template>
   <div class="relative min-h-screen">
-    <div class="container mx-auto px-4 sm:px-0 max-w-6xl relative z-10 py-8">
+    <div class="container mx-auto px-4 xl:px-0 max-w-6xl relative z-10 py-8">
       <div class="grid grid-cols-1 gap-4 sm:gap-8">
         <!-- Back Navigation -->
         <nuxt-link

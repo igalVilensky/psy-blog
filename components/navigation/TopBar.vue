@@ -9,7 +9,7 @@
 
     <!-- Container for topbar content -->
     <div
-      class="container max-w-6xl px-4 sm:px-0 w-full mx-auto flex justify-between items-center py-4 relative z-10"
+      class="container max-w-6xl px-4 xl:px-0 w-full mx-auto flex justify-between items-center py-4 relative z-10"
     >
       <!-- Brand/Logo -->
       <NuxtLink to="/" class="group relative" @click="closeDropdown">

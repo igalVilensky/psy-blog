@@ -144,7 +144,7 @@
       </header>
 
       <!-- Blog Posts Grid -->
-      <main class="container mx-auto max-w-6xl px-4 sm:px-0 pb-24 mt-4 sm:mt-8">
+      <main class="container mx-auto max-w-6xl px-4 xl:px-0 pb-24 mt-4 sm:mt-8">
         <!-- Loading State -->
         <div
           v-if="isLoading"

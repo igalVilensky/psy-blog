@@ -145,7 +145,7 @@
       </header>
 
       <!-- Resources Grid -->
-      <main class="container mx-auto max-w-6xl px-4 sm:px-0 pb-16 mt-4 sm:mt-8">
+      <main class="container mx-auto max-w-6xl px-4 xl:px-0 pb-16 mt-4 sm:mt-8">
         <!-- Guides Section -->
         <div v-if="selectedType === 'Все' || selectedType === 'Гайды'">
           <h2 class="text-2xl font-bold text-white/90 mb-6">Гайды</h2>
@@ -328,45 +328,46 @@
             категорию.
           </p>
         </div>
-      </main>
-
-      <!-- Email Capture CTA -->
-      <div
-        class="max-w-6xl mx-auto mb-16 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-8 text-center transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
-      >
-        <h2 class="text-2xl font-bold text-white/90 mb-4">
-          Получайте бесплатные материалы первыми
-        </h2>
-        <p class="text-slate-300 mb-6 max-w-2xl mx-auto">
-          Подпишитесь на нашу рассылку и будьте в курсе всех новых бесплатных
-          ресурсов, которые помогут вам расти и развиваться.
-        </p>
-        <div class="max-w-md mx-auto flex flex-col sm:flex-row gap-3 sm:gap-0">
-          <input
-            type="email"
-            v-model="email"
-            placeholder="Ваш email"
-            class="w-full px-6 py-3 rounded-lg sm:rounded-l-lg sm:rounded-r-none bg-white/5 border border-[#0EA5E9]/20 text-white placeholder-slate-400/50 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]"
-          />
-          <button
-            @click="subscribeEmail"
-            class="relative inline-flex items-center justify-center min-w-[160px] overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg sm:rounded-l-none sm:rounded-r-lg group"
+        <!-- Email Capture CTA -->
+        <div
+          class="max-w-6xl mx-auto my-16 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-8 text-center transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+        >
+          <h2 class="text-2xl font-bold text-white/90 mb-4">
+            Получайте бесплатные материалы первыми
+          </h2>
+          <p class="text-slate-300 mb-6 max-w-2xl mx-auto">
+            Подпишитесь на нашу рассылку и будьте в курсе всех новых бесплатных
+            ресурсов, которые помогут вам расти и развиваться.
+          </p>
+          <div
+            class="max-w-md mx-auto flex flex-col sm:flex-row gap-3 sm:gap-0"
           >
-            <span
-              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
+            <input
+              type="email"
+              v-model="email"
+              placeholder="Ваш email"
+              class="w-full px-6 py-3 rounded-lg sm:rounded-l-lg sm:rounded-r-none bg-white/5 border border-[#0EA5E9]/20 text-white placeholder-slate-400/50 focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]"
+            />
+            <button
+              @click="subscribeEmail"
+              class="relative inline-flex items-center justify-center min-w-[160px] overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg sm:rounded-l-none sm:rounded-r-lg group"
             >
-              <i class="fas fa-bell text-lg"></i>
-            </span>
-            <span
-              class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
-            >
-              <i class="fas fa-envelope text-lg mr-2"></i>
-              Подписаться
-            </span>
-            <span class="relative invisible px-8 py-3">Подписаться</span>
-          </button>
+              <span
+                class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
+              >
+                <i class="fas fa-bell text-lg"></i>
+              </span>
+              <span
+                class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
+              >
+                <i class="fas fa-envelope text-lg mr-2"></i>
+                Подписаться
+              </span>
+              <span class="relative invisible px-8 py-3">Подписаться</span>
+            </button>
+          </div>
         </div>
-      </div>
+      </main>
     </div>
   </div>
 </template>

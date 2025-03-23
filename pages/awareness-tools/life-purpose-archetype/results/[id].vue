@@ -6,7 +6,7 @@
       class="absolute inset-0 bg-[url('/images/constellation-bg.svg')] opacity-20"
     ></div>
     <div
-      class="container mx-auto px-4 sm:px-0 max-w-6xl relative z-10 py-10 lg:py-20"
+      class="container mx-auto px-4 xl:px-0 max-w-6xl relative z-10 py-10 lg:py-20"
     >
       <!-- Loading State -->
       <div
