@@ -165,7 +165,10 @@ const socialLinks = [
     icon: "fab fa-instagram text-[#F97316]",
     link: "https://www.instagram.com/galactik.anastasia/",
   },
-  { icon: "fab fa-telegram text-[#0EA5E9]", link: "https://t.me/your_channel" },
+  {
+    icon: "fab fa-telegram text-[#0EA5E9]",
+    link: "https://web.telegram.org/a/#984171843",
+  },
   {
     icon: "fab fa-youtube text-[#E879F9]",
     link: "https://www.youtube.com/@gelichka84",

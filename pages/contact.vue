@@ -31,10 +31,10 @@
                 <i class="fas fa-envelope text-[#0EA5E9] text-xl"></i>
               </div>
               <a
-                href="mailto:info@platform.com"
+                href="mailto:anastasiagelmut@gmail.com"
                 class="text-slate-300 hover:text-[#0EA5E9] transition-colors duration-300"
               >
-                info@platform.com
+                anastasiagelmut@gmail.com
               </a>
             </div>
 
@@ -48,24 +48,29 @@
                 href="tel:+1234567890"
                 class="text-slate-300 hover:text-[#F59E0B] transition-colors duration-300"
               >
-                +7 (123) 456-78-90
+                +49 163 6920612
               </a>
             </div>
 
-            <div class="flex items-center space-x-4">
+            <!-- <div class="flex items-center space-x-4">
               <div
                 class="p-3 bg-[#E879F9]/10 rounded-lg transition-all duration-300"
               >
                 <i class="fas fa-map-marker-alt text-[#E879F9] text-xl"></i>
               </div>
               <span class="text-slate-300"> Москва, ул. Примерная, 123 </span>
-            </div>
+            </div> -->
           </div>
 
           <!-- Social Media Links -->
+
+          <!-- Social Media Links -->
           <div class="pt-8 flex space-x-4">
+            <!-- Telegram -->
             <a
-              href="#"
+              href="https:/ /web.telegram.org/a/#984171843"
+              target="_blank"
+              rel="noopener noreferrer"
               class="group relative inline-flex items-center justify-center p-3 bg-[#0EA5E9]/10 rounded-lg overflow-hidden transition-all duration-300"
             >
               <span
@@ -80,8 +85,12 @@
               </span>
               <span class="relative invisible">Telegram</span>
             </a>
+
+            <!-- Instagram -->
             <a
-              href="#"
+              href="https://www.instagram.com/galactik.anastasia/"
+              target="_blank"
+              rel="noopener noreferrer"
               class="group relative inline-flex items-center justify-center p-3 bg-[#F59E0B]/10 rounded-lg overflow-hidden transition-all duration-300"
             >
               <span
@@ -96,8 +105,12 @@
               </span>
               <span class="relative invisible">Instagram</span>
             </a>
+
+            <!-- WhatsApp -->
             <a
-              href="#"
+              href="https://wa.me/491636920612"
+              target="_blank"
+              rel="noopener noreferrer"
               class="group relative inline-flex items-center justify-center p-3 bg-[#E879F9]/10 rounded-lg overflow-hidden transition-all duration-300"
             >
               <span

@@ -318,7 +318,7 @@ const courses = [
     participants: 250,
     category: "Саморазвитие",
     image: courseImage,
-    discount: 20,
+    // discount: 20,
     link: "/courses/healing-childhood-traumas",
   },
 ];

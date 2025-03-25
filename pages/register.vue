@@ -322,7 +322,7 @@ const isLoading = ref(false);
 // Default Directus URL
 const API_URL = directusUrl || "http://localhost:8055";
 
-// SEO metadata with useHead (unchanged)
+// SEO metadata with useHead
 useHead({
   title: "Регистрация - Присоединяйтесь к нашему сообществу",
   meta: [
@@ -342,7 +342,7 @@ useHead({
   htmlAttrs: { lang: "ru" },
 });
 
-// Computed property to check if form is valid (unchanged)
+// Computed property to check if form is valid
 const isFormValid = computed(() => {
   return (
     displayName.value.trim() !== "" &&
@@ -357,14 +357,14 @@ const isFormValid = computed(() => {
   );
 });
 
-// Toggle password visibility (unchanged)
+// Toggle password visibility
 const togglePassword = (field) => {
   if (field === "password") showPassword.value = !showPassword.value;
   else if (field === "confirm")
     showConfirmPassword.value = !showConfirmPassword.value;
 };
 
-// Associate assessment with user (Firebase-specific, unchanged)
+// Associate assessment with user
 const associateAssessmentWithUser = async (userId) => {
   if (!assessmentId.value) return;
   try {
