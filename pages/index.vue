@@ -345,7 +345,7 @@
               class="relative overflow-hidden rounded-2xl border border-white/10"
             >
               <img
-                src="https://academica.ru/upload/medialibrary/edc/yavo2.jpg"
+                src="https://jameskelleher.com/cdn/shop/products/psychological-profile.jpg?v=1527227791"
                 alt="Психологический профиль"
                 class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
               />

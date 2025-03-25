@@ -21,6 +21,59 @@
 
             <!-- Profile Form -->
             <form @submit.prevent="saveProfile" class="space-y-6">
+              <!-- Avatar Upload Section -->
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-slate-300">
+                  Аватар
+                </label>
+                <div class="flex items-center space-x-4">
+                  <div class="relative">
+                    <img
+                      v-if="avatarPreview || currentAvatar"
+                      :src="
+                        avatarPreview ||
+                        `${useDirectus}/assets/${currentAvatar}`
+                      "
+                      alt="Avatar"
+                      class="w-24 h-24 rounded-full object-cover border border-[#0EA5E9]/20"
+                    />
+                    <div
+                      v-else
+                      class="w-24 h-24 rounded-full bg-white/5 border border-[#0EA5E9]/20 flex items-center justify-center"
+                    >
+                      <i class="fas fa-user text-[#0EA5E9] text-2xl"></i>
+                    </div>
+                  </div>
+                  <div class="flex flex-col space-y-2">
+                    <input
+                      type="file"
+                      ref="avatarInput"
+                      @change="handleAvatarChange"
+                      accept="image/*"
+                      class="hidden"
+                    />
+                    <button
+                      type="button"
+                      @click="$refs.avatarInput.click()"
+                      class="px-4 py-2 bg-white/5 border border-[#0EA5E9]/20 rounded-lg text-[#0EA5E9] hover:bg-white/10 transition-colors"
+                    >
+                      <i class="fas fa-upload mr-2"></i>Загрузить
+                    </button>
+                    <button
+                      v-if="avatarPreview || currentAvatar"
+                      type="button"
+                      @click="removeAvatar"
+                      class="px-4 py-2 bg-white/5 border border-[#F59E0B]/20 rounded-lg text-[#F59E0B] hover:bg-white/10 transition-colors"
+                    >
+                      <i class="fas fa-trash mr-2"></i>Удалить
+                    </button>
+                  </div>
+                </div>
+                <p class="text-xs text-slate-400 mt-1">
+                  Максимальный размер: 2MB. Форматы: JPG, PNG
+                </p>
+              </div>
+
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <!-- Display Name -->
                 <div class="space-y-2">
@@ -146,6 +199,7 @@
               <!-- Save Button -->
               <button
                 type="submit"
+                :disabled="isSaving"
                 class="group relative inline-flex items-center justify-center w-full px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg backdrop-blur-sm border border-[#0EA5E9]/20"
               >
                 <span
@@ -157,12 +211,13 @@
                   class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
                 >
                   <i class="fas fa-save mr-2"></i>
-                  Сохранить изменения
+                  {{ isSaving ? "Сохранение..." : "Сохранить изменения" }}
                 </span>
                 <span class="relative invisible">Сохранить изменения</span>
               </button>
             </form>
           </section>
+
           <!-- Feedback Section -->
           <section
             class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-8"
@@ -322,12 +377,12 @@ import {
   getCurrentDirectusUser,
 } from "@/api/directus";
 import { useDirectusAuthStore } from "~/stores/auth2";
+import { useRuntimeConfig } from "#app/nuxt";
 
-// Initialize router and store
 const router = useRouter();
 const directusAuthStore = useDirectusAuthStore();
+const { useDirectus } = useRuntimeConfig().public;
 
-// Notification composable
 const {
   notificationMessage,
   notificationType,
@@ -338,12 +393,16 @@ const {
 
 // Profile Fields
 const userId = ref(null);
-const displayName = ref("");
+const displayName = ref(""); // Ensure this is always a string
 const profession = ref("");
 const age = ref("");
 const gender = ref("");
 const aboutYourself = ref("");
-const socialMedia = ref([{ type: "telegram", url: "" }]); // UI only, not updated in Directus
+const socialMedia = ref([{ type: "telegram", url: "" }]);
+const currentAvatar = ref(null);
+const avatarFile = ref(null);
+const avatarPreview = ref(null);
+const isSaving = ref(false);
 
 // Feedback Form
 const feedbackForm = reactive({
@@ -353,9 +412,62 @@ const feedbackForm = reactive({
 });
 const isSubmittingFeedback = ref(false);
 
-// Fetch current user and profile data on mount
+// Handle avatar file selection
+const handleAvatarChange = (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  if (file.size > 2 * 1024 * 1024) {
+    showNotification("Файл слишком большой. Максимум 2MB.", "error");
+    return;
+  }
+  if (!["image/jpeg", "image/png"].includes(file.type)) {
+    showNotification("Поддерживаются только JPG и PNG.", "error");
+    return;
+  }
+
+  avatarFile.value = file;
+  avatarPreview.value = URL.createObjectURL(file);
+};
+
+// Remove avatar
+const removeAvatar = () => {
+  avatarFile.value = null;
+  avatarPreview.value = null;
+  currentAvatar.value = null;
+};
+
+// Upload avatar to Directus
+const uploadAvatar = async () => {
+  if (!avatarFile.value) return currentAvatar.value;
+
+  const formData = new FormData();
+  formData.append("file", avatarFile.value);
+
+  try {
+    const response = await fetch(`http://localhost:8055/files`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${directusAuthStore.accessToken}`,
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.errors[0].message || "Ошибка загрузки аватара");
+    }
+
+    const data = await response.json();
+    return data.data.id;
+  } catch (error) {
+    showNotification(`Ошибка при загрузке аватара: ${error.message}`, "error");
+    return null;
+  }
+};
+
+// Fetch user data
 onMounted(async () => {
-  // Check if access token exists; if not, attempt to refresh it
   if (!directusAuthStore.accessToken) {
     const refreshToken = localStorage.getItem("refresh_token");
     if (refreshToken) {
@@ -373,32 +485,28 @@ onMounted(async () => {
     }
   }
 
-  // Get current user from Directus
   const userResult = await getCurrentDirectusUser();
   if (userResult.success) {
     userId.value = userResult.user.id;
-    displayName.value = userResult.user.first_name || ""; // Set initial displayName from user
+    displayName.value = userResult.user.first_name || ""; // Default to empty string
+    currentAvatar.value = userResult.user.avatar || null;
 
-    // Fetch profile data
     const profileResult = await fetchDirectusUserProfile({
       userId: userId.value,
     });
-    console.log(profileResult, "profileResult");
-
-    if (profileResult.success && profileResult.profile) {
-      displayName.value = profileResult.profile.first_name || displayName.value;
-      profession.value = profileResult.profile.profession || "";
-      age.value = profileResult.profile.age || "";
-      gender.value = profileResult.profile.gender || "";
-      aboutYourself.value = profileResult.profile.about_yourself || "";
-      console.log("Profile data loaded:", profileResult.profile);
+    if (profileResult.success) {
+      displayName.value = profileResult.user.first_name || ""; // Ensure not undefined
+      profession.value = profileResult.profile?.profession || "";
+      age.value = profileResult.profile?.age || "";
+      gender.value = profileResult.profile?.gender || "";
+      aboutYourself.value = profileResult.profile?.about_yourself || "";
     }
   } else {
     showNotification(
       "Ошибка при загрузке данных пользователя: " + userResult.message,
       "error"
     );
-    directusAuthStore.clearAuth(); // Clear auth state if user fetch fails
+    directusAuthStore.clearAuth();
     router.push("/login");
   }
 });
@@ -421,34 +529,52 @@ const saveProfile = async () => {
     return;
   }
 
-  const data = {
-    userId: userId.value,
-    first_name: displayName.value,
-    profession: profession.value,
-    age: age.value,
-    gender: gender.value,
-    about_yourself: aboutYourself.value,
-  };
+  if (!displayName.value.trim()) {
+    showNotification("Пожалуйста, укажите отображаемое имя.", "error");
+    return;
+  }
 
-  const result = await updateDirectusUserProfile(data);
-  if (result.success) {
-    showNotification("Изменения сохранены!", "success");
-    goBackToProfile();
-  } else {
-    showNotification(
-      "Ошибка при сохранении изменений: " + result.message,
-      "error"
-    );
+  isSaving.value = true;
+
+  try {
+    const avatarId = await uploadAvatar();
+
+    const data = {
+      userId: userId.value,
+      first_name: displayName.value,
+      profession: profession.value,
+      age: age.value,
+      gender: gender.value,
+      about_yourself: aboutYourself.value,
+      avatar: avatarId,
+    };
+
+    const result = await updateDirectusUserProfile(data);
+    if (result.success) {
+      currentAvatar.value = avatarId;
+      avatarFile.value = null;
+      avatarPreview.value = null;
+      displayName.value = result.user.first_name || displayName.value; // Update displayName from response
+      showNotification("Изменения сохранены!", "success");
+      goBackToProfile();
+    } else {
+      showNotification(
+        "Ошибка при сохранении изменений: " + result.message,
+        "error"
+      );
+    }
+  } catch (error) {
+    showNotification(`Ошибка: ${error.message}`, "error");
+  } finally {
+    isSaving.value = false;
   }
 };
 
 // Redirect back to profile
 const goBackToProfile = () => {
-  if (displayName.value) {
-    router.push(`/profile/${displayName.value}`);
-  } else {
-    router.push("/profile");
-  }
+  // Ensure displayName is a valid string before navigation
+  const safeDisplayName = displayName.value.trim() || "profile"; // Fallback to "profile" if empty
+  router.push(`/profile/${safeDisplayName}`);
 };
 
 // Placeholder methods

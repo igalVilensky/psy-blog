@@ -10,7 +10,7 @@ directusApi.interceptors.request.use(
   async (config) => {
     const directusAuthStore = useDirectusAuthStore();
     if (!directusAuthStore.accessToken) {
-      directusAuthStore.accessToken = await directusAuthStore.refreshToken(); // Calls the action
+      directusAuthStore.accessToken = await directusAuthStore.refreshToken();
     }
     if (directusAuthStore.accessToken) {
       config.headers.Authorization = `Bearer ${directusAuthStore.accessToken}`;
@@ -26,7 +26,7 @@ directusApi.interceptors.response.use(
   async (error) => {
     if (error.response?.status === 401) {
       const directusAuthStore = useDirectusAuthStore();
-      const newToken = await directusAuthStore.refreshToken(); // Calls the action
+      const newToken = await directusAuthStore.refreshToken();
       if (newToken) {
         error.config.headers.Authorization = `Bearer ${newToken}`;
         return directusApi(error.config);
@@ -83,17 +83,28 @@ export const registerDirectusUser = async ({
 
 export const updateDirectusUserProfile = async ({
   userId,
-  displayName,
+  first_name,
   profession,
   age,
   gender,
   about_yourself,
+  avatar, // Added avatar parameter
   adminToken,
 }) => {
   try {
+    // Update the users collection first (for first_name and avatar)
+    const userData = {};
+    if (first_name) userData.first_name = first_name;
+    if (avatar !== undefined) userData.avatar = avatar; // Can be null to remove avatar
+
+    let userResponse;
+    if (Object.keys(userData).length > 0) {
+      userResponse = await directusApi.patch(`/users/${userId}`, userData);
+    }
+
+    // Update or create the user_profiles collection
     const profileData = {
       user: userId,
-      display_name: displayName,
       profession: profession || null,
       age: age ? parseInt(age) : null,
       gender: gender || null,
@@ -101,28 +112,37 @@ export const updateDirectusUserProfile = async ({
     };
 
     const existingProfile = await directusApi.get(
-      `/items/user_profiles?filter[user][_eq]=${userId}`,
-      { headers: { Authorization: `Bearer ${adminToken}` } }
+      `/items/user_profiles?filter[user][_eq]=${userId}`
     );
 
-    let response;
+    let profileResponse;
     if (
       existingProfile.data.data.length > 0 &&
       existingProfile.data.data[0].id
     ) {
       const profileId = existingProfile.data.data[0].id;
-      response = await directusApi.patch(
+      profileResponse = await directusApi.patch(
         `/items/user_profiles/${profileId}`,
-        profileData,
-        { headers: { Authorization: `Bearer ${adminToken}` } }
+        profileData
       );
     } else {
-      response = await directusApi.post("/items/user_profiles", profileData, {
-        headers: { Authorization: `Bearer ${adminToken}` },
-      });
+      profileResponse = await directusApi.post(
+        "/items/user_profiles",
+        profileData
+      );
     }
-    return { success: true, profile: response.data.data || {} };
+
+    return {
+      success: true,
+      user: userResponse?.data.data || {},
+      profile: profileResponse.data.data || {},
+    };
   } catch (error) {
+    console.error("Directus profile update error:", {
+      status: error.response?.status,
+      data: error.response?.data,
+      message: error.message,
+    });
     return {
       success: false,
       message:
@@ -133,12 +153,22 @@ export const updateDirectusUserProfile = async ({
 
 export const fetchDirectusUserProfile = async ({ userId }) => {
   try {
-    const response = await directusApi.get(
-      `/items/user_profiles?filter[user][_eq]=${userId}`
-    );
+    const [userResponse, profileResponse] = await Promise.all([
+      directusApi.get(`/users/${userId}`),
+      directusApi.get(`/items/user_profiles?filter[user][_eq]=${userId}`),
+    ]);
 
-    return { success: true, profile: response.data.data[0] || null };
+    return {
+      success: true,
+      user: userResponse.data.data,
+      profile: profileResponse.data.data[0] || null,
+    };
   } catch (error) {
+    console.error("Fetch profile error:", {
+      status: error.response?.status,
+      data: error.response?.data,
+      message: error.message,
+    });
     return {
       success: false,
       message:

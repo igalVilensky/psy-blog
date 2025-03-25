@@ -171,8 +171,8 @@ const showPassword = ref(false);
 const isLoading = ref(false);
 
 // Runtime config for Directus settings
-const { useDirectus, directusUrl } = useRuntimeConfig().public;
-const API_URL = directusUrl || "http://localhost:8055";
+const { useDirectus } = useRuntimeConfig().public;
+const API_URL = "http://localhost:8055";
 
 // Toggle password visibility
 const togglePassword = () => {
