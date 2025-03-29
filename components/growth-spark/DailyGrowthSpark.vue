@@ -2,206 +2,278 @@
   <Teleport to="body">
     <div
       v-if="isVisible"
-      class="daily-growth-spark-overlay"
+      class="fixed inset-0 bg-black/60 flex justify-center items-center z-[999] backdrop-blur-sm"
       @click="handleOverlayClick"
     >
-      <div class="daily-growth-spark-modal" @click.stop>
+      <div
+        class="bg-white rounded-2xl w-[90%] max-w-[500px] flex flex-col shadow-2xl overflow-hidden animate-fade-in-up"
+        @click.stop
+      >
         <!-- Modal header with progress indicator -->
-        <div class="modal-header">
-          <h2 class="modal-title">Daily Growth Spark</h2>
-          <div class="progress-bar">
-            <div class="progress-steps">
+        <div class="p-6 border-b border-gray-100 relative">
+          <h2 class="text-2xl font-semibold text-gray-800">
+            Ежедневная искра роста
+          </h2>
+          <div class="mt-4">
+            <div class="flex justify-between mb-2">
               <div
                 v-for="(step, index) in [
-                  'Focus Game',
-                  'Energy Check',
-                  'Share Insight',
+                  'Эмоциональная проницательность',
+                  'Проверка энергии',
+                  'Поделитесь открытием',
                 ]"
                 :key="index"
                 :class="[
-                  'progress-step',
-                  {
-                    active: getStageIndex(currentStage) === index,
-                    completed: getStageIndex(currentStage) > index,
-                  },
+                  'flex flex-col items-center flex-1',
+                  getStageIndex(currentStage) === index ? 'text-blue-500' : '',
+                  getStageIndex(currentStage) > index ? 'text-green-500' : '',
                 ]"
               >
-                <div class="step-circle">{{ index + 1 }}</div>
-                <div class="step-label">{{ step }}</div>
+                <div
+                  :class="[
+                    'w-6 h-6 rounded-full flex items-center justify-center text-sm font-semibold mb-1 transition-all',
+                    getStageIndex(currentStage) === index
+                      ? 'bg-blue-500 text-white'
+                      : getStageIndex(currentStage) > index
+                      ? 'bg-green-500 text-white'
+                      : 'bg-gray-200 text-gray-600',
+                  ]"
+                >
+                  {{ index + 1 }}
+                </div>
+                <div class="text-xs">{{ step }}</div>
               </div>
             </div>
-            <div class="progress-line">
+            <div class="h-1 bg-gray-200 rounded-full relative">
               <div
-                class="progress-filled"
+                class="absolute top-0 left-0 h-full bg-blue-500 rounded-full transition-all"
                 :style="`width: ${progressPercentage}%`"
               ></div>
             </div>
           </div>
-          <button class="close-button" @click="confirmClose" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+          <div class="absolute top-4 right-12 text-sm text-gray-600">
+            Очки: {{ points }}
+          </div>
+          <button
+            class="absolute right-4 top-4 text-gray-500 hover:text-gray-700 hover:bg-gray-100 w-8 h-8 flex items-center justify-center rounded-full transition-all"
+            @click="confirmClose"
+            aria-label="Закрыть"
+          >
+            <span aria-hidden="true">×</span>
           </button>
         </div>
 
-        <div class="modal-content">
-          <!-- Stage 1: Emoji Game -->
-          <div v-if="currentStage === 'emoji'" class="emoji-game">
-            <div class="stage-header">
-              <h3>{{ gamePrompt }}</h3>
-              <div class="streak-counter">
-                <div class="streak-icon" :class="{ active: winCount >= 1 }">
-                  🔥
-                </div>
-                <div class="streak-icon" :class="{ active: winCount >= 2 }">
-                  🔥
-                </div>
-                <div class="streak-icon" :class="{ active: winCount >= 3 }">
-                  🔥
+        <div class="p-6 overflow-y-auto">
+          <!-- Stage 1: Emotion Insight Game -->
+          <div v-if="currentStage === 'emotion'" class="space-y-5">
+            <div class="flex justify-between items-center">
+              <h3 class="text-lg font-medium">
+                Эмоциональная проницательность
+              </h3>
+              <div class="flex gap-1">
+                <div
+                  v-for="i in 3"
+                  :key="i"
+                  class="text-xl transition-all"
+                  :class="{
+                    'opacity-30': winCount < i,
+                    'scale-110': winCount >= i,
+                  }"
+                >
+                  🌟
                 </div>
               </div>
             </div>
-            <div class="emoji-container">
+            <div class="bg-gray-50 p-4 rounded-xl text-center">
+              <p class="text-gray-700 italic">{{ currentScenario.prompt }}</p>
+            </div>
+            <div class="flex justify-center gap-4">
               <div
-                v-for="(emoji, index) in emojiSet"
+                v-for="(emotion, index) in currentScenario.emotions"
                 :key="index"
-                @click="handleEmojiClick(index)"
-                :class="{
-                  'emoji-card': true,
-                  selected: selectedIndex === index,
-                  correct: isCorrect && selectedIndex === index,
-                  wrong: isWrong && selectedIndex === index,
-                }"
+                @click="handleEmotionClick(index)"
+                :class="[
+                  'w-24 h-20 flex flex-col items-center justify-center bg-gray-50 rounded-xl cursor-pointer transition-all border-2',
+                  selectedIndex === index
+                    ? 'border-blue-500'
+                    : 'border-transparent',
+                  isCorrect && selectedIndex === index
+                    ? 'bg-green-100 border-green-500 scale-105'
+                    : '',
+                  isWrong && selectedIndex === index
+                    ? 'bg-red-100 border-red-500 animate-shake'
+                    : '',
+                  'hover:-translate-y-1 hover:shadow-md',
+                ]"
               >
-                <span class="emoji">{{ emoji }}</span>
+                <span class="text-2xl">{{ emotion.emoji }}</span>
+                <span class="text-sm mt-1">{{ emotion.label }}</span>
               </div>
             </div>
             <div
               v-if="feedback"
-              class="feedback"
-              :class="{
-                'feedback-success': isCorrect,
-                'feedback-error': isWrong,
-              }"
+              :class="[
+                'p-3 rounded-lg text-center font-medium',
+                isCorrect
+                  ? 'bg-green-100 text-green-700'
+                  : 'bg-red-100 text-red-700',
+              ]"
             >
               {{ feedback }}
             </div>
             <button
               v-if="gameComplete"
               @click="nextRound"
-              class="action-button"
+              class="bg-blue-500 text-white px-5 py-2 rounded-lg font-medium hover:bg-blue-600 transition-all hover:-translate-y-1 mx-auto block"
             >
-              {{ winCount >= 3 ? "Continue" : "Next Round" }}
+              {{ winCount >= 3 ? "Продолжить" : "Следующий вопрос" }}
             </button>
           </div>
 
           <!-- Stage 2: Energy Tracker -->
-          <div v-if="currentStage === 'energy'" class="energy-tracker">
-            <h3>How's Your Energy Today?</h3>
-            <div class="energy-level-display">
-              <div class="energy-emoji">{{ energyEmoji }}</div>
-              <div class="energy-label">
+          <div v-if="currentStage === 'energy'" class="text-center space-y-6">
+            <h3 class="text-lg font-medium">Как ваша энергия сегодня?</h3>
+            <div>
+              <div class="text-5xl mb-2 transition-all">{{ energyEmoji }}</div>
+              <div class="text-lg font-medium text-gray-700">
                 {{ energyLevel }} - {{ energyFeedback }}
               </div>
             </div>
-            <div class="slider-container">
-              <span class="slider-label low">Low</span>
+            <div class="flex items-center px-3">
+              <span class="text-sm text-gray-600 w-10 text-right">Низкая</span>
               <input
                 type="range"
-                id="energy"
                 v-model="energyLevel"
                 min="0"
                 max="10"
                 step="1"
-                class="energy-slider"
+                class="flex-1 h-2 mx-3 rounded-full appearance-none bg-gradient-to-r from-red-400 via-yellow-400 to-green-400"
               />
-              <span class="slider-label high">High</span>
+              <span class="text-sm text-gray-600 w-10 text-left">Высокая</span>
             </div>
-
-            <div class="wellness-check">
-              <h4>Quick Wellness Check</h4>
-              <div class="wellness-items">
+            <div class="bg-gray-50 p-4 rounded-xl">
+              <h4 class="text-base font-medium mb-3">Топливо для роста</h4>
+              <div class="flex flex-wrap justify-center gap-2">
                 <div
-                  v-for="(item, index) in wellnessItems"
+                  v-for="(item, index) in growthFuelItems"
                   :key="index"
-                  :class="['wellness-item', { selected: item.selected }]"
-                  @click="toggleWellnessItem(index)"
+                  :class="[
+                    'flex flex-col items-center p-2 w-20 bg-white rounded-lg cursor-pointer transition-all border',
+                    item.selected
+                      ? 'bg-blue-500 text-white border-blue-500'
+                      : 'border-gray-200 hover:bg-blue-50',
+                  ]"
+                  @click="toggleFuelItem(index)"
                 >
-                  <span class="wellness-emoji">{{ item.emoji }}</span>
-                  <span class="wellness-label">{{ item.label }}</span>
+                  <span class="text-2xl mb-1">{{ item.emoji }}</span>
+                  <span class="text-xs text-center">{{ item.label }}</span>
                 </div>
               </div>
             </div>
-
-            <button @click="submitEnergy" class="action-button">
-              Continue
+            <button
+              @click="submitEnergy"
+              class="bg-blue-500 text-white px-5 py-2 rounded-lg font-medium hover:bg-blue-600 transition-all hover:-translate-y-1"
+            >
+              Продолжить
             </button>
           </div>
 
           <!-- Stage 3: Tip Input -->
-          <div v-if="currentStage === 'tip'" class="tip-input">
-            <h3>Share Your Growth Insight</h3>
-            <p class="tip-description">
-              What's one thing that helped you grow today? Share it to inspire
-              others.
+          <div v-if="currentStage === 'tip'" class="text-center space-y-5">
+            <h3 class="text-lg font-medium">
+              Поделитесь своим открытием роста
+            </h3>
+            <p class="text-gray-600">
+              Что сегодня помогло вам вырасти? Поделитесь, чтобы вдохновить
+              других.
             </p>
-
-            <div class="tip-categories">
+            <div class="flex flex-wrap justify-center gap-2">
               <span
                 v-for="(category, index) in tipCategories"
                 :key="index"
                 :class="[
-                  'tip-category',
-                  { active: selectedCategory === category },
+                  'px-3 py-1 bg-gray-100 rounded-full text-sm text-gray-600 cursor-pointer transition-all',
+                  selectedCategory === category
+                    ? 'bg-blue-500 text-white'
+                    : 'hover:bg-gray-200',
                 ]"
                 @click="selectedCategory = category"
               >
                 {{ category }}
               </span>
             </div>
-
-            <div class="input-container">
+            <div class="relative">
               <textarea
-                id="tip"
                 v-model="tip"
-                placeholder="Enter a growth tip, insight or reminder..."
+                placeholder="Введите совет, открытие или напоминание..."
                 rows="3"
                 maxlength="280"
+                class="w-full p-4 border border-gray-200 rounded-lg resize-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
               ></textarea>
-              <div class="char-counter">{{ tip.length }}/280</div>
+              <div class="absolute bottom-2 right-3 text-sm text-gray-500">
+                {{ tip.length }}/280
+              </div>
             </div>
-
-            <div class="anonymous-toggle">
-              <label class="toggle">
-                <input type="checkbox" v-model="isAnonymous" />
-                <span class="toggle-slider"></span>
+            <div
+              class="flex items-center justify-center gap-2 text-sm text-gray-600"
+            >
+              <label class="relative inline-block w-9 h-5">
+                <input
+                  type="checkbox"
+                  v-model="isAnonymous"
+                  class="opacity-0 w-0 h-0"
+                />
+                <span
+                  class="absolute inset-0 cursor-pointer bg-gray-300 rounded-full transition-all before:absolute before:h-4 before:w-4 before:left-0.5 before:bottom-0.5 before:bg-white before:rounded-full before:transition-all"
+                  :class="{ 'bg-blue-500 before:translate-x-4': isAnonymous }"
+                ></span>
               </label>
-              <span>Share anonymously</span>
+              <span>Поделиться анонимно</span>
             </div>
-
-            <div class="action-buttons">
-              <button @click="skipTip" class="secondary-button">Skip</button>
+            <div class="flex justify-center gap-3">
+              <button
+                @click="skipTip"
+                class="bg-gray-100 text-gray-600 px-5 py-2 rounded-lg font-medium hover:bg-gray-200 transition-all"
+              >
+                Пропустить
+              </button>
               <button
                 @click="submitTip"
-                class="action-button"
+                class="bg-blue-500 text-white px-5 py-2 rounded-lg font-medium transition-all hover:bg-blue-600 hover:-translate-y-1"
+                :class="{ 'bg-gray-400 cursor-not-allowed': tip.trim() === '' }"
                 :disabled="tip.trim() === ''"
               >
-                Submit & Complete
+                Отправить и завершить
               </button>
             </div>
           </div>
 
           <!-- Final Stage: Success -->
-          <div v-if="currentStage === 'success'" class="success-message">
-            <div class="success-icon">✅</div>
-            <h3>Awesome Job!</h3>
+          <div
+            v-if="currentStage === 'success'"
+            class="text-center space-y-5 py-5"
+          >
+            <div class="text-6xl animate-bounce-in">✅</div>
+            <h3 class="text-lg font-medium">Отличная работа!</h3>
             <p>
-              You've completed today's Growth Spark. Check back tomorrow for a
-              new challenge!
+              Вы завершили сегодняшнюю искру роста. Возвращайтесь завтра за
+              новым вызовом!
             </p>
-            <div class="streak-message">
-              <span class="streak-icon">🔥</span>
-              <span>{{ streakDays }} day streak</span>
+            <div class="bg-gray-50 p-4 rounded-xl">
+              <p class="text-gray-700">Сегодня вы: {{ successSummary }}</p>
             </div>
-            <button @click="closeModal" class="action-button">Finish</button>
+            <div
+              class="flex items-center justify-center gap-2 bg-orange-50 p-3 rounded-lg w-fit mx-auto"
+            >
+              <span class="text-xl">🌟</span>
+              <span>Серия: {{ streakDays }} дней</span>
+            </div>
+            <button
+              @click="closeModal"
+              class="bg-blue-500 text-white px-5 py-2 rounded-lg font-medium hover:bg-blue-600 transition-all hover:-translate-y-1"
+            >
+              Завершить
+            </button>
           </div>
         </div>
       </div>
@@ -210,15 +282,28 @@
     <!-- Confirmation Dialog -->
     <div
       v-if="showConfirmation"
-      class="confirmation-overlay"
+      class="fixed inset-0 bg-black/70 flex justify-center items-center z-[1000]"
       @click="cancelClose"
     >
-      <div class="confirmation-dialog" @click.stop>
-        <h3>Are you sure?</h3>
-        <p>Your progress will be lost if you exit now.</p>
-        <div class="confirmation-buttons">
-          <button @click="cancelClose" class="secondary-button">Cancel</button>
-          <button @click="closeModal" class="danger-button">Exit</button>
+      <div
+        class="bg-white p-6 rounded-xl w-[90%] max-w-[300px] text-center"
+        @click.stop
+      >
+        <h3 class="text-lg font-medium">Вы уверены?</h3>
+        <p class="mt-2">Ваш прогресс будет потерян, если вы выйдете сейчас.</p>
+        <div class="flex justify-center gap-3 mt-5">
+          <button
+            @click="cancelClose"
+            class="bg-gray-100 text-gray-600 px-5 py-2 rounded-lg font-medium hover:bg-gray-200 transition-all"
+          >
+            Отмена
+          </button>
+          <button
+            @click="closeModal"
+            class="bg-red-500 text-white px-5 py-2 rounded-lg font-medium hover:bg-red-600 transition-all"
+          >
+            Выйти
+          </button>
         </div>
       </div>
     </div>
@@ -233,11 +318,11 @@ const isVisible = ref(true);
 const showConfirmation = ref(false);
 
 // Stage control
-const currentStage = ref("emoji"); // 'emoji', 'energy', 'tip', 'success'
+const currentStage = ref("emotion"); // 'emotion', 'energy', 'tip', 'success'
 
 // Progress calculation
 const getStageIndex = (stage) => {
-  const stages = ["emoji", "energy", "tip", "success"];
+  const stages = ["emotion", "energy", "tip", "success"];
   return stages.indexOf(stage);
 };
 
@@ -247,75 +332,59 @@ const progressPercentage = computed(() => {
   return Math.min(100, (currentIndex / totalStages) * 100);
 });
 
-// Streak tracking
+// Streak and points tracking
 const streakDays = ref(1);
+const points = ref(0);
 
 onMounted(() => {
-  // Simulate loading streak from localStorage or API
   const savedStreak = localStorage.getItem("growthStreak");
-  if (savedStreak) {
-    streakDays.value = parseInt(savedStreak);
-  }
+  const savedPoints = localStorage.getItem("growthPoints");
+  if (savedStreak) streakDays.value = parseInt(savedStreak);
+  if (savedPoints) points.value = parseInt(savedPoints);
 });
 
-// Emoji game logic - Extended with more variety
-const emojiSets = [
+// Emotion Insight Game Logic
+const emotionScenarios = [
   {
-    emojis: ["😊", "😊", "😢"],
-    correctIndex: 2,
-    prompt: "Spot the odd emotion!",
+    prompt:
+      "Вы только что закончили сложный проект и чувствуете удовлетворение.",
+    emotions: [
+      { emoji: "😊", label: "Гордость" },
+      { emoji: "😢", label: "Грусть" },
+      { emoji: "😡", label: "Злость" },
+    ],
+    correctIndex: 0,
+    tip: "Чувствуете гордость? Отмечайте маленькие победы, чтобы оставаться мотивированным!",
   },
   {
-    emojis: ["🍎", "🍏", "🍎"],
+    prompt: "Друг отменил планы в последнюю минуту, и вы разочарованы.",
+    emotions: [
+      { emoji: "😂", label: "Веселье" },
+      { emoji: "😔", label: "Разочарование" },
+      { emoji: "😊", label: "Счастье" },
+    ],
     correctIndex: 1,
-    prompt: "Find the different fruit!",
+    tip: "Разочарование — это нормально. Попробуйте найти радость в неожиданном свободном времени.",
   },
   {
-    emojis: ["🐱", "🐶", "🐱"],
+    prompt: "Вы помедитировали и чувствуете спокойствие и сосредоточенность.",
+    emotions: [
+      { emoji: "😰", label: "Тревога" },
+      { emoji: "😌", label: "Спокойствие" },
+      { emoji: "😤", label: "Раздражение" },
+    ],
     correctIndex: 1,
-    prompt: "Which animal doesn't match?",
-  },
-  {
-    emojis: ["🌟", "🌟", "☀️"],
-    correctIndex: 2,
-    prompt: "Find the unique light!",
-  },
-  {
-    emojis: ["🚀", "✈️", "🚀"],
-    correctIndex: 1,
-    prompt: "Spot the different vehicle!",
-  },
-  {
-    emojis: ["🎉", "🎉", "🎁"],
-    correctIndex: 2,
-    prompt: "Which celebration icon is unique?",
-  },
-  {
-    emojis: ["🌍", "🌎", "🌕"],
-    correctIndex: 2,
-    prompt: "Find the celestial body that's not a planet!",
-  },
-  {
-    emojis: ["🏆", "🏆", "🥇"],
-    correctIndex: 2,
-    prompt: "Spot the different achievement symbol!",
-  },
-  {
-    emojis: ["💻", "📱", "💻"],
-    correctIndex: 1,
-    prompt: "Which tech device is different?",
-  },
-  {
-    emojis: ["🧠", "🧠", "❤️"],
-    correctIndex: 2,
-    prompt: "Mind or heart? Find the odd one out!",
+    tip: "Спокойствие — ваш источник силы. Используйте его для ясности в делах.",
   },
 ];
 
-const currentSetIndex = ref(Math.floor(Math.random() * emojiSets.length));
-const emojiSet = ref(emojiSets[currentSetIndex.value].emojis);
-const correctIndex = ref(emojiSets[currentSetIndex.value].correctIndex);
-const gamePrompt = computed(() => emojiSets[currentSetIndex.value].prompt);
+const currentSetIndex = ref(
+  Math.floor(Math.random() * emotionScenarios.length)
+);
+const currentScenario = computed(() => emotionScenarios[currentSetIndex.value]);
+const correctIndex = computed(
+  () => emotionScenarios[currentSetIndex.value].correctIndex
+);
 
 const selectedIndex = ref(null);
 const isCorrect = ref(false);
@@ -324,18 +393,21 @@ const feedback = ref("");
 const gameComplete = ref(false);
 const winCount = ref(0);
 
-const handleEmojiClick = (index) => {
+const handleEmotionClick = (index) => {
   if (selectedIndex.value !== null || gameComplete.value) return;
   selectedIndex.value = index;
 
   if (index === correctIndex.value) {
     isCorrect.value = true;
-    feedback.value = "Great job! Your focus is on point.";
+    feedback.value = `Отлично! Вы в гармонии со своими эмоциями. ${
+      emotionScenarios[currentSetIndex.value].tip
+    }`;
     winCount.value += 1;
+    points.value += 10;
     gameComplete.value = true;
   } else {
     isWrong.value = true;
-    feedback.value = "Not quite right. Keep building your focus!";
+    feedback.value = "Не совсем. Подумайте, что вы чувствуете в этот момент.";
     setTimeout(() => {
       gameComplete.value = true;
     }, 1000);
@@ -344,20 +416,17 @@ const handleEmojiClick = (index) => {
 
 const nextRound = () => {
   if (winCount.value >= 3) {
-    currentStage.value = "energy"; // Move to energy stage
+    currentStage.value = "energy";
     feedback.value = "";
     return;
   }
 
-  // Get a new random emoji set
   let newIndex;
   do {
-    newIndex = Math.floor(Math.random() * emojiSets.length);
+    newIndex = Math.floor(Math.random() * emotionScenarios.length);
   } while (newIndex === currentSetIndex.value);
   currentSetIndex.value = newIndex;
 
-  emojiSet.value = emojiSets[currentSetIndex.value].emojis;
-  correctIndex.value = emojiSets[currentSetIndex.value].correctIndex;
   selectedIndex.value = null;
   isCorrect.value = false;
   isWrong.value = false;
@@ -365,12 +434,12 @@ const nextRound = () => {
   gameComplete.value = false;
 };
 
-// Energy level logic - Enhanced with emojis
+// Energy level logic
 const energyLevel = ref(5);
 const energyFeedback = computed(() => {
-  if (energyLevel.value <= 3) return "Low energy day";
-  if (energyLevel.value <= 7) return "Steady energy";
-  return "High energy peak";
+  if (energyLevel.value <= 3) return "День с низкой энергией";
+  if (energyLevel.value <= 7) return "Стабильная энергия";
+  return "Пик высокой энергии";
 });
 
 const energyEmoji = computed(() => {
@@ -381,44 +450,45 @@ const energyEmoji = computed(() => {
   return "🤩";
 });
 
-// Wellness check items
-const wellnessItems = ref([
-  { emoji: "💤", label: "Well rested", selected: false },
-  { emoji: "💪", label: "Exercised", selected: false },
-  { emoji: "🥗", label: "Healthy food", selected: false },
-  { emoji: "🧘", label: "Meditated", selected: false },
-  { emoji: "📚", label: "Learned", selected: false },
-  { emoji: "🤝", label: "Connected", selected: false },
+// Growth Fuel items
+const growthFuelItems = ref([
+  { emoji: "💧", label: "Пить воду", selected: false },
+  { emoji: "🏃", label: "Размяться", selected: false },
+  { emoji: "🍎", label: "Здоровая еда", selected: false },
+  { emoji: "🧘", label: "Медитация", selected: false },
+  { emoji: "📖", label: "Учиться", selected: false },
 ]);
 
-const toggleWellnessItem = (index) => {
-  wellnessItems.value[index].selected = !wellnessItems.value[index].selected;
+const toggleFuelItem = (index) => {
+  growthFuelItems.value[index].selected =
+    !growthFuelItems.value[index].selected;
 };
 
 const submitEnergy = () => {
-  currentStage.value = "tip"; // Move to tip stage
+  points.value += 5; // Bonus for completing energy stage
+  currentStage.value = "tip";
 };
 
-// Tip input logic - Enhanced with categories
+// Tip input logic
 const tip = ref("");
 const isAnonymous = ref(false);
 const tipCategories = ref([
-  "Work",
-  "Health",
-  "Mindfulness",
-  "Relationships",
-  "Learning",
+  "Работа",
+  "Здоровье",
+  "Осознанность",
+  "Отношения",
+  "Обучение",
 ]);
-const selectedCategory = ref("Mindfulness");
+const selectedCategory = ref("Осознанность");
 
 const submitTip = () => {
-  // Save data to API or localStorage
+  points.value += 20; // Bonus for sharing a tip
   const growthData = {
     date: new Date().toISOString(),
     gameResults: { wins: winCount.value },
     energy: {
       level: energyLevel.value,
-      wellnessFactors: wellnessItems.value
+      fuelFactors: growthFuelItems.value
         .filter((item) => item.selected)
         .map((item) => item.label),
     },
@@ -429,42 +499,52 @@ const submitTip = () => {
     },
   };
 
-  console.log("Daily Growth Spark completed:", growthData);
-
-  // In a real app, you'd send this to your backend
-  // await $fetch('/api/growth-spark', { method: 'POST', body: growthData })
-
-  // Update streak in localStorage
+  console.log("Ежедневная искра роста завершена:", growthData);
   localStorage.setItem("growthStreak", (streakDays.value + 1).toString());
+  localStorage.setItem("growthPoints", points.value.toString());
   localStorage.setItem("lastGrowthSpark", new Date().toDateString());
-
-  // Show success message
   currentStage.value = "success";
 };
 
 const skipTip = () => {
-  // Skip insight but still record other data
   const growthData = {
     date: new Date().toISOString(),
     gameResults: { wins: winCount.value },
     energy: {
       level: energyLevel.value,
-      wellnessFactors: wellnessItems.value
+      fuelFactors: growthFuelItems.value
         .filter((item) => item.selected)
         .map((item) => item.label),
     },
     insight: null,
   };
 
-  console.log("Daily Growth Spark completed (tip skipped):", growthData);
+  console.log("Ежедневная искра роста завершена (совет пропущен):", growthData);
+  localStorage.setItem("growthStreak", (streakDays.value + 1).toString());
+  localStorage.setItem("growthPoints", points.value.toString());
   currentStage.value = "success";
 };
 
+// Success summary
+const successSummary = computed(() => {
+  const emotion =
+    emotionScenarios[currentSetIndex.value].emotions[
+      correctIndex.value
+    ].label.toLowerCase();
+  const fuel =
+    growthFuelItems.value
+      .filter((item) => item.selected)
+      .map((item) => item.label.toLowerCase())
+      .join(", ") || "ничего не выбрано";
+  const tipText = tip.value
+    ? `поделились советом в категории "${selectedCategory.value}"`
+    : "пропустили совет";
+  return `чувствовали ${emotion}, имели ${energyFeedback.value.toLowerCase()}, выбрали топливо: ${fuel}, и ${tipText}.`;
+});
+
 // Modal control
 const handleOverlayClick = (event) => {
-  if (event.target.classList.contains("daily-growth-spark-overlay")) {
-    confirmClose();
-  }
+  if (event.target.classList.contains("fixed")) confirmClose();
 };
 
 const confirmClose = () => {
@@ -482,286 +562,7 @@ const closeModal = () => {
 </script>
 
 <style scoped>
-/* Base Modal Styling */
-.daily-growth-spark-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-  backdrop-filter: blur(4px);
-}
-
-.daily-growth-spark-modal {
-  background: #fff;
-  border-radius: 16px;
-  width: 90%;
-  max-width: 500px;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-  overflow: hidden;
-  animation: fadeInUp 0.3s ease-out;
-}
-
-.modal-header {
-  padding: 20px 24px;
-  border-bottom: 1px solid #f0f0f0;
-  position: relative;
-}
-
-.modal-title {
-  margin: 0;
-  font-size: 1.5rem;
-  color: #333;
-  font-weight: 600;
-}
-
-.close-button {
-  position: absolute;
-  right: 16px;
-  top: 16px;
-  background: transparent;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: #999;
-  transition: color 0.2s;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-}
-
-.close-button:hover {
-  color: #555;
-  background: #f5f5f5;
-}
-
-.modal-content {
-  padding: 24px;
-  overflow-y: auto;
-}
-
-/* Progress Bar */
-.progress-bar {
-  margin-top: 16px;
-}
-
-.progress-steps {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 8px;
-}
-
-.progress-step {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex: 1;
-}
-
-.step-circle {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background-color: #e0e0e0;
-  color: #666;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.8rem;
-  font-weight: 600;
-  margin-bottom: 4px;
-  transition: all 0.3s;
-}
-
-.step-label {
-  font-size: 0.75rem;
-  color: #666;
-  transition: all 0.3s;
-}
-
-.progress-step.active .step-circle {
-  background-color: #3b82f6;
-  color: white;
-}
-
-.progress-step.active .step-label {
-  color: #3b82f6;
-  font-weight: 600;
-}
-
-.progress-step.completed .step-circle {
-  background-color: #10b981;
-  color: white;
-}
-
-.progress-line {
-  height: 4px;
-  background-color: #e0e0e0;
-  border-radius: 2px;
-  position: relative;
-  margin-top: 4px;
-}
-
-.progress-filled {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  background-color: #3b82f6;
-  border-radius: 2px;
-  transition: width 0.3s ease;
-}
-
-/* Emoji Game Styling */
-.stage-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.streak-counter {
-  display: flex;
-  gap: 4px;
-}
-
-.streak-icon {
-  font-size: 1.2rem;
-  opacity: 0.3;
-  transition: opacity 0.3s, transform 0.3s;
-}
-
-.streak-icon.active {
-  opacity: 1;
-  transform: scale(1.1);
-}
-
-.emoji-container {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  margin: 20px 0;
-}
-
-.emoji-card {
-  width: 80px;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f8f9fa;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: 2px solid transparent;
-}
-
-.emoji-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.emoji {
-  font-size: 3rem;
-}
-
-.emoji-card.selected {
-  border-color: #3b82f6;
-}
-
-.emoji-card.correct {
-  background: #d1fae5;
-  border-color: #10b981;
-  transform: scale(1.1);
-}
-
-.emoji-card.wrong {
-  background: #fee2e2;
-  border-color: #ef4444;
-  animation: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-}
-
-.feedback {
-  margin: 16px 0;
-  padding: 12px;
-  border-radius: 8px;
-  font-weight: 500;
-  text-align: center;
-}
-
-.feedback-success {
-  background-color: #d1fae5;
-  color: #047857;
-}
-
-.feedback-error {
-  background-color: #fee2e2;
-  color: #b91c1c;
-}
-
-/* Energy Tracker Styling */
-.energy-tracker {
-  text-align: center;
-}
-
-.energy-level-display {
-  margin: 20px 0;
-}
-
-.energy-emoji {
-  font-size: 3rem;
-  margin-bottom: 8px;
-  transition: all 0.3s;
-}
-
-.energy-label {
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: #333;
-}
-
-.slider-container {
-  display: flex;
-  align-items: center;
-  margin: 24px 0;
-  padding: 0 12px;
-}
-
-.slider-label {
-  font-size: 0.9rem;
-  color: #666;
-  width: 40px;
-}
-
-.slider-label.low {
-  text-align: right;
-}
-
-.slider-label.high {
-  text-align: left;
-}
-
-.energy-slider {
-  flex: 1;
-  height: 8px;
-  appearance: none;
-  margin: 0 12px;
-  background: linear-gradient(to right, #f87171, #fbbf24, #34d399);
-  border-radius: 4px;
-  outline: none;
-}
-
-.energy-slider::-webkit-slider-thumb {
+input[type="range"]::-webkit-slider-thumb {
   appearance: none;
   width: 20px;
   height: 20px;
@@ -772,308 +573,11 @@ const closeModal = () => {
   transition: all 0.2s;
 }
 
-.energy-slider::-webkit-slider-thumb:hover {
+input[type="range"]::-webkit-slider-thumb:hover {
   transform: scale(1.2);
 }
 
-/* Wellness Check */
-.wellness-check {
-  margin-top: 24px;
-  background: #f8f9fa;
-  padding: 16px;
-  border-radius: 12px;
-}
-
-.wellness-check h4 {
-  margin-top: 0;
-  margin-bottom: 12px;
-  font-size: 1rem;
-  color: #333;
-}
-
-.wellness-items {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
-}
-
-.wellness-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 8px;
-  width: 80px;
-  background: white;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s;
-  border: 1px solid #e0e0e0;
-}
-
-.wellness-item:hover {
-  background: #f0f7ff;
-}
-
-.wellness-item.selected {
-  background: #3b82f6;
-  color: white;
-}
-
-.wellness-emoji {
-  font-size: 1.5rem;
-  margin-bottom: 4px;
-}
-
-.wellness-label {
-  font-size: 0.8rem;
-  text-align: center;
-}
-
-/* Tip Input Styling */
-.tip-input {
-  text-align: center;
-}
-
-.tip-description {
-  color: #666;
-  margin-bottom: 20px;
-}
-
-.tip-categories {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
-  margin-bottom: 16px;
-}
-
-.tip-category {
-  padding: 6px 12px;
-  background: #f1f5f9;
-  border-radius: 16px;
-  font-size: 0.9rem;
-  color: #475569;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.tip-category:hover {
-  background: #e2e8f0;
-}
-
-.tip-category.active {
-  background: #3b82f6;
-  color: white;
-}
-
-.input-container {
-  position: relative;
-  margin-bottom: 16px;
-}
-
-textarea {
-  width: 100%;
-  padding: 12px 16px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  font-size: 1rem;
-  resize: none;
-  transition: border-color 0.2s;
-  font-family: inherit;
-}
-
-textarea:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
-}
-
-.char-counter {
-  position: absolute;
-  bottom: 8px;
-  right: 12px;
-  font-size: 0.8rem;
-  color: #888;
-}
-
-.anonymous-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 20px;
-  font-size: 0.9rem;
-  color: #555;
-}
-
-.toggle {
-  position: relative;
-  display: inline-block;
-  width: 36px;
-  height: 20px;
-}
-
-.toggle input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.toggle-slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  transition: 0.4s;
-  border-radius: 20px;
-}
-
-.toggle-slider:before {
-  position: absolute;
-  content: "";
-  height: 16px;
-  width: 16px;
-  left: 2px;
-  bottom: 2px;
-  background-color: white;
-  transition: 0.4s;
-  border-radius: 50%;
-}
-
-input:checked + .toggle-slider {
-  background-color: #3b82f6;
-}
-
-input:checked + .toggle-slider:before {
-  transform: translateX(16px);
-}
-
-/* Success Message Styling */
-.success-message {
-  text-align: center;
-  padding: 20px 0;
-}
-
-.success-icon {
-  font-size: 4rem;
-  margin-bottom: 16px;
-  animation: bounceIn 0.6s;
-}
-
-.streak-message {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin: 24px 0;
-  padding: 12px;
-  background: #fff7ed;
-  border-radius: 8px;
-  width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.streak-message .streak-icon {
-  opacity: 1;
-}
-
-/* Confirmation Dialog */
-.confirmation-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.confirmation-dialog {
-  background: white;
-  padding: 24px;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 300px;
-  text-align: center;
-}
-
-.confirmation-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 20px;
-}
-
-/* Buttons */
-.action-button {
-  background-color: #3b82f6;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.action-button:hover {
-  background-color: #2563eb;
-  transform: translateY(-2px);
-}
-
-.action-button:disabled {
-  background-color: #9ca3af;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.secondary-button {
-  background-color: #f1f5f9;
-  color: #475569;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.secondary-button:hover {
-  background-color: #e2e8f0;
-}
-
-.danger-button {
-  background-color: #ef4444;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.danger-button:hover {
-  background-color: #dc2626;
-}
-
-.action-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-}
-@keyframes fadeInUp {
+@keyframes fade-in-up {
   from {
     opacity: 0;
     transform: translateY(20px);
@@ -1083,7 +587,8 @@ input:checked + .toggle-slider:before {
     transform: translateY(0);
   }
 }
-@keyframes bounceIn {
+
+@keyframes bounce-in {
   0% {
     transform: scale(0.3);
     opacity: 0;
@@ -1097,6 +602,7 @@ input:checked + .toggle-slider:before {
     opacity: 1;
   }
 }
+
 @keyframes shake {
   0% {
     transform: translateX(0);
@@ -1117,32 +623,16 @@ input:checked + .toggle-slider:before {
     transform: translateX(0);
   }
 }
-@media (max-width: 500px) {
-  .daily-growth-spark-modal {
-    width: 95%;
-    max-width: none;
-    margin: 10px;
-  }
-  .emoji-card {
-    width: 60px;
-    height: 60px;
-  }
-  .emoji {
-    font-size: 2.5rem;
-  }
-  .progress-steps {
-    flex-direction: column;
-    gap: 8px;
-  }
-  .step-label {
-    font-size: 0.65rem;
-  }
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.3s ease-out;
 }
-.action-button:focus,
-.secondary-button:focus,
-.danger-button:focus,
-.close-button:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+
+.animate-bounce-in {
+  animation: bounce-in 0.6s;
+}
+
+.animate-shake {
+  animation: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 </style>
