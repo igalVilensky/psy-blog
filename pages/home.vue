@@ -17,6 +17,7 @@
     <ProfilingReasons :reasons="profilingReasons" />
     <CTASection v-if="!isLoggedIn" />
   </div>
+  <DailyGrowthSpark />
 </template>
 
 <script setup>
@@ -34,6 +35,7 @@ import RecentUpdates from "~/components/home-page/RecentUpdates.vue";
 import SuccessStories from "~/components/home-page/SuccessStories.vue";
 import ProfilingReasons from "~/components/home-page/ProfilingReasons.vue";
 import CTASection from "~/components/home-page/CTASection.vue";
+import DailyGrowthSpark from "~/components/growth-spark/DailyGrowthSpark.vue";
 
 const authStore = useAuthStore();
 const firestore = useFirestore();
@@ -60,9 +62,8 @@ const latestBlogPosts = computed(() => {
 const loadBlogPosts = async () => {
   try {
     const initialPosts = await fetchPosts();
-    blogPosts.value = Array.isArray(initialPosts.data.value)
-      ? initialPosts.data.value
-      : [];
+    // Check if initialPosts is an array directly
+    blogPosts.value = Array.isArray(initialPosts) ? initialPosts : [];
     if (blogPosts.value.length > 0) {
       await Promise.all(
         blogPosts.value.map(async (post) => {
@@ -75,8 +76,6 @@ const loadBlogPosts = async () => {
     blogPosts.value = [];
   }
 };
-
-await loadBlogPosts();
 
 // Fetch stats for logged-in users
 const fetchUserStats = async (userId) => {
@@ -205,6 +204,8 @@ const fetchProfilingReasons = async () => {
 onMounted(async () => {
   recentUpdates.value = await fetchRecentUpdates();
   profilingReasons.value = await fetchProfilingReasons();
+  await loadBlogPosts();
+
   if (isLoggedIn.value) {
     const userId = authStore.user.uid;
     await fetchUserStats(userId);

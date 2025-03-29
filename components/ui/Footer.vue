@@ -157,6 +157,7 @@ const sitemapLinks = [
   },
   { label: "О проекте", to: "/about" },
   { label: "Блог", to: "/blog" },
+  { label: "FAQ", to: "/faq" },
   { label: "Связь", to: "/contact" },
 ];
 
