@@ -1,7 +1,7 @@
 <template>
   <section class="relative overflow-hidden">
     <div class="relative container mx-auto px-4 sm:px-0 max-w-6xl z-10">
-      <div class="text-center">
+      <div class="text-center px-4 xl:px-0">
         <h1
           v-if="!isLoggedIn"
           class="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight"

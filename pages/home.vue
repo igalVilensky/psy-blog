@@ -11,6 +11,7 @@
           <BlogPosts :posts="latestBlogPosts" />
           <RecentUpdates :updates="recentUpdates" />
         </div>
+        <NotificationsSection :notifications="notifications" />
         <SuccessStories v-if="!isLoggedIn" :stories="successStories" />
       </div>
     </section>
@@ -35,6 +36,7 @@ import RecentUpdates from "~/components/home-page/RecentUpdates.vue";
 import SuccessStories from "~/components/home-page/SuccessStories.vue";
 import ProfilingReasons from "~/components/home-page/ProfilingReasons.vue";
 import CTASection from "~/components/home-page/CTASection.vue";
+import NotificationsSection from "~/components/home-page/NotificationsSection.vue";
 import DailyGrowthSpark from "~/components/growth-spark/DailyGrowthSpark.vue";
 
 const authStore = useAuthStore();
@@ -52,6 +54,39 @@ const blogPosts = ref([]);
 const recentUpdates = ref([]);
 const successStories = ref([]);
 const profilingReasons = ref([]);
+
+const notifications = ref([]);
+
+// Add this to your existing onMounted or create a separate function
+const fetchNotifications = async (userId) => {
+  if (!userId) {
+    notifications.value = [];
+    return;
+  }
+
+  // Mock logic for now; replace with real checks later
+  const today = new Date().toISOString().split("T")[0];
+  const hasEmotionalEntry = await checkEmotionalCompassEntry(userId, today);
+  const hasDailySpark = await checkDailySparkCompletion(userId, today);
+
+  notifications.value = [];
+  if (!hasEmotionalEntry) {
+    notifications.value.push({
+      id: 1,
+      message: "Don't forget to log your emotions today!",
+      link: "/tools/emotion-barometer",
+      ctaText: "Log Now",
+    });
+  }
+  if (!hasDailySpark) {
+    notifications.value.push({
+      id: 2,
+      message: "Complete your Daily Spark task for a bonus!",
+      link: "/daily-spark",
+      ctaText: "Start Now",
+    });
+  }
+};
 
 const latestBlogPosts = computed(() => {
   return blogPosts.value
@@ -209,6 +244,7 @@ onMounted(async () => {
   if (isLoggedIn.value) {
     const userId = authStore.user.uid;
     await fetchUserStats(userId);
+    await fetchNotifications(userId); // Add this line
     recentActions.value = await fetchRecentActions();
     recommendations.value = await fetchRecommendations();
   } else {
@@ -228,6 +264,19 @@ onMounted(async () => {
       },
     };
     successStories.value = await fetchSuccessStories();
+    notifications.value = []; // Empty for non-logged-in users
   }
 });
+
+// Mock functions for checking entries (replace with real API calls)
+const checkEmotionalCompassEntry = async (userId, date) => {
+  // Replace with actual Firestore check
+  const emotionStats = await getEmotionBarometerStats(firestore, userId);
+  return emotionStats.success && emotionStats.stats.lastEntryDate === date;
+};
+
+const checkDailySparkCompletion = async (userId, date) => {
+  // Replace with actual Firestore check
+  return false; // Placeholder
+};
 </script>

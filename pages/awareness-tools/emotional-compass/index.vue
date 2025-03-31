@@ -483,7 +483,7 @@ const handleSubmit = async () => {
   );
 
   if (response.success) {
-    $markEntry(); // Сбрасываем уведомление из inAppReminder
+    $markEntry("emotion"); // Reset Emotional Compass reminder
 
     if (currentRecommendations.value.length > 0) {
       showModal.value = true;
@@ -491,7 +491,7 @@ const handleSubmit = async () => {
       closeModal();
     }
 
-    // Reset all state variables
+    // Reset state
     currentStep.value = 1;
     selectedEmotion.value = null;
     journalEntry.value = "";
