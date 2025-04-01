@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen">
-    <!-- Hero Section with updated design -->
+    <!-- Hero Section (Full Width) -->
     <header class="pt-12 pb-16 sm:pt-20 sm:pb-24 px-4 xl:px-0">
       <div class="container mx-auto max-w-6xl">
         <HeroSection
@@ -15,23 +15,29 @@
     <!-- Main Content Area -->
     <main class="px-6 xl:px-0 pb-20">
       <div class="container mx-auto max-w-6xl">
-        <!-- Notification Banner (if present) -->
-        <NotificationsSection :notifications="notifications" class="mb-8" />
-
-        <!-- Two-column layout for blog posts and updates -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16">
-          <div class="lg:col-span-8">
-            <BlogPosts :posts="latestBlogPosts" class="rounded-xl shadow-md" />
-          </div>
-          <div class="lg:col-span-4">
-            <RecentUpdates
-              :updates="recentUpdates"
-              class="rounded-xl shadow-md"
-            />
-          </div>
+        <!-- Two-Column Layout: Notifications and Recent Updates -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+          <NotificationsSection
+            :notifications="notifications"
+            class="rounded-xl shadow-md"
+          />
+          <RecentUpdates
+            :updates="recentUpdates"
+            class="rounded-xl shadow-md"
+          />
         </div>
 
-        <!-- Success Stories for non-logged in users -->
+        <!-- Daily Growth Spark Summary (Full Width) -->
+        <section class="mb-16">
+          <DailyGrowthSparkSummary class="rounded-xl shadow-md" />
+        </section>
+
+        <!-- Blog Posts (Full Width) -->
+        <section class="mb-16">
+          <BlogPosts :posts="latestBlogPosts" class="rounded-xl shadow-md" />
+        </section>
+
+        <!-- Success Stories for Non-Logged-In Users (Full Width) -->
         <section v-if="!isLoggedIn" class="mb-16">
           <SuccessStories
             :stories="successStories"
@@ -39,7 +45,7 @@
           />
         </section>
 
-        <!-- Why Profiling Section with cards -->
+        <!-- Why Profiling Section (Grid Layout) -->
         <section class="mb-16">
           <ProfilingReasons
             :reasons="profilingReasons"
@@ -47,15 +53,16 @@
           />
         </section>
 
-        <!-- CTA Section for non-logged in users -->
-        <CTASection
-          v-if="!isLoggedIn"
-          class="bg-indigo-600 text-white rounded-xl shadow-lg p-8"
-        />
+        <!-- CTA Section for Non-Logged-In Users (Full Width) -->
+        <section v-if="!isLoggedIn">
+          <CTASection
+            class="bg-indigo-600 text-white rounded-xl shadow-lg p-8"
+          />
+        </section>
       </div>
     </main>
 
-    <!-- Daily Growth Spark (floating component) -->
+    <!-- Daily Growth Spark (Floating Component) -->
     <DailyGrowthSpark class="fixed bottom-6 right-6 z-50" />
   </div>
 </template>
@@ -77,15 +84,16 @@ import ProfilingReasons from "~/components/home-page/ProfilingReasons.vue";
 import CTASection from "~/components/home-page/CTASection.vue";
 import NotificationsSection from "~/components/home-page/NotificationsSection.vue";
 import DailyGrowthSpark from "~/components/growth-spark/DailyGrowthSpark.vue";
+import DailyGrowthSparkSummary from "~/components/growth-spark/DailyGrowthSparkSummary.vue";
 
 const authStore = useAuthStore();
 const firestore = useFirestore();
 const isLoggedIn = computed(() => !!authStore.user);
 
 const stats = ref({
-  tests: null, // { completedTest: { name, topArchetypes }, ctas: [{ name, link }] }
-  courses: null, // { purchasedCourses: [{ name, progressPercentage }], cta: { link } }
-  tools: null, // { emotionStats: { totalEntries }, reminder: { link }, cta: { link } }
+  tests: null,
+  courses: null,
+  tools: null,
 });
 const recentActions = ref([]);
 const recommendations = ref([]);
@@ -93,17 +101,13 @@ const blogPosts = ref([]);
 const recentUpdates = ref([]);
 const successStories = ref([]);
 const profilingReasons = ref([]);
-
 const notifications = ref([]);
 
-// Add this to your existing onMounted or create a separate function
 const fetchNotifications = async (userId) => {
   if (!userId) {
     notifications.value = [];
     return;
   }
-
-  // Mock logic for now; replace with real checks later
   const today = new Date().toISOString().split("T")[0];
   const hasEmotionalEntry = await checkEmotionalCompassEntry(userId, today);
   const hasDailySpark = await checkDailySparkCompletion(userId, today);
@@ -136,7 +140,6 @@ const latestBlogPosts = computed(() => {
 const loadBlogPosts = async () => {
   try {
     const initialPosts = await fetchPosts();
-    // Check if initialPosts is an array directly
     blogPosts.value = Array.isArray(initialPosts) ? initialPosts : [];
     if (blogPosts.value.length > 0) {
       await Promise.all(
@@ -151,9 +154,7 @@ const loadBlogPosts = async () => {
   }
 };
 
-// Fetch stats for logged-in users
 const fetchUserStats = async (userId) => {
-  // Assessments (Archetype Test)
   const assessmentResponse = await getLatestUserAssessment(firestore, userId);
   if (assessmentResponse.success) {
     const scores = assessmentResponse.assessment.scores;
@@ -175,7 +176,6 @@ const fetchUserStats = async (userId) => {
     };
   }
 
-  // Courses
   const coursesResponse = await getPurchasedCourses(userId);
   if (coursesResponse.success && coursesResponse.data.length > 0) {
     stats.value.courses = {
@@ -192,7 +192,6 @@ const fetchUserStats = async (userId) => {
     };
   }
 
-  // Emotion Barometer
   const emotionStatsResponse = await getEmotionBarometerStats(
     firestore,
     userId
@@ -215,7 +214,6 @@ const fetchUserStats = async (userId) => {
   }
 };
 
-// Mock fetch functions for non-logged-in users
 const fetchRecentActions = async () => {
   return [
     {
@@ -252,6 +250,7 @@ const fetchRecentUpdates = async () => {
     },
   ];
 };
+
 const fetchSuccessStories = async () => {
   return [
     { id: 1, quote: "Тесты помогли мне понять себя.", author: "Анна, 34" },
@@ -262,13 +261,14 @@ const fetchSuccessStories = async () => {
     },
   ];
 };
+
 const fetchProfilingReasons = async () => {
   return [
     {
       id: 1,
       title: "Самопознание",
       description: "Узнайте свои сильные и слабые стороны.",
-      icon: "brain", // Icons will be implemented in the component
+      icon: "brain",
     },
     {
       id: 2,
@@ -313,19 +313,16 @@ onMounted(async () => {
       },
     };
     successStories.value = await fetchSuccessStories();
-    notifications.value = []; // Empty for non-logged-in users
+    notifications.value = [];
   }
 });
 
-// Mock functions for checking entries (replace with real API calls)
 const checkEmotionalCompassEntry = async (userId, date) => {
-  // Replace with actual Firestore check
   const emotionStats = await getEmotionBarometerStats(firestore, userId);
   return emotionStats.success && emotionStats.stats.lastEntryDate === date;
 };
 
 const checkDailySparkCompletion = async (userId, date) => {
-  // Replace with actual Firestore check
   return false; // Placeholder
 };
 </script>

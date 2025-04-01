@@ -307,14 +307,43 @@
         </div>
       </div>
     </div>
+
+    <Notification
+      v-if="notificationMessage"
+      :message="notificationMessage"
+      :type="notificationType"
+      @close="hideNotification"
+      class="z-50"
+    />
   </Teleport>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import {
+  getDailyGrowthSparkData,
+  saveDailyGrowthSparkEntry,
+} from "~/api/firebase/dailyGrowthSpark";
+import { useNotification } from "@/composables/useNotification";
+import Notification from "~/components/base/Notification.vue";
+
+// Authentication and Firestore
+const auth = getAuth();
+const db = getFirestore();
+const user = ref(null);
+
+// Notification handling
+const {
+  notificationMessage,
+  notificationType,
+  showNotification,
+  hideNotification,
+} = useNotification();
 
 // Modal visibility
-const isVisible = ref(true);
+const isVisible = ref(false); // Start hidden, show only if authenticated and not completed today
 const showConfirmation = ref(false);
 
 // Stage control
@@ -333,14 +362,29 @@ const progressPercentage = computed(() => {
 });
 
 // Streak and points tracking
-const streakDays = ref(1);
+const streakDays = ref(0);
 const points = ref(0);
 
-onMounted(() => {
-  const savedStreak = localStorage.getItem("growthStreak");
-  const savedPoints = localStorage.getItem("growthPoints");
-  if (savedStreak) streakDays.value = parseInt(savedStreak);
-  if (savedPoints) points.value = parseInt(savedPoints);
+// Check auth state and fetch data
+onMounted(async () => {
+  onAuthStateChanged(auth, async (currentUser) => {
+    if (currentUser) {
+      user.value = currentUser;
+      const response = await getDailyGrowthSparkData(db, currentUser.uid);
+      if (response.success) {
+        streakDays.value = response.data.streakDays;
+        points.value = response.data.points;
+        const lastUpdated = response.data.lastUpdated;
+        const today = new Date().toISOString().split("T")[0];
+        // Show modal only if not completed today
+        if (lastUpdated !== today) {
+          isVisible.value = true;
+        }
+      }
+    } else {
+      isVisible.value = false; // Hide if not authenticated
+    }
+  });
 });
 
 // Emotion Insight Game Logic
@@ -481,10 +525,9 @@ const tipCategories = ref([
 ]);
 const selectedCategory = ref("Осознанность");
 
-const submitTip = () => {
+const submitTip = async () => {
   points.value += 20; // Bonus for sharing a tip
   const growthData = {
-    date: new Date().toISOString(),
     gameResults: { wins: winCount.value },
     energy: {
       level: energyLevel.value,
@@ -497,18 +540,24 @@ const submitTip = () => {
       category: selectedCategory.value,
       isAnonymous: isAnonymous.value,
     },
+    points: points.value,
   };
 
-  console.log("Ежедневная искра роста завершена:", growthData);
-  localStorage.setItem("growthStreak", (streakDays.value + 1).toString());
-  localStorage.setItem("growthPoints", points.value.toString());
-  localStorage.setItem("lastGrowthSpark", new Date().toDateString());
-  currentStage.value = "success";
+  const response = await saveDailyGrowthSparkEntry(
+    db,
+    user.value.uid,
+    growthData,
+    showNotification
+  );
+  if (response.success) {
+    streakDays.value = response.streakDays;
+    points.value = response.points;
+    currentStage.value = "success";
+  }
 };
 
-const skipTip = () => {
+const skipTip = async () => {
   const growthData = {
-    date: new Date().toISOString(),
     gameResults: { wins: winCount.value },
     energy: {
       level: energyLevel.value,
@@ -517,12 +566,20 @@ const skipTip = () => {
         .map((item) => item.label),
     },
     insight: null,
+    points: points.value,
   };
 
-  console.log("Ежедневная искра роста завершена (совет пропущен):", growthData);
-  localStorage.setItem("growthStreak", (streakDays.value + 1).toString());
-  localStorage.setItem("growthPoints", points.value.toString());
-  currentStage.value = "success";
+  const response = await saveDailyGrowthSparkEntry(
+    db,
+    user.value.uid,
+    growthData,
+    showNotification
+  );
+  if (response.success) {
+    streakDays.value = response.streakDays;
+    points.value = response.points;
+    currentStage.value = "success";
+  }
 };
 
 // Success summary
