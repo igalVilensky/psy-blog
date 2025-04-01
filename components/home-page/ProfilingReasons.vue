@@ -1,5 +1,5 @@
 <template>
-  <section class="pb-20 px-4 relative overflow-hidden">
+  <section class="pb-20 relative overflow-hidden">
     <div class="container mx-auto max-w-4xl relative z-10">
       <h2 class="text-2xl font-bold text-white mb-6 sm:text-center">
         Почему важно знать свой психологический профиль?

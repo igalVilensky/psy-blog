@@ -1,14 +1,14 @@
 <template>
-  <section class="py-12">
+  <section class="pb-12">
     <div class="container mx-auto max-w-6xl">
       <h2 class="text-2xl font-bold text-white mb-6">
-        Notifications ({{ notifications.length }})
+        Уведомления ({{ notifications.length }})
       </h2>
       <div v-if="isLoggedIn && notifications.length > 0" class="space-y-4">
         <div
           v-for="notification in notifications"
           :key="notification.id"
-          class="bg-white/5 backdrop-blur-lg p-6 rounded-xl border border-sky-500/20 hover:border-sky-500/40 transition-all duration-300"
+          class="bg-white/5 backdrop-blur-lg p-6 text-white rounded-xl border border-sky-500/20 hover:border-sky-500/40 transition-all duration-300"
         >
           <p>{{ notification.message }}</p>
           <a
@@ -24,11 +24,15 @@
         v-else-if="isLoggedIn && notifications.length === 0"
         class="text-gray-600"
       >
-        No new notifications.
+        Нет новых уведомлений.
       </div>
       <div v-else class="text-center">
-        <p class="mb-4">Stay on top of your growth with daily notifications!</p>
-        <a href="/signup" class="btn btn-primary">Sign Up to Get Started</a>
+        <p class="mb-4">
+          Следите за своим ростом с помощью ежедневных уведомлений!
+        </p>
+        <a href="/signup" class="btn btn-primary"
+          >Зарегистрируйтесь, чтобы начать</a
+        >
       </div>
     </div>
   </section>

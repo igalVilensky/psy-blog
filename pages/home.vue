@@ -1,24 +1,63 @@
 <template>
-  <div class="min-h-screen mt-12 sm:mt-24">
-    <HeroSection
-      :stats="stats"
-      :recent-actions="recentActions"
-      :recommendations="recommendations"
-    />
-    <section class="pb-20 pt-16 px-4 sm:px-6 lg:px-0 relative overflow-hidden">
-      <div class="container mx-auto max-w-6xl relative z-10">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <BlogPosts :posts="latestBlogPosts" />
-          <RecentUpdates :updates="recentUpdates" />
-        </div>
-        <NotificationsSection :notifications="notifications" />
-        <SuccessStories v-if="!isLoggedIn" :stories="successStories" />
+  <div class="min-h-screen">
+    <!-- Hero Section with updated design -->
+    <header class="pt-12 pb-16 sm:pt-20 sm:pb-24 px-4 xl:px-0">
+      <div class="container mx-auto max-w-6xl">
+        <HeroSection
+          :stats="stats"
+          :recent-actions="recentActions"
+          :recommendations="recommendations"
+          class="rounded-2xl shadow-xl overflow-hidden"
+        />
       </div>
-    </section>
-    <ProfilingReasons :reasons="profilingReasons" />
-    <CTASection v-if="!isLoggedIn" />
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="px-6 xl:px-0 pb-20">
+      <div class="container mx-auto max-w-6xl">
+        <!-- Notification Banner (if present) -->
+        <NotificationsSection :notifications="notifications" class="mb-8" />
+
+        <!-- Two-column layout for blog posts and updates -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16">
+          <div class="lg:col-span-8">
+            <BlogPosts :posts="latestBlogPosts" class="rounded-xl shadow-md" />
+          </div>
+          <div class="lg:col-span-4">
+            <RecentUpdates
+              :updates="recentUpdates"
+              class="rounded-xl shadow-md"
+            />
+          </div>
+        </div>
+
+        <!-- Success Stories for non-logged in users -->
+        <section v-if="!isLoggedIn" class="mb-16">
+          <SuccessStories
+            :stories="successStories"
+            class="rounded-xl shadow-md"
+          />
+        </section>
+
+        <!-- Why Profiling Section with cards -->
+        <section class="mb-16">
+          <ProfilingReasons
+            :reasons="profilingReasons"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          />
+        </section>
+
+        <!-- CTA Section for non-logged in users -->
+        <CTASection
+          v-if="!isLoggedIn"
+          class="bg-indigo-600 text-white rounded-xl shadow-lg p-8"
+        />
+      </div>
+    </main>
+
+    <!-- Daily Growth Spark (floating component) -->
+    <DailyGrowthSpark class="fixed bottom-6 right-6 z-50" />
   </div>
-  <DailyGrowthSpark />
 </template>
 
 <script setup>
@@ -124,7 +163,7 @@ const fetchUserStats = async (userId) => {
       .map(([name, score]) => ({ name, score }));
     stats.value.tests = {
       completedTest: { name: "Archetype Test", topArchetypes },
-      ctas: [{ name: "Big 5 Test", link: "/tests/big-5" }],
+      ctas: [{ name: "Big 5 Test", link: "/awareness-tools/big-5-model" }],
     };
   } else {
     stats.value.tests = {
@@ -191,12 +230,14 @@ const fetchRecentActions = async () => {
     },
   ];
 };
+
 const fetchRecommendations = async () => {
   return [
     { id: 1, text: "Завершите тест: Эмоциональный компас" },
     { id: 2, text: "Попробуйте курс: Основы осознанности" },
   ];
 };
+
 const fetchRecentUpdates = async () => {
   return [
     {
@@ -227,11 +268,19 @@ const fetchProfilingReasons = async () => {
       id: 1,
       title: "Самопознание",
       description: "Узнайте свои сильные и слабые стороны.",
+      icon: "brain", // Icons will be implemented in the component
     },
     {
       id: 2,
       title: "Развитие",
       description: "Ставьте цели, основанные на вашем профиле.",
+      icon: "target",
+    },
+    {
+      id: 3,
+      title: "Понимание",
+      description: "Осознайте свои эмоциональные паттерны.",
+      icon: "heart",
     },
   ];
 };
@@ -244,7 +293,7 @@ onMounted(async () => {
   if (isLoggedIn.value) {
     const userId = authStore.user.uid;
     await fetchUserStats(userId);
-    await fetchNotifications(userId); // Add this line
+    await fetchNotifications(userId);
     recentActions.value = await fetchRecentActions();
     recommendations.value = await fetchRecommendations();
   } else {
