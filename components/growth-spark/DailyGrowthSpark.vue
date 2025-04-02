@@ -2,19 +2,19 @@
   <Teleport to="body">
     <div
       v-if="isVisible"
-      class="fixed inset-0 bg-black/60 flex justify-center items-center z-[999] backdrop-blur-sm"
+      class="fixed inset-0 bg-black/60 flex justify-center items-start md:items-center z-[999] backdrop-blur-sm overflow-y-auto"
       @click="handleOverlayClick"
     >
       <div
-        class="bg-white rounded-2xl w-[90%] max-w-[500px] flex flex-col shadow-2xl overflow-hidden animate-fade-in-up"
+        class="bg-white rounded-2xl w-[95%] max-w-[500px] flex flex-col shadow-2xl overflow-hidden animate-fade-in-up my-4"
         @click.stop
       >
         <!-- Modal header with progress indicator -->
-        <div class="p-6 border-b border-gray-100 relative">
-          <h2 class="text-2xl font-semibold text-gray-800">
+        <div class="p-4 border-b border-gray-100 relative">
+          <h2 class="text-xl font-semibold text-gray-800">
             Ежедневная искра роста
           </h2>
-          <div class="mt-4">
+          <div class="mt-3">
             <div class="flex justify-between mb-2">
               <div
                 v-for="(step, index) in [
@@ -31,7 +31,7 @@
               >
                 <div
                   :class="[
-                    'w-6 h-6 rounded-full flex items-center justify-center text-sm font-semibold mb-1 transition-all',
+                    'w-5 h-5 rounded-full flex items-center justify-center text-xs font-semibold mb-1 transition-all',
                     getStageIndex(currentStage) === index
                       ? 'bg-blue-500 text-white'
                       : getStageIndex(currentStage) > index
@@ -41,7 +41,13 @@
                 >
                   {{ index + 1 }}
                 </div>
-                <div class="text-xs">{{ step }}</div>
+                <div class="text-xs hidden sm:block">{{ step }}</div>
+                <!-- Mobile version - just show number -->
+                <div class="text-xs sm:hidden">
+                  {{
+                    index === 0 ? "Эмоция" : index === 1 ? "Энергия" : "Совет"
+                  }}
+                </div>
               </div>
             </div>
             <div class="h-1 bg-gray-200 rounded-full relative">
@@ -52,48 +58,50 @@
             </div>
           </div>
           <div class="absolute top-4 right-12 text-sm text-gray-600">
-            Очки: {{ points }}
+            <i class="fas fa-star text-yellow-400"></i> {{ points }}
           </div>
           <button
             class="absolute right-4 top-4 text-gray-500 hover:text-gray-700 hover:bg-gray-100 w-8 h-8 flex items-center justify-center rounded-full transition-all"
             @click="confirmClose"
             aria-label="Закрыть"
           >
-            <span aria-hidden="true">×</span>
+            <i class="fas fa-times"></i>
           </button>
         </div>
 
-        <div class="p-6 overflow-y-auto">
+        <div class="p-4 overflow-y-auto max-h-[70vh]">
           <!-- Stage 1: Emotion Insight Game -->
-          <div v-if="currentStage === 'emotion'" class="space-y-5">
+          <div v-if="currentStage === 'emotion'" class="space-y-4">
             <div class="flex justify-between items-center">
-              <h3 class="text-lg font-medium">
+              <h3 class="text-base font-medium">
                 Эмоциональная проницательность
               </h3>
               <div class="flex gap-1">
                 <div
                   v-for="i in 3"
                   :key="i"
-                  class="text-xl transition-all"
+                  class="text-lg transition-all"
                   :class="{
                     'opacity-30': winCount < i,
                     'scale-110': winCount >= i,
                   }"
                 >
-                  🌟
+                  <i class="fas fa-star text-yellow-400"></i>
                 </div>
               </div>
             </div>
-            <div class="bg-gray-50 p-4 rounded-xl text-center">
-              <p class="text-gray-700 italic">{{ currentScenario.prompt }}</p>
+            <div class="bg-gray-50 p-3 rounded-xl text-center">
+              <p class="text-gray-700 italic text-sm">
+                {{ currentScenario.prompt }}
+              </p>
             </div>
-            <div class="flex justify-center gap-4">
+            <div class="flex justify-center gap-3">
               <div
                 v-for="(emotion, index) in currentScenario.emotions"
                 :key="index"
                 @click="handleEmotionClick(index)"
                 :class="[
-                  'w-24 h-20 flex flex-col items-center justify-center bg-gray-50 rounded-xl cursor-pointer transition-all border-2',
+                  'w-20 h-16 flex flex-col items-center justify-center bg-gray-50 rounded-xl cursor-pointer transition-all border-2',
                   selectedIndex === index
                     ? 'border-blue-500'
                     : 'border-transparent',
@@ -106,14 +114,14 @@
                   'hover:-translate-y-1 hover:shadow-md',
                 ]"
               >
-                <span class="text-2xl">{{ emotion.emoji }}</span>
-                <span class="text-sm mt-1">{{ emotion.label }}</span>
+                <span class="text-xl">{{ emotion.emoji }}</span>
+                <span class="text-xs mt-1">{{ emotion.label }}</span>
               </div>
             </div>
             <div
               v-if="feedback"
               :class="[
-                'p-3 rounded-lg text-center font-medium',
+                'p-2 rounded-lg text-center font-medium text-sm',
                 isCorrect
                   ? 'bg-green-100 text-green-700'
                   : 'bg-red-100 text-red-700',
@@ -124,75 +132,72 @@
             <button
               v-if="gameComplete"
               @click="nextRound"
-              class="bg-blue-500 text-white px-5 py-2 rounded-lg font-medium hover:bg-blue-600 transition-all hover:-translate-y-1 mx-auto block"
+              class="bg-blue-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-600 transition-all hover:-translate-y-1 mx-auto block text-sm"
             >
               {{ winCount >= 3 ? "Продолжить" : "Следующий вопрос" }}
             </button>
           </div>
 
           <!-- Stage 2: Energy Tracker -->
-          <div v-if="currentStage === 'energy'" class="text-center space-y-6">
-            <h3 class="text-lg font-medium">Как ваша энергия сегодня?</h3>
+          <div v-if="currentStage === 'energy'" class="text-center space-y-4">
+            <h3 class="text-base font-medium">Как ваша энергия сегодня?</h3>
             <div>
-              <div class="text-5xl mb-2 transition-all">{{ energyEmoji }}</div>
-              <div class="text-lg font-medium text-gray-700">
+              <div class="text-4xl mb-2 transition-all">{{ energyEmoji }}</div>
+              <div class="text-base font-medium text-gray-700">
                 {{ energyLevel }} - {{ energyFeedback }}
               </div>
             </div>
-            <div class="flex items-center px-3">
-              <span class="text-sm text-gray-600 w-10 text-right">Низкая</span>
+            <div class="flex items-center px-2">
+              <span class="text-xs text-gray-600 w-8 text-right">Низкая</span>
               <input
                 type="range"
                 v-model="energyLevel"
                 min="0"
                 max="10"
                 step="1"
-                class="flex-1 h-2 mx-3 rounded-full appearance-none bg-gradient-to-r from-red-400 via-yellow-400 to-green-400"
+                class="flex-1 h-2 mx-2 rounded-full appearance-none bg-gradient-to-r from-red-400 via-yellow-400 to-green-400"
               />
-              <span class="text-sm text-gray-600 w-10 text-left">Высокая</span>
+              <span class="text-xs text-gray-600 w-8 text-left">Высокая</span>
             </div>
-            <div class="bg-gray-50 p-4 rounded-xl">
-              <h4 class="text-base font-medium mb-3">Топливо для роста</h4>
+            <div class="bg-gray-50 p-3 rounded-xl">
+              <h4 class="text-sm font-medium mb-2">Топливо для роста</h4>
               <div class="flex flex-wrap justify-center gap-2">
                 <div
                   v-for="(item, index) in growthFuelItems"
                   :key="index"
                   :class="[
-                    'flex flex-col items-center p-2 w-20 bg-white rounded-lg cursor-pointer transition-all border',
+                    'flex flex-col items-center p-2 w-16 bg-white rounded-lg cursor-pointer transition-all border',
                     item.selected
                       ? 'bg-blue-500 text-white border-blue-500'
                       : 'border-gray-200 hover:bg-blue-50',
                   ]"
                   @click="toggleFuelItem(index)"
                 >
-                  <span class="text-2xl mb-1">{{ item.emoji }}</span>
+                  <i :class="['fas', item.icon, 'text-lg mb-1']"></i>
                   <span class="text-xs text-center">{{ item.label }}</span>
                 </div>
               </div>
             </div>
             <button
               @click="submitEnergy"
-              class="bg-blue-500 text-white px-5 py-2 rounded-lg font-medium hover:bg-blue-600 transition-all hover:-translate-y-1"
+              class="bg-blue-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-600 transition-all hover:-translate-y-1 text-sm"
             >
               Продолжить
             </button>
           </div>
 
           <!-- Stage 3: Tip Input -->
-          <div v-if="currentStage === 'tip'" class="text-center space-y-5">
-            <h3 class="text-lg font-medium">
-              Поделитесь своим открытием роста
-            </h3>
-            <p class="text-gray-600">
-              Что сегодня помогло вам вырасти? Поделитесь, чтобы вдохновить
-              других.
+          <div v-if="currentStage === 'tip'" class="text-center space-y-4">
+            <h3 class="text-base font-medium">Поделитесь своим открытием</h3>
+            <p class="text-gray-600 text-sm">
+              Что помогло вам вырасти? Поделитесь, чтобы вдохновить других.
             </p>
             <div class="flex flex-wrap justify-center gap-2">
               <span
                 v-for="(category, index) in tipCategories"
                 :key="index"
                 :class="[
-                  'px-3 py-1 bg-gray-100 rounded-full text-sm text-gray-600 cursor-pointer transition-all',
+                  'px-2 py-1 bg-gray-100 rounded-full text-xs text-gray-600 cursor-pointer transition-all',
                   selectedCategory === category
                     ? 'bg-blue-500 text-white'
                     : 'hover:bg-gray-200',
@@ -208,23 +213,23 @@
                 placeholder="Введите совет, открытие или напоминание..."
                 rows="3"
                 maxlength="280"
-                class="w-full p-4 border border-gray-200 rounded-lg resize-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                class="w-full p-3 border border-gray-200 rounded-lg resize-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-sm"
               ></textarea>
-              <div class="absolute bottom-2 right-3 text-sm text-gray-500">
+              <div class="absolute bottom-2 right-3 text-xs text-gray-500">
                 {{ tip.length }}/280
               </div>
             </div>
             <div
-              class="flex items-center justify-center gap-2 text-sm text-gray-600"
+              class="flex items-center justify-center gap-2 text-xs text-gray-600"
             >
-              <label class="relative inline-block w-9 h-5">
+              <label class="relative inline-block w-8 h-4">
                 <input
                   type="checkbox"
                   v-model="isAnonymous"
                   class="opacity-0 w-0 h-0"
                 />
                 <span
-                  class="absolute inset-0 cursor-pointer bg-gray-300 rounded-full transition-all before:absolute before:h-4 before:w-4 before:left-0.5 before:bottom-0.5 before:bg-white before:rounded-full before:transition-all"
+                  class="absolute inset-0 cursor-pointer bg-gray-300 rounded-full transition-all before:absolute before:h-3 before:w-3 before:left-0.5 before:bottom-0.5 before:bg-white before:rounded-full before:transition-all"
                   :class="{ 'bg-blue-500 before:translate-x-4': isAnonymous }"
                 ></span>
               </label>
@@ -233,17 +238,17 @@
             <div class="flex justify-center gap-3">
               <button
                 @click="skipTip"
-                class="bg-gray-100 text-gray-600 px-5 py-2 rounded-lg font-medium hover:bg-gray-200 transition-all"
+                class="bg-gray-100 text-gray-600 px-4 py-2 rounded-lg font-medium hover:bg-gray-200 transition-all text-sm"
               >
                 Пропустить
               </button>
               <button
                 @click="submitTip"
-                class="bg-blue-500 text-white px-5 py-2 rounded-lg font-medium transition-all hover:bg-blue-600 hover:-translate-y-1"
+                class="bg-blue-500 text-white px-4 py-2 rounded-lg font-medium transition-all hover:bg-blue-600 hover:-translate-y-1 text-sm"
                 :class="{ 'bg-gray-400 cursor-not-allowed': tip.trim() === '' }"
                 :disabled="tip.trim() === ''"
               >
-                Отправить и завершить
+                Отправить
               </button>
             </div>
           </div>
@@ -251,26 +256,30 @@
           <!-- Final Stage: Success -->
           <div
             v-if="currentStage === 'success'"
-            class="text-center space-y-5 py-5"
+            class="text-center space-y-4 py-3"
           >
-            <div class="text-6xl animate-bounce-in">✅</div>
-            <h3 class="text-lg font-medium">Отличная работа!</h3>
-            <p>
+            <div class="text-4xl animate-bounce-in">
+              <i class="fas fa-check-circle text-green-500"></i>
+            </div>
+            <h3 class="text-base font-medium">Отличная работа!</h3>
+            <p class="text-sm">
               Вы завершили сегодняшнюю искру роста. Возвращайтесь завтра за
               новым вызовом!
             </p>
-            <div class="bg-gray-50 p-4 rounded-xl">
-              <p class="text-gray-700">Сегодня вы: {{ successSummary }}</p>
+            <div class="bg-gray-50 p-3 rounded-xl">
+              <p class="text-gray-700 text-sm">
+                Сегодня вы: {{ successSummary }}
+              </p>
             </div>
             <div
-              class="flex items-center justify-center gap-2 bg-orange-50 p-3 rounded-lg w-fit mx-auto"
+              class="flex items-center justify-center gap-2 bg-orange-50 p-2 rounded-lg w-fit mx-auto"
             >
-              <span class="text-xl">🌟</span>
-              <span>Серия: {{ streakDays }} дней</span>
+              <i class="fas fa-fire text-orange-500"></i>
+              <span class="text-sm">Серия: {{ streakDays }} дней</span>
             </div>
             <button
               @click="closeModal"
-              class="bg-blue-500 text-white px-5 py-2 rounded-lg font-medium hover:bg-blue-600 transition-all hover:-translate-y-1"
+              class="bg-blue-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-600 transition-all hover:-translate-y-1 text-sm"
             >
               Завершить
             </button>
@@ -286,21 +295,23 @@
       @click="cancelClose"
     >
       <div
-        class="bg-white p-6 rounded-xl w-[90%] max-w-[300px] text-center"
+        class="bg-white p-5 rounded-xl w-[90%] max-w-[300px] text-center"
         @click.stop
       >
-        <h3 class="text-lg font-medium">Вы уверены?</h3>
-        <p class="mt-2">Ваш прогресс будет потерян, если вы выйдете сейчас.</p>
-        <div class="flex justify-center gap-3 mt-5">
+        <h3 class="text-base font-medium">Вы уверены?</h3>
+        <p class="mt-2 text-sm">
+          Ваш прогресс будет потерян, если вы выйдете сейчас.
+        </p>
+        <div class="flex justify-center gap-3 mt-4">
           <button
             @click="cancelClose"
-            class="bg-gray-100 text-gray-600 px-5 py-2 rounded-lg font-medium hover:bg-gray-200 transition-all"
+            class="bg-gray-100 text-gray-600 px-4 py-2 rounded-lg font-medium hover:bg-gray-200 transition-all text-sm"
           >
             Отмена
           </button>
           <button
             @click="closeModal"
-            class="bg-red-500 text-white px-5 py-2 rounded-lg font-medium hover:bg-red-600 transition-all"
+            class="bg-red-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-600 transition-all text-sm"
           >
             Выйти
           </button>
@@ -494,13 +505,13 @@ const energyEmoji = computed(() => {
   return "🤩";
 });
 
-// Growth Fuel items
+// Growth Fuel items with FontAwesome icons
 const growthFuelItems = ref([
-  { emoji: "💧", label: "Пить воду", selected: false },
-  { emoji: "🏃", label: "Размяться", selected: false },
-  { emoji: "🍎", label: "Здоровая еда", selected: false },
-  { emoji: "🧘", label: "Медитация", selected: false },
-  { emoji: "📖", label: "Учиться", selected: false },
+  { icon: "fa-tint", label: "Пить воду", selected: false },
+  { icon: "fa-running", label: "Размяться", selected: false },
+  { icon: "fa-apple-alt", label: "Здоровая еда", selected: false },
+  { icon: "fa-om", label: "Медитация", selected: false },
+  { icon: "fa-book", label: "Учиться", selected: false },
 ]);
 
 const toggleFuelItem = (index) => {
@@ -510,6 +521,7 @@ const toggleFuelItem = (index) => {
 
 const submitEnergy = () => {
   points.value += 5; // Bonus for completing energy stage
+  energyLevel.value = Number(energyLevel.value);
   currentStage.value = "tip";
 };
 
@@ -526,11 +538,11 @@ const tipCategories = ref([
 const selectedCategory = ref("Осознанность");
 
 const submitTip = async () => {
-  points.value += 20; // Bonus for sharing a tip
+  points.value += 20;
   const growthData = {
     gameResults: { wins: winCount.value },
     energy: {
-      level: energyLevel.value,
+      level: Number(energyLevel.value),
       fuelFactors: growthFuelItems.value
         .filter((item) => item.selected)
         .map((item) => item.label),
@@ -560,7 +572,7 @@ const skipTip = async () => {
   const growthData = {
     gameResults: { wins: winCount.value },
     energy: {
-      level: energyLevel.value,
+      level: Number(energyLevel.value),
       fuelFactors: growthFuelItems.value
         .filter((item) => item.selected)
         .map((item) => item.label),
@@ -621,8 +633,8 @@ const closeModal = () => {
 <style scoped>
 input[type="range"]::-webkit-slider-thumb {
   appearance: none;
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   background: white;
   border: 2px solid #3b82f6;

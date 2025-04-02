@@ -1,8 +1,8 @@
 <template>
   <div class="min-h-screen">
     <!-- Hero Section (Full Width) -->
-    <header class="pt-12 pb-16 sm:pt-20 sm:pb-24 px-4 xl:px-0">
-      <div class="container mx-auto max-w-6xl">
+    <header class="pt-12 pb-16 sm:pt-20 sm:pb-24 px-6 xl:px-0">
+      <div class="w-full sm:container sm:mx-auto sm:max-w-6xl">
         <HeroSection
           :stats="stats"
           :recent-actions="recentActions"

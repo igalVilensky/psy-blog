@@ -1,16 +1,6 @@
 <template>
-  <div class="hero-section relative overflow-hidden">
-    <!-- Background subtle pattern -->
-    <div class="absolute inset-0 opacity-10">
-      <div
-        class="absolute top-0 right-0 w-1/2 h-1/2 bg-indigo-500 rounded-full blur-3xl transform translate-x-1/3 -translate-y-1/3"
-      ></div>
-      <div
-        class="absolute bottom-0 left-0 w-1/2 h-1/2 bg-emerald-500 rounded-full blur-3xl transform -translate-x-1/3 translate-y-1/3"
-      ></div>
-    </div>
-
-    <div class="container relative z-10">
+  <div class="hero-section relative">
+    <div class="relative z-10 w-full lg:max-w-6xl lg:mx-auto">
       <div
         class="rounded-2xl overflow-hidden border border-white/10 shadow-2xl"
       >
