@@ -1,5 +1,5 @@
 <template>
-  <section class="pb-12">
+  <section>
     <div class="container mx-auto max-w-6xl">
       <h2 class="text-2xl font-bold text-white mb-6">
         Уведомления ({{ notifications.length }})
@@ -39,15 +39,21 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from "vue";
+import { computed, onMounted, onUnmounted } from "vue";
 import { useAuthStore } from "~/stores/auth";
+
+defineProps({
+  notifications: {
+    type: Array,
+    default: () => [],
+  },
+});
 
 const authStore = useAuthStore();
 const isLoggedIn = computed(() => !!authStore.user);
-const notifications = ref([]);
 const { $emitter } = useNuxtApp();
 
-// Listen for notifications from the inAppReminder plugin
+// Listen for additional notifications from the inAppReminder plugin
 onMounted(() => {
   $emitter.on("showNotification", (data) => {
     const notification = {

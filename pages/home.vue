@@ -17,14 +17,8 @@
       <div class="container mx-auto max-w-6xl">
         <!-- Two-Column Layout: Notifications and Recent Updates -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-          <NotificationsSection
-            :notifications="notifications"
-            class="rounded-xl shadow-md"
-          />
-          <RecentUpdates
-            :updates="recentUpdates"
-            class="rounded-xl shadow-md"
-          />
+          <NotificationsSection :notifications="notifications" />
+          <RecentUpdates :updates="recentUpdates" />
         </div>
 
         <!-- Daily Growth Spark Summary (Full Width) -->
@@ -75,7 +69,8 @@ import { fetchPosts } from "~/api/sanity/posts";
 import { getPostViewCount } from "~/api/firebase/views";
 import { getLatestUserAssessment } from "~/api/firebase/assessments";
 import { getPurchasedCourses } from "~/api/firebase/coursesApi";
-import { getEmotionBarometerStats } from "~/api/firebase/emotionBarometer";
+import { getEmotionBarometerData } from "~/api/firebase/emotionBarometer"; // Updated import
+import { getDailyGrowthSparkData } from "~/api/firebase/dailyGrowthSpark";
 import HeroSection from "~/components/home-page/HeroSection.vue";
 import BlogPosts from "~/components/home-page/BlogPosts.vue";
 import RecentUpdates from "~/components/home-page/RecentUpdates.vue";
@@ -109,6 +104,7 @@ const fetchNotifications = async (userId) => {
     return;
   }
   const today = new Date().toISOString().split("T")[0];
+
   const hasEmotionalEntry = await checkEmotionalCompassEntry(userId, today);
   const hasDailySpark = await checkDailySparkCompletion(userId, today);
 
@@ -116,17 +112,17 @@ const fetchNotifications = async (userId) => {
   if (!hasEmotionalEntry) {
     notifications.value.push({
       id: 1,
-      message: "Don't forget to log your emotions today!",
-      link: "/tools/emotion-barometer",
-      ctaText: "Log Now",
+      message: "Не забудьте записать свои эмоции сегодня!",
+      routePath: "/awareness-tools/emotional-compass",
+      ctaText: "Записать сейчас",
     });
   }
   if (!hasDailySpark) {
     notifications.value.push({
       id: 2,
-      message: "Complete your Daily Spark task for a bonus!",
-      link: "/daily-spark",
-      ctaText: "Start Now",
+      message: "Выполните задание Daily Spark для получения бонуса!",
+      routePath: "/home",
+      ctaText: "Начать сейчас",
     });
   }
 };
@@ -192,16 +188,13 @@ const fetchUserStats = async (userId) => {
     };
   }
 
-  const emotionStatsResponse = await getEmotionBarometerStats(
-    firestore,
-    userId
-  );
+  const emotionStatsResponse = await getEmotionBarometerData(firestore, userId); // Updated to use data
   if (
     emotionStatsResponse.success &&
-    emotionStatsResponse.stats.totalEntries > 0
+    emotionStatsResponse.data.entries.length > 0
   ) {
     stats.value.tools = {
-      emotionStats: { totalEntries: emotionStatsResponse.stats.totalEntries },
+      emotionStats: { totalEntries: emotionStatsResponse.data.entries.length },
       reminder: { link: "/tools/emotion-barometer" },
       cta: null,
     };
@@ -285,6 +278,34 @@ const fetchProfilingReasons = async () => {
   ];
 };
 
+const checkEmotionalCompassEntry = async (userId, date) => {
+  try {
+    const emotionData = await getEmotionBarometerData(firestore, userId);
+    if (emotionData.success) {
+      const { lastUpdated } = emotionData.data;
+      return lastUpdated && lastUpdated.split("T")[0] === date;
+    }
+    return false; // No entries exist yet
+  } catch (error) {
+    console.error("Error checking Emotional Compass entry:", error);
+    return false;
+  }
+};
+
+const checkDailySparkCompletion = async (userId, date) => {
+  try {
+    const response = await getDailyGrowthSparkData(firestore, userId);
+    if (response.success) {
+      const { lastUpdated } = response.data;
+      return lastUpdated && lastUpdated.split("T")[0] === date;
+    }
+    return false;
+  } catch (error) {
+    console.error("Error checking Daily Spark completion:", error);
+    return false;
+  }
+};
+
 onMounted(async () => {
   recentUpdates.value = await fetchRecentUpdates();
   profilingReasons.value = await fetchProfilingReasons();
@@ -316,13 +337,4 @@ onMounted(async () => {
     notifications.value = [];
   }
 });
-
-const checkEmotionalCompassEntry = async (userId, date) => {
-  const emotionStats = await getEmotionBarometerStats(firestore, userId);
-  return emotionStats.success && emotionStats.stats.lastEntryDate === date;
-};
-
-const checkDailySparkCompletion = async (userId, date) => {
-  return false; // Placeholder
-};
 </script>
