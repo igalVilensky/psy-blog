@@ -1,7 +1,7 @@
 <template>
-  <div class="container mx-auto max-w-6xl relative z-10 py-12">
+  <div class="container mx-auto max-w-6xl relative z-10 py-12 px-6 xl:px-0">
     <!-- Profile Header -->
-    <div class="px-6 xl:px-0">
+    <div>
       <ProfileHeader
         :avatarUrl="avatarUrl"
         :loading="loading"
@@ -25,13 +25,13 @@
       <div class="w-full max-w-6xl">
         <!-- Top Row: 3 cards -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          <!-- Core Identity Sphere -->
+          <!-- Essence Sphere (Adam Kadmon) -->
           <div
             class="sphere bg-gradient-to-b from-[#1A1F35]/60 to-[#1E293B]/80 backdrop-blur-xl rounded-2xl border border-white/10 p-6 md:p-8 hover:shadow-lg hover:shadow-[#0EA5E9]/20 transition-all transform hover:translate-y-[-4px] duration-300"
           >
             <h3 class="text-lg font-bold text-white/90 mb-6 flex items-center">
-              <i class="fas fa-user text-[#0EA5E9] mr-3"></i>
-              Личность
+              <i class="fas fa-seedling text-[#0EA5E9] mr-3"></i>
+              Сущность
             </h3>
             <div
               v-if="loadingBio"
@@ -56,19 +56,19 @@
               >
                 <div
                   class="h-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9]"
-                  style="width: 85%"
+                  :style="`width: ${calculateEssenceProgress()}%`"
                 ></div>
               </div>
             </div>
           </div>
 
-          <!-- Cognitive Sphere -->
+          <!-- Insight Sphere (Atzilut) -->
           <div
             class="sphere bg-gradient-to-b from-[#1A1F35]/60 to-[#1E293B]/80 backdrop-blur-xl rounded-2xl border border-white/10 p-6 md:p-8 hover:shadow-lg hover:shadow-[#0EA5E9]/20 transition-all transform hover:translate-y-[-4px] duration-300"
           >
             <h3 class="text-lg font-bold text-white/90 mb-6 flex items-center">
-              <i class="fas fa-brain text-[#0EA5E9] mr-3"></i>
-              Когнитивность
+              <i class="fas fa-lightbulb text-[#0EA5E9] mr-3"></i>
+              Прозрение
             </h3>
             <div
               v-if="loadingAssessments"
@@ -87,7 +87,10 @@
               >
                 <div
                   class="h-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9]"
-                  :style="`width: ${archetypeScores.length * 20}%`"
+                  :style="`width: ${Math.min(
+                    archetypeScores.length * 20,
+                    100
+                  )}%`"
                 ></div>
               </div>
               <Button
@@ -102,13 +105,13 @@
             </div>
           </div>
 
-          <!-- Emotional Sphere -->
+          <!-- Inner Realm Sphere (Beriah) -->
           <div
             class="sphere bg-gradient-to-b from-[#1A1F35]/60 to-[#1E293B]/80 backdrop-blur-xl rounded-2xl border border-white/10 p-6 md:p-8 hover:shadow-lg hover:shadow-[#0EA5E9]/20 transition-all transform hover:translate-y-[-4px] duration-300"
           >
             <h3 class="text-lg font-bold text-white/90 mb-6 flex items-center">
               <i class="fas fa-heart text-[#0EA5E9] mr-3"></i>
-              Эмоции
+              Внутренний Мир
             </h3>
             <div
               v-if="loadingEmotionBarometer"
@@ -171,13 +174,13 @@
 
         <!-- Bottom Row: 2 cards in center -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:max-w-2xl mx-auto">
-          <!-- Growth Sphere -->
+          <!-- Evolution Sphere (Yetzirah) -->
           <div
             class="sphere bg-gradient-to-b from-[#1A1F35]/60 to-[#1E293B]/80 backdrop-blur-xl rounded-2xl border border-white/10 p-6 md:p-8 hover:shadow-lg hover:shadow-[#0EA5E9]/20 transition-all transform hover:translate-y-[-4px] duration-300"
           >
             <h3 class="text-lg font-bold text-white/90 mb-6 flex items-center">
-              <i class="fas fa-seedling text-[#0EA5E9] mr-3"></i>
-              Рост
+              <i class="fas fa-arrow-up text-[#0EA5E9] mr-3"></i>
+              Эволюция
             </h3>
             <div v-if="loading" class="flex justify-center items-center h-48">
               <i class="fas fa-spinner fa-spin text-[#0EA5E9] text-xl"></i>
@@ -225,13 +228,13 @@
             </div>
           </div>
 
-          <!-- Behavioral Sphere -->
+          <!-- Action Sphere (Assiyah) -->
           <div
             class="sphere bg-gradient-to-b from-[#1A1F35]/60 to-[#1E293B]/80 backdrop-blur-xl rounded-2xl border border-white/10 p-6 md:p-8 hover:shadow-lg hover:shadow-[#0EA5E9]/20 transition-all transform hover:translate-y-[-4px] duration-300"
           >
             <h3 class="text-lg font-bold text-white/90 mb-6 flex items-center">
               <i class="fas fa-running text-[#0EA5E9] mr-3"></i>
-              Поведение
+              Действие
             </h3>
             <div
               v-if="loadingEmotionBarometer"
@@ -295,8 +298,6 @@
       </div>
     </div>
 
-    <!-- Radial Background (Decorative) -->
-
     <!-- Notification -->
     <Notification
       v-if="notificationMessage"
@@ -336,14 +337,14 @@ const avatarUrl = ref(null);
 const authStore = useAuthStore();
 const router = useRouter();
 
-// Bio Data (Core Identity)
+// Essence Sphere (Bio Data)
 const profession = ref("");
 const socialMedia = ref("");
 const age = ref("");
 const gender = ref("");
 const aboutYourself = ref("");
 
-// Emotional Sphere Data
+// Inner Realm Sphere (Emotional Data)
 const emotionBarometerStats = ref({
   totalEntries: 0,
   mostCommonEmotion: "",
@@ -352,9 +353,9 @@ const emotionBarometerStats = ref({
   emotionDistribution: {},
 });
 
-// Cognitive Sphere Data
+// Insight Sphere (Cognitive Data)
 const archetypeScores = ref([]);
-const coursesProgress = ref([]); // Placeholder for course data
+const coursesProgress = ref([]);
 const topArchetype = computed(() =>
   archetypeScores.value.length > 0
     ? archetypeScores.value.reduce((max, curr) =>
@@ -363,8 +364,8 @@ const topArchetype = computed(() =>
     : "Н/Д"
 );
 
-// Growth Sphere Data
-const dailyGrowthSpark = ref([]); // Placeholder for growth spark data
+// Evolution Sphere (Growth Data)
+const dailyGrowthSpark = ref([]);
 const latestGrowthSpark = computed(() =>
   dailyGrowthSpark.value.length > 0 ? dailyGrowthSpark.value[0] : "Н/Д"
 );
@@ -413,16 +414,24 @@ const fetchAssessmentData = async (userId) => {
   loadingAssessments.value = false;
 };
 
-// Placeholder for fetching courses and growth data
 const fetchCoursesProgress = async () => {
-  // Replace with actual API call; for now, assume archetype test counts as a "course"
   coursesProgress.value =
     archetypeScores.value.length > 0 ? [{ name: "Тест архетипов" }] : [];
 };
 
 const fetchGrowthSpark = async () => {
-  // Replace with actual API call; mock data for now
-  dailyGrowthSpark.value = []; // Add real data when available
+  dailyGrowthSpark.value = []; // Replace with actual API call when available
+};
+
+// Calculate Progress for Essence Sphere
+const calculateEssenceProgress = () => {
+  let filledFields = 0;
+  if (profession.value !== "Не указано") filledFields++;
+  if (socialMedia.value !== "Не указано") filledFields++;
+  if (age.value !== "Не указано") filledFields++;
+  if (gender.value !== "Не указано") filledFields++;
+  if (aboutYourself.value !== "Не указано") filledFields++;
+  return (filledFields / 5) * 100; // 5 fields total
 };
 
 onMounted(async () => {
@@ -479,35 +488,6 @@ const handleNotification = ({ message, type }) => {
   pointer-events: none;
 }
 
-.center-avatar-container {
-  animation: floatAvatar 6s ease-in-out infinite;
-}
-
-@keyframes floatAvatar {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-15px);
-  }
-}
-
-.radial-bg {
-  animation: pulse 15s ease-in-out infinite alternate;
-}
-
-@keyframes pulse {
-  0% {
-    opacity: 0.03;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 0.07;
-    transform: scale(1.2);
-  }
-}
-
 @media (min-width: 1024px) {
   .sphere {
     min-height: 300px;
@@ -516,12 +496,6 @@ const handleNotification = ({ message, type }) => {
     transform: translateY(-8px);
     box-shadow: 0 12px 20px -5px rgba(14, 165, 233, 0.2);
     border-color: rgba(255, 255, 255, 0.2);
-  }
-}
-
-@media (min-width: 640px) {
-  .psychological-map {
-    padding: 0 1rem;
   }
 }
 </style>
