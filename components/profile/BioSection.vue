@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-gradient-to-b from-[#1A1F35]/60 to-[#1E293B]/80 backdrop-blur-xl rounded-3xl border border-white/10 p-6 sm:p-8 mb-8 shadow-2xl"
+    class="bg-gradient-to-b from-[#1A1F35]/60 to-[#1E293B]/80 backdrop-blur-xl rounded-2xl border border-white/10 p-6 sm:p-8 mb-8 shadow-2xl"
   >
     <!-- Title and Progress Bar -->
     <div

@@ -17,7 +17,7 @@
       <!-- Guide Content Container -->
       <div
         v-if="guide"
-        class="bg-gray-800/50 backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl border border-gray-700/50"
+        class="bg-gray-800/50 backdrop-blur-xl rounded-2xl overflow-hidden shadow-2xl border border-gray-700/50"
       >
         <!-- Hero Section -->
         <div class="relative">

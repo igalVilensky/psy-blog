@@ -3,7 +3,7 @@
     <div class="container mx-auto px-4 max-w-5xl relative z-10 pb-12 pt-12">
       <!-- Glass-morphism container -->
       <div
-        class="backdrop-blur-lg bg-[#1A1F35]/40 rounded-3xl border border-[#0EA5E9]/20 shadow-2xl p-8 text-white my-12 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+        class="backdrop-blur-lg bg-[#1A1F35]/40 rounded-2xl border border-[#0EA5E9]/20 shadow-2xl p-8 text-white my-12 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
       >
         <!-- Header with animated gradient text -->
         <div class="text-center mb-16 relative">

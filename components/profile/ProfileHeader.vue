@@ -1,6 +1,6 @@
 <template>
   <div
-    class="min-h-[300px] bg-gradient-to-br from-[#1A1F35]/80 to-[#1E293B]/90 backdrop-blur-xl rounded-3xl border border-white/10 p-6 sm:p-8 lg:p-12 mb-8 shadow-2xl relative overflow-hidden"
+    class="min-h-[300px] bg-gradient-to-br from-[#1A1F35]/80 to-[#1E293B]/90 backdrop-blur-xl rounded-2xl border border-white/10 p-6 sm:p-8 lg:p-12 mb-8 shadow-2xl relative overflow-hidden"
   >
     <!-- Background Pattern -->
     <div

@@ -4,7 +4,7 @@
       <!-- Hero Section with adjusted colors -->
       <section class="text-center mb-16 relative">
         <div
-          class="absolute -inset-2 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-3xl transform -skew-y-1"
+          class="absolute -inset-2 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-2xl transform -skew-y-1"
         ></div>
         <span
           class="inline-block px-4 py-2 rounded-full bg-blue-500/20 text-cyan-300 text-sm font-medium mb-6"
