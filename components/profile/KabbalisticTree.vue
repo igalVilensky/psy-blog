@@ -9,9 +9,6 @@
 
       <!-- Horizontal connecting lines -->
       <div
-        class="absolute top-[15%] left-0 right-0 h-0.5 bg-gradient-to-r from-[#0EA5E9]/30 to-[#E879F9]/30"
-      ></div>
-      <div
         class="absolute top-[50%] left-0 right-0 h-0.5 bg-gradient-to-r from-[#0EA5E9]/30 to-[#E879F9]/30"
       ></div>
       <div
