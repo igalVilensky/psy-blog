@@ -1,13 +1,10 @@
 <template>
   <div class="w-full max-w-6xl mb-12 relative">
-    <!-- Connection Lines -->
+    <!-- Connection Lines (unchanged) -->
     <div class="absolute inset-0 z-0 hidden md:block">
-      <!-- Central axis -->
       <div
         class="absolute top-1/2 left-1/2 h-full w-0.5 bg-gradient-to-b from-[#0EA5E9]/50 to-[#E879F9]/50 transform -translate-x-1/2 -translate-y-1/2"
       ></div>
-
-      <!-- Horizontal connecting lines -->
       <div
         class="absolute top-[50%] left-0 right-0 h-0.5 bg-gradient-to-r from-[#0EA5E9]/30 to-[#E879F9]/30"
       ></div>
@@ -20,48 +17,60 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
       <!-- Adam Kadmon (Crown) - Essence -->
       <div class="md:col-start-2 md:col-span-1">
-        <SphereCard
-          title="Сущность"
-          subtitle="Адам Кадмон"
-          icon-class="fas fa-crown"
-          description="Ваша истинная природа, основа всего, потенциал души."
-          gradient-start="#7B68EE"
-          gradient-end="#E879F9"
-          icon-color="#7B68EE"
-          :loading="loadingBio"
-          :data="bioData"
-          button-text="Редактировать"
-          button-to="/profile/edit"
-          button-icon="fas fa-pen"
-          :progress="calculateEssenceProgress()"
-        >
-          <template #data-content>
-            <div class="flex justify-between items-center">
-              <span class="text-slate-300">Профессия:</span>
-              <span class="text-white font-medium">{{
-                bioData.profession || "Не указано"
-              }}</span>
-            </div>
-            <div class="flex justify-between items-center">
-              <span class="text-slate-300">Возраст:</span>
-              <span class="text-white font-medium">{{
-                bioData.age || "Не указано"
-              }}</span>
-            </div>
-            <div class="flex justify-between items-center">
-              <span class="text-slate-300">Пол:</span>
-              <span class="text-white font-medium">{{
-                bioData.gender || "Не указано"
-              }}</span>
-            </div>
-          </template>
-        </SphereCard>
+        <div class="flex flex-col md:flex-row gap-6">
+          <!-- User Avatar (only for Essence) -->
+
+          <!-- Sphere Card -->
+          <SphereCard
+            title="Сущность"
+            subtitle="Адам Кадмон"
+            icon-class="fas fa-crown"
+            description="Ваша истинная природа, основа всего, потенциал души."
+            gradient-start="#7B68EE"
+            gradient-end="#E879F9"
+            icon-color="#7B68EE"
+            :loading="loadingBio"
+            :data="bioData"
+            button-text="Редактировать"
+            button-to="/profile/edit"
+            button-icon="fas fa-pen"
+            :progress="calculateEssenceProgress()"
+          >
+            <template #data-content>
+              <div class="flex-shrink-0 flex justify-center items-center mb-4">
+                <UserAvatar
+                  :avatar-url="avatarUrl"
+                  :loading="loadingBio"
+                  :user-initial="userInitial"
+                  :size="100"
+                  :no-upload="true"
+                />
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-slate-300">Профессия:</span>
+                <span class="text-white font-medium">{{
+                  bioData.profession || "Не указано"
+                }}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-slate-300">Возраст:</span>
+                <span class="text-white font-medium">{{
+                  bioData.age || "Не указано"
+                }}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-slate-300">Пол:</span>
+                <span class="text-white font-medium">{{
+                  bioData.gender || "Не указано"
+                }}</span>
+              </div>
+            </template>
+          </SphereCard>
+        </div>
       </div>
 
       <!-- Empty cell for grid spacing -->
       <div class="hidden md:block"></div>
-
-      <!-- Empty cell for grid spacing -->
       <div class="hidden md:block"></div>
 
       <!-- Atzilut (Wisdom) - Insight -->
@@ -267,6 +276,7 @@
 
 <script setup>
 import SphereCard from "~/components/profile/SphereCard.vue";
+import UserAvatar from "~/components/profile/UserAvatar.vue"; // Import UserAvatar here
 
 defineProps({
   loading: { type: Boolean, required: true },
@@ -279,5 +289,7 @@ defineProps({
   growthData: { type: Object, required: true },
   actionData: { type: Object, required: true },
   calculateEssenceProgress: { type: Function, required: true },
+  avatarUrl: { type: String, default: null }, // Add avatarUrl prop
+  userInitial: { type: String, default: "" }, // Add userInitial prop
 });
 </script>

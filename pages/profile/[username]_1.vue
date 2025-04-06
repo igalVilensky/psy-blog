@@ -34,6 +34,8 @@
         :growth-data="growthData"
         :action-data="{ emotionBarometerStats, archetypeScores }"
         :calculate-essence-progress="calculateEssenceProgress"
+        :avatar-url="avatarUrl"
+        :user-initial="authStore.user?.displayName?.charAt(0).toUpperCase()"
       />
 
       <!-- Kabbalistic Worlds Legend -->

@@ -49,14 +49,11 @@
           :class="['fas fa-spinner fa-spin text-2xl']"
           :style="{ color: iconColor }"
         ></i>
-        <span class="absolute -bottom-6 text-sm text-white/60"
-          >Loading profile data...</span
-        >
       </div>
     </div>
     <div v-else-if="hasData" class="space-y-4 relative z-10">
       <slot name="data-content">
-        <!-- Default data display if no custom slot is provided -->
+        <!-- Default data display -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div
             v-for="(value, key) in formattedData"
@@ -92,7 +89,7 @@
         </div>
       </div>
 
-      <!-- Action Button -->
+      <!-- Action елементы Button -->
       <Button
         :to="buttonTo"
         :text="buttonText"
