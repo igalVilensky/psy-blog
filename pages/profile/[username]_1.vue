@@ -23,435 +23,18 @@
       </h2>
 
       <!-- Kabbalistic Tree Visualization -->
-      <div class="w-full max-w-6xl mb-12 relative">
-        <!-- Connection Lines -->
-        <div class="absolute inset-0 z-0 hidden md:block">
-          <!-- Central axis -->
-          <div
-            class="absolute top-1/2 left-1/2 h-full w-0.5 bg-gradient-to-b from-[#0EA5E9]/50 to-[#E879F9]/50 transform -translate-x-1/2 -translate-y-1/2"
-          ></div>
-
-          <!-- Horizontal connecting lines -->
-          <div
-            class="absolute top-[15%] left-0 right-0 h-0.5 bg-gradient-to-r from-[#0EA5E9]/30 to-[#E879F9]/30"
-          ></div>
-          <div
-            class="absolute top-[50%] left-0 right-0 h-0.5 bg-gradient-to-r from-[#0EA5E9]/30 to-[#E879F9]/30"
-          ></div>
-          <div
-            class="absolute top-[85%] left-0 right-0 h-0.5 bg-gradient-to-r from-[#0EA5E9]/30 to-[#E879F9]/30"
-          ></div>
-        </div>
-
-        <!-- Tree of Life Layout -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
-          <!-- Adam Kadmon (Crown) - Essence -->
-          <div class="md:col-start-2 md:col-span-1">
-            <div
-              class="sphere bg-gradient-to-b from-[#1A1F35]/80 to-[#1E293B]/90 backdrop-blur-xl rounded-2xl border border-white/20 p-6 md:p-8 hover:shadow-lg hover:shadow-[#7B68EE]/20 transition-all transform hover:translate-y-[-4px] duration-300 relative overflow-hidden"
-            >
-              <!-- Decorative Element -->
-              <div
-                class="absolute top-0 right-0 w-24 h-24 bg-[#7B68EE]/10 rounded-full blur-2xl"
-              ></div>
-
-              <div class="flex items-center justify-between mb-6">
-                <h3 class="text-xl font-bold text-white/90 flex items-center">
-                  <i class="fas fa-crown text-[#7B68EE] mr-3"></i>
-                  Сущность
-                </h3>
-                <span class="text-xs text-white/50">Адам Кадмон</span>
-              </div>
-
-              <p class="text-sm text-white/60 mb-4">
-                Ваша истинная природа, основа всего, потенциал души.
-              </p>
-
-              <div
-                v-if="loadingBio"
-                class="flex justify-center items-center h-36"
-              >
-                <i class="fas fa-spinner fa-spin text-[#7B68EE] text-xl"></i>
-              </div>
-              <div v-else class="space-y-3">
-                <div class="flex justify-between items-center">
-                  <span class="text-slate-300">Профессия:</span>
-                  <span class="text-white font-medium">{{
-                    profession || "Не указано"
-                  }}</span>
-                </div>
-                <div class="flex justify-between items-center">
-                  <span class="text-slate-300">Возраст:</span>
-                  <span class="text-white font-medium">{{
-                    age || "Не указано"
-                  }}</span>
-                </div>
-                <div class="flex justify-between items-center">
-                  <span class="text-slate-300">Пол:</span>
-                  <span class="text-white font-medium">{{
-                    gender || "Не указано"
-                  }}</span>
-                </div>
-
-                <div
-                  class="sphere-progress mt-6 h-2 bg-white/10 rounded-full overflow-hidden"
-                >
-                  <div
-                    class="h-full bg-gradient-to-r from-[#7B68EE] to-[#E879F9]"
-                    :style="`width: ${calculateEssenceProgress()}%`"
-                  ></div>
-                </div>
-
-                <Button
-                  to="/profile/edit"
-                  text="Редактировать"
-                  iconClass="fas fa-pen"
-                  gradientStart="#7B68EE"
-                  gradientEnd="#E879F9"
-                  textColor="white"
-                  customClass="mt-4 w-full"
-                />
-              </div>
-            </div>
-          </div>
-
-          <!-- Empty cell for grid spacing -->
-          <div class="hidden md:block"></div>
-
-          <!-- Empty cell for grid spacing -->
-          <div class="hidden md:block"></div>
-
-          <!-- Atzilut (Wisdom) - Insight -->
-          <div class="md:col-start-1 md:col-span-1">
-            <div
-              class="sphere bg-gradient-to-b from-[#1A1F35]/80 to-[#1E293B]/90 backdrop-blur-xl rounded-2xl border border-white/20 p-6 md:p-8 hover:shadow-lg hover:shadow-[#0EA5E9]/20 transition-all transform hover:translate-y-[-4px] duration-300 relative overflow-hidden"
-            >
-              <!-- Decorative Element -->
-              <div
-                class="absolute top-0 right-0 w-24 h-24 bg-[#0EA5E9]/10 rounded-full blur-2xl"
-              ></div>
-
-              <div class="flex items-center justify-between mb-6">
-                <h3 class="text-xl font-bold text-white/90 flex items-center">
-                  <i class="fas fa-lightbulb text-[#0EA5E9] mr-3"></i>
-                  Прозрение
-                </h3>
-                <span class="text-xs text-white/50">Ацилут</span>
-              </div>
-
-              <p class="text-sm text-white/60 mb-4">
-                Интеллектуальное понимание, сфера мудрости и осознания.
-              </p>
-
-              <div
-                v-if="loadingAssessments"
-                class="flex justify-center items-center h-36"
-              >
-                <i class="fas fa-spinner fa-spin text-[#0EA5E9] text-xl"></i>
-              </div>
-              <div v-else class="space-y-3">
-                <div class="flex justify-between items-center">
-                  <span class="text-slate-300">Пройдено архетипов:</span>
-                  <span class="text-white font-medium">{{
-                    archetypeScores.length
-                  }}</span>
-                </div>
-                <div class="flex justify-between items-center">
-                  <span class="text-slate-300">Основной архетип:</span>
-                  <span class="text-white font-medium">{{ topArchetype }}</span>
-                </div>
-                <div class="flex justify-between items-center">
-                  <span class="text-slate-300">Курсы:</span>
-                  <span class="text-white font-medium">{{
-                    coursesProgress.length
-                  }}</span>
-                </div>
-
-                <div
-                  class="sphere-progress mt-6 h-2 bg-white/10 rounded-full overflow-hidden"
-                >
-                  <div
-                    class="h-full bg-gradient-to-r from-[#0EA5E9] to-[#9333EA]"
-                    :style="`width: ${Math.min(
-                      archetypeScores.length * 20,
-                      100
-                    )}%`"
-                  ></div>
-                </div>
-
-                <Button
-                  to="/courses"
-                  text="Исследовать архетипы"
-                  iconClass="fas fa-arrow-right"
-                  gradientStart="#0EA5E9"
-                  gradientEnd="#9333EA"
-                  textColor="white"
-                  customClass="mt-4 w-full"
-                />
-              </div>
-            </div>
-          </div>
-
-          <!-- Beriah (Understanding) - Inner Realm -->
-          <div class="md:col-start-3 md:col-span-1">
-            <div
-              class="sphere bg-gradient-to-b from-[#1A1F35]/80 to-[#1E293B]/90 backdrop-blur-xl rounded-2xl border border-white/20 p-6 md:p-8 hover:shadow-lg hover:shadow-[#EC4899]/20 transition-all transform hover:translate-y-[-4px] duration-300 relative overflow-hidden"
-            >
-              <!-- Decorative Element -->
-              <div
-                class="absolute top-0 right-0 w-24 h-24 bg-[#EC4899]/10 rounded-full blur-2xl"
-              ></div>
-
-              <div class="flex items-center justify-between mb-6">
-                <h3 class="text-xl font-bold text-white/90 flex items-center">
-                  <i class="fas fa-heart text-[#EC4899] mr-3"></i>
-                  Внутренний Мир
-                </h3>
-                <span class="text-xs text-white/50">Брия</span>
-              </div>
-
-              <p class="text-sm text-white/60 mb-4">
-                Эмоциональный мир, глубина чувств и переживаний.
-              </p>
-
-              <div
-                v-if="loadingEmotionBarometer"
-                class="flex justify-center items-center h-36"
-              >
-                <i class="fas fa-spinner fa-spin text-[#EC4899] text-xl"></i>
-              </div>
-              <div
-                v-else-if="emotionBarometerStats.totalEntries > 0"
-                class="space-y-3"
-              >
-                <div class="flex justify-between items-center">
-                  <span class="text-slate-300">Записей:</span>
-                  <span class="text-white font-medium">{{
-                    emotionBarometerStats.totalEntries
-                  }}</span>
-                </div>
-                <div class="flex justify-between items-center">
-                  <span class="text-slate-300">Основная эмоция:</span>
-                  <span class="text-white font-medium">{{
-                    emotionBarometerStats.mostCommonEmotion
-                  }}</span>
-                </div>
-                <div class="flex justify-between items-center">
-                  <span class="text-slate-300">Интенсивность:</span>
-                  <span class="text-white font-medium">{{
-                    emotionBarometerStats.averageIntensity.toFixed(1)
-                  }}</span>
-                </div>
-
-                <div
-                  class="sphere-progress mt-6 h-2 bg-white/10 rounded-full overflow-hidden"
-                >
-                  <div
-                    class="h-full bg-gradient-to-r from-[#EC4899] to-[#E879F9]"
-                    :style="`width: ${Math.min(
-                      emotionBarometerStats.totalEntries * 10,
-                      100
-                    )}%`"
-                  ></div>
-                </div>
-
-                <Button
-                  to="/awareness-tools/emotional-compass"
-                  text="Эмоциональный компас"
-                  iconClass="fas fa-compass"
-                  gradientStart="#EC4899"
-                  gradientEnd="#E879F9"
-                  textColor="white"
-                  customClass="mt-4 w-full"
-                />
-              </div>
-              <div
-                v-else
-                class="flex flex-col items-center justify-center h-36 space-y-3"
-              >
-                <i class="fas fa-wind text-[#EC4899] text-2xl opacity-50"></i>
-                <p class="text-center text-slate-400">Нет данных об эмоциях</p>
-                <NuxtLink
-                  to="/awareness-tools/emotional-compass"
-                  class="text-[#EC4899] hover:underline text-sm"
-                >
-                  Начать исследование
-                </NuxtLink>
-              </div>
-            </div>
-          </div>
-
-          <!-- Yetzirah (Formation) - Evolution -->
-          <div class="md:col-start-1 md:col-span-1">
-            <div
-              class="sphere bg-gradient-to-b from-[#1A1F35]/80 to-[#1E293B]/90 backdrop-blur-xl rounded-2xl border border-white/20 p-6 md:p-8 hover:shadow-lg hover:shadow-[#10B981]/20 transition-all transform hover:translate-y-[-4px] duration-300 relative overflow-hidden"
-            >
-              <!-- Decorative Element -->
-              <div
-                class="absolute top-0 right-0 w-24 h-24 bg-[#10B981]/10 rounded-full blur-2xl"
-              ></div>
-
-              <div class="flex items-center justify-between mb-6">
-                <h3 class="text-xl font-bold text-white/90 flex items-center">
-                  <i class="fas fa-arrow-up text-[#10B981] mr-3"></i>
-                  Эволюция
-                </h3>
-                <span class="text-xs text-white/50">Йецира</span>
-              </div>
-
-              <p class="text-sm text-white/60 mb-4">
-                Личностный рост, формирование и преобразование.
-              </p>
-
-              <div v-if="loading" class="flex justify-center items-center h-36">
-                <i class="fas fa-spinner fa-spin text-[#10B981] text-xl"></i>
-              </div>
-              <div v-else-if="dailyGrowthSpark.length > 0" class="space-y-3">
-                <div class="flex justify-between items-center">
-                  <span class="text-slate-300">Инсайтов:</span>
-                  <span class="text-white font-medium">{{
-                    dailyGrowthSpark.length
-                  }}</span>
-                </div>
-                <div class="flex items-start space-x-2">
-                  <span class="text-slate-300 whitespace-nowrap"
-                    >Последний:</span
-                  >
-                  <span class="text-white font-medium truncate">{{
-                    latestGrowthSpark
-                  }}</span>
-                </div>
-
-                <div
-                  class="sphere-progress mt-6 h-2 bg-white/10 rounded-full overflow-hidden"
-                >
-                  <div
-                    class="h-full bg-gradient-to-r from-[#10B981] to-[#3B82F6]"
-                    :style="`width: ${Math.min(
-                      dailyGrowthSpark.length * 20,
-                      100
-                    )}%`"
-                  ></div>
-                </div>
-
-                <Button
-                  to="/growth-tools"
-                  text="Добавить инсайт"
-                  iconClass="fas fa-plus"
-                  gradientStart="#10B981"
-                  gradientEnd="#3B82F6"
-                  textColor="white"
-                  customClass="mt-4 w-full"
-                />
-              </div>
-              <div
-                v-else
-                class="flex flex-col items-center justify-center h-36 space-y-3"
-              >
-                <i
-                  class="fas fa-lightbulb text-[#10B981] text-2xl opacity-50"
-                ></i>
-                <p class="text-center text-slate-400">Нет данных о росте</p>
-                <NuxtLink
-                  to="/growth-tools"
-                  class="text-[#10B981] hover:underline text-sm"
-                >
-                  Начать путь роста
-                </NuxtLink>
-              </div>
-            </div>
-          </div>
-
-          <!-- Assiyah (Action) - Action -->
-          <div class="md:col-start-3 md:col-span-1">
-            <div
-              class="sphere bg-gradient-to-b from-[#1A1F35]/80 to-[#1E293B]/90 backdrop-blur-xl rounded-2xl border border-white/20 p-6 md:p-8 hover:shadow-lg hover:shadow-[#F59E0B]/20 transition-all transform hover:translate-y-[-4px] duration-300 relative overflow-hidden"
-            >
-              <!-- Decorative Element -->
-              <div
-                class="absolute top-0 right-0 w-24 h-24 bg-[#F59E0B]/10 rounded-full blur-2xl"
-              ></div>
-
-              <div class="flex items-center justify-between mb-6">
-                <h3 class="text-xl font-bold text-white/90 flex items-center">
-                  <i class="fas fa-running text-[#F59E0B] mr-3"></i>
-                  Действие
-                </h3>
-                <span class="text-xs text-white/50">Асия</span>
-              </div>
-
-              <p class="text-sm text-white/60 mb-4">
-                Материальный план, поведение и конкретные действия.
-              </p>
-
-              <div
-                v-if="loadingEmotionBarometer"
-                class="flex justify-center items-center h-36"
-              >
-                <i class="fas fa-spinner fa-spin text-[#F59E0B] text-xl"></i>
-              </div>
-              <div
-                v-else-if="
-                  emotionBarometerStats.totalEntries > 0 ||
-                  archetypeScores.length > 0
-                "
-                class="space-y-3"
-              >
-                <div class="flex justify-between items-center">
-                  <span class="text-slate-300">Использований компаса:</span>
-                  <span class="text-white font-medium">{{
-                    emotionBarometerStats.totalEntries
-                  }}</span>
-                </div>
-                <div class="flex justify-between items-center">
-                  <span class="text-slate-300">Пройдено тестов:</span>
-                  <span class="text-white font-medium">{{
-                    archetypeScores.length
-                  }}</span>
-                </div>
-
-                <div
-                  class="sphere-progress mt-6 h-2 bg-white/10 rounded-full overflow-hidden"
-                >
-                  <div
-                    class="h-full bg-gradient-to-r from-[#F59E0B] to-[#EF4444]"
-                    :style="`width: ${Math.min(
-                      emotionBarometerStats.totalEntries * 10 +
-                        archetypeScores.length * 10,
-                      100
-                    )}%`"
-                  ></div>
-                </div>
-
-                <Button
-                  to="/awareness-tools"
-                  text="Все инструменты"
-                  iconClass="fas fa-tools"
-                  gradientStart="#F59E0B"
-                  gradientEnd="#EF4444"
-                  textColor="white"
-                  customClass="mt-4 w-full"
-                />
-              </div>
-              <div
-                v-else
-                class="flex flex-col items-center justify-center h-36 space-y-3"
-              >
-                <i
-                  class="fas fa-shoe-prints text-[#F59E0B] text-2xl opacity-50"
-                ></i>
-                <p class="text-center text-slate-400">Нет данных о поведении</p>
-                <NuxtLink
-                  to="/awareness-tools"
-                  class="text-[#F59E0B] hover:underline text-sm"
-                >
-                  Исследовать инструменты
-                </NuxtLink>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <KabbalisticTree
+        :loading="loading"
+        :loading-bio="loadingBio"
+        :loading-emotion-barometer="loadingEmotionBarometer"
+        :loading-assessments="loadingAssessments"
+        :bio-data="{ profession, age, gender }"
+        :emotion-data="emotionBarometerStats"
+        :insight-data="{ archetypeScores, topArchetype, coursesProgress }"
+        :growth-data="growthData"
+        :action-data="{ emotionBarometerStats, archetypeScores }"
+        :calculate-essence-progress="calculateEssenceProgress"
+      />
 
       <!-- Kabbalistic Worlds Legend -->
       <div
@@ -504,11 +87,12 @@ import { useNotification } from "@/composables/useNotification";
 import { useAuthStore } from "~/stores/auth";
 import { getFirestore } from "firebase/firestore";
 import ProfileHeader from "~/components/profile/ProfileHeader.vue";
-import Button from "~/components/base/Button.vue";
 import Notification from "~/components/base/Notification.vue";
+import KabbalisticTree from "~/components/profile/KabbalisticTree.vue";
 import { getEmotionBarometerStats } from "~/api/firebase/emotionBarometer";
 import { getLatestUserAssessment } from "~/api/firebase/assessments";
 import { fetchUserAvatarUrl } from "~/api/firebase/userProfile";
+import { getDailyGrowthSparkData } from "~/api/firebase/dailyGrowthSpark";
 
 const {
   notificationMessage,
@@ -553,9 +137,16 @@ const topArchetype = computed(() =>
 );
 
 // Evolution Sphere (Growth Data)
-const dailyGrowthSpark = ref([]);
+const growthData = ref({
+  entries: [],
+  streakDays: 0,
+  points: 0,
+  lastUpdated: null,
+});
 const latestGrowthSpark = computed(() =>
-  dailyGrowthSpark.value.length > 0 ? dailyGrowthSpark.value[0] : "Н/Д"
+  growthData.value.entries.length > 0
+    ? growthData.value.entries[0].insight || "Н/Д"
+    : "Н/Д"
 );
 
 // Fetch Data Functions
@@ -607,8 +198,14 @@ const fetchCoursesProgress = async () => {
     archetypeScores.value.length > 0 ? [{ name: "Тест архетипов" }] : [];
 };
 
-const fetchGrowthSpark = async () => {
-  dailyGrowthSpark.value = []; // Replace with actual API call when available
+const fetchGrowthSpark = async (userId) => {
+  const db = getFirestore();
+  const { success, data } = await getDailyGrowthSparkData(db, userId);
+  if (success) {
+    growthData.value = data;
+  } else {
+    console.error("Failed to fetch daily growth spark data");
+  }
 };
 
 // Calculate Progress for Essence Sphere
@@ -631,7 +228,7 @@ onMounted(async () => {
       fetchEmotionData(authStore.user.uid),
       fetchAssessmentData(authStore.user.uid),
       fetchCoursesProgress(),
-      fetchGrowthSpark(),
+      fetchGrowthSpark(authStore.user.uid),
     ]);
     loading.value = false;
   }
@@ -650,39 +247,6 @@ const handleNotification = ({ message, type }) => {
 <style scoped>
 .psychological-map {
   position: relative;
-}
-
-.sphere {
-  min-height: 300px;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  z-index: 10;
-}
-
-.sphere:after {
-  content: "";
-  position: absolute;
-  top: -50%;
-  right: -50%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    45deg,
-    transparent,
-    rgba(255, 255, 255, 0.05),
-    transparent
-  );
-  transform: rotate(45deg);
-  pointer-events: none;
-}
-
-@media (min-width: 1024px) {
-  .sphere:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 20px -5px rgba(14, 165, 233, 0.2);
-    border-color: rgba(255, 255, 255, 0.2);
-  }
 }
 
 /* Star field background on the page to represent Kabbalistic cosmos */
