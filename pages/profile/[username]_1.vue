@@ -1,18 +1,6 @@
 <template>
   <div class="container mx-auto max-w-6xl relative z-10 py-12 px-6 xl:px-0">
     <!-- Profile Header -->
-    <div>
-      <ProfileHeader
-        :avatarUrl="avatarUrl"
-        :loading="loading"
-        :displayName="authStore.user?.displayName || 'Пользователь'"
-        :email="authStore.user?.email || 'Email не указан'"
-        :userInitial="authStore.user?.displayName?.charAt(0).toUpperCase()"
-        @update:avatarUrl="avatarUrl = $event"
-        @logout="logoutUser"
-        @notify="handleNotification($event)"
-      />
-    </div>
 
     <!-- Psychological Map Container -->
     <div class="psychological-map flex flex-col items-center gap-8 mb-16">

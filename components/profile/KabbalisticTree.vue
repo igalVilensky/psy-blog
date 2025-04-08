@@ -1,6 +1,6 @@
 <template>
   <div class="w-full max-w-6xl mb-12 relative">
-    <!-- Connection Lines (unchanged) -->
+    <!-- Connection Lines -->
     <div class="absolute inset-0 z-0 hidden md:block">
       <div
         class="absolute top-1/2 left-1/2 h-full w-0.5 bg-gradient-to-b from-[#0EA5E9]/50 to-[#E879F9]/50 transform -translate-x-1/2 -translate-y-1/2"
@@ -17,10 +17,7 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
       <!-- Adam Kadmon (Crown) - Essence -->
       <div class="md:col-start-2 md:col-span-1">
-        <div class="flex flex-col md:flex-row gap-6">
-          <!-- User Avatar (only for Essence) -->
-
-          <!-- Sphere Card -->
+        <div class="flex flex-col md:flex-row">
           <SphereCard
             title="Сущность"
             subtitle="Адам Кадмон"
@@ -35,6 +32,7 @@
             button-to="/profile/edit"
             button-icon="fas fa-pen"
             :progress="calculateEssenceProgress()"
+            progress-label="Завершённость профиля"
           >
             <template #data-content>
               <div class="flex-shrink-0 flex justify-center items-center mb-4">
@@ -89,6 +87,7 @@
           button-to="/courses"
           button-icon="fas fa-arrow-right"
           :progress="Math.min(insightData.archetypeScores.length * 20, 100)"
+          progress-label="Прогресс прозрения"
         >
           <template #data-content>
             <div class="flex justify-between items-center">
@@ -129,6 +128,7 @@
           button-to="/awareness-tools/emotional-compass"
           button-icon="fas fa-compass"
           :progress="Math.min(emotionData.totalEntries * 10, 100)"
+          progress-label="Эмоциональная глубина"
         >
           <template #data-content v-if="emotionData.totalEntries > 0">
             <div class="flex justify-between items-center">
@@ -179,6 +179,7 @@
           button-to="/growth-tools"
           button-icon="fas fa-plus"
           :progress="Math.min(growthData.entries.length * 20, 100)"
+          progress-label="Прогресс роста"
         >
           <template #data-content v-if="growthData.entries.length > 0">
             <div class="flex justify-between items-center">
@@ -235,6 +236,7 @@
               100
             )
           "
+          progress-label="Активность действий"
         >
           <template
             #data-content
@@ -276,7 +278,7 @@
 
 <script setup>
 import SphereCard from "~/components/profile/SphereCard.vue";
-import UserAvatar from "~/components/profile/UserAvatar.vue"; // Import UserAvatar here
+import UserAvatar from "~/components/profile/UserAvatar.vue";
 
 defineProps({
   loading: { type: Boolean, required: true },
@@ -289,7 +291,7 @@ defineProps({
   growthData: { type: Object, required: true },
   actionData: { type: Object, required: true },
   calculateEssenceProgress: { type: Function, required: true },
-  avatarUrl: { type: String, default: null }, // Add avatarUrl prop
-  userInitial: { type: String, default: "" }, // Add userInitial prop
+  avatarUrl: { type: String, default: null },
+  userInitial: { type: String, default: "" },
 });
 </script>

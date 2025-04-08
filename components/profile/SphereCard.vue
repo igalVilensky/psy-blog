@@ -1,44 +1,77 @@
 <template>
   <div
-    class="sphere bg-gradient-to-b from-[#1A1F35]/90 to-[#1E293B]/95 backdrop-blur-xl rounded-2xl border border-white/20 p-6 md:p-8 transition-all transform duration-300 relative overflow-hidden"
-    :class="`hover:shadow-[0_0_25px_${gradientStart}/50]`"
+    class="sphere bg-gradient-to-b from-[#1A1F35]/90 to-[#1E293B]/95 backdrop-blur-xl rounded-2xl border border-white/20 p-6 transition-all transform duration-300 relative overflow-hidden"
+    :class="{ 'is-hovered': isHovered }"
+    @mouseenter="isHovered = true"
+    @mouseleave="isHovered = false"
   >
-    <!-- Decorative Elements -->
+    <!-- Enhanced Decorative Elements -->
     <div
-      class="absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-30 transition-opacity duration-300"
+      class="absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-20 transition-all duration-500"
       :style="{ backgroundColor: gradientStart }"
-      :class="{ 'opacity-50': isHovered }"
+      :class="{ 'opacity-60 scale-125': isHovered }"
     ></div>
     <div
-      class="absolute bottom-0 left-0 w-24 h-24 rounded-full blur-2xl opacity-20 transition-opacity duration-300"
+      class="absolute bottom-0 left-0 w-24 h-24 rounded-full blur-2xl opacity-10 transition-all duration-500"
       :style="{ backgroundColor: gradientEnd }"
-      :class="{ 'opacity-40': isHovered }"
+      :class="{ 'opacity-40 scale-125': isHovered }"
     ></div>
-    <!-- Glow Overlay on Hover -->
+
+    <!-- Interactive Glow Path -->
+    <svg
+      class="absolute inset-0 w-full h-full z-0 pointer-events-none"
+      :class="{ 'path-active': isHovered }"
+    >
+      <path
+        d="M20,20 Q60,10 100,50 T180,90 Q240,120 280,100 T340,80"
+        class="glow-path"
+        stroke-width="3"
+        fill="none"
+        :stroke="gradientStart"
+        stroke-dasharray="5,5"
+        stroke-linecap="round"
+        :class="{ 'path-animate': isHovered }"
+      />
+      <defs>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="5" result="blur" />
+          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+      </defs>
+    </svg>
+
+    <!-- Content Highlight Overlay -->
     <div
-      class="absolute inset-0 pointer-events-none transition-opacity duration-500 opacity-0 hover:opacity-100"
+      class="absolute inset-0 pointer-events-none transition-opacity duration-700 opacity-0"
+      :class="{ 'opacity-100': isHovered }"
       :style="{
-        background: `radial-gradient(circle at 50% 50%, ${gradientStart}20, transparent 70%)`,
+        background: `radial-gradient(circle at 50% 50%, ${gradientStart}10, transparent 70%)`,
       }"
     ></div>
 
     <!-- Header -->
     <div class="flex items-center justify-between mb-4 relative z-10">
-      <h3 class="text-xl md:text-2xl font-bold text-white/95 flex items-center">
+      <h3
+        class="text-xl gap-4 md:text-2xl font-bold text-white/95 flex items-center transition-transform duration-300"
+        :class="{ 'translate-x-1': isHovered }"
+      >
         <i
-          :class="[iconClass, 'mr-3 text-lg md:text-xl']"
+          :class="[
+            iconClass,
+            'text-3xl opacity-70 transition-all duration-300',
+            { 'scale-110': isHovered },
+          ]"
           :style="{ color: iconColor }"
         ></i>
         {{ title }}
       </h3>
-      <span
-        class="text-xs md:text-sm font-medium text-white/60 bg-black/20 px-2 py-1 rounded-full"
-        >{{ subtitle }}</span
-      >
     </div>
 
     <!-- Description -->
-    <p class="text-sm md:text-base text-white/70 mb-6 max-w-md relative z-10">
+    <p
+      class="text-sm md:text-base mb-6 max-w-md relative z-10 transition-all duration-300"
+      :class="isHovered ? 'text-white/90' : 'text-white/70'"
+    >
       {{ description }}
     </p>
 
@@ -53,26 +86,46 @@
     </div>
     <div v-else-if="hasData" class="space-y-4 relative z-10">
       <slot name="data-content">
-        <!-- Default data display -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div
-            v-for="(value, key) in formattedData"
+            v-for="(value, key, index) in formattedData"
             :key="key"
-            class="flex flex-col bg-white/5 rounded-lg p-3 border border-white/10 hover:border-white/20 transition-all"
+            class="flex flex-col bg-white/5 rounded-lg p-3 border border-white/10 transition-all duration-300"
+            :class="{
+              'border-white/30 bg-white/10 transform translate-y-[-2px]':
+                isHovered && hoveredItem === index,
+            }"
+            @mouseenter="hoveredItem = index"
+            @mouseleave="hoveredItem = null"
           >
-            <span class="text-white/50 text-xs mb-1 uppercase tracking-wider">{{
-              key
-            }}</span>
-            <span class="text-white/90 font-medium text-lg">{{ value }}</span>
+            <span
+              class="text-white/50 text-xs mb-1 uppercase tracking-wider transition-colors duration-300"
+              :class="{ 'text-white/70': isHovered && hoveredItem === index }"
+              >{{ key }}</span
+            >
+            <span
+              class="text-white/90 font-medium text-lg transition-all duration-300"
+              :class="{ 'text-white': isHovered && hoveredItem === index }"
+              :style="
+                isHovered && hoveredItem === index ? { color: gradientEnd } : {}
+              "
+              >{{ value }}</span
+            >
           </div>
         </div>
       </slot>
 
-      <!-- Progress Section -->
+      <!-- Progress bar with dynamic label -->
       <div class="mt-6 space-y-2">
         <div class="flex justify-between items-center">
-          <span class="text-sm text-white/70">Profile Completion</span>
-          <span class="text-sm font-medium" :style="{ color: gradientEnd }"
+          <span
+            class="text-sm transition-colors duration-300"
+            :class="isHovered ? 'text-white/90' : 'text-white/70'"
+            >{{ progressLabel }}</span
+          >
+          <span
+            class="text-sm font-medium transition-all duration-500"
+            :style="{ color: isHovered ? gradientEnd : gradientStart }"
             >{{ progress }}%</span
           >
         </div>
@@ -80,16 +133,17 @@
           class="sphere-progress h-2 bg-white/10 rounded-full overflow-hidden"
         >
           <div
-            class="h-full transition-all duration-500"
+            class="h-full transition-all duration-700"
             :style="{
               background: `linear-gradient(to right, ${gradientStart}, ${gradientEnd})`,
               width: `${progress}%`,
+              boxShadow: isHovered ? `0 0 10px ${gradientStart}` : 'none',
             }"
           ></div>
         </div>
       </div>
 
-      <!-- Action елементы Button -->
+      <!-- Button -->
       <Button
         :to="buttonTo"
         :text="buttonText"
@@ -97,7 +151,8 @@
         :gradient-start="gradientStart"
         :gradient-end="gradientEnd"
         text-color="white"
-        custom-class="mt-6 w-full text-sm md:text-base font-medium"
+        custom-class="mt-6 w-full text-sm md:text-base font-medium transition-transform duration-300"
+        :class="{ 'transform translate-y-[-2px]': isHovered }"
       />
     </div>
     <div
@@ -105,25 +160,49 @@
       class="flex flex-col items-center justify-center h-48 space-y-4 relative z-10"
     >
       <slot name="no-data">
-        <!-- Enhanced "No Data" state -->
-        <div class="p-4 rounded-full bg-white/5">
+        <div
+          class="p-4 rounded-full bg-white/5 transition-all duration-300"
+          :class="{ 'bg-white/10': isHovered }"
+        >
           <i
-            :class="[iconClass, 'text-3xl opacity-70']"
+            :class="[
+              iconClass,
+              'text-3xl opacity-70 transition-all duration-300',
+              { 'scale-110': isHovered },
+            ]"
             :style="{ color: iconColor }"
           ></i>
         </div>
-        <p class="text-center text-white/70">
+        <p
+          class="text-center transition-colors duration-300"
+          :class="isHovered ? 'text-white/90' : 'text-white/70'"
+        >
           Нет данных психологического профиля
         </p>
         <NuxtLink
           :to="buttonTo"
           class="px-4 py-2 text-sm rounded-full transition-all hover:bg-white/10"
-          :style="{ color: gradientStart }"
+          :style="{ color: isHovered ? gradientEnd : gradientStart }"
         >
           <i :class="[buttonIcon, 'mr-2']"></i>
           {{ buttonText }}
         </NuxtLink>
       </slot>
+    </div>
+
+    <!-- Pulse effect dots that appear on hover -->
+    <div v-if="isHovered" class="absolute inset-0 pointer-events-none">
+      <div
+        v-for="i in 3"
+        :key="i"
+        class="absolute w-2 h-2 rounded-full"
+        :class="`pulse-dot pulse-dot-${i}`"
+        :style="{
+          backgroundColor: i % 2 === 0 ? gradientStart : gradientEnd,
+          left: `${30 + i * 20}%`,
+          top: `${20 + i * 15}%`,
+        }"
+      ></div>
     </div>
   </div>
 </template>
@@ -146,12 +225,12 @@ const props = defineProps({
   buttonTo: { type: String, required: true },
   buttonIcon: { type: String, required: true },
   progress: { type: Number, default: 0 },
+  progressLabel: { type: String, default: "Profile Completion" },
 });
 
-// Track hover state
 const isHovered = ref(false);
+const hoveredItem = ref(null);
 
-// Check if there's meaningful data to display
 const hasData = computed(() => {
   const data = props.data;
   return (
@@ -162,7 +241,6 @@ const hasData = computed(() => {
   );
 });
 
-// Format data for display with improved handling
 const formattedData = computed(() => {
   const data = props.data;
   const result = {};
@@ -182,43 +260,69 @@ const formattedData = computed(() => {
 <style scoped>
 .sphere {
   min-height: 340px;
-  transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
   overflow: hidden;
   z-index: 10;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
 }
 
-.sphere:hover {
-  transform: translateY(-4px);
-  border-color: rgba(255, 255, 255, 0.3);
+.sphere.is-hovered {
+  transform: translateY(-6px);
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
 }
 
-.sphere:after {
-  content: "";
-  position: absolute;
-  top: -50%;
-  right: -50%;
-  width: 120%;
-  height: 120%;
-  background: linear-gradient(
-    45deg,
-    transparent,
-    rgba(255, 255, 255, 0.08),
-    transparent
-  );
-  transform: rotate(45deg);
-  pointer-events: none;
-  z-index: 1;
-  transition: opacity 0.3s ease;
+/* SVG Path Animation */
+.glow-path {
+  opacity: 0;
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  filter: url(#glow);
 }
 
-.sphere:hover:after {
-  opacity: 0.15;
+.path-active .glow-path {
+  opacity: 0.6;
+  transition: opacity 0.3s ease, stroke-dashoffset 1.5s ease;
+  stroke-dashoffset: 0;
+}
+
+/* Pulse animation for dots */
+.pulse-dot {
+  opacity: 0;
+  transform: scale(0);
+  animation: pulse 2s infinite;
+}
+
+.pulse-dot-1 {
+  animation-delay: 0s;
+}
+
+.pulse-dot-2 {
+  animation-delay: 0.5s;
+}
+
+.pulse-dot-3 {
+  animation-delay: 1s;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
 }
 
 .sphere-progress div {
-  transition: width 1s ease-in-out;
+  transition: width 1s ease-in-out, box-shadow 0.3s ease;
 }
 
 @media (max-width: 640px) {
