@@ -1,5 +1,16 @@
-// api/firebase/dailyGrowthSpark.js
-import { doc, getDoc, updateDoc, setDoc, arrayUnion } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  updateDoc,
+  setDoc,
+  arrayUnion,
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  orderBy,
+  limit,
+} from "firebase/firestore";
 
 // Fetch user's Daily Growth Spark data
 export const getDailyGrowthSparkData = async (firestore, userId) => {
@@ -20,7 +31,7 @@ export const getDailyGrowthSparkData = async (firestore, userId) => {
       };
     } else {
       return {
-        success: true, // Return success even if no data exists yet
+        success: true,
         data: {
           entries: [],
           streakDays: 0,
@@ -38,12 +49,12 @@ export const getDailyGrowthSparkData = async (firestore, userId) => {
   }
 };
 
-// Save a new Daily Growth Spark entry
+// Save a new Daily Growth Spark entry and shared insight
 export const saveDailyGrowthSparkEntry = async (
   firestore,
   userId,
   entryData,
-  showNotification // Callback for notifications
+  showNotification
 ) => {
   if (!userId) {
     console.error("User ID is required");
@@ -51,7 +62,7 @@ export const saveDailyGrowthSparkEntry = async (
   }
 
   const userRef = doc(firestore, "daily_growth_spark", userId);
-  const currentDate = new Date().toISOString().split("T")[0]; // YYYY-MM-DD format
+  const currentDate = new Date().toISOString().split("T")[0];
 
   const newEntry = {
     date: new Date().toISOString(),
@@ -75,13 +86,12 @@ export const saveDailyGrowthSparkEntry = async (
       yesterday.setDate(yesterday.getDate() - 1);
       const yesterdayDate = yesterday.toISOString().split("T")[0];
 
-      // Calculate streak
       if (lastUpdated === yesterdayDate) {
         updatedStreak = (data.streakDays || 0) + 1;
       } else if (lastUpdated !== currentDate) {
-        updatedStreak = 1; // Reset streak if not consecutive or same day
+        updatedStreak = 1;
       } else {
-        updatedStreak = data.streakDays || 1; // Same day, keep streak
+        updatedStreak = data.streakDays || 1;
       }
 
       updatedPoints += data.points || 0;
@@ -101,6 +111,23 @@ export const saveDailyGrowthSparkEntry = async (
       });
     }
 
+    if (entryData.insight && entryData.insight.text.trim() !== "") {
+      const insightData = {
+        text: entryData.insight.text,
+        category: entryData.insight.category,
+        isAnonymous: entryData.insight.isAnonymous,
+        userId: userId,
+        displayName: entryData.insight.isAnonymous
+          ? null
+          : entryData.insight.displayName || "Unknown",
+        timestamp: new Date().toISOString(),
+        date: currentDate,
+      };
+      console.log(entryData, "insightData");
+
+      await addDoc(collection(firestore, "shared_insights"), insightData);
+    }
+
     showNotification("Daily Growth Spark saved successfully!", "success");
     return {
       success: true,
@@ -115,7 +142,39 @@ export const saveDailyGrowthSparkEntry = async (
   }
 };
 
-// Fetch statistics for Daily Growth Spark (optional, for future use)
+// Fetch shared insights for display
+export const getSharedInsights = async (firestore, fetchLimit = 20) => {
+  try {
+    if (typeof limit !== "function") {
+      throw new Error(
+        "Firestore 'limit' function is not available. Check your Firebase SDK imports."
+      );
+    }
+    const insightsCollection = collection(firestore, "shared_insights");
+    const q = query(
+      insightsCollection,
+      orderBy("timestamp", "desc"),
+      limit(fetchLimit)
+    );
+    const querySnapshot = await getDocs(q);
+    const insights = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    return {
+      success: true,
+      data: insights,
+    };
+  } catch (error) {
+    console.error("Error fetching shared insights:", error);
+    return {
+      success: false,
+      message: "Failed to fetch shared insights",
+    };
+  }
+};
+
+// Fetch statistics for Daily Growth Spark
 export const getDailyGrowthSparkStats = async (firestore, userId) => {
   try {
     const userRef = doc(firestore, "daily_growth_spark", userId);

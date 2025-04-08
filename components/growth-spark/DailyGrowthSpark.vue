@@ -551,6 +551,7 @@ const submitTip = async () => {
       text: tip.value,
       category: selectedCategory.value,
       isAnonymous: isAnonymous.value,
+      displayName: user.value.displayName,
     },
     points: points.value,
   };
