@@ -224,39 +224,49 @@
         </button>
       </div>
 
-      <!-- Floating Action Button -->
-      <div class="fixed bottom-8 right-8">
-        <button
-          class="bg-indigo-600 text-white h-14 w-14 rounded-full shadow-lg hover:bg-indigo-700 transition-all flex items-center justify-center group"
-          title="Поделиться своим вдохновением"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <line x1="12" y1="5" x2="12" y2="19"></line>
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-          </svg>
-          <span
-            class="absolute right-16 bg-gray-900 text-white px-3 py-1 rounded text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap"
-          >
-            Поделиться вдохновением
-          </span>
-        </button>
-      </div>
+      <!-- Floating Action Button (Use Case 1) -->
+      <FloatingButton
+        @click="addNewItem"
+        tooltip-text="Добавить вдохновение"
+        :pulse-animation="true"
+        color="primary"
+        size="lg"
+      />
+      <!-- <FloatingButton
+        :menu-items="menuItems"
+        tooltip-text="Действия"
+        color="success"
+        size="md"
+        menu-position="top"
+        position="bottom-right"
+        @menu-item-click="handleMenuAction"
+      /> -->
+
+      <FloatingButton
+        @click="scrollToTop"
+        :custom-color="'#10b981'"
+        tooltip-text="Наверх"
+        :tooltip-trigger="isMobile ? 'click' : 'hover'"
+        size="sm"
+        position="bottom-left"
+        icon="chevron-up"
+      />
+      <!-- <FloatingButton
+        :menu-items="mobileMenuItems"
+        tooltip-text="Меню"
+        color="danger"
+        size="xl"
+        :show-backdrop="true"
+        position="bottom-left"
+        @menu-item-click="handleMenuAction"
+      /> -->
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
+import FloatingButton from "~/components/base/FloatingButton.vue";
 import { getFirestore } from "firebase/firestore";
 import { getSharedInsights } from "~/api/firebase/dailyGrowthSpark";
 
@@ -276,6 +286,31 @@ const categories = [
   "Обучение",
 ];
 
+const sortByDate = () => {
+  insights.value.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  alert("Sorted by date!");
+};
+const shareWall = () => {
+  alert("Sharing the inspiration wall!");
+};
+// Method for Use Case 1: Add New Inspiration
+const addNewItem = () => {
+  alert("Opening form to add a new inspiration!");
+  // Add logic to open a modal or form here
+};
+// Methods for Use Case 2: Menu Actions
+const handleMenuAction = (item) => {
+  alert(`Action: ${item.label}`);
+  if (typeof item.action === "function") {
+    item.action();
+  }
+};
+// Menu items for Use Case 2 (Floating Button with Menu)
+const menuItems = ref([
+  { label: "Добавить вдохновение", action: addNewItem, icon: "svg-plus" },
+  { label: "Сортировать по дате", action: sortByDate, icon: "svg-calendar" },
+  { label: "Поделиться стеной", action: shareWall, icon: "svg-share" },
+]);
 const fetchInsights = async () => {
   loading.value = true;
   try {
@@ -317,12 +352,13 @@ const filteredInsights = computed(() => {
   return result;
 });
 
+// Utility to load more insights
 const loadMore = () => {
   limit.value += 20;
   fetchInsights();
 };
-
-// Format date to be more user-friendly
+const isMobile = ref(false);
+// Format date for display
 const formatDate = (timestamp) => {
   if (!timestamp) return "";
 
@@ -342,6 +378,13 @@ const formatDate = (timestamp) => {
   }
 };
 
+// Check if mobile view
+const checkMobile = () => {
+  isMobile.value = window.innerWidth < 640;
+};
+const scrollToTop = () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
 // Generate consistent colors for user avatars
 const generateAvatarColor = (name) => {
   if (!name) return "#6366f1"; // Default indigo
@@ -364,7 +407,7 @@ const generateAvatarColor = (name) => {
   return colors[charCode % colors.length];
 };
 
-// Generate random like counts for demo purposes
+// Generate random like counts for demo
 const randomLikes = (id) => {
   const hash = id.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
   return (hash % 50) + 1;
@@ -373,10 +416,16 @@ const randomLikes = (id) => {
 onMounted(() => {
   selectedCategory.value = "Все";
   fetchInsights();
+  checkMobile();
+  window.addEventListener("resize", checkMobile);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", checkMobile);
 });
 </script>
 
-<style>
+<style scoped>
 .transform {
   transition: transform 0.3s ease;
 }
