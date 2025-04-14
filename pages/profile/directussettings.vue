@@ -32,7 +32,7 @@
                       v-if="avatarPreview || currentAvatar"
                       :src="
                         avatarPreview ||
-                        `${useDirectus}/assets/${currentAvatar}`
+                        `http://localhost:8055/assets/${currentAvatar}`
                       "
                       alt="Avatar"
                       class="w-24 h-24 rounded-full object-cover border border-[#0EA5E9]/20"
@@ -43,6 +43,7 @@
                     >
                       <i class="fas fa-user text-[#0EA5E9] text-2xl"></i>
                     </div>
+                    {{ `http://localhost:8055/assets/${currentAvatar}` }}
                   </div>
                   <div class="flex flex-col space-y-2">
                     <input
@@ -393,12 +394,12 @@ const {
 
 // Profile Fields
 const userId = ref(null);
-const displayName = ref(""); // Ensure this is always a string
+const displayName = ref("");
 const profession = ref("");
 const age = ref("");
 const gender = ref("");
 const aboutYourself = ref("");
-const socialMedia = ref([{ type: "telegram", url: "" }]);
+const socialMedia = ref([]); // Initialize as empty array, will be populated from Directus
 const currentAvatar = ref(null);
 const avatarFile = ref(null);
 const avatarPreview = ref(null);
@@ -488,18 +489,22 @@ onMounted(async () => {
   const userResult = await getCurrentDirectusUser();
   if (userResult.success) {
     userId.value = userResult.user.id;
-    displayName.value = userResult.user.first_name || ""; // Default to empty string
+    displayName.value = userResult.user.first_name || "";
     currentAvatar.value = userResult.user.avatar || null;
 
     const profileResult = await fetchDirectusUserProfile({
       userId: userId.value,
     });
     if (profileResult.success) {
-      displayName.value = profileResult.user.first_name || ""; // Ensure not undefined
+      displayName.value = profileResult.user.first_name || "";
       profession.value = profileResult.profile?.profession || "";
       age.value = profileResult.profile?.age || "";
       gender.value = profileResult.profile?.gender || "";
       aboutYourself.value = profileResult.profile?.about_yourself || "";
+      // Populate socialMedia from Directus
+      socialMedia.value = profileResult.profile?.social_media || [
+        { type: "telegram", url: "" },
+      ];
     }
   } else {
     showNotification(
@@ -511,12 +516,12 @@ onMounted(async () => {
   }
 });
 
-// Add a new social platform (UI only)
+// Add a new social platform
 const addSocialPlatform = () => {
   socialMedia.value.push({ type: "telegram", url: "" });
 };
 
-// Remove a social platform (UI only)
+// Remove a social platform
 const removeSocialPlatform = (index) => {
   socialMedia.value.splice(index, 1);
 };
@@ -547,14 +552,17 @@ const saveProfile = async () => {
       gender: gender.value,
       about_yourself: aboutYourself.value,
       avatar: avatarId,
+      social_media: socialMedia.value,
     };
+
+    console.log("Data to be sent:", data);
 
     const result = await updateDirectusUserProfile(data);
     if (result.success) {
       currentAvatar.value = avatarId;
       avatarFile.value = null;
       avatarPreview.value = null;
-      displayName.value = result.user.first_name || displayName.value; // Update displayName from response
+      displayName.value = result.user.first_name || displayName.value;
       showNotification("Изменения сохранены!", "success");
       goBackToProfile();
     } else {
@@ -572,8 +580,7 @@ const saveProfile = async () => {
 
 // Redirect back to profile
 const goBackToProfile = () => {
-  // Ensure displayName is a valid string before navigation
-  const safeDisplayName = displayName.value.trim() || "profile"; // Fallback to "profile" if empty
+  const safeDisplayName = displayName.value.trim() || "profile";
   router.push(`/profile/${safeDisplayName}`);
 };
 
