@@ -87,7 +87,7 @@
 import { ref } from "vue";
 import EmotionalBarometerImage from "@/assets/images/awarenessTools/emotional-compass.jpeg";
 import DeepConversationWithCardsImage from "@/assets/images/awarenessTools/deep-conversation-with-cards.jpeg";
-import LifeArchetypeImage from "@/assets/images/awarenessTools/life-archetype.jpg";
+import LifeArchetypeImage from "@/assets/images/awarenessTools/archetypes_test_cta.png";
 import big5Image from "@/assets/images/awarenessTools/big5.jpg";
 
 const tools = ref([
