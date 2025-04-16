@@ -237,10 +237,10 @@
 
             <!-- CTA Card (After Second Post) -->
             <div
-              v-if="index === 1"
-              class="group bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+              v-if="index === 0"
+              class="group bg-gradient-to-br from-white/5 via-white/10 to-white/5 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
             >
-              <!-- Image Container -->
+              <!-- Image Container with Overlay -->
               <div class="relative aspect-[4/3] overflow-hidden">
                 <img
                   :src="emCompasImage"
@@ -248,64 +248,119 @@
                   class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   loading="lazy"
                 />
-                <span
-                  :class="[
-                    'absolute top-4 left-4 px-4 py-2 rounded-full text-sm font-medium shadow-md backdrop-blur-sm border border-white/10',
-                    activeCategory === 'Отношения'
-                      ? 'bg-[#E879F9]/80'
-                      : activeCategory === 'Личностный рост'
-                      ? 'bg-[#0EA5E9]/80'
-                      : activeCategory === 'Продуктивность'
-                      ? 'bg-[#10B981]/80'
-                      : 'bg-[#0EA5E9]/80',
-                  ]"
-                  class="text-white"
+                <!-- Gradient Overlay -->
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-70"
+                ></div>
+
+                <!-- Quick Stats -->
+                <div
+                  class="absolute bottom-4 left-4 right-4 flex justify-between text-xs text-white"
                 >
-                  Эмоции
-                </span>
+                  <div
+                    class="flex items-center space-x-1.5 bg-black/40 backdrop-blur-sm px-2 py-1 rounded"
+                  >
+                    <i class="far fa-user text-[#0EA5E9]"></i>
+                    <span>5,000+ пользователей</span>
+                  </div>
+                  <div
+                    class="flex items-center space-x-1.5 bg-black/40 backdrop-blur-sm px-2 py-1 rounded"
+                  >
+                    <i class="far fa-clock text-[#F59E0B]"></i>
+                    <span>5 мин</span>
+                  </div>
+                </div>
               </div>
 
-              <div class="p-8">
+              <div class="p-6">
+                <!-- Dynamic Heading Based on Category -->
                 <h2
-                  class="text-xl font-bold text-white/90 mb-4 line-clamp-2 group-hover:text-[#0EA5E9] transition-colors duration-300"
+                  class="text-xl font-bold text-white/90 mb-3 group-hover:text-[#0EA5E9] transition-colors duration-300"
                 >
                   {{
                     activeCategory === "Отношения"
-                      ? "Проблемы в отношениях?"
+                      ? "Проблемы в отношениях? Решение есть!"
                       : activeCategory === "Личностный рост"
-                      ? "Отслеживай свои эмоции!"
+                      ? "Раскрой потенциал своих эмоций!"
                       : activeCategory === "Продуктивность"
-                      ? "Найди баланс в работе!"
-                      : "Узнай свои эмоции!"
+                      ? "Найди эмоциональный баланс в работе!"
+                      : "Узнай свои истинные эмоции!"
                   }}
                 </h2>
+
+                <!-- Dynamic Description Based on Category -->
                 <p class="text-slate-300 mb-4">
                   {{
                     activeCategory === "Отношения"
-                      ? "Эмоциональный компас поможет разобраться в чувствах и улучшить отношения."
+                      ? "Эмоциональный компас поможет распознать истинные чувства и улучшить взаимопонимание в отношениях."
                       : activeCategory === "Личностный рост"
-                      ? "Используй эмоциональный компас для понимания своих эмоций."
+                      ? "Используй эмоциональный компас для глубокого понимания своих эмоций и личностного роста."
                       : activeCategory === "Продуктивность"
-                      ? "Эмоциональный компас поможет сбалансировать работу и эмоции."
-                      : "Пройди тест и начни понимать свои эмоции!"
+                      ? "Эмоциональный компас поможет найти идеальный баланс между работой и эмоциональным состоянием."
+                      : "Научись лучше понимать свои чувства и управлять ими."
                   }}
                 </p>
-                <NuxtLink
-                  to="/awareness-tools/emotional-compass"
-                  :class="[
-                    activeCategory === 'Отношения'
-                      ? 'bg-[#E879F9]'
-                      : activeCategory === 'Личностный рост'
-                      ? 'bg-[#0EA5E9]'
-                      : activeCategory === 'Продуктивность'
-                      ? 'bg-[#10B981]'
-                      : 'bg-[#0EA5E9]',
-                    'inline-block px-4 py-2 text-white rounded-lg hover:opacity-90 transition-colors duration-300',
-                  ]"
-                >
-                  Открыть компас
-                </NuxtLink>
+
+                <!-- Benefits List -->
+                <div class="grid grid-cols-2 gap-2 mb-4">
+                  <div
+                    class="flex items-center space-x-1.5 text-xs text-white/80"
+                  >
+                    <i
+                      :class="[
+                        activeCategory === 'Отношения'
+                          ? 'fas fa-heart text-[#E879F9]'
+                          : activeCategory === 'Личностный рост'
+                          ? 'fas fa-brain text-[#0EA5E9]'
+                          : activeCategory === 'Продуктивность'
+                          ? 'fas fa-chart-line text-[#10B981]'
+                          : 'fas fa-lightbulb text-[#0EA5E9]',
+                      ]"
+                    ></i>
+                    <span>{{
+                      activeCategory === "Отношения"
+                        ? "Улучшит взаимопонимание"
+                        : activeCategory === "Личностный рост"
+                        ? "Развивает самосознание"
+                        : activeCategory === "Продуктивность"
+                        ? "Повышает эффективность"
+                        : "Улучшает самопонимание"
+                    }}</span>
+                  </div>
+                  <div
+                    class="flex items-center space-x-1.5 text-xs text-white/80"
+                  >
+                    <i class="fas fa-check-circle text-[#10B981]"></i>
+                    <span>5-минутная оценка</span>
+                  </div>
+                </div>
+
+                <!-- Action Button -->
+                <div class="flex items-center space-x-2">
+                  <NuxtLink
+                    to="/awareness-tools/emotional-compass"
+                    :class="[
+                      activeCategory === 'Отношения'
+                        ? 'bg-[#E879F9]'
+                        : activeCategory === 'Личностный рост'
+                        ? 'bg-[#0EA5E9]'
+                        : activeCategory === 'Продуктивность'
+                        ? 'bg-[#10B981]'
+                        : 'bg-[#0EA5E9]',
+                      'flex-grow text-center py-3 px-4 text-white rounded-lg hover:opacity-90 transition-all duration-300 flex items-center justify-center group-hover:shadow-lg',
+                    ]"
+                  >
+                    <i class="fas fa-compass mr-2"></i>
+                    <span>Открыть компас</span>
+                  </NuxtLink>
+                </div>
               </div>
+
+              <!-- Full card link -->
+              <NuxtLink
+                to="/awareness-tools/emotional-compass"
+                class="absolute inset-0 z-10"
+              ></NuxtLink>
             </div>
           </template>
         </div>
