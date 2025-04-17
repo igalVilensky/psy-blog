@@ -221,7 +221,7 @@
         </div>
 
         <!-- Call to Action -->
-        <div class="text-center">
+        <!-- <div class="text-center">
           <Button
             text="Продолжить рост"
             iconClass="fas fa-arrow-right"
@@ -229,7 +229,7 @@
             :isLink="false"
             @click="startDailySpark"
           />
-        </div>
+        </div> -->
       </div>
     </div>
   </section>

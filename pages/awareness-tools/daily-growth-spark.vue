@@ -318,7 +318,7 @@
               </div>
             </div>
 
-            <div class="text-center pt-4">
+            <!-- <div class="text-center pt-4">
               <button
                 @click="openDailySparkModal"
                 class="px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-lg font-medium rounded-xl hover:from-indigo-500 hover:to-purple-500 transition-all shadow-md hover:shadow-lg hover:shadow-indigo-500/20 flex items-center gap-2 mx-auto transform hover:-translate-y-1"
@@ -338,7 +338,7 @@
                 </svg>
                 Продолжить рост
               </button>
-            </div>
+            </div> -->
           </div>
         </div>
       </section>
