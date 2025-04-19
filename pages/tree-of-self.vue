@@ -280,7 +280,7 @@
                     :stroke="getNodeStrokeColor(sefirah.id)"
                     stroke-width="3"
                     stroke-linecap="round"
-                    fill="none"
+                    fill="gray"
                     :stroke-dasharray="`${sefirah.progress * 0.94}, 100`"
                     :transform="`rotate(-90 ${sefirah.x} ${sefirah.y})`"
                   >
