@@ -39,6 +39,13 @@
                 viewBox="0 0 300 450"
                 preserveAspectRatio="xMidYMid meet"
               >
+                <rect
+                  x="0"
+                  y="0"
+                  width="300"
+                  height="450"
+                  fill="url(#svg-bg)"
+                />
                 <!-- Definitions for effects -->
                 <defs>
                   <!-- Glow filter with variable color input -->
@@ -261,7 +268,6 @@
                     "
                   >
                     <title>{{ sefirah.name }}: {{ sefirah.progress }}%</title>
-                    <!-- Subtle pulsing animation for active nodes -->
                     <animate
                       v-if="sefirah.progress > 0"
                       attributeName="opacity"
@@ -280,11 +286,11 @@
                     :stroke="getNodeStrokeColor(sefirah.id)"
                     stroke-width="3"
                     stroke-linecap="round"
-                    fill="gray"
+                    fill="none"
                     :stroke-dasharray="`${sefirah.progress * 0.94}, 100`"
                     :transform="`rotate(-90 ${sefirah.x} ${sefirah.y})`"
+                    style="pointer-events: none; filter: url(#progress-shadow)"
                   >
-                    <!-- Subtle shimmer animation for progress ring -->
                     <animate
                       attributeName="stroke-opacity"
                       values="0.8;1;0.8"
@@ -299,26 +305,29 @@
                     :y="sefirah.y"
                     text-anchor="middle"
                     dominant-baseline="central"
-                    class="fill-white text-opacity-80 text-xs"
+                    :class="[
+                      'text-xs font-bold',
+                      getIconClass(sefirah.category, sefirah.progress),
+                    ]"
                     style="pointer-events: none"
                   >
                     <tspan v-if="sefirah.category === 'wisdom'" class="fa">
-                      &#xf0eb;
+                      
                     </tspan>
                     <tspan
                       v-else-if="sefirah.category === 'emotions'"
                       class="fa"
                     >
-                      &#xf004;
+                      
                     </tspan>
                     <tspan v-else-if="sefirah.category === 'action'" class="fa">
-                      &#xf554;
+                      
                     </tspan>
                     <tspan
                       v-else-if="sefirah.category === 'integration'"
                       class="fa"
                     >
-                      &#xf5fd;
+                      
                     </tspan>
                   </text>
 
@@ -389,45 +398,6 @@
                     class="bg-gradient-to-r from-gradient-mint-start to-gradient-mint-end h-2.5 rounded-full"
                     :style="{ width: `${overallProgress}%` }"
                   ></div>
-                </div>
-              </div>
-
-              <div class="grid grid-cols-2 gap-3">
-                <div
-                  v-for="sefirah in sefirot"
-                  :key="`mobile-${sefirah.id}`"
-                  class="p-3 rounded-lg border cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-sefirah-glow"
-                  :class="[
-                    getNodeBorderClass(sefirah.progress),
-                    {
-                      'hover:shadow-blue-400/30': sefirah.category === 'wisdom',
-                    },
-                    {
-                      'hover:shadow-purple-400/30':
-                        sefirah.category === 'emotions',
-                    },
-                    {
-                      'hover:shadow-orange-400/30':
-                        sefirah.category === 'action',
-                    },
-                    {
-                      'hover:shadow-green-400/30':
-                        sefirah.category === 'integration',
-                    },
-                  ]"
-                  @click="scrollToSefirah(sefirah.id)"
-                >
-                  <p class="text-white text-sm font-medium mb-1">
-                    {{ sefirah.name }}
-                  </p>
-                  <div class="w-full bg-gray-800/50 rounded-full h-1.5 mb-1">
-                    <div
-                      class="h-1.5 rounded-full"
-                      :class="getProgressBarClass(sefirah.id)"
-                      :style="{ width: `${sefirah.progress}%` }"
-                    ></div>
-                  </div>
-                  <p class="text-xs text-gray-300">{{ sefirah.progress }}%</p>
                 </div>
               </div>
             </div>
@@ -984,24 +954,41 @@ const getRingColor = (id) => {
   }
 };
 
+const getIconClass = (category, progress) => {
+  if (progress === 0) return "fill-gray-400"; // Dimmed for inactive nodes
+
+  switch (category) {
+    case "wisdom":
+      return "fill-blue-200";
+    case "emotions":
+      return "fill-purple-200";
+    case "action":
+      return "fill-orange-200";
+    case "integration":
+      return "fill-green-200";
+    default:
+      return "fill-gray-400";
+  }
+};
+
 // Styling functions based on category and progress
 const getNodeClass = (id, progress) => {
   const sefirah = sefirot.value.find((s) => s.id === id);
-  if (!sefirah) return "fill-gray-800";
+  if (!sefirah) return "fill-gray-700";
 
-  if (progress === 0) return "fill-gray-800";
+  if (progress === 0) return "fill-gray-700 stroke-gray-500"; // Inactive state with subtle stroke
 
   switch (sefirah.category) {
     case "wisdom":
-      return "fill-gradient-to-r from-gradient-blue-start to-gradient-blue-end";
+      return "fill-blue-600 stroke-blue-400";
     case "emotions":
-      return "fill-gradient-to-r from-gradient-purple-start to-gradient-purple-end";
+      return "fill-purple-600 stroke-purple-400";
     case "action":
-      return "fill-gradient-to-r from-gradient-orange-start to-gradient-orange-end";
+      return "fill-orange-600 stroke-orange-400";
     case "integration":
-      return "fill-gradient-to-r from-gradient-mint-start to-gradient-mint-end";
+      return "fill-green-600 stroke-green-400";
     default:
-      return "fill-gray-800";
+      return "fill-gray-700 stroke-gray-500";
   }
 };
 
@@ -1135,6 +1122,53 @@ watch(
   stroke: rgba(255, 255, 255, 0.3);
   stroke-dasharray: 5, 5;
   stroke-width: 2;
+}
+
+.fill-blue-200 {
+  fill: #bfdbfe;
+}
+.fill-purple-200 {
+  fill: #e9d5ff;
+}
+.fill-orange-200 {
+  fill: #fed7aa;
+}
+.fill-green-200 {
+  fill: #bbf7d0;
+}
+.fill-gray-400 {
+  fill: #9ca3af;
+}
+
+.fill-blue-600 {
+  fill: #2563eb;
+}
+.stroke-blue-400 {
+  stroke: #60a5fa;
+}
+.fill-purple-600 {
+  fill: #9333ea;
+}
+.stroke-purple-400 {
+  stroke: #c084fc;
+}
+.fill-orange-600 {
+  fill: #f97316;
+}
+.stroke-orange-400 {
+  stroke: #fb923c;
+}
+.fill-green-600 {
+  fill: #16a34a;
+}
+.stroke-green-400 {
+  stroke: #4ade80;
+}
+.fill-gray-700 {
+  fill: #4b5563;
+}
+.stroke-gray-500 {
+  stroke: #6b7280;
 }
 
 /* Gradients for text */
