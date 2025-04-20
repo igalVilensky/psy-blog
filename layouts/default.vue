@@ -2,14 +2,14 @@
 <template>
   <div class="flex flex-col min-h-screen">
     <!-- Уведомление -->
-    <Notification
+    <!-- <Notification
       v-if="notification"
       :message="notification.message"
       :type="'reminder'"
       :route-path="notification.routePath"
       :cta-text="notification.ctaText"
       @close="notification = null"
-    />
+    /> -->
 
     <!-- TopBar (Fixed) -->
     <div class="mb-16">

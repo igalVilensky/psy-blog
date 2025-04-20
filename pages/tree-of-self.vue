@@ -17,23 +17,21 @@
           <div class="relative flex flex-col items-center mb-6">
             <!-- SVG Tree for Medium+ Screens -->
             <div class="relative mb-4">
-              <!-- Decorative background elements -->
-
               <svg
-                class="w-full max-w-xl h-[28rem] lg:h-[32rem]"
-                viewBox="0 0 300 450"
+                class="w-full max-w-2xl h-[28rem] lg:max-w-3xl lg:h-[36rem]"
+                viewBox="0 0 400 600"
                 preserveAspectRatio="xMidYMid meet"
               >
                 <rect
                   x="0"
                   y="0"
-                  width="300"
-                  height="450"
+                  width="400"
+                  height="600"
                   fill="url(#svg-bg)"
                 />
                 <!-- Definitions for effects -->
                 <defs>
-                  <!-- Glow filter with variable color input -->
+                  <!-- Glow filter -->
                   <filter
                     id="glow"
                     x="-50%"
@@ -148,20 +146,20 @@
                   </linearGradient>
                 </defs>
 
-                <!-- Dynamic connections between nodes with gradient -->
+                <!-- Dynamic connections between nodes -->
                 <g class="connections">
-                  <!-- Vertical light beam from top to bottom -->
+                  <!-- Vertical light beam -->
                   <line
-                    x1="150"
-                    y1="40"
-                    x2="150"
-                    y2="410"
+                    x1="200"
+                    y1="67"
+                    x2="200"
+                    y2="533"
                     stroke="url(#vertical-beam)"
                     stroke-width="1"
                     stroke-opacity="0.2"
                   />
 
-                  <!-- Paths (Connections between Sefirot) -->
+                  <!-- Paths -->
                   <g v-for="(conn, idx) in connections" :key="`conn-${idx}`">
                     <path
                       :d="conn.path"
@@ -170,8 +168,6 @@
                       :class="{ 'active-path': conn.active }"
                       :stroke-dasharray="conn.active ? '5,5' : '2,3'"
                     />
-
-                    <!-- Animated particle on path (when both nodes have progress) -->
                     <circle
                       v-if="conn.active"
                       :class="getConnectionParticleClass(conn.category)"
@@ -194,7 +190,7 @@
                   :key="sefirah.id"
                   :class="`sefirah-${sefirah.id}`"
                 >
-                  <!-- Outer glow ring (always visible for active nodes) -->
+                  <!-- Outer glow ring -->
                   <circle
                     v-if="sefirah.progress > 0"
                     :cx="sefirah.x"
@@ -240,6 +236,10 @@
                     :class="[
                       getNodeClass(sefirah.id, sefirah.progress),
                       'node-circle',
+                      {
+                        'highlight-node':
+                          highlightedCategory === sefirah.category,
+                      },
                     ]"
                     class="cursor-pointer transition-all duration-300"
                     @click="scrollToSefirah(sefirah.id)"
@@ -252,7 +252,9 @@
                       hoveredNode = null;
                     "
                   >
-                    <title>{{ sefirah.name }}: {{ sefirah.progress }}%</title>
+                    <title>
+                      {{ sefirah.function }}: {{ sefirah.progress }}%
+                    </title>
                     <animate
                       v-if="sefirah.progress > 0"
                       attributeName="opacity"
@@ -284,7 +286,7 @@
                     />
                   </circle>
 
-                  <!-- Node inner icon based on category -->
+                  <!-- Node inner icon -->
                   <text
                     :x="sefirah.x"
                     :y="sefirah.y"
@@ -316,28 +318,25 @@
                     </tspan>
                   </text>
 
-                  <!-- Label with better contrast -->
+                  <!-- Label with psychological term and Hebrew name -->
                   <g class="node-label transition-opacity duration-300">
-                    <!-- Label background for better readability -->
-                    <rect
-                      :x="getLabelX(sefirah) - 30"
-                      :y="sefirah.y + 20"
-                      width="60"
-                      height="20"
-                      rx="10"
-                      fill="rgba(0,0,0,0.9)"
-                      class="node-label-bg"
-                    />
-
-                    <!-- Label text -->
                     <text
                       :x="getLabelX(sefirah)"
                       :y="sefirah.y + 30"
-                      class="text-xs font-medium text-white"
+                      class="font-medium text-white"
                       text-anchor="middle"
                       dominant-baseline="middle"
                     >
-                      {{ sefirah.name }}
+                      {{ sefirah.function }}
+                    </text>
+                    <text
+                      :x="getLabelX(sefirah)"
+                      :y="sefirah.y + 45"
+                      class="text-[0.6rem] font-light text-gray-300"
+                      text-anchor="middle"
+                      dominant-baseline="middle"
+                    >
+                      ({{ sefirah.name }})
                     </text>
                   </g>
                 </g>
@@ -346,7 +345,7 @@
                 <foreignObject
                   v-if="activeTooltip"
                   :x="activeTooltip.x - 70"
-                  :y="activeTooltip.y - 80"
+                  :y="activeTooltip.y"
                   width="140"
                   height="70"
                   class="tooltip-container"
@@ -354,8 +353,8 @@
                   <div
                     class="bg-black/80 backdrop-blur-sm p-2 rounded text-white text-xs border border-white/20"
                   >
-                    <p class="font-medium">{{ activeTooltip.name }}</p>
-                    <p class="text-gray-300">{{ activeTooltip.function }}</p>
+                    <p class="font-medium">{{ activeTooltip.function }}</p>
+                    <p class="text-gray-300">{{ activeTooltip.name }}</p>
                     <div class="w-full bg-gray-800/50 rounded-full h-1 mt-1">
                       <div
                         class="h-1 rounded-full"
@@ -367,31 +366,16 @@
                 </foreignObject>
               </svg>
             </div>
-            <!-- Mobile Tree Summary for Small Screens -->
-            <div class="w-full">
-              <div
-                class="bg-background/50 rounded-lg p-4 mb-4 border border-white/10"
-              >
-                <div class="flex justify-between items-center mb-2">
-                  <span class="text-white">Общий прогресс</span>
-                  <span class="text-gradient-mint-end font-medium"
-                    >{{ overallProgress }}%</span
-                  >
-                </div>
-                <div class="w-full bg-gray-800/50 rounded-full h-2.5">
-                  <div
-                    class="bg-gradient-to-r from-gradient-mint-start to-gradient-mint-end h-2.5 rounded-full"
-                    :style="{ width: `${overallProgress}%` }"
-                  ></div>
-                </div>
-              </div>
-            </div>
           </div>
 
-          <!-- Legend with hover effects -->
+          <!-- Legend with hover and click effects -->
           <div class="flex flex-wrap justify-center gap-4 text-sm">
             <div
               class="flex items-center p-1 rounded hover:bg-white/5 transition-colors cursor-pointer"
+              :class="{ 'bg-white/10': highlightedCategory === 'wisdom' }"
+              @click="toggleHighlight('wisdom')"
+              role="button"
+              aria-label="Highlight Wisdom Sefirot"
             >
               <span
                 class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-blue-start to-gradient-blue-end mr-1"
@@ -400,6 +384,10 @@
             </div>
             <div
               class="flex items-center p-1 rounded hover:bg-white/5 transition-colors cursor-pointer"
+              :class="{ 'bg-white/10': highlightedCategory === 'emotions' }"
+              @click="toggleHighlight('emotions')"
+              role="button"
+              aria-label="Highlight Emotions Sefirot"
             >
               <span
                 class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-purple-start to-gradient-purple-end mr-1"
@@ -408,6 +396,10 @@
             </div>
             <div
               class="flex items-center p-1 rounded hover:bg-white/5 transition-colors cursor-pointer"
+              :class="{ 'bg-white/10': highlightedCategory === 'action' }"
+              @click="toggleHighlight('action')"
+              role="button"
+              aria-label="Highlight Action Sefirot"
             >
               <span
                 class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-orange-start to-gradient-orange-end mr-1"
@@ -416,6 +408,10 @@
             </div>
             <div
               class="flex items-center p-1 rounded hover:bg-white/5 transition-colors cursor-pointer"
+              :class="{ 'bg-white/10': highlightedCategory === 'integration' }"
+              @click="toggleHighlight('integration')"
+              role="button"
+              aria-label="Highlight Integration Sefirot"
             >
               <span
                 class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-mint-start to-gradient-mint-end mr-1"
@@ -443,7 +439,8 @@
           >
             <div class="flex justify-between items-start mb-3">
               <h3 class="text-lg md:text-xl font-semibold text-white">
-                {{ sefirah.name }}
+                {{ sefirah.psychName }}
+                <span class="text-sm text-gray-300">({{ sefirah.name }})</span>
               </h3>
               <div
                 class="w-12 h-12 rounded-full flex items-center justify-center text-sm font-medium"
@@ -511,82 +508,229 @@ const isLoggedIn = computed(() => !!authStore.user);
 const activeCard = ref(null);
 const activeTooltip = ref(null);
 const hoveredNode = ref(null);
+const highlightedCategory = ref(null);
+
+// Sefirot Data Structure
+const sefirot = ref([
+  {
+    id: "keter",
+    name: "Кетер",
+    psychName: "Высшее Я",
+    function: "Высшее Я",
+    description: "Ваша истинная сущность и потенциал души.",
+    features: ["Профиль", "Открытие Архетипов"],
+    x: 200,
+    y: 67,
+    progress: 0,
+    category: "integration",
+    cta: {
+      text: "Пройти тест архетипов",
+      link: "/awareness-tools/life-purpose-archetype",
+    },
+  },
+  {
+    id: "chokhmah",
+    name: "Хохма",
+    psychName: "Clarity",
+    function: "Ясность",
+    description: "Интуиция и интеллектуальное прозрение.",
+    features: ["Тест Большой Пятёрки", "Блог"],
+    x: 133,
+    y: 160,
+    progress: 0,
+    category: "wisdom",
+    cta: {
+      text: "Пройти Большую Пятёрку",
+      link: "/awareness-tools/big-5-model",
+    },
+  },
+  {
+    id: "binah",
+    name: "Бина",
+    psychName: "Emotional Awareness",
+    function: "Эм. осознанность",
+    description: "Глубина чувств и понимание эмоций.",
+    features: ["Эмоциональный Компас"],
+    x: 267,
+    y: 160,
+    progress: 0,
+    category: "emotions",
+    cta: {
+      text: "Записать эмоции",
+      link: "/awareness-tools/emotional-compass",
+    },
+  },
+  {
+    id: "chesed",
+    name: "Хесед",
+    psychName: "Connection",
+    function: "Связь",
+    description: "Милосердие и поддержка сообщества.",
+    features: ["Центр сообщества"],
+    x: 107,
+    y: 267,
+    progress: 0,
+    category: "emotions",
+    cta: {
+      text: "Поделиться инсайтом",
+      link: "/awareness-tools/inspiration-wall",
+    },
+  },
+  {
+    id: "gevurah",
+    name: "Гвура",
+    psychName: "Structure",
+    function: "Структура",
+    description: "Дисциплина и конкретные действия.",
+    features: ["Курсы"],
+    x: 293,
+    y: 267,
+    progress: 0,
+    category: "action",
+    cta: { text: "Начать курс", link: "/courses/courses" },
+  },
+  {
+    id: "tiferet",
+    name: "Тиферет",
+    psychName: "Integration",
+    function: "Интеграция",
+    description: "Баланс и целостность вашего пути.",
+    features: ["Внутренний Ландшафт"],
+    x: 200,
+    y: 347,
+    progress: 0,
+    category: "integration",
+    cta: null,
+  },
+  {
+    id: "netzach",
+    name: "Нецах",
+    psychName: "Motivation",
+    function: "Мотивация",
+    description: "Стойкость и ежедневный рост.",
+    features: ["Ежедневная Искра Роста"],
+    x: 133,
+    y: 373,
+    progress: 0,
+    category: "action",
+    cta: { text: "Записать искру", link: "/home" },
+  },
+  {
+    id: "hod",
+    name: "Ход",
+    psychName: "Perspective",
+    function: "Перспектива",
+    description: "Рефлексия через контент и знания.",
+    features: ["Гайды", "Подкасты"],
+    x: 267,
+    y: 373,
+    progress: 0,
+    category: "wisdom",
+    cta: null,
+  },
+  {
+    id: "yesod",
+    name: "Йесод",
+    psychName: "Routine",
+    function: "Рутина",
+    description: "Фундамент ваших привычек и прогресса.",
+    features: ["Личный кабинет"],
+    x: 200,
+    y: 453,
+    progress: 0,
+    category: "integration",
+    cta: { text: "Посмотреть прогресс", link: "/personal-cabinet" },
+  },
+  {
+    id: "malkhut",
+    name: "Малхут",
+    psychName: "Manifestation",
+    function: "Воплощение",
+    description: "Реальные действия в мире.",
+    features: ["Выполненные задачи"],
+    x: 200,
+    y: 533,
+    progress: 0,
+    category: "action",
+    cta: { text: "Завершить задачу", link: "/awareness-tools" },
+  },
+]);
 
 // Connection data
 const connections = computed(() => {
   return [
     {
-      path: "M150 50 L100 120",
+      path: "M200 67 L133 160",
       active:
         sefirot.value.find((s) => s.id === "keter").progress > 0 &&
         sefirot.value.find((s) => s.id === "chokhmah").progress > 0,
       category: "wisdom",
     },
     {
-      path: "M150 50 L200 120",
+      path: "M200 67 L267 160",
       active:
         sefirot.value.find((s) => s.id === "keter").progress > 0 &&
         sefirot.value.find((s) => s.id === "binah").progress > 0,
       category: "emotions",
     },
     {
-      path: "M100 120 L80 200",
+      path: "M133 160 L107 267",
       active:
         sefirot.value.find((s) => s.id === "chokhmah").progress > 0 &&
         sefirot.value.find((s) => s.id === "chesed").progress > 0,
       category: "emotions",
     },
     {
-      path: "M200 120 L220 200",
+      path: "M267 160 L293 267",
       active:
         sefirot.value.find((s) => s.id === "binah").progress > 0 &&
         sefirot.value.find((s) => s.id === "gevurah").progress > 0,
       category: "action",
     },
     {
-      path: "M80 200 L150 260",
+      path: "M107 267 L200 347",
       active:
         sefirot.value.find((s) => s.id === "chesed").progress > 0 &&
         sefirot.value.find((s) => s.id === "tiferet").progress > 0,
       category: "integration",
     },
     {
-      path: "M220 200 L150 260",
+      path: "M293 267 L200 347",
       active:
         sefirot.value.find((s) => s.id === "gevurah").progress > 0 &&
         sefirot.value.find((s) => s.id === "tiferet").progress > 0,
       category: "integration",
     },
     {
-      path: "M80 200 L100 280",
+      path: "M107 267 L133 373",
       active:
         sefirot.value.find((s) => s.id === "chesed").progress > 0 &&
         sefirot.value.find((s) => s.id === "netzach").progress > 0,
       category: "action",
     },
     {
-      path: "M220 200 L200 280",
+      path: "M293 267 L267 373",
       active:
         sefirot.value.find((s) => s.id === "gevurah").progress > 0 &&
         sefirot.value.find((s) => s.id === "hod").progress > 0,
       category: "wisdom",
     },
     {
-      path: "M100 280 L150 340",
+      path: "M133 373 L200 453",
       active:
         sefirot.value.find((s) => s.id === "netzach").progress > 0 &&
         sefirot.value.find((s) => s.id === "yesod").progress > 0,
       category: "integration",
     },
     {
-      path: "M200 280 L150 340",
+      path: "M267 373 L200 453",
       active:
         sefirot.value.find((s) => s.id === "hod").progress > 0 &&
         sefirot.value.find((s) => s.id === "yesod").progress > 0,
       category: "integration",
     },
     {
-      path: "M150 340 L150 400",
+      path: "M200 453 L200 533",
       active:
         sefirot.value.find((s) => s.id === "yesod").progress > 0 &&
         sefirot.value.find((s) => s.id === "malkhut").progress > 0,
@@ -600,13 +744,19 @@ const showNodeTooltip = (sefirah) => {
   activeTooltip.value = {
     ...sefirah,
     x: sefirah.x,
-    y: sefirah.y,
+    y: sefirah.id === "keter" ? sefirah.y + 80 : sefirah.y - 80,
   };
 };
 
 // Hide node tooltip
 const hideNodeTooltip = () => {
   activeTooltip.value = null;
+};
+
+// Toggle highlight for legend
+const toggleHighlight = (category) => {
+  highlightedCategory.value =
+    highlightedCategory.value === category ? null : category;
 };
 
 // Get node pulse class
@@ -641,7 +791,7 @@ const getConnectionParticleClass = (category) => {
   }
 };
 
-// Set active card and scroll to it
+// Set active card
 const setActiveCard = (id) => {
   activeCard.value = id;
 };
@@ -651,155 +801,17 @@ const scrollToSefirah = (id) => {
   activeCard.value = id;
   const element = document.getElementById(`sefirah-${id}`);
   if (element) {
-    // Add a small timeout to ensure the DOM is ready
     setTimeout(() => {
       element.scrollIntoView({
         behavior: "smooth",
         block: "center",
         inline: "nearest",
       });
-      // Add a temporary highlight class
       element.classList.add("ring-2");
       setTimeout(() => element.classList.remove("ring-2"), 2000);
     }, 50);
   }
 };
-
-// Sefirot Data Structure with category info for styling
-const sefirot = ref([
-  {
-    id: "keter",
-    name: "Кетер",
-    function: "Высшее Я",
-    description: "Ваша истинная сущность и потенциал души.",
-    features: ["Профиль", "Открытие Архетипов"],
-    x: 150,
-    y: 50,
-    progress: 0,
-    category: "integration",
-    cta: {
-      text: "Пройти тест архетипов",
-      link: "/awareness-tools/life-purpose-archetype",
-    },
-  },
-  {
-    id: "chokhmah",
-    name: "Хохма",
-    function: "Ясность",
-    description: "Интуиция и интеллектуальное прозрение.",
-    features: ["Тест Большой Пятёрки", "Блог"],
-    x: 100,
-    y: 120,
-    progress: 0,
-    category: "wisdom",
-    cta: {
-      text: "Пройти Большую Пятёрку",
-      link: "/awareness-tools/big-5-model",
-    },
-  },
-  {
-    id: "binah",
-    name: "Бина",
-    function: "Эмоциональная осознанность",
-    description: "Глубина чувств и понимание эмоций.",
-    features: ["Эмоциональный Компас"],
-    x: 200,
-    y: 120,
-    progress: 0,
-    category: "emotions",
-    cta: {
-      text: "Записать эмоции",
-      link: "/awareness-tools/emotional-compass",
-    },
-  },
-  {
-    id: "chesed",
-    name: "Хесед",
-    function: "Связь",
-    description: "Милосердие и поддержка сообщества.",
-    features: ["Центр сообщества"],
-    x: 80,
-    y: 200,
-    progress: 0,
-    category: "emotions",
-    cta: {
-      text: "Поделиться инсайтом",
-      link: "/awareness-tools/inspiration-wall",
-    },
-  },
-  {
-    id: "gevurah",
-    name: "Гвура",
-    function: "Структура",
-    description: "Дисциплина и конкретные действия.",
-    features: ["Курсы"],
-    x: 220,
-    y: 200,
-    progress: 0,
-    category: "action",
-    cta: { text: "Начать курс", link: "/courses/courses" },
-  },
-  {
-    id: "tiferet",
-    name: "Тиферет",
-    function: "Интеграция",
-    description: "Баланс и целостность вашего пути.",
-    features: ["Внутренний Ландшафт"],
-    x: 150,
-    y: 260,
-    progress: 0,
-    category: "integration",
-    cta: null,
-  },
-  {
-    id: "netzach",
-    name: "Нецах",
-    function: "Мотивация",
-    description: "Стойкость и ежедневный рост.",
-    features: ["Ежедневная Искра Роста"],
-    x: 100,
-    y: 280,
-    progress: 0,
-    category: "action",
-    cta: { text: "Записать искру", link: "/home" },
-  },
-  {
-    id: "hod",
-    name: "Ход",
-    function: "Перспектива",
-    description: "Рефлексия через контент и знания.",
-    features: ["Гайды", "Подкасты"],
-    x: 200,
-    y: 280,
-    progress: 0,
-    category: "wisdom",
-    cta: null,
-  },
-  {
-    id: "yesod",
-    name: "Йесод",
-    function: "Рутина",
-    description: "Фундамент ваших привычек и прогресса.",
-    features: ["Личный кабинет"],
-    x: 150,
-    y: 340,
-    progress: 0,
-    category: "integration",
-    cta: { text: "Посмотреть прогресс", link: "/personal-cabinet" },
-  },
-  {
-    id: "malkhut",
-    name: "Малхут",
-    function: "Воплощение",
-    description: "Реальные действия в мире.",
-    features: ["Выполненные задачи"],
-    x: 150,
-    y: 400,
-    progress: 0,
-    category: "action",
-    cta: { text: "Завершить задачу", link: "/awareness-tools" },
-  },
-]);
 
 // Calculate overall progress
 const overallProgress = computed(() => {
@@ -810,7 +822,6 @@ const overallProgress = computed(() => {
 // Fetch User Progress
 const fetchSefirotProgress = async (userId) => {
   try {
-    // Keter: Profile completion and archetypes
     const assessmentResponse = await getLatestUserAssessment(firestore, userId);
     if (assessmentResponse?.success) {
       const archetypeCount = Object.keys(
@@ -822,7 +833,6 @@ const fetchSefirotProgress = async (userId) => {
       );
     }
 
-    // Chokhmah: Big Five test completion
     if (
       assessmentResponse?.success &&
       assessmentResponse.assessment.type === "big-5"
@@ -830,7 +840,6 @@ const fetchSefirotProgress = async (userId) => {
       sefirot.value.find((s) => s.id === "chokhmah").progress = 100;
     }
 
-    // Binah: Emotional Compass entries
     const emotionResponse = await getEmotionBarometerData(firestore, userId);
     if (emotionResponse?.success) {
       const entryCount = emotionResponse.data.entries.length;
@@ -840,10 +849,8 @@ const fetchSefirotProgress = async (userId) => {
       );
     }
 
-    // Chesed: Community posts
-    sefirot.value.find((s) => s.id === "chesed").progress = 10; // Mock: 1 post = 10%
+    sefirot.value.find((s) => s.id === "chesed").progress = 10;
 
-    // Gevurah: Course progress
     const coursesResponse = await getPurchasedCourses(userId);
     if (coursesResponse?.success && coursesResponse.data.length > 0) {
       const avgProgress =
@@ -855,8 +862,6 @@ const fetchSefirotProgress = async (userId) => {
         Math.round(avgProgress);
     }
 
-    // Tiferet: Overall Inner Landscape progress
-    // Calculate after other Sefirot updates
     setTimeout(() => {
       const totalProgress = sefirot.value
         .filter((s) => s.id !== "tiferet")
@@ -866,7 +871,6 @@ const fetchSefirotProgress = async (userId) => {
       );
     }, 100);
 
-    // Netzach: Daily Growth Spark entries
     const sparkResponse = await getDailyGrowthSparkData(firestore, userId);
     if (sparkResponse?.success) {
       const sparkCount = sparkResponse.data.entries?.length || 1;
@@ -876,18 +880,14 @@ const fetchSefirotProgress = async (userId) => {
       );
     }
 
-    // Hod: Guides/Podcasts engagement
     sefirot.value.find((s) => s.id === "hod").progress = 0;
 
-    // Yesod: Personal cabinet activity
     sefirot.value.find((s) => s.id === "yesod").progress =
       coursesResponse?.success ? 50 : 0;
 
-    // Malkhut: Task completions
     sefirot.value.find((s) => s.id === "malkhut").progress = 20;
   } catch (error) {
     console.error("Error fetching Sefirot progress:", error);
-    // Ensure UI doesn't break on error
     sefirot.value.forEach((s) => {
       if (typeof s.progress !== "number") s.progress = 0;
     });
@@ -897,7 +897,7 @@ const fetchSefirotProgress = async (userId) => {
 // Get ring color for active card
 const getRingColor = (id) => {
   const sefirah = sefirot.value.find((s) => s.id === id);
-  if (!sefirah) return "75, 85, 99"; // RGB for gray-600
+  if (!sefirah) return "75, 85, 99";
 
   switch (sefirah.category) {
     case "wisdom":
@@ -914,7 +914,7 @@ const getRingColor = (id) => {
 };
 
 const getIconClass = (category, progress) => {
-  if (progress === 0) return "fill-gray-400"; // Dimmed for inactive nodes
+  if (progress === 0) return "fill-gray-400";
 
   switch (category) {
     case "wisdom":
@@ -930,12 +930,12 @@ const getIconClass = (category, progress) => {
   }
 };
 
-// Styling functions based on category and progress
+// Styling functions
 const getNodeClass = (id, progress) => {
   const sefirah = sefirot.value.find((s) => s.id === id);
   if (!sefirah) return "fill-gray-700";
 
-  if (progress === 0) return "fill-gray-700 stroke-gray-500"; // Inactive state with subtle stroke
+  if (progress === 0) return "fill-gray-700 stroke-gray-500";
 
   switch (sefirah.category) {
     case "wisdom":
@@ -1032,17 +1032,15 @@ const getNodeBorderClass = (progress) => {
   return "border-white/40";
 };
 
-// Label positioning helper
+// Label positioning
 const getLabelX = (sefirah) => {
-  // Adjust label positioning based on node position
-  if (sefirah.x < 120) return sefirah.x - 25;
-  if (sefirah.x > 180) return sefirah.x + 25;
+  if (sefirah.x < 160) return sefirah.x - 35;
+  if (sefirah.x > 240) return sefirah.x + 35;
   return sefirah.x;
 };
 
 // Open Daily Growth Spark dialog
 const openDailyGrowthSpark = () => {
-  // Navigate to daily growth spark or open modal
   navigateTo("/daily-growth-spark");
 };
 
@@ -1052,7 +1050,6 @@ onMounted(async () => {
     const userId = authStore.user.uid;
     await fetchSefirotProgress(userId);
   } else {
-    // Non-logged-in: Show sample progress for demo purposes
     const demoData = [40, 70, 30, 10, 50, 35, 20, 5, 60, 15];
     sefirot.value.forEach((s, index) => {
       s.progress = demoData[index];
@@ -1160,7 +1157,7 @@ watch(
   }
 }
 
-/* Make sure SVG text is visible and appropriately sized */
+/* SVG text */
 svg text {
   fill: currentColor;
   font-size: 10px;
@@ -1199,8 +1196,12 @@ svg text {
   filter: brightness(1.2);
 }
 
-.node-label:hover {
-  opacity: 1;
+/* Highlight effect for legend click */
+.highlight-node {
+  filter: brightness(1.5);
+  stroke: rgba(255, 255, 255, 0.8);
+  stroke-width: 2;
+  animation: glowPulse 1.5s ease-in-out infinite;
 }
 
 /* Pulse effects */
@@ -1236,22 +1237,7 @@ svg text {
   }
 }
 
-/* Background radial gradient */
-.bg-gradient-radial {
-  background: radial-gradient(
-    circle,
-    var(--tw-gradient-from) 0%,
-    var(--tw-gradient-to) 70%
-  );
-}
-
-/* FontAwesome in SVG */
-.fa {
-  font-family: "Font Awesome 5 Free";
-  font-weight: 900;
-}
-
-/* Mobile card hover effect */
+/* Glow pulse for highlight */
 @keyframes glowPulse {
   0% {
     box-shadow: 0 0 5px 0 rgba(255, 255, 255, 0.1);
@@ -1264,25 +1250,18 @@ svg text {
   }
 }
 
-/* Vertical beam gradient */
-@keyframes shimmer {
-  from {
-    opacity: 0.1;
-  }
-  50% {
-    opacity: 0.3;
-  }
-  to {
-    opacity: 0.1;
-  }
+/* FontAwesome in SVG */
+.fa {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
 }
 
-/* Ensure SVG elements can receive pointer events */
+/* SVG pointer events */
 svg {
   pointer-events: bounding-box;
 }
 
-/* Make sure the cards are not covered by other elements */
+/* Ensure cards are not covered */
 section {
   position: relative;
   z-index: 1;
