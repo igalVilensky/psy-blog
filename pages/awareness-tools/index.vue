@@ -92,7 +92,7 @@ import big5Image from "@/assets/images/awarenessTools/big5.jpg";
 
 const tools = ref([
   {
-    name: "Открытие Архетипа Жизни",
+    name: "12 Архетипов",
     path: "/awareness-tools/life-purpose-archetype",
     description:
       "Погрузитесь в глубокое исследование архетипов вашей личности и раскройте истинную цель вашей жизни через трансформационный процесс самопознания.",

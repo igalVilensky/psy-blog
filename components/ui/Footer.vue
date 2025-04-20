@@ -143,12 +143,12 @@ const sitemapLinks = [
     label: "Эмоциональный компас",
     to: "/awareness-tools/emotional-compass",
   },
-  // {
-  //   label: "Глубокий разговор с картами",
-  //   to: "/awareness-tools/deep-conversation-with-cards",
-  // },
   {
-    label: "Открытие Архетипа Жизни",
+    label: "Колесо баланса",
+    to: "/awareness-tools/wheel-of-life",
+  },
+  {
+    label: "12 Архетипов",
     to: "/awareness-tools/life-purpose-archetype",
   },
   {

@@ -121,13 +121,22 @@
                 <span>Эмоциональный компас</span>
               </NuxtLink>
               <NuxtLink
+                to="/awareness-tools/wheel-of-life"
+                class="flex items-center space-x-2 px-4 py-3 text-sm text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-300"
+                exact-active-class="bg-white/10"
+                @click="closeDropdown"
+              >
+                <i class="fas fa-yin-yang text-[#F59E0B]"></i>
+                <span>Колесо баланса </span>
+              </NuxtLink>
+              <NuxtLink
                 to="/awareness-tools/life-purpose-archetype"
                 class="flex items-center space-x-2 px-4 py-3 text-sm text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-300"
                 exact-active-class="bg-white/10"
                 @click="closeDropdown"
               >
                 <i class="fas fa-star text-[#F59E0B]"></i>
-                <span>Открытие Архетипа Жизни</span>
+                <span>12 Архетипов</span>
               </NuxtLink>
               <NuxtLink
                 to="/awareness-tools/big-5-model"
@@ -466,13 +475,22 @@
                   <span>Эмоциональный компас</span>
                 </NuxtLink>
                 <NuxtLink
+                  to="/awareness-tools/wheel-of-life"
+                  class="flex items-center space-x-3 px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/5 rounded-lg"
+                  exact-active-class="bg-white/15"
+                  @click="closeDropdown"
+                >
+                  <i class="fas fa-yin-yang text-[#F59E0B]"></i>
+                  <span>Колесо баланса</span>
+                </NuxtLink>
+                <NuxtLink
                   to="/awareness-tools/life-purpose-archetype"
                   class="flex items-center space-x-3 px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/5 rounded-lg"
                   exact-active-class="bg-white/15"
                   @click="closeDropdown"
                 >
                   <i class="fas fa-star text-[#F59E0B]"></i>
-                  <span>Открытие Архетипа Жизни</span>
+                  <span>12 Архетипов</span>
                 </NuxtLink>
                 <NuxtLink
                   to="/awareness-tools/big-5-model"
