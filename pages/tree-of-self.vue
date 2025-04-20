@@ -1,24 +1,23 @@
 <template>
   <div class="min-h-screen">
     <!-- Main Content Area -->
-    <main class="px-6 xl:px-0 pb-20 mt-14">
+    <main class="px-6 xl:px-0 pb-20 mt-12">
       <div class="container mx-auto max-w-6xl">
         <!-- Tree Visualization -->
-        <section
-          class="mb-8 bg-white/5 backdrop-blur rounded-xl shadow-xl p-4 md:p-8 border border-white/10"
+        <h2
+          class="text-xl md:text-2xl font-semibold text-white flex items-center mb-4 md:hidden"
         >
-          <h2
-            class="text-xl md:text-2xl font-semibold text-white mb-4 md:mb-6 flex items-center"
-          >
-            <i class="fas fa-tree mr-2 text-gradient-blue-end"></i>
-            Ваше Древо Себя
-          </h2>
-
-          <div class="relative flex flex-col items-center mb-6">
+          <i class="fas fa-tree mr-2 text-gradient-blue-end"></i>
+          Ваше Древо Себя
+        </h2>
+        <section
+          class="mb-8 bg-white/5 backdrop-blur rounded-xl shadow-xl border border-white/10"
+        >
+          <div class="relative flex flex-col items-center">
             <!-- SVG Tree for Medium+ Screens -->
             <div class="relative mb-4">
               <svg
-                class="w-full max-w-2xl h-[28rem] lg:max-w-3xl lg:h-[36rem]"
+                class="w-full max-w-3xl h-[32rem] lg:max-w-4xl lg:h-[40rem] xl:max-w-5xl xl:h-[48rem]"
                 viewBox="0 0 400 600"
                 preserveAspectRatio="xMidYMid meet"
               >
@@ -29,6 +28,18 @@
                   height="600"
                   fill="url(#svg-bg)"
                 />
+
+                <!-- Title inside SVG (desktop only) -->
+                <g class="hidden md:block">
+                  <text
+                    x="140"
+                    y="30"
+                    class="text-3xl font-semibold text-white"
+                  >
+                    Ваше Древо Себя
+                  </text>
+                </g>
+
                 <!-- Definitions for effects -->
                 <defs>
                   <!-- Glow filter -->
@@ -368,55 +379,121 @@
             </div>
           </div>
 
-          <!-- Legend with hover and click effects -->
-          <div class="flex flex-wrap justify-center gap-4 text-sm">
+          <!-- Desktop Side Legend -->
+          <div
+            class="hidden md:block absolute right-16 top-1/3 transform -translate-y-1/2"
+          >
             <div
-              class="flex items-center p-1 rounded hover:bg-white/5 transition-colors cursor-pointer"
-              :class="{ 'bg-white/10': highlightedCategory === 'wisdom' }"
-              @click="toggleHighlight('wisdom')"
-              role="button"
-              aria-label="Highlight Wisdom Sefirot"
+              class="flex flex-col space-y-2 bg-black/40 rounded-lg p-1 border border-white/10"
             >
-              <span
-                class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-blue-start to-gradient-blue-end mr-1"
-              ></span>
-              <span class="text-gray-200">Мудрость</span>
+              <div
+                class="flex items-center px-3 py-2 hover:bg-white/5 transition-colors cursor-pointer rounded"
+                :class="{ 'bg-white/10': highlightedCategory === 'wisdom' }"
+                @click="toggleHighlight('wisdom')"
+                role="button"
+                aria-label="Highlight Wisdom Sefirot"
+              >
+                <span
+                  class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-blue-start to-gradient-blue-end mr-2"
+                ></span>
+                <span class="text-gray-200 whitespace-nowrap">Мудрость</span>
+              </div>
+              <div
+                class="flex items-center px-3 py-2 hover:bg-white/5 transition-colors cursor-pointer rounded"
+                :class="{ 'bg-white/10': highlightedCategory === 'emotions' }"
+                @click="toggleHighlight('emotions')"
+                role="button"
+                aria-label="Highlight Emotions Sefirot"
+              >
+                <span
+                  class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-purple-start to-gradient-purple-end mr-2"
+                ></span>
+                <span class="text-gray-200 whitespace-nowrap">Чувства</span>
+              </div>
+              <div
+                class="flex items-center px-3 py-2 hover:bg-white/5 transition-colors cursor-pointer rounded"
+                :class="{ 'bg-white/10': highlightedCategory === 'action' }"
+                @click="toggleHighlight('action')"
+                role="button"
+                aria-label="Highlight Action Sefirot"
+              >
+                <span
+                  class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-orange-start to-gradient-orange-end mr-2"
+                ></span>
+                <span class="text-gray-200 whitespace-nowrap">Действия</span>
+              </div>
+              <div
+                class="flex items-center px-3 py-2 hover:bg-white/5 transition-colors cursor-pointer rounded"
+                :class="{
+                  'bg-white/10': highlightedCategory === 'integration',
+                }"
+                @click="toggleHighlight('integration')"
+                role="button"
+                aria-label="Highlight Integration Sefirot"
+              >
+                <span
+                  class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-mint-start to-gradient-mint-end mr-2"
+                ></span>
+                <span class="text-gray-200 whitespace-nowrap">Интеграция</span>
+              </div>
             </div>
+          </div>
+
+          <!-- Mobile/Tablet Legend -->
+          <div class="flex justify-center md:hidden">
             <div
-              class="flex items-center p-1 rounded hover:bg-white/5 transition-colors cursor-pointer"
-              :class="{ 'bg-white/10': highlightedCategory === 'emotions' }"
-              @click="toggleHighlight('emotions')"
-              role="button"
-              aria-label="Highlight Emotions Sefirot"
+              class="inline-grid grid-cols-2 sm:grid-cols-4 gap-px bg-white/10 rounded-lg overflow-hidden border border-white/10"
             >
-              <span
-                class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-purple-start to-gradient-purple-end mr-1"
-              ></span>
-              <span class="text-gray-200">Чувства</span>
-            </div>
-            <div
-              class="flex items-center p-1 rounded hover:bg-white/5 transition-colors cursor-pointer"
-              :class="{ 'bg-white/10': highlightedCategory === 'action' }"
-              @click="toggleHighlight('action')"
-              role="button"
-              aria-label="Highlight Action Sefirot"
-            >
-              <span
-                class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-orange-start to-gradient-orange-end mr-1"
-              ></span>
-              <span class="text-gray-200">Действия</span>
-            </div>
-            <div
-              class="flex items-center p-1 rounded hover:bg-white/5 transition-colors cursor-pointer"
-              :class="{ 'bg-white/10': highlightedCategory === 'integration' }"
-              @click="toggleHighlight('integration')"
-              role="button"
-              aria-label="Highlight Integration Sefirot"
-            >
-              <span
-                class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-mint-start to-gradient-mint-end mr-1"
-              ></span>
-              <span class="text-gray-200">Интеграция</span>
+              <div
+                class="flex items-center px-4 py-2 bg-black/40 hover:bg-white/5 transition-colors cursor-pointer"
+                :class="{ 'bg-white/10': highlightedCategory === 'wisdom' }"
+                @click="toggleHighlight('wisdom')"
+                role="button"
+                aria-label="Highlight Wisdom Sefirot"
+              >
+                <span
+                  class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-blue-start to-gradient-blue-end mr-2"
+                ></span>
+                <span class="text-gray-200 whitespace-nowrap">Мудрость</span>
+              </div>
+              <div
+                class="flex items-center px-4 py-2 bg-black/40 hover:bg-white/5 transition-colors cursor-pointer"
+                :class="{ 'bg-white/10': highlightedCategory === 'emotions' }"
+                @click="toggleHighlight('emotions')"
+                role="button"
+                aria-label="Highlight Emotions Sefirot"
+              >
+                <span
+                  class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-purple-start to-gradient-purple-end mr-2"
+                ></span>
+                <span class="text-gray-200 whitespace-nowrap">Чувства</span>
+              </div>
+              <div
+                class="flex items-center px-4 py-2 bg-black/40 hover:bg-white/5 transition-colors cursor-pointer"
+                :class="{ 'bg-white/10': highlightedCategory === 'action' }"
+                @click="toggleHighlight('action')"
+                role="button"
+                aria-label="Highlight Action Sefirot"
+              >
+                <span
+                  class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-orange-start to-gradient-orange-end mr-2"
+                ></span>
+                <span class="text-gray-200 whitespace-nowrap">Действия</span>
+              </div>
+              <div
+                class="flex items-center px-4 py-2 bg-black/40 hover:bg-white/5 transition-colors cursor-pointer"
+                :class="{
+                  'bg-white/10': highlightedCategory === 'integration',
+                }"
+                @click="toggleHighlight('integration')"
+                role="button"
+                aria-label="Highlight Integration Sefirot"
+              >
+                <span
+                  class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-mint-start to-gradient-mint-end mr-2"
+                ></span>
+                <span class="text-gray-200 whitespace-nowrap">Интеграция</span>
+              </div>
             </div>
           </div>
         </section>
