@@ -263,6 +263,15 @@
                 <span>Мой Профиль</span>
               </NuxtLink>
               <NuxtLink
+                :to="`/profile/${formattedUsername}_1`"
+                class="flex items-center space-x-2 px-4 py-3 text-sm text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-300"
+                exact-active-class="bg-white/10"
+                @click="closeDropdown"
+              >
+                <i class="fas fa-user-circle text-[#0EA5E9]"></i>
+                <span>Мой Профиль (New)</span>
+              </NuxtLink>
+              <NuxtLink
                 to="/personal-cabinet"
                 class="flex items-center space-x-2 px-4 py-3 text-sm text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-300"
                 exact-active-class="bg-white/10"
@@ -594,6 +603,18 @@
                   >
                 </NuxtLink>
                 <NuxtLink
+                  :to="`/profile/${formattedUsername}_1`"
+                  class="flex items-center space-x-3 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-300 group"
+                  exact-active-class="bg-white/15"
+                  @click="closeDropdown"
+                >
+                  <i class="fas fa-user text-[#0EA5E9] text-lg"></i>
+                  <span
+                    class="font-medium text-slate-300 group-hover:text-white"
+                    >Мой Профиль (New)</span
+                  >
+                </NuxtLink>
+                <NuxtLink
                   to="/personal-cabinet"
                   class="flex items-center space-x-3 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-300 group"
                   exact-active-class="bg-white/15"
@@ -708,6 +729,9 @@ const isCommunityRouteActive = computed(() => {
 onMounted(async () => {
   await auth.initAuth();
   document.addEventListener("click", handleOutsideClick);
+  if (auth.user && auth.user.displayName) {
+    const formattedUsername = auth.user.displayName.replace(/\s/g, "-"); // or .replace(/\s/g, '') for no spaces
+  }
 });
 
 onUnmounted(() => {

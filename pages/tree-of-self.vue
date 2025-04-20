@@ -1,26 +1,11 @@
 <template>
   <div class="min-h-screen">
-    <!-- Header Section -->
-    <header
-      class="pt-8 md:pt-12 pb-10 md:pb-16 px-4 sm:px-6 bg-gradient-to-br from-background to-background/95"
-    >
-      <div class="container mx-auto max-w-6xl">
-        <h1 class="text-3xl sm:text-4xl font-bold text-white mb-3 md:mb-4">
-          Древо Себя
-        </h1>
-        <p class="text-lg text-gray-300 max-w-2xl">
-          Исследуйте свой внутренний мир через 10 Сефирот, отражая прогресс в
-          самопознании, эмоциях и действиях
-        </p>
-      </div>
-    </header>
-
     <!-- Main Content Area -->
-    <main class="px-4 sm:px-6 pb-20">
+    <main class="px-6 xl:px-0 pb-20 mt-14">
       <div class="container mx-auto max-w-6xl">
         <!-- Tree Visualization -->
         <section
-          class="my-8 md:my-16 bg-white/5 backdrop-blur rounded-xl shadow-xl p-4 md:p-8 border border-white/10"
+          class="mb-8 bg-white/5 backdrop-blur rounded-xl shadow-xl p-4 md:p-8 border border-white/10"
         >
           <h2
             class="text-xl md:text-2xl font-semibold text-white mb-4 md:mb-6 flex items-center"
@@ -505,35 +490,6 @@
             </p>
           </div>
         </section>
-
-        <!-- CTA Section -->
-        <section
-          class="bg-gradient-to-br from-gradient-blue-start/30 to-gradient-blue-end/30 backdrop-blur text-white rounded-xl shadow-lg p-6 md:p-8 text-center border border-white/10"
-        >
-          <h2 class="text-xl md:text-2xl font-semibold mb-3 md:mb-4">
-            Продолжайте Расти с Древом Себя
-          </h2>
-          <p class="text-gray-300 mb-6">
-            Каждый шаг укрепляет ваше Древо. Запишите эмоции, завершите тест или
-            поделитесь инсайтом уже сегодня!
-          </p>
-          <div class="flex flex-wrap gap-3 justify-center">
-            <nuxt-link
-              to="/awareness-tools"
-              class="inline-flex items-center bg-gradient-to-r from-gradient-mint-start to-gradient-mint-end text-background px-5 py-3 rounded-lg font-medium hover:shadow-lg transition"
-            >
-              <i class="fas fa-compass mr-2"></i>
-              Исследовать Инструменты
-            </nuxt-link>
-            <nuxt-link
-              to="/emotional-compass"
-              class="inline-flex items-center bg-white/10 text-white px-5 py-3 rounded-lg font-medium hover:bg-white/15 transition"
-            >
-              <i class="fas fa-heart mr-2"></i>
-              Записать Эмоции
-            </nuxt-link>
-          </div>
-        </section>
       </div>
     </main>
   </div>
@@ -723,7 +679,7 @@ const sefirot = ref([
     category: "integration",
     cta: {
       text: "Пройти тест архетипов",
-      link: "/awareness-tools/archetype-discovery",
+      link: "/awareness-tools/life-purpose-archetype",
     },
   },
   {
@@ -766,7 +722,10 @@ const sefirot = ref([
     y: 200,
     progress: 0,
     category: "emotions",
-    cta: { text: "Поделиться инсайтом", link: "/community" },
+    cta: {
+      text: "Поделиться инсайтом",
+      link: "/awareness-tools/inspiration-wall",
+    },
   },
   {
     id: "gevurah",
@@ -778,7 +737,7 @@ const sefirot = ref([
     y: 200,
     progress: 0,
     category: "action",
-    cta: { text: "Начать курс", link: "/courses" },
+    cta: { text: "Начать курс", link: "/courses/courses" },
   },
   {
     id: "tiferet",

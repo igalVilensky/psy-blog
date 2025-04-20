@@ -84,7 +84,7 @@
           :loading="loadingAssessments"
           :data="insightData"
           button-text="Исследовать архетипы"
-          button-to="/courses"
+          button-to="/courses/courses"
           button-icon="fas fa-arrow-right"
           :progress="Math.min(insightData.archetypeScores.length * 20, 100)"
           progress-label="Прогресс прозрения"
@@ -176,7 +176,7 @@
           :loading="loading"
           :data="growthData"
           button-text="Добавить инсайт"
-          button-to="/growth-tools"
+          button-to="/awareness-tools/daily-growth-spark"
           button-icon="fas fa-plus"
           :progress="Math.min(growthData.entries.length * 20, 100)"
           progress-label="Прогресс роста"
@@ -205,7 +205,7 @@
             <i class="fas fa-lightbulb text-[#10B981] text-2xl opacity-50"></i>
             <p class="text-center text-slate-400">Нет данных о росте</p>
             <NuxtLink
-              to="/growth-tools"
+              to="/awareness-tools/daily-growth-spark"
               class="text-[#10B981] hover:underline text-sm"
             >
               Начать путь роста
