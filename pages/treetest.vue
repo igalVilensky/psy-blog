@@ -21,14 +21,14 @@
             <div class="flex items-center space-x-4 mb-2">
               <div class="flex-1">
                 <div class="flex justify-between mb-1">
-                  <span class="text-xs text-gold-300">Правая (Огонь)</span>
-                  <span class="text-xs text-gold-300"
+                  <span class="text-xs text-yellow-300">Правая (Огонь)</span>
+                  <span class="text-xs text-yellow-300"
                     >{{ Math.round(columnProgress.right) }}%</span
                   >
                 </div>
                 <div class="w-full bg-black/30 rounded-full h-2">
                   <div
-                    class="h-2 rounded-full bg-gradient-to-r from-gold-500/70 to-gold-300"
+                    class="h-2 rounded-full bg-gradient-to-r from-yellow-500/70 to-yellow-300"
                     :style="{ width: `${columnProgress.right}%` }"
                   ></div>
                 </div>
@@ -79,7 +79,7 @@
                 class="py-2 px-3 rounded-lg text-sm font-medium transition-all"
                 :class="
                   energyOfDay === 'right'
-                    ? 'bg-gold-500/30 text-gold-200 border border-gold-400/50'
+                    ? 'bg-yellow-500/30 text-yellow-200 border border-yellow-400/50'
                     : 'bg-black/20 text-white/70 border border-white/10 hover:bg-white/10'
                 "
               >
@@ -115,31 +115,42 @@
         </div>
 
         <!-- Cycle Toggle -->
-        <div class="mb-4 flex justify-between items-center">
-          <div class="flex items-center">
-            <label class="inline-flex items-center cursor-pointer mr-4">
+        <div
+          class="mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2"
+        >
+          <div
+            class="flex flex-col xs:flex-row items-start xs:items-center gap-2 w-full sm:w-auto"
+          >
+            <label class="inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
                 v-model="pathOfWholeness"
                 class="sr-only peer"
               />
               <div
-                class="relative w-11 h-6 bg-black/20 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-gold-600 peer-checked:to-gold-400"
+                class="relative w-11 h-6 bg-black/20 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-yellow-600 peer-checked:to-yellow-400"
               ></div>
-              <span class="ml-2 text-sm font-medium text-white/80"
-                >Путь Целостности</span
+              <span
+                class="ml-2 text-sm font-medium text-white/80 whitespace-nowrap"
               >
+                Путь Целостности
+              </span>
             </label>
-            <p v-if="pathOfWholeness" class="text-sm text-gold-300">
+
+            <p
+              v-if="pathOfWholeness"
+              class="text-sm text-yellow-300 whitespace-nowrap"
+            >
               <i class="fas fa-sun mr-1"></i> Неделя {{ currentWeek }}:
               {{ getCurrentSefirahName() }}
             </p>
           </div>
+
           <nuxt-link
             to="/community/leaderboard"
-            class="text-sm flex items-center text-white/80 hover:text-white"
+            class="text-sm flex items-center text-white/80 hover:text-white w-full sm:w-auto justify-end"
           >
-            <i class="fas fa-trophy mr-1 text-gold-300"></i> Таблица лидеров
+            <i class="fas fa-trophy mr-1 text-yellow-300"></i> Таблица лидеров
           </nuxt-link>
         </div>
 
@@ -227,28 +238,6 @@
 
                   <!-- Column-specific pulse filters -->
                   <filter
-                    id="pulse-blue"
-                    x="-50%"
-                    y="-50%"
-                    width="200%"
-                    height="200%"
-                  >
-                    <feGaussianBlur stdDeviation="6" result="blur" />
-                    <feColorMatrix
-                      in="blur"
-                      type="matrix"
-                      values="0 0 0 0 0 0 0 0 0 0.9 0 0 0 0 1 0 0 0 0.7 0"
-                      result="glow"
-                    />
-                    <feComposite
-                      in="SourceGraphic"
-                      in2="glow"
-                      operator="over"
-                    />
-                  </filter>
-
-                  <!-- Left column pulse (blue/water) -->
-                  <filter
                     id="pulse-left"
                     x="-50%"
                     y="-50%"
@@ -269,7 +258,6 @@
                     />
                   </filter>
 
-                  <!-- Right column pulse (gold/fire) -->
                   <filter
                     id="pulse-right"
                     x="-50%"
@@ -291,7 +279,6 @@
                     />
                   </filter>
 
-                  <!-- Center column pulse (green/air) -->
                   <filter
                     id="pulse-center"
                     x="-50%"
@@ -304,69 +291,6 @@
                       in="blur"
                       type="matrix"
                       values="0.3 0.8 0 0 0 0.2 1 0 0 0 0.3 0.5 0 0 0 0 0 0 0.7 0"
-                      result="glow"
-                    />
-                    <feComposite
-                      in="SourceGraphic"
-                      in2="glow"
-                      operator="over"
-                    />
-                  </filter>
-
-                  <filter
-                    id="pulse-purple"
-                    x="-50%"
-                    y="-50%"
-                    width="200%"
-                    height="200%"
-                  >
-                    <feGaussianBlur stdDeviation="6" result="blur" />
-                    <feColorMatrix
-                      in="blur"
-                      type="matrix"
-                      values="0.8 0 0 0 0 0 0 0 0 0 0.8 0 0 0 1 0 0 0 0.7 0"
-                      result="glow"
-                    />
-                    <feComposite
-                      in="SourceGraphic"
-                      in2="glow"
-                      operator="over"
-                    />
-                  </filter>
-
-                  <filter
-                    id="pulse-orange"
-                    x="-50%"
-                    y="-50%"
-                    width="200%"
-                    height="200%"
-                  >
-                    <feGaussianBlur stdDeviation="6" result="blur" />
-                    <feColorMatrix
-                      in="blur"
-                      type="matrix"
-                      values="1 0 0 0 0 0.6 0 0 0 0 0 0 0 0 0 0 0 0 0.7 0"
-                      result="glow"
-                    />
-                    <feComposite
-                      in="SourceGraphic"
-                      in2="glow"
-                      operator="over"
-                    />
-                  </filter>
-
-                  <filter
-                    id="pulse-mint"
-                    x="-50%"
-                    y="-50%"
-                    width="200%"
-                    height="200%"
-                  >
-                    <feGaussianBlur stdDeviation="6" result="blur" />
-                    <feColorMatrix
-                      in="blur"
-                      type="matrix"
-                      values="0 0.8 0 0 0 0 1 0 0 0 0 0.5 0 0 0 0 0 0 0.7 0"
                       result="glow"
                     />
                     <feComposite
@@ -394,40 +318,6 @@
                     <stop offset="0%" stop-color="rgba(255,215,0,0.9)" />
                     <stop offset="50%" stop-color="rgba(255,215,0,0.4)" />
                     <stop offset="100%" stop-color="rgba(255,215,0,0.1)" />
-                  </linearGradient>
-
-                  <!-- Column-specific gradients -->
-                  <linearGradient
-                    id="left-column-gradient"
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2="1"
-                  >
-                    <stop offset="0%" stop-color="rgba(59,130,246,0.7)" />
-                    <stop offset="100%" stop-color="rgba(147,197,253,0.7)" />
-                  </linearGradient>
-
-                  <linearGradient
-                    id="right-column-gradient"
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2="1"
-                  >
-                    <stop offset="0%" stop-color="rgba(234,179,8,0.7)" />
-                    <stop offset="100%" stop-color="rgba(250,204,21,0.7)" />
-                  </linearGradient>
-
-                  <linearGradient
-                    id="center-column-gradient"
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2="1"
-                  >
-                    <stop offset="0%" stop-color="rgba(34,197,94,0.7)" />
-                    <stop offset="100%" stop-color="rgba(74,222,128,0.7)" />
                   </linearGradient>
                 </defs>
 
@@ -481,6 +371,9 @@
                       :class="[
                         { 'active-path': conn.active },
                         getConnectionColumnClass(conn.from, conn.to),
+                        conn.active
+                          ? getActiveStrokeClass(conn.from, conn.to)
+                          : '',
                       ]"
                       :stroke-dasharray="conn.active ? '5,5' : '2,3'"
                     />
@@ -516,7 +409,7 @@
                     :cx="sefirah.x"
                     :cy="sefirah.y"
                     r="25"
-                    class="fill-gold-500/20"
+                    class="fill-yellow-500/20"
                     filter="url(#gold-glow)"
                   >
                     <animate
@@ -535,7 +428,7 @@
 
                   <!-- Outer glow ring -->
                   <circle
-                    v-if="sefirah.progress > 0"
+                    v-if="sefirah.points > 0"
                     :cx="sefirah.x"
                     :cy="sefirah.y"
                     r="18"
@@ -605,7 +498,7 @@
                       (Уровень {{ sefirah.level }})
                     </title>
                     <animate
-                      v-if="sefirah.displayProgress > 0"
+                      v-if="sefirah.points > 0"
                       attributeName="opacity"
                       values="0.9;1;0.9"
                       dur="3s"
@@ -615,17 +508,20 @@
 
                   <!-- Progress ring -->
                   <circle
-                    v-if="sefirah.displayProgress > 0"
+                    v-if="sefirah.points > 0"
                     :cx="sefirah.x"
                     :cy="sefirah.y"
-                    r="15"
+                    r="18"
                     :stroke="getNodeStrokeColor(sefirah.id, sefirah.column)"
-                    stroke-width="3"
+                    stroke-width="4"
                     stroke-linecap="round"
                     fill="none"
-                    :stroke-dasharray="`${sefirah.displayProgress * 0.94}, 100`"
-                    :transform="`rotate(-90 ${sefirah.x} ${sefirah.y})`"
-                    style="pointer-events: none; filter: url(#progress-shadow)"
+                    :stroke-dasharray="`${
+                      (sefirah.displayProgress / 100) * 113
+                    }, 113`"
+                    :transform="`rotate(-90 ${sefirah.x}
+                    ${sefirah.y})`"
+                    style="pointer-events: none"
                   >
                     <animate
                       attributeName="stroke-opacity"
@@ -634,47 +530,36 @@
                       repeatCount="indefinite"
                     />
                   </circle>
+                  <!-- Inside each sefirah node group, after the progress ring -->
 
-                  <!-- Node inner icon -->
-                  <text
-                    :x="sefirah.x"
-                    :y="sefirah.y"
-                    text-anchor="middle"
-                    dominant-baseline="central"
-                    :class="[
-                      'text-xs font-bold',
-                      getIconClass(
-                        sefirah.category,
-                        sefirah.displayProgress,
-                        sefirah.column
-                      ),
-                    ]"
+                  <!-- Your existing circle and other elements -->
+
+                  <foreignObject
+                    :x="sefirah.x - 10"
+                    :y="sefirah.y - 10"
+                    width="20"
+                    height="20"
                     style="pointer-events: none"
                   >
-                    <tspan
-                      v-if="sefirah.category === 'wisdom'"
-                      class="fa"
-                    ></tspan>
-                    <tspan
-                      v-else-if="sefirah.category === 'emotions'"
-                      class="fa"
-                    ></tspan>
-                    <tspan
-                      v-else-if="sefirah.category === 'action'"
-                      class="fa"
-                    ></tspan>
-                    <tspan
-                      v-else-if="sefirah.category === 'integration'"
-                      class="fa"
-                    ></tspan>
-                  </text>
+                    <div
+                      class="flex items-center justify-center h-full w-full"
+                      style="pointer-events: auto"
+                      @mouseover="showNodeTooltip(sefirah)"
+                      @mouseleave="hideNodeTooltip()"
+                    >
+                      <i
+                        class="fas text-white text-xs"
+                        :class="getSefirahIcon(sefirah.id)"
+                      ></i>
+                    </div>
+                  </foreignObject>
 
                   <!-- Level indicator -->
                   <text
                     v-if="sefirah.level > 1"
                     :x="sefirah.x + 20"
                     :y="sefirah.y - 15"
-                    class="text-xs font-semibold"
+                    class="text-xs font-semibold text-white"
                     :fill="getLevelColor(sefirah.column)"
                     text-anchor="middle"
                     dominant-baseline="middle"
@@ -683,7 +568,7 @@
                   </text>
 
                   <!-- Label with psychological term and Hebrew name -->
-                  <g class="node-label transition-opacity duration-300">
+                  <g>
                     <text
                       :x="getLabelX(sefirah)"
                       :y="sefirah.y + 30"
@@ -708,11 +593,12 @@
                 <!-- Interactive tooltip -->
                 <foreignObject
                   v-if="activeTooltip"
-                  :x="activeTooltip.x - 80"
-                  :y="activeTooltip.y"
-                  width="160"
+                  :x="activeTooltip.x - 100"
+                  :y="activeTooltip.y - (activeTooltip.y < 200 ? 0 : 90)"
+                  width="200"
                   height="90"
                   class="tooltip-container"
+                  style="pointer-events: none"
                 >
                   <div
                     class="bg-black/80 backdrop-blur-sm p-2 rounded text-white text-xs border border-white/20"
@@ -950,6 +836,7 @@
               v-if="sefirah.cta"
               :to="sefirah.cta.link"
               class="inline-flex items-center text-sm px-4 py-2 rounded-lg bg-white/10 hover:bg-white/15 transition-all text-white"
+              @click="logAction(sefirah.id)"
             >
               <i class="fas fa-arrow-right mr-2"></i>
               {{ sefirah.cta.text }}
@@ -969,11 +856,14 @@
 import { ref, computed, onMounted, watch } from "vue";
 import { useAuthStore } from "~/stores/auth";
 import { useFirestore } from "~/plugins/firebase";
-import { getEmotionBarometerData } from "~/api/firebase/emotionBarometer";
-import { getDailyGrowthSparkData } from "~/api/firebase/dailyGrowthSpark";
-import { getLatestUserAssessment } from "~/api/firebase/assessments";
-import { getPurchasedCourses } from "~/api/firebase/coursesApi";
-import { doc, getDoc, setDoc, onSnapshot, updateDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  setDoc,
+  onSnapshot,
+  updateDoc,
+  increment,
+} from "firebase/firestore";
 
 // Auth and Firestore setup
 const authStore = useAuthStore();
@@ -1004,7 +894,7 @@ const columns = {
   left: { name: "Вода", color: "blue", sefirot: ["binah", "gevurah", "hod"] },
   right: {
     name: "Огонь",
-    color: "gold",
+    color: "yellow",
     sefirot: ["chokhmah", "chesed", "netzach"],
   },
   center: {
@@ -1327,21 +1217,13 @@ const connections = computed(() => {
 
 // Calculate column progress averages
 const columnProgress = computed(() => {
-  const result = {
-    left: 0,
-    right: 0,
-    center: 0,
-  };
-
+  const result = { left: 0, right: 0, center: 0 };
   sefirot.value.forEach((sefirah) => {
     result[sefirah.column] += sefirah.displayProgress;
   });
-
-  // Calculate averages
   result.left = Math.round(result.left / columns.left.sefirot.length);
   result.right = Math.round(result.right / columns.right.sefirot.length);
   result.center = Math.round(result.center / columns.center.sefirot.length);
-
   return result;
 });
 
@@ -1351,20 +1233,13 @@ const columnRecommendation = computed(() => {
     (acc, [key, value]) => (value < acc.value ? { key, value } : acc),
     { key: "left", value: 100 }
   ).key;
-
-  const sefirahNames = {
-    left: "Бина",
-    right: "Хохма",
-    center: "Кетер",
-  };
-
+  const sefirahNames = { left: "Бина", right: "Хохма", center: "Кетер" };
   return `Укрепите ${columns[lowestColumn].name}: ${sefirahNames[lowestColumn]}`;
 });
 
 // Energy of the day recommendation
 const energyRecommendation = computed(() => {
   if (!energyOfDay.value) return "Выберите энергию дня для рекомендаций";
-
   const columnSefirot = sefirot.value.filter(
     (s) => s.column === energyOfDay.value
   );
@@ -1373,24 +1248,21 @@ const energyRecommendation = computed(() => {
       current.displayProgress < lowest.displayProgress ? current : lowest,
     columnSefirot[0]
   );
-
   return `Сфокусируйтесь на ${lowestSefirah.function} (${lowestSefirah.name})`;
 });
 
 // Select energy column
 const selectEnergyColumn = (column) => {
   energyOfDay.value = energyOfDay.value === column ? null : column;
-
   if (energyOfDay.value) {
     const columnSefirot = sefirot.value.filter(
       (s) => s.column === energyOfDay.value
     );
     const lowestSefirah = columnSefirot.reduce(
       (lowest, current) =>
-        current.displayProgress < lowest.displayProgress ? current : current,
+        current.displayProgress < lowest.displayProgress ? current : lowest,
       columnSefirot[0]
     );
-
     scrollToSefirah(lowestSefirah.id);
   }
 };
@@ -1431,34 +1303,58 @@ const calculateDailyProgress = (actions, maxActions) => {
 // Apply decay to points
 const applyDecay = (points, lastActive) => {
   if (!lastActive) return points;
-
   const daysInactive = Math.floor(
     (new Date() - lastActive.toDate()) / (1000 * 60 * 60 * 24)
   );
   if (daysInactive <= 7) return points;
-
   const decayDays = daysInactive - 7;
   let decayedPoints = points;
-
   for (let i = 0; i < decayDays; i++) {
     decayedPoints = Math.max(decayedPoints * 0.95, 10);
   }
-
   return Math.round(decayedPoints);
 };
 
-// Show node tooltip
+let hoverTimeout = null;
+
 const showNodeTooltip = (sefirah) => {
+  // Determine tooltip position based on sefirah position
+  let tooltipY;
+  let tooltipX = sefirah.x;
+
+  // For top 3 sefirot (Keter, Chokhmah, Binah)
+  if (sefirah.y < 200) {
+    tooltipY = sefirah.y + 50; // Less distance below for top nodes
+  }
+  // For bottom sefirot (Malkhut)
+  else if (sefirah.y > 500) {
+    tooltipY = sefirah.y - 50; // Above for bottom node
+  }
+  // For all others
+  else {
+    tooltipY = sefirah.y - 60; // Above for middle nodes
+  }
+
+  // Adjust for left/right columns to prevent overflow
+  if (sefirah.x < 150) {
+    // Left column
+    tooltipX = sefirah.x + 30;
+  } else if (sefirah.x > 250) {
+    // Right column
+    tooltipX = sefirah.x - 30;
+  }
+
   activeTooltip.value = {
     ...sefirah,
-    x: sefirah.x,
-    y: sefirah.id === "keter" ? sefirah.y + 80 : sefirah.y - 80,
+    x: tooltipX,
+    y: tooltipY,
   };
 };
 
-// Hide node tooltip
 const hideNodeTooltip = () => {
-  activeTooltip.value = null;
+  hoverTimeout = setTimeout(() => {
+    activeTooltip.value = null;
+  }, 100);
 };
 
 // Toggle highlight for legend
@@ -1471,43 +1367,55 @@ const toggleHighlight = (category) => {
 const getConnectionColumnClass = (fromId, toId) => {
   const fromSefirah = sefirot.value.find((s) => s.id === fromId);
   const toSefirah = sefirot.value.find((s) => s.id === toId);
-
-  // If both are in same column, use that column's color
   if (fromSefirah.column === toSefirah.column) {
     return `path-${fromSefirah.column}`;
   }
-
-  // Otherwise use a neutral color
   return "path-neutral";
+};
+
+// Get active stroke class for paths
+const getActiveStrokeClass = (fromId, toId) => {
+  const fromSefirah = sefirot.value.find((s) => s.id === fromId);
+  const toSefirah = sefirot.value.find((s) => s.id === toId);
+  if (fromSefirah.column === toSefirah.column) {
+    switch (fromSefirah.column) {
+      case "left":
+        return "stroke-blue-500";
+      case "right":
+        return "stroke-yellow-500";
+      case "center":
+        return "stroke-green-500";
+    }
+  }
+  return "stroke-white";
 };
 
 // Get node pulse class
 const getNodePulseClass = (category, column) => {
-  if (column) {
-    return `pulse-${column}`;
-  }
-
-  switch (category) {
-    case "wisdom":
-      return "pulse-blue";
-    case "emotions":
-      return "pulse-purple";
-    case "action":
-      return "pulse-orange";
-    case "integration":
-      return "pulse-mint";
-    default:
-      return "";
-  }
+  return `pulse-${column}`;
 };
-
+const getSefirahIcon = (id) => {
+  const icons = {
+    keter: "fa-crown",
+    chokhmah: "fa-lightbulb",
+    binah: "fa-heart",
+    chesed: "fa-hands-helping",
+    gevurah: "fa-gavel",
+    tiferet: "fa-balance-scale",
+    netzach: "fa-trophy",
+    hod: "fa-book",
+    yesod: "fa-calendar-check",
+    malkhut: "fa-shoe-prints",
+  };
+  return icons[id] || "fa-circle";
+};
 // Get connection particle class
 const getConnectionParticleClass = (columnType) => {
   switch (columnType) {
     case "left":
       return "fill-blue-300";
     case "right":
-      return "fill-gold-300";
+      return "fill-yellow-300";
     case "center":
       return "fill-green-300";
     default:
@@ -1523,25 +1431,26 @@ const setActiveCard = (id) => {
 // Scroll to Sefirah Card
 const scrollToSefirah = (id) => {
   activeCard.value = id;
-  const element = document.getElementById(`sefirah-${id}`);
-  if (element) {
-    setTimeout(() => {
+  setTimeout(() => {
+    const element = document.getElementById(`sefirah-${id}`);
+    if (element) {
       element.scrollIntoView({
         behavior: "smooth",
         block: "center",
         inline: "nearest",
       });
+
+      // Add temporary highlight
       element.classList.add("ring-2");
       setTimeout(() => element.classList.remove("ring-2"), 2000);
-    }, 50);
-  }
+    }
+  }, 100); // Increased timeout to ensure DOM is ready
 };
 
 // Get ring color for active card
 const getRingColor = (id) => {
   const sefirah = sefirot.value.find((s) => s.id === id);
   if (!sefirah) return "75, 85, 99";
-
   switch (sefirah.column) {
     case "left":
       return "59, 130, 246";
@@ -1554,33 +1463,22 @@ const getRingColor = (id) => {
   }
 };
 
-const getIconClass = (category, progress, column) => {
-  if (progress === 0) return "fill-gray-400";
-
-  switch (column) {
-    case "left":
-      return "fill-blue-200";
-    case "right":
-      return "fill-gold-200";
-    case "center":
-      return "fill-green-200";
-    default:
-      return "fill-gray-400";
-  }
+// Label positioning
+const getLabelX = (sefirah) => {
+  if (sefirah.x < 160) return sefirah.x - 35;
+  if (sefirah.x > 240) return sefirah.x + 35;
+  return sefirah.x;
 };
 
 // Styling functions
 const getNodeClass = (id, progress, column) => {
   const sefirah = sefirot.value.find((s) => s.id === id);
-  if (!sefirah) return "fill-gray-700";
-
-  if (progress === 0) return "fill-gray-700 stroke-gray-500";
-
+  if (!sefirah || sefirah.points === 0) return "fill-gray-700 stroke-gray-500";
   switch (column) {
     case "left":
       return "fill-blue-600 stroke-blue-400";
     case "right":
-      return "fill-gold-600 stroke-gold-400";
+      return "fill-yellow-600 stroke-yellow-400";
     case "center":
       return "fill-green-600 stroke-green-400";
     default:
@@ -1593,7 +1491,7 @@ const getNodeGlowClass = (id, column) => {
     case "left":
       return "fill-blue-400";
     case "right":
-      return "fill-gold-400";
+      return "fill-yellow-400";
     case "center":
       return "fill-green-400";
     default:
@@ -1604,13 +1502,13 @@ const getNodeGlowClass = (id, column) => {
 const getNodeStrokeColor = (id, column) => {
   switch (column) {
     case "left":
-      return "#3b82f6";
+      return "#3b82f6"; // blue-500
     case "right":
-      return "#eab308";
+      return "#eab308"; // yellow-500
     case "center":
-      return "#22c55e";
+      return "#22c55e"; // green-500
     default:
-      return "#4B5563";
+      return "#4B5563"; // gray-600
   }
 };
 
@@ -1619,7 +1517,7 @@ const getProgressBarClass = (id, column) => {
     case "left":
       return "bg-gradient-to-r from-blue-500 to-blue-300";
     case "right":
-      return "bg-gradient-to-r from-gold-500 to-gold-300";
+      return "bg-gradient-to-r from-yellow-500 to-yellow-300";
     case "center":
       return "bg-gradient-to-r from-green-500 to-green-300";
     default:
@@ -1629,15 +1527,12 @@ const getProgressBarClass = (id, column) => {
 
 const getCardProgressClass = (id, column) => {
   const sefirah = sefirot.value.find((s) => s.id === id);
-  if (!sefirah) return "bg-gray-800/50 text-gray-400";
-
-  if (sefirah.displayProgress === 0) return "bg-gray-800/50 text-gray-400";
-
+  if (!sefirah || sefirah.points === 0) return "bg-gray-800/50 text-gray-400";
   switch (column) {
     case "left":
       return "bg-blue-500/20 text-blue-300";
     case "right":
-      return "bg-gold-500/20 text-gold-300";
+      return "bg-yellow-500/20 text-yellow-300";
     case "center":
       return "bg-green-500/20 text-green-300";
     default:
@@ -1648,11 +1543,11 @@ const getCardProgressClass = (id, column) => {
 const getLevelColor = (column) => {
   switch (column) {
     case "left":
-      return "#93c5fd";
+      return "#93c5fd"; // blue-300
     case "right":
-      return "#fcd34d";
+      return "#fcd34d"; // yellow-300
     case "center":
-      return "#86efac";
+      return "#86efac"; // green-300
     default:
       return "#ffffff";
   }
@@ -1663,7 +1558,7 @@ const getLevelBadgeClass = (column) => {
     case "left":
       return "bg-blue-500/20 text-blue-300";
     case "right":
-      return "bg-gold-500/20 text-gold-300";
+      return "bg-yellow-500/20 text-yellow-300";
     case "center":
       return "bg-green-500/20 text-green-300";
     default:
@@ -1676,7 +1571,7 @@ const getTooltipLevelClass = (column) => {
     case "left":
       return "bg-blue-500/30 text-blue-100";
     case "right":
-      return "bg-gold-500/30 text-gold-100";
+      return "bg-yellow-500/30 text-yellow-100";
     case "center":
       return "bg-green-500/30 text-green-100";
     default:
@@ -1684,23 +1579,62 @@ const getTooltipLevelClass = (column) => {
   }
 };
 
-const getNodeBorderClass = (progress) => {
-  if (progress === 0) return "border-gray-800";
-  if (progress < 33) return "border-white/20";
-  if (progress < 66) return "border-white/30";
-  return "border-white/40";
+// Initialize progress data
+const initializeSefirotProgress = async (userId) => {
+  const progressRef = doc(firestore, `users/${userId}/progress/sefirot`);
+  const initialData = sefirot.value.reduce(
+    (acc, s) => ({
+      ...acc,
+      [s.id]: { points: 0, lastActive: new Date() },
+    }),
+    {}
+  );
+  await setDoc(progressRef, initialData);
+  return initialData;
 };
 
-// Label positioning
-const getLabelX = (sefirah) => {
-  if (sefirah.x < 160) return sefirah.x - 35;
-  if (sefirah.x > 240) return sefirah.x + 35;
-  return sefirah.x;
+// Initialize daily actions
+const initializeDailyActions = async (userId, date) => {
+  const dailyRef = doc(firestore, `users/${userId}/daily/${date}`);
+  const initialData = sefirot.value.reduce(
+    (acc, s) => ({
+      ...acc,
+      [s.id]: { actions: 0 },
+    }),
+    {}
+  );
+  await setDoc(dailyRef, initialData);
+  return initialData;
 };
 
-// Open Daily Growth Spark dialog
-const openDailyGrowthSpark = () => {
-  navigateTo("/daily-growth-spark");
+// Log an action (e.g., clicking a CTA)
+const logAction = async (sefirahId) => {
+  if (!isLoggedIn.value) return;
+  const userId = authStore.user.uid;
+  const today = new Date().toISOString().split("T")[0];
+  try {
+    const progressRef = doc(firestore, `users/${userId}/progress/sefirot`);
+    const dailyRef = doc(firestore, `users/${userId}/daily/${today}`);
+
+    // Check if daily actions exist
+    const dailySnap = await getDoc(dailyRef);
+    if (!dailySnap.exists()) {
+      await initializeDailyActions(userId, today);
+    }
+
+    // Update progress (add 10 points)
+    await updateDoc(progressRef, {
+      [`${sefirahId}.points`]: increment(10),
+      [`${sefirahId}.lastActive`]: new Date(),
+    });
+
+    // Update daily actions (add 1 action)
+    await updateDoc(dailyRef, {
+      [`${sefirahId}.actions`]: increment(1),
+    });
+  } catch (error) {
+    console.error("Error logging action:", error);
+  }
 };
 
 // Fetch User Progress from Firebase
@@ -1710,20 +1644,18 @@ const fetchSefirotProgress = async (userId) => {
     const progressRef = doc(firestore, `users/${userId}/progress/sefirot`);
     const progressSnap = await getDoc(progressRef);
 
-    if (progressSnap.exists()) {
+    if (!progressSnap.exists()) {
+      await initializeSefirotProgress(userId);
+    } else {
       const progressData = progressSnap.data();
-
-      // Update sefirot with points and calculate levels
       sefirot.value.forEach((sefirah) => {
         if (progressData[sefirah.id]) {
           const points = applyDecay(
             progressData[sefirah.id].points || 0,
             progressData[sefirah.id].lastActive
           );
-
           const level = calculateLevel(points);
           const displayProgress = calculateDisplayProgress(points, level);
-
           sefirah.points = points;
           sefirah.level = level;
           sefirah.displayProgress = displayProgress;
@@ -1737,7 +1669,9 @@ const fetchSefirotProgress = async (userId) => {
     const dailyRef = doc(firestore, `users/${userId}/daily/${today}`);
     const dailySnap = await getDoc(dailyRef);
 
-    if (dailySnap.exists()) {
+    if (!dailySnap.exists()) {
+      await initializeDailyActions(userId, today);
+    } else {
       const dailyData = dailySnap.data();
       sefirot.value.forEach((sefirah) => {
         sefirah.dailyActions = dailyData[sefirah.id]?.actions || 0;
@@ -1758,10 +1692,8 @@ const fetchSefirotProgress = async (userId) => {
               progressData[sefirah.id].points || 0,
               progressData[sefirah.id].lastActive
             );
-
             const level = calculateLevel(points);
             const displayProgress = calculateDisplayProgress(points, level);
-
             sefirah.points = points;
             sefirah.level = level;
             sefirah.displayProgress = displayProgress;
@@ -1775,6 +1707,7 @@ const fetchSefirotProgress = async (userId) => {
     onSnapshot(dailyRef, (snap) => {
       if (snap.exists()) {
         const dailyData = snap.data();
+
         sefirot.value.forEach((sefirah) => {
           sefirah.dailyActions = dailyData[sefirah.id]?.actions || 0;
           sefirah.progress = calculateDailyProgress(
@@ -1787,8 +1720,11 @@ const fetchSefirotProgress = async (userId) => {
   } catch (error) {
     console.error("Error fetching Sefirot progress:", error);
     sefirot.value.forEach((s) => {
-      if (typeof s.progress !== "number") s.progress = 0;
-      if (typeof s.displayProgress !== "number") s.displayProgress = 0;
+      s.progress = 0;
+      s.displayProgress = 0;
+      s.points = 0;
+      s.dailyActions = 0;
+      s.level = 1;
     });
   }
 };
@@ -1799,6 +1735,7 @@ onMounted(async () => {
     const userId = authStore.user.uid;
     await fetchSefirotProgress(userId);
   } else {
+    // Demo data for non-logged-in users
     const demoData = [40, 70, 30, 10, 50, 35, 20, 5, 60, 15];
     sefirot.value.forEach((s, index) => {
       s.progress = demoData[index];
@@ -1835,142 +1772,24 @@ watch(
   stroke: rgba(255, 255, 255, 0.15);
   stroke-dasharray: 2, 2;
 }
-
 .path-left {
   stroke: rgba(59, 130, 246, 0.3);
 }
-
 .path-right {
   stroke: rgba(234, 179, 8, 0.3);
 }
-
 .path-center {
   stroke: rgba(34, 197, 94, 0.3);
 }
-
 .path-neutral {
   stroke: rgba(255, 255, 255, 0.15);
 }
-
 .active-path {
   stroke-dasharray: 5, 5;
   stroke-width: 2;
+  stroke-opacity: 0.6;
 }
 
-.path-left.active-path {
-  stroke: rgba(59, 130, 246, 0.6);
-}
-
-.path-right.active-path {
-  stroke: rgba(234, 179, 8, 0.6);
-}
-
-.path-center.active-path {
-  stroke: rgba(34, 197, 94, 0.6);
-}
-
-.path-neutral.active-path {
-  stroke: rgba(255, 255, 255, 0.3);
-}
-
-.fill-blue-200 {
-  fill: #bfdbfe;
-}
-
-.fill-gold-200 {
-  fill: #fde68a;
-}
-
-.fill-green-200 {
-  fill: #bbf7d0;
-}
-
-.fill-gray-400 {
-  fill: #9ca3af;
-}
-
-.fill-blue-600 {
-  fill: #2563eb;
-}
-
-.stroke-blue-400 {
-  stroke: #60a5fa;
-}
-
-.fill-gold-600 {
-  fill: #d97706;
-}
-
-.stroke-gold-400 {
-  stroke: #fbbf24;
-}
-
-.fill-green-600 {
-  fill: #16a34a;
-}
-
-.stroke-green-400 {
-  stroke: #4ade80;
-}
-
-.fill-gray-700 {
-  fill: #4b5563;
-}
-
-.stroke-gray-500 {
-  stroke: #6b7280;
-}
-
-/* Column colors */
-.text-blue-300 {
-  color: #93c5fd;
-}
-
-.text-gold-300 {
-  color: #fcd34d;
-}
-
-.text-green-300 {
-  color: #86efac;
-}
-
-.bg-blue-500 {
-  background-color: #3b82f6;
-}
-
-.bg-gold-500 {
-  background-color: #eab308;
-}
-
-.bg-green-500 {
-  background-color: #22c55e;
-}
-
-.from-blue-500 {
-  --tw-gradient-from: #3b82f6;
-}
-
-.to-blue-300 {
-  --tw-gradient-to: #93c5fd;
-}
-
-.from-gold-500 {
-  --tw-gradient-from: #eab308;
-}
-
-.to-gold-300 {
-  --tw-gradient-to: #fcd34d;
-}
-
-.from-green-500 {
-  --tw-gradient-from: #22c55e;
-}
-
-.to-green-300 {
-  --tw-gradient-to: #86efac;
-}
-
-/* Animation for hover on cards */
 @keyframes pulse {
   0% {
     box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.1);
@@ -1983,24 +1802,20 @@ watch(
   }
 }
 
-/* SVG text */
 svg text {
   fill: currentColor;
   font-size: 10px;
 }
-
 @media (min-width: 768px) {
   svg text {
     font-size: 12px;
   }
 }
 
-/* Active card styling */
 [class*="ring-"] {
   --tw-ring-color: rgb(var(--ring-color));
   animation: pulseHighlight 2s ease;
 }
-
 @keyframes pulseHighlight {
   0% {
     box-shadow: 0 0 0 0 rgba(var(--ring-color), 0.4);
@@ -2013,54 +1828,31 @@ svg text {
   }
 }
 
-/* Node hover effects */
 .node-circle {
   transition: r 0.3s ease, filter 0.3s ease;
+  z-index: 5;
 }
-
 .node-circle:hover {
   filter: brightness(1.2);
 }
-
-/* Highlight effect for legend click */
 .highlight-node {
   filter: brightness(1.5);
   stroke: rgba(255, 255, 255, 0.8);
   stroke-width: 2;
   animation: glowPulse 1.5s ease-in-out infinite;
 }
-
-/* Pulse effects */
-.pulse-blue,
 .pulse-left {
-  filter: url(#pulse-blue);
+  filter: url(#pulse-left);
 }
-
 .pulse-right {
   filter: url(#pulse-right);
 }
-
 .pulse-center {
   filter: url(#pulse-center);
 }
-
-.pulse-purple {
-  filter: url(#pulse-purple);
-}
-
-.pulse-orange {
-  filter: url(#pulse-orange);
-}
-
-.pulse-mint {
-  filter: url(#pulse-mint);
-}
-
-/* Descending light animation */
 .descending-light {
   animation: lightFlow 15s linear infinite;
 }
-
 @keyframes lightFlow {
   0% {
     stroke-dasharray: 0, 1000;
@@ -2069,12 +1861,10 @@ svg text {
     stroke-dasharray: 1000, 0;
   }
 }
-
-/* Tooltip animation */
 .tooltip-container {
   animation: fadeIn 0.2s ease-in;
+  z-index: 10;
 }
-
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -2085,8 +1875,6 @@ svg text {
     transform: translateY(0);
   }
 }
-
-/* Glow pulse for highlight */
 @keyframes glowPulse {
   0% {
     box-shadow: 0 0 5px 0 rgba(255, 255, 255, 0.1);
@@ -2098,21 +1886,14 @@ svg text {
     box-shadow: 0 0 5px 0 rgba(255, 255, 255, 0.1);
   }
 }
-
-/* FontAwesome in SVG */
-.fa {
-  font-family: "Font Awesome 5 Free";
-  font-weight: 900;
-}
-
-/* SVG pointer events */
 svg {
   pointer-events: bounding-box;
 }
-
-/* Ensure cards are not covered */
 section {
   position: relative;
+  z-index: 1;
+}
+.connections {
   z-index: 1;
 }
 </style>

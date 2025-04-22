@@ -16,6 +16,12 @@
           Древе Себя </router-link
         >.
       </p>
+      <router-link
+        to="/treetest"
+        class="text-[#0EA5E9] hover:text-[#E879F9] transition-colors duration-300 underline underline-offset-2"
+      >
+        Древо Себя
+      </router-link>
     </div>
 
     <!-- Psychological Map Container -->
