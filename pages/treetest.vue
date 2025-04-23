@@ -14,145 +14,25 @@
         <!-- Column Balance & Energy of the Day -->
         <div class="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
           <!-- Column Balance Gauge -->
-          <div
-            class="bg-white/5 backdrop-blur rounded-xl p-4 shadow-xl border border-white/10"
-          >
-            <h3 class="text-lg font-semibold text-white mb-2">Баланс колонн</h3>
-            <div class="flex items-center space-x-4 mb-2">
-              <div class="flex-1">
-                <div class="flex justify-between mb-1">
-                  <span class="text-xs text-yellow-300">Правая (Огонь)</span>
-                  <span class="text-xs text-yellow-300"
-                    >{{ Math.round(columnProgress.right) }}%</span
-                  >
-                </div>
-                <div class="w-full bg-black/30 rounded-full h-2">
-                  <div
-                    class="h-2 rounded-full bg-gradient-to-r from-yellow-500/70 to-yellow-300"
-                    :style="{ width: `${columnProgress.right}%` }"
-                  ></div>
-                </div>
-              </div>
-              <div class="flex-1">
-                <div class="flex justify-between mb-1">
-                  <span class="text-xs text-blue-300">Левая (Вода)</span>
-                  <span class="text-xs text-blue-300"
-                    >{{ Math.round(columnProgress.left) }}%</span
-                  >
-                </div>
-                <div class="w-full bg-black/30 rounded-full h-2">
-                  <div
-                    class="h-2 rounded-full bg-gradient-to-r from-blue-500/70 to-blue-300"
-                    :style="{ width: `${columnProgress.left}%` }"
-                  ></div>
-                </div>
-              </div>
-              <div class="flex-1">
-                <div class="flex justify-between mb-1">
-                  <span class="text-xs text-green-300">Центр (Воздух)</span>
-                  <span class="text-xs text-green-300"
-                    >{{ Math.round(columnProgress.center) }}%</span
-                  >
-                </div>
-                <div class="w-full bg-black/30 rounded-full h-2">
-                  <div
-                    class="h-2 rounded-full bg-gradient-to-r from-green-500/70 to-green-300"
-                    :style="{ width: `${columnProgress.center}%` }"
-                  ></div>
-                </div>
-              </div>
-            </div>
-            <p class="text-xs text-white/80 mt-1">
-              <span class="font-medium">Рекомендация:</span>
-              {{ columnRecommendation }}
-            </p>
-          </div>
+          <ColumnBalanceGauge
+            :column-progress="columnProgress"
+            :column-recommendation="columnRecommendation"
+          />
 
           <!-- Energy of the Day -->
-          <div
-            class="bg-white/5 backdrop-blur rounded-xl p-4 shadow-xl border border-white/10"
-          >
-            <h3 class="text-lg font-semibold text-white mb-2">Энергия дня</h3>
-            <div class="grid grid-cols-3 gap-2 mb-3">
-              <button
-                @click="selectEnergyColumn('right')"
-                class="py-2 px-3 rounded-lg text-sm font-medium transition-all"
-                :class="
-                  energyOfDay === 'right'
-                    ? 'bg-yellow-500/30 text-yellow-200 border border-yellow-400/50'
-                    : 'bg-black/20 text-white/70 border border-white/10 hover:bg-white/10'
-                "
-              >
-                <i class="fas fa-fire mr-1"></i> Огонь
-              </button>
-              <button
-                @click="selectEnergyColumn('left')"
-                class="py-2 px-3 rounded-lg text-sm font-medium transition-all"
-                :class="
-                  energyOfDay === 'left'
-                    ? 'bg-blue-500/30 text-blue-200 border border-blue-400/50'
-                    : 'bg-black/20 text-white/70 border border-white/10 hover:bg-white/10'
-                "
-              >
-                <i class="fas fa-water mr-1"></i> Вода
-              </button>
-              <button
-                @click="selectEnergyColumn('center')"
-                class="py-2 px-3 rounded-lg text-sm font-medium transition-all"
-                :class="
-                  energyOfDay === 'center'
-                    ? 'bg-green-500/30 text-green-200 border border-green-400/50'
-                    : 'bg-black/20 text-white/70 border border-white/10 hover:bg-white/10'
-                "
-              >
-                <i class="fas fa-wind mr-1"></i> Воздух
-              </button>
-            </div>
-            <p class="text-xs text-white/80">
-              {{ energyRecommendation }}
-            </p>
-          </div>
+          <EnergyOfDay
+            :energy-of-day="energyOfDay"
+            :energy-recommendation="energyRecommendation"
+            :select-energy-column="selectEnergyColumn"
+          />
         </div>
 
         <!-- Cycle Toggle -->
-        <div
-          class="mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2"
-        >
-          <div
-            class="flex flex-col xs:flex-row items-start xs:items-center gap-2 w-full sm:w-auto"
-          >
-            <label class="inline-flex items-center cursor-pointer">
-              <input
-                type="checkbox"
-                v-model="pathOfWholeness"
-                class="sr-only peer"
-              />
-              <div
-                class="relative w-11 h-6 bg-black/20 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-yellow-600 peer-checked:to-yellow-400"
-              ></div>
-              <span
-                class="ml-2 text-sm font-medium text-white/80 whitespace-nowrap"
-              >
-                Путь Целостности
-              </span>
-            </label>
-
-            <p
-              v-if="pathOfWholeness"
-              class="text-sm text-yellow-300 whitespace-nowrap"
-            >
-              <i class="fas fa-sun mr-1"></i> Неделя {{ currentWeek }}:
-              {{ getCurrentSefirahName() }}
-            </p>
-          </div>
-
-          <nuxt-link
-            to="/community/leaderboard"
-            class="text-sm flex items-center text-white/80 hover:text-white w-full sm:w-auto justify-end"
-          >
-            <i class="fas fa-trophy mr-1 text-yellow-300"></i> Таблица лидеров
-          </nuxt-link>
-        </div>
+        <CycleToggle
+          v-model:path-of-wholeness="pathOfWholeness"
+          :current-week="currentWeek"
+          :get-current-sefirah-name="getCurrentSefirahName"
+        />
 
         <section
           class="mb-8 bg-white/5 backdrop-blur rounded-xl shadow-xl border border-white/10"
@@ -530,10 +410,8 @@
                       repeatCount="indefinite"
                     />
                   </circle>
+
                   <!-- Inside each sefirah node group, after the progress ring -->
-
-                  <!-- Your existing circle and other elements -->
-
                   <foreignObject
                     :x="sefirah.x - 10"
                     :y="sefirah.y - 10"
@@ -643,209 +521,36 @@
           </div>
 
           <!-- Desktop Side Legend -->
-          <div
-            class="hidden md:block absolute right-16 top-1/3 transform -translate-y-1/2"
-          >
-            <div
-              class="flex flex-col space-y-2 bg-black/40 rounded-lg p-1 border border-white/10"
-            >
-              <div
-                class="flex items-center px-3 py-2 hover:bg-white/5 transition-colors cursor-pointer rounded"
-                :class="{ 'bg-white/10': highlightedCategory === 'wisdom' }"
-                @click="toggleHighlight('wisdom')"
-                role="button"
-                aria-label="Highlight Wisdom Sefirot"
-              >
-                <span
-                  class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-blue-start to-gradient-blue-end mr-2"
-                ></span>
-                <span class="text-gray-200 whitespace-nowrap">Мудрость</span>
-              </div>
-              <div
-                class="flex items-center px-3 py-2 hover:bg-white/5 transition-colors cursor-pointer rounded"
-                :class="{ 'bg-white/10': highlightedCategory === 'emotions' }"
-                @click="toggleHighlight('emotions')"
-                role="button"
-                aria-label="Highlight Emotions Sefirot"
-              >
-                <span
-                  class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-purple-start to-gradient-purple-end mr-2"
-                ></span>
-                <span class="text-gray-200 whitespace-nowrap">Чувства</span>
-              </div>
-              <div
-                class="flex items-center px-3 py-2 hover:bg-white/5 transition-colors cursor-pointer rounded"
-                :class="{ 'bg-white/10': highlightedCategory === 'action' }"
-                @click="toggleHighlight('action')"
-                role="button"
-                aria-label="Highlight Action Sefirot"
-              >
-                <span
-                  class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-orange-start to-gradient-orange-end mr-2"
-                ></span>
-                <span class="text-gray-200 whitespace-nowrap">Действия</span>
-              </div>
-              <div
-                class="flex items-center px-3 py-2 hover:bg-white/5 transition-colors cursor-pointer rounded"
-                :class="{
-                  'bg-white/10': highlightedCategory === 'integration',
-                }"
-                @click="toggleHighlight('integration')"
-                role="button"
-                aria-label="Highlight Integration Sefirot"
-              >
-                <span
-                  class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-mint-start to-gradient-mint-end mr-2"
-                ></span>
-                <span class="text-gray-200 whitespace-nowrap">Интеграция</span>
-              </div>
-            </div>
-          </div>
-
+          <DesktopSideLegend
+            :highlighted-category="highlightedCategory"
+            :toggle-highlight="toggleHighlight"
+          />
           <!-- Mobile/Tablet Legend -->
-          <div class="flex justify-center md:hidden">
-            <div
-              class="inline-grid grid-cols-2 sm:grid-cols-4 gap-px bg-white/10 rounded-lg overflow-hidden border border-white/10"
-            >
-              <div
-                class="flex items-center px-4 py-2 bg-black/40 hover:bg-white/5 transition-colors cursor-pointer"
-                :class="{ 'bg-white/10': highlightedCategory === 'wisdom' }"
-                @click="toggleHighlight('wisdom')"
-                role="button"
-                aria-label="Highlight Wisdom Sefirot"
-              >
-                <span
-                  class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-blue-start to-gradient-blue-end mr-2"
-                ></span>
-                <span class="text-gray-200 whitespace-nowrap">Мудрость</span>
-              </div>
-              <div
-                class="flex items-center px-4 py-2 bg-black/40 hover:bg-white/5 transition-colors cursor-pointer"
-                :class="{ 'bg-white/10': highlightedCategory === 'emotions' }"
-                @click="toggleHighlight('emotions')"
-                role="button"
-                aria-label="Highlight Emotions Sefirot"
-              >
-                <span
-                  class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-purple-start to-gradient-purple-end mr-2"
-                ></span>
-                <span class="text-gray-200 whitespace-nowrap">Чувства</span>
-              </div>
-              <div
-                class="flex items-center px-4 py-2 bg-black/40 hover:bg-white/5 transition-colors cursor-pointer"
-                :class="{ 'bg-white/10': highlightedCategory === 'action' }"
-                @click="toggleHighlight('action')"
-                role="button"
-                aria-label="Highlight Action Sefirot"
-              >
-                <span
-                  class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-orange-start to-gradient-orange-end mr-2"
-                ></span>
-                <span class="text-gray-200 whitespace-nowrap">Действия</span>
-              </div>
-              <div
-                class="flex items-center px-4 py-2 bg-black/40 hover:bg-white/5 transition-colors cursor-pointer"
-                :class="{
-                  'bg-white/10': highlightedCategory === 'integration',
-                }"
-                @click="toggleHighlight('integration')"
-                role="button"
-                aria-label="Highlight Integration Sefirot"
-              >
-                <span
-                  class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-mint-start to-gradient-mint-end mr-2"
-                ></span>
-                <span class="text-gray-200 whitespace-nowrap">Интеграция</span>
-              </div>
-            </div>
-          </div>
+          <MobileTabletLegend
+            :highlighted-category="highlightedCategory"
+            :toggle-highlight="toggleHighlight"
+          />
         </section>
 
         <!-- Sefirot Progress Cards -->
         <section
           class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-10 md:mb-16"
         >
-          <div
+          <SefirotProgressCard
             v-for="sefirah in sefirot"
             :key="sefirah.id"
             :id="`sefirah-${sefirah.id}`"
-            class="bg-white/5 backdrop-blur rounded-xl shadow-md p-5 border border-white/10 transition-all hover:shadow-xl"
-            :class="{
-              'ring-2 ring-offset-2 ring-offset-background':
-                activeCard === sefirah.id,
-            }"
-            :style="{ '--ring-color': getRingColor(sefirah.id) }"
-            @click="setActiveCard(sefirah.id)"
-          >
-            <div class="flex justify-between items-start mb-3">
-              <h3 class="text-lg md:text-xl font-semibold text-white">
-                {{ sefirah.psychName }}
-                <span class="text-sm text-gray-300">({{ sefirah.name }})</span>
-              </h3>
-              <div
-                class="w-12 h-12 rounded-full flex items-center justify-center text-sm font-medium"
-                :class="getCardProgressClass(sefirah.id, sefirah.column)"
-              >
-                {{ sefirah.displayProgress }}%
-              </div>
-            </div>
-
-            <div class="flex items-center mb-2">
-              <span
-                class="px-2 py-0.5 rounded-full text-xs font-medium"
-                :class="getLevelBadgeClass(sefirah.column)"
-              >
-                Уровень {{ sefirah.level }}
-              </span>
-              <span class="text-xs text-gray-400 ml-2">
-                {{ sefirah.points }} очков
-              </span>
-            </div>
-
-            <p class="text-gray-300 text-sm mb-2">{{ sefirah.function }}</p>
-            <p class="text-gray-400 text-sm mb-4">{{ sefirah.description }}</p>
-
-            <div class="mb-4">
-              <div class="flex justify-between text-xs text-gray-400 mb-1">
-                <span>Ежедневный прогресс</span>
-                <span
-                  >{{ sefirah.dailyActions }}/{{ sefirah.maxActions }} действий
-                  сегодня</span
-                >
-              </div>
-              <div class="w-full bg-gray-800/50 rounded-full h-1.5 mb-1">
-                <div
-                  class="h-1.5 rounded-full"
-                  :class="getProgressBarClass(sefirah.id, sefirah.column)"
-                  :style="{ width: `${sefirah.displayProgress}%` }"
-                ></div>
-              </div>
-            </div>
-
-            <div class="flex flex-wrap gap-2 mb-4">
-              <span
-                v-for="(feature, idx) in sefirah.features"
-                :key="`feature-${sefirah.id}-${idx}`"
-                class="inline-block text-xs py-1 px-2 rounded-full bg-white/10 text-gray-300"
-              >
-                {{ feature }}
-              </span>
-            </div>
-
-            <nuxt-link
-              v-if="sefirah.cta"
-              :to="sefirah.cta.link"
-              class="inline-flex items-center text-sm px-4 py-2 rounded-lg bg-white/10 hover:bg-white/15 transition-all text-white"
-              @click="logAction(sefirah.id)"
-            >
-              <i class="fas fa-arrow-right mr-2"></i>
-              {{ sefirah.cta.text }}
-            </nuxt-link>
-            <p v-else class="text-xs text-gray-500">
-              <i class="fas fa-clock mr-1"></i> Скоро появятся новые способы
-              роста!
-            </p>
-          </div>
+            :sefirah="sefirah"
+            :is-active="activeCard === sefirah.id"
+            :ring-color="getRingColor(sefirah.id)"
+            :progress-class="getCardProgressClass(sefirah.id, sefirah.column)"
+            :level-badge-class="getLevelBadgeClass(sefirah.column)"
+            :progress-bar-class="
+              getProgressBarClass(sefirah.id, sefirah.column)
+            "
+            :set-active-card="setActiveCard"
+            :log-action="logAction"
+          />
         </section>
       </div>
     </main>
@@ -854,6 +559,13 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from "vue";
+import ColumnBalanceGauge from "~/components/tree-of-self/ColumnBalanceGauge.vue";
+import EnergyOfDay from "~/components/tree-of-self/EnergyOfDay.vue";
+import CycleToggle from "~/components/tree-of-self/CycleToggle.vue";
+import SefirotProgressCard from "~/components/tree-of-self/SefirotProgressCard.vue";
+import MobileTabletLegend from "~/components/tree-of-self/MobileTabletLegend.vue";
+import DesktopSideLegend from "~/components/tree-of-self/DesktopSideLegend.vue";
+
 import { useAuthStore } from "~/stores/auth";
 import { useFirestore } from "~/plugins/firebase";
 import {
