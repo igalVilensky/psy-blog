@@ -42,7 +42,6 @@
                   {{ index + 1 }}
                 </div>
                 <div class="text-xs hidden sm:block">{{ step }}</div>
-                <!-- Mobile version - just show number -->
                 <div class="text-xs sm:hidden">
                   {{
                     index === 0 ? "Эмоция" : index === 1 ? "Энергия" : "Совет"
@@ -277,6 +276,50 @@
               <i class="fas fa-fire text-orange-500"></i>
               <span class="text-sm">Серия: {{ streakDays }} дней</span>
             </div>
+            <!-- Netzach Progress Indicator -->
+            <div class="bg-gray-50 p-3 rounded-xl text-gray-700 text-sm">
+              <p>
+                Прогресс Нецаха: {{ sefirotProgress.netzach.displayProgress }}%
+                ({{ sefirotProgress.netzach.dailyActions }}/{{
+                  sefirotProgress.netzach.maxActions
+                }}
+                действий)
+              </p>
+              <div class="w-48 mx-auto bg-gray-200 rounded-full h-1.5 mt-2">
+                <div
+                  class="h-1.5 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-300"
+                  :style="{
+                    width: `${sefirotProgress.netzach.displayProgress}%`,
+                  }"
+                ></div>
+              </div>
+              <p class="mt-2">
+                Очки: {{ sefirotProgress.netzach.points }} | Уровень:
+                {{ sefirotProgress.netzach.level }}
+              </p>
+            </div>
+            <!-- Chesed Progress Indicator -->
+            <div class="bg-gray-50 p-3 rounded-xl text-gray-700 text-sm">
+              <p>
+                Прогресс Хеседа: {{ sefirotProgress.chesed.displayProgress }}%
+                ({{ sefirotProgress.chesed.dailyActions }}/{{
+                  sefirotProgress.chesed.maxActions
+                }}
+                действий)
+              </p>
+              <div class="w-48 mx-auto bg-gray-200 rounded-full h-1.5 mt-2">
+                <div
+                  class="h-1.5 rounded-full bg-gradient-to-r from-purple-500 to-purple-300"
+                  :style="{
+                    width: `${sefirotProgress.chesed.displayProgress}%`,
+                  }"
+                ></div>
+              </div>
+              <p class="mt-2">
+                Очки: {{ sefirotProgress.chesed.points }} | Уровень:
+                {{ sefirotProgress.chesed.level }}
+              </p>
+            </div>
             <button
               @click="closeModal"
               class="bg-blue-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-600 transition-all hover:-translate-y-1 text-sm"
@@ -332,7 +375,7 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, doc, getDoc, onSnapshot } from "firebase/firestore";
 import {
   getDailyGrowthSparkData,
   saveDailyGrowthSparkEntry,
@@ -354,7 +397,7 @@ const {
 } = useNotification();
 
 // Modal visibility
-const isVisible = ref(false); // Start hidden, show only if authenticated and not completed today
+const isVisible = ref(false);
 const showConfirmation = ref(false);
 
 // Stage control
@@ -372,9 +415,133 @@ const progressPercentage = computed(() => {
   return Math.min(100, (currentIndex / totalStages) * 100);
 });
 
-// Streak and points tracking
+// Streak and points tracking (for Daily Growth Spark)
 const streakDays = ref(0);
 const points = ref(0);
+
+// State for Sefirot progress (Netzach and Chesed)
+const sefirotProgress = ref({
+  netzach: {
+    dailyActions: 0,
+    maxActions: 3,
+    points: 0,
+    level: 1,
+    displayProgress: 0,
+  },
+  chesed: {
+    dailyActions: 0,
+    maxActions: 3,
+    points: 0,
+    level: 1,
+    displayProgress: 0,
+  },
+});
+
+// Calculate daily progress
+const calculateDailyProgress = (actions, maxActions) => {
+  return Math.round((actions / maxActions) * 100);
+};
+
+// Calculate level based on points
+const calculateLevel = (points) => {
+  if (points < 200) return 1;
+  if (points < 400) return 2;
+  if (points < 1000) return 3;
+  if (points < 2000) return 4;
+  return 5;
+};
+
+// Fetch progress for Netzach and Chesed
+const fetchSefirotProgress = async (userId) => {
+  try {
+    // Fetch progress data
+    const progressRef = doc(db, `users/${userId}/progress/sefirot`);
+    const progressSnap = await getDoc(progressRef);
+
+    if (progressSnap.exists()) {
+      const progressData = progressSnap.data();
+      if (progressData.netzach) {
+        sefirotProgress.value.netzach.points = progressData.netzach.points || 0;
+        sefirotProgress.value.netzach.level = calculateLevel(
+          sefirotProgress.value.netzach.points
+        );
+      }
+      if (progressData.chesed) {
+        sefirotProgress.value.chesed.points = progressData.chesed.points || 0;
+        sefirotProgress.value.chesed.level = calculateLevel(
+          sefirotProgress.value.chesed.points
+        );
+      }
+    }
+
+    // Fetch daily actions
+    const today = new Date().toISOString().split("T")[0];
+    const dailyRef = doc(db, `users/${userId}/daily/${today}`);
+    const dailySnap = await getDoc(dailyRef);
+
+    if (dailySnap.exists()) {
+      const dailyData = dailySnap.data();
+      sefirotProgress.value.netzach.dailyActions =
+        dailyData.netzach?.actions || 0;
+      sefirotProgress.value.netzach.displayProgress = calculateDailyProgress(
+        sefirotProgress.value.netzach.dailyActions,
+        sefirotProgress.value.netzach.maxActions
+      );
+      sefirotProgress.value.chesed.dailyActions =
+        dailyData.chesed?.actions || 0;
+      sefirotProgress.value.chesed.displayProgress = calculateDailyProgress(
+        sefirotProgress.value.chesed.dailyActions,
+        sefirotProgress.value.chesed.maxActions
+      );
+    }
+
+    // Set up real-time listeners
+    onSnapshot(progressRef, (snap) => {
+      if (snap.exists()) {
+        const progressData = snap.data();
+        if (progressData.netzach) {
+          sefirotProgress.value.netzach.points =
+            progressData.netzach.points || 0;
+          sefirotProgress.value.netzach.level = calculateLevel(
+            sefirotProgress.value.netzach.points
+          );
+        }
+        if (progressData.chesed) {
+          sefirotProgress.value.chesed.points = progressData.chesed.points || 0;
+          sefirotProgress.value.chesed.level = calculateLevel(
+            sefirotProgress.value.chesed.points
+          );
+        }
+      }
+    });
+
+    onSnapshot(dailyRef, (snap) => {
+      if (snap.exists()) {
+        const dailyData = snap.data();
+        sefirotProgress.value.netzach.dailyActions =
+          dailyData.netzach?.actions || 0;
+        sefirotProgress.value.netzach.displayProgress = calculateDailyProgress(
+          sefirotProgress.value.netzach.dailyActions,
+          sefirotProgress.value.netzach.maxActions
+        );
+        sefirotProgress.value.chesed.dailyActions =
+          dailyData.chesed?.actions || 0;
+        sefirotProgress.value.chesed.displayProgress = calculateDailyProgress(
+          sefirotProgress.value.chesed.dailyActions,
+          sefirotProgress.value.chesed.maxActions
+        );
+      } else {
+        sefirotProgress.value.netzach.dailyActions = 0;
+        sefirotProgress.value.netzach.displayProgress = 0;
+        sefirotProgress.value.chesed.dailyActions = 0;
+        sefirotProgress.value.chesed.displayProgress = 0;
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching Sefirot progress:", error);
+    showNotification("Ошибка загрузки прогресса Сфирот.", "error");
+  }
+};
 
 // Check auth state and fetch data
 onMounted(async () => {
@@ -387,13 +554,30 @@ onMounted(async () => {
         points.value = response.data.points;
         const lastUpdated = response.data.lastUpdated;
         const today = new Date().toISOString().split("T")[0];
-        // Show modal only if not completed today
         if (lastUpdated !== today) {
           isVisible.value = true;
         }
       }
+      await fetchSefirotProgress(currentUser.uid);
     } else {
-      isVisible.value = false; // Hide if not authenticated
+      user.value = null;
+      isVisible.value = false;
+      sefirotProgress.value = {
+        netzach: {
+          dailyActions: 0,
+          maxActions: 3,
+          points: 0,
+          level: 1,
+          displayProgress: 0,
+        },
+        chesed: {
+          dailyActions: 0,
+          maxActions: 3,
+          points: 0,
+          level: 1,
+          displayProgress: 0,
+        },
+      };
     }
   });
 });
@@ -537,7 +721,10 @@ const tipCategories = ref([
 ]);
 const selectedCategory = ref("Осознанность");
 
+// Modified submitTip with Netzach and Chesed feedback
 const submitTip = async () => {
+  const oldNetzachLevel = sefirotProgress.value.netzach.level;
+  const oldChesedLevel = sefirotProgress.value.chesed.level;
   points.value += 20;
   const growthData = {
     gameResults: { wins: winCount.value },
@@ -566,10 +753,30 @@ const submitTip = async () => {
     streakDays.value = response.streakDays;
     points.value = response.points;
     currentStage.value = "success";
+    // Show Netzach and Chesed progress feedback
+    showNotification(
+      `Запись сохранена! Вы заработали 10 очков для Нецаха (прогресс: ${sefirotProgress.value.netzach.displayProgress}%) и 10 очков для Хеседа (прогресс: ${sefirotProgress.value.chesed.displayProgress}%).`,
+      "success"
+    );
+    // Check for level-ups
+    if (sefirotProgress.value.netzach.level > oldNetzachLevel) {
+      showNotification(
+        `Поздравляем! Вы достигли уровня ${sefirotProgress.value.netzach.level} для Нецаха!`,
+        "success"
+      );
+    }
+    if (sefirotProgress.value.chesed.level > oldChesedLevel) {
+      showNotification(
+        `Поздравляем! Вы достигли уровня ${sefirotProgress.value.chesed.level} для Хеседа!`,
+        "success"
+      );
+    }
   }
 };
 
+// Modified skipTip with Netzach feedback only
 const skipTip = async () => {
+  const oldNetzachLevel = sefirotProgress.value.netzach.level;
   const growthData = {
     gameResults: { wins: winCount.value },
     energy: {
@@ -592,6 +799,18 @@ const skipTip = async () => {
     streakDays.value = response.streakDays;
     points.value = response.points;
     currentStage.value = "success";
+    // Show Netzach progress feedback
+    showNotification(
+      `Запись сохранена! Вы заработали 10 очков для Нецаха. Текущий прогресс: ${sefirotProgress.value.netzach.displayProgress}% (${sefirotProgress.value.netzach.dailyActions}/${sefirotProgress.value.netzach.maxActions} действий).`,
+      "success"
+    );
+    // Check for level-up
+    if (sefirotProgress.value.netzach.level > oldNetzachLevel) {
+      showNotification(
+        `Поздравляем! Вы достигли уровня ${sefirotProgress.value.netzach.level} для Нецаха!`,
+        "success"
+      );
+    }
   }
 };
 
