@@ -807,7 +807,7 @@
 
             <div class="mb-4">
               <div class="flex justify-between text-xs text-gray-400 mb-1">
-                <span>Прогресс</span>
+                <span>Ежедневный прогресс</span>
                 <span
                   >{{ sefirah.dailyActions }}/{{ sefirah.maxActions }} действий
                   сегодня</span
@@ -904,8 +904,9 @@ const columns = {
   },
 };
 
-// Sefirot Data Structure with column assignments
+// Sefirot Data Structure
 const sefirot = ref([
+  // Same as before, but ensure each has maxActions set to 3
   {
     id: "keter",
     name: "Кетер",
@@ -915,7 +916,6 @@ const sefirot = ref([
     features: ["Профиль", "Открытие Архетипов"],
     x: 200,
     y: 67,
-    progress: 0,
     points: 0,
     level: 1,
     dailyActions: 0,
@@ -1215,7 +1215,7 @@ const connections = computed(() => {
   ];
 });
 
-// Calculate column progress averages
+// Calculate column progress averages based on daily progress
 const columnProgress = computed(() => {
   const result = { left: 0, right: 0, center: 0 };
   sefirot.value.forEach((sefirah) => {
@@ -1251,7 +1251,7 @@ const energyRecommendation = computed(() => {
   return `Сфокусируйтесь на ${lowestSefirah.function} (${lowestSefirah.name})`;
 });
 
-// Select energy column
+// Select energy column (unchanged)
 const selectEnergyColumn = (column) => {
   energyOfDay.value = energyOfDay.value === column ? null : column;
   if (energyOfDay.value) {
@@ -1288,13 +1288,6 @@ const calculateLevel = (points) => {
   return 5;
 };
 
-// Calculate display progress
-const calculateDisplayProgress = (points, level) => {
-  const levelThreshold = level * 200;
-  const progress = Math.min((points / levelThreshold) * 100, 100);
-  return Math.round(progress);
-};
-
 // Calculate daily progress
 const calculateDailyProgress = (actions, maxActions) => {
   return Math.round((actions / maxActions) * 100);
@@ -1315,35 +1308,22 @@ const applyDecay = (points, lastActive) => {
   return Math.round(decayedPoints);
 };
 
-let hoverTimeout = null;
-
+// Tooltip and highlight functions
 const showNodeTooltip = (sefirah) => {
-  // Determine tooltip position based on sefirah position
   let tooltipY;
   let tooltipX = sefirah.x;
-
-  // For top 3 sefirot (Keter, Chokhmah, Binah)
   if (sefirah.y < 200) {
-    tooltipY = sefirah.y + 50; // Less distance below for top nodes
+    tooltipY = sefirah.y + 50;
+  } else if (sefirah.y > 500) {
+    tooltipY = sefirah.y - 50;
+  } else {
+    tooltipY = sefirah.y - 60;
   }
-  // For bottom sefirot (Malkhut)
-  else if (sefirah.y > 500) {
-    tooltipY = sefirah.y - 50; // Above for bottom node
-  }
-  // For all others
-  else {
-    tooltipY = sefirah.y - 60; // Above for middle nodes
-  }
-
-  // Adjust for left/right columns to prevent overflow
   if (sefirah.x < 150) {
-    // Left column
     tooltipX = sefirah.x + 30;
   } else if (sefirah.x > 250) {
-    // Right column
     tooltipX = sefirah.x - 30;
   }
-
   activeTooltip.value = {
     ...sefirah,
     x: tooltipX,
@@ -1352,18 +1332,17 @@ const showNodeTooltip = (sefirah) => {
 };
 
 const hideNodeTooltip = () => {
-  hoverTimeout = setTimeout(() => {
+  setTimeout(() => {
     activeTooltip.value = null;
   }, 100);
 };
 
-// Toggle highlight for legend
 const toggleHighlight = (category) => {
   highlightedCategory.value =
     highlightedCategory.value === category ? null : category;
 };
 
-// Get connection column class
+// Connection and node styling functions
 const getConnectionColumnClass = (fromId, toId) => {
   const fromSefirah = sefirot.value.find((s) => s.id === fromId);
   const toSefirah = sefirot.value.find((s) => s.id === toId);
@@ -1373,7 +1352,6 @@ const getConnectionColumnClass = (fromId, toId) => {
   return "path-neutral";
 };
 
-// Get active stroke class for paths
 const getActiveStrokeClass = (fromId, toId) => {
   const fromSefirah = sefirot.value.find((s) => s.id === fromId);
   const toSefirah = sefirot.value.find((s) => s.id === toId);
@@ -1394,6 +1372,7 @@ const getActiveStrokeClass = (fromId, toId) => {
 const getNodePulseClass = (category, column) => {
   return `pulse-${column}`;
 };
+
 const getSefirahIcon = (id) => {
   const icons = {
     keter: "fa-crown",
@@ -1444,7 +1423,7 @@ const scrollToSefirah = (id) => {
       element.classList.add("ring-2");
       setTimeout(() => element.classList.remove("ring-2"), 2000);
     }
-  }, 100); // Increased timeout to ensure DOM is ready
+  }, 100);
 };
 
 // Get ring color for active card
@@ -1502,13 +1481,13 @@ const getNodeGlowClass = (id, column) => {
 const getNodeStrokeColor = (id, column) => {
   switch (column) {
     case "left":
-      return "#3b82f6"; // blue-500
+      return "#3b82f6";
     case "right":
-      return "#eab308"; // yellow-500
+      return "#eab308";
     case "center":
-      return "#22c55e"; // green-500
+      return "#22c55e";
     default:
-      return "#4B5563"; // gray-600
+      return "#4B5563";
   }
 };
 
@@ -1543,11 +1522,11 @@ const getCardProgressClass = (id, column) => {
 const getLevelColor = (column) => {
   switch (column) {
     case "left":
-      return "#93c5fd"; // blue-300
+      return "#93c5fd";
     case "right":
-      return "#fcd34d"; // yellow-300
+      return "#fcd34d";
     case "center":
-      return "#86efac"; // green-300
+      return "#86efac";
     default:
       return "#ffffff";
   }
@@ -1607,7 +1586,7 @@ const initializeDailyActions = async (userId, date) => {
   return initialData;
 };
 
-// Log an action (e.g., clicking a CTA)
+// Log an action
 const logAction = async (sefirahId) => {
   if (!isLoggedIn.value) return;
   const userId = authStore.user.uid;
@@ -1620,6 +1599,13 @@ const logAction = async (sefirahId) => {
     const dailySnap = await getDoc(dailyRef);
     if (!dailySnap.exists()) {
       await initializeDailyActions(userId, today);
+    } else {
+      // Check if max actions (3) reached
+      const dailyData = dailySnap.data();
+      if (dailyData[sefirahId]?.actions >= 3) {
+        console.log("Max daily actions reached for", sefirahId);
+        return;
+      }
     }
 
     // Update progress (add 10 points)
@@ -1655,10 +1641,8 @@ const fetchSefirotProgress = async (userId) => {
             progressData[sefirah.id].lastActive
           );
           const level = calculateLevel(points);
-          const displayProgress = calculateDisplayProgress(points, level);
           sefirah.points = points;
           sefirah.level = level;
-          sefirah.displayProgress = displayProgress;
           sefirah.lastActive = progressData[sefirah.id].lastActive;
         }
       });
@@ -1675,7 +1659,7 @@ const fetchSefirotProgress = async (userId) => {
       const dailyData = dailySnap.data();
       sefirot.value.forEach((sefirah) => {
         sefirah.dailyActions = dailyData[sefirah.id]?.actions || 0;
-        sefirah.progress = calculateDailyProgress(
+        sefirah.displayProgress = calculateDailyProgress(
           sefirah.dailyActions,
           sefirah.maxActions
         );
@@ -1693,10 +1677,8 @@ const fetchSefirotProgress = async (userId) => {
               progressData[sefirah.id].lastActive
             );
             const level = calculateLevel(points);
-            const displayProgress = calculateDisplayProgress(points, level);
             sefirah.points = points;
             sefirah.level = level;
-            sefirah.displayProgress = displayProgress;
             sefirah.lastActive = progressData[sefirah.id].lastActive;
           }
         });
@@ -1707,23 +1689,27 @@ const fetchSefirotProgress = async (userId) => {
     onSnapshot(dailyRef, (snap) => {
       if (snap.exists()) {
         const dailyData = snap.data();
-
         sefirot.value.forEach((sefirah) => {
           sefirah.dailyActions = dailyData[sefirah.id]?.actions || 0;
-          sefirah.progress = calculateDailyProgress(
+          sefirah.displayProgress = calculateDailyProgress(
             sefirah.dailyActions,
             sefirah.maxActions
           );
+        });
+      } else {
+        // If no data for today, reset daily actions
+        sefirot.value.forEach((sefirah) => {
+          sefirah.dailyActions = 0;
+          sefirah.displayProgress = 0;
         });
       }
     });
   } catch (error) {
     console.error("Error fetching Sefirot progress:", error);
     sefirot.value.forEach((s) => {
-      s.progress = 0;
-      s.displayProgress = 0;
       s.points = 0;
       s.dailyActions = 0;
+      s.displayProgress = 0;
       s.level = 1;
     });
   }
@@ -1736,17 +1722,17 @@ onMounted(async () => {
     await fetchSefirotProgress(userId);
   } else {
     // Demo data for non-logged-in users
-    const demoData = [40, 70, 30, 10, 50, 35, 20, 5, 60, 15];
+    const demoDailyActions = [0, 1, 2, 0, 3, 1, 0, 2, 0, 1];
+    const demoPoints = [400, 700, 300, 100, 500, 350, 200, 50, 600, 150];
     sefirot.value.forEach((s, index) => {
-      s.progress = demoData[index];
-      s.displayProgress = demoData[index];
-      s.points = demoData[index] * 10;
+      s.points = demoPoints[index];
       s.level = calculateLevel(s.points);
-      s.dailyActions = Math.floor(Math.random() * 4);
+      s.dailyActions = demoDailyActions[index];
+      s.displayProgress = calculateDailyProgress(s.dailyActions, s.maxActions);
     });
   }
 
-  // Set current week (1-10)
+  // Set current week
   currentWeek.value =
     (Math.floor(
       (new Date() - new Date(new Date().getFullYear(), 0, 1)) /
@@ -1754,6 +1740,30 @@ onMounted(async () => {
     ) %
       10) +
     1;
+
+  // Reset daily actions at midnight
+  const checkMidnight = () => {
+    const now = new Date();
+    const tomorrow = new Date(now);
+    tomorrow.setDate(now.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+    const msUntilMidnight = tomorrow - now;
+    setTimeout(async () => {
+      if (isLoggedIn.value) {
+        const userId = authStore.user.uid;
+        const today = new Date().toISOString().split("T")[0];
+        await initializeDailyActions(userId, today);
+        await fetchSefirotProgress(userId);
+      } else {
+        sefirot.value.forEach((s) => {
+          s.dailyActions = 0;
+          s.displayProgress = 0;
+        });
+      }
+      setInterval(checkMidnight, 24 * 60 * 60 * 1000);
+    }, msUntilMidnight);
+  };
+  checkMidnight();
 });
 
 // Watch for auth changes

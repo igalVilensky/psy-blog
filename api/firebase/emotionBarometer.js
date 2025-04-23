@@ -1,7 +1,13 @@
-// api/firebase/emotionBarometer.js
-import { doc, getDoc, updateDoc, setDoc, arrayUnion } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  updateDoc,
+  setDoc,
+  arrayUnion,
+  increment,
+} from "firebase/firestore";
 
-// Fetch user emotion data from `emotion_barometer` document
+// Fetch user emotion data from `emotion_barometer` document (unchanged)
 export const getEmotionBarometerData = async (firestore, userId) => {
   try {
     const userRef = doc(firestore, "emotion_barometer", userId);
@@ -13,7 +19,7 @@ export const getEmotionBarometerData = async (firestore, userId) => {
         success: true,
         data: {
           entries: data.entries || [],
-          lastUpdated: data.lastUpdated || null, // Возвращаем lastUpdated
+          lastUpdated: data.lastUpdated || null,
         },
       };
     } else {
@@ -31,19 +37,23 @@ export const getEmotionBarometerData = async (firestore, userId) => {
   }
 };
 
-// Save emotion entry to Firebase (перенос вашей функции в API)
+// Save emotion entry to Firebase and update Sefirot progress
 export const saveEmotionBarometerEntry = async (
   firestore,
   userId,
   entryData,
-  showNotification // Callback для уведомлений, переданный из компонента
+  showNotification // Callback for notifications
 ) => {
   if (!userId) {
     console.error("User ID is required");
+    showNotification("Требуется идентификатор пользователя.", "error");
     return { success: false, message: "User ID is required" };
   }
 
   const userRef = doc(firestore, "emotion_barometer", userId);
+  const progressRef = doc(firestore, `users/${userId}/progress/sefirot`);
+  const today = new Date().toISOString().split("T")[0];
+  const dailyRef = doc(firestore, `users/${userId}/daily/${today}`);
 
   const newEntry = {
     emotion: entryData.emotion,
@@ -58,8 +68,39 @@ export const saveEmotionBarometerEntry = async (
   };
 
   try {
-    const docSnap = await getDoc(userRef);
+    // Check if daily actions document exists and initialize if not
+    const dailySnap = await getDoc(dailyRef);
+    if (!dailySnap.exists()) {
+      const initialDailyData = {
+        keter: { actions: 0 },
+        chokhmah: { actions: 0 },
+        binah: { actions: 0 },
+        chesed: { actions: 0 },
+        gevurah: { actions: 0 },
+        tiferet: { actions: 0 },
+        netzach: { actions: 0 },
+        hod: { actions: 0 },
+        yesod: { actions: 0 },
+        malkhut: { actions: 0 },
+      };
+      await setDoc(dailyRef, initialDailyData);
+    } else {
+      // Check if max actions (3) for Binah have been reached
+      const dailyData = dailySnap.data();
+      if (dailyData.binah?.actions >= 3) {
+        showNotification(
+          "Достигнуто максимальное количество действий для Бины сегодня.",
+          "warning"
+        );
+        return {
+          success: false,
+          message: "Max daily actions for Binah reached",
+        };
+      }
+    }
 
+    // Save the Emotion Barometer entry
+    const docSnap = await getDoc(userRef);
     if (docSnap.exists()) {
       await updateDoc(userRef, {
         entries: arrayUnion(newEntry),
@@ -72,19 +113,39 @@ export const saveEmotionBarometerEntry = async (
       });
     }
 
-    showNotification("Запись успешно сохранена!", "success");
-    return { success: true, message: "Entry saved successfully" };
-  } catch (error) {
-    console.error("Error saving entry to Firebase:", error);
+    // Update Sefirot progress (add 10 points to Binah)
+    await updateDoc(progressRef, {
+      "binah.points": increment(10),
+      "binah.lastActive": new Date(),
+    });
+
+    // Update daily actions (add 1 action to Binah)
+    await updateDoc(dailyRef, {
+      "binah.actions": increment(1),
+    });
+
     showNotification(
-      "Ошибка сохранения записи. Пожалуйста, попробуйте еще раз.",
+      "Запись успешно сохранена и прогресс обновлен!",
+      "success"
+    );
+    return {
+      success: true,
+      message: "Entry saved and progress updated successfully",
+    };
+  } catch (error) {
+    console.error("Error saving entry or updating progress:", error);
+    showNotification(
+      "Ошибка сохранения записи или обновления прогресса. Пожалуйста, попробуйте еще раз.",
       "error"
     );
-    return { success: false, message: "Failed to save entry" };
+    return {
+      success: false,
+      message: "Failed to save entry or update progress",
+    };
   }
 };
 
-// New function to calculate emotion barometer statistics (без изменений)
+// Calculate emotion barometer statistics (unchanged)
 export const getEmotionBarometerStats = async (firestore, userId) => {
   const barometerRef = doc(firestore, "emotion_barometer", userId);
 

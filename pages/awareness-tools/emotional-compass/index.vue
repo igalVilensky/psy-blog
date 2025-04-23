@@ -62,7 +62,7 @@
           </div>
         </div>
 
-        <!-- Start Button (shown only when showStartButton is true) -->
+        <!-- Start Button and Binah Progress -->
         <div v-if="user && showStartButton" class="text-center mb-8">
           <Button
             text="Добавить запись"
@@ -74,6 +74,24 @@
             :isLink="false"
             @click="startEntry"
           />
+          <!-- Binah Progress Indicator -->
+          <div v-if="user" class="mt-4 text-slate-300 text-sm">
+            <p>
+              Прогресс Бины сегодня: {{ binahProgress.displayProgress }}% ({{
+                binahProgress.dailyActions
+              }}/{{ binahProgress.maxActions }} действий)
+            </p>
+            <div class="w-64 mx-auto bg-gray-800/50 rounded-full h-1.5 mt-2">
+              <div
+                class="h-1.5 rounded-full bg-gradient-to-r from-blue-500 to-blue-300"
+                :style="{ width: `${binahProgress.displayProgress}%` }"
+              ></div>
+            </div>
+            <p class="mt-2">
+              Очки: {{ binahProgress.points }} | Уровень:
+              {{ binahProgress.level }}
+            </p>
+          </div>
         </div>
 
         <!-- Main Barometer Section (shown only when showStartButton is false) -->
@@ -264,15 +282,6 @@
       :recommendations="currentRecommendations"
       @close="closeModal"
     />
-    <!-- New AI Typing Box -->
-    <!-- <AITypingBox
-      :is-visible="showModal"
-      :text="formattedRecommendations"
-      :delay="0"
-      :typing-speed="30"
-      :thinking-duration="1000"
-      v-model:is-visible="showModal"
-    /> -->
 
     <Notification
       v-if="notificationMessage"
@@ -285,9 +294,9 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getFirestore } from "firebase/firestore"; // Убираем лишние импорты, так как они не нужны
+import { getFirestore, doc, getDoc, onSnapshot } from "firebase/firestore";
 import RecommendationsModal from "~/components/emotional-compass/RecommendationsModal.vue";
 import EmotionSelection from "~/components/emotional-compass/EmotionSelection.vue";
 import IntensityLevel from "~/components/emotional-compass/IntensityLevel.vue";
@@ -295,12 +304,11 @@ import JournalEntry from "~/components/emotional-compass/JournalEntry.vue";
 import LifeSpheresSelection from "~/components/emotional-compass/LifeSpheresSelection.vue";
 import SubEmotionSelection from "~/components/emotional-compass/SubEmotionSelection.vue";
 import Notification from "~/components/base/Notification.vue";
-// import AITypingBox from "~/components/base/AITypingBox.vue";
 import { useNotification } from "@/composables/useNotification";
 import {
   getEmotionBarometerStats,
   saveEmotionBarometerEntry,
-} from "~/api/firebase/emotionBarometer"; // Импортируем новую функцию
+} from "~/api/firebase/emotionBarometer";
 import { emotions } from "~/data/emotionalBarometer/emotions.js";
 import { subEmotionsMap } from "~/data/emotionalBarometer/subEmotionsMap";
 import { lifeSpheres } from "~/data/emotionalBarometer/lifeSpheres";
@@ -337,7 +345,16 @@ const subEmotions = ref([]);
 const selectedSubEmotion = ref(null);
 const showStartButton = ref(true);
 
-// Получаем доступ к $markEntry через NuxtApp
+// New state for Binah progress
+const binahProgress = ref({
+  dailyActions: 0,
+  maxActions: 3,
+  points: 0,
+  level: 1,
+  displayProgress: 0,
+});
+
+// Poluchayem dostup k $markEntry cherez NuxtApp
 const { $markEntry } = useNuxtApp();
 
 // Validation for each step
@@ -392,6 +409,82 @@ const formattedRecommendations = computed(() => {
   );
 });
 
+// New function to calculate daily progress
+const calculateDailyProgress = (actions, maxActions) => {
+  return Math.round((actions / maxActions) * 100);
+};
+
+// New function to calculate level based on points
+const calculateLevel = (points) => {
+  if (points < 200) return 1;
+  if (points < 400) return 2;
+  if (points < 1000) return 3;
+  if (points < 2000) return 4;
+  return 5;
+};
+
+// New function to fetch Binah progress
+const fetchBinahProgress = async (userId) => {
+  try {
+    // Fetch progress data
+    const progressRef = doc(db, `users/${userId}/progress/sefirot`);
+    const progressSnap = await getDoc(progressRef);
+
+    if (progressSnap.exists()) {
+      const progressData = progressSnap.data();
+      if (progressData.binah) {
+        binahProgress.value.points = progressData.binah.points || 0;
+        binahProgress.value.level = calculateLevel(binahProgress.value.points);
+      }
+    }
+
+    // Fetch daily actions
+    const today = new Date().toISOString().split("T")[0];
+    const dailyRef = doc(db, `users/${userId}/daily/${today}`);
+    const dailySnap = await getDoc(dailyRef);
+
+    if (dailySnap.exists()) {
+      const dailyData = dailySnap.data();
+      binahProgress.value.dailyActions = dailyData.binah?.actions || 0;
+      binahProgress.value.displayProgress = calculateDailyProgress(
+        binahProgress.value.dailyActions,
+        binahProgress.value.maxActions
+      );
+    }
+
+    // Set up real-time listener for progress updates
+    onSnapshot(progressRef, (snap) => {
+      if (snap.exists()) {
+        const progressData = snap.data();
+        if (progressData.binah) {
+          binahProgress.value.points = progressData.binah.points || 0;
+          binahProgress.value.level = calculateLevel(
+            binahProgress.value.points
+          );
+        }
+      }
+    });
+
+    // Set up real-time listener for daily actions
+    onSnapshot(dailyRef, (snap) => {
+      if (snap.exists()) {
+        const dailyData = snap.data();
+        binahProgress.value.dailyActions = dailyData.binah?.actions || 0;
+        binahProgress.value.displayProgress = calculateDailyProgress(
+          binahProgress.value.dailyActions,
+          binahProgress.value.maxActions
+        );
+      } else {
+        binahProgress.value.dailyActions = 0;
+        binahProgress.value.displayProgress = 0;
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching Binah progress:", error);
+    showNotification("Ошибка загрузки прогресса Бины.", "error");
+  }
+};
+
 // Listen for auth state changes
 onAuthStateChanged(auth, async (currentUser) => {
   loading.value = true;
@@ -403,6 +496,19 @@ onAuthStateChanged(auth, async (currentUser) => {
     } else {
       stats.value = null;
     }
+    // Fetch Binah progress for authenticated user
+    await fetchBinahProgress(currentUser.uid);
+  } else {
+    user.value = null;
+    stats.value = null;
+    // Reset Binah progress for unauthenticated users
+    binahProgress.value = {
+      dailyActions: 0,
+      maxActions: 3,
+      points: 0,
+      level: 1,
+      displayProgress: 0,
+    };
   }
   loading.value = false;
 });
@@ -460,7 +566,7 @@ const toggleTag = (tag) => {
   }
 };
 
-// Handle submit with Firebase version
+// Modified handleSubmit to provide progress feedback
 const handleSubmit = async () => {
   if (!canSubmit.value || !user.value) return;
 
@@ -484,6 +590,14 @@ const handleSubmit = async () => {
 
   if (response.success) {
     $markEntry("emotion"); // Reset Emotional Compass reminder
+
+    // Provide feedback about Binah progress
+    if (binahProgress.value.dailyActions <= 3) {
+      showNotification(
+        `Запись сохранена! Вы заработали 10 очков для Бины. Текущий прогресс: ${binahProgress.value.displayProgress}% (${binahProgress.value.dailyActions}/${binahProgress.value.maxActions} действий).`,
+        "success"
+      );
+    }
 
     if (currentRecommendations.value.length > 0) {
       showModal.value = true;
