@@ -1,15 +1,27 @@
 <template>
-  <div class="min-h-screen">
+  <div
+    class="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 text-white"
+  >
     <!-- Main Content Area -->
-    <main class="px-6 xl:px-0 pb-20 mt-12">
+    <main class="px-6 xl:px-0 pb-20 pt-12">
       <div class="container mx-auto max-w-6xl">
-        <!-- Tree Visualization -->
+        <!-- Page Header -->
         <h2
           class="text-xl md:text-2xl font-semibold text-white flex items-center mb-4 md:hidden"
         >
           <i class="fas fa-tree mr-2 text-gradient-blue-end"></i>
           Ваше Древо Себя
         </h2>
+
+        <!-- Link to Tree of Self Info Page -->
+        <div class="text-center mb-6">
+          <router-link
+            to="/tree-of-self-info"
+            class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md transition-colors"
+          >
+            Исследовать значения Сфирот
+          </router-link>
+        </div>
 
         <!-- Column Balance & Energy of the Day -->
         <div class="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -314,7 +326,7 @@
                     r="18"
                     :class="getNodeGlowClass(sefirah.id, sefirah.column)"
                     opacity="0.4"
-                    filter="url(#glow)"
+                    :filter="getGlowFilter(sefirah.column)"
                   />
 
                   <!-- Pulse effect on hover -->
@@ -349,20 +361,15 @@
                     :cx="sefirah.x"
                     :cy="sefirah.y"
                     :r="hoveredNode === sefirah.id ? 18 : 15"
-                    :class="[
-                      getNodeClass(
-                        sefirah.id,
-                        sefirah.displayProgress,
-                        sefirah.column
-                      ),
-                      'node-circle',
-                      {
-                        'highlight-node':
-                          highlightedCategory === sefirah.category ||
-                          energyOfDay === sefirah.column,
-                      },
-                    ]"
-                    class="cursor-pointer transition-all duration-300"
+                    :fill="sefirah.points > 0 ? sefirah.energyColor : '#374151'"
+                    stroke="#ffffff"
+                    stroke-width="1"
+                    class="node-circle cursor-pointer transition-all duration-300"
+                    :class="{
+                      'highlight-node':
+                        highlightedCategory === sefirah.category ||
+                        energyOfDay === sefirah.column,
+                    }"
                     @click="scrollToSefirah(sefirah.id)"
                     @mouseover="
                       showNodeTooltip(sefirah);
@@ -399,8 +406,7 @@
                     :stroke-dasharray="`${
                       (sefirah.displayProgress / 100) * 113
                     }, 113`"
-                    :transform="`rotate(-90 ${sefirah.x}
-                    ${sefirah.y})`"
+                    :transform="`rotate(-90 ${sefirah.x} ${sefirah.y})`"
                     style="pointer-events: none"
                   >
                     <animate
@@ -411,7 +417,7 @@
                     />
                   </circle>
 
-                  <!-- Inside each sefirah node group, after the progress ring -->
+                  <!-- Icon inside node -->
                   <foreignObject
                     :x="sefirah.x - 10"
                     :y="sefirah.y - 10"
@@ -450,7 +456,7 @@
                     <text
                       :x="getLabelX(sefirah)"
                       :y="sefirah.y + 30"
-                      class="font-medium text-white"
+                      class="font-medium text-white text-xs"
                       text-anchor="middle"
                       dominant-baseline="middle"
                     >
@@ -616,14 +622,16 @@ const columns = {
   },
 };
 
-// Sefirot Data Structure
+// Sefirot Data Structure with Symbols, Energy Colors, and Associations
 const sefirot = ref([
-  // Same as before, but ensure each has maxActions set to 3
   {
     id: "keter",
     name: "Кетер",
     psychName: "Высшее Я",
     function: "Высшее Я",
+    symbol: "Корона",
+    energyColor: "#FFD700", // White/Golden Light
+    association: "Чистое намерение",
     description: "Ваша истинная сущность и потенциал души.",
     features: ["Профиль", "Открытие Архетипов"],
     x: 200,
@@ -643,13 +651,15 @@ const sefirot = ref([
   {
     id: "chokhmah",
     name: "Хохма",
-    psychName: "Clarity",
+    psychName: "Ясность",
     function: "Ясность",
+    symbol: "Око/искра",
+    energyColor: "#C0C0C0", // Silvery-White
+    association: "Интуитивное озарение",
     description: "Интуиция и интеллектуальное прозрение.",
     features: ["Тест Большой Пятёрки", "Блог"],
     x: 133,
     y: 160,
-    progress: 0,
     points: 0,
     level: 1,
     dailyActions: 0,
@@ -665,13 +675,15 @@ const sefirot = ref([
   {
     id: "binah",
     name: "Бина",
-    psychName: "Emotional Awareness",
+    psychName: "Эм. осознанность",
     function: "Эм. осознанность",
+    symbol: "Кубок",
+    energyColor: "#0000FF", // Blue
+    association: "Мудрое понимание",
     description: "Глубина чувств и понимание эмоций.",
     features: ["Эмоциональный Компас"],
     x: 267,
     y: 160,
-    progress: 0,
     points: 0,
     level: 1,
     dailyActions: 0,
@@ -687,13 +699,15 @@ const sefirot = ref([
   {
     id: "chesed",
     name: "Хесед",
-    psychName: "Connection",
+    psychName: "Связь",
     function: "Связь",
+    symbol: "Раскрытая ладонь",
+    energyColor: "#00B7EB", // Light Blue
+    association: "Безусловная любовь",
     description: "Милосердие и поддержка сообщества.",
     features: ["Центр сообщества"],
     x: 107,
     y: 267,
-    progress: 0,
     points: 0,
     level: 1,
     dailyActions: 0,
@@ -709,13 +723,15 @@ const sefirot = ref([
   {
     id: "gevurah",
     name: "Гвура",
-    psychName: "Structure",
+    psychName: "Структура",
     function: "Структура",
+    symbol: "Меч",
+    energyColor: "#FF0000", // Red
+    association: "Сила воли",
     description: "Дисциплина и конкретные действия.",
     features: ["Курсы"],
     x: 293,
     y: 267,
-    progress: 0,
     points: 0,
     level: 1,
     dailyActions: 0,
@@ -728,13 +744,15 @@ const sefirot = ref([
   {
     id: "tiferet",
     name: "Тиферет",
-    psychName: "Integration",
+    psychName: "Интеграция",
     function: "Интеграция",
+    symbol: "Сердце",
+    energyColor: "#FFD700", // Golden
+    association: "Красота в балансе",
     description: "Баланс и целостность вашего пути.",
     features: ["Внутренний Ландшафт"],
     x: 200,
     y: 347,
-    progress: 0,
     points: 0,
     level: 1,
     dailyActions: 0,
@@ -747,13 +765,15 @@ const sefirot = ref([
   {
     id: "netzach",
     name: "Нецах",
-    psychName: "Motivation",
+    psychName: "Мотивация",
     function: "Мотивация",
+    symbol: "Факел",
+    energyColor: "#008000", // Green
+    association: "Устремлённость",
     description: "Стойкость и ежедневный рост.",
     features: ["Ежедневная Искра Роста"],
     x: 133,
     y: 373,
-    progress: 0,
     points: 0,
     level: 1,
     dailyActions: 0,
@@ -766,13 +786,15 @@ const sefirot = ref([
   {
     id: "hod",
     name: "Ход",
-    psychName: "Perspective",
+    psychName: "Перспектива",
     function: "Перспектива",
+    symbol: "Лотос",
+    energyColor: "#FFA500", // Orange
+    association: "Смирение и принятие",
     description: "Рефлексия через контент и знания.",
     features: ["Гайды", "Подкасты"],
     x: 267,
     y: 373,
-    progress: 0,
     points: 0,
     level: 1,
     dailyActions: 0,
@@ -785,13 +807,15 @@ const sefirot = ref([
   {
     id: "yesod",
     name: "Йесод",
-    psychName: "Routine",
+    psychName: "Рутина",
     function: "Рутина",
+    symbol: "Луна",
+    energyColor: "#800080", // Purple
+    association: "Канал связи",
     description: "Фундамент ваших привычек и прогресса.",
     features: ["Личный кабинет"],
     x: 200,
     y: 453,
-    progress: 0,
     points: 0,
     level: 1,
     dailyActions: 0,
@@ -804,13 +828,15 @@ const sefirot = ref([
   {
     id: "malkhut",
     name: "Малхут",
-    psychName: "Manifestation",
+    psychName: "Воплощение",
     function: "Воплощение",
+    symbol: "Земля",
+    energyColor: "#3C2F2F", // Earthy Brown
+    association: "Материальное проявление",
     description: "Реальные действия в мире.",
     features: ["Выполненные задачи"],
     x: 200,
     y: 533,
-    progress: 0,
     points: 0,
     level: 1,
     dailyActions: 0,
@@ -963,7 +989,7 @@ const energyRecommendation = computed(() => {
   return `Сфокусируйтесь на ${lowestSefirah.function} (${lowestSefirah.name})`;
 });
 
-// Select energy column (unchanged)
+// Select energy column
 const selectEnergyColumn = (column) => {
   energyOfDay.value = energyOfDay.value === column ? null : column;
   if (energyOfDay.value) {
@@ -1087,19 +1113,20 @@ const getNodePulseClass = (category, column) => {
 
 const getSefirahIcon = (id) => {
   const icons = {
-    keter: "fa-crown",
-    chokhmah: "fa-lightbulb",
-    binah: "fa-heart",
-    chesed: "fa-hands-helping",
-    gevurah: "fa-gavel",
-    tiferet: "fa-balance-scale",
-    netzach: "fa-trophy",
-    hod: "fa-book",
-    yesod: "fa-calendar-check",
-    malkhut: "fa-shoe-prints",
+    keter: "fa-crown", // Корона
+    chokhmah: "fa-eye", // Око/искра
+    binah: "fa-wine-glass", // Кубок
+    chesed: "fa-hand-holding-heart", // Раскрытая ладонь
+    gevurah: "fa-shield-alt", // Меч (using shield-alt for strength)
+    tiferet: "fa-heart", // Сердце
+    netzach: "fa-fire", // Факел
+    hod: "fa-spa", // Лотос
+    yesod: "fa-moon", // Луна
+    malkhut: "fa-globe", // Земля
   };
   return icons[id] || "fa-circle";
 };
+
 // Get connection particle class
 const getConnectionParticleClass = (columnType) => {
   switch (columnType) {
@@ -1162,21 +1189,6 @@ const getLabelX = (sefirah) => {
 };
 
 // Styling functions
-const getNodeClass = (id, progress, column) => {
-  const sefirah = sefirot.value.find((s) => s.id === id);
-  if (!sefirah || sefirah.points === 0) return "fill-gray-700 stroke-gray-500";
-  switch (column) {
-    case "left":
-      return "fill-blue-600 stroke-blue-400";
-    case "right":
-      return "fill-yellow-600 stroke-yellow-400";
-    case "center":
-      return "fill-green-600 stroke-green-400";
-    default:
-      return "fill-gray-700 stroke-gray-500";
-  }
-};
-
 const getNodeGlowClass = (id, column) => {
   switch (column) {
     case "left":
@@ -1187,6 +1199,19 @@ const getNodeGlowClass = (id, column) => {
       return "fill-green-400";
     default:
       return "fill-white";
+  }
+};
+
+const getGlowFilter = (column) => {
+  switch (column) {
+    case "left":
+      return "url(#pulse-left)";
+    case "right":
+      return "url(#pulse-right)";
+    case "center":
+      return "url(#pulse-center)";
+    default:
+      return "url(#glow)";
   }
 };
 
