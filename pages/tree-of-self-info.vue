@@ -3,16 +3,77 @@
     class="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 text-white"
   >
     <!-- Main Content Area -->
-    <main class="px-6 xl:px-0 pb-20 pt-12">
+    <main class="px-4 md:px-6 xl:px-0 pb-20 pt-8 md:pt-12">
       <div class="container mx-auto max-w-6xl">
         <!-- Page Header -->
-        <h1 class="text-3xl md:text-4xl font-semibold text-center mb-8">
-          Древо Себя: Исследуйте Сфирот
-        </h1>
-        <p class="text-center text-gray-400 mb-12 max-w-2xl mx-auto">
-          Кликните на любую сфиру, чтобы узнать её психологическое и
-          каббалистическое значение.
-        </p>
+        <div class="text-center mb-8 md:mb-12">
+          <h1 class="text-3xl md:text-4xl font-semibold mb-2">
+            Древо Себя: Исследуйте Сфирот
+          </h1>
+          <p class="text-gray-400 max-w-2xl mx-auto px-4">
+            Кликните на любую сфиру, чтобы узнать её психологическое и
+            каббалистическое значение.
+          </p>
+        </div>
+
+        <!-- Three Lines Explanation -->
+        <section class="mb-8 bg-white/5 rounded-lg p-4 border border-white/10">
+          <h2 class="text-xl font-semibold mb-4 text-center">
+            Три Линии Древа Жизни
+          </h2>
+          <p class="text-sm text-gray-300 mb-4">
+            В каббале Древо Жизни содержит три вертикальные линии,
+            представляющие разные аспекты божественного проявления:
+          </p>
+          <div class="flex flex-col md:flex-row gap-4 mb-4">
+            <button
+              @click="highlightLine('right')"
+              class="flex-1 p-3 rounded-lg transition-all"
+              :class="
+                activeLine === 'right'
+                  ? 'bg-yellow-500/20 border-yellow-500/50'
+                  : 'bg-slate-700/50 hover:bg-slate-700'
+              "
+            >
+              <h3 class="font-medium text-yellow-400 mb-1">Правая линия</h3>
+              <p class="text-xs text-gray-300">
+                Милосердие, экспансия, мужская энергия
+              </p>
+            </button>
+            <button
+              @click="highlightLine('center')"
+              class="flex-1 p-3 rounded-lg transition-all"
+              :class="
+                activeLine === 'center'
+                  ? 'bg-green-500/20 border-green-500/50'
+                  : 'bg-slate-700/50 hover:bg-slate-700'
+              "
+            >
+              <h3 class="font-medium text-green-400 mb-1">Центральная линия</h3>
+              <p class="text-xs text-gray-300">Баланс, гармония, интеграция</p>
+            </button>
+            <button
+              @click="highlightLine('left')"
+              class="flex-1 p-3 rounded-lg transition-all"
+              :class="
+                activeLine === 'left'
+                  ? 'bg-blue-500/20 border-blue-500/50'
+                  : 'bg-slate-700/50 hover:bg-slate-700'
+              "
+            >
+              <h3 class="font-medium text-blue-400 mb-1">Левая линия</h3>
+              <p class="text-xs text-gray-300">
+                Строгость, ограничение, женская энергия
+              </p>
+            </button>
+          </div>
+          <button
+            @click="resetHighlight()"
+            class="text-xs text-gray-400 hover:text-white transition-colors"
+          >
+            Сбросить выделение
+          </button>
+        </section>
 
         <!-- Tree Visualization -->
         <section
@@ -99,6 +160,18 @@
                   />
                   <feComposite in="SourceGraphic" in2="glow" operator="over" />
                 </filter>
+
+                <!-- Highlight filters -->
+                <filter
+                  id="highlight"
+                  x="-50%"
+                  y="-50%"
+                  width="200%"
+                  height="200%"
+                >
+                  <feGaussianBlur stdDeviation="8" result="blur" />
+                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
               </defs>
 
               <!-- Sefirot Connections -->
@@ -111,8 +184,9 @@
                   :x2="conn.x2"
                   :y2="conn.y2"
                   :stroke="getConnectionStroke(conn.column)"
-                  stroke-width="1.5"
-                  stroke-opacity="0.3"
+                  :stroke-width="isLineActive(conn.column) ? 3 : 1.5"
+                  :stroke-opacity="isLineActive(conn.column) ? 0.8 : 0.3"
+                  :class="{ 'transition-all duration-300': true }"
                 />
               </g>
 
@@ -129,7 +203,7 @@
                   :cy="sefirah.y"
                   r="18"
                   :class="getNodeGlowClass(sefirah.column)"
-                  opacity="0.4"
+                  :opacity="isNodeActive(sefirah.column) ? 0.8 : 0.4"
                   :filter="getGlowFilter(sefirah.column)"
                 />
 
@@ -141,7 +215,7 @@
                   :fill="sefirah.energyColor"
                   class="node-circle transition-all duration-300"
                   stroke="#ffffff"
-                  stroke-width="1"
+                  :stroke-width="isNodeActive(sefirah.column) ? 2 : 1"
                   @mouseover="hoveredNode = sefirah.id"
                   @mouseleave="hoveredNode = null"
                 >
@@ -170,6 +244,10 @@
                     :x="getLabelX(sefirah)"
                     :y="sefirah.y + 30"
                     class="font-medium text-white text-xs"
+                    :class="{
+                      'text-opacity-80':
+                        activeLine && !isNodeActive(sefirah.column),
+                    }"
                     text-anchor="middle"
                     dominant-baseline="middle"
                   >
@@ -178,7 +256,12 @@
                   <text
                     :x="getLabelX(sefirah)"
                     :y="sefirah.y + 45"
-                    class="text-[0.6rem] font-light text-gray-300"
+                    class="text-[0.6rem] font-light"
+                    :class="
+                      isNodeActive(sefirah.column)
+                        ? 'text-gray-200'
+                        : 'text-gray-400'
+                    "
                     text-anchor="middle"
                     dominant-baseline="middle"
                   >
@@ -187,6 +270,56 @@
                 </g>
               </g>
             </svg>
+          </div>
+        </section>
+
+        <!-- Parzufim Explanation -->
+        <section class="mb-8 bg-white/5 rounded-lg p-4 border border-white/10">
+          <h2 class="text-xl font-semibold mb-4 text-center">
+            Концепция Парцуфим в Каббале
+          </h2>
+          <p class="text-sm text-gray-300 mb-4">
+            Парцуфим (Лики) — это конфигурации сфирот, которые действуют как
+            единые системы. Они представляют динамические аспекты божественного
+            проявления.
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div
+              v-for="parzuf in parzufim"
+              :key="parzuf.id"
+              @click="showParzufDetail(parzuf)"
+              class="p-3 rounded-lg cursor-pointer transition-all hover:bg-white/10"
+              :class="{ 'bg-white/10': activeParzuf === parzuf.id }"
+            >
+              <h3 class="font-medium mb-1 flex items-center gap-2">
+                <i :class="parzuf.icon" class="text-yellow-400"></i>
+                {{ parzuf.name }}
+              </h3>
+              <p class="text-xs text-gray-400">{{ parzuf.description }}</p>
+            </div>
+          </div>
+
+          <div
+            v-if="activeParzufDetail"
+            class="mt-4 p-4 bg-slate-800/50 rounded-lg"
+          >
+            <h3 class="font-semibold text-lg mb-2">
+              {{ activeParzufDetail.name }}
+            </h3>
+            <p class="text-sm mb-3">
+              {{ activeParzufDetail.detailedDescription }}
+            </p>
+            <div class="text-xs text-gray-400">
+              <p>
+                <span class="font-medium">Соответствующие сфирот:</span>
+                {{ activeParzufDetail.relatedSefirot.join(", ") }}
+              </p>
+              <p>
+                <span class="font-medium">Аспект:</span>
+                {{ activeParzufDetail.aspect }}
+              </p>
+            </div>
           </div>
         </section>
       </div>
@@ -200,7 +333,7 @@
         @click.self="closeModal"
       >
         <div
-          class="bg-slate-800 rounded-xl max-w-md w-full p-6 relative shadow-2xl border border-white/10"
+          class="bg-slate-800 rounded-xl max-w-md w-full p-6 relative shadow-2xl border border-white/10 max-h-[90vh] overflow-y-auto"
         >
           <!-- Close Button -->
           <button
@@ -211,9 +344,23 @@
           </button>
 
           <!-- Modal Header -->
-          <h2 class="text-2xl font-semibold mb-4">
-            {{ selectedSefirah.function }} ({{ selectedSefirah.name }})
-          </h2>
+          <div class="flex items-start gap-3 mb-4">
+            <div
+              class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
+              :style="{ backgroundColor: selectedSefirah.energyColor }"
+            >
+              <i
+                :class="getSefirahIcon(selectedSefirah.id)"
+                class="text-white"
+              ></i>
+            </div>
+            <div>
+              <h2 class="text-2xl font-semibold">
+                {{ selectedSefirah.function }} ({{ selectedSefirah.name }})
+              </h2>
+              <p class="text-sm text-gray-400">{{ selectedSefirah.symbol }}</p>
+            </div>
+          </div>
 
           <!-- Toggle Tabs -->
           <div class="flex mb-4">
@@ -250,7 +397,17 @@
               <p class="font-bold italic mb-2">
                 *{{ selectedSefirah.association }}*
               </p>
-              <p>{{ selectedSefirah.psychologicalMeaning }}</p>
+              <p class="mb-4">{{ selectedSefirah.psychologicalMeaning }}</p>
+
+              <div
+                v-if="selectedSefirah.psychologicalExercise"
+                class="bg-slate-700/50 p-3 rounded-lg mt-4"
+              >
+                <h4 class="font-medium text-white mb-2">
+                  Упражнение для развития:
+                </h4>
+                <p>{{ selectedSefirah.psychologicalExercise }}</p>
+              </div>
             </div>
             <div v-else>
               <h3 class="text-lg font-medium text-white mb-2">
@@ -259,7 +416,32 @@
               <p class="font-bold italic mb-2">
                 *{{ selectedSefirah.association }}*
               </p>
-              <p>{{ selectedSefirah.kabbalisticMeaning }}</p>
+              <p class="mb-4">{{ selectedSefirah.kabbalisticMeaning }}</p>
+
+              <div class="grid grid-cols-2 gap-3 text-xs mt-4">
+                <div>
+                  <p class="text-gray-400">Архетип:</p>
+                  <p class="font-medium">
+                    {{ selectedSefirah.archetype || "—" }}
+                  </p>
+                </div>
+                <div>
+                  <p class="text-gray-400">Стихия:</p>
+                  <p class="font-medium">
+                    {{ selectedSefirah.element || "—" }}
+                  </p>
+                </div>
+                <div>
+                  <p class="text-gray-400">Планета:</p>
+                  <p class="font-medium">{{ selectedSefirah.planet || "—" }}</p>
+                </div>
+                <div>
+                  <p class="text-gray-400">Цвет:</p>
+                  <p class="font-medium">
+                    {{ selectedSefirah.colorName || "—" }}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -271,15 +453,19 @@
 <script setup>
 import { ref } from "vue";
 
-// Sefirot Data with Symbols, Energy Colors, and Associations
+// Sefirot Data with enhanced information
 const sefirot = ref([
   {
     id: "keter",
     name: "Кетер",
     function: "Высшее Я",
     symbol: "Корона",
-    energyColor: "#FFD700", // White/Golden Light (using gold for visibility)
+    energyColor: "#FFD700",
+    colorName: "Золотой",
     association: "Чистое намерение",
+    archetype: "Царь/Мудрец",
+    element: "Дух",
+    planet: "Нептун",
     x: 200,
     y: 67,
     column: "center",
@@ -287,14 +473,20 @@ const sefirot = ref([
       "Кетер представляет ваше истинное 'Я', центр вашей идентичности и высший потенциал. Это точка интеграции всех аспектов личности, где вы соединяетесь с вашей жизненной целью.",
     kabbalisticMeaning:
       "В каббале Кетер — это 'Корона', первая сфира, представляющая божественную волю и источник всего творения. Это чистый свет, из которого исходят все остальные сфирот.",
+    psychologicalExercise:
+      "Медитация на высшее предназначение. Задавайте себе вопросы: 'Кто я на самом деле?', 'В чем моя истинная цель?'",
   },
   {
     id: "chokhmah",
     name: "Хохма",
     function: "Ясность",
     symbol: "Око/искра",
-    energyColor: "#C0C0C0", // Silvery-White
+    energyColor: "#C0C0C0",
+    colorName: "Серебристо-белый",
     association: "Интуитивное озарение",
+    archetype: "Отец",
+    element: "Огонь",
+    planet: "Уран",
     x: 133,
     y: 160,
     column: "right",
@@ -302,14 +494,20 @@ const sefirot = ref([
       "Хохма символизирует интуитивное прозрение и ясность мышления. Это способность видеть суть вещей и находить новые идеи через вдохновение.",
     kabbalisticMeaning:
       "Хохма — это 'Мудрость', искра божественного вдохновения. Она представляет начальную точку творческого процесса, где рождаются идеи.",
+    psychologicalExercise:
+      "Развитие интуиции через ведение дневника озарений. Записывайте внезапные прозрения и проверяйте их точность со временем.",
   },
   {
     id: "binah",
     name: "Бина",
     function: "Эм. осознанность",
     symbol: "Кубок",
-    energyColor: "#0000FF", // Blue
+    energyColor: "#0000FF",
+    colorName: "Синий",
     association: "Мудрое понимание",
+    archetype: "Мать",
+    element: "Вода",
+    planet: "Сатурн",
     x: 267,
     y: 160,
     column: "left",
@@ -317,14 +515,20 @@ const sefirot = ref([
       "Бина отвечает за эмоциональную осознанность и понимание своих чувств. Это способность анализировать эмоции и использовать их для роста.",
     kabbalisticMeaning:
       "Бина — это 'Понимание', сфира, которая структурирует мудрость Хохмы. Она символизирует женский аспект божественного, формирующий идеи в реальность.",
+    psychologicalExercise:
+      "Анализ эмоций через ведение эмоционального дневника. Записывайте ситуации, свои реакции и скрытые причины этих реакций.",
   },
   {
     id: "chesed",
     name: "Хесед",
     function: "Связь",
     symbol: "Раскрытая ладонь",
-    energyColor: "#00B7EB", // Light Blue
+    energyColor: "#00B7EB",
+    colorName: "Голубой",
     association: "Безусловная любовь",
+    archetype: "Благодетель",
+    element: "Вода",
+    planet: "Юпитер",
     x: 107,
     y: 267,
     column: "right",
@@ -332,14 +536,20 @@ const sefirot = ref([
       "Хесед отражает сострадание, щедрость и способность строить глубокие связи с другими. Это энергия любви и поддержки.",
     kabbalisticMeaning:
       "Хесед — это 'Милосердие', сфира безусловной любви и щедрости. Она представляет божественное стремление к распространению добра.",
+    psychologicalExercise:
+      "Практика бескорыстной помощи. Раз в неделю совершайте добрый поступок без ожидания благодарности.",
   },
   {
     id: "gevurah",
     name: "Гвура",
     function: "Структура",
     symbol: "Меч",
-    energyColor: "#FF0000", // Red
+    energyColor: "#FF0000",
+    colorName: "Красный",
     association: "Сила воли",
+    archetype: "Воин",
+    element: "Огонь",
+    planet: "Марс",
     x: 293,
     y: 267,
     column: "left",
@@ -347,14 +557,20 @@ const sefirot = ref([
       "Гвура символизирует дисциплину, силу и способность устанавливать границы. Это умение направлять энергию в конкретные действия.",
     kabbalisticMeaning:
       "Гвура — это 'Сила' или 'Суд', сфира, которая ограничивает и структурирует милосердие Хеседа. Она представляет божественную строгость.",
+    psychologicalExercise:
+      "Установление здоровых границ. Определите одну сферу жизни, где вам нужно установить четкие границы, и реализуйте это.",
   },
   {
     id: "tiferet",
     name: "Тиферет",
     function: "Интеграция",
     symbol: "Сердце",
-    energyColor: "#FFD755", // Golden
+    energyColor: "#FFD755",
+    colorName: "Золотистый",
     association: "Красота в балансе",
+    archetype: "Царь",
+    element: "Воздух",
+    planet: "Солнце",
     x: 200,
     y: 347,
     column: "center",
@@ -362,14 +578,20 @@ const sefirot = ref([
       "Тиферет — это гармония и баланс, центр, где интегрируются эмоции, мысли и действия. Это ваше внутреннее равновесие.",
     kabbalisticMeaning:
       "Тиферет — это 'Красота', сфира, которая объединяет Хесед и Гвуру. Она символизирует божественную гармонию и сострадание.",
+    psychologicalExercise:
+      "Практика баланса. Ведите дневник, отмечая моменты гармонии и дисбаланса в вашей жизни, и анализируйте причины.",
   },
   {
     id: "netzach",
     name: "Нецах",
     function: "Мотивация",
     symbol: "Факел",
-    energyColor: "#008000", // Green
+    energyColor: "#008000",
+    colorName: "Зеленый",
     association: "Устремлённость",
+    archetype: "Победитель",
+    element: "Огонь",
+    planet: "Венера",
     x: 133,
     y: 373,
     column: "right",
@@ -377,14 +599,20 @@ const sefirot = ref([
       "Нецах представляет стойкость, мотивацию и стремление к достижению целей. Это энергия, которая движет вас вперед.",
     kabbalisticMeaning:
       "Нецах — это 'Победа', сфира вечности и выносливости. Она отражает божественную способность преодолевать препятствия.",
+    psychologicalExercise:
+      "Постановка и достижение небольших целей. Каждый день ставьте одну конкретную цель и фиксируйте её выполнение.",
   },
   {
     id: "hod",
     name: "Ход",
     function: "Перспектива",
     symbol: "Лотос",
-    energyColor: "#FFA500", // Orange
+    energyColor: "#FFA500",
+    colorName: "Оранжевый",
     association: "Смирение и принятие",
+    archetype: "Посланник",
+    element: "Воздух",
+    planet: "Меркурий",
     x: 267,
     y: 373,
     column: "left",
@@ -392,14 +620,20 @@ const sefirot = ref([
       "Ход символизирует рефлексию, способность видеть вещи с разных сторон и учиться через знания и опыт.",
     kabbalisticMeaning:
       "Ход — это 'Слава', сфира, которая отвечает за восприятие и передачу божественного света через структуру и порядок.",
+    psychologicalExercise:
+      "Практика многогранного восприятия. Анализируйте важные события с трех разных точек зрения: своей, другого участника и нейтрального наблюдателя.",
   },
   {
     id: "yesod",
     name: "Йесод",
     function: "Рутина",
     symbol: "Луна",
-    energyColor: "#800080", // Purple
+    energyColor: "#800080",
+    colorName: "Фиолетовый",
     association: "Канал связи",
+    archetype: "Маг",
+    element: "Эфир",
+    planet: "Луна",
     x: 200,
     y: 453,
     column: "center",
@@ -407,14 +641,20 @@ const sefirot = ref([
       "Йесод — это фундамент вашей жизни, привычки и рутины, которые поддерживают ваш рост и стабильность.",
     kabbalisticMeaning:
       "Йесод — это 'Основа', сфира, которая соединяет все сфирот и передает их энергию в Малхут. Она символизирует связь с божественным.",
+    psychologicalExercise:
+      "Анализ и оптимизация привычек. В течение недели фиксируйте свои ежедневные рутины и отмечайте, какие из них поддерживают, а какие мешают вашим целям.",
   },
   {
     id: "malkhut",
     name: "Малхут",
     function: "Воплощение",
     symbol: "Земля",
-    energyColor: "#3C2F2F", // Earthy Brown (instead of black for visibility)
+    energyColor: "#3C2F2F",
+    colorName: "Земляной",
     association: "Материальное проявление",
+    archetype: "Царица",
+    element: "Земля",
+    planet: "Земля",
     x: 200,
     y: 533,
     column: "center",
@@ -422,6 +662,8 @@ const sefirot = ref([
       "Малхут представляет реализацию ваших идей и действий в физическом мире. Это ваша способность воплощать мечты в реальность.",
     kabbalisticMeaning:
       "Малхут — это 'Царство', сфира, которая принимает божественный свет и проявляет его в материальном мире. Это завершение творения.",
+    psychologicalExercise:
+      "Практика материализации идей. Каждую неделю выбирайте одну идею и предпринимайте конкретные шаги для её реализации в физическом мире.",
   },
 ]);
 
@@ -440,10 +682,57 @@ const connections = [
   { x1: 200, y1: 453, x2: 200, y2: 533, column: "center" }, // Yesod to Malkhut
 ];
 
+// Parzufim Data
+const parzufim = [
+  {
+    id: "arik-anpin",
+    name: "Арик Анпин",
+    icon: "fa-user-tie",
+    description: "Длинный Лик, высшая милость",
+    detailedDescription:
+      "Арик Анпин (Длинный Лик) представляет аспект бесконечного терпения и милосердия в божественном. Это высшая форма прощения и всеобъемлющей любви, которая предшествует процессу суда.",
+    relatedSefirot: ["Кетер", "Хохма", "Бина"],
+    aspect: "Бесконечное милосердие",
+  },
+  {
+    id: "abba-ve-imma",
+    name: "Абба ве-Имма",
+    icon: "fa-people-arrows",
+    description: "Отец и Мать, мужское и женское",
+    detailedDescription:
+      "Абба (Отец) и Имма (Мать) представляют мужской и женский аспекты божественного. Хохма (Отец) - активный принцип, дающий семя творения, Бина (Мать) - принимающий принцип, формирующий творение.",
+    relatedSefirot: ["Хохма", "Бина"],
+    aspect: "Божественная полярность",
+  },
+  {
+    id: "zeir-anpin",
+    name: "Зеир Анпин",
+    icon: "fa-user",
+    description: "Малый Лик, 6 нижних сфирот",
+    detailedDescription:
+      "Зеир Анпин (Малый Лик) объединяет шесть эмоциональных сфирот от Хеседа до Йесода. Он представляет аспект божественного, который взаимодействует с миром через эмоции и суд.",
+    relatedSefirot: ["Хесед", "Гвура", "Тиферет", "Нецах", "Ход", "Йесод"],
+    aspect: "Эмоциональный интеллект",
+  },
+  {
+    id: "nukva",
+    name: "Нуква",
+    icon: "fa-user-alt",
+    description: "Женский аспект, невеста",
+    detailedDescription:
+      "Нуква (Женский аспект) представляет Малхут, которая получает свет от всех вышестоящих сфирот. Она символизирует Шхину - божественное присутствие в мире.",
+    relatedSefirot: ["Малхут"],
+    aspect: "Божественное присутствие",
+  },
+];
+
 // Modal State
 const selectedSefirah = ref(null);
 const activeTab = ref("psychological");
 const hoveredNode = ref(null);
+const activeLine = ref(null);
+const activeParzuf = ref(null);
+const activeParzufDetail = ref(null);
 
 // Modal Functions
 const openModal = (sefirah) => {
@@ -453,6 +742,29 @@ const openModal = (sefirah) => {
 
 const closeModal = () => {
   selectedSefirah.value = null;
+};
+
+// Line Highlight Functions
+const highlightLine = (line) => {
+  activeLine.value = line;
+};
+
+const resetHighlight = () => {
+  activeLine.value = null;
+};
+
+const isLineActive = (column) => {
+  return activeLine.value === column;
+};
+
+const isNodeActive = (column) => {
+  return !activeLine.value || activeLine.value === column;
+};
+
+// Parzufim Functions
+const showParzufDetail = (parzuf) => {
+  activeParzuf.value = parzuf.id;
+  activeParzufDetail.value = parzuf;
 };
 
 // Styling Functions
@@ -497,16 +809,16 @@ const getConnectionStroke = (column) => {
 
 const getSefirahIcon = (id) => {
   const icons = {
-    keter: "fa-crown", // Корона
-    chokhmah: "fa-eye", // Око/искра
-    binah: "fa-trophy", // Кубок (closest match)
-    chesed: "fa-hand-holding-heart", // Раскрытая ладонь
-    gevurah: "fa-gavel", // Меч (using gavel as a symbol of strength)
-    tiferet: "fa-heart", // Сердце
-    netzach: "fa-fire", // Факел
-    hod: "fa-spa", // Лотос
-    yesod: "fa-moon", // Луна
-    malkhut: "fa-globe", // Земля
+    keter: "fa-crown",
+    chokhmah: "fa-eye",
+    binah: "fa-trophy",
+    chesed: "fa-hand-holding-heart",
+    gevurah: "fa-gavel",
+    tiferet: "fa-heart",
+    netzach: "fa-fire",
+    hod: "fa-spa",
+    yesod: "fa-moon",
+    malkhut: "fa-globe",
   };
   return icons[id] || "fa-circle";
 };
@@ -520,7 +832,7 @@ const getLabelX = (sefirah) => {
 
 <style scoped>
 .node-circle {
-  transition: r 0.3s ease, filter 0.3s ease;
+  transition: r 0.3s ease, filter 0.3s ease, stroke-width 0.3s ease;
 }
 .node-circle:hover {
   filter: brightness(1.2);
@@ -548,6 +860,7 @@ const getLabelX = (sefirah) => {
 svg text {
   fill: currentColor;
   font-size: 10px;
+  transition: opacity 0.3s ease;
 }
 @media (min-width: 768px) {
   svg text {
@@ -561,5 +874,20 @@ svg {
 }
 .connections {
   z-index: 1;
+}
+
+/* Custom scrollbar for modal */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 </style>
