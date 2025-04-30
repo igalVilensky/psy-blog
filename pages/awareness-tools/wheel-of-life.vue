@@ -1,10 +1,13 @@
 <template>
   <div class="min-h-screen py-12">
     <div class="container mx-auto px-6 xl:px-0">
-      <h1 class="text-4xl font-bold text-center mb-8 text-white drop-shadow-sm">
-        Колесо баланса
+      <h1
+        class="text-4xl font-bold text-center mb-8 text-indigo-900 drop-shadow-sm"
+      >
+        Enhanced Wheel of Life
       </h1>
 
+      <!-- Main Assessment Section -->
       <div class="flex flex-col lg:flex-row gap-10 items-center justify-center">
         <!-- Wheel Visualization -->
         <div
@@ -71,13 +74,7 @@
                 </div>
                 <span
                   class="text-sm font-bold px-2 py-1 rounded-md transition-colors"
-                  :class="
-                    category.score > 7
-                      ? 'bg-green-100 text-green-800'
-                      : category.score > 4
-                      ? 'bg-yellow-100 text-yellow-800'
-                      : 'bg-red-100 text-red-800'
-                  "
+                  :class="scoreClass(category.score)"
                 >
                   {{ category.score }}/10
                 </span>
@@ -103,8 +100,8 @@
 
             <div class="flex flex-col gap-3 mt-8">
               <button
-                @click="saveResults"
-                class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center gap-2 shadow-md hover:shadow-lg"
+                @click="showGoalModal = true"
+                class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg transition flex items-center justify-center gap-2"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -117,17 +114,16 @@
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="2"
-                    d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
                   />
                 </svg>
-                Сохранить результаты
+                Set Improvement Goals
               </button>
-
               <button
-                @click="resetToDefault"
-                class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg transition duration-200"
+                @click="saveResults"
+                class="w-full bg-indigo-100 hover:bg-indigo-200 text-indigo-800 font-medium py-2 px-4 rounded-lg transition"
               >
-                Сбросить до значений по умолчанию
+                Save Assessment
               </button>
             </div>
 
@@ -150,6 +146,219 @@
                 />
               </svg>
               Последнее сохранение: {{ lastSaved }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature Tabs -->
+      <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Values Alignment Card -->
+        <div
+          class="bg-white rounded-xl shadow-lg overflow-hidden border border-indigo-100"
+        >
+          <div class="bg-indigo-600 p-4 text-white">
+            <h3 class="font-semibold flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"
+                />
+              </svg>
+              Values Alignment
+            </h3>
+          </div>
+          <div class="p-5">
+            <p class="text-gray-600 mb-4">
+              Compare what's important to you with your current satisfaction
+            </p>
+            <div
+              v-for="(category, index) in categories"
+              :key="`value-${index}`"
+              class="mb-4"
+            >
+              <div class="flex justify-between mb-1">
+                <span class="text-sm font-medium">{{ category.name }}</span>
+                <span class="text-xs text-gray-500">
+                  Priority: {{ category.importance }}/5
+                </span>
+              </div>
+              <div class="h-2 bg-gray-200 rounded-full">
+                <div
+                  class="h-2 rounded-full"
+                  :style="{
+                    width: `${(category.importance / 5) * 100}%`,
+                    backgroundColor: category.color,
+                  }"
+                ></div>
+              </div>
+              <div class="mt-2 flex justify-between text-xs text-gray-500">
+                <span>Low Priority</span>
+                <span>High Priority</span>
+              </div>
+            </div>
+            <button
+              @click="showPriorityModal = true"
+              class="mt-4 w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 py-2 px-4 rounded-lg text-sm font-medium transition"
+            >
+              Edit Priorities
+            </button>
+          </div>
+        </div>
+
+        <!-- Energy Mapping Card -->
+        <div
+          class="bg-white rounded-xl shadow-lg overflow-hidden border border-indigo-100"
+        >
+          <div class="bg-emerald-600 p-4 text-white">
+            <h3 class="font-semibold flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                />
+              </svg>
+              Energy Map
+            </h3>
+          </div>
+          <div class="p-5">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <h4 class="font-medium text-sm mb-2 text-emerald-700">
+                  Energizers
+                </h4>
+                <ul class="space-y-2">
+                  <li
+                    v-for="(category, index) in energizingCategories"
+                    :key="`energy-${index}`"
+                    class="flex items-center gap-2 text-sm"
+                  >
+                    <div
+                      class="w-2 h-2 rounded-full"
+                      :style="{ backgroundColor: category.color }"
+                    ></div>
+                    {{ category.name }}
+                  </li>
+                  <li
+                    v-if="energizingCategories.length === 0"
+                    class="text-sm text-gray-400"
+                  >
+                    No energizing areas
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h4 class="font-medium text-sm mb-2 text-rose-700">Drains</h4>
+                <ul class="space-y-2">
+                  <li
+                    v-for="(category, index) in drainingCategories"
+                    :key="`drain-${index}`"
+                    class="flex items-center gap-2 text-sm"
+                  >
+                    <div
+                      class="w-2 h-2 rounded-full"
+                      :style="{ backgroundColor: category.color }"
+                    ></div>
+                    {{ category.name }}
+                  </li>
+                  <li
+                    v-if="drainingCategories.length === 0"
+                    class="text-sm text-gray-400"
+                  >
+                    No draining areas
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <button
+              @click="showEnergyModal = true"
+              class="mt-4 w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 py-2 px-4 rounded-lg text-sm font-medium transition"
+            >
+              Update Energy Ratings
+            </button>
+          </div>
+        </div>
+
+        <!-- Goal Progress Card -->
+        <div
+          class="bg-white rounded-xl shadow-lg overflow-hidden border border-indigo-100"
+        >
+          <div class="bg-amber-600 p-4 text-white">
+            <h3 class="font-semibold flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"
+                />
+              </svg>
+              My Goals
+            </h3>
+          </div>
+          <div class="p-5">
+            <div v-if="userGoals.length > 0" class="space-y-4">
+              <div
+                v-for="(goal, index) in userGoals"
+                :key="`goal-${index}`"
+                class="border-l-4 pl-3 py-1"
+                :style="{ borderLeftColor: getCategoryColor(goal.category) }"
+              >
+                <div class="flex justify-between items-start">
+                  <h4 class="font-medium">{{ goal.category }}</h4>
+                  <span
+                    class="text-xs bg-amber-100 text-amber-800 px-2 py-1 rounded-full"
+                  >
+                    {{ goal.targetScore }}/10 target
+                  </span>
+                </div>
+                <p class="text-sm text-gray-600 mt-1">{{ goal.description }}</p>
+                <div class="mt-2 flex items-center gap-2">
+                  <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      class="h-2 rounded-full"
+                      :style="{
+                        width: `${currentGoalProgress(goal) * 100}%`,
+                        backgroundColor: getCategoryColor(goal.category),
+                      }"
+                    ></div>
+                  </div>
+                  <span class="text-xs text-gray-500">
+                    {{ Math.round(currentGoalProgress(goal) * 100) }}%
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div v-else class="text-center py-4 text-gray-500">
+              <p>No goals set yet</p>
+              <button
+                @click="showGoalModal = true"
+                class="mt-2 text-indigo-600 hover:text-indigo-800 text-sm font-medium"
+              >
+                Set your first goal
+              </button>
             </div>
           </div>
         </div>
@@ -254,23 +463,397 @@
           <canvas ref="historyCanvas"></canvas>
         </div>
       </div>
+
+      <!-- Modals -->
+      <!-- Goal Setting Modal -->
+      <Transition name="fade">
+        <div
+          v-if="showGoalModal"
+          class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+        >
+          <div
+            class="bg-white rounded-xl shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+          >
+            <button
+              @click="showGoalModal = false"
+              class="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+            <div class="p-6">
+              <h3 class="text-xl font-semibold mb-4 text-indigo-800">
+                Set Improvement Goals
+              </h3>
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">
+                    Focus Area
+                  </label>
+                  <select
+                    v-model="newGoal.category"
+                    class="w-full rounded-lg border-gray-300"
+                  >
+                    <option
+                      v-for="category in categories"
+                      :value="category.name"
+                    >
+                      {{ category.name }}
+                    </option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">
+                    Target Score
+                  </label>
+                  <div class="flex items-center gap-2">
+                    <input
+                      v-model.number="newGoal.targetScore"
+                      type="range"
+                      min="1"
+                      max="10"
+                      class="w-full"
+                      @input="updateWheel"
+                    />
+                    <span class="text-sm font-medium w-8 text-center">
+                      {{ newGoal.targetScore }}
+                    </span>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">
+                    Specific Goal (optional)
+                  </label>
+                  <textarea
+                    v-model="newGoal.description"
+                    rows="3"
+                    class="w-full rounded-lg border-gray-300"
+                    placeholder="Example: 'Exercise 3 times per week'"
+                  ></textarea>
+                </div>
+              </div>
+              <div class="mt-6 flex justify-end gap-3">
+                <button
+                  @click="showGoalModal = false"
+                  class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg"
+                >
+                  Cancel
+                </button>
+                <button
+                  @click="addGoal"
+                  class="px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700"
+                >
+                  Save Goal
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Transition>
+
+      <!-- Priority Setting Modal -->
+      <Transition name="fade">
+        <div
+          v-if="showPriorityModal"
+          class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+        >
+          <div
+            class="bg-white rounded-xl shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+          >
+            <button
+              @click="showPriorityModal = false"
+              class="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+            <div class="p-6">
+              <h3 class="text-xl font-semibold mb-4 text-indigo-800">
+                Set Your Priorities
+              </h3>
+              <p class="text-gray-600 mb-6">
+                Rate how important each area is to you (1 = not important, 5 =
+                very important)
+              </p>
+              <div class="space-y-5">
+                <div
+                  v-for="(category, index) in categories"
+                  :key="`priority-${index}`"
+                >
+                  <div class="flex justify-between items-center mb-2">
+                    <label class="font-medium text-gray-800">
+                      {{ category.name }}
+                    </label>
+                    <span class="text-sm font-medium">
+                      {{ category.importance }}/5
+                    </span>
+                  </div>
+                  <input
+                    v-model.number="category.importance"
+                    type="range"
+                    min="1"
+                    max="5"
+                    class="w-full accent-indigo-600"
+                  />
+                  <div
+                    class="flex justify-between text-xs text-gray-400 px-1 mt-1"
+                  >
+                    <span>1</span>
+                    <span>5</span>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-6 flex justify-end gap-3">
+                <button
+                  @click="showPriorityModal = false"
+                  class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg"
+                >
+                  Cancel
+                </button>
+                <button
+                  @click="savePriorities"
+                  class="px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700"
+                >
+                  Save Priorities
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Transition>
+
+      <!-- Energy Rating Modal -->
+      <Transition name="fade">
+        <div
+          v-if="showEnergyModal"
+          class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+        >
+          <div
+            class="bg-white rounded-xl shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+          >
+            <button
+              @click="showEnergyModal = false"
+              class="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+            <div class="p-6">
+              <h3 class="text-xl font-semibold mb-4 text-indigo-800">
+                Energy Assessment
+              </h3>
+              <p class="text-gray-600 mb-6">
+                For each area, indicate whether it gives you energy or drains
+                your energy
+              </p>
+              <div class="space-y-4">
+                <div
+                  v-for="(category, index) in categories"
+                  :key="`energy-rate-${index}`"
+                  class="p-4 border rounded-lg"
+                >
+                  <h4 class="font-medium mb-3">{{ category.name }}</h4>
+                  <div class="flex gap-4">
+                    <button
+                      @click="category.energy = 'energizing'"
+                      class="flex-1 py-2 px-3 rounded-lg border transition"
+                      :class="{
+                        'bg-emerald-100 border-emerald-300 text-emerald-800':
+                          category.energy === 'energizing',
+                        'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100':
+                          category.energy !== 'energizing',
+                      }"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-4 w-4 inline mr-1"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M13 10V3L4 14h7v7l9-11h-7z"
+                        />
+                      </svg>
+                      Energizing
+                    </button>
+                    <button
+                      @click="category.energy = 'neutral'"
+                      class="flex-1 py-2 px-3 rounded-lg border transition"
+                      :class="{
+                        'bg-gray-100 border-gray-300 text-gray-800':
+                          category.energy === 'neutral',
+                        'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100':
+                          category.energy !== 'neutral',
+                      }"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-4 w-4 inline mr-1"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"
+                        />
+                      </svg>
+                      Neutral
+                    </button>
+                    <button
+                      @click="category.energy = 'draining'"
+                      class="flex-1 py-2 px-3 rounded-lg border transition"
+                      :class="{
+                        'bg-rose-100 border-rose-300 text-rose-800':
+                          category.energy === 'draining',
+                        'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100':
+                          category.energy !== 'draining',
+                      }"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-4 w-4 inline mr-1"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M5 10l7-7m0 0l7 7m-7-7v18"
+                        />
+                      </svg>
+                      Draining
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-6 flex justify-end gap-3">
+                <button
+                  @click="showEnergyModal = false"
+                  class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg"
+                >
+                  Cancel
+                </button>
+                <button
+                  @click="saveEnergyRatings"
+                  class="px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700"
+                >
+                  Save Ratings
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Transition>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 
-// Categories with initial scores
+// Categories with enhanced properties
 const categories = ref([
-  { name: "Здоровье", score: 5, color: "#4F46E5" },
-  { name: "Отношения", score: 5, color: "#10B981" },
-  { name: "Карьера", score: 5, color: "#F59E0B" },
-  { name: "Финансы", score: 5, color: "#EF4444" },
-  { name: "Личностный рост", score: 5, color: "#8B5CF6" },
-  { name: "Духовность", score: 5, color: "#EC4899" },
-  { name: "Творчество", score: 5, color: "#14B8A6" },
-  { name: "Отдых", score: 5, color: "#F97316" },
+  {
+    name: "Здоровье",
+    score: 5,
+    color: "#4F46E5",
+    importance: 3,
+    energy: "neutral",
+  },
+  {
+    name: "Отношения",
+    score: 5,
+    color: "#10B981",
+    importance: 3,
+    energy: "neutral",
+  },
+  {
+    name: "Карьера",
+    score: 5,
+    color: "#F59E0B",
+    importance: 3,
+    energy: "neutral",
+  },
+  {
+    name: "Финансы",
+    score: 5,
+    color: "#EF4444",
+    importance: 3,
+    energy: "neutral",
+  },
+  {
+    name: "Личностный рост",
+    score: 5,
+    color: "#8B5CF6",
+    importance: 3,
+    energy: "neutral",
+  },
+  {
+    name: "Духовность",
+    score: 5,
+    color: "#EC4899",
+    importance: 3,
+    energy: "neutral",
+  },
+  {
+    name: "Творчество",
+    score: 5,
+    color: "#14B8A6",
+    importance: 3,
+    energy: "neutral",
+  },
+  {
+    name: "Отдых",
+    score: 5,
+    color: "#F97316",
+    importance: 3,
+    energy: "neutral",
+  },
 ]);
 
 const wheelCanvas = ref(null);
@@ -281,14 +864,56 @@ const recommendationText = ref("");
 const lastSaved = ref(null);
 const historyData = ref([]);
 
-// Computed property for low score categories
+// New features state
+const showGoalModal = ref(false);
+const showPriorityModal = ref(false);
+const showEnergyModal = ref(false);
+const newGoal = ref({
+  category: "Здоровье",
+  targetScore: 7,
+  description: "",
+});
+const userGoals = ref([]);
+
+// Computed properties from original
 const lowScoreCategories = computed(() => {
   return categories.value
     .filter((c) => c.score <= 5)
     .sort((a, b) => a.score - b.score);
 });
 
-// Recommendations for each category - enhanced with more specific suggestions
+// New computed properties
+const energizingCategories = computed(() => {
+  return categories.value.filter((c) => c.energy === "energizing");
+});
+
+const drainingCategories = computed(() => {
+  return categories.value.filter((c) => c.energy === "draining");
+});
+
+const scoreClass = (score) => {
+  if (score > 7) return "bg-green-100 text-green-800";
+  if (score > 4) return "bg-yellow-100 text-yellow-800";
+  return "bg-red-100 text-red-800";
+};
+
+const getCategoryColor = (name) => {
+  const category = categories.value.find((c) => c.name === name);
+  return category ? category.color : "#6B7280";
+};
+
+const currentGoalProgress = (goal) => {
+  const category = categories.value.find((c) => c.name === goal.category);
+  if (!category) return 0;
+
+  const current = category.score;
+  const target = goal.targetScore;
+  const min = Math.min(current, target);
+
+  return (min - 1) / (target - 1); // Normalized progress
+};
+
+// Recommendations from original - enhanced with more specific suggestions
 const recommendations = {
   Здоровье: [
     "Составьте план правильного питания на неделю с упором на свежие продукты",
@@ -365,7 +990,7 @@ const getRecommendationForCategory = (categoryName) => {
   return categoryRecs[index];
 };
 
-// Draw animated wheel
+// Draw animated wheel (from original)
 const drawWheel = (animated = false) => {
   const canvas = wheelCanvas.value;
   if (!canvas) return;
@@ -512,7 +1137,7 @@ const drawWheel = (animated = false) => {
   }
 };
 
-// Helper function to draw segment score
+// Helper function to draw segment score (from original)
 const drawSegmentScore = (
   category,
   index,
@@ -557,7 +1182,7 @@ const drawSegmentScore = (
   ctx.fill();
 };
 
-// Draw history chart
+// Draw history chart (from original)
 const drawHistoryChart = () => {
   if (historyData.value.length <= 1 || !historyCanvas.value) return;
 
@@ -692,12 +1317,12 @@ const drawHistoryChart = () => {
   });
 };
 
-// Update wheel visualization with animation
+// Update wheel visualization with animation (from original)
 const updateWheel = () => {
   drawWheel();
 };
 
-// Set score for specific category
+// Set score for specific category (from original)
 const setCategoryScore = (name, score) => {
   const category = categories.value.find((c) => c.name === name);
   if (category) {
@@ -706,15 +1331,37 @@ const setCategoryScore = (name, score) => {
   }
 };
 
-// Reset to default values
-const resetToDefault = () => {
-  categories.value.forEach((category) => {
-    category.score = 5;
+// New methods for enhanced features
+const addGoal = () => {
+  if (!newGoal.value.category || newGoal.value.targetScore < 1) return;
+
+  userGoals.value.push({
+    ...newGoal.value,
+    id: Date.now(),
   });
-  updateWheel();
+
+  // Reset form
+  newGoal.value = {
+    category: "Здоровье",
+    targetScore: 7,
+    description: "",
+  };
+
+  showGoalModal.value = false;
+  saveToLocalStorage();
 };
 
-// Save results to localStorage with history tracking
+const savePriorities = () => {
+  showPriorityModal.value = false;
+  saveToLocalStorage();
+};
+
+const saveEnergyRatings = () => {
+  showEnergyModal.value = false;
+  saveToLocalStorage();
+};
+
+// Save results to localStorage with history tracking (enhanced from original)
 const saveResults = () => {
   const now = new Date();
   lastSaved.value = now.toLocaleString();
@@ -754,6 +1401,7 @@ const saveResults = () => {
     JSON.stringify({
       categories: categories.value,
       lastSaved: lastSaved.value,
+      goals: userGoals.value,
     })
   );
 
@@ -777,7 +1425,7 @@ const saveResults = () => {
   });
 };
 
-// Load saved data
+// Load saved data (enhanced from original)
 const loadSavedData = () => {
   try {
     // Load wheel data
@@ -785,17 +1433,20 @@ const loadSavedData = () => {
     if (savedData) {
       const parsedData = JSON.parse(savedData);
 
-      // Update each category individually to preserve colors
-      parsedData.categories.forEach((savedCategory) => {
+      // Update each category individually to preserve structure
+      parsedData.categories?.forEach((savedCategory) => {
         const category = categories.value.find(
           (c) => c.name === savedCategory.name
         );
         if (category) {
-          category.score = savedCategory.score;
+          category.score = savedCategory.score ?? 5;
+          category.importance = savedCategory.importance ?? 3;
+          category.energy = savedCategory.energy ?? "neutral";
         }
       });
 
       lastSaved.value = parsedData.lastSaved;
+      userGoals.value = parsedData.goals || [];
     }
 
     // Load history data
@@ -808,7 +1459,7 @@ const loadSavedData = () => {
   }
 };
 
-// Watch for changes to update recommendations
+// Watch for changes to update recommendations (from original)
 watch(
   () => lowScoreCategories.value,
   (newVal) => {
@@ -824,7 +1475,7 @@ watch(
   { deep: true }
 );
 
-// Initialize
+// Initialize (enhanced from original)
 onMounted(() => {
   // Check if SweetAlert2 is available
   if (typeof window !== "undefined" && !window.Swal) {
@@ -875,6 +1526,18 @@ onMounted(() => {
     }
   });
 });
+
+// Helper to save all data
+const saveToLocalStorage = () => {
+  localStorage.setItem(
+    "wheelOfLifeData",
+    JSON.stringify({
+      categories: categories.value,
+      lastSaved: new Date().toLocaleString(),
+      goals: userGoals.value,
+    })
+  );
+};
 </script>
 
 <style scoped>
@@ -882,45 +1545,34 @@ onMounted(() => {
 input[type="range"] {
   -webkit-appearance: none;
   height: 6px;
+  border-radius: 3px;
 }
 
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   background: #4f46e5;
   border-radius: 50%;
   cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border: 2px solid white;
-  transition: all 0.2s ease;
-}
-
-input[type="range"]::-webkit-slider-thumb:hover {
-  transform: scale(1.1);
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 input[type="range"]::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   background: #4f46e5;
   border-radius: 50%;
   cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border: 2px solid white;
-  transition: all 0.2s ease;
-}
-
-input[type="range"]::-moz-range-thumb:hover {
-  transform: scale(1.1);
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Transitions */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s ease;
+  transition: opacity 0.3s ease;
 }
 
 .fade-enter-from,
