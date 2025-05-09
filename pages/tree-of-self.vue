@@ -1116,11 +1116,6 @@ const getLabelX = (sefirah) => {
   return sefirah.x;
 };
 
-// Open Daily Growth Spark dialog
-const openDailyGrowthSpark = () => {
-  navigateTo("/daily-growth-spark");
-};
-
 // Initialize Data
 onMounted(async () => {
   if (isLoggedIn.value) {

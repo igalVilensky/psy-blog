@@ -138,7 +138,7 @@
 
           <!-- Внутренний Мир -->
           <router-link
-            to="/emotion-barometer"
+            to="/awareness-tools/emotional-compass"
             class="group relative bg-[#1E293B]/70 rounded-xl p-5 hover:bg-[#EC4899]/20 border border-[#EC4899]/10 hover:border-[#EC4899]/30 transition-all duration-300 overflow-hidden"
           >
             <div class="flex flex-col">
@@ -178,7 +178,7 @@
 
           <!-- Эволюция -->
           <router-link
-            to="/daily-growth-spark"
+            to="/awareness-tools/daily-growth-spark"
             class="group relative bg-[#1E293B]/70 rounded-xl p-5 hover:bg-[#10B981]/20 border border-[#10B981]/10 hover:border-[#10B981]/30 transition-all duration-300 overflow-hidden"
           >
             <div class="flex flex-col">

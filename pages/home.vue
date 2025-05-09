@@ -195,14 +195,14 @@ const fetchUserStats = async (userId) => {
   ) {
     stats.value.tools = {
       emotionStats: { totalEntries: emotionStatsResponse.data.entries.length },
-      reminder: { link: "/tools/emotion-barometer" },
+      reminder: { link: "/awareness-tools/emotional-compass" },
       cta: null,
     };
   } else {
     stats.value.tools = {
       emotionStats: null,
       reminder: null,
-      cta: { link: "/tools/emotion-barometer" },
+      cta: { link: "/awareness-tools/emotional-compass" },
     };
   }
 };
@@ -330,7 +330,7 @@ onMounted(async () => {
       tools: {
         emotionStats: null,
         reminder: null,
-        cta: { link: "/tools/emotion-barometer" },
+        cta: { link: "/awareness-tools/emotional-compass" },
       },
     };
     successStories.value = await fetchSuccessStories();

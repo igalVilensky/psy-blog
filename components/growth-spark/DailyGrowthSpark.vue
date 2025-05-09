@@ -2,16 +2,16 @@
   <Teleport to="body">
     <div
       v-if="isVisible"
-      class="fixed inset-0 bg-black/60 flex justify-center items-start md:items-center z-[999] backdrop-blur-sm overflow-y-auto"
+      class="fixed inset-0 bg-black/80 flex justify-center items-start md:items-center z-[999] backdrop-blur-sm overflow-y-auto"
       @click="handleOverlayClick"
     >
       <div
-        class="bg-white rounded-2xl w-[95%] max-w-[500px] flex flex-col shadow-2xl overflow-hidden animate-fade-in-up my-4"
+        class="bg-gray-900 rounded-2xl w-[95%] max-w-[500px] flex flex-col shadow-2xl overflow-hidden animate-fade-in-up my-4 border border-gray-700 text-gray-100"
         @click.stop
       >
         <!-- Modal header with progress indicator -->
-        <div class="p-4 border-b border-gray-100 relative">
-          <h2 class="text-xl font-semibold text-gray-800">
+        <div class="p-4 border-b border-gray-800 relative">
+          <h2 class="text-xl font-semibold text-gray-100">
             Ежедневная искра роста
           </h2>
           <div class="mt-3">
@@ -25,18 +25,18 @@
                 :key="index"
                 :class="[
                   'flex flex-col items-center flex-1',
-                  getStageIndex(currentStage) === index ? 'text-blue-500' : '',
-                  getStageIndex(currentStage) > index ? 'text-green-500' : '',
+                  getStageIndex(currentStage) === index ? 'text-blue-400' : '',
+                  getStageIndex(currentStage) > index ? 'text-green-400' : '',
                 ]"
               >
                 <div
                   :class="[
-                    'w-5 h-5 rounded-full flex items-center justify-center text-xs font-semibold mb-1 transition-all',
+                    'w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold mb-1 transition-all',
                     getStageIndex(currentStage) === index
-                      ? 'bg-blue-500 text-white'
+                      ? 'bg-blue-500 text-gray-900'
                       : getStageIndex(currentStage) > index
-                      ? 'bg-green-500 text-white'
-                      : 'bg-gray-200 text-gray-600',
+                      ? 'bg-green-500 text-gray-900'
+                      : 'bg-gray-700 text-gray-300',
                   ]"
                 >
                   {{ index + 1 }}
@@ -49,18 +49,21 @@
                 </div>
               </div>
             </div>
-            <div class="h-1 bg-gray-200 rounded-full relative">
+            <div class="h-1.5 bg-gray-700 rounded-full relative">
               <div
-                class="absolute top-0 left-0 h-full bg-blue-500 rounded-full transition-all"
+                class="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-full transition-all"
                 :style="`width: ${progressPercentage}%`"
               ></div>
             </div>
           </div>
-          <div class="absolute top-4 right-12 text-sm text-gray-600">
-            <i class="fas fa-star text-yellow-400"></i> {{ points }}
+          <div
+            class="absolute top-4 right-12 text-sm text-gray-300 flex items-center"
+          >
+            <i class="fas fa-star text-yellow-400 mr-1"></i>
+            <span>{{ points }}</span>
           </div>
           <button
-            class="absolute right-4 top-4 text-gray-500 hover:text-gray-700 hover:bg-gray-100 w-8 h-8 flex items-center justify-center rounded-full transition-all"
+            class="absolute right-4 top-4 text-gray-400 hover:text-gray-200 hover:bg-gray-700 w-8 h-8 flex items-center justify-center rounded-full transition-all"
             @click="confirmClose"
             aria-label="Закрыть"
           >
@@ -72,7 +75,7 @@
           <!-- Stage 1: Emotion Insight Game -->
           <div v-if="currentStage === 'emotion'" class="space-y-4">
             <div class="flex justify-between items-center">
-              <h3 class="text-base font-medium">
+              <h3 class="text-base font-medium text-gray-100">
                 Эмоциональная проницательность
               </h3>
               <div class="flex gap-1">
@@ -89,32 +92,45 @@
                 </div>
               </div>
             </div>
-            <div class="bg-gray-50 p-3 rounded-xl text-center">
-              <p class="text-gray-700 italic text-sm">
+            <div class="bg-gray-800 p-3 rounded-xl border border-gray-700">
+              <p class="text-gray-300 italic text-sm mb-2">
                 {{ currentScenario.prompt }}
               </p>
+              <div class="text-xs text-blue-400 font-medium">
+                Связано с {{ currentScenario.sefira }}:
+                {{ currentScenario.sefiraDescription }}
+              </div>
             </div>
-            <div class="flex justify-center gap-3">
+            <div class="flex justify-center gap-3 flex-wrap">
               <div
                 v-for="(emotion, index) in currentScenario.emotions"
                 :key="index"
                 @click="handleEmotionClick(index)"
                 :class="[
-                  'w-20 h-16 flex flex-col items-center justify-center bg-gray-50 rounded-xl cursor-pointer transition-all border-2',
+                  'w-20 h-16 flex flex-col items-center justify-center rounded-xl cursor-pointer transition-all border-2 p-1',
                   selectedIndex === index
-                    ? 'border-blue-500'
-                    : 'border-transparent',
+                    ? 'border-blue-500 bg-blue-900/50'
+                    : 'border-transparent bg-gray-800',
                   isCorrect && selectedIndex === index
-                    ? 'bg-green-100 border-green-500 scale-105'
+                    ? 'bg-green-900/40 border-green-500 scale-105'
                     : '',
                   isWrong && selectedIndex === index
-                    ? 'bg-red-100 border-red-500 animate-shake'
+                    ? 'bg-red-900/40 border-red-500 animate-shake'
                     : '',
-                  'hover:-translate-y-1 hover:shadow-md',
+                  'hover:-translate-y-1 hover:shadow-md hover:shadow-blue-900/30',
                 ]"
               >
                 <span class="text-xl">{{ emotion.emoji }}</span>
-                <span class="text-xs mt-1">{{ emotion.label }}</span>
+                <span
+                  :class="[
+                    'text-xs mt-1 text-center',
+                    selectedIndex === index
+                      ? 'text-gray-200 font-medium'
+                      : 'text-gray-400',
+                  ]"
+                >
+                  {{ emotion.label }}
+                </span>
               </div>
             </div>
             <div
@@ -122,8 +138,8 @@
               :class="[
                 'p-2 rounded-lg text-center font-medium text-sm',
                 isCorrect
-                  ? 'bg-green-100 text-green-700'
-                  : 'bg-red-100 text-red-700',
+                  ? 'bg-green-900/30 text-green-400 border border-green-700'
+                  : 'bg-red-900/30 text-red-400 border border-red-700',
               ]"
             >
               {{ feedback }}
@@ -131,7 +147,7 @@
             <button
               v-if="gameComplete"
               @click="nextRound"
-              class="bg-blue-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-600 transition-all hover:-translate-y-1 mx-auto block text-sm"
+              class="bg-blue-600 text-gray-100 px-4 py-2 rounded-lg font-medium hover:bg-blue-500 transition-all hover:-translate-y-1 mx-auto block text-sm"
             >
               {{ winCount >= 3 ? "Продолжить" : "Следующий вопрос" }}
             </button>
@@ -139,36 +155,40 @@
 
           <!-- Stage 2: Energy Tracker -->
           <div v-if="currentStage === 'energy'" class="text-center space-y-4">
-            <h3 class="text-base font-medium">Как ваша энергия сегодня?</h3>
+            <h3 class="text-base font-medium text-gray-100">
+              Как ваша энергия сегодня?
+            </h3>
             <div>
               <div class="text-4xl mb-2 transition-all">{{ energyEmoji }}</div>
-              <div class="text-base font-medium text-gray-700">
+              <div class="text-base font-medium text-gray-300">
                 {{ energyLevel }} - {{ energyFeedback }}
               </div>
             </div>
             <div class="flex items-center px-2">
-              <span class="text-xs text-gray-600 w-8 text-right">Низкая</span>
+              <span class="text-xs text-gray-400 w-8 text-right">Низкая</span>
               <input
                 type="range"
                 v-model="energyLevel"
                 min="0"
                 max="10"
                 step="1"
-                class="flex-1 h-2 mx-2 rounded-full appearance-none bg-gradient-to-r from-red-400 via-yellow-400 to-green-400"
+                class="flex-1 h-2 mx-2 rounded-full appearance-none bg-gradient-to-r from-red-500 via-yellow-500 to-green-500"
               />
-              <span class="text-xs text-gray-600 w-8 text-left">Высокая</span>
+              <span class="text-xs text-gray-400 w-8 text-left">Высокая</span>
             </div>
-            <div class="bg-gray-50 p-3 rounded-xl">
-              <h4 class="text-sm font-medium mb-2">Топливо для роста</h4>
+            <div class="bg-gray-800 p-3 rounded-xl border border-gray-700">
+              <h4 class="text-sm font-medium mb-2 text-gray-200">
+                Топливо для роста
+              </h4>
               <div class="flex flex-wrap justify-center gap-2">
                 <div
                   v-for="(item, index) in growthFuelItems"
                   :key="index"
                   :class="[
-                    'flex flex-col items-center p-2 w-16 bg-white rounded-lg cursor-pointer transition-all border',
+                    'flex flex-col items-center p-2 w-16 rounded-lg cursor-pointer transition-all border',
                     item.selected
-                      ? 'bg-blue-500 text-white border-blue-500'
-                      : 'border-gray-200 hover:bg-blue-50',
+                      ? 'bg-blue-600 text-gray-100 border-blue-400'
+                      : 'bg-gray-700 text-gray-300 border-gray-600 hover:bg-gray-600',
                   ]"
                   @click="toggleFuelItem(index)"
                 >
@@ -179,7 +199,7 @@
             </div>
             <button
               @click="submitEnergy"
-              class="bg-blue-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-600 transition-all hover:-translate-y-1 text-sm"
+              class="bg-blue-600 text-gray-100 px-4 py-2 rounded-lg font-medium hover:bg-blue-500 transition-all hover:-translate-y-1 text-sm"
             >
               Продолжить
             </button>
@@ -187,8 +207,10 @@
 
           <!-- Stage 3: Tip Input -->
           <div v-if="currentStage === 'tip'" class="text-center space-y-4">
-            <h3 class="text-base font-medium">Поделитесь своим открытием</h3>
-            <p class="text-gray-600 text-sm">
+            <h3 class="text-base font-medium text-gray-100">
+              Поделитесь своим открытием
+            </h3>
+            <p class="text-gray-400 text-sm">
               Что помогло вам вырасти? Поделитесь, чтобы вдохновить других.
             </p>
             <div class="flex flex-wrap justify-center gap-2">
@@ -196,10 +218,10 @@
                 v-for="(category, index) in tipCategories"
                 :key="index"
                 :class="[
-                  'px-2 py-1 bg-gray-100 rounded-full text-xs text-gray-600 cursor-pointer transition-all',
+                  'px-3 py-1.5 rounded-full text-xs cursor-pointer transition-all',
                   selectedCategory === category
-                    ? 'bg-blue-500 text-white'
-                    : 'hover:bg-gray-200',
+                    ? 'bg-blue-600 text-gray-100 border border-blue-400'
+                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border border-gray-600',
                 ]"
                 @click="selectedCategory = category"
               >
@@ -212,24 +234,24 @@
                 placeholder="Введите совет, открытие или напоминание..."
                 rows="3"
                 maxlength="280"
-                class="w-full p-3 border border-gray-200 rounded-lg resize-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-sm"
+                class="w-full p-3 border border-gray-700 rounded-lg resize-none focus:border-blue-500 focus:ring-2 focus:ring-blue-700 transition-all text-sm bg-gray-800 text-gray-200 placeholder-gray-500"
               ></textarea>
               <div class="absolute bottom-2 right-3 text-xs text-gray-500">
                 {{ tip.length }}/280
               </div>
             </div>
             <div
-              class="flex items-center justify-center gap-2 text-xs text-gray-600"
+              class="flex items-center justify-center gap-2 text-xs text-gray-400"
             >
-              <label class="relative inline-block w-8 h-4">
+              <label class="relative inline-block w-10 h-5">
                 <input
                   type="checkbox"
                   v-model="isAnonymous"
                   class="opacity-0 w-0 h-0"
                 />
                 <span
-                  class="absolute inset-0 cursor-pointer bg-gray-300 rounded-full transition-all before:absolute before:h-3 before:w-3 before:left-0.5 before:bottom-0.5 before:bg-white before:rounded-full before:transition-all"
-                  :class="{ 'bg-blue-500 before:translate-x-4': isAnonymous }"
+                  class="absolute inset-0 cursor-pointer bg-gray-700 rounded-full transition-all before:absolute before:h-4 before:w-4 before:left-0.5 before:bottom-0.5 before:bg-gray-300 before:rounded-full before:transition-all"
+                  :class="{ 'bg-blue-600 before:translate-x-5': isAnonymous }"
                 ></span>
               </label>
               <span>Поделиться анонимно</span>
@@ -237,14 +259,17 @@
             <div class="flex justify-center gap-3">
               <button
                 @click="skipTip"
-                class="bg-gray-100 text-gray-600 px-4 py-2 rounded-lg font-medium hover:bg-gray-200 transition-all text-sm"
+                class="bg-gray-700 text-gray-300 px-4 py-2 rounded-lg font-medium hover:bg-gray-600 transition-all text-sm"
               >
                 Пропустить
               </button>
               <button
                 @click="submitTip"
-                class="bg-blue-500 text-white px-4 py-2 rounded-lg font-medium transition-all hover:bg-blue-600 hover:-translate-y-1 text-sm"
-                :class="{ 'bg-gray-400 cursor-not-allowed': tip.trim() === '' }"
+                class="bg-blue-600 text-gray-100 px-4 py-2 rounded-lg font-medium transition-all hover:bg-blue-500 hover:-translate-y-1 text-sm"
+                :class="{
+                  'bg-gray-600 cursor-not-allowed hover:bg-gray-600 hover:translate-y-0':
+                    tip.trim() === '',
+                }"
                 :disabled="tip.trim() === ''"
               >
                 Отправить
@@ -260,24 +285,30 @@
             <div class="text-4xl animate-bounce-in">
               <i class="fas fa-check-circle text-green-500"></i>
             </div>
-            <h3 class="text-base font-medium">Отличная работа!</h3>
-            <p class="text-sm">
+            <h3 class="text-base font-medium text-gray-100">
+              Отличная работа!
+            </h3>
+            <p class="text-sm text-gray-300">
               Вы завершили сегодняшнюю искру роста. Возвращайтесь завтра за
               новым вызовом!
             </p>
-            <div class="bg-gray-50 p-3 rounded-xl">
-              <p class="text-gray-700 text-sm">
+            <div class="bg-gray-800 p-3 rounded-xl border border-gray-700">
+              <p class="text-gray-300 text-sm">
                 Сегодня вы: {{ successSummary }}
               </p>
             </div>
             <div
-              class="flex items-center justify-center gap-2 bg-orange-50 p-2 rounded-lg w-fit mx-auto"
+              class="flex items-center justify-center gap-2 bg-orange-900/30 p-2 rounded-lg w-fit mx-auto border border-orange-700"
             >
               <i class="fas fa-fire text-orange-500"></i>
-              <span class="text-sm">Серия: {{ streakDays }} дней</span>
+              <span class="text-sm text-orange-300"
+                >Серия: {{ streakDays }} дней</span
+              >
             </div>
             <!-- Netzach Progress Indicator -->
-            <div class="bg-gray-50 p-3 rounded-xl text-gray-700 text-sm">
+            <div
+              class="bg-gray-800 p-3 rounded-xl text-gray-300 text-sm border border-gray-700"
+            >
               <p>
                 Прогресс Нецаха: {{ sefirotProgress.netzach.displayProgress }}%
                 ({{ sefirotProgress.netzach.dailyActions }}/{{
@@ -285,9 +316,9 @@
                 }}
                 действий)
               </p>
-              <div class="w-48 mx-auto bg-gray-200 rounded-full h-1.5 mt-2">
+              <div class="w-48 mx-auto bg-gray-700 rounded-full h-1.5 mt-2">
                 <div
-                  class="h-1.5 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-300"
+                  class="h-1.5 rounded-full bg-gradient-to-r from-yellow-600 to-yellow-400"
                   :style="{
                     width: `${sefirotProgress.netzach.displayProgress}%`,
                   }"
@@ -299,7 +330,9 @@
               </p>
             </div>
             <!-- Chesed Progress Indicator -->
-            <div class="bg-gray-50 p-3 rounded-xl text-gray-700 text-sm">
+            <div
+              class="bg-gray-800 p-3 rounded-xl text-gray-300 text-sm border border-gray-700"
+            >
               <p>
                 Прогресс Хеседа: {{ sefirotProgress.chesed.displayProgress }}%
                 ({{ sefirotProgress.chesed.dailyActions }}/{{
@@ -307,9 +340,9 @@
                 }}
                 действий)
               </p>
-              <div class="w-48 mx-auto bg-gray-200 rounded-full h-1.5 mt-2">
+              <div class="w-48 mx-auto bg-gray-700 rounded-full h-1.5 mt-2">
                 <div
-                  class="h-1.5 rounded-full bg-gradient-to-r from-purple-500 to-purple-300"
+                  class="h-1.5 rounded-full bg-gradient-to-r from-purple-600 to-purple-400"
                   :style="{
                     width: `${sefirotProgress.chesed.displayProgress}%`,
                   }"
@@ -322,7 +355,7 @@
             </div>
             <button
               @click="closeModal"
-              class="bg-blue-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-600 transition-all hover:-translate-y-1 text-sm"
+              class="bg-blue-600 text-gray-100 px-4 py-2 rounded-lg font-medium hover:bg-blue-500 transition-all hover:-translate-y-1 text-sm"
             >
               Завершить
             </button>
@@ -334,27 +367,27 @@
     <!-- Confirmation Dialog -->
     <div
       v-if="showConfirmation"
-      class="fixed inset-0 bg-black/70 flex justify-center items-center z-[1000]"
+      class="fixed inset-0 bg-black/80 flex justify-center items-center z-[1000]"
       @click="cancelClose"
     >
       <div
-        class="bg-white p-5 rounded-xl w-[90%] max-w-[300px] text-center"
+        class="bg-gray-900 p-5 rounded-xl w-[90%] max-w-[300px] text-center border border-gray-700"
         @click.stop
       >
-        <h3 class="text-base font-medium">Вы уверены?</h3>
-        <p class="mt-2 text-sm">
+        <h3 class="text-base font-medium text-gray-100">Вы уверены?</h3>
+        <p class="mt-2 text-sm text-gray-300">
           Ваш прогресс будет потерян, если вы выйдете сейчас.
         </p>
         <div class="flex justify-center gap-3 mt-4">
           <button
             @click="cancelClose"
-            class="bg-gray-100 text-gray-600 px-4 py-2 rounded-lg font-medium hover:bg-gray-200 transition-all text-sm"
+            class="bg-gray-700 text-gray-300 px-4 py-2 rounded-lg font-medium hover:bg-gray-600 transition-all text-sm"
           >
             Отмена
           </button>
           <button
             @click="closeModal"
-            class="bg-red-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-600 transition-all text-sm"
+            class="bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-500 transition-all text-sm"
           >
             Выйти
           </button>
@@ -585,35 +618,53 @@ onMounted(async () => {
 // Emotion Insight Game Logic
 const emotionScenarios = [
   {
-    prompt:
-      "Вы только что закончили сложный проект и чувствуете удовлетворение.",
+    sefira: "Бина (Понимание)",
+    sefiraDescription: "Глубина чувств и эмоциональная осознанность",
+    prompt: "После глубокого разговора с близким человеком вы чувствуете...",
     emotions: [
-      { emoji: "😊", label: "Гордость" },
-      { emoji: "😢", label: "Грусть" },
-      { emoji: "😡", label: "Злость" },
+      { emoji: "🤲", label: "Связь" },
+      { emoji: "🌊", label: "Переполненность" },
+      { emoji: "🧩", label: "Ясность" },
     ],
     correctIndex: 0,
-    tip: "Чувствуете гордость? Отмечайте маленькие победы, чтобы оставаться мотивированным!",
+    tip: "Бина помогает нам обрабатывать сложные эмоции. Заметьте, как этот разговор изменил ваше состояние.",
   },
   {
-    prompt: "Друг отменил планы в последнюю минуту, и вы разочарованы.",
+    sefira: "Нецах (Настойчивость)",
+    sefiraDescription: "Мотивация и ежедневные победы",
+    prompt:
+      "Вы завершили важную задачу, которую откладывали. Какое чувство преобладает?",
     emotions: [
-      { emoji: "😂", label: "Веселье" },
-      { emoji: "😔", label: "Разочарование" },
-      { emoji: "😊", label: "Счастье" },
+      { emoji: "🏆", label: "Достижение" },
+      { emoji: "😮‍💨", label: "Облегчение" },
+      { emoji: "🔄", label: "Незавершённость" },
     ],
-    correctIndex: 1,
-    tip: "Разочарование — это нормально. Попробуйте найти радость в неожиданном свободном времени.",
+    correctIndex: 0,
+    tip: "Нецах питается нашими маленькими победами. Отмечайте их для поддержания мотивации.",
   },
   {
-    prompt: "Вы помедитировали и чувствуете спокойствие и сосредоточенность.",
+    sefira: "Хесед (Милосердие)",
+    sefiraDescription: "Щедрость и связь с другими",
+    prompt: "Кто-то поблагодарил вас за помощь. Ваша реакция:",
     emotions: [
-      { emoji: "😰", label: "Тревога" },
-      { emoji: "😌", label: "Спокойствие" },
-      { emoji: "😤", label: "Раздражение" },
+      { emoji: "💞", label: "Со-радость" },
+      { emoji: "🤷", label: "Безразличие" },
+      { emoji: "😳", label: "Смущение" },
     ],
-    correctIndex: 1,
-    tip: "Спокойствие — ваш источник силы. Используйте его для ясности в делах.",
+    correctIndex: 0,
+    tip: "Хесед учит нас принимать благодарность так же открыто, как мы даём помощь.",
+  },
+  {
+    sefira: "Гвура (Сила)",
+    sefiraDescription: "Границы и дисциплина",
+    prompt: "Вам нужно сказать 'нет' ради своих границ. Вы чувствуете:",
+    emotions: [
+      { emoji: "🛡️", label: "Уверенность" },
+      { emoji: "⚖️", label: "Вину" },
+      { emoji: "🌪️", label: "Смятение" },
+    ],
+    correctIndex: 0,
+    tip: "Гвура напоминает: здоровые границы — акт заботы, а не агрессии.",
   },
 ];
 
@@ -638,15 +689,25 @@ const handleEmotionClick = (index) => {
 
   if (index === correctIndex.value) {
     isCorrect.value = true;
-    feedback.value = `Отлично! Вы в гармонии со своими эмоциями. ${
-      emotionScenarios[currentSetIndex.value].tip
-    }`;
+    feedback.value = `Правильно! Это развивает ${currentScenario.value.sefira}. ${currentScenario.value.tip}`;
     winCount.value += 1;
     points.value += 10;
+
+    // Update Sefirot progress based on current scenario
+    if (currentScenario.value.sefira.includes("Нецах")) {
+      sefirotProgress.value.netzach.dailyActions += 1;
+      sefirotProgress.value.netzach.points += 10;
+    } else if (currentScenario.value.sefira.includes("Хесед")) {
+      sefirotProgress.value.chesed.dailyActions += 1;
+      sefirotProgress.value.chesed.points += 10;
+    }
+
     gameComplete.value = true;
   } else {
     isWrong.value = true;
-    feedback.value = "Не совсем. Подумайте, что вы чувствуете в этот момент.";
+    feedback.value =
+      "Попробуйте снова. Обратите внимание на подсказку о " +
+      currentScenario.value.sefira;
     setTimeout(() => {
       gameComplete.value = true;
     }, 1000);
