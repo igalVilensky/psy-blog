@@ -795,6 +795,16 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from "vue";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import {
+  getWheelOfLifeData,
+  saveWheelOfLifeData,
+} from "../../api/firebase/wheelOfLifeApi";
+
+// Initialize Firebase
+const auth = getAuth();
+const firestore = getFirestore();
 
 // Categories with enhanced properties
 const categories = ref([
@@ -863,8 +873,6 @@ const recommendationTitle = ref("");
 const recommendationText = ref("");
 const lastSaved = ref(null);
 const historyData = ref([]);
-
-// New features state
 const showGoalModal = ref(false);
 const showPriorityModal = ref(false);
 const showEnergyModal = ref(false);
@@ -875,14 +883,13 @@ const newGoal = ref({
 });
 const userGoals = ref([]);
 
-// Computed properties from original
+// Computed properties
 const lowScoreCategories = computed(() => {
   return categories.value
     .filter((c) => c.score <= 5)
     .sort((a, b) => a.score - b.score);
 });
 
-// New computed properties
 const energizingCategories = computed(() => {
   return categories.value.filter((c) => c.energy === "energizing");
 });
@@ -913,7 +920,7 @@ const currentGoalProgress = (goal) => {
   return (min - 1) / (target - 1); // Normalized progress
 };
 
-// Recommendations from original - enhanced with more specific suggestions
+// Recommendations
 const recommendations = {
   Здоровье: [
     "Составьте план правильного питания на неделю с упором на свежие продукты",
@@ -973,7 +980,6 @@ const recommendations = {
   ],
 };
 
-// Get recommendation for a category - improved to be deterministic based on score
 const getRecommendationForCategory = (categoryName) => {
   const categoryRecs = recommendations[categoryName] || [];
   if (categoryRecs.length === 0) return "Нет рекомендаций";
@@ -981,7 +987,6 @@ const getRecommendationForCategory = (categoryName) => {
   const category = categories.value.find((c) => c.name === categoryName);
   if (!category) return categoryRecs[0];
 
-  // Use score to determine which recommendation to show
   const index = Math.min(
     Math.floor((10 - category.score) / 2),
     categoryRecs.length - 1
@@ -990,7 +995,7 @@ const getRecommendationForCategory = (categoryName) => {
   return categoryRecs[index];
 };
 
-// Draw animated wheel (from original)
+// Draw animated wheel
 const drawWheel = (animated = false) => {
   const canvas = wheelCanvas.value;
   if (!canvas) return;
@@ -1002,10 +1007,8 @@ const drawWheel = (animated = false) => {
   const segmentCount = categories.value.length;
   const segmentAngle = (2 * Math.PI) / segmentCount;
 
-  // Clear canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Draw center circle
   ctx.beginPath();
   ctx.arc(centerX, centerY, 10, 0, 2 * Math.PI);
   ctx.fillStyle = "#fff";
@@ -1014,12 +1017,10 @@ const drawWheel = (animated = false) => {
   ctx.lineWidth = 2;
   ctx.stroke();
 
-  // Draw segments
   categories.value.forEach((category, index) => {
     const startAngle = index * segmentAngle - Math.PI / 2;
     const endAngle = (index + 1) * segmentAngle - Math.PI / 2;
 
-    // Draw guide circles
     for (let i = 1; i <= 10; i++) {
       ctx.beginPath();
       ctx.arc(centerX, centerY, (radius / 10) * i, 0, 2 * Math.PI);
@@ -1028,15 +1029,13 @@ const drawWheel = (animated = false) => {
       ctx.stroke();
     }
 
-    // Segment background
     ctx.beginPath();
     ctx.moveTo(centerX, centerY);
     ctx.arc(centerX, centerY, radius, startAngle, endAngle);
     ctx.closePath();
-    ctx.fillStyle = `${category.color}10`; // 10% opacity
+    ctx.fillStyle = `${category.color}10`;
     ctx.fill();
 
-    // Draw segment divider lines
     ctx.beginPath();
     ctx.moveTo(centerX, centerY);
     ctx.lineTo(
@@ -1047,16 +1046,12 @@ const drawWheel = (animated = false) => {
     ctx.lineWidth = 1;
     ctx.stroke();
 
-    // Animation logic for score rendering
     let scoreToRender = category.score;
     if (animated) {
-      // Start from 1 and animate to actual score
       scoreToRender = 1;
       const animateScore = () => {
         if (scoreToRender < category.score) {
           scoreToRender += 0.1;
-
-          // Redraw this segment
           drawSegmentScore(
             category,
             index,
@@ -1067,10 +1062,8 @@ const drawWheel = (animated = false) => {
             segmentAngle,
             ctx
           );
-
           requestAnimationFrame(animateScore);
         } else {
-          // Finalize with exact score
           drawSegmentScore(
             category,
             index,
@@ -1083,12 +1076,10 @@ const drawWheel = (animated = false) => {
           );
         }
       };
-
       setTimeout(() => {
         animateScore();
-      }, index * 100); // Stagger animations
+      }, index * 100);
     } else {
-      // Immediate rendering without animation
       drawSegmentScore(
         category,
         index,
@@ -1101,7 +1092,6 @@ const drawWheel = (animated = false) => {
       );
     }
 
-    // Category name with better positioning
     const textAngle = startAngle + segmentAngle / 2;
     const textRadius = radius + 30;
     const textX = centerX + Math.cos(textAngle) * textRadius;
@@ -1109,14 +1099,11 @@ const drawWheel = (animated = false) => {
 
     ctx.save();
     ctx.translate(textX, textY);
-
-    // Rotate text based on position to make it more readable
     let rotation = textAngle;
     if (textAngle > Math.PI / 2 && textAngle < (3 * Math.PI) / 2) {
       rotation += Math.PI;
     }
     ctx.rotate(rotation);
-
     ctx.font = "bold 12px sans-serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
@@ -1125,9 +1112,7 @@ const drawWheel = (animated = false) => {
     ctx.restore();
   });
 
-  // Check if we need to show recommendations
   showRecommendation.value = lowScoreCategories.value.length > 0;
-
   if (lowScoreCategories.value.length > 0) {
     const lowestCategory = lowScoreCategories.value[0];
     recommendationTitle.value = `Совет для "${lowestCategory.name}"`;
@@ -1137,7 +1122,6 @@ const drawWheel = (animated = false) => {
   }
 };
 
-// Helper function to draw segment score (from original)
 const drawSegmentScore = (
   category,
   index,
@@ -1150,11 +1134,8 @@ const drawSegmentScore = (
 ) => {
   const startAngle = index * segmentAngle - Math.PI / 2;
   const endAngle = (index + 1) * segmentAngle - Math.PI / 2;
-
-  // Calculate radius based on score
   const scoreRadius = radius * (score / 10);
 
-  // Draw filled segment based on score
   ctx.beginPath();
   ctx.moveTo(centerX, centerY);
   ctx.arc(centerX, centerY, scoreRadius, startAngle, endAngle);
@@ -1162,7 +1143,6 @@ const drawSegmentScore = (
   ctx.fillStyle = category.color;
   ctx.fill();
 
-  // Add subtle gradient overlay for depth
   const gradient = ctx.createRadialGradient(
     centerX,
     centerY,
@@ -1182,25 +1162,20 @@ const drawSegmentScore = (
   ctx.fill();
 };
 
-// Draw history chart (from original)
+// Draw history chart
 const drawHistoryChart = () => {
   if (historyData.value.length <= 1 || !historyCanvas.value) return;
 
   const canvas = historyCanvas.value;
   const ctx = canvas.getContext("2d");
-
-  // Set canvas dimensions
   canvas.width = canvas.offsetWidth;
   canvas.height = canvas.offsetHeight;
-
-  // Clear canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   const padding = 40;
   const chartWidth = canvas.width - padding * 2;
   const chartHeight = canvas.height - padding * 2;
 
-  // Draw axis
   ctx.beginPath();
   ctx.moveTo(padding, padding);
   ctx.lineTo(padding, canvas.height - padding);
@@ -1209,16 +1184,13 @@ const drawHistoryChart = () => {
   ctx.lineWidth = 1;
   ctx.stroke();
 
-  // Draw y-axis labels
   for (let i = 0; i <= 10; i += 2) {
     const y = canvas.height - padding - (i / 10) * chartHeight;
-
     ctx.beginPath();
     ctx.moveTo(padding - 5, y);
     ctx.lineTo(padding, y);
     ctx.strokeStyle = "#9ca3af";
     ctx.stroke();
-
     ctx.font = "10px sans-serif";
     ctx.textAlign = "right";
     ctx.textBaseline = "middle";
@@ -1226,46 +1198,37 @@ const drawHistoryChart = () => {
     ctx.fillText(i.toString(), padding - 10, y);
   }
 
-  // Calculate horizontal spacing
   const entryCount = historyData.value.length;
   const xStep = chartWidth / (entryCount - 1);
 
-  // Draw data for each category
   categories.value.forEach((category) => {
     ctx.beginPath();
-
     historyData.value.forEach((entry, index) => {
       const categoryData = entry.categories.find(
         (c) => c.name === category.name
       );
       if (!categoryData) return;
-
       const x = padding + index * xStep;
       const y =
         canvas.height - padding - (categoryData.score / 10) * chartHeight;
-
       if (index === 0) {
         ctx.moveTo(x, y);
       } else {
         ctx.lineTo(x, y);
       }
     });
-
     ctx.strokeStyle = category.color;
     ctx.lineWidth = 2;
     ctx.stroke();
 
-    // Add dots for data points
     historyData.value.forEach((entry, index) => {
       const categoryData = entry.categories.find(
         (c) => c.name === category.name
       );
       if (!categoryData) return;
-
       const x = padding + index * xStep;
       const y =
         canvas.height - padding - (categoryData.score / 10) * chartHeight;
-
       ctx.beginPath();
       ctx.arc(x, y, 4, 0, 2 * Math.PI);
       ctx.fillStyle = category.color;
@@ -1276,20 +1239,15 @@ const drawHistoryChart = () => {
     });
   });
 
-  // Draw x-axis labels (dates)
   historyData.value.forEach((entry, index) => {
     const x = padding + index * xStep;
-
     ctx.beginPath();
     ctx.moveTo(x, canvas.height - padding);
     ctx.lineTo(x, canvas.height - padding + 5);
     ctx.strokeStyle = "#9ca3af";
     ctx.stroke();
-
-    // Format date for display
     const date = new Date(entry.timestamp);
     const dateLabel = `${date.getDate()}.${date.getMonth() + 1}`;
-
     ctx.font = "10px sans-serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
@@ -1297,32 +1255,26 @@ const drawHistoryChart = () => {
     ctx.fillText(dateLabel, x, canvas.height - padding + 10);
   });
 
-  // Draw legend
   const legendY = padding / 2;
   let legendX = padding;
-
   categories.value.forEach((category) => {
-    // Color box
     ctx.fillStyle = category.color;
     ctx.fillRect(legendX, legendY - 5, 10, 10);
-
-    // Category name
     ctx.font = "10px sans-serif";
     ctx.textAlign = "left";
     ctx.textBaseline = "middle";
     ctx.fillStyle = "#4b5563";
     ctx.fillText(category.name, legendX + 15, legendY);
-
     legendX += ctx.measureText(category.name).width + 30;
   });
 };
 
-// Update wheel visualization with animation (from original)
+// Update wheel visualization
 const updateWheel = () => {
   drawWheel();
 };
 
-// Set score for specific category (from original)
+// Set score for specific category
 const setCategoryScore = (name, score) => {
   const category = categories.value.find((c) => c.name === name);
   if (category) {
@@ -1331,8 +1283,8 @@ const setCategoryScore = (name, score) => {
   }
 };
 
-// New methods for enhanced features
-const addGoal = () => {
+// Add goal and save to Firebase
+const addGoal = async () => {
   if (!newGoal.value.category || newGoal.value.targetScore < 1) return;
 
   userGoals.value.push({
@@ -1340,7 +1292,6 @@ const addGoal = () => {
     id: Date.now(),
   });
 
-  // Reset form
   newGoal.value = {
     category: "Здоровье",
     targetScore: 7,
@@ -1348,118 +1299,123 @@ const addGoal = () => {
   };
 
   showGoalModal.value = false;
-  saveToLocalStorage();
+  await saveToFirebase();
 };
 
-const savePriorities = () => {
+// Save priorities and update Firebase
+const savePriorities = async () => {
   showPriorityModal.value = false;
-  saveToLocalStorage();
+  await saveToFirebase();
 };
 
-const saveEnergyRatings = () => {
+// Save energy ratings and update Firebase
+const saveEnergyRatings = async () => {
   showEnergyModal.value = false;
-  saveToLocalStorage();
+  await saveToFirebase();
 };
 
-// Save results to localStorage with history tracking (enhanced from original)
-const saveResults = () => {
+// Save results to Firebase with history tracking
+const saveResults = async () => {
   const now = new Date();
   lastSaved.value = now.toLocaleString();
 
-  // Create history entry
   const historyEntry = {
     timestamp: now.getTime(),
     categories: JSON.parse(JSON.stringify(categories.value)),
     dateFormatted: lastSaved.value,
   };
 
-  // Load existing history
-  let history = [];
-  try {
-    const savedHistory = localStorage.getItem("wheelOfLifeHistory");
-    if (savedHistory) {
-      history = JSON.parse(savedHistory);
+  historyData.value.push(historyEntry);
+  if (historyData.value.length > 10) {
+    historyData.value = historyData.value.slice(-10);
+  }
+
+  const result = await saveWheelOfLifeData(
+    firestore,
+    auth.currentUser?.uid,
+    categories.value,
+    userGoals.value,
+    historyData.value,
+    (message, type) => {
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        icon: type,
+        title: message,
+      });
     }
-  } catch (e) {
-    console.error("Error loading history:", e);
-  }
-
-  // Add new entry and save history
-  history.push(historyEntry);
-
-  // Limit history to last 10 entries
-  if (history.length > 10) {
-    history = history.slice(-10);
-  }
-
-  // Update history data
-  historyData.value = history;
-
-  // Save to localStorage
-  localStorage.setItem(
-    "wheelOfLifeData",
-    JSON.stringify({
-      categories: categories.value,
-      lastSaved: lastSaved.value,
-      goals: userGoals.value,
-    })
   );
 
-  localStorage.setItem("wheelOfLifeHistory", JSON.stringify(history));
-
-  // Update history chart
-  drawHistoryChart();
-
-  // Show success message
-  const Toast = Swal.mixin({
-    toast: true,
-    position: "top-end",
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-  });
-
-  Toast.fire({
-    icon: "success",
-    title: "Результаты успешно сохранены!",
-  });
-};
-
-// Load saved data (enhanced from original)
-const loadSavedData = () => {
-  try {
-    // Load wheel data
-    const savedData = localStorage.getItem("wheelOfLifeData");
-    if (savedData) {
-      const parsedData = JSON.parse(savedData);
-
-      // Update each category individually to preserve structure
-      parsedData.categories?.forEach((savedCategory) => {
-        const category = categories.value.find(
-          (c) => c.name === savedCategory.name
-        );
-        if (category) {
-          category.score = savedCategory.score ?? 5;
-          category.importance = savedCategory.importance ?? 3;
-          category.energy = savedCategory.energy ?? "neutral";
-        }
-      });
-
-      lastSaved.value = parsedData.lastSaved;
-      userGoals.value = parsedData.goals || [];
-    }
-
-    // Load history data
-    const savedHistory = localStorage.getItem("wheelOfLifeHistory");
-    if (savedHistory) {
-      historyData.value = JSON.parse(savedHistory);
-    }
-  } catch (e) {
-    console.error("Error loading saved data:", e);
+  if (result && result.success) {
+    drawHistoryChart();
+  } else {
+    console.error(
+      "Failed to save results:",
+      result?.message || "No result returned"
+    );
   }
 };
 
-// Watch for changes to update recommendations (from original)
+// Load saved data from Firebase
+const loadSavedData = async () => {
+  const userId = auth.currentUser?.uid;
+  if (!userId) return;
+
+  const result = await getWheelOfLifeData(firestore, userId);
+  if (result.success) {
+    const {
+      categories: savedCategories,
+      lastSaved: savedLastSaved,
+      goals,
+      history,
+    } = result.data;
+
+    savedCategories?.forEach((savedCategory) => {
+      const category = categories.value.find(
+        (c) => c.name === savedCategory.name
+      );
+      if (category) {
+        category.score = savedCategory.score ?? 5;
+        category.importance = savedCategory.importance ?? 3;
+        category.energy = savedCategory.energy ?? "neutral";
+      }
+    });
+
+    lastSaved.value = savedLastSaved;
+    userGoals.value = goals || [];
+    historyData.value = history || [];
+  }
+};
+
+// Save to Firebase
+const saveToFirebase = async () => {
+  const result = await saveWheelOfLifeData(
+    firestore,
+    auth.currentUser?.uid,
+    categories.value,
+    userGoals.value,
+    historyData.value,
+    (message, type) => {
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        icon: type,
+        title: message,
+      });
+    }
+  );
+  if (result.success) {
+    lastSaved.value = new Date().toLocaleString();
+  }
+};
+
+// Watch for recommendation changes
 watch(
   () => lowScoreCategories.value,
   (newVal) => {
@@ -1475,50 +1431,38 @@ watch(
   { deep: true }
 );
 
-// Initialize (enhanced from original)
-onMounted(() => {
-  // Check if SweetAlert2 is available
+// Initialize
+onMounted(async () => {
   if (typeof window !== "undefined" && !window.Swal) {
     const script = document.createElement("script");
     script.src = "https://cdn.jsdelivr.net/npm/sweetalert2@11";
     document.head.appendChild(script);
   }
 
-  // Set canvas size
   const canvas = wheelCanvas.value;
   if (canvas) {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
   }
 
-  // Set history canvas size
   const histCanvas = historyCanvas.value;
   if (histCanvas) {
     histCanvas.width = histCanvas.offsetWidth;
     histCanvas.height = histCanvas.offsetHeight;
   }
 
-  // Load saved data
-  loadSavedData();
-
-  // Draw initial wheel with animation
+  await loadSavedData();
   drawWheel(true);
-
-  // Draw history chart
   setTimeout(() => {
     drawHistoryChart();
   }, 500);
 
-  // Add window resize handler
   window.addEventListener("resize", () => {
-    // Redraw wheel
     if (canvas) {
       canvas.width = canvas.offsetWidth;
       canvas.height = canvas.offsetHeight;
       drawWheel();
     }
-
-    // Redraw history chart
     if (histCanvas) {
       histCanvas.width = histCanvas.offsetWidth;
       histCanvas.height = histCanvas.offsetHeight;
@@ -1526,18 +1470,6 @@ onMounted(() => {
     }
   });
 });
-
-// Helper to save all data
-const saveToLocalStorage = () => {
-  localStorage.setItem(
-    "wheelOfLifeData",
-    JSON.stringify({
-      categories: categories.value,
-      lastSaved: new Date().toLocaleString(),
-      goals: userGoals.value,
-    })
-  );
-};
 </script>
 
 <style scoped>
