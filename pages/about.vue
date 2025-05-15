@@ -1,44 +1,32 @@
 <template>
-  <div class="relative w-full bg-[#1A1F35]">
-    <!-- Scroll Progress Indicator -->
-    <div
-      class="fixed top-1/2 right-4 -translate-y-1/2 z-50 flex flex-col items-center gap-2 md:gap-3"
-    >
-      <button
-        v-for="i in totalSections"
-        :key="i"
-        @click="scrollToSection(i - 1)"
-        class="w-2 h-2 md:w-3 md:h-3 rounded-full transition-all duration-300 cursor-pointer"
-        :class="
-          currentSection === i - 1
-            ? 'bg-[#00E6FF] scale-125'
-            : 'bg-slate-600/50'
-        "
-        :aria-label="`Navigate to section ${i}`"
-      />
-    </div>
-
-    <!-- Main Scroll Container -->
-    <div
-      ref="sectionsContainer"
-      class="h-screen overflow-y-auto scroll-smooth snap-y snap-mandatory"
-    >
-      <!-- Section 1: Mission Text -->
-      <section
-        ref="section1"
-        class="h-screen w-full snap-start flex items-center justify-center bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 py-12 md:py-16 px-4 sm:px-6"
-      >
-        <div class="container mx-auto max-w-6xl">
-          <h2
-            class="text-3xl sm:text-4xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-[#00E6FF] to-[#70FF94] tracking-tight mb-8 md:mb-12"
+  <!-- About Page with Professional Layout, no scroll effect -->
+  <div class="w-full min-h-screen bg-[#1A1F35] text-white">
+    <!-- Animated Header Banner -->
+    <header class="relative overflow-hidden py-16 sm:pt-24 sm:pb-0">
+      <div class="container mx-auto px-4 sm:px-6 relative z-10">
+        <div class="max-w-4xl mx-auto text-center">
+          <h1
+            ref="mainTitle"
+            class="text-4xl sm:text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#00E6FF] to-[#70FF94] mb-6"
           >
-            Наша миссия
-          </h2>
-          <div
-            class="backdrop-blur-xl rounded-2xl border border-[#00E6FF]/20 p-6 sm:p-8 md:p-12 hover:shadow-[0_0_20px_5px_rgba(0,230,255,0.3)] transition-all duration-300"
-          >
-            <div class="text-center">
-              <p class="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto">
+            Psy-Blog
+          </h1>
+          <p class="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
+            Платформа осознанного развития, соединяющая древнюю мудрость Каббалы
+            с современной психологией
+          </p>
+        </div>
+        <section ref="missionSection" class="mb-24">
+          <div class="relative">
+            <div
+              class="absolute -inset-4 sm:-inset-8 bg-gradient-to-br from-[#00E6FF]/10 to-[#70FF94]/10 rounded-2xl blur-lg"
+            ></div>
+            <div
+              class="relative bg-[#1E293B]/70 backdrop-blur-xl rounded-2xl border border-[#00E6FF]/20 p-8 sm:p-10 transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,230,255,0.2)]"
+            >
+              <p
+                class="text-lg text-slate-300 max-w-6xl mx-auto leading-relaxed"
+              >
                 Inner Compass — это платформа осознанного развития,
                 вдохновленная древней мудростью Каббалы и современной
                 психологией. Наше Древо Себя из 10 Сефирот, организованных в три
@@ -50,185 +38,73 @@
               </p>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
+    </header>
 
-      <!-- Section 2: Team -->
-      <section
-        ref="section2"
-        class="h-screen w-full snap-start flex items-center justify-center bg-gradient-to-b from-[#1E293B]/60 to-[#1E293B]/80 py-12 md:py-16 px-4 sm:px-6"
-      >
-        <div class="container mx-auto max-w-6xl">
-          <h2
-            class="text-3xl sm:text-4xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-[#FF4DFF] to-[#FF9E00] tracking-tight mb-8 md:mb-12"
-          >
-            Наша команда
-          </h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-            <!-- Team Member 1 -->
+    <main class="container mx-auto px-4 sm:px-6 pb-24">
+      <!-- Mission Section -->
+
+      <!-- Approach Section with Tree Visualization -->
+      <section ref="approachSection" class="mb-24">
+        <h2
+          class="text-3xl sm:text-4xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-[#FF4DFF] to-[#FF9E00] mb-12"
+        >
+          Наш подход: Древо Себя
+        </h2>
+
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+          <!-- Tree Visualization -->
+          <div class="lg:col-span-2 order-2 lg:order-1">
             <div
-              class="group relative bg-[#1E293B]/60 backdrop-blur-xl rounded-xl p-6 border border-[#00E6FF]/20 hover:shadow-[0_0_20px_5px_rgba(0,230,255,0.3)] transition-all duration-300"
+              ref="treeCard"
+              class="relative bg-[#1A1F35]/60 backdrop-blur-xl rounded-2xl p-6 border border-[#00E6FF]/20 h-full flex flex-col items-center justify-center transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,230,255,0.3)]"
             >
-              <div
-                class="flex flex-col sm:flex-row gap-4 md:gap-6 items-center sm:items-start"
-              >
+              <div class="aspect-square w-full max-w-md mx-auto">
                 <img
-                  src="/assets/images/profile.jpg"
-                  alt="Team Member"
-                  class="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover shadow-lg group-hover:-translate-y-2 transition-all duration-500"
+                  src="/assets/images/tree.png"
+                  alt="Древо Себя"
+                  class="w-full h-full object-contain rounded-xl"
                 />
-                <div class="space-y-3 text-center sm:text-left">
-                  <h3 class="text-lg md:text-xl font-semibold text-[#00E6FF]">
-                    Анастасия Гельмут
-                  </h3>
-                  <p class="text-sm text-[#FF4DFF] font-medium">
-                    Руководитель по психологии и контенту
-                  </p>
-                  <p class="text-slate-300 text-sm">
-                    Анастасия создает психологическую основу Inner Compass,
-                    объединяя современные методики и каббалистическую мудрость.
-                  </p>
-                  <div class="flex gap-4 justify-center sm:justify-start">
-                    <a
-                      href="#"
-                      class="group relative p-2"
-                      target="_blank"
-                      aria-label="LinkedIn"
-                    >
-                      <div
-                        class="absolute inset-0 bg-gradient-to-r from-[#FF4DFF]/20 to-[#00E6FF]/20 rounded-lg blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                      ></div>
-                      <i
-                        class="fab fa-linkedin text-lg relative z-10 text-[#FF4DFF] group-hover:text-white transition-all duration-300 group-hover:scale-110"
-                      ></i>
-                    </a>
-                    <a
-                      href="#"
-                      class="group relative p-2"
-                      target="_blank"
-                      aria-label="Instagram"
-                    >
-                      <div
-                        class="absolute inset-0 bg-gradient-to-r from-[#FF4DFF]/20 to-[#00E6FF]/20 rounded-lg blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                      ></div>
-                      <i
-                        class="fab fa-instagram text-lg relative z-10 text-[#FF4DFF] group-hover:text-white transition-all duration-300 group-hover:scale-110"
-                      ></i>
-                    </a>
-                  </div>
-                </div>
               </div>
-            </div>
-
-            <!-- Team Member 2 -->
-            <div
-              class="group relative bg-[#1E293B]/60 backdrop-blur-xl rounded-xl p-6 border border-[#FFD700]/20 hover:shadow-[0_0_20px_5px_rgba(255,215,0,0.3)] transition-all duration-300"
-            >
-              <div
-                class="flex flex-col sm:flex-row gap-4 md:gap-6 items-center sm:items-start"
-              >
-                <img
-                  src="/assets/images/igal.avif"
-                  alt="Team Member"
-                  class="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover shadow-lg group-hover:-translate-y-2 transition-all duration-500"
-                />
-                <div class="space-y-3 text-center sm:text-left">
-                  <h3 class="text-lg md:text-xl font-semibold text-[#FFD700]">
-                    Игаль Виленский
-                  </h3>
-                  <p class="text-sm text-[#FF9E00] font-medium">
-                    Технический руководитель
-                  </p>
-                  <p class="text-slate-300 text-sm">
-                    Игаль отвечает за техническую реализацию Inner Compass,
-                    включая интерактивное Древо Себя и интеграции.
-                  </p>
-                  <div class="flex gap-4 justify-center sm:justify-start">
-                    <a
-                      href="#"
-                      class="group relative p-2"
-                      target="_blank"
-                      aria-label="LinkedIn"
-                    >
-                      <div
-                        class="absolute inset-0 bg-gradient-to-r from-[#FF9E00]/20 to-[#FFD700]/20 rounded-lg blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                      ></div>
-                      <i
-                        class="fab fa-linkedin text-lg relative z-10 text-[#FF9E00] group-hover:text-white transition-all duration-300 group-hover:scale-110"
-                      ></i>
-                    </a>
-                    <a
-                      href="#"
-                      class="group relative p-2"
-                      target="_blank"
-                      aria-label="GitHub"
-                    >
-                      <div
-                        class="absolute inset-0 bg-gradient-to-r from-[#FF9E00]/20 to-[#FFD700]/20 rounded-lg blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                      ></div>
-                      <i
-                        class="fab fa-github text-lg relative z-10 text-[#FF9E00] group-hover:text-white transition-all duration-300 group-hover:scale-110"
-                      ></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Section 3: Approach -->
-      <section
-        ref="section3"
-        class="h-screen w-full snap-start flex items-center justify-center bg-gradient-to-b from-[#1E293B]/80 to-[#00E6FF]/20 py-16 px-4 sm:px-6"
-      >
-        <div class="container mx-auto max-w-6xl">
-          <h2
-            class="text-3xl sm:text-4xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-[#FF4DFF] to-[#FF9E00] tracking-tight mb-8 md:mb-12"
-          >
-            Наш подход: Древо Себя
-          </h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Tree Visualization -->
-            <div
-              class="relative bg-[#1A1F35]/40 backdrop-blur-xl rounded-2xl p-6 border border-[#00E6FF]/20 hover:shadow-[0_0_20px_5px_rgba(0,230,255,0.3)] transition-all duration-300"
-            >
-              <img
-                src="/assets/images/tree.png"
-                alt="Древо Себя"
-                class="w-full h-48 sm:h-64 md:h-80 object-contain rounded-xl"
-              />
-              <p class="text-sm text-slate-300 text-center mt-4">
+              <p class="text-sm text-slate-300 text-center mt-6">
                 Интерактивное Древо Себя с тремя колоннами
               </p>
             </div>
+          </div>
 
-            <!-- Approach Details -->
+          <!-- Approach Features -->
+          <div class="lg:col-span-3 order-1 lg:order-2">
             <div
-              class="space-y-6 bg-[#1A1F35]/40 backdrop-blur-xl rounded-2xl p-6 border border-[#FF4DFF]/20 hover:shadow-[0_0_20px_5px_rgba(255,77,255,0.3)] transition-all duration-300"
+              ref="featuresCard"
+              class="bg-[#1A1F35]/60 backdrop-blur-xl rounded-2xl p-8 border border-[#FF4DFF]/20 h-full transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,77,255,0.3)]"
             >
-              <div
-                v-for="(feature, index) in features"
-                :key="feature.title"
-                class="flex items-start gap-4"
-              >
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
                 <div
-                  class="w-8 h-8 md:w-10 md:h-10 flex-shrink-0 flex items-center justify-center rounded-xl"
-                  :class="getFeatureIconClass(index)"
+                  v-for="(feature, index) in features"
+                  :key="index"
+                  ref="featureItems"
+                  class="relative"
                 >
-                  <i :class="feature.icon" class="text-base md:text-xl"></i>
-                </div>
-                <div>
-                  <h3
-                    class="text-base md:text-lg font-semibold"
-                    :class="getFeatureTextClass(index)"
-                  >
-                    {{ feature.title }}
-                  </h3>
-                  <p class="text-slate-300 text-sm">
-                    {{ feature.description }}
-                  </p>
+                  <div class="flex gap-4 items-start">
+                    <div
+                      class="w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-xl"
+                      :class="getFeatureIconClass(index)"
+                    >
+                      <i :class="feature.icon" class="text-xl"></i>
+                    </div>
+                    <div>
+                      <h3
+                        class="text-lg font-semibold mb-2"
+                        :class="getFeatureTextClass(index)"
+                      >
+                        {{ feature.title }}
+                      </h3>
+                      <p class="text-slate-300">
+                        {{ feature.description }}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -236,23 +112,144 @@
         </div>
       </section>
 
-      <!-- Section 4: CTA -->
-      <section
-        ref="section4"
-        class="h-screen w-full snap-start flex items-center justify-center bg-gradient-to-b from-[#1E293B]/90 to-[#70FF94]/10 py-16 px-4 sm:px-6"
-      >
-        <div class="container mx-auto max-w-4xl text-center">
+      <!-- Team Section -->
+      <section ref="teamSection" class="mb-24">
+        <h2
+          class="text-3xl sm:text-4xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-[#FF4DFF] to-[#FF9E00] mb-12"
+        >
+          Наша команда
+        </h2>
+
+        <div ref="teamCards" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- Team Member 1 -->
           <div
-            class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#70FF94]/20 p-6 sm:p-8 md:p-12 hover:shadow-[0_0_20px_5px_rgba(112,255,148,0.3)] transition-all duration-300"
+            class="group bg-[#1E293B]/60 backdrop-blur-xl rounded-xl overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,230,255,0.3)] border border-[#00E6FF]/20"
+          >
+            <div class="relative h-48 overflow-hidden">
+              <div
+                class="absolute inset-0 bg-gradient-to-b from-[#00E6FF]/30 to-transparent opacity-70"
+              ></div>
+              <div
+                class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-[#1E293B] to-transparent"
+              ></div>
+              <div class="absolute bottom-0 left-6">
+                <img
+                  src="/assets/images/profile.jpg"
+                  alt="Анастасия Гельмут"
+                  class="w-32 h-32 z-20 rounded-full border-4 border-[#1E293B] object-cover shadow-lg transition-all duration-500 group-hover:scale-105"
+                />
+              </div>
+            </div>
+
+            <div class="p-6">
+              <h3 class="text-xl font-semibold text-[#00E6FF] mb-1">
+                Анастасия Гельмут
+              </h3>
+              <p class="text-sm text-[#FF4DFF] font-medium mb-4">
+                Руководитель по психологии и контенту
+              </p>
+              <p class="text-slate-300 mb-6">
+                Анастасия создает психологическую основу Inner Compass,
+                объединяя современные методики и каббалистическую мудрость.
+              </p>
+              <div class="flex gap-4">
+                <a
+                  href="#"
+                  class="group relative p-2 rounded-lg hover:bg-[#FF4DFF]/10 transition-all duration-300"
+                  target="_blank"
+                  aria-label="LinkedIn"
+                >
+                  <i
+                    class="fab fa-linkedin text-lg text-[#FF4DFF] group-hover:scale-110 transition-all duration-300"
+                  ></i>
+                </a>
+                <a
+                  href="#"
+                  class="group relative p-2 rounded-lg hover:bg-[#FF4DFF]/10 transition-all duration-300"
+                  target="_blank"
+                  aria-label="Instagram"
+                >
+                  <i
+                    class="fab fa-instagram text-lg text-[#FF4DFF] group-hover:scale-110 transition-all duration-300"
+                  ></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Team Member 2 -->
+          <div
+            class="group bg-[#1E293B]/60 backdrop-blur-xl rounded-xl overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,215,0,0.3)] border border-[#FFD700]/20"
+          >
+            <div class="relative h-48 overflow-hidden">
+              <div
+                class="absolute inset-0 bg-gradient-to-b from-[#FFD700]/30 to-transparent opacity-70"
+              ></div>
+              <div
+                class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-[#1E293B] to-transparent"
+              ></div>
+              <div class="absolute bottom-0 left-6">
+                <img
+                  src="/assets/images/igal.avif"
+                  alt="Игаль Виленский"
+                  class="w-32 h-32 rounded-full border-4 border-[#1E293B] object-cover shadow-lg transition-all duration-500 group-hover:scale-105"
+                />
+              </div>
+            </div>
+
+            <div class="p-6">
+              <h3 class="text-xl font-semibold text-[#FFD700] mb-1">
+                Игаль Виленский
+              </h3>
+              <p class="text-sm text-[#FF9E00] font-medium mb-4">
+                Технический руководитель
+              </p>
+              <p class="text-slate-300 mb-6">
+                Игаль отвечает за техническую реализацию Inner Compass, включая
+                интерактивное Древо Себя и интеграции.
+              </p>
+              <div class="flex gap-4">
+                <a
+                  href="#"
+                  class="group relative p-2 rounded-lg hover:bg-[#FF9E00]/10 transition-all duration-300"
+                  target="_blank"
+                  aria-label="LinkedIn"
+                >
+                  <i
+                    class="fab fa-linkedin text-lg text-[#FF9E00] group-hover:scale-110 transition-all duration-300"
+                  ></i>
+                </a>
+                <a
+                  href="#"
+                  class="group relative p-2 rounded-lg hover:bg-[#FF9E00]/10 transition-all duration-300"
+                  target="_blank"
+                  aria-label="GitHub"
+                >
+                  <i
+                    class="fab fa-github text-lg text-[#FF9E00] group-hover:scale-110 transition-all duration-300"
+                  ></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA Section -->
+      <section ref="ctaSection">
+        <div class="relative max-w-4xl mx-auto">
+          <div
+            class="absolute -inset-4 sm:-inset-8 bg-gradient-to-br from-[#00E6FF]/10 to-[#70FF94]/10 rounded-2xl blur-lg"
+          ></div>
+          <div
+            class="relative bg-gradient-to-b from-[#1A1F35]/80 to-[#1E293B]/80 backdrop-blur-xl rounded-2xl border border-[#70FF94]/20 p-10 sm:p-12 text-center transition-all duration-300 hover:shadow-[0_0_20px_rgba(112,255,148,0.3)]"
           >
             <h2
-              class="text-3xl sm:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#00E6FF] to-[#70FF94] tracking-tight mb-6"
+              class="text-3xl sm:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#00E6FF] to-[#70FF94] mb-6"
             >
               Начните свое путешествие к целостности
             </h2>
-            <p
-              class="text-base sm:text-lg text-slate-300 mb-6 md:mb-8 max-w-2xl mx-auto"
-            >
+            <p class="text-lg text-slate-300 mb-8 max-w-2xl mx-auto">
               Присоединяйтесь к Inner Compass, чтобы открыть свой потенциал
               через Древо Себя и наше поддерживающее сообщество.
             </p>
@@ -263,13 +260,13 @@
               gradientStart="#00E6FF"
               gradientEnd="#70FF94"
               textColor="#FFF"
-              customClass="bg-gradient-to-r from-[#00E6FF] to-[#70FF94] border-[#FFF] px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base"
+              customClass="bg-gradient-to-r from-[#00E6FF] to-[#70FF94] hover:shadow-lg hover:shadow-[#00E6FF]/20 border-[#FFF] px-6 py-3 text-base"
               :isLink="true"
             />
           </div>
         </div>
       </section>
-    </div>
+    </main>
   </div>
 </template>
 
@@ -277,9 +274,6 @@
 import Button from "~/components/base/Button.vue";
 import { ref, onMounted } from "vue";
 import { gsap } from "gsap";
-import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-
-gsap.registerPlugin(ScrollToPlugin);
 
 const features = [
   {
@@ -292,7 +286,7 @@ const features = [
     title: "Путь Целостности",
     description:
       "10-недельное путешествие от Кетер (Высшее Я) к Малхут (Воплощение).",
-    icon: "fas fa-path",
+    icon: "fas fa-road",
   },
   {
     title: "Динамический прогресс",
@@ -308,36 +302,17 @@ const features = [
   },
 ];
 
-const currentSection = ref(0);
-const totalSections = 4; // Updated to 4 sections
-const sectionsContainer = ref(null);
-const section1 = ref(null);
-const section2 = ref(null);
-const section3 = ref(null);
-const section4 = ref(null);
-
-const scrollToSection = (index) => {
-  if (index >= 0 && index < totalSections) {
-    currentSection.value = index;
-    const section = [
-      section1.value,
-      section2.value,
-      section3.value,
-      section4.value,
-    ][index];
-    if (section) {
-      gsap.to(sectionsContainer.value, {
-        duration: 0.8,
-        scrollTo: {
-          y: section,
-          autoKill: false,
-          offsetY: 20, // Small offset to account for headers
-        },
-        ease: "power2.inOut",
-      });
-    }
-  }
-};
+// Refs for animations
+const headerGlow = ref(null);
+const mainTitle = ref(null);
+const missionSection = ref(null);
+const approachSection = ref(null);
+const treeCard = ref(null);
+const featuresCard = ref(null);
+const featureItems = ref([]);
+const teamSection = ref(null);
+const teamCards = ref(null);
+const ctaSection = ref(null);
 
 const getFeatureIconClass = (index) => {
   const classes = [
@@ -360,72 +335,95 @@ const getFeatureTextClass = (index) => {
 };
 
 onMounted(() => {
-  const container = sectionsContainer.value;
+  // Subtle header glow animation
+  gsap.to(headerGlow.value, {
+    x: "10%",
+    y: "5%",
+    duration: 8,
+    repeat: -1,
+    yoyo: true,
+    ease: "sine.inOut",
+  });
 
-  if (container) {
-    // Improved scroll detection with IntersectionObserver
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
-            const index = [
-              section1.value,
-              section2.value,
-              section3.value,
-              section4.value,
-            ].indexOf(entry.target);
-            if (index !== -1) {
-              currentSection.value = index;
-            }
-          }
-        });
-      },
-      {
-        threshold: [0.1, 0.5, 0.9],
-        root: container,
-      }
-    );
+  // Title animation
+  gsap.from(mainTitle.value, {
+    y: 30,
+    opacity: 0,
+    duration: 1,
+    ease: "power2.out",
+  });
 
-    [section1.value, section2.value, section3.value, section4.value].forEach(
-      (section) => {
-        if (section) observer.observe(section);
-      }
-    );
+  // Scroll-triggered animations using GSAP
+  const createScrollTrigger = (elements, animationProps) => {
+    if (!elements) return;
 
-    // Keyboard navigation
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowDown" || e.key === "PageDown") {
-        e.preventDefault();
-        scrollToSection(Math.min(currentSection.value + 1, totalSections - 1));
-      } else if (e.key === "ArrowUp" || e.key === "PageUp") {
-        e.preventDefault();
-        scrollToSection(Math.max(currentSection.value - 1, 0));
-      }
+    const isArray = Array.isArray(elements);
+    const targets = isArray ? elements : [elements];
+
+    targets.forEach((target, index) => {
+      if (!target) return;
+
+      gsap.from(target, {
+        ...animationProps,
+        delay: isArray ? index * 0.1 : 0,
+        scrollTrigger: {
+          trigger: target,
+          start: "top bottom-=100",
+          end: "bottom center",
+          toggleActions: "play none none none",
+        },
+      });
     });
+  };
 
-    // Handle wheel events for smoother scrolling
-    let lastScrollTime = 0;
-    const scrollCooldown = 800;
+  // Mission section animation
+  createScrollTrigger(missionSection.value, {
+    y: 40,
+    opacity: 0,
+    duration: 0.8,
+    ease: "power2.out",
+  });
 
-    container.addEventListener(
-      "wheel",
-      (e) => {
-        e.preventDefault();
-        const now = Date.now();
-        if (now - lastScrollTime > scrollCooldown) {
-          const direction = e.deltaY > 0 ? 1 : -1;
-          const newSection = Math.max(
-            0,
-            Math.min(totalSections - 1, currentSection.value + direction)
-          );
-          if (newSection !== currentSection.value) {
-            scrollToSection(newSection);
-            lastScrollTime = now;
-          }
-        }
-      },
-      { passive: false }
-    );
-  }
+  // Approach section animations
+  createScrollTrigger(treeCard.value, {
+    x: -30,
+    opacity: 0,
+    duration: 0.8,
+    ease: "power2.out",
+  });
+
+  createScrollTrigger(featuresCard.value, {
+    x: 30,
+    opacity: 0,
+    duration: 0.8,
+    ease: "power2.out",
+  });
+
+  createScrollTrigger(featureItems.value, {
+    y: 20,
+    opacity: 0,
+    duration: 0.6,
+    ease: "power2.out",
+  });
+
+  // Team section animation
+  createScrollTrigger(teamCards.value && teamCards.value.children, {
+    y: 30,
+    opacity: 0,
+    duration: 0.8,
+    ease: "back.out(1.2)",
+  });
+
+  // CTA section animation
+  createScrollTrigger(ctaSection.value, {
+    y: 30,
+    opacity: 0,
+    duration: 0.8,
+    ease: "power2.out",
+  });
 });
 </script>
+
+<style scoped>
+/* Additional styles if needed */
+</style>
