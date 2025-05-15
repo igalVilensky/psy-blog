@@ -1,40 +1,32 @@
 <template>
   <!-- About Page with Professional Layout, no scroll effect -->
-  <div class="w-full min-h-screen bg-[#1A1F35] text-white">
+  <div class="max-w-6xl mx-auto min-h-screen text-white">
     <!-- Animated Header Banner -->
-    <header class="relative overflow-hidden py-16 sm:pt-24 sm:pb-0">
-      <div class="container mx-auto px-4 sm:px-6 relative z-10">
-        <div class="max-w-4xl mx-auto text-center">
-          <h1
-            ref="mainTitle"
-            class="text-4xl sm:text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#00E6FF] to-[#70FF94] mb-6"
-          >
-            Psy-Blog
-          </h1>
-          <p class="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
-            Платформа осознанного развития, соединяющая древнюю мудрость Каббалы
-            с современной психологией
-          </p>
-        </div>
+    <header class="relative overflow-hidden pt-16 sm:pt-24">
+      <div class="container mx-auto px-6 sm:px-0 relative z-10">
         <section ref="missionSection" class="mb-24">
           <div class="relative">
             <div
-              class="absolute -inset-4 sm:-inset-8 bg-gradient-to-br from-[#00E6FF]/10 to-[#70FF94]/10 rounded-2xl blur-lg"
-            ></div>
-            <div
               class="relative bg-[#1E293B]/70 backdrop-blur-xl rounded-2xl border border-[#00E6FF]/20 p-8 sm:p-10 transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,230,255,0.2)]"
             >
+              <div class="max-w-4xl mx-auto text-center">
+                <h1
+                  ref="mainTitle"
+                  class="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#00E6FF] to-[#70FF94] mb-6"
+                >
+                  Psy-Blog
+                </h1>
+              </div>
               <p
                 class="text-lg text-slate-300 max-w-6xl mx-auto leading-relaxed"
               >
-                Inner Compass — это платформа осознанного развития,
-                вдохновленная древней мудростью Каббалы и современной
-                психологией. Наше Древо Себя из 10 Сефирот, организованных в три
-                колонны (Огонь, Вода, Воздух), помогает вам пройти Путь
-                Целостности — 10-недельное путешествие от высшего Я (Кетер) к
-                воплощению (Малхут). Система прогресса отслеживает ежедневные
-                достижения, награждает баллами и уровнями, поддерживая баланс
-                колонн через Энергию Дня.
+                Psy-Blog — это платформа осознанного развития, вдохновленная
+                древней мудростью Каббалы и современной психологией. Наше Древо
+                Себя из 10 Сефирот, организованных в три колонны (Огонь, Вода,
+                Воздух), помогает вам пройти Путь Целостности — 10-недельное
+                путешествие от высшего Я (Кетер) к воплощению (Малхут). Система
+                прогресса отслеживает ежедневные достижения, награждает баллами
+                и уровнями, поддерживая баланс колонн через Энергию Дня.
               </p>
             </div>
           </div>
@@ -67,7 +59,7 @@
                   class="w-full h-full object-contain rounded-xl"
                 />
               </div>
-              <p class="text-sm text-slate-300 text-center mt-6">
+              <p class="text-sm text-slate-300 text-center">
                 Интерактивное Древо Себя с тремя колоннами
               </p>
             </div>
@@ -125,13 +117,7 @@
           <div
             class="group bg-[#1E293B]/60 backdrop-blur-xl rounded-xl overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,230,255,0.3)] border border-[#00E6FF]/20"
           >
-            <div class="relative h-48 overflow-hidden">
-              <div
-                class="absolute inset-0 bg-gradient-to-b from-[#00E6FF]/30 to-transparent opacity-70"
-              ></div>
-              <div
-                class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-[#1E293B] to-transparent"
-              ></div>
+            <div class="relative h-44 overflow-hidden">
               <div class="absolute bottom-0 left-6">
                 <img
                   src="/assets/images/profile.jpg"
@@ -181,13 +167,7 @@
           <div
             class="group bg-[#1E293B]/60 backdrop-blur-xl rounded-xl overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,215,0,0.3)] border border-[#FFD700]/20"
           >
-            <div class="relative h-48 overflow-hidden">
-              <div
-                class="absolute inset-0 bg-gradient-to-b from-[#FFD700]/30 to-transparent opacity-70"
-              ></div>
-              <div
-                class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-[#1E293B] to-transparent"
-              ></div>
+            <div class="relative h-44 overflow-hidden">
               <div class="absolute bottom-0 left-6">
                 <img
                   src="/assets/images/igal.avif"
