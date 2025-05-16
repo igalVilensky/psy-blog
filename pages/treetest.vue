@@ -10,20 +10,13 @@
         <!-- Link to Tree of Self Info Page -->
         <SefirotInfoLink />
         <!-- Column Balance & Energy of the Day -->
-        <div class="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <!-- Column Balance Gauge -->
-          <ColumnBalanceGauge
-            :column-progress="columnProgress"
-            :column-recommendation="columnRecommendation"
-          />
-
-          <!-- Energy of the Day -->
-          <EnergyOfDay
-            :energy-of-day="energyOfDay"
-            :energy-recommendation="energyRecommendation"
-            :select-energy-column="selectEnergyColumn"
-          />
-        </div>
+        <ColumnEnergySection
+          :column-progress="columnProgress"
+          :column-recommendation="columnRecommendation"
+          :energy-of-day="energyOfDay"
+          :energy-recommendation="energyRecommendation"
+          :select-energy-column="selectEnergyColumn"
+        />
 
         <!-- Cycle Toggle -->
         <CycleToggle
@@ -551,8 +544,7 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from "vue";
-import ColumnBalanceGauge from "~/components/tree-of-self/ColumnBalanceGauge.vue";
-import EnergyOfDay from "~/components/tree-of-self/EnergyOfDay.vue";
+import ColumnEnergySection from "~/components/tree-of-self/EnergyOfDay.vue";
 import CycleToggle from "~/components/tree-of-self/CycleToggle.vue";
 import SefirotProgressCard from "~/components/tree-of-self/SefirotProgressCard.vue";
 import MobileTabletLegend from "~/components/tree-of-self/MobileTabletLegend.vue";

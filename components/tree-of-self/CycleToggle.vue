@@ -1,7 +1,7 @@
 <!-- CycleToggle.vue -->
 <template>
   <div
-    class="mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2"
+    class="my-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2"
   >
     <div
       class="flex flex-col xs:flex-row items-start xs:items-center gap-2 w-full sm:w-auto"
