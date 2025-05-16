@@ -7,8 +7,10 @@
       <div class="container mx-auto max-w-6xl">
         <!-- Page Header -->
         <PageHeader />
+
         <!-- Link to Tree of Self Info Page -->
         <SefirotInfoLink />
+
         <!-- Column Balance & Energy of the Day -->
         <ColumnEnergySection
           :column-progress="columnProgress"
@@ -25,497 +27,33 @@
           :get-current-sefirah-name="getCurrentSefirahName"
         />
 
-        <section
-          class="mb-8 bg-white/5 backdrop-blur rounded-xl shadow-xl border border-white/10"
-        >
-          <div class="relative flex flex-col items-center">
-            <!-- SVG Tree for Medium+ Screens -->
-            <div class="relative mb-4">
-              <svg
-                class="w-full max-w-3xl h-[32rem] lg:max-w-4xl lg:h-[40rem] xl:max-w-5xl xl:h-[48rem]"
-                viewBox="0 0 400 600"
-                preserveAspectRatio="xMidYMid meet"
-              >
-                <rect
-                  x="0"
-                  y="0"
-                  width="400"
-                  height="600"
-                  fill="url(#svg-bg)"
-                />
-
-                <!-- Title inside SVG (desktop only) -->
-                <g class="hidden md:block">
-                  <text
-                    x="140"
-                    y="30"
-                    class="text-3xl font-semibold text-white"
-                  >
-                    Ваше Древо Себя
-                  </text>
-                </g>
-
-                <!-- Definitions for effects -->
-                <defs>
-                  <!-- Background gradient -->
-                  <linearGradient
-                    id="svg-bg"
-                    x1="0%"
-                    y1="0%"
-                    x2="100%"
-                    y2="100%"
-                  >
-                    <stop offset="0%" stop-color="rgba(15, 23, 42, 0.8)" />
-                    <stop offset="100%" stop-color="rgba(15, 23, 42, 0.9)" />
-                  </linearGradient>
-
-                  <!-- Glow filter -->
-                  <filter
-                    id="glow"
-                    x="-50%"
-                    y="-50%"
-                    width="200%"
-                    height="200%"
-                  >
-                    <feGaussianBlur stdDeviation="5" result="blur" />
-                    <feComposite
-                      in="SourceGraphic"
-                      in2="blur"
-                      operator="over"
-                    />
-                  </filter>
-
-                  <!-- Gold glow filter for Path of Wholeness -->
-                  <filter
-                    id="gold-glow"
-                    x="-50%"
-                    y="-50%"
-                    width="200%"
-                    height="200%"
-                  >
-                    <feGaussianBlur stdDeviation="4" result="blur" />
-                    <feColorMatrix
-                      in="blur"
-                      type="matrix"
-                      values="1 0 0 0 0.8 0 1 0 0 0.7 0 0 1 0 0.1 0 0 0 1 0"
-                      result="glow"
-                    />
-                    <feComposite
-                      in="SourceGraphic"
-                      in2="glow"
-                      operator="over"
-                    />
-                  </filter>
-
-                  <!-- Column-specific pulse filters -->
-                  <filter
-                    id="pulse-left"
-                    x="-50%"
-                    y="-50%"
-                    width="200%"
-                    height="200%"
-                  >
-                    <feGaussianBlur stdDeviation="6" result="blur" />
-                    <feColorMatrix
-                      in="blur"
-                      type="matrix"
-                      values="0 0 0 0 0 0 0.4 0 0 0.9 0.8 0 0 0 1 0 0 0 0.7 0"
-                      result="glow"
-                    />
-                    <feComposite
-                      in="SourceGraphic"
-                      in2="glow"
-                      operator="over"
-                    />
-                  </filter>
-
-                  <filter
-                    id="pulse-right"
-                    x="-50%"
-                    y="-50%"
-                    width="200%"
-                    height="200%"
-                  >
-                    <feGaussianBlur stdDeviation="6" result="blur" />
-                    <feColorMatrix
-                      in="blur"
-                      type="matrix"
-                      values="1 0 0 0 0.8 0.7 0.5 0 0 0 0 0 0 0 0 0 0 0 0.7 0"
-                      result="glow"
-                    />
-                    <feComposite
-                      in="SourceGraphic"
-                      in2="glow"
-                      operator="over"
-                    />
-                  </filter>
-
-                  <filter
-                    id="pulse-center"
-                    x="-50%"
-                    y="-50%"
-                    width="200%"
-                    height="200%"
-                  >
-                    <feGaussianBlur stdDeviation="6" result="blur" />
-                    <feColorMatrix
-                      in="blur"
-                      type="matrix"
-                      values="0.3 0.8 0 0 0 0.2 1 0 0 0 0.3 0.5 0 0 0 0 0 0 0.7 0"
-                      result="glow"
-                    />
-                    <feComposite
-                      in="SourceGraphic"
-                      in2="glow"
-                      operator="over"
-                    />
-                  </filter>
-
-                  <!-- Vertical beam gradient -->
-                  <linearGradient
-                    id="vertical-beam"
-                    x1="0"
-                    x2="0"
-                    y1="0"
-                    y2="1"
-                  >
-                    <stop offset="0%" stop-color="rgba(255,255,255,0)" />
-                    <stop offset="50%" stop-color="rgba(255,255,255,0.1)" />
-                    <stop offset="100%" stop-color="rgba(255,255,255,0)" />
-                  </linearGradient>
-
-                  <!-- Golden light beam (descending light) -->
-                  <linearGradient id="golden-light" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stop-color="rgba(255,215,0,0.9)" />
-                    <stop offset="50%" stop-color="rgba(255,215,0,0.4)" />
-                    <stop offset="100%" stop-color="rgba(255,215,0,0.1)" />
-                  </linearGradient>
-                </defs>
-
-                <!-- Descending Light Animation (for Path of Wholeness) -->
-                <g v-if="pathOfWholeness">
-                  <line
-                    x1="200"
-                    y1="50"
-                    x2="200"
-                    y2="550"
-                    stroke="url(#golden-light)"
-                    stroke-width="4"
-                    stroke-opacity="0.8"
-                    filter="url(#gold-glow)"
-                    class="descending-light"
-                  >
-                    <animate
-                      attributeName="stroke-dasharray"
-                      values="0,1000;1000,0"
-                      dur="15s"
-                      repeatCount="indefinite"
-                    />
-                    <animate
-                      attributeName="stroke-dashoffset"
-                      values="0;-1000"
-                      dur="15s"
-                      repeatCount="indefinite"
-                    />
-                  </line>
-                </g>
-
-                <!-- Dynamic connections between nodes -->
-                <g class="connections">
-                  <!-- Vertical light beam -->
-                  <line
-                    x1="200"
-                    y1="67"
-                    x2="200"
-                    y2="533"
-                    stroke="url(#vertical-beam)"
-                    stroke-width="1"
-                    stroke-opacity="0.2"
-                  />
-
-                  <!-- Paths -->
-                  <g v-for="(conn, idx) in connections" :key="`conn-${idx}`">
-                    <path
-                      :d="conn.path"
-                      stroke-width="1.5"
-                      class="path-line"
-                      :class="[
-                        { 'active-path': conn.active },
-                        getConnectionColumnClass(conn.from, conn.to),
-                        conn.active
-                          ? getActiveStrokeClass(conn.from, conn.to)
-                          : '',
-                      ]"
-                      :stroke-dasharray="conn.active ? '5,5' : '2,3'"
-                    />
-                    <circle
-                      v-if="conn.active"
-                      :class="
-                        getConnectionParticleClass(
-                          conn.columnType || conn.category
-                        )
-                      "
-                      r="2"
-                      opacity="0.8"
-                    >
-                      <animateMotion
-                        :path="conn.path"
-                        dur="3s"
-                        repeatCount="indefinite"
-                        rotate="auto"
-                      />
-                    </circle>
-                  </g>
-                </g>
-
-                <!-- Sefirot Nodes -->
-                <g
-                  v-for="sefirah in sefirot"
-                  :key="sefirah.id"
-                  :class="`sefirah-${sefirah.id}`"
-                >
-                  <!-- Path of Wholeness highlight -->
-                  <circle
-                    v-if="pathOfWholeness && isCurrentWeekSefirah(sefirah.id)"
-                    :cx="sefirah.x"
-                    :cy="sefirah.y"
-                    r="25"
-                    class="fill-yellow-500/20"
-                    filter="url(#gold-glow)"
-                  >
-                    <animate
-                      attributeName="r"
-                      values="25;30;25"
-                      dur="3s"
-                      repeatCount="indefinite"
-                    />
-                    <animate
-                      attributeName="opacity"
-                      values="0.3;0.7;0.3"
-                      dur="3s"
-                      repeatCount="indefinite"
-                    />
-                  </circle>
-
-                  <!-- Outer glow ring -->
-                  <circle
-                    v-if="sefirah.points > 0"
-                    :cx="sefirah.x"
-                    :cy="sefirah.y"
-                    r="18"
-                    :class="getNodeGlowClass(sefirah.id, sefirah.column)"
-                    opacity="0.4"
-                    :filter="getGlowFilter(sefirah.column)"
-                  />
-
-                  <!-- Pulse effect on hover -->
-                  <circle
-                    :cx="sefirah.x"
-                    :cy="sefirah.y"
-                    r="18"
-                    class="node-pulse"
-                    :class="getNodePulseClass(sefirah.category, sefirah.column)"
-                    opacity="0"
-                  >
-                    <animate
-                      attributeName="opacity"
-                      values="0;0.6;0"
-                      dur="1.5s"
-                      begin="mouseover"
-                      repeatCount="indefinite"
-                      restart="whenNotActive"
-                    />
-                    <animate
-                      attributeName="r"
-                      values="15;25;15"
-                      dur="1.5s"
-                      begin="mouseover"
-                      repeatCount="indefinite"
-                      restart="whenNotActive"
-                    />
-                  </circle>
-
-                  <!-- Base node circle -->
-                  <circle
-                    :cx="sefirah.x"
-                    :cy="sefirah.y"
-                    :r="hoveredNode === sefirah.id ? 18 : 15"
-                    :fill="sefirah.points > 0 ? sefirah.energyColor : '#374151'"
-                    stroke="#ffffff"
-                    stroke-width="1"
-                    class="node-circle cursor-pointer transition-all duration-300"
-                    :class="{
-                      'highlight-node':
-                        highlightedCategory === sefirah.category ||
-                        energyOfDay === sefirah.column,
-                    }"
-                    @click="scrollToSefirah(sefirah.id)"
-                    @mouseover="
-                      showNodeTooltip(sefirah);
-                      hoveredNode = sefirah.id;
-                    "
-                    @mouseleave="
-                      hideNodeTooltip();
-                      hoveredNode = null;
-                    "
-                  >
-                    <title>
-                      {{ sefirah.function }}: {{ sefirah.displayProgress }}%
-                      (Уровень {{ sefirah.level }})
-                    </title>
-                    <animate
-                      v-if="sefirah.points > 0"
-                      attributeName="opacity"
-                      values="0.9;1;0.9"
-                      dur="3s"
-                      repeatCount="indefinite"
-                    />
-                  </circle>
-
-                  <!-- Progress ring -->
-                  <circle
-                    v-if="sefirah.points > 0"
-                    :cx="sefirah.x"
-                    :cy="sefirah.y"
-                    r="18"
-                    :stroke="getNodeStrokeColor(sefirah.id, sefirah.column)"
-                    stroke-width="4"
-                    stroke-linecap="round"
-                    fill="none"
-                    :stroke-dasharray="`${
-                      (sefirah.displayProgress / 100) * 113
-                    }, 113`"
-                    :transform="`rotate(-90 ${sefirah.x} ${sefirah.y})`"
-                    style="pointer-events: none"
-                  >
-                    <animate
-                      attributeName="stroke-opacity"
-                      values="0.8;1;0.8"
-                      dur="4s"
-                      repeatCount="indefinite"
-                    />
-                  </circle>
-
-                  <!-- Icon inside node -->
-                  <foreignObject
-                    :x="sefirah.x - 10"
-                    :y="sefirah.y - 10"
-                    width="20"
-                    height="20"
-                    style="pointer-events: none"
-                  >
-                    <div
-                      class="flex items-center justify-center h-full w-full"
-                      style="pointer-events: auto"
-                      @mouseover="showNodeTooltip(sefirah)"
-                      @mouseleave="hideNodeTooltip()"
-                    >
-                      <i
-                        class="fas text-white text-xs"
-                        :class="getSefirahIcon(sefirah.id)"
-                      ></i>
-                    </div>
-                  </foreignObject>
-
-                  <!-- Level indicator -->
-                  <text
-                    v-if="sefirah.level > 1"
-                    :x="sefirah.x + 20"
-                    :y="sefirah.y - 15"
-                    class="text-xs font-semibold text-white"
-                    :fill="getLevelColor(sefirah.column)"
-                    text-anchor="middle"
-                    dominant-baseline="middle"
-                  >
-                    {{ sefirah.level }}
-                  </text>
-
-                  <!-- Label with psychological term and Hebrew name -->
-                  <g>
-                    <text
-                      :x="getLabelX(sefirah)"
-                      :y="sefirah.y + 30"
-                      class="font-medium text-white text-xs"
-                      text-anchor="middle"
-                      dominant-baseline="middle"
-                    >
-                      {{ sefirah.function }}
-                    </text>
-                    <text
-                      :x="getLabelX(sefirah)"
-                      :y="sefirah.y + 45"
-                      class="text-[0.6rem] font-light text-gray-300"
-                      text-anchor="middle"
-                      dominant-baseline="middle"
-                    >
-                      ({{ sefirah.name }})
-                    </text>
-                  </g>
-                </g>
-
-                <!-- Interactive tooltip -->
-                <foreignObject
-                  v-if="activeTooltip"
-                  :x="activeTooltip.x - 100"
-                  :y="activeTooltip.y - (activeTooltip.y < 200 ? 0 : 90)"
-                  width="200"
-                  height="90"
-                  class="tooltip-container"
-                  style="pointer-events: none"
-                >
-                  <div
-                    class="bg-black/80 backdrop-blur-sm p-2 rounded text-white text-xs border border-white/20"
-                  >
-                    <div class="flex justify-between items-center">
-                      <p class="font-medium">{{ activeTooltip.function }}</p>
-                      <span
-                        class="px-1.5 py-0.5 rounded text-[10px] font-medium"
-                        :class="getTooltipLevelClass(activeTooltip.column)"
-                      >
-                        Ур. {{ activeTooltip.level }}
-                      </span>
-                    </div>
-                    <p class="text-gray-300">{{ activeTooltip.name }}</p>
-                    <div class="w-full bg-gray-800/50 rounded-full h-1 mt-1">
-                      <div
-                        class="h-1 rounded-full"
-                        :class="
-                          getProgressBarClass(
-                            activeTooltip.id,
-                            activeTooltip.column
-                          )
-                        "
-                        :style="{ width: `${activeTooltip.displayProgress}%` }"
-                      ></div>
-                    </div>
-                    <div class="flex justify-between mt-1">
-                      <span class="text-[10px] text-gray-400"
-                        >{{ activeTooltip.points }} очков</span
-                      >
-                      <span class="text-[10px] text-gray-400"
-                        >{{ activeTooltip.dailyActions }}/{{
-                          activeTooltip.maxActions
-                        }}
-                        сегодня</span
-                      >
-                    </div>
-                  </div>
-                </foreignObject>
-              </svg>
-            </div>
-          </div>
-
-          <!-- Desktop Side Legend -->
-          <DesktopSideLegend
-            :highlighted-category="highlightedCategory"
-            :toggle-highlight="toggleHighlight"
-          />
-          <!-- Mobile/Tablet Legend -->
-          <MobileTabletLegend
-            :highlighted-category="highlightedCategory"
-            :toggle-highlight="toggleHighlight"
-          />
-        </section>
+        <!-- Tree Visualization -->
+        <TreeVisualization
+          :sefirot="sefirot"
+          :connections="connections"
+          :path-of-wholeness="pathOfWholeness"
+          :current-week="currentWeek"
+          :energy-of-day="energyOfDay"
+          :highlighted-category="highlightedCategory"
+          v-model:hovered-node="hoveredNode"
+          v-model:active-tooltip="activeTooltip"
+          :is-current-week-sefirah="isCurrentWeekSefirah"
+          :get-connection-column-class="getConnectionColumnClass"
+          :get-active-stroke-class="getActiveStrokeClass"
+          :get-connection-particle-class="getConnectionParticleClass"
+          :get-node-glow-class="getNodeGlowClass"
+          :get-glow-filter="getGlowFilter"
+          :get-node-pulse-class="getNodePulseClass"
+          :get-node-stroke-color="getNodeStrokeColor"
+          :get-sefirah-icon="getSefirahIcon"
+          :get-label-x="getLabelX"
+          :get-level-color="getLevelColor"
+          :get-tooltip-level-class="getTooltipLevelClass"
+          :get-progress-bar-class="getProgressBarClass"
+          :scroll-to-sefirah="scrollToSefirah"
+          :show-node-tooltip="showNodeTooltip"
+          :hide-node-tooltip="hideNodeTooltip"
+        />
 
         <!-- Sefirot Progress Cards -->
         <section
@@ -550,6 +88,7 @@ import SefirotProgressCard from "~/components/tree-of-self/SefirotProgressCard.v
 import MobileTabletLegend from "~/components/tree-of-self/MobileTabletLegend.vue";
 import DesktopSideLegend from "~/components/tree-of-self/DesktopSideLegend.vue";
 import PageHeader from "~/components/tree-of-self/PageHeader.vue";
+import TreeVisualization from "~/components/tree-of-self/TreeVisualization.vue";
 import SefirotInfoLink from "~/components/tree-of-self/SefirotInfoLink.vue";
 import { useAuthStore } from "~/stores/auth";
 import { useFirestore } from "~/plugins/firebase";
@@ -1052,11 +591,6 @@ const hideNodeTooltip = () => {
   setTimeout(() => {
     activeTooltip.value = null;
   }, 100);
-};
-
-const toggleHighlight = (category) => {
-  highlightedCategory.value =
-    highlightedCategory.value === category ? null : category;
 };
 
 // Connection and node styling functions
