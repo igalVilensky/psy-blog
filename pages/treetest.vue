@@ -7,17 +7,8 @@
       <div class="container mx-auto max-w-6xl">
         <!-- Page Header -->
         <PageHeader />
-
         <!-- Link to Tree of Self Info Page -->
-        <div class="text-center mb-6">
-          <router-link
-            to="/tree-of-self-info"
-            class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md transition-colors"
-          >
-            Исследовать значения Сфирот
-          </router-link>
-        </div>
-
+        <SefirotInfoLink />
         <!-- Column Balance & Energy of the Day -->
         <div class="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
           <!-- Column Balance Gauge -->
@@ -567,6 +558,7 @@ import SefirotProgressCard from "~/components/tree-of-self/SefirotProgressCard.v
 import MobileTabletLegend from "~/components/tree-of-self/MobileTabletLegend.vue";
 import DesktopSideLegend from "~/components/tree-of-self/DesktopSideLegend.vue";
 import PageHeader from "~/components/tree-of-self/PageHeader.vue";
+import SefirotInfoLink from "~/components/tree-of-self/SefirotInfoLink.vue";
 import { useAuthStore } from "~/stores/auth";
 import { useFirestore } from "~/plugins/firebase";
 import {
