@@ -6,12 +6,7 @@
     <main class="px-6 xl:px-0 pb-20 pt-12">
       <div class="container mx-auto max-w-6xl">
         <!-- Page Header -->
-        <h2
-          class="text-xl md:text-2xl font-semibold text-white flex items-center mb-4 md:hidden"
-        >
-          <i class="fas fa-tree mr-2 text-gradient-blue-end"></i>
-          Ваше Древо Себя
-        </h2>
+        <PageHeader />
 
         <!-- Link to Tree of Self Info Page -->
         <div class="text-center mb-6">
@@ -571,7 +566,7 @@ import CycleToggle from "~/components/tree-of-self/CycleToggle.vue";
 import SefirotProgressCard from "~/components/tree-of-self/SefirotProgressCard.vue";
 import MobileTabletLegend from "~/components/tree-of-self/MobileTabletLegend.vue";
 import DesktopSideLegend from "~/components/tree-of-self/DesktopSideLegend.vue";
-
+import PageHeader from "~/components/tree-of-self/PageHeader.vue";
 import { useAuthStore } from "~/stores/auth";
 import { useFirestore } from "~/plugins/firebase";
 import {
