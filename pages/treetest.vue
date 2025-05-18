@@ -8,9 +8,6 @@
         <!-- Page Header -->
         <PageHeader />
 
-        <!-- Link to Tree of Self Info Page -->
-        <SefirotInfoLink />
-
         <!-- Column Balance & Energy of the Day -->
         <ColumnEnergySection
           :column-progress="columnProgress"
@@ -74,6 +71,8 @@
           />
         </section>
       </div>
+      <!-- Link to Tree of Self Info Page -->
+      <SefirotInfoLink />
     </main>
   </div>
 </template>
