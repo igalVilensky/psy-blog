@@ -4,24 +4,27 @@
   >
     <!-- Navigation Bar -->
     <nav
-      class="py-4 px-6 bg-slate-800/80 backdrop-blur-sm sticky top-0 z-10 border-b border-slate-700"
+      class="py-4 px-4 sm:px-6 bg-slate-800/80 backdrop-blur-sm sticky top-0 z-10 border-b border-slate-700"
     >
       <div
-        class="container mx-auto max-w-6xl flex justify-between items-center"
+        class="container mx-auto max-w-6xl flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sm:gap-0"
       >
         <h2 class="text-xl font-bold text-blue-400">Сообщество</h2>
-        <div class="flex items-center gap-4">
-          <div class="relative">
+        <div
+          class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3"
+        >
+          <!-- Search Input -->
+          <div class="relative flex-1">
             <input
               v-model="searchQuery"
               @input="handleSearch"
               type="text"
               placeholder="Поиск участников..."
-              class="py-2 px-4 pr-10 rounded-full bg-slate-700/70 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full md:w-64"
+              class="w-full py-2.5 px-4 pr-10 rounded-lg bg-slate-700/90 border border-slate-600 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
             />
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5 absolute right-3 top-2.5 text-gray-400"
+              class="h-5 w-5 absolute right-3 top-1/2 -translate-y-1/2 text-gray-300"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -34,13 +37,18 @@
               />
             </svg>
           </div>
+          <!-- Sort Dropdown -->
           <select
             v-model="sortBy"
             @change="sortUsers"
-            class="py-2 px-4 rounded-full bg-slate-700/70 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            class="py-2.5 px-4 rounded-lg bg-slate-700/90 border border-slate-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
           >
-            <option value="date">По дате регистрации</option>
-            <option value="name">По имени</option>
+            <option value="date" class="bg-slate-700 text-white">
+              По дате регистрации
+            </option>
+            <option value="name" class="bg-slate-700 text-white">
+              По имени
+            </option>
           </select>
         </div>
       </div>
@@ -326,14 +334,14 @@
               :disabled="currentPage === 1"
               class="px-3 py-1 rounded-md bg-slate-700 hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              &laquo;
+              «
             </button>
             <button
               @click="prevPage"
               :disabled="currentPage === 1"
               class="px-3 py-1 rounded-md bg-slate-700 hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              &lsaquo;
+              ‹
             </button>
 
             <template v-for="page in displayedPages" :key="page">
@@ -357,14 +365,14 @@
               :disabled="currentPage === totalPages"
               class="px-3 py-1 rounded-md bg-slate-700 hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              &rsaquo;
+              ›
             </button>
             <button
               @click="goToPage(totalPages)"
               :disabled="currentPage === totalPages"
               class="px-3 py-1 rounded-md bg-slate-700 hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              &raquo;
+              »
             </button>
           </div>
         </div>
@@ -741,6 +749,30 @@ onMounted(fetchUsers);
 </script>
 
 <style scoped>
+/* Ensure select dropdown options are styled */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23CBD5E1' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+}
+
+/* Ensure select options have proper styling in all browsers */
+option {
+  background-color: #334155;
+  color: white;
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 640px) {
+  select {
+    min-width: 100%;
+  }
+}
+
 /* Custom animations */
 @keyframes pulse {
   0%,

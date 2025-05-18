@@ -30,7 +30,7 @@
     </div>
 
     <nuxt-link
-      to="/community/leaderboard"
+      to="/community"
       class="text-sm flex items-center text-white/80 hover:text-white w-full sm:w-auto justify-end"
     >
       <i class="fas fa-trophy mr-1 text-yellow-300"></i> Таблица лидеров
