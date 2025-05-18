@@ -30,7 +30,6 @@
         <!-- Tree Visualization -->
         <TreeVisualization
           :sefirot="sefirot"
-          :connections="connections"
           :path-of-wholeness="pathOfWholeness"
           :current-week="currentWeek"
           :energy-of-day="energyOfDay"
@@ -47,7 +46,6 @@
           :get-node-stroke-color="getNodeStrokeColor"
           :get-sefirah-icon="getSefirahIcon"
           :get-label-x="getLabelX"
-          :get-level-color="getLevelColor"
           :get-tooltip-level-class="getTooltipLevelClass"
           :get-progress-bar-class="getProgressBarClass"
           :scroll-to-sefirah="scrollToSefirah"
@@ -90,19 +88,14 @@ import TreeVisualization from "~/components/tree-of-self/TreeVisualization.vue";
 import SefirotInfoLink from "~/components/tree-of-self/SefirotInfoLink.vue";
 import { sefirot } from "~/data/sefirotTree.js";
 import { useAuthStore } from "~/stores/auth";
-import { useFirestore } from "~/plugins/firebase";
 import {
-  doc,
-  getDoc,
-  setDoc,
-  onSnapshot,
-  updateDoc,
-  increment,
-} from "firebase/firestore";
+  initializeDailyActions,
+  logAction,
+  fetchSefirotProgress,
+} from "~/api/firebase/sefirotProgress";
 
-// Auth and Firestore setup
+// Auth setup
 const authStore = useAuthStore();
-const firestore = useFirestore();
 const isLoggedIn = computed(() => !!authStore.user);
 const activeCard = ref(null);
 const activeTooltip = ref(null);
@@ -138,111 +131,6 @@ const columns = {
     sefirot: ["keter", "tiferet", "yesod", "malkhut"],
   },
 };
-
-// Connection data with column types
-const connections = computed(() => {
-  return [
-    {
-      path: "M200 67 L133 160",
-      active:
-        sefirot.value.find((s) => s.id === "keter").displayProgress > 0 &&
-        sefirot.value.find((s) => s.id === "chokhmah").displayProgress > 0,
-      from: "keter",
-      to: "chokhmah",
-      columnType: "right",
-    },
-    {
-      path: "M200 67 L267 160",
-      active:
-        sefirot.value.find((s) => s.id === "keter").displayProgress > 0 &&
-        sefirot.value.find((s) => s.id === "binah").displayProgress > 0,
-      from: "keter",
-      to: "binah",
-      columnType: "left",
-    },
-    {
-      path: "M133 160 L107 267",
-      active:
-        sefirot.value.find((s) => s.id === "chokhmah").displayProgress > 0 &&
-        sefirot.value.find((s) => s.id === "chesed").displayProgress > 0,
-      from: "chokhmah",
-      to: "chesed",
-      columnType: "right",
-    },
-    {
-      path: "M267 160 L293 267",
-      active:
-        sefirot.value.find((s) => s.id === "binah").displayProgress > 0 &&
-        sefirot.value.find((s) => s.id === "gevurah").displayProgress > 0,
-      from: "binah",
-      to: "gevurah",
-      columnType: "left",
-    },
-    {
-      path: "M107 267 L200 347",
-      active:
-        sefirot.value.find((s) => s.id === "chesed").displayProgress > 0 &&
-        sefirot.value.find((s) => s.id === "tiferet").displayProgress > 0,
-      from: "chesed",
-      to: "tiferet",
-      columnType: "center",
-    },
-    {
-      path: "M293 267 L200 347",
-      active:
-        sefirot.value.find((s) => s.id === "gevurah").displayProgress > 0 &&
-        sefirot.value.find((s) => s.id === "tiferet").displayProgress > 0,
-      from: "gevurah",
-      to: "tiferet",
-      columnType: "center",
-    },
-    {
-      path: "M107 267 L133 373",
-      active:
-        sefirot.value.find((s) => s.id === "chesed").displayProgress > 0 &&
-        sefirot.value.find((s) => s.id === "netzach").displayProgress > 0,
-      from: "chesed",
-      to: "netzach",
-      columnType: "right",
-    },
-    {
-      path: "M293 267 L267 373",
-      active:
-        sefirot.value.find((s) => s.id === "gevurah").displayProgress > 0 &&
-        sefirot.value.find((s) => s.id === "hod").displayProgress > 0,
-      from: "gevurah",
-      to: "hod",
-      columnType: "left",
-    },
-    {
-      path: "M133 373 L200 453",
-      active:
-        sefirot.value.find((s) => s.id === "netzach").displayProgress > 0 &&
-        sefirot.value.find((s) => s.id === "yesod").displayProgress > 0,
-      from: "netzach",
-      to: "yesod",
-      columnType: "center",
-    },
-    {
-      path: "M267 373 L200 453",
-      active:
-        sefirot.value.find((s) => s.id === "hod").displayProgress > 0 &&
-        sefirot.value.find((s) => s.id === "yesod").displayProgress > 0,
-      from: "hod",
-      to: "yesod",
-      columnType: "center",
-    },
-    {
-      path: "M200 453 L200 533",
-      active:
-        sefirot.value.find((s) => s.id === "yesod").displayProgress > 0 &&
-        sefirot.value.find((s) => s.id === "malkhut").displayProgress > 0,
-      from: "yesod",
-      to: "malkhut",
-      columnType: "center",
-    },
-  ];
-});
 
 // Calculate column progress averages based on daily progress
 const columnProgress = computed(() => {
@@ -542,19 +430,6 @@ const getCardProgressClass = (id, column) => {
   }
 };
 
-const getLevelColor = (column) => {
-  switch (column) {
-    case "left":
-      return "#93c5fd";
-    case "right":
-      return "#fcd34d";
-    case "center":
-      return "#86efac";
-    default:
-      return "#ffffff";
-  }
-};
-
 const getLevelBadgeClass = (column) => {
   switch (column) {
     case "left":
@@ -581,168 +456,17 @@ const getTooltipLevelClass = (column) => {
   }
 };
 
-// Initialize progress data
-const initializeSefirotProgress = async (userId) => {
-  const progressRef = doc(firestore, `users/${userId}/progress/sefirot`);
-  const initialData = sefirot.value.reduce(
-    (acc, s) => ({
-      ...acc,
-      [s.id]: { points: 0, lastActive: new Date() },
-    }),
-    {}
-  );
-  await setDoc(progressRef, initialData);
-  return initialData;
-};
-
-// Initialize daily actions
-const initializeDailyActions = async (userId, date) => {
-  const dailyRef = doc(firestore, `users/${userId}/daily/${date}`);
-  const initialData = sefirot.value.reduce(
-    (acc, s) => ({
-      ...acc,
-      [s.id]: { actions: 0 },
-    }),
-    {}
-  );
-  await setDoc(dailyRef, initialData);
-  return initialData;
-};
-
-// Log an action
-const logAction = async (sefirahId) => {
-  if (!isLoggedIn.value) return;
-  const userId = authStore.user.uid;
-  const today = new Date().toISOString().split("T")[0];
-  try {
-    const progressRef = doc(firestore, `users/${userId}/progress/sefirot`);
-    const dailyRef = doc(firestore, `users/${userId}/daily/${today}`);
-
-    // Check if daily actions exist
-    const dailySnap = await getDoc(dailyRef);
-    if (!dailySnap.exists()) {
-      await initializeDailyActions(userId, today);
-    } else {
-      // Check if max actions (3) reached
-      const dailyData = dailySnap.data();
-      if (dailyData[sefirahId]?.actions >= 3) {
-        console.log("Max daily actions reached for", sefirahId);
-        return;
-      }
-    }
-
-    // Update progress (add 10 points)
-    await updateDoc(progressRef, {
-      [`${sefirahId}.points`]: increment(10),
-      [`${sefirahId}.lastActive`]: new Date(),
-    });
-
-    // Update daily actions (add 1 action)
-    await updateDoc(dailyRef, {
-      [`${sefirahId}.actions`]: increment(1),
-    });
-  } catch (error) {
-    console.error("Error logging action:", error);
-  }
-};
-
-// Fetch User Progress from Firebase
-const fetchSefirotProgress = async (userId) => {
-  try {
-    // Get progress data
-    const progressRef = doc(firestore, `users/${userId}/progress/sefirot`);
-    const progressSnap = await getDoc(progressRef);
-
-    if (!progressSnap.exists()) {
-      await initializeSefirotProgress(userId);
-    } else {
-      const progressData = progressSnap.data();
-      sefirot.value.forEach((sefirah) => {
-        if (progressData[sefirah.id]) {
-          const points = applyDecay(
-            progressData[sefirah.id].points || 0,
-            progressData[sefirah.id].lastActive
-          );
-          const level = calculateLevel(points);
-          sefirah.points = points;
-          sefirah.level = level;
-          sefirah.lastActive = progressData[sefirah.id].lastActive;
-        }
-      });
-    }
-
-    // Get daily actions
-    const today = new Date().toISOString().split("T")[0];
-    const dailyRef = doc(firestore, `users/${userId}/daily/${today}`);
-    const dailySnap = await getDoc(dailyRef);
-
-    if (!dailySnap.exists()) {
-      await initializeDailyActions(userId, today);
-    } else {
-      const dailyData = dailySnap.data();
-      sefirot.value.forEach((sefirah) => {
-        sefirah.dailyActions = dailyData[sefirah.id]?.actions || 0;
-        sefirah.displayProgress = calculateDailyProgress(
-          sefirah.dailyActions,
-          sefirah.maxActions
-        );
-      });
-    }
-
-    // Set up real-time listener for progress updates
-    onSnapshot(progressRef, (snap) => {
-      if (snap.exists()) {
-        const progressData = snap.data();
-        sefirot.value.forEach((sefirah) => {
-          if (progressData[sefirah.id]) {
-            const points = applyDecay(
-              progressData[sefirah.id].points || 0,
-              progressData[sefirah.id].lastActive
-            );
-            const level = calculateLevel(points);
-            sefirah.points = points;
-            sefirah.level = level;
-            sefirah.lastActive = progressData[sefirah.id].lastActive;
-          }
-        });
-      }
-    });
-
-    // Set up real-time listener for daily actions
-    onSnapshot(dailyRef, (snap) => {
-      if (snap.exists()) {
-        const dailyData = snap.data();
-        sefirot.value.forEach((sefirah) => {
-          sefirah.dailyActions = dailyData[sefirah.id]?.actions || 0;
-          sefirah.displayProgress = calculateDailyProgress(
-            sefirah.dailyActions,
-            sefirah.maxActions
-          );
-        });
-      } else {
-        // If no data for today, reset daily actions
-        sefirot.value.forEach((sefirah) => {
-          sefirah.dailyActions = 0;
-          sefirah.displayProgress = 0;
-        });
-      }
-    });
-  } catch (error) {
-    console.error("Error fetching Sefirot progress:", error);
-    sefirot.value.forEach((s) => {
-      s.points = 0;
-      s.dailyActions = 0;
-      s.displayProgress = 0;
-      s.level = 1;
-    });
-  }
-};
-
 // Initialize Data
 onMounted(async () => {
   if (isLoggedIn.value) {
     const userId = authStore.user.uid;
-    await fetchSefirotProgress(userId);
+    await fetchSefirotProgress(
+      userId,
+      sefirot.value,
+      applyDecay,
+      calculateLevel,
+      calculateDailyProgress
+    );
   } else {
     // Demo data for non-logged-in users
     const demoDailyActions = [0, 1, 2, 0, 3, 1, 0, 2, 0, 1];
@@ -775,8 +499,14 @@ onMounted(async () => {
       if (isLoggedIn.value) {
         const userId = authStore.user.uid;
         const today = new Date().toISOString().split("T")[0];
-        await initializeDailyActions(userId, today);
-        await fetchSefirotProgress(userId);
+        await initializeDailyActions(userId, today, sefirot.value);
+        await fetchSefirotProgress(
+          userId,
+          sefirot.value,
+          applyDecay,
+          calculateLevel,
+          calculateDailyProgress
+        );
       } else {
         sefirot.value.forEach((s) => {
           s.dailyActions = 0;
@@ -794,7 +524,13 @@ watch(
   () => authStore.user,
   async (newUser) => {
     if (newUser) {
-      await fetchSefirotProgress(newUser.uid);
+      await fetchSefirotProgress(
+        newUser.uid,
+        sefirot.value,
+        applyDecay,
+        calculateLevel,
+        calculateDailyProgress
+      );
     }
   }
 );
@@ -924,9 +660,6 @@ svg {
 }
 section {
   position: relative;
-  z-index: 1;
-}
-.connections {
   z-index: 1;
 }
 </style>

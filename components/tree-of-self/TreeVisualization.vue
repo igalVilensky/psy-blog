@@ -111,6 +111,7 @@
 </template>
 
 <script setup>
+import { computed } from "vue";
 import SvgDefs from "./SvgDefs.vue";
 import SefirahNode from "./SefirahNode.vue";
 import ConnectionLine from "./ConnectionLine.vue";
@@ -118,12 +119,8 @@ import Tooltip from "./Tooltip.vue";
 import { defineProps, defineEmits } from "vue";
 
 // Define props
-defineProps({
+const props = defineProps({
   sefirot: {
-    type: Array,
-    required: true,
-  },
-  connections: {
     type: Array,
     required: true,
   },
@@ -191,10 +188,6 @@ defineProps({
     type: Function,
     required: true,
   },
-  getLevelColor: {
-    type: Function,
-    required: true,
-  },
   getTooltipLevelClass: {
     type: Function,
     required: true,
@@ -219,6 +212,124 @@ defineProps({
 
 // Define emits for two-way binding
 defineEmits(["update:hoveredNode", "update:activeTooltip"]);
+
+// Connection data with column types
+const connections = computed(() => {
+  return [
+    {
+      path: "M200 67 L133 160",
+      active:
+        props.sefirot.find((s) => s.id === "keter").displayProgress > 0 &&
+        props.sefirot.find((s) => s.id === "chokhmah").displayProgress > 0,
+      from: "keter",
+      to: "chokhmah",
+      columnType: "right",
+    },
+    {
+      path: "M200 67 L267 160",
+      active:
+        props.sefirot.find((s) => s.id === "keter").displayProgress > 0 &&
+        props.sefirot.find((s) => s.id === "binah").displayProgress > 0,
+      from: "keter",
+      to: "binah",
+      columnType: "left",
+    },
+    {
+      path: "M133 160 L107 267",
+      active:
+        props.sefirot.find((s) => s.id === "chokhmah").displayProgress > 0 &&
+        props.sefirot.find((s) => s.id === "chesed").displayProgress > 0,
+      from: "chokhmah",
+      to: "chesed",
+      columnType: "right",
+    },
+    {
+      path: "M267 160 L293 267",
+      active:
+        props.sefirot.find((s) => s.id === "binah").displayProgress > 0 &&
+        props.sefirot.find((s) => s.id === "gevurah").displayProgress > 0,
+      from: "binah",
+      to: "gevurah",
+      columnType: "left",
+    },
+    {
+      path: "M107 267 L200 347",
+      active:
+        props.sefirot.find((s) => s.id === "chesed").displayProgress > 0 &&
+        props.sefirot.find((s) => s.id === "tiferet").displayProgress > 0,
+      from: "chesed",
+      to: "tiferet",
+      columnType: "center",
+    },
+    {
+      path: "M293 267 L200 347",
+      active:
+        props.sefirot.find((s) => s.id === "gevurah").displayProgress > 0 &&
+        props.sefirot.find((s) => s.id === "tiferet").displayProgress > 0,
+      from: "gevurah",
+      to: "tiferet",
+      columnType: "center",
+    },
+    {
+      path: "M107 267 L133 373",
+      active:
+        props.sefirot.find((s) => s.id === "chesed").displayProgress > 0 &&
+        props.sefirot.find((s) => s.id === "netzach").displayProgress > 0,
+      from: "chesed",
+      to: "netzach",
+      columnType: "right",
+    },
+    {
+      path: "M293 267 L267 373",
+      active:
+        props.sefirot.find((s) => s.id === "gevurah").displayProgress > 0 &&
+        props.sefirot.find((s) => s.id === "hod").displayProgress > 0,
+      from: "gevurah",
+      to: "hod",
+      columnType: "left",
+    },
+    {
+      path: "M133 373 L200 453",
+      active:
+        props.sefirot.find((s) => s.id === "netzach").displayProgress > 0 &&
+        props.sefirot.find((s) => s.id === "yesod").displayProgress > 0,
+      from: "netzach",
+      to: "yesod",
+      columnType: "center",
+    },
+    {
+      path: "M267 373 L200 453",
+      active:
+        props.sefirot.find((s) => s.id === "hod").displayProgress > 0 &&
+        props.sefirot.find((s) => s.id === "yesod").displayProgress > 0,
+      from: "hod",
+      to: "yesod",
+      columnType: "center",
+    },
+    {
+      path: "M200 453 L200 533",
+      active:
+        props.sefirot.find((s) => s.id === "yesod").displayProgress > 0 &&
+        props.sefirot.find((s) => s.id === "malkhut").displayProgress > 0,
+      from: "yesod",
+      to: "malkhut",
+      columnType: "center",
+    },
+  ];
+});
+
+const getLevelColor = (column) => {
+  switch (column) {
+    case "left":
+      return "#93c5fd";
+    case "right":
+      return "#fcd34d";
+    case "center":
+      return "#86efac";
+    default:
+      return "#ffffff";
+  }
+};
 </script>
 
 <style scoped>
