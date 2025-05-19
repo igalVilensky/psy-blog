@@ -75,7 +75,7 @@
           highlightedCategory === sefirah.category ||
           energyOfDay === sefirah.column,
       }"
-      @click="scrollToSefirah(sefirah.id)"
+      @click="$emit('open-modal', sefirah.id)"
       @mouseover="
         showNodeTooltip(sefirah);
         $emit('update:hoveredNode', sefirah.id);
@@ -231,10 +231,6 @@ defineProps({
     type: Function,
     required: true,
   },
-  scrollToSefirah: {
-    type: Function,
-    required: true,
-  },
   showNodeTooltip: {
     type: Function,
     required: true,
@@ -246,7 +242,7 @@ defineProps({
 });
 
 // Define emits
-defineEmits(["update:hoveredNode"]);
+defineEmits(["update:hoveredNode", "open-modal"]);
 </script>
 
 <style scoped>

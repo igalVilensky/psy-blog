@@ -92,9 +92,9 @@
             :get-sefirah-icon="getSefirahIcon"
             :get-label-x="getLabelX"
             :get-level-color="getLevelColor"
-            :scroll-to-sefirah="scrollToSefirah"
             :show-node-tooltip="showNodeTooltip"
             :hide-node-tooltip="hideNodeTooltip"
+            @open-modal="$emit('open-modal', sefirah.id)"
           />
 
           <!-- Interactive Tooltip -->
@@ -196,10 +196,6 @@ const props = defineProps({
     type: Function,
     required: true,
   },
-  scrollToSefirah: {
-    type: Function,
-    required: true,
-  },
   showNodeTooltip: {
     type: Function,
     required: true,
@@ -210,8 +206,8 @@ const props = defineProps({
   },
 });
 
-// Define emits for two-way binding
-defineEmits(["update:hoveredNode", "update:activeTooltip"]);
+// Define emits for two-way binding and modal
+defineEmits(["update:hoveredNode", "update:activeTooltip", "open-modal"]);
 
 // Connection data with column types
 const connections = computed(() => {

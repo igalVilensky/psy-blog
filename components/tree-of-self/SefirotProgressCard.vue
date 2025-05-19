@@ -114,7 +114,6 @@ defineProps({
 </script>
 
 <style scoped>
-/* Tailwind handles most styling, but include custom ring color */
 [class*="ring-"] {
   --tw-ring-color: rgb(var(--ring-color));
 }

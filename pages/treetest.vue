@@ -45,9 +45,9 @@
           :get-label-x="getLabelX"
           :get-tooltip-level-class="getTooltipLevelClass"
           :get-progress-bar-class="getProgressBarClass"
-          :scroll-to-sefirah="scrollToSefirah"
           :show-node-tooltip="showNodeTooltip"
           :hide-node-tooltip="hideNodeTooltip"
+          @open-modal="openModal"
         />
 
         <!-- Sefirot Progress Cards -->
@@ -73,6 +73,38 @@
       </div>
       <!-- Link to Tree of Self Info Page -->
       <SefirotInfoLink />
+
+      <!-- Pending Actions Notification -->
+      <PendingActionsNotification
+        :sefirot="sefirot"
+        :get-sefirah-icon="getSefirahIcon"
+      />
+
+      <!-- Sefirah Modal -->
+      <SefirahModal
+        v-model:is-open="isModalOpen"
+        :sefirah="selectedSefirah"
+        :ring-color="
+          selectedSefirah ? getRingColor(selectedSefirah.id) : '75, 85, 99'
+        "
+        :progress-class="
+          selectedSefirah
+            ? getCardProgressClass(selectedSefirah.id, selectedSefirah.column)
+            : 'bg-gray-800/50 text-gray-400'
+        "
+        :level-badge-class="
+          selectedSefirah
+            ? getLevelBadgeClass(selectedSefirah.column)
+            : 'bg-gray-800/50 text-gray-400'
+        "
+        :progress-bar-class="
+          selectedSefirah
+            ? getProgressBarClass(selectedSefirah.id, selectedSefirah.column)
+            : 'bg-gray-600'
+        "
+        :set-active-card="setActiveCard"
+        :log-action="logAction"
+      />
     </main>
   </div>
 </template>
@@ -85,6 +117,8 @@ import SefirotProgressCard from "~/components/tree-of-self/SefirotProgressCard.v
 import PageHeader from "~/components/tree-of-self/PageHeader.vue";
 import TreeVisualization from "~/components/tree-of-self/TreeVisualization.vue";
 import SefirotInfoLink from "~/components/tree-of-self/SefirotInfoLink.vue";
+import PendingActionsNotification from "~/components/tree-of-self/PendingActionsNotification.vue";
+import SefirahModal from "~/components/tree-of-self/SefirahModal.vue";
 import { sefirot } from "~/data/sefirotTree.js";
 import { useAuthStore } from "~/stores/auth";
 import {
@@ -115,6 +149,8 @@ const pathOrder = ref([
   "yesod",
   "malkhut",
 ]);
+const isModalOpen = ref(false);
+const selectedSefirah = ref(null);
 
 // Column definitions
 const columns = {
@@ -179,7 +215,7 @@ const selectEnergyColumn = (column) => {
         current.displayProgress < lowest.displayProgress ? current : lowest,
       columnSefirot[0]
     );
-    scrollToSefirah(lowestSefirah.id);
+    openModal(lowestSefirah.id);
   }
 };
 
@@ -253,6 +289,16 @@ const hideNodeTooltip = () => {
   }, 100);
 };
 
+// Open modal with selected sefirah
+const openModal = (sefirahId) => {
+  const sefirah = sefirot.value.find((s) => s.id === sefirahId);
+  if (sefirah) {
+    selectedSefirah.value = sefirah;
+    isModalOpen.value = true;
+    setActiveCard(sefirahId);
+  }
+};
+
 // Connection and node styling functions
 const getConnectionColumnClass = (fromId, toId) => {
   const fromSefirah = sefirot.value.find((s) => s.id === fromId);
@@ -317,25 +363,6 @@ const getConnectionParticleClass = (columnType) => {
 // Set active card
 const setActiveCard = (id) => {
   activeCard.value = id;
-};
-
-// Scroll to Sefirah Card
-const scrollToSefirah = (id) => {
-  activeCard.value = id;
-  setTimeout(() => {
-    const element = document.getElementById(`sefirah-${id}`);
-    if (element) {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-        inline: "nearest",
-      });
-
-      // Add temporary highlight
-      element.classList.add("ring-2");
-      setTimeout(() => element.classList.remove("ring-2"), 2000);
-    }
-  }, 100);
 };
 
 // Get ring color for active card
