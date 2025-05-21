@@ -277,8 +277,8 @@
                 exact-active-class="bg-white/10"
                 @click="closeDropdown"
               >
-                <i class="fas fa-user-circle text-[#0EA5E9]"></i>
-                <span>Мой Профиль (New)</span>
+                <i class="fas fa-tree text-[#0EA5E9]"></i>
+                <span>Древо Себя</span>
               </NuxtLink>
               <NuxtLink
                 to="/personal-cabinet"
@@ -626,10 +626,10 @@
                   exact-active-class="bg-white/15"
                   @click="closeDropdown"
                 >
-                  <i class="fas fa-user text-[#0EA5E9] text-lg"></i>
+                  <i class="fas fa-tree text-[#0EA5E9] text-lg"></i>
                   <span
                     class="font-medium text-slate-300 group-hover:text-white"
-                    >Мой Профиль (New)</span
+                    >Древо Себя</span
                   >
                 </NuxtLink>
                 <NuxtLink

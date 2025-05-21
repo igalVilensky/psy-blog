@@ -1,868 +1,360 @@
 <template>
-  <div class="min-h-screen">
+  <div
+    class="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 text-white"
+  >
     <!-- Main Content Area -->
-    <main class="px-6 xl:px-0 pb-20 mt-12">
+    <main class="px-6 xl:px-0 pb-20 pt-12">
       <div class="container mx-auto max-w-6xl">
+        <!-- Page Header -->
+        <PageHeader />
+
+        <!-- Column Balance & Energy of the Day -->
+        <ColumnEnergySection
+          :column-progress="columnProgress"
+          :column-recommendation="columnRecommendation"
+          :energy-of-day="energyOfDay"
+          :energy-recommendation="energyRecommendation"
+          :select-energy-column="selectEnergyColumn"
+        />
+
+        <!-- Cycle Toggle -->
+        <CycleToggle
+          v-model:path-of-wholeness="pathOfWholeness"
+          :current-week="currentWeek"
+          :get-current-sefirah-name="getCurrentSefirahName"
+        />
+
         <!-- Tree Visualization -->
-        <h2
-          class="text-xl md:text-2xl font-semibold text-white flex items-center mb-4 md:hidden"
-        >
-          <i class="fas fa-tree mr-2 text-gradient-blue-end"></i>
-          Ваше Древо Себя
-        </h2>
-        <section
-          class="mb-8 bg-white/5 backdrop-blur rounded-xl shadow-xl border border-white/10"
-        >
-          <div class="relative flex flex-col items-center">
-            <!-- SVG Tree for Medium+ Screens -->
-            <div class="relative mb-4">
-              <svg
-                class="w-full max-w-3xl h-[32rem] lg:max-w-4xl lg:h-[40rem] xl:max-w-5xl xl:h-[48rem]"
-                viewBox="0 0 400 600"
-                preserveAspectRatio="xMidYMid meet"
-              >
-                <rect
-                  x="0"
-                  y="0"
-                  width="400"
-                  height="600"
-                  fill="url(#svg-bg)"
-                />
-
-                <!-- Title inside SVG (desktop only) -->
-                <g class="hidden md:block">
-                  <text
-                    x="140"
-                    y="30"
-                    class="text-3xl font-semibold text-white"
-                  >
-                    Ваше Древо Себя
-                  </text>
-                </g>
-
-                <!-- Definitions for effects -->
-                <defs>
-                  <!-- Glow filter -->
-                  <filter
-                    id="glow"
-                    x="-50%"
-                    y="-50%"
-                    width="200%"
-                    height="200%"
-                  >
-                    <feGaussianBlur stdDeviation="5" result="blur" />
-                    <feComposite
-                      in="SourceGraphic"
-                      in2="blur"
-                      operator="over"
-                    />
-                  </filter>
-
-                  <!-- Pulse animation for hover -->
-                  <filter
-                    id="pulse-blue"
-                    x="-50%"
-                    y="-50%"
-                    width="200%"
-                    height="200%"
-                  >
-                    <feGaussianBlur stdDeviation="6" result="blur" />
-                    <feColorMatrix
-                      in="blur"
-                      type="matrix"
-                      values="0 0 0 0 0 0 0 0 0 0.9 0 0 0 0 1 0 0 0 0.7 0"
-                      result="glow"
-                    />
-                    <feComposite
-                      in="SourceGraphic"
-                      in2="glow"
-                      operator="over"
-                    />
-                  </filter>
-
-                  <filter
-                    id="pulse-purple"
-                    x="-50%"
-                    y="-50%"
-                    width="200%"
-                    height="200%"
-                  >
-                    <feGaussianBlur stdDeviation="6" result="blur" />
-                    <feColorMatrix
-                      in="blur"
-                      type="matrix"
-                      values="0.8 0 0 0 0 0 0 0 0 0 0.8 0 0 0 1 0 0 0 0.7 0"
-                      result="glow"
-                    />
-                    <feComposite
-                      in="SourceGraphic"
-                      in2="glow"
-                      operator="over"
-                    />
-                  </filter>
-
-                  <filter
-                    id="pulse-orange"
-                    x="-50%"
-                    y="-50%"
-                    width="200%"
-                    height="200%"
-                  >
-                    <feGaussianBlur stdDeviation="6" result="blur" />
-                    <feColorMatrix
-                      in="blur"
-                      type="matrix"
-                      values="1 0 0 0 0 0.6 0 0 0 0 0 0 0 0 0 0 0 0 0.7 0"
-                      result="glow"
-                    />
-                    <feComposite
-                      in="SourceGraphic"
-                      in2="glow"
-                      operator="over"
-                    />
-                  </filter>
-
-                  <filter
-                    id="pulse-mint"
-                    x="-50%"
-                    y="-50%"
-                    width="200%"
-                    height="200%"
-                  >
-                    <feGaussianBlur stdDeviation="6" result="blur" />
-                    <feColorMatrix
-                      in="blur"
-                      type="matrix"
-                      values="0 0.8 0 0 0 0 1 0 0 0 0 0.5 0 0 0 0 0 0 0.7 0"
-                      result="glow"
-                    />
-                    <feComposite
-                      in="SourceGraphic"
-                      in2="glow"
-                      operator="over"
-                    />
-                  </filter>
-
-                  <!-- Vertical beam gradient -->
-                  <linearGradient
-                    id="vertical-beam"
-                    x1="0"
-                    x2="0"
-                    y1="0"
-                    y2="1"
-                  >
-                    <stop offset="0%" stop-color="rgba(255,255,255,0)" />
-                    <stop offset="50%" stop-color="rgba(255,255,255,0.1)" />
-                    <stop offset="100%" stop-color="rgba(255,255,255,0)" />
-                  </linearGradient>
-                </defs>
-
-                <!-- Dynamic connections between nodes -->
-                <g class="connections">
-                  <!-- Vertical light beam -->
-                  <line
-                    x1="200"
-                    y1="67"
-                    x2="200"
-                    y2="533"
-                    stroke="url(#vertical-beam)"
-                    stroke-width="1"
-                    stroke-opacity="0.2"
-                  />
-
-                  <!-- Paths -->
-                  <g v-for="(conn, idx) in connections" :key="`conn-${idx}`">
-                    <path
-                      :d="conn.path"
-                      stroke-width="1.5"
-                      class="path-line"
-                      :class="{ 'active-path': conn.active }"
-                      :stroke-dasharray="conn.active ? '5,5' : '2,3'"
-                    />
-                    <circle
-                      v-if="conn.active"
-                      :class="getConnectionParticleClass(conn.category)"
-                      r="2"
-                      opacity="0.8"
-                    >
-                      <animateMotion
-                        :path="conn.path"
-                        dur="3s"
-                        repeatCount="indefinite"
-                        rotate="auto"
-                      />
-                    </circle>
-                  </g>
-                </g>
-
-                <!-- Sefirot Nodes -->
-                <g
-                  v-for="sefirah in sefirot"
-                  :key="sefirah.id"
-                  :class="`sefirah-${sefirah.id}`"
-                >
-                  <!-- Outer glow ring -->
-                  <circle
-                    v-if="sefirah.progress > 0"
-                    :cx="sefirah.x"
-                    :cy="sefirah.y"
-                    r="18"
-                    :class="getNodeGlowClass(sefirah.id)"
-                    opacity="0.4"
-                    filter="url(#glow)"
-                  />
-
-                  <!-- Pulse effect on hover -->
-                  <circle
-                    :cx="sefirah.x"
-                    :cy="sefirah.y"
-                    r="18"
-                    class="node-pulse"
-                    :class="getNodePulseClass(sefirah.category)"
-                    opacity="0"
-                  >
-                    <animate
-                      attributeName="opacity"
-                      values="0;0.6;0"
-                      dur="1.5s"
-                      begin="mouseover"
-                      repeatCount="indefinite"
-                      restart="whenNotActive"
-                    />
-                    <animate
-                      attributeName="r"
-                      values="15;25;15"
-                      dur="1.5s"
-                      begin="mouseover"
-                      repeatCount="indefinite"
-                      restart="whenNotActive"
-                    />
-                  </circle>
-
-                  <!-- Base node circle -->
-                  <circle
-                    :cx="sefirah.x"
-                    :cy="sefirah.y"
-                    :r="hoveredNode === sefirah.id ? 18 : 15"
-                    :class="[
-                      getNodeClass(sefirah.id, sefirah.progress),
-                      'node-circle',
-                      {
-                        'highlight-node':
-                          highlightedCategory === sefirah.category,
-                      },
-                    ]"
-                    class="cursor-pointer transition-all duration-300"
-                    @click="scrollToSefirah(sefirah.id)"
-                    @mouseover="
-                      showNodeTooltip(sefirah);
-                      hoveredNode = sefirah.id;
-                    "
-                    @mouseleave="
-                      hideNodeTooltip();
-                      hoveredNode = null;
-                    "
-                  >
-                    <title>
-                      {{ sefirah.function }}: {{ sefirah.progress }}%
-                    </title>
-                    <animate
-                      v-if="sefirah.progress > 0"
-                      attributeName="opacity"
-                      values="0.9;1;0.9"
-                      dur="3s"
-                      repeatCount="indefinite"
-                    />
-                  </circle>
-
-                  <!-- Progress ring -->
-                  <circle
-                    v-if="sefirah.progress > 0"
-                    :cx="sefirah.x"
-                    :cy="sefirah.y"
-                    r="15"
-                    :stroke="getNodeStrokeColor(sefirah.id)"
-                    stroke-width="3"
-                    stroke-linecap="round"
-                    fill="none"
-                    :stroke-dasharray="`${sefirah.progress * 0.94}, 100`"
-                    :transform="`rotate(-90 ${sefirah.x} ${sefirah.y})`"
-                    style="pointer-events: none; filter: url(#progress-shadow)"
-                  >
-                    <animate
-                      attributeName="stroke-opacity"
-                      values="0.8;1;0.8"
-                      dur="4s"
-                      repeatCount="indefinite"
-                    />
-                  </circle>
-
-                  <!-- Node inner icon -->
-                  <text
-                    :x="sefirah.x"
-                    :y="sefirah.y"
-                    text-anchor="middle"
-                    dominant-baseline="central"
-                    :class="[
-                      'text-xs font-bold',
-                      getIconClass(sefirah.category, sefirah.progress),
-                    ]"
-                    style="pointer-events: none"
-                  >
-                    <tspan v-if="sefirah.category === 'wisdom'" class="fa">
-                      
-                    </tspan>
-                    <tspan
-                      v-else-if="sefirah.category === 'emotions'"
-                      class="fa"
-                    >
-                      
-                    </tspan>
-                    <tspan v-else-if="sefirah.category === 'action'" class="fa">
-                      
-                    </tspan>
-                    <tspan
-                      v-else-if="sefirah.category === 'integration'"
-                      class="fa"
-                    >
-                      
-                    </tspan>
-                  </text>
-
-                  <!-- Label with psychological term and Hebrew name -->
-                  <g class="node-label transition-opacity duration-300">
-                    <text
-                      :x="getLabelX(sefirah)"
-                      :y="sefirah.y + 30"
-                      class="font-medium text-white"
-                      text-anchor="middle"
-                      dominant-baseline="middle"
-                    >
-                      {{ sefirah.function }}
-                    </text>
-                    <text
-                      :x="getLabelX(sefirah)"
-                      :y="sefirah.y + 45"
-                      class="text-[0.6rem] font-light text-gray-300"
-                      text-anchor="middle"
-                      dominant-baseline="middle"
-                    >
-                      ({{ sefirah.name }})
-                    </text>
-                  </g>
-                </g>
-
-                <!-- Interactive tooltip -->
-                <foreignObject
-                  v-if="activeTooltip"
-                  :x="activeTooltip.x - 70"
-                  :y="activeTooltip.y"
-                  width="140"
-                  height="70"
-                  class="tooltip-container"
-                >
-                  <div
-                    class="bg-black/80 backdrop-blur-sm p-2 rounded text-white text-xs border border-white/20"
-                  >
-                    <p class="font-medium">{{ activeTooltip.function }}</p>
-                    <p class="text-gray-300">{{ activeTooltip.name }}</p>
-                    <div class="w-full bg-gray-800/50 rounded-full h-1 mt-1">
-                      <div
-                        class="h-1 rounded-full"
-                        :class="getProgressBarClass(activeTooltip.id)"
-                        :style="{ width: `${activeTooltip.progress}%` }"
-                      ></div>
-                    </div>
-                  </div>
-                </foreignObject>
-              </svg>
-            </div>
-          </div>
-
-          <!-- Desktop Side Legend -->
-          <div
-            class="hidden md:block absolute right-16 top-1/3 transform -translate-y-1/2"
-          >
-            <div
-              class="flex flex-col space-y-2 bg-black/40 rounded-lg p-1 border border-white/10"
-            >
-              <div
-                class="flex items-center px-3 py-2 hover:bg-white/5 transition-colors cursor-pointer rounded"
-                :class="{ 'bg-white/10': highlightedCategory === 'wisdom' }"
-                @click="toggleHighlight('wisdom')"
-                role="button"
-                aria-label="Highlight Wisdom Sefirot"
-              >
-                <span
-                  class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-blue-start to-gradient-blue-end mr-2"
-                ></span>
-                <span class="text-gray-200 whitespace-nowrap">Мудрость</span>
-              </div>
-              <div
-                class="flex items-center px-3 py-2 hover:bg-white/5 transition-colors cursor-pointer rounded"
-                :class="{ 'bg-white/10': highlightedCategory === 'emotions' }"
-                @click="toggleHighlight('emotions')"
-                role="button"
-                aria-label="Highlight Emotions Sefirot"
-              >
-                <span
-                  class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-purple-start to-gradient-purple-end mr-2"
-                ></span>
-                <span class="text-gray-200 whitespace-nowrap">Чувства</span>
-              </div>
-              <div
-                class="flex items-center px-3 py-2 hover:bg-white/5 transition-colors cursor-pointer rounded"
-                :class="{ 'bg-white/10': highlightedCategory === 'action' }"
-                @click="toggleHighlight('action')"
-                role="button"
-                aria-label="Highlight Action Sefirot"
-              >
-                <span
-                  class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-orange-start to-gradient-orange-end mr-2"
-                ></span>
-                <span class="text-gray-200 whitespace-nowrap">Действия</span>
-              </div>
-              <div
-                class="flex items-center px-3 py-2 hover:bg-white/5 transition-colors cursor-pointer rounded"
-                :class="{
-                  'bg-white/10': highlightedCategory === 'integration',
-                }"
-                @click="toggleHighlight('integration')"
-                role="button"
-                aria-label="Highlight Integration Sefirot"
-              >
-                <span
-                  class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-mint-start to-gradient-mint-end mr-2"
-                ></span>
-                <span class="text-gray-200 whitespace-nowrap">Интеграция</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Mobile/Tablet Legend -->
-          <div class="flex justify-center md:hidden">
-            <div
-              class="inline-grid grid-cols-2 sm:grid-cols-4 gap-px bg-white/10 rounded-lg overflow-hidden border border-white/10"
-            >
-              <div
-                class="flex items-center px-4 py-2 bg-black/40 hover:bg-white/5 transition-colors cursor-pointer"
-                :class="{ 'bg-white/10': highlightedCategory === 'wisdom' }"
-                @click="toggleHighlight('wisdom')"
-                role="button"
-                aria-label="Highlight Wisdom Sefirot"
-              >
-                <span
-                  class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-blue-start to-gradient-blue-end mr-2"
-                ></span>
-                <span class="text-gray-200 whitespace-nowrap">Мудрость</span>
-              </div>
-              <div
-                class="flex items-center px-4 py-2 bg-black/40 hover:bg-white/5 transition-colors cursor-pointer"
-                :class="{ 'bg-white/10': highlightedCategory === 'emotions' }"
-                @click="toggleHighlight('emotions')"
-                role="button"
-                aria-label="Highlight Emotions Sefirot"
-              >
-                <span
-                  class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-purple-start to-gradient-purple-end mr-2"
-                ></span>
-                <span class="text-gray-200 whitespace-nowrap">Чувства</span>
-              </div>
-              <div
-                class="flex items-center px-4 py-2 bg-black/40 hover:bg-white/5 transition-colors cursor-pointer"
-                :class="{ 'bg-white/10': highlightedCategory === 'action' }"
-                @click="toggleHighlight('action')"
-                role="button"
-                aria-label="Highlight Action Sefirot"
-              >
-                <span
-                  class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-orange-start to-gradient-orange-end mr-2"
-                ></span>
-                <span class="text-gray-200 whitespace-nowrap">Действия</span>
-              </div>
-              <div
-                class="flex items-center px-4 py-2 bg-black/40 hover:bg-white/5 transition-colors cursor-pointer"
-                :class="{
-                  'bg-white/10': highlightedCategory === 'integration',
-                }"
-                @click="toggleHighlight('integration')"
-                role="button"
-                aria-label="Highlight Integration Sefirot"
-              >
-                <span
-                  class="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-gradient-mint-start to-gradient-mint-end mr-2"
-                ></span>
-                <span class="text-gray-200 whitespace-nowrap">Интеграция</span>
-              </div>
-            </div>
-          </div>
-        </section>
+        <TreeVisualization
+          :sefirot="sefirot"
+          :path-of-wholeness="pathOfWholeness"
+          :current-week="currentWeek"
+          :energy-of-day="energyOfDay"
+          :highlighted-category="highlightedCategory"
+          v-model:hovered-node="hoveredNode"
+          v-model:active-tooltip="activeTooltip"
+          :is-current-week-sefirah="isCurrentWeekSefirah"
+          :get-connection-column-class="getConnectionColumnClass"
+          :get-active-stroke-class="getActiveStrokeClass"
+          :get-connection-particle-class="getConnectionParticleClass"
+          :get-node-glow-class="getNodeGlowClass"
+          :get-glow-filter="getGlowFilter"
+          :get-node-pulse-class="getNodePulseClass"
+          :get-node-stroke-color="getNodeStrokeColor"
+          :get-sefirah-icon="getSefirahIcon"
+          :get-label-x="getLabelX"
+          :get-tooltip-level-class="getTooltipLevelClass"
+          :get-progress-bar-class="getProgressBarClass"
+          :show-node-tooltip="showNodeTooltip"
+          :hide-node-tooltip="hideNodeTooltip"
+          @open-modal="openModal"
+        />
 
         <!-- Sefirot Progress Cards -->
         <section
           class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-10 md:mb-16"
         >
-          <div
+          <SefirotProgressCard
             v-for="sefirah in sefirot"
             :key="sefirah.id"
             :id="`sefirah-${sefirah.id}`"
-            class="bg-white/5 backdrop-blur rounded-xl shadow-md p-5 border border-white/10 transition-all hover:shadow-xl"
-            :class="{
-              'ring-2 ring-offset-2 ring-offset-background':
-                activeCard === sefirah.id,
-            }"
-            :style="{ '--ring-color': getRingColor(sefirah.id) }"
-            @click="setActiveCard(sefirah.id)"
-          >
-            <div class="flex justify-between items-start mb-3">
-              <h3 class="text-lg md:text-xl font-semibold text-white">
-                {{ sefirah.psychName }}
-                <span class="text-sm text-gray-300">({{ sefirah.name }})</span>
-              </h3>
-              <div
-                class="w-12 h-12 rounded-full flex items-center justify-center text-sm font-medium"
-                :class="getCardProgressClass(sefirah.id)"
-              >
-                {{ sefirah.progress }}%
-              </div>
-            </div>
-
-            <p class="text-gray-300 text-sm mb-2">{{ sefirah.function }}</p>
-            <p class="text-gray-400 text-sm mb-4">{{ sefirah.description }}</p>
-
-            <div class="mb-4">
-              <div class="w-full bg-gray-800/50 rounded-full h-1.5 mb-1">
-                <div
-                  class="h-1.5 rounded-full"
-                  :class="getProgressBarClass(sefirah.id)"
-                  :style="{ width: `${sefirah.progress}%` }"
-                ></div>
-              </div>
-            </div>
-
-            <div class="flex flex-wrap gap-2 mb-4">
-              <span
-                v-for="(feature, idx) in sefirah.features"
-                :key="`feature-${sefirah.id}-${idx}`"
-                class="inline-block text-xs py-1 px-2 rounded-full bg-white/10 text-gray-300"
-              >
-                {{ feature }}
-              </span>
-            </div>
-
-            <nuxt-link
-              v-if="sefirah.cta"
-              :to="sefirah.cta.link"
-              class="inline-flex items-center text-sm px-4 py-2 rounded-lg bg-white/10 hover:bg-white/15 transition-all text-white"
-            >
-              <i class="fas fa-arrow-right mr-2"></i>
-              {{ sefirah.cta.text }}
-            </nuxt-link>
-            <p v-else class="text-xs text-gray-500">
-              <i class="fas fa-clock mr-1"></i> Скоро появятся новые способы
-              роста!
-            </p>
-          </div>
+            :sefirah="sefirah"
+            :is-active="activeCard === sefirah.id"
+            :ring-color="getRingColor(sefirah.id)"
+            :progress-class="getCardProgressClass(sefirah.id, sefirah.column)"
+            :level-badge-class="getLevelBadgeClass(sefirah.column)"
+            :progress-bar-class="
+              getProgressBarClass(sefirah.id, sefirah.column)
+            "
+            :set-active-card="setActiveCard"
+            :log-action="logAction"
+          />
         </section>
       </div>
+      <!-- Link to Tree of Self Info Page -->
+      <SefirotInfoLink />
+
+      <!-- Pending Actions Notification -->
+      <PendingActionsNotification
+        :sefirot="sefirot"
+        :get-sefirah-icon="getSefirahIcon"
+      />
+
+      <!-- Sefirah Modal -->
+      <SefirahModal
+        v-model:is-open="isModalOpen"
+        :sefirah="selectedSefirah"
+        :ring-color="
+          selectedSefirah ? getRingColor(selectedSefirah.id) : '75, 85, 99'
+        "
+        :progress-class="
+          selectedSefirah
+            ? getCardProgressClass(selectedSefirah.id, selectedSefirah.column)
+            : 'bg-gray-800/50 text-gray-400'
+        "
+        :level-badge-class="
+          selectedSefirah
+            ? getLevelBadgeClass(selectedSefirah.column)
+            : 'bg-gray-800/50 text-gray-400'
+        "
+        :progress-bar-class="
+          selectedSefirah
+            ? getProgressBarClass(selectedSefirah.id, selectedSefirah.column)
+            : 'bg-gray-600'
+        "
+        :set-active-card="setActiveCard"
+        :log-action="logAction"
+      />
     </main>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted, watch } from "vue";
+import ColumnEnergySection from "~/components/tree-of-self/EnergyOfDay.vue";
+import CycleToggle from "~/components/tree-of-self/CycleToggle.vue";
+import SefirotProgressCard from "~/components/tree-of-self/SefirotProgressCard.vue";
+import PageHeader from "~/components/tree-of-self/PageHeader.vue";
+import TreeVisualization from "~/components/tree-of-self/TreeVisualization.vue";
+import SefirotInfoLink from "~/components/tree-of-self/SefirotInfoLink.vue";
+import PendingActionsNotification from "~/components/tree-of-self/PendingActionsNotification.vue";
+import SefirahModal from "~/components/tree-of-self/SefirahModal.vue";
+import { sefirot } from "~/data/sefirotTree.js";
 import { useAuthStore } from "~/stores/auth";
-import { useFirestore } from "~/plugins/firebase";
-import { getEmotionBarometerData } from "~/api/firebase/emotionBarometer";
-import { getDailyGrowthSparkData } from "~/api/firebase/dailyGrowthSpark";
-import { getLatestUserAssessment } from "~/api/firebase/assessments";
-import { getPurchasedCourses } from "~/api/firebase/coursesApi";
+import {
+  initializeDailyActions,
+  logAction,
+  fetchSefirotProgress,
+} from "~/api/firebase/sefirotProgress";
 
-// Auth and Firestore setup
+// Auth setup
 const authStore = useAuthStore();
-const firestore = useFirestore();
 const isLoggedIn = computed(() => !!authStore.user);
 const activeCard = ref(null);
 const activeTooltip = ref(null);
 const hoveredNode = ref(null);
 const highlightedCategory = ref(null);
-
-// Sefirot Data Structure
-const sefirot = ref([
-  {
-    id: "keter",
-    name: "Кетер",
-    psychName: "Высшее Я",
-    function: "Высшее Я",
-    description: "Ваша истинная сущность и потенциал души.",
-    features: ["Профиль", "Открытие Архетипов"],
-    x: 200,
-    y: 67,
-    progress: 0,
-    category: "integration",
-    cta: {
-      text: "Пройти тест архетипов",
-      link: "/awareness-tools/life-purpose-archetype",
-    },
-  },
-  {
-    id: "chokhmah",
-    name: "Хохма",
-    psychName: "Clarity",
-    function: "Ясность",
-    description: "Интуиция и интеллектуальное прозрение.",
-    features: ["Тест Большой Пятёрки", "Блог"],
-    x: 133,
-    y: 160,
-    progress: 0,
-    category: "wisdom",
-    cta: {
-      text: "Пройти Большую Пятёрку",
-      link: "/awareness-tools/big-5-model",
-    },
-  },
-  {
-    id: "binah",
-    name: "Бина",
-    psychName: "Emotional Awareness",
-    function: "Эм. осознанность",
-    description: "Глубина чувств и понимание эмоций.",
-    features: ["Эмоциональный Компас"],
-    x: 267,
-    y: 160,
-    progress: 0,
-    category: "emotions",
-    cta: {
-      text: "Записать эмоции",
-      link: "/awareness-tools/emotional-compass",
-    },
-  },
-  {
-    id: "chesed",
-    name: "Хесед",
-    psychName: "Connection",
-    function: "Связь",
-    description: "Милосердие и поддержка сообщества.",
-    features: ["Центр сообщества"],
-    x: 107,
-    y: 267,
-    progress: 0,
-    category: "emotions",
-    cta: {
-      text: "Поделиться инсайтом",
-      link: "/awareness-tools/inspiration-wall",
-    },
-  },
-  {
-    id: "gevurah",
-    name: "Гвура",
-    psychName: "Structure",
-    function: "Структура",
-    description: "Дисциплина и конкретные действия.",
-    features: ["Курсы"],
-    x: 293,
-    y: 267,
-    progress: 0,
-    category: "action",
-    cta: { text: "Начать курс", link: "/courses/courses" },
-  },
-  {
-    id: "tiferet",
-    name: "Тиферет",
-    psychName: "Integration",
-    function: "Интеграция",
-    description: "Баланс и целостность вашего пути.",
-    features: ["Внутренний Ландшафт"],
-    x: 200,
-    y: 347,
-    progress: 0,
-    category: "integration",
-    cta: null,
-  },
-  {
-    id: "netzach",
-    name: "Нецах",
-    psychName: "Motivation",
-    function: "Мотивация",
-    description: "Стойкость и ежедневный рост.",
-    features: ["Ежедневная Искра Роста"],
-    x: 133,
-    y: 373,
-    progress: 0,
-    category: "action",
-    cta: { text: "Записать искру", link: "/home" },
-  },
-  {
-    id: "hod",
-    name: "Ход",
-    psychName: "Perspective",
-    function: "Перспектива",
-    description: "Рефлексия через контент и знания.",
-    features: ["Гайды", "Подкасты"],
-    x: 267,
-    y: 373,
-    progress: 0,
-    category: "wisdom",
-    cta: null,
-  },
-  {
-    id: "yesod",
-    name: "Йесод",
-    psychName: "Routine",
-    function: "Рутина",
-    description: "Фундамент ваших привычек и прогресса.",
-    features: ["Личный кабинет"],
-    x: 200,
-    y: 453,
-    progress: 0,
-    category: "integration",
-    cta: { text: "Посмотреть прогресс", link: "/personal-cabinet" },
-  },
-  {
-    id: "malkhut",
-    name: "Малхут",
-    psychName: "Manifestation",
-    function: "Воплощение",
-    description: "Реальные действия в мире.",
-    features: ["Выполненные задачи"],
-    x: 200,
-    y: 533,
-    progress: 0,
-    category: "action",
-    cta: { text: "Завершить задачу", link: "/awareness-tools" },
-  },
+const pathOfWholeness = ref(false);
+const energyOfDay = ref(null);
+const currentWeek = ref(1);
+const pathOrder = ref([
+  "keter",
+  "chokhmah",
+  "binah",
+  "chesed",
+  "gevurah",
+  "tiferet",
+  "netzach",
+  "hod",
+  "yesod",
+  "malkhut",
 ]);
+const isModalOpen = ref(false);
+const selectedSefirah = ref(null);
 
-// Connection data
-const connections = computed(() => {
-  return [
-    {
-      path: "M200 67 L133 160",
-      active:
-        sefirot.value.find((s) => s.id === "keter").progress > 0 &&
-        sefirot.value.find((s) => s.id === "chokhmah").progress > 0,
-      category: "wisdom",
-    },
-    {
-      path: "M200 67 L267 160",
-      active:
-        sefirot.value.find((s) => s.id === "keter").progress > 0 &&
-        sefirot.value.find((s) => s.id === "binah").progress > 0,
-      category: "emotions",
-    },
-    {
-      path: "M133 160 L107 267",
-      active:
-        sefirot.value.find((s) => s.id === "chokhmah").progress > 0 &&
-        sefirot.value.find((s) => s.id === "chesed").progress > 0,
-      category: "emotions",
-    },
-    {
-      path: "M267 160 L293 267",
-      active:
-        sefirot.value.find((s) => s.id === "binah").progress > 0 &&
-        sefirot.value.find((s) => s.id === "gevurah").progress > 0,
-      category: "action",
-    },
-    {
-      path: "M107 267 L200 347",
-      active:
-        sefirot.value.find((s) => s.id === "chesed").progress > 0 &&
-        sefirot.value.find((s) => s.id === "tiferet").progress > 0,
-      category: "integration",
-    },
-    {
-      path: "M293 267 L200 347",
-      active:
-        sefirot.value.find((s) => s.id === "gevurah").progress > 0 &&
-        sefirot.value.find((s) => s.id === "tiferet").progress > 0,
-      category: "integration",
-    },
-    {
-      path: "M107 267 L133 373",
-      active:
-        sefirot.value.find((s) => s.id === "chesed").progress > 0 &&
-        sefirot.value.find((s) => s.id === "netzach").progress > 0,
-      category: "action",
-    },
-    {
-      path: "M293 267 L267 373",
-      active:
-        sefirot.value.find((s) => s.id === "gevurah").progress > 0 &&
-        sefirot.value.find((s) => s.id === "hod").progress > 0,
-      category: "wisdom",
-    },
-    {
-      path: "M133 373 L200 453",
-      active:
-        sefirot.value.find((s) => s.id === "netzach").progress > 0 &&
-        sefirot.value.find((s) => s.id === "yesod").progress > 0,
-      category: "integration",
-    },
-    {
-      path: "M267 373 L200 453",
-      active:
-        sefirot.value.find((s) => s.id === "hod").progress > 0 &&
-        sefirot.value.find((s) => s.id === "yesod").progress > 0,
-      category: "integration",
-    },
-    {
-      path: "M200 453 L200 533",
-      active:
-        sefirot.value.find((s) => s.id === "yesod").progress > 0 &&
-        sefirot.value.find((s) => s.id === "malkhut").progress > 0,
-      category: "action",
-    },
-  ];
+// Column definitions
+const columns = {
+  left: { name: "Вода", color: "blue", sefirot: ["binah", "gevurah", "hod"] },
+  right: {
+    name: "Огонь",
+    color: "yellow",
+    sefirot: ["chokhmah", "chesed", "netzach"],
+  },
+  center: {
+    name: "Воздух",
+    color: "green",
+    sefirot: ["keter", "tiferet", "yesod", "malkhut"],
+  },
+};
+
+// Calculate column progress averages based on daily progress
+const columnProgress = computed(() => {
+  const result = { left: 0, right: 0, center: 0 };
+  sefirot.value.forEach((sefirah) => {
+    result[sefirah.column] += sefirah.displayProgress;
+  });
+  result.left = Math.round(result.left / columns.left.sefirot.length);
+  result.right = Math.round(result.right / columns.right.sefirot.length);
+  result.center = Math.round(result.center / columns.center.sefirot.length);
+  return result;
 });
 
-// Show node tooltip
-const showNodeTooltip = (sefirah) => {
-  activeTooltip.value = {
-    ...sefirah,
-    x: sefirah.x,
-    y: sefirah.id === "keter" ? sefirah.y + 80 : sefirah.y - 80,
-  };
-};
+// Column recommendation
+const columnRecommendation = computed(() => {
+  const lowestColumn = Object.entries(columnProgress.value).reduce(
+    (acc, [key, value]) => (value < acc.value ? { key, value } : acc),
+    { key: "left", value: 100 }
+  ).key;
+  const sefirahNames = { left: "Бина", right: "Хохма", center: "Кетер" };
+  return `Укрепите ${columns[lowestColumn].name}: ${sefirahNames[lowestColumn]}`;
+});
 
-// Hide node tooltip
-const hideNodeTooltip = () => {
-  activeTooltip.value = null;
-};
+// Energy of the day recommendation
+const energyRecommendation = computed(() => {
+  if (!energyOfDay.value) return "Выберите энергию дня для рекомендаций";
+  const columnSefirot = sefirot.value.filter(
+    (s) => s.column === energyOfDay.value
+  );
+  const lowestSefirah = columnSefirot.reduce(
+    (lowest, current) =>
+      current.displayProgress < lowest.displayProgress ? current : lowest,
+    columnSefirot[0]
+  );
+  return `Сфокусируйтесь на ${lowestSefirah.function} (${lowestSefirah.name})`;
+});
 
-// Toggle highlight for legend
-const toggleHighlight = (category) => {
-  highlightedCategory.value =
-    highlightedCategory.value === category ? null : category;
-};
-
-// Get node pulse class
-const getNodePulseClass = (category) => {
-  switch (category) {
-    case "wisdom":
-      return "pulse-blue";
-    case "emotions":
-      return "pulse-purple";
-    case "action":
-      return "pulse-orange";
-    case "integration":
-      return "pulse-mint";
-    default:
-      return "";
+// Select energy column
+const selectEnergyColumn = (column) => {
+  energyOfDay.value = energyOfDay.value === column ? null : column;
+  if (energyOfDay.value) {
+    const columnSefirot = sefirot.value.filter(
+      (s) => s.column === energyOfDay.value
+    );
+    const lowestSefirah = columnSefirot.reduce(
+      (lowest, current) =>
+        current.displayProgress < lowest.displayProgress ? current : lowest,
+      columnSefirot[0]
+    );
+    openModal(lowestSefirah.id);
   }
 };
 
+// Check if sefirah is current week's focus
+const isCurrentWeekSefirah = (id) => {
+  return pathOfWholeness.value && pathOrder.value[currentWeek.value - 1] === id;
+};
+
+// Get current sefirah name for Path of Wholeness
+const getCurrentSefirahName = () => {
+  const currentSefirahId = pathOrder.value[currentWeek.value - 1];
+  const sefirah = sefirot.value.find((s) => s.id === currentSefirahId);
+  return sefirah ? sefirah.name : "";
+};
+
+// Calculate level based on points
+const calculateLevel = (points) => {
+  if (points < 200) return 1;
+  if (points < 400) return 2;
+  if (points < 1000) return 3;
+  if (points < 2000) return 4;
+  return 5;
+};
+
+// Calculate daily progress
+const calculateDailyProgress = (actions, maxActions) => {
+  return Math.round((actions / maxActions) * 100);
+};
+
+// Apply decay to points
+const applyDecay = (points, lastActive) => {
+  if (!lastActive) return points;
+  const daysInactive = Math.floor(
+    (new Date() - lastActive.toDate()) / (1000 * 60 * 60 * 24)
+  );
+  if (daysInactive <= 7) return points;
+  const decayDays = daysInactive - 7;
+  let decayedPoints = points;
+  for (let i = 0; i < decayDays; i++) {
+    decayedPoints = Math.max(decayedPoints * 0.95, 10);
+  }
+  return Math.round(decayedPoints);
+};
+
+// Tooltip and highlight functions
+const showNodeTooltip = (sefirah) => {
+  let tooltipY;
+  let tooltipX = sefirah.x;
+  if (sefirah.y < 200) {
+    tooltipY = sefirah.y + 50;
+  } else if (sefirah.y > 500) {
+    tooltipY = sefirah.y - 50;
+  } else {
+    tooltipY = sefirah.y - 60;
+  }
+  if (sefirah.x < 150) {
+    tooltipX = sefirah.x + 30;
+  } else if (sefirah.x > 250) {
+    tooltipX = sefirah.x - 30;
+  }
+  activeTooltip.value = {
+    ...sefirah,
+    x: tooltipX,
+    y: tooltipY,
+  };
+};
+
+const hideNodeTooltip = () => {
+  setTimeout(() => {
+    activeTooltip.value = null;
+  }, 100);
+};
+
+// Open modal with selected sefirah
+const openModal = (sefirahId) => {
+  const sefirah = sefirot.value.find((s) => s.id === sefirahId);
+  if (sefirah) {
+    selectedSefirah.value = sefirah;
+    isModalOpen.value = true;
+    setActiveCard(sefirahId);
+  }
+};
+
+// Connection and node styling functions
+const getConnectionColumnClass = (fromId, toId) => {
+  const fromSefirah = sefirot.value.find((s) => s.id === fromId);
+  const toSefirah = sefirot.value.find((s) => s.id === toId);
+  if (fromSefirah.column === toSefirah.column) {
+    return `path-${fromSefirah.column}`;
+  }
+  return "path-neutral";
+};
+
+const getActiveStrokeClass = (fromId, toId) => {
+  const fromSefirah = sefirot.value.find((s) => s.id === fromId);
+  const toSefirah = sefirot.value.find((s) => s.id === toId);
+  if (fromSefirah.column === toSefirah.column) {
+    switch (fromSefirah.column) {
+      case "left":
+        return "stroke-blue-500";
+      case "right":
+        return "stroke-yellow-500";
+      case "center":
+        return "stroke-green-500";
+    }
+  }
+  return "stroke-white";
+};
+
+// Get node pulse class
+const getNodePulseClass = (category, column) => {
+  return `pulse-${column}`;
+};
+
+const getSefirahIcon = (id) => {
+  const icons = {
+    keter: "fa-crown", // Корона
+    chokhmah: "fa-eye", // Око/искра
+    binah: "fa-wine-glass", // Кубок
+    chesed: "fa-hand-holding-heart", // Раскрытая ладонь
+    gevurah: "fa-shield-alt", // Меч (using shield-alt for strength)
+    tiferet: "fa-heart", // Сердце
+    netzach: "fa-fire", // Факел
+    hod: "fa-spa", // Лотос
+    yesod: "fa-moon", // Луна
+    malkhut: "fa-globe", // Земля
+  };
+  return icons[id] || "fa-circle";
+};
+
 // Get connection particle class
-const getConnectionParticleClass = (category) => {
-  switch (category) {
-    case "wisdom":
-      return "fill-gradient-blue-end";
-    case "emotions":
-      return "fill-gradient-purple-end";
-    case "action":
-      return "fill-gradient-orange-end";
-    case "integration":
-      return "fill-gradient-mint-end";
+const getConnectionParticleClass = (columnType) => {
+  switch (columnType) {
+    case "left":
+      return "fill-blue-300";
+    case "right":
+      return "fill-yellow-300";
+    case "center":
+      return "fill-green-300";
     default:
       return "fill-white";
   }
@@ -873,240 +365,20 @@ const setActiveCard = (id) => {
   activeCard.value = id;
 };
 
-// Scroll to Sefirah Card
-const scrollToSefirah = (id) => {
-  activeCard.value = id;
-  const element = document.getElementById(`sefirah-${id}`);
-  if (element) {
-    setTimeout(() => {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-        inline: "nearest",
-      });
-      element.classList.add("ring-2");
-      setTimeout(() => element.classList.remove("ring-2"), 2000);
-    }, 50);
-  }
-};
-
-// Calculate overall progress
-const overallProgress = computed(() => {
-  const total = sefirot.value.reduce((sum, s) => sum + s.progress, 0);
-  return Math.round(total / 10);
-});
-
-// Fetch User Progress
-const fetchSefirotProgress = async (userId) => {
-  try {
-    const assessmentResponse = await getLatestUserAssessment(firestore, userId);
-    if (assessmentResponse?.success) {
-      const archetypeCount = Object.keys(
-        assessmentResponse.assessment.scores
-      ).length;
-      sefirot.value.find((s) => s.id === "keter").progress = Math.min(
-        Math.round((archetypeCount / 12) * 100),
-        100
-      );
-    }
-
-    if (
-      assessmentResponse?.success &&
-      assessmentResponse.assessment.type === "big-5"
-    ) {
-      sefirot.value.find((s) => s.id === "chokhmah").progress = 100;
-    }
-
-    const emotionResponse = await getEmotionBarometerData(firestore, userId);
-    if (emotionResponse?.success) {
-      const entryCount = emotionResponse.data.entries.length;
-      sefirot.value.find((s) => s.id === "binah").progress = Math.min(
-        Math.round((entryCount / 10) * 100),
-        100
-      );
-    }
-
-    sefirot.value.find((s) => s.id === "chesed").progress = 10;
-
-    const coursesResponse = await getPurchasedCourses(userId);
-    if (coursesResponse?.success && coursesResponse.data.length > 0) {
-      const avgProgress =
-        coursesResponse.data.reduce(
-          (sum, course) => sum + (course.progress?.progressPercentage || 0),
-          0
-        ) / coursesResponse.data.length;
-      sefirot.value.find((s) => s.id === "gevurah").progress =
-        Math.round(avgProgress);
-    }
-
-    setTimeout(() => {
-      const totalProgress = sefirot.value
-        .filter((s) => s.id !== "tiferet")
-        .reduce((sum, s) => sum + s.progress, 0);
-      sefirot.value.find((s) => s.id === "tiferet").progress = Math.round(
-        totalProgress / 9
-      );
-    }, 100);
-
-    const sparkResponse = await getDailyGrowthSparkData(firestore, userId);
-    if (sparkResponse?.success) {
-      const sparkCount = sparkResponse.data.entries?.length || 1;
-      sefirot.value.find((s) => s.id === "netzach").progress = Math.min(
-        Math.round((sparkCount / 10) * 100),
-        100
-      );
-    }
-
-    sefirot.value.find((s) => s.id === "hod").progress = 0;
-
-    sefirot.value.find((s) => s.id === "yesod").progress =
-      coursesResponse?.success ? 50 : 0;
-
-    sefirot.value.find((s) => s.id === "malkhut").progress = 20;
-  } catch (error) {
-    console.error("Error fetching Sefirot progress:", error);
-    sefirot.value.forEach((s) => {
-      if (typeof s.progress !== "number") s.progress = 0;
-    });
-  }
-};
-
 // Get ring color for active card
 const getRingColor = (id) => {
   const sefirah = sefirot.value.find((s) => s.id === id);
   if (!sefirah) return "75, 85, 99";
-
-  switch (sefirah.category) {
-    case "wisdom":
-      return "0, 230, 255";
-    case "emotions":
-      return "255, 77, 255";
-    case "action":
-      return "255, 158, 0";
-    case "integration":
-      return "112, 255, 148";
+  switch (sefirah.column) {
+    case "left":
+      return "59, 130, 246";
+    case "right":
+      return "234, 179, 8";
+    case "center":
+      return "34, 197, 94";
     default:
       return "75, 85, 99";
   }
-};
-
-const getIconClass = (category, progress) => {
-  if (progress === 0) return "fill-gray-400";
-
-  switch (category) {
-    case "wisdom":
-      return "fill-blue-200";
-    case "emotions":
-      return "fill-purple-200";
-    case "action":
-      return "fill-orange-200";
-    case "integration":
-      return "fill-green-200";
-    default:
-      return "fill-gray-400";
-  }
-};
-
-// Styling functions
-const getNodeClass = (id, progress) => {
-  const sefirah = sefirot.value.find((s) => s.id === id);
-  if (!sefirah) return "fill-gray-700";
-
-  if (progress === 0) return "fill-gray-700 stroke-gray-500";
-
-  switch (sefirah.category) {
-    case "wisdom":
-      return "fill-blue-600 stroke-blue-400";
-    case "emotions":
-      return "fill-purple-600 stroke-purple-400";
-    case "action":
-      return "fill-orange-600 stroke-orange-400";
-    case "integration":
-      return "fill-green-600 stroke-green-400";
-    default:
-      return "fill-gray-700 stroke-gray-500";
-  }
-};
-
-const getNodeGlowClass = (id) => {
-  const sefirah = sefirot.value.find((s) => s.id === id);
-  if (!sefirah) return "";
-
-  switch (sefirah.category) {
-    case "wisdom":
-      return "fill-gradient-blue-end";
-    case "emotions":
-      return "fill-gradient-purple-end";
-    case "action":
-      return "fill-gradient-orange-end";
-    case "integration":
-      return "fill-gradient-mint-end";
-    default:
-      return "fill-white";
-  }
-};
-
-const getNodeStrokeColor = (id) => {
-  const sefirah = sefirot.value.find((s) => s.id === id);
-  if (!sefirah) return "#4B5563";
-
-  switch (sefirah.category) {
-    case "wisdom":
-      return "#00E6FF";
-    case "emotions":
-      return "#FF4DFF";
-    case "action":
-      return "#FF9E00";
-    case "integration":
-      return "#70FF94";
-    default:
-      return "#4B5563";
-  }
-};
-
-const getProgressBarClass = (id) => {
-  const sefirah = sefirot.value.find((s) => s.id === id);
-  if (!sefirah) return "bg-gray-600";
-
-  switch (sefirah.category) {
-    case "wisdom":
-      return "bg-gradient-to-r from-gradient-blue-start to-gradient-blue-end";
-    case "emotions":
-      return "bg-gradient-to-r from-gradient-purple-start to-gradient-purple-end";
-    case "action":
-      return "bg-gradient-to-r from-gradient-orange-start to-gradient-orange-end";
-    case "integration":
-      return "bg-gradient-to-r from-gradient-mint-start to-gradient-mint-end";
-    default:
-      return "bg-gray-600";
-  }
-};
-
-const getCardProgressClass = (id) => {
-  const sefirah = sefirot.value.find((s) => s.id === id);
-  if (!sefirah) return "bg-gray-800/50 text-gray-400";
-
-  if (sefirah.progress === 0) return "bg-gray-800/50 text-gray-400";
-
-  switch (sefirah.category) {
-    case "wisdom":
-      return "bg-gradient-blue-end/20 text-gradient-blue-end";
-    case "emotions":
-      return "bg-gradient-purple-end/20 text-gradient-purple-end";
-    case "action":
-      return "bg-gradient-orange-end/20 text-gradient-orange-end";
-    case "integration":
-      return "bg-gradient-mint-end/20 text-gradient-mint-end";
-    default:
-      return "bg-gray-800/50 text-gray-400";
-  }
-};
-
-const getNodeBorderClass = (progress) => {
-  if (progress === 0) return "border-gray-800";
-  if (progress < 33) return "border-white/20";
-  if (progress < 66) return "border-white/30";
-  return "border-white/40";
 };
 
 // Label positioning
@@ -1116,17 +388,161 @@ const getLabelX = (sefirah) => {
   return sefirah.x;
 };
 
+// Styling functions
+const getNodeGlowClass = (id, column) => {
+  switch (column) {
+    case "left":
+      return "fill-blue-400";
+    case "right":
+      return "fill-yellow-400";
+    case "center":
+      return "fill-green-400";
+    default:
+      return "fill-white";
+  }
+};
+
+const getGlowFilter = (column) => {
+  switch (column) {
+    case "left":
+      return "url(#pulse-left)";
+    case "right":
+      return "url(#pulse-right)";
+    case "center":
+      return "url(#pulse-center)";
+    default:
+      return "url(#glow)";
+  }
+};
+
+const getNodeStrokeColor = (id, column) => {
+  switch (column) {
+    case "left":
+      return "#3b82f6";
+    case "right":
+      return "#eab308";
+    case "center":
+      return "#22c55e";
+    default:
+      return "#4B5563";
+  }
+};
+
+const getProgressBarClass = (id, column) => {
+  switch (column) {
+    case "left":
+      return "bg-gradient-to-r from-blue-500 to-blue-300";
+    case "right":
+      return "bg-gradient-to-r from-yellow-500 to-yellow-300";
+    case "center":
+      return "bg-gradient-to-r from-green-500 to-green-300";
+    default:
+      return "bg-gray-600";
+  }
+};
+
+const getCardProgressClass = (id, column) => {
+  const sefirah = sefirot.value.find((s) => s.id === id);
+  if (!sefirah || sefirah.points === 0) return "bg-gray-800/50 text-gray-400";
+  switch (column) {
+    case "left":
+      return "bg-blue-500/20 text-blue-300";
+    case "right":
+      return "bg-yellow-500/20 text-yellow-300";
+    case "center":
+      return "bg-green-500/20 text-green-300";
+    default:
+      return "bg-gray-800/50 text-gray-400";
+  }
+};
+
+const getLevelBadgeClass = (column) => {
+  switch (column) {
+    case "left":
+      return "bg-blue-500/20 text-blue-300";
+    case "right":
+      return "bg-yellow-500/20 text-yellow-300";
+    case "center":
+      return "bg-green-500/20 text-green-300";
+    default:
+      return "bg-gray-800/50 text-gray-400";
+  }
+};
+
+const getTooltipLevelClass = (column) => {
+  switch (column) {
+    case "left":
+      return "bg-blue-500/30 text-blue-100";
+    case "right":
+      return "bg-yellow-500/30 text-yellow-100";
+    case "center":
+      return "bg-green-500/30 text-green-100";
+    default:
+      return "bg-gray-800/50 text-gray-400";
+  }
+};
+
 // Initialize Data
 onMounted(async () => {
   if (isLoggedIn.value) {
     const userId = authStore.user.uid;
-    await fetchSefirotProgress(userId);
+    await fetchSefirotProgress(
+      userId,
+      sefirot.value,
+      applyDecay,
+      calculateLevel,
+      calculateDailyProgress
+    );
   } else {
-    const demoData = [40, 70, 30, 10, 50, 35, 20, 5, 60, 15];
+    // Demo data for non-logged-in users
+    const demoDailyActions = [0, 1, 2, 0, 3, 1, 0, 2, 0, 1];
+    const demoPoints = [400, 700, 300, 100, 500, 350, 200, 50, 600, 150];
     sefirot.value.forEach((s, index) => {
-      s.progress = demoData[index];
+      s.points = demoPoints[index];
+      s.level = calculateLevel(s.points);
+      s.dailyActions = demoDailyActions[index];
+      s.displayProgress = calculateDailyProgress(s.dailyActions, s.maxActions);
     });
   }
+
+  // Set current week
+  currentWeek.value =
+    (Math.floor(
+      (new Date() - new Date(new Date().getFullYear(), 0, 1)) /
+        (1000 * 60 * 60 * 24 * 7)
+    ) %
+      10) +
+    1;
+
+  // Reset daily actions at midnight
+  const checkMidnight = () => {
+    const now = new Date();
+    const tomorrow = new Date(now);
+    tomorrow.setDate(now.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+    const msUntilMidnight = tomorrow - now;
+    setTimeout(async () => {
+      if (isLoggedIn.value) {
+        const userId = authStore.user.uid;
+        const today = new Date().toISOString().split("T")[0];
+        await initializeDailyActions(userId, today, sefirot.value);
+        await fetchSefirotProgress(
+          userId,
+          sefirot.value,
+          applyDecay,
+          calculateLevel,
+          calculateDailyProgress
+        );
+      } else {
+        sefirot.value.forEach((s) => {
+          s.dailyActions = 0;
+          s.displayProgress = 0;
+        });
+      }
+      setInterval(checkMidnight, 24 * 60 * 60 * 1000);
+    }, msUntilMidnight);
+  };
+  checkMidnight();
 });
 
 // Watch for auth changes
@@ -1134,7 +550,13 @@ watch(
   () => authStore.user,
   async (newUser) => {
     if (newUser) {
-      await fetchSefirotProgress(newUser.uid);
+      await fetchSefirotProgress(
+        newUser.uid,
+        sefirot.value,
+        applyDecay,
+        calculateLevel,
+        calculateDailyProgress
+      );
     }
   }
 );
@@ -1145,78 +567,24 @@ watch(
   stroke: rgba(255, 255, 255, 0.15);
   stroke-dasharray: 2, 2;
 }
-
+.path-left {
+  stroke: rgba(59, 130, 246, 0.3);
+}
+.path-right {
+  stroke: rgba(234, 179, 8, 0.3);
+}
+.path-center {
+  stroke: rgba(34, 197, 94, 0.3);
+}
+.path-neutral {
+  stroke: rgba(255, 255, 255, 0.15);
+}
 .active-path {
-  stroke: rgba(255, 255, 255, 0.3);
   stroke-dasharray: 5, 5;
   stroke-width: 2;
+  stroke-opacity: 0.6;
 }
 
-.fill-blue-200 {
-  fill: #bfdbfe;
-}
-.fill-purple-200 {
-  fill: #e9d5ff;
-}
-.fill-orange-200 {
-  fill: #fed7aa;
-}
-.fill-green-200 {
-  fill: #bbf7d0;
-}
-.fill-gray-400 {
-  fill: #9ca3af;
-}
-
-.fill-blue-600 {
-  fill: #2563eb;
-}
-.stroke-blue-400 {
-  stroke: #60a5fa;
-}
-.fill-purple-600 {
-  fill: #9333ea;
-}
-.stroke-purple-400 {
-  stroke: #c084fc;
-}
-.fill-orange-600 {
-  fill: #f97316;
-}
-.stroke-orange-400 {
-  stroke: #fb923c;
-}
-.fill-green-600 {
-  fill: #16a34a;
-}
-.stroke-green-400 {
-  stroke: #4ade80;
-}
-.fill-gray-700 {
-  fill: #4b5563;
-}
-.stroke-gray-500 {
-  stroke: #6b7280;
-}
-
-/* Gradients for text */
-.text-gradient-blue-end {
-  color: #00e6ff;
-}
-
-.text-gradient-purple-end {
-  color: #ff4dff;
-}
-
-.text-gradient-orange-end {
-  color: #ff9e00;
-}
-
-.text-gradient-mint-end {
-  color: #70ff94;
-}
-
-/* Animation for hover on cards */
 @keyframes pulse {
   0% {
     box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.1);
@@ -1229,24 +597,20 @@ watch(
   }
 }
 
-/* SVG text */
 svg text {
   fill: currentColor;
   font-size: 10px;
 }
-
 @media (min-width: 768px) {
   svg text {
     font-size: 12px;
   }
 }
 
-/* Active card styling */
 [class*="ring-"] {
   --tw-ring-color: rgb(var(--ring-color));
   animation: pulseHighlight 2s ease;
 }
-
 @keyframes pulseHighlight {
   0% {
     box-shadow: 0 0 0 0 rgba(var(--ring-color), 0.4);
@@ -1259,45 +623,43 @@ svg text {
   }
 }
 
-/* Node hover effects */
 .node-circle {
   transition: r 0.3s ease, filter 0.3s ease;
+  z-index: 5;
 }
-
 .node-circle:hover {
   filter: brightness(1.2);
 }
-
-/* Highlight effect for legend click */
 .highlight-node {
   filter: brightness(1.5);
   stroke: rgba(255, 255, 255, 0.8);
   stroke-width: 2;
   animation: glowPulse 1.5s ease-in-out infinite;
 }
-
-/* Pulse effects */
-.pulse-blue {
-  filter: url(#pulse-blue);
+.pulse-left {
+  filter: url(#pulse-left);
 }
-
-.pulse-purple {
-  filter: url(#pulse-purple);
+.pulse-right {
+  filter: url(#pulse-right);
 }
-
-.pulse-orange {
-  filter: url(#pulse-orange);
+.pulse-center {
+  filter: url(#pulse-center);
 }
-
-.pulse-mint {
-  filter: url(#pulse-mint);
+.descending-light {
+  animation: lightFlow 15s linear infinite;
 }
-
-/* Tooltip animation */
+@keyframes lightFlow {
+  0% {
+    stroke-dasharray: 0, 1000;
+  }
+  100% {
+    stroke-dasharray: 1000, 0;
+  }
+}
 .tooltip-container {
   animation: fadeIn 0.2s ease-in;
+  z-index: 10;
 }
-
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -1308,8 +670,6 @@ svg text {
     transform: translateY(0);
   }
 }
-
-/* Glow pulse for highlight */
 @keyframes glowPulse {
   0% {
     box-shadow: 0 0 5px 0 rgba(255, 255, 255, 0.1);
@@ -1321,19 +681,9 @@ svg text {
     box-shadow: 0 0 5px 0 rgba(255, 255, 255, 0.1);
   }
 }
-
-/* FontAwesome in SVG */
-.fa {
-  font-family: "Font Awesome 5 Free";
-  font-weight: 900;
-}
-
-/* SVG pointer events */
 svg {
   pointer-events: bounding-box;
 }
-
-/* Ensure cards are not covered */
 section {
   position: relative;
   z-index: 1;

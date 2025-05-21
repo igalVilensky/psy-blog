@@ -9,19 +9,13 @@
       </h1>
       <p class="text-sm sm:text-base text-slate-300 mt-2 max-w-2xl mx-auto">
         Ваша Психологическая Карта — обзор вашего роста. Углубитесь в детали на
-        <router-link
-          to="/tree-of-self"
-          class="text-[#0EA5E9] hover:text-[#E879F9] transition-colors duration-300 underline underline-offset-2"
-        >
-          Древе Себя </router-link
-        >.
       </p>
       <router-link
-        to="/treetest"
+        to="/tree-of-self"
         class="text-[#0EA5E9] hover:text-[#E879F9] transition-colors duration-300 underline underline-offset-2"
       >
-        Древо Себя
-      </router-link>
+        Древе Себя.</router-link
+      >
     </div>
 
     <!-- Psychological Map Container -->
