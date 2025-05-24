@@ -95,14 +95,7 @@
             :show-node-tooltip="showNodeTooltip"
             :hide-node-tooltip="hideNodeTooltip"
             @open-modal="$emit('open-modal', sefirah.id)"
-          />
-
-          <!-- Interactive Tooltip -->
-          <Tooltip
-            v-if="activeTooltip"
-            :active-tooltip="activeTooltip"
-            :get-tooltip-level-class="getTooltipLevelClass"
-            :get-progress-bar-class="getProgressBarClass"
+            @update:hovered-node="$emit('update:hoveredNode', $event)"
           />
         </svg>
       </div>
@@ -115,7 +108,6 @@ import { computed } from "vue";
 import SvgDefs from "./SvgDefs.vue";
 import SefirahNode from "./SefirahNode.vue";
 import ConnectionLine from "./ConnectionLine.vue";
-import Tooltip from "./Tooltip.vue";
 import { defineProps, defineEmits } from "vue";
 
 // Define props
@@ -142,10 +134,6 @@ const props = defineProps({
   },
   hoveredNode: {
     type: String,
-    default: null,
-  },
-  activeTooltip: {
-    type: Object,
     default: null,
   },
   isCurrentWeekSefirah: {
@@ -207,7 +195,7 @@ const props = defineProps({
 });
 
 // Define emits for two-way binding and modal
-defineEmits(["update:hoveredNode", "update:activeTooltip", "open-modal"]);
+defineEmits(["update:hoveredNode", "open-modal"]);
 
 // Connection data with column types
 const connections = computed(() => {
@@ -215,8 +203,10 @@ const connections = computed(() => {
     {
       path: "M200 67 L133 160",
       active:
-        props.sefirot.find((s) => s.id === "keter").displayProgress > 0 &&
-        props.sefirot.find((s) => s.id === "chokhmah").displayProgress > 0,
+        props.sefirot.find((s) => s.id === "keter")?.revealed &&
+        props.sefirot.find((s) => s.id === "keter")?.displayProgress > 0 &&
+        props.sefirot.find((s) => s.id === "chokhmah")?.revealed &&
+        props.sefirot.find((s) => s.id === "chokhmah")?.displayProgress > 0,
       from: "keter",
       to: "chokhmah",
       columnType: "right",
@@ -224,8 +214,10 @@ const connections = computed(() => {
     {
       path: "M200 67 L267 160",
       active:
-        props.sefirot.find((s) => s.id === "keter").displayProgress > 0 &&
-        props.sefirot.find((s) => s.id === "binah").displayProgress > 0,
+        props.sefirot.find((s) => s.id === "keter")?.revealed &&
+        props.sefirot.find((s) => s.id === "keter")?.displayProgress > 0 &&
+        props.sefirot.find((s) => s.id === "binah")?.revealed &&
+        props.sefirot.find((s) => s.id === "binah")?.displayProgress > 0,
       from: "keter",
       to: "binah",
       columnType: "left",
@@ -233,8 +225,10 @@ const connections = computed(() => {
     {
       path: "M133 160 L107 267",
       active:
-        props.sefirot.find((s) => s.id === "chokhmah").displayProgress > 0 &&
-        props.sefirot.find((s) => s.id === "chesed").displayProgress > 0,
+        props.sefirot.find((s) => s.id === "chokhmah")?.revealed &&
+        props.sefirot.find((s) => s.id === "chokhmah")?.displayProgress > 0 &&
+        props.sefirot.find((s) => s.id === "chesed")?.revealed &&
+        props.sefirot.find((s) => s.id === "chesed")?.displayProgress > 0,
       from: "chokhmah",
       to: "chesed",
       columnType: "right",
@@ -242,8 +236,10 @@ const connections = computed(() => {
     {
       path: "M267 160 L293 267",
       active:
-        props.sefirot.find((s) => s.id === "binah").displayProgress > 0 &&
-        props.sefirot.find((s) => s.id === "gevurah").displayProgress > 0,
+        props.sefirot.find((s) => s.id === "binah")?.revealed &&
+        props.sefirot.find((s) => s.id === "binah")?.displayProgress > 0 &&
+        props.sefirot.find((s) => s.id === "gevurah")?.revealed &&
+        props.sefirot.find((s) => s.id === "gevurah")?.displayProgress > 0,
       from: "binah",
       to: "gevurah",
       columnType: "left",
@@ -251,8 +247,10 @@ const connections = computed(() => {
     {
       path: "M107 267 L200 347",
       active:
-        props.sefirot.find((s) => s.id === "chesed").displayProgress > 0 &&
-        props.sefirot.find((s) => s.id === "tiferet").displayProgress > 0,
+        props.sefirot.find((s) => s.id === "chesed")?.revealed &&
+        props.sefirot.find((s) => s.id === "chesed")?.displayProgress > 0 &&
+        props.sefirot.find((s) => s.id === "tiferet")?.revealed &&
+        props.sefirot.find((s) => s.id === "tiferet")?.displayProgress > 0,
       from: "chesed",
       to: "tiferet",
       columnType: "center",
@@ -260,8 +258,10 @@ const connections = computed(() => {
     {
       path: "M293 267 L200 347",
       active:
-        props.sefirot.find((s) => s.id === "gevurah").displayProgress > 0 &&
-        props.sefirot.find((s) => s.id === "tiferet").displayProgress > 0,
+        props.sefirot.find((s) => s.id === "gevurah")?.revealed &&
+        props.sefirot.find((s) => s.id === "gevurah")?.displayProgress > 0 &&
+        props.sefirot.find((s) => s.id === "tiferet")?.revealed &&
+        props.sefirot.find((s) => s.id === "tiferet")?.displayProgress > 0,
       from: "gevurah",
       to: "tiferet",
       columnType: "center",
@@ -269,8 +269,10 @@ const connections = computed(() => {
     {
       path: "M107 267 L133 373",
       active:
-        props.sefirot.find((s) => s.id === "chesed").displayProgress > 0 &&
-        props.sefirot.find((s) => s.id === "netzach").displayProgress > 0,
+        props.sefirot.find((s) => s.id === "chesed")?.revealed &&
+        props.sefirot.find((s) => s.id === "chesed")?.displayProgress > 0 &&
+        props.sefirot.find((s) => s.id === "netzach")?.revealed &&
+        props.sefirot.find((s) => s.id === "netzach")?.displayProgress > 0,
       from: "chesed",
       to: "netzach",
       columnType: "right",
@@ -278,8 +280,10 @@ const connections = computed(() => {
     {
       path: "M293 267 L267 373",
       active:
-        props.sefirot.find((s) => s.id === "gevurah").displayProgress > 0 &&
-        props.sefirot.find((s) => s.id === "hod").displayProgress > 0,
+        props.sefirot.find((s) => s.id === "gevurah")?.revealed &&
+        props.sefirot.find((s) => s.id === "gevurah")?.displayProgress > 0 &&
+        props.sefirot.find((s) => s.id === "hod")?.revealed &&
+        props.sefirot.find((s) => s.id === "hod")?.displayProgress > 0,
       from: "gevurah",
       to: "hod",
       columnType: "left",
@@ -287,8 +291,10 @@ const connections = computed(() => {
     {
       path: "M133 373 L200 453",
       active:
-        props.sefirot.find((s) => s.id === "netzach").displayProgress > 0 &&
-        props.sefirot.find((s) => s.id === "yesod").displayProgress > 0,
+        props.sefirot.find((s) => s.id === "netzach")?.revealed &&
+        props.sefirot.find((s) => s.id === "netzach")?.displayProgress > 0 &&
+        props.sefirot.find((s) => s.id === "yesod")?.revealed &&
+        props.sefirot.find((s) => s.id === "yesod")?.displayProgress > 0,
       from: "netzach",
       to: "yesod",
       columnType: "center",
@@ -296,8 +302,10 @@ const connections = computed(() => {
     {
       path: "M267 373 L200 453",
       active:
-        props.sefirot.find((s) => s.id === "hod").displayProgress > 0 &&
-        props.sefirot.find((s) => s.id === "yesod").displayProgress > 0,
+        props.sefirot.find((s) => s.id === "hod")?.revealed &&
+        props.sefirot.find((s) => s.id === "hod")?.displayProgress > 0 &&
+        props.sefirot.find((s) => s.id === "yesod")?.revealed &&
+        props.sefirot.find((s) => s.id === "yesod")?.displayProgress > 0,
       from: "hod",
       to: "yesod",
       columnType: "center",
@@ -305,8 +313,10 @@ const connections = computed(() => {
     {
       path: "M200 453 L200 533",
       active:
-        props.sefirot.find((s) => s.id === "yesod").displayProgress > 0 &&
-        props.sefirot.find((s) => s.id === "malkhut").displayProgress > 0,
+        props.sefirot.find((s) => s.id === "yesod")?.revealed &&
+        props.sefirot.find((s) => s.id === "yesod")?.displayProgress > 0 &&
+        props.sefirot.find((s) => s.id === "malkhut")?.revealed &&
+        props.sefirot.find((s) => s.id === "malkhut")?.displayProgress > 0,
       from: "yesod",
       to: "malkhut",
       columnType: "center",

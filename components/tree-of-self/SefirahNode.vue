@@ -2,16 +2,18 @@
   <g :class="`sefirah-${sefirah.id}`">
     <!-- Path of Wholeness highlight -->
     <circle
-      v-if="pathOfWholeness && isCurrentWeekSefirah(sefirah.id)"
+      v-if="
+        pathOfWholeness && isCurrentWeekSefirah(sefirah.id) && sefirah.revealed
+      "
       :cx="sefirah.x"
       :cy="sefirah.y"
-      r="25"
+      r="30"
       class="fill-yellow-500/20"
       filter="url(#gold-glow)"
     >
       <animate
         attributeName="r"
-        values="25;30;25"
+        values="30;35;30"
         dur="3s"
         repeatCount="indefinite"
       />
@@ -25,10 +27,10 @@
 
     <!-- Outer glow ring -->
     <circle
-      v-if="sefirah.points > 0"
+      v-if="sefirah.revealed && sefirah.points > 0"
       :cx="sefirah.x"
       :cy="sefirah.y"
-      r="18"
+      r="22"
       :class="getNodeGlowClass(sefirah.id, sefirah.column)"
       opacity="0.4"
       :filter="getGlowFilter(sefirah.column)"
@@ -38,7 +40,7 @@
     <circle
       :cx="sefirah.x"
       :cy="sefirah.y"
-      r="18"
+      r="22"
       class="node-pulse"
       :class="getNodePulseClass(sefirah.category, sefirah.column)"
       opacity="0"
@@ -53,7 +55,7 @@
       />
       <animate
         attributeName="r"
-        values="15;25;15"
+        values="22;30;22"
         dur="1.5s"
         begin="mouseover"
         repeatCount="indefinite"
@@ -65,28 +67,25 @@
     <circle
       :cx="sefirah.x"
       :cy="sefirah.y"
-      :r="hoveredNode === sefirah.id ? 18 : 15"
-      :fill="sefirah.points > 0 ? sefirah.energyColor : '#374151'"
+      :r="hoveredNode === sefirah.id ? 22 : 18"
+      :fill="
+        sefirah.revealed && sefirah.points > 0 ? sefirah.energyColor : '#374151'
+      "
       stroke="#ffffff"
-      stroke-width="1"
+      stroke-width="1.5"
       class="node-circle cursor-pointer transition-all duration-300"
       :class="{
         'highlight-node':
-          highlightedCategory === sefirah.category ||
-          energyOfDay === sefirah.column,
+          sefirah.revealed &&
+          (highlightedCategory === sefirah.category ||
+            energyOfDay === sefirah.column),
       }"
       @click="$emit('open-modal', sefirah.id)"
-      @mouseover="
-        showNodeTooltip(sefirah);
-        $emit('update:hoveredNode', sefirah.id);
-      "
-      @mouseleave="
-        hideNodeTooltip();
-        $emit('update:hoveredNode', null);
-      "
+      @mouseover="$emit('update:hoveredNode', sefirah.id)"
+      @mouseleave="$emit('update:hoveredNode', null)"
     >
       <animate
-        v-if="sefirah.points > 0"
+        v-if="sefirah.revealed && sefirah.points > 0"
         attributeName="opacity"
         values="0.9;1;0.9"
         dur="3s"
@@ -96,15 +95,15 @@
 
     <!-- Progress ring -->
     <circle
-      v-if="sefirah.points > 0"
+      v-if="sefirah.revealed && sefirah.points > 0"
       :cx="sefirah.x"
       :cy="sefirah.y"
-      r="18"
+      r="22"
       :stroke="getNodeStrokeColor(sefirah.id, sefirah.column)"
-      stroke-width="4"
+      stroke-width="5"
       stroke-linecap="round"
       fill="none"
-      :stroke-dasharray="`${(sefirah.displayProgress / 100) * 113}, 113`"
+      :stroke-dasharray="`${(sefirah.displayProgress / 100) * 138}, 138`"
       :transform="`rotate(-90 ${sefirah.x} ${sefirah.y})`"
       style="pointer-events: none"
     >
@@ -116,22 +115,47 @@
       />
     </circle>
 
+    <!-- Action needed indicator -->
+    <g v-if="sefirah.revealed && sefirah.displayProgress === 0">
+      <circle
+        :cx="sefirah.x + 20"
+        :cy="sefirah.y - 20"
+        r="8"
+        fill="#ef4444"
+        stroke="#ffffff"
+        stroke-width="1"
+        class="action-needed-indicator"
+      >
+        <animate
+          attributeName="opacity"
+          values="0.6;1;0.6"
+          dur="2s"
+          repeatCount="indefinite"
+        />
+      </circle>
+      <text
+        :x="sefirah.x + 20"
+        :y="sefirah.y - 20"
+        class="text-xs font-semibold text-white"
+        fill="white"
+        text-anchor="middle"
+        dominant-baseline="middle"
+      >
+        !
+      </text>
+    </g>
+
     <!-- Icon inside node -->
     <foreignObject
-      :x="sefirah.x - 10"
-      :y="sefirah.y - 10"
-      width="20"
-      height="20"
+      :x="sefirah.x - 12"
+      :y="sefirah.y - 12"
+      width="24"
+      height="24"
       style="pointer-events: none"
     >
-      <div
-        class="flex items-center justify-center h-full w-full"
-        style="pointer-events: auto"
-        @mouseover="showNodeTooltip(sefirah)"
-        @mouseleave="hideNodeTooltip()"
-      >
+      <div class="flex items-center justify-center h-full w-full">
         <i
-          class="fas text-white text-xs"
+          class="fas text-white text-sm"
           :class="getSefirahIcon(sefirah.id)"
         ></i>
       </div>
@@ -139,9 +163,9 @@
 
     <!-- Level indicator -->
     <text
-      v-if="sefirah.level > 1"
-      :x="sefirah.x + 20"
-      :y="sefirah.y - 15"
+      v-if="sefirah.revealed && sefirah.level > 1"
+      :x="sefirah.x + 24"
+      :y="sefirah.y - 20"
       class="text-xs font-semibold text-white"
       fill="white"
       text-anchor="middle"
@@ -153,9 +177,9 @@
     <!-- Label with psychological term -->
     <text
       :x="getLabelX(sefirah)"
-      :y="sefirah.y + 30"
-      class="font-medium text-xs"
-      fill="white"
+      :y="sefirah.y + 35"
+      class="font-medium text-sm"
+      :fill="sefirah.revealed ? 'white' : 'rgba(255, 255, 255, 0.7)'"
       text-anchor="middle"
       dominant-baseline="middle"
     >
@@ -163,9 +187,9 @@
     </text>
     <text
       :x="getLabelX(sefirah)"
-      :y="sefirah.y + 45"
-      class="text-[0.6rem] font-light"
-      fill="white"
+      :y="sefirah.y + 50"
+      class="text-[0.7rem] font-light"
+      :fill="sefirah.revealed ? 'white' : 'rgba(255, 255, 255, 0.7)'"
       text-anchor="middle"
       dominant-baseline="middle"
     >
@@ -258,6 +282,9 @@ defineEmits(["update:hoveredNode", "open-modal"]);
   stroke: rgba(255, 255, 255, 0.8);
   stroke-width: 2;
   animation: glowPulse 1.5s ease-in-out infinite;
+}
+.action-needed-indicator {
+  z-index: 10;
 }
 @keyframes glowPulse {
   0% {

@@ -141,6 +141,15 @@ import {
   getPurchasedCourses,
   updateCourseProgress,
 } from "~/api/firebase/coursesApi";
+import {
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  serverTimestamp,
+  increment,
+} from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
 
 definePageMeta({
   layout: "personal-cabinet",
@@ -148,6 +157,7 @@ definePageMeta({
 
 const route = useRoute();
 const authStore = useAuthStore();
+const db = getFirestore();
 
 const courseSlug = route.params.course; // Course slug from URL
 const lessonSlug = route.params.lesson; // Lesson slug from URL
@@ -157,9 +167,18 @@ const lesson = ref(null); // Current lesson data
 const completedLessons = ref([]); // Completed lessons from backend
 const isLessonCompleted = ref(false); // Whether the lesson is completed
 
+// Function to show notifications (mock implementation, replace with your actual notification system)
+const showNotification = (message, type) => {
+  console.log(`[${type}] ${message}`);
+  // Replace with your actual notification system, e.g., toast or alert
+};
+
 // Fetch course and lesson data
 const fetchCourseData = async () => {
-  if (!authStore.user) return;
+  if (!authStore.user) {
+    showNotification("Пользователь не авторизован.", "error");
+    return;
+  }
 
   try {
     // Fetch static course data from data/courses folder
@@ -185,16 +204,107 @@ const fetchCourseData = async () => {
     }
   } catch (error) {
     console.error("Ошибка при загрузке данных курса:", error);
+    showNotification("Ошибка при загрузке данных курса.", "error");
   } finally {
     loading.value = false;
   }
 };
 
-// Mark lesson as completed
-const markLessonAsCompleted = async () => {
-  if (!authStore.user) return;
+// Update Sefirot progress for Gevurah
+const updateSefirotProgress = async (userId) => {
+  if (!userId) {
+    showNotification("Требуется идентификатор пользователя.", "error");
+    return { success: false, message: "User ID is required" };
+  }
+
+  const currentDate = new Date().toISOString().split("T")[0];
+  const dailyRef = doc(db, `users/${userId}/daily/${currentDate}`);
+  const progressRef = doc(db, `users/${userId}/progress/sefirot`);
 
   try {
+    // Check if daily actions document exists and initialize if not
+    const dailySnap = await getDoc(dailyRef);
+    let dailyData = {
+      keter: { actions: 0 },
+      chokhmah: { actions: 0 },
+      binah: { actions: 0 },
+      chesed: { actions: 0 },
+      gevurah: { actions: 0 },
+      tiferet: { actions: 0 },
+      netzach: { actions: 0 },
+      hod: { actions: 0 },
+      yesod: { actions: 0 },
+      malkhut: { actions: 0 },
+    };
+
+    if (dailySnap.exists()) {
+      dailyData = dailySnap.data();
+      // Check Gevurah actions limit
+      if (dailyData.gevurah?.actions >= 3) {
+        showNotification(
+          "Достигнуто максимальное количество действий для Гвуры сегодня.",
+          "warning"
+        );
+        return {
+          success: false,
+          message: "Max daily actions for Gevurah reached",
+        };
+      }
+    } else {
+      // Initialize daily document if it doesn't exist
+      await setDoc(dailyRef, dailyData);
+    }
+
+    // Check if progress document exists and initialize if not
+    const progressSnap = await getDoc(progressRef);
+    if (!progressSnap.exists()) {
+      const initialProgressData = {
+        keter: { points: 0, lastActive: serverTimestamp() },
+        chokhmah: { points: 0, lastActive: serverTimestamp() },
+        binah: { points: 0, lastActive: serverTimestamp() },
+        chesed: { points: 0, lastActive: serverTimestamp() },
+        gevurah: { points: 0, lastActive: serverTimestamp() },
+        tiferet: { points: 0, lastActive: serverTimestamp() },
+        netzach: { points: 0, lastActive: serverTimestamp() },
+        hod: { points: 0, lastActive: serverTimestamp() },
+        yesod: { points: 0, lastActive: serverTimestamp() },
+        malkhut: { points: 0, lastActive: serverTimestamp() },
+      };
+      await setDoc(progressRef, initialProgressData);
+    }
+
+    // Update daily actions for Gevurah
+    await updateDoc(dailyRef, {
+      "gevurah.actions": increment(1),
+    });
+
+    // Update Sefirot progress for Gevurah
+    await updateDoc(progressRef, {
+      "gevurah.points": increment(10), // Increment by 10, matching the Daily Growth Spark example
+      "gevurah.lastActive": serverTimestamp(),
+    });
+
+    showNotification("Прогресс для Гвуры обновлен!", "success");
+    return { success: true, message: "Sefirot progress updated" };
+  } catch (error) {
+    console.error("Error updating Sefirot progress:", error);
+    showNotification(
+      "Ошибка при обновлении прогресса Гвуры. Пожалуйста, попробуйте еще раз.",
+      "error"
+    );
+    return { success: false, message: "Error updating Sefirot progress" };
+  }
+};
+
+// Mark lesson as completed and update Sefirot progress
+const markLessonAsCompleted = async () => {
+  if (!authStore.user) {
+    showNotification("Пользователь не авторизован.", "error");
+    return;
+  }
+
+  try {
+    // Update course progress
     const { success } = await updateCourseProgress(
       authStore.user.uid,
       course.value.id,
@@ -202,12 +312,21 @@ const markLessonAsCompleted = async () => {
     );
 
     if (success) {
-      // Update local state
+      // Update local state for course progress
       completedLessons.value.push(lesson.value.slug);
       isLessonCompleted.value = true;
+
+      // Update Sefirot progress for Gevurah
+      const sefirotResult = await updateSefirotProgress(authStore.user.uid);
+      if (!sefirotResult.success) {
+        showNotification(sefirotResult.message, "warning");
+      }
+    } else {
+      showNotification("Ошибка при завершении урока.", "error");
     }
   } catch (error) {
     console.error("Ошибка при обновлении прогресса:", error);
+    showNotification("Ошибка при обновлении прогресса.", "error");
   }
 };
 

@@ -5,7 +5,7 @@
     @click.self="closeModal"
   >
     <div
-      class="bg-slate-900 rounded-xl p-6 max-w-lg w-full mx-4 max-h-[80vh] overflow-y-auto"
+      class="bg-slate-900 rounded-xl p-6 max-w-lg w-full mx-4 overflow-y-auto max-h-[80vh]"
     >
       <div class="flex justify-between items-center mb-4">
         <h2 class="text-xl font-semibold text-white">
@@ -77,10 +77,3 @@ const closeModal = () => {
   emit("update:isOpen", false);
 };
 </script>
-
-<style scoped>
-/* Ensure modal has a high z-index and proper overflow */
-.max-h-[80vh] {
-  max-height: 80vh;
-}
-</style>

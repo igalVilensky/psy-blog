@@ -5,106 +5,122 @@
     <!-- Main Content Area -->
     <main class="px-6 xl:px-0 pb-20 pt-12">
       <div class="container mx-auto max-w-6xl">
-        <!-- Page Header -->
-        <PageHeader />
+        <!-- Loading State -->
+        <div v-if="isLoading" class="text-center py-10">
+          <div
+            class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white mx-auto"
+          ></div>
+          <p class="mt-4 text-lg">Загрузка Древа Себя...</p>
+        </div>
 
-        <!-- Column Balance & Energy of the Day -->
-        <ColumnEnergySection
-          :column-progress="columnProgress"
-          :column-recommendation="columnRecommendation"
-          :energy-of-day="energyOfDay"
-          :energy-recommendation="energyRecommendation"
-          :select-energy-column="selectEnergyColumn"
-        />
+        <div v-else>
+          <!-- Page Header -->
+          <PageHeader />
 
-        <!-- Cycle Toggle -->
-        <CycleToggle
-          v-model:path-of-wholeness="pathOfWholeness"
-          :current-week="currentWeek"
-          :get-current-sefirah-name="getCurrentSefirahName"
-        />
+          <!-- Column Balance & Energy of the Day -->
+          <ColumnEnergySection
+            :column-progress="columnProgress"
+            :column-recommendation="columnRecommendation"
+            :energy-of-day="energyOfDay"
+            :energy-recommendation="energyRecommendation"
+            :select-energy-column="selectEnergyColumn"
+          />
 
-        <!-- Tree Visualization -->
-        <TreeVisualization
-          :sefirot="sefirot"
-          :path-of-wholeness="pathOfWholeness"
-          :current-week="currentWeek"
-          :energy-of-day="energyOfDay"
-          :highlighted-category="highlightedCategory"
-          v-model:hovered-node="hoveredNode"
-          v-model:active-tooltip="activeTooltip"
-          :is-current-week-sefirah="isCurrentWeekSefirah"
-          :get-connection-column-class="getConnectionColumnClass"
-          :get-active-stroke-class="getActiveStrokeClass"
-          :get-connection-particle-class="getConnectionParticleClass"
-          :get-node-glow-class="getNodeGlowClass"
-          :get-glow-filter="getGlowFilter"
-          :get-node-pulse-class="getNodePulseClass"
-          :get-node-stroke-color="getNodeStrokeColor"
-          :get-sefirah-icon="getSefirahIcon"
-          :get-label-x="getLabelX"
-          :get-tooltip-level-class="getTooltipLevelClass"
-          :get-progress-bar-class="getProgressBarClass"
-          :show-node-tooltip="showNodeTooltip"
-          :hide-node-tooltip="hideNodeTooltip"
-          @open-modal="openModal"
-        />
+          <!-- Cycle Toggle -->
+          <CycleToggle
+            v-model:path-of-wholeness="pathOfWholeness"
+            :current-week="currentWeek"
+            :get-current-sefirah-name="getCurrentSefirahName"
+          />
 
-        <!-- Sefirot Progress Cards -->
-        <section
-          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-10 md:mb-16"
-        >
-          <SefirotProgressCard
-            v-for="sefirah in sefirot"
-            :key="sefirah.id"
-            :id="`sefirah-${sefirah.id}`"
-            :sefirah="sefirah"
-            :is-active="activeCard === sefirah.id"
-            :ring-color="getRingColor(sefirah.id)"
-            :progress-class="getCardProgressClass(sefirah.id, sefirah.column)"
-            :level-badge-class="getLevelBadgeClass(sefirah.column)"
+          <!-- Tree Visualization -->
+          <TreeVisualization
+            :sefirot="sefirot"
+            :path-of-wholeness="pathOfWholeness"
+            :current-week="currentWeek"
+            :energy-of-day="energyOfDay"
+            :highlighted-category="highlightedCategory"
+            v-model:hovered-node="hoveredNode"
+            :is-current-week-sefirah="isCurrentWeekSefirah"
+            :get-connection-column-class="getConnectionColumnClass"
+            :get-active-stroke-class="getActiveStrokeClass"
+            :get-connection-particle-class="getConnectionParticleClass"
+            :get-node-glow-class="getNodeGlowClass"
+            :get-glow-filter="getGlowFilter"
+            :get-node-pulse-class="getNodePulseClass"
+            :get-node-stroke-color="getNodeStrokeColor"
+            :get-sefirah-icon="getSefirahIcon"
+            :get-label-x="getLabelX"
+            :get-tooltip-level-class="getTooltipLevelClass"
+            :get-progress-bar-class="getProgressBarClass"
+            :show-node-tooltip="showNodeTooltip"
+            :hide-node-tooltip="hideNodeTooltip"
+            @open-modal="openModal"
+          />
+
+          <!-- Sefirot Progress Cards -->
+          <section
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-10 md:mb-16"
+          >
+            <SefirotProgressCard
+              v-for="sefirah in sefirot"
+              :key="sefirah.id"
+              :id="`sefirah-${sefirah.id}`"
+              :sefirah="sefirah"
+              :is-active="activeCard === sefirah.id"
+              :ring-color="getRingColor(sefirah.id)"
+              :progress-class="getCardProgressClass(sefirah.id, sefirah.column)"
+              :level-badge-class="getLevelBadgeClass(sefirah.column)"
+              :progress-bar-class="
+                getProgressBarClass(sefirah.id, sefirah.column)
+              "
+              :set-active-card="setActiveCard"
+              :log-action="logActionWrapper"
+            />
+          </section>
+
+          <!-- Link to Tree of Self Info Page -->
+          <SefirotInfoLink />
+
+          <!-- Pending Actions Notification -->
+          <PendingActionsNotification
+            :sefirot="sefirot"
+            :get-sefirah-icon="getSefirahIcon"
+          />
+
+          <!-- Sefirah Modal -->
+          <SefirahModal
+            v-model:is-open="isModalOpen"
+            :sefirah="selectedSefirah"
+            :ring-color="
+              selectedSefirah ? getRingColor(selectedSefirah.id) : '75, 85, 99'
+            "
+            :progress-class="
+              selectedSefirah
+                ? getCardProgressClass(
+                    selectedSefirah.id,
+                    selectedSefirah.column
+                  )
+                : 'bg-gray-800/50 text-gray-400'
+            "
+            :level-badge-class="
+              selectedSefirah
+                ? getLevelBadgeClass(selectedSefirah.column)
+                : 'bg-gray-800/50 text-gray-400'
+            "
             :progress-bar-class="
-              getProgressBarClass(sefirah.id, sefirah.column)
+              selectedSefirah
+                ? getProgressBarClass(
+                    selectedSefirah.id,
+                    selectedSefirah.column
+                  )
+                : 'bg-gray-600'
             "
             :set-active-card="setActiveCard"
-            :log-action="logAction"
+            :log-action="logActionWrapper"
           />
-        </section>
+        </div>
       </div>
-      <!-- Link to Tree of Self Info Page -->
-      <SefirotInfoLink />
-
-      <!-- Pending Actions Notification -->
-      <PendingActionsNotification
-        :sefirot="sefirot"
-        :get-sefirah-icon="getSefirahIcon"
-      />
-
-      <!-- Sefirah Modal -->
-      <SefirahModal
-        v-model:is-open="isModalOpen"
-        :sefirah="selectedSefirah"
-        :ring-color="
-          selectedSefirah ? getRingColor(selectedSefirah.id) : '75, 85, 99'
-        "
-        :progress-class="
-          selectedSefirah
-            ? getCardProgressClass(selectedSefirah.id, selectedSefirah.column)
-            : 'bg-gray-800/50 text-gray-400'
-        "
-        :level-badge-class="
-          selectedSefirah
-            ? getLevelBadgeClass(selectedSefirah.column)
-            : 'bg-gray-800/50 text-gray-400'
-        "
-        :progress-bar-class="
-          selectedSefirah
-            ? getProgressBarClass(selectedSefirah.id, selectedSefirah.column)
-            : 'bg-gray-600'
-        "
-        :set-active-card="setActiveCard"
-        :log-action="logAction"
-      />
     </main>
   </div>
 </template>
@@ -130,8 +146,8 @@ import {
 // Auth setup
 const authStore = useAuthStore();
 const isLoggedIn = computed(() => !!authStore.user);
+const isLoading = ref(true);
 const activeCard = ref(null);
-const activeTooltip = ref(null);
 const hoveredNode = ref(null);
 const highlightedCategory = ref(null);
 const pathOfWholeness = ref(false);
@@ -152,6 +168,11 @@ const pathOrder = ref([
 const isModalOpen = ref(false);
 const selectedSefirah = ref(null);
 
+// Initialize Sefirot with revealed state
+sefirot.value.forEach((s) => {
+  s.revealed = false; // Default to unrevealed for new users
+});
+
 // Column definitions
 const columns = {
   left: { name: "Вода", color: "blue", sefirot: ["binah", "gevurah", "hod"] },
@@ -171,7 +192,9 @@ const columns = {
 const columnProgress = computed(() => {
   const result = { left: 0, right: 0, center: 0 };
   sefirot.value.forEach((sefirah) => {
-    result[sefirah.column] += sefirah.displayProgress;
+    if (sefirah.revealed) {
+      result[sefirah.column] += sefirah.displayProgress;
+    }
   });
   result.left = Math.round(result.left / columns.left.sefirot.length);
   result.right = Math.round(result.right / columns.right.sefirot.length);
@@ -193,8 +216,9 @@ const columnRecommendation = computed(() => {
 const energyRecommendation = computed(() => {
   if (!energyOfDay.value) return "Выберите энергию дня для рекомендаций";
   const columnSefirot = sefirot.value.filter(
-    (s) => s.column === energyOfDay.value
+    (s) => s.column === energyOfDay.value && s.revealed
   );
+  if (columnSefirot.length === 0) return "Раскройте сефиры для рекомендаций";
   const lowestSefirah = columnSefirot.reduce(
     (lowest, current) =>
       current.displayProgress < lowest.displayProgress ? current : lowest,
@@ -208,8 +232,9 @@ const selectEnergyColumn = (column) => {
   energyOfDay.value = energyOfDay.value === column ? null : column;
   if (energyOfDay.value) {
     const columnSefirot = sefirot.value.filter(
-      (s) => s.column === energyOfDay.value
+      (s) => s.column === energyOfDay.value && s.revealed
     );
+    if (columnSefirot.length === 0) return;
     const lowestSefirah = columnSefirot.reduce(
       (lowest, current) =>
         current.displayProgress < lowest.displayProgress ? current : lowest,
@@ -260,34 +285,18 @@ const applyDecay = (points, lastActive) => {
   return Math.round(decayedPoints);
 };
 
-// Tooltip and highlight functions
-const showNodeTooltip = (sefirah) => {
-  let tooltipY;
-  let tooltipX = sefirah.x;
-  if (sefirah.y < 200) {
-    tooltipY = sefirah.y + 50;
-  } else if (sefirah.y > 500) {
-    tooltipY = sefirah.y - 50;
-  } else {
-    tooltipY = sefirah.y - 60;
+// Modified logAction to handle revealing
+const logActionWrapper = async (sefirahId, actionType) => {
+  await logAction(sefirahId, actionType);
+  const sefirah = sefirot.value.find((s) => s.id === sefirahId);
+  if (sefirah && !sefirah.revealed) {
+    sefirah.revealed = true; // Reveal the Sefirah upon first action
   }
-  if (sefirah.x < 150) {
-    tooltipX = sefirah.x + 30;
-  } else if (sefirah.x > 250) {
-    tooltipX = sefirah.x - 30;
-  }
-  activeTooltip.value = {
-    ...sefirah,
-    x: tooltipX,
-    y: tooltipY,
-  };
 };
 
-const hideNodeTooltip = () => {
-  setTimeout(() => {
-    activeTooltip.value = null;
-  }, 100);
-};
+// Tooltip functions (kept for compatibility)
+const showNodeTooltip = () => {};
+const hideNodeTooltip = () => {};
 
 // Open modal with selected sefirah
 const openModal = (sefirahId) => {
@@ -295,7 +304,9 @@ const openModal = (sefirahId) => {
   if (sefirah) {
     selectedSefirah.value = sefirah;
     isModalOpen.value = true;
-    setActiveCard(sefirahId);
+    if (sefirah.revealed) {
+      setActiveCard(sefirahId);
+    }
   }
 };
 
@@ -303,7 +314,12 @@ const openModal = (sefirahId) => {
 const getConnectionColumnClass = (fromId, toId) => {
   const fromSefirah = sefirot.value.find((s) => s.id === fromId);
   const toSefirah = sefirot.value.find((s) => s.id === toId);
-  if (fromSefirah.column === toSefirah.column) {
+  if (!fromSefirah || !toSefirah) return "path-neutral";
+  if (
+    fromSefirah.revealed &&
+    toSefirah.revealed &&
+    fromSefirah.column === toSefirah.column
+  ) {
     return `path-${fromSefirah.column}`;
   }
   return "path-neutral";
@@ -312,7 +328,12 @@ const getConnectionColumnClass = (fromId, toId) => {
 const getActiveStrokeClass = (fromId, toId) => {
   const fromSefirah = sefirot.value.find((s) => s.id === fromId);
   const toSefirah = sefirot.value.find((s) => s.id === toId);
-  if (fromSefirah.column === toSefirah.column) {
+  if (!fromSefirah || !toSefirah) return "stroke-white";
+  if (
+    fromSefirah.revealed &&
+    toSefirah.revealed &&
+    fromSefirah.column === toSefirah.column
+  ) {
     switch (fromSefirah.column) {
       case "left":
         return "stroke-blue-500";
@@ -332,16 +353,16 @@ const getNodePulseClass = (category, column) => {
 
 const getSefirahIcon = (id) => {
   const icons = {
-    keter: "fa-crown", // Корона
-    chokhmah: "fa-eye", // Око/искра
-    binah: "fa-wine-glass", // Кубок
-    chesed: "fa-hand-holding-heart", // Раскрытая ладонь
-    gevurah: "fa-shield-alt", // Меч (using shield-alt for strength)
-    tiferet: "fa-heart", // Сердце
-    netzach: "fa-fire", // Факел
-    hod: "fa-spa", // Лотос
-    yesod: "fa-moon", // Луна
-    malkhut: "fa-globe", // Земля
+    keter: "fa-crown",
+    chokhmah: "fa-eye",
+    binah: "fa-wine-glass",
+    chesed: "fa-hand-holding-heart",
+    gevurah: "fa-shield-alt",
+    tiferet: "fa-heart",
+    netzach: "fa-fire",
+    hod: "fa-spa",
+    yesod: "fa-moon",
+    malkhut: "fa-globe",
   };
   return icons[id] || "fa-circle";
 };
@@ -362,13 +383,16 @@ const getConnectionParticleClass = (columnType) => {
 
 // Set active card
 const setActiveCard = (id) => {
-  activeCard.value = id;
+  const sefirah = sefirot.value.find((s) => s.id === id);
+  if (sefirah && sefirah.revealed) {
+    activeCard.value = id;
+  }
 };
 
 // Get ring color for active card
 const getRingColor = (id) => {
   const sefirah = sefirot.value.find((s) => s.id === id);
-  if (!sefirah) return "75, 85, 99";
+  if (!sefirah || !sefirah.revealed) return "75, 85, 99";
   switch (sefirah.column) {
     case "left":
       return "59, 130, 246";
@@ -390,6 +414,8 @@ const getLabelX = (sefirah) => {
 
 // Styling functions
 const getNodeGlowClass = (id, column) => {
+  const sefirah = sefirot.value.find((s) => s.id === id);
+  if (!sefirah || !sefirah.revealed) return "fill-gray-400";
   switch (column) {
     case "left":
       return "fill-blue-400";
@@ -398,7 +424,7 @@ const getNodeGlowClass = (id, column) => {
     case "center":
       return "fill-green-400";
     default:
-      return "fill-white";
+      return "fill-gray-400";
   }
 };
 
@@ -416,6 +442,8 @@ const getGlowFilter = (column) => {
 };
 
 const getNodeStrokeColor = (id, column) => {
+  const sefirah = sefirot.value.find((s) => s.id === id);
+  if (!sefirah || !sefirah.revealed) return "#4B5563";
   switch (column) {
     case "left":
       return "#3b82f6";
@@ -429,6 +457,8 @@ const getNodeStrokeColor = (id, column) => {
 };
 
 const getProgressBarClass = (id, column) => {
+  const sefirah = sefirot.value.find((s) => s.id === id);
+  if (!sefirah || !sefirah.revealed) return "bg-gray-600";
   switch (column) {
     case "left":
       return "bg-gradient-to-r from-blue-500 to-blue-300";
@@ -443,7 +473,8 @@ const getProgressBarClass = (id, column) => {
 
 const getCardProgressClass = (id, column) => {
   const sefirah = sefirot.value.find((s) => s.id === id);
-  if (!sefirah || sefirah.points === 0) return "bg-gray-800/50 text-gray-400";
+  if (!sefirah || !sefirah.revealed || sefirah.points === 0)
+    return "bg-gray-800/50 text-gray-400";
   switch (column) {
     case "left":
       return "bg-blue-500/20 text-blue-300";
@@ -484,6 +515,7 @@ const getTooltipLevelClass = (column) => {
 
 // Initialize Data
 onMounted(async () => {
+  isLoading.value = true;
   if (isLoggedIn.value) {
     const userId = authStore.user.uid;
     await fetchSefirotProgress(
@@ -493,6 +525,10 @@ onMounted(async () => {
       calculateLevel,
       calculateDailyProgress
     );
+    // Update revealed state based on fetched data
+    sefirot.value.forEach((s) => {
+      s.revealed = s.points > 0;
+    });
   } else {
     // Demo data for non-logged-in users
     const demoDailyActions = [0, 1, 2, 0, 3, 1, 0, 2, 0, 1];
@@ -502,8 +538,10 @@ onMounted(async () => {
       s.level = calculateLevel(s.points);
       s.dailyActions = demoDailyActions[index];
       s.displayProgress = calculateDailyProgress(s.dailyActions, s.maxActions);
+      s.revealed = s.points > 0; // Reveal based on demo points
     });
   }
+  isLoading.value = false;
 
   // Set current week
   currentWeek.value =
@@ -533,6 +571,9 @@ onMounted(async () => {
           calculateLevel,
           calculateDailyProgress
         );
+        sefirot.value.forEach((s) => {
+          s.revealed = s.points > 0;
+        });
       } else {
         sefirot.value.forEach((s) => {
           s.dailyActions = 0;
@@ -549,6 +590,7 @@ onMounted(async () => {
 watch(
   () => authStore.user,
   async (newUser) => {
+    isLoading.value = true;
     if (newUser) {
       await fetchSefirotProgress(
         newUser.uid,
@@ -557,7 +599,11 @@ watch(
         calculateLevel,
         calculateDailyProgress
       );
+      sefirot.value.forEach((s) => {
+        s.revealed = s.points > 0;
+      });
     }
+    isLoading.value = false;
   }
 );
 </script>
@@ -655,37 +701,5 @@ svg text {
   100% {
     stroke-dasharray: 1000, 0;
   }
-}
-.tooltip-container {
-  animation: fadeIn 0.2s ease-in;
-  z-index: 10;
-}
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-@keyframes glowPulse {
-  0% {
-    box-shadow: 0 0 5px 0 rgba(255, 255, 255, 0.1);
-  }
-  50% {
-    box-shadow: 0 0 15px 0 rgba(255, 255, 255, 0.2);
-  }
-  100% {
-    box-shadow: 0 0 5px 0 rgba(255, 255, 255, 0.1);
-  }
-}
-svg {
-  pointer-events: bounding-box;
-}
-section {
-  position: relative;
-  z-index: 1;
 }
 </style>
