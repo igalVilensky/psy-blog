@@ -1,8 +1,24 @@
 <template>
   <section
     class="mb-8 bg-white/5 backdrop-blur rounded-xl shadow-xl border border-white/10"
+    ref="treeContainer"
   >
     <div class="relative flex flex-col items-center">
+      <!-- Full Screen Button (Mobile Only) -->
+      <div class="flex justify-end w-full px-4 py-2 md:hidden">
+        <button
+          @click="toggleFullscreen"
+          class="inline-flex items-center px-4 py-2 bg-gray-800/50 text-white rounded-lg hover:bg-gray-700/50 transition-all duration-200"
+        >
+          <i :class="isFullscreen ? 'fas fa-compress' : 'fas fa-expand'"></i>
+          <span class="ml-2">{{
+            isFullscreen
+              ? "Выйти из полноэкранного режима"
+              : "Смотреть на весь экран"
+          }}</span>
+        </button>
+      </div>
+
       <!-- SVG Tree for Medium+ Screens -->
       <div class="relative mb-4">
         <svg
@@ -94,7 +110,7 @@
             :get-level-color="getLevelColor"
             :show-node-tooltip="showNodeTooltip"
             :hide-node-tooltip="hideNodeTooltip"
-            @open-modal="$emit('open-modal', sefirah.id)"
+            @open-modal="handleOpenModal(sefirah.id)"
             @update:hovered-node="$emit('update:hoveredNode', $event)"
           />
         </svg>
@@ -104,7 +120,7 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, ref, onMounted } from "vue";
 import SvgDefs from "./SvgDefs.vue";
 import SefirahNode from "./SefirahNode.vue";
 import ConnectionLine from "./ConnectionLine.vue";
@@ -195,7 +211,99 @@ const props = defineProps({
 });
 
 // Define emits for two-way binding and modal
-defineEmits(["update:hoveredNode", "open-modal"]);
+const emit = defineEmits(["update:hoveredNode", "open-modal"]);
+
+// Fullscreen state and container ref
+const isFullscreen = ref(false);
+const treeContainer = ref(null);
+
+// Toggle fullscreen mode
+const toggleFullscreen = async () => {
+  if (!treeContainer.value) return;
+
+  if (!isFullscreen.value) {
+    try {
+      if (treeContainer.value.requestFullscreen) {
+        await treeContainer.value.requestFullscreen();
+      } else if (treeContainer.value.webkitRequestFullscreen) {
+        await treeContainer.value.webkitRequestFullscreen();
+      } else {
+        treeContainer.value.classList.add("fullscreen-fallback");
+      }
+      isFullscreen.value = true;
+    } catch (error) {
+      console.error("Error entering fullscreen:", error);
+      console.log("[error] Не удалось включить полноэкранный режим.");
+    }
+  } else {
+    try {
+      if (document.fullscreenElement || document.webkitFullscreenElement) {
+        if (document.exitFullscreen) {
+          await document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          await document.webkitExitFullscreen();
+        }
+      } else {
+        treeContainer.value.classList.remove("fullscreen-fallback");
+      }
+      isFullscreen.value = false;
+    } catch (error) {
+      console.error("Error exiting fullscreen:", error);
+      console.log("[error] Не удалось выйти из полноэкранного режима.");
+    }
+  }
+};
+
+// Exit fullscreen mode
+const exitFullscreen = async () => {
+  if (!isFullscreen.value || !treeContainer.value) return;
+
+  try {
+    if (document.fullscreenElement || document.webkitFullscreenElement) {
+      if (document.exitFullscreen) {
+        await document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) {
+        await document.webkitExitFullscreen();
+      }
+    } else {
+      treeContainer.value.classList.remove("fullscreen-fallback");
+    }
+    isFullscreen.value = false;
+  } catch (error) {
+    console.error("Error exiting fullscreen:", error);
+  }
+};
+
+// Handle modal opening with fullscreen exit
+const handleOpenModal = async (sefirahId) => {
+  if (isFullscreen.value) {
+    await exitFullscreen();
+  }
+  emit("open-modal", sefirahId);
+};
+
+// Sync fullscreen state
+onMounted(() => {
+  const handleFullscreenChange = () => {
+    isFullscreen.value = !!(
+      document.fullscreenElement || document.webkitFullscreenElement
+    );
+    if (!isFullscreen.value && treeContainer.value) {
+      treeContainer.value.classList.remove("fullscreen-fallback");
+    }
+  };
+
+  document.addEventListener("fullscreenchange", handleFullscreenChange);
+  document.addEventListener("webkitfullscreenchange", handleFullscreenChange);
+
+  return () => {
+    document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    document.removeEventListener(
+      "webkitfullscreenchange",
+      handleFullscreenChange
+    );
+  };
+});
 
 // Connection data with column types
 const connections = computed(() => {
@@ -348,5 +456,38 @@ section {
 }
 .connections {
   z-index: 1;
+}
+
+/* Fullscreen fallback for browsers without Fullscreen API */
+.fullscreen-fallback {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  background: linear-gradient(to bottom, #0f172a, #1e293b);
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.fullscreen-fallback svg {
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+  max-height: none;
+}
+
+/* iOS Safari compatibility */
+@supports (-webkit-touch-callout: none) {
+  .fullscreen-fallback {
+    height: -webkit-fill-available;
+  }
+  .fullscreen-fallback svg {
+    height: -webkit-fill-available;
+  }
 }
 </style>
