@@ -6,7 +6,7 @@ Our **Tree of Self** — 10 Sefirot organized into three pillars (**Fire, Water,
 The project combines **interactive practices**, **progress tracking**, and **gamification** to help you maintain balance and harmony in daily life.  
 
 🔗 **GitHub Repo**: [psy-blog](https://github.com/igalVilensky/psy-blog)  
-🌍 **Live Preview** (if available): *deployment link*
+🌍 **Live Preview**: *(https://psy-blog.netlify.app/)*
 
 ---
 
