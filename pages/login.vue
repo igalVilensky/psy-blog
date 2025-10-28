@@ -194,46 +194,6 @@ const handleLogin = async () => {
     );
     const user = userCredential.user;
 
-    // Optional: Check email verification
-    // if (!user.emailVerified) {
-    //   await auth.signOut();
-    //   throw new Error("Please verify your email before logging in.");
-    // }
-
-    // Step 2: Directus Authentication (local only)
-    if (useDirectus) {
-      // Directus login request
-      const loginResponse = await fetch(`${API_URL}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: email.value,
-          password: password.value,
-        }),
-      });
-
-      const loginData = await loginResponse.json();
-      if (!loginResponse.ok) {
-        throw new Error(
-          loginData.errors?.[0]?.message || "Ошибка входа в Directus"
-        );
-      }
-
-      // Store tokens in directusAuthStore
-      directusAuthStore.setTokens(
-        loginData.data.access_token,
-        loginData.data.refresh_token
-      );
-
-      // Fetch current Directus user (optional, for immediate user data)
-      const userResponse = await getCurrentDirectusUser();
-      if (userResponse.success) {
-        directusAuthStore.user = userResponse.user;
-      } else {
-        console.warn("Failed to fetch Directus user:", userResponse.message);
-      }
-    }
-
     // Redirect to profile page on success
     router.push("/profile");
   } catch (err) {

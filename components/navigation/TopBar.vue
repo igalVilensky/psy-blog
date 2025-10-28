@@ -13,14 +13,13 @@
     >
       <!-- Logo -->
       <NuxtLink to="/home" class="group relative" @click="closeDropdown">
-        <span
-          class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:from-[#E879F9] group-hover:to-[#0EA5E9] transition-all duration-500"
-        >
-          Psy-Blog
-        </span>
-        <span
-          class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:w-full transition-all duration-500"
-        ></span>
+        <div class="w-12 h-12 rounded-xl overflow-hidden bg-white">
+          <img
+            src="/logo2.png"
+            alt="FamilySpace Logo"
+            class="w-full h-full object-cover"
+          />
+        </div>
       </NuxtLink>
 
       <!-- Desktop Menu -->
