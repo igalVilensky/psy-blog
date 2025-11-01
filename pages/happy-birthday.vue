@@ -83,7 +83,7 @@
               >
                 <div class="text-center mb-6 md:mb-8">
                   <a
-                    href="https://mindqlab.com"
+                    href="https://www.mindqlab.com"
                     target="_blank"
                     class="inline-flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-gradient-blue-start to-gradient-blue-end rounded-full text-white font-semibold text-sm sm:text-base md:text-lg mb-4 md:mb-6 shadow-lg hover:shadow-blue-500/50 transform hover:scale-105 transition-all duration-300"
                   >
