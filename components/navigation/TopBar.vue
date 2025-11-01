@@ -12,13 +12,67 @@
       class="container max-w-6xl px-4 xl:px-0 mx-auto flex justify-between items-center py-4 relative z-10"
     >
       <!-- Logo -->
-      <NuxtLink to="/home" class="group relative" @click="closeDropdown">
-        <div class="w-12 h-12 rounded-xl overflow-hidden bg-white">
+      <NuxtLink to="/home" class="group relative block" @click="closeDropdown">
+        <!-- Outer glow ring - expands on hover -->
+        <div
+          class="absolute -inset-2 rounded-full bg-gradient-to-r from-[#0EA5E9] via-[#F59E0B] to-[#E879F9] opacity-0 group-hover:opacity-70 blur-xl transition-all duration-500 group-hover:animate-spin-slow"
+        ></div>
+
+        <!-- Secondary ring -->
+        <div
+          class="absolute -inset-1 rounded-full bg-gradient-to-r from-[#0EA5E9] via-[#F59E0B] to-[#E879F9] opacity-0 group-hover:opacity-50 blur-md transition-all duration-300"
+        ></div>
+
+        <!-- Logo container -->
+        <div
+          class="relative w-8 h-8 sm:w-12 sm:h-12 rounded-full overflow-hidden bg-gradient-to-br from-[#1A1F35] to-[#0F172A] transition-all duration-500 group-hover:scale-105 group-hover:shadow-[0_0_30px_rgba(14,165,233,0.6)] border-2 border-transparent group-hover:border-[#0EA5E9]/50"
+        >
+          <!-- Neural network effect -->
+          <div
+            class="absolute inset-0 bg-gradient-to-br from-[#0EA5E9]/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500"
+          ></div>
+
+          <!-- Logo image -->
           <img
-            src="/logo2.png"
-            alt="FamilySpace Logo"
-            class="w-full h-full object-cover"
+            src="/mindqlab-logo.png"
+            alt="MindQLab Logo"
+            class="relative w-full h-full object-cover transition-all duration-500 group-hover:scale-105 z-10"
           />
+
+          <!-- Synaptic spark particles -->
+          <div
+            class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          >
+            <div
+              class="absolute top-1/4 left-1/4 w-1 h-1 bg-[#0EA5E9] rounded-full group-hover:animate-ping"
+            ></div>
+            <div
+              class="absolute top-1/3 right-1/4 w-1 h-1 bg-[#F59E0B] rounded-full group-hover:animate-ping"
+              style="animation-delay: 0.2s"
+            ></div>
+            <div
+              class="absolute bottom-1/3 left-1/3 w-1 h-1 bg-[#E879F9] rounded-full group-hover:animate-ping"
+              style="animation-delay: 0.4s"
+            ></div>
+          </div>
+        </div>
+
+        <!-- Connection lines expanding outward -->
+        <div
+          class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+        >
+          <div
+            class="absolute top-0 left-1/2 w-px h-2 bg-gradient-to-t from-[#0EA5E9] to-transparent"
+          ></div>
+          <div
+            class="absolute bottom-0 left-1/2 w-px h-2 bg-gradient-to-b from-[#E879F9] to-transparent"
+          ></div>
+          <div
+            class="absolute left-0 top-1/2 w-2 h-px bg-gradient-to-l from-[#F59E0B] to-transparent"
+          ></div>
+          <div
+            class="absolute right-0 top-1/2 w-2 h-px bg-gradient-to-r from-[#0EA5E9] to-transparent"
+          ></div>
         </div>
       </NuxtLink>
 

@@ -14,13 +14,13 @@
                   ref="mainTitle"
                   class="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#00E6FF] to-[#70FF94] mb-6"
                 >
-                  Psy-Blog
+                  mindQlab
                 </h1>
               </div>
               <p
                 class="text-lg text-slate-300 max-w-6xl mx-auto leading-relaxed"
               >
-                Psy-Blog — это платформа осознанного развития, вдохновленная
+                mindQlab — это платформа осознанного развития, вдохновленная
                 древней мудростью Каббалы и современной психологией. Наше Древо
                 Себя из 10 Сефирот, организованных в три колонны (Огонь, Вода,
                 Воздух), помогает вам пройти Путь Целостности — 10-недельное
