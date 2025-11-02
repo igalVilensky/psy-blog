@@ -1,71 +1,64 @@
 <template>
-  <div class="min-h-screen bg-background relative overflow-hidden">
+  <div
+    class="min-h-screen bg-gradient-to-br from-pink-50 via-orange-50 to-yellow-50 relative overflow-hidden"
+  >
     <!-- Animated Background Elements -->
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
       <div
-        class="absolute top-20 left-10 w-64 h-64 md:w-96 md:h-96 bg-gradient-to-br from-purple-start/20 to-purple-end/20 rounded-full blur-3xl animate-slow-pulse"
+        class="absolute bottom-10 sm:bottom-20 right-5 sm:right-10 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-gradient-to-br from-blue-200/30 to-cyan-200/30 rounded-full blur-3xl animate-slow-drift"
       ></div>
       <div
-        class="absolute bottom-20 right-10 w-64 h-64 md:w-96 md:h-96 bg-gradient-to-br from-gradient-blue-start/20 to-gradient-blue-end/20 rounded-full blur-3xl animate-slow-drift"
-      ></div>
-      <div
-        class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 md:w-96 md:h-96 bg-gradient-to-br from-gradient-orange-start/10 to-gradient-orange-end/10 rounded-full blur-3xl animate-slow-float"
+        class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-gradient-to-br from-yellow-200/20 to-orange-200/20 rounded-full blur-3xl animate-slow-float"
       ></div>
     </div>
 
-    <!-- Floating Hearts on Mouse Move -->
-    <transition-group name="heart-float">
+    <!-- Floating Balloons on Mouse Move -->
+    <transition-group name="balloon-float">
       <div
-        v-for="heart in floatingHearts"
-        :key="'heart-' + heart.id"
-        class="fixed pointer-events-none text-2xl z-40 animate-float-up"
+        v-for="balloon in floatingBalloons"
+        :key="'balloon-' + balloon.id"
+        class="fixed pointer-events-none text-xl sm:text-2xl z-40 animate-float-up"
         :style="{
-          left: heart.x + 'px',
-          top: heart.y + 'px',
+          left: balloon.x + 'px',
+          top: balloon.y + 'px',
           transform: 'translate(-50%, -50%)',
         }"
       >
-        💖
+        🎈
       </div>
     </transition-group>
 
     <!-- Main Content -->
     <div
-      class="relative z-10 min-h-screen flex items-center justify-center p-3 sm:p-4 md:p-8 py-12 md:py-16"
+      class="relative z-10 min-h-screen flex items-center justify-center p-3 sm:p-4 md:p-6 lg:p-8 py-8 sm:py-12 md:py-16"
       @mousemove="handleMouseMove"
       @click="handleClick"
     >
-      <div class="max-w-5xl w-full">
+      <div class="max-w-6xl w-full">
         <!-- Main Card -->
         <div
-          class="bg-white/5 backdrop-blur-2xl rounded-2xl sm:rounded-3xl shadow-2xl border border-white/10 p-4 sm:p-6 md:p-12 lg:p-16 transform hover:scale-[1.01] transition-all duration-500"
-          :class="{ 'animate-pulse-slow': clickCount > 5 }"
+          class="bg-white/80 backdrop-blur-xl rounded-2xl sm:rounded-3xl shadow-2xl border border-white/60 p-4 sm:p-6 md:p-10 lg:p-16 transform hover:scale-[1.01] transition-all duration-500"
         >
           <!-- Header Section -->
-          <div ref="confettiTrigger" class="text-center mb-8 md:mb-12">
-            <!-- Animated Icon -->
+          <div ref="confettiTrigger" class="text-center mb-6 sm:mb-8 md:mb-16">
+            <!-- Animated Birthday Icon -->
             <div
-              class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 mx-auto mb-6 md:mb-8 bg-gradient-to-br from-gradient-purple-start to-gradient-purple-end rounded-full flex items-center justify-center shadow-2xl transform hover:rotate-12 transition-transform duration-300 cursor-pointer animate-bounce-subtle"
+              class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 mx-auto mb-6 sm:mb-8 md:mb-12 bg-gradient-to-br from-pink-400 to-rose-500 rounded-full flex items-center justify-center shadow-2xl transform hover:rotate-12 transition-transform duration-300 cursor-pointer animate-bounce-subtle"
               @click="triggerSpecialEffect"
             >
               <i
-                class="fas fa-gift text-3xl sm:text-4xl md:text-5xl text-white animate-wiggle"
+                class="fas fa-birthday-cake text-3xl sm:text-4xl md:text-5xl text-white animate-wiggle"
               ></i>
             </div>
 
             <h1
-              class="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold bg-gradient-to-r from-gradient-purple-start via-gradient-purple-end to-gradient-blue-end bg-clip-text text-transparent mb-4 md:mb-6 leading-tight px-2 animate-gradient-x"
+              class="text-3xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl font-bold bg-gradient-to-r from-pink-500 via-rose-500 to-orange-500 bg-clip-text text-transparent mb-4 sm:mb-6 md:mb-8 leading-tight px-2 animate-gradient-x font-birthday"
             >
-              С Днём Рождения, Настя! 🎉
+              С Днём Рождения, моя дорогая Настя! 🎉
             </h1>
 
             <p
-              class="text-xl sm:text-2xl md:text-3xl text-white mb-3 md:mb-4 font-light px-2 animate-fade-in-up"
-            >
-              Моя дорогая!
-            </p>
-            <p
-              class="text-base sm:text-lg md:text-xl text-white/80 mb-6 md:mb-8 max-w-2xl mx-auto px-4 animate-fade-in-up-delay"
+              class="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 mb-4 sm:mb-6 md:mb-8 lg:mb-12 max-w-3xl mx-auto px-4 leading-relaxed animate-fade-in-up-delay font-reading"
             >
               От всего сердца, от твоего любящего мужа и наших замечательных
               детей: Амели, Натаниэля и Адриэля 💕
@@ -73,34 +66,34 @@
           </div>
 
           <!-- CTA Button -->
-          <div class="text-center mb-8 md:mb-12 px-2">
+          <div class="text-center mb-8 sm:mb-10 md:mb-16 px-2">
             <button
               @click="revealSurprise"
-              class="group relative px-6 sm:px-8 md:px-10 py-4 md:py-5 bg-gradient-to-r from-gradient-purple-start to-gradient-purple-end rounded-xl sm:rounded-2xl font-semibold text-base sm:text-lg md:text-xl text-white shadow-2xl hover:shadow-purple-start/50 transform hover:scale-105 transition-all duration-300 overflow-hidden w-full sm:w-auto animate-pulse-glow"
+              class="group relative px-6 sm:px-10 md:px-16 py-4 sm:py-5 md:py-6 bg-gradient-to-r from-pink-500 to-rose-500 rounded-xl sm:rounded-2xl font-bold text-base sm:text-lg md:text-xl lg:text-2xl text-white shadow-2xl hover:shadow-pink-500/50 transform hover:scale-105 transition-all duration-300 overflow-hidden w-full sm:w-auto animate-pulse-glow"
             >
               <span
-                class="relative z-10 flex items-center gap-2 sm:gap-3 justify-center"
+                class="relative z-10 flex items-center gap-2 sm:gap-3 md:gap-4 justify-center"
               >
                 <i
                   :class="
                     showSurprise ? 'fas fa-kiss-wink-heart' : 'fas fa-sparkles'
                   "
-                  class="animate-spin-slow"
+                  class="animate-spin-slow text-base sm:text-lg md:text-xl"
                 ></i>
-                <span class="whitespace-nowrap">{{
+                <span class="whitespace-nowrap font-greeting">{{
                   showSurprise
                     ? "Послать тысячу поцелуев 💋"
                     : "Открыть подарок ✨"
                 }}</span>
               </span>
               <div
-                class="absolute inset-0 bg-gradient-to-r from-gradient-purple-end to-gradient-purple-start opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                class="absolute inset-0 bg-gradient-to-r from-rose-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
               ></div>
             </button>
 
             <p
               v-if="!showSurprise"
-              class="text-white/60 text-sm mt-4 animate-pulse"
+              class="text-gray-500 text-sm sm:text-base mt-4 sm:mt-6 font-reading"
             >
               💡 Нажми на подарок сверху для сюрприза!
             </p>
@@ -108,38 +101,43 @@
 
           <!-- Surprise Content -->
           <transition name="fade-slide">
-            <div v-if="showSurprise" class="space-y-6 md:space-y-8">
+            <div
+              v-if="showSurprise"
+              class="space-y-6 sm:space-y-8 md:space-y-12"
+            >
               <!-- Main Gift Section -->
               <div
-                class="bg-white/10 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-12 border border-white/20 shadow-xl hover:border-white/30 transition-all duration-300"
+                class="bg-white/90 backdrop-blur-lg rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-10 lg:p-14 border border-pink-200 shadow-xl hover:border-pink-300 transition-all duration-300"
               >
-                <div class="text-center mb-6 md:mb-8">
+                <div class="text-center mb-6 sm:mb-8 md:mb-12">
                   <a
                     href="https://www.mindqlab.com"
                     target="_blank"
-                    class="inline-flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-gradient-blue-start to-gradient-blue-end rounded-full text-white font-semibold text-sm sm:text-base md:text-lg mb-4 md:mb-6 shadow-lg hover:shadow-blue-500/50 transform hover:scale-105 transition-all duration-300 animate-bounce-subtle"
+                    class="inline-flex items-center gap-2 sm:gap-3 px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full text-white font-bold text-sm sm:text-base md:text-lg lg:text-xl mb-4 sm:mb-6 md:mb-8 shadow-lg hover:shadow-blue-500/50 transform hover:scale-105 transition-all duration-300 animate-bounce-subtle"
                   >
-                    <i class="fas fa-globe animate-spin-slow"></i>
+                    <i
+                      class="fas fa-globe animate-spin-slow text-sm sm:text-base"
+                    ></i>
                     <span>mindqlab.com</span>
                     <i class="fas fa-external-link-alt text-xs sm:text-sm"></i>
                   </a>
                   <h2
-                    class="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 md:mb-4 leading-tight px-2"
+                    class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-3 sm:mb-4 md:mb-6 leading-tight px-2 font-greeting"
                   >
                     Твоя лаборатория осознанного развития
                   </h2>
                   <div
-                    class="w-20 sm:w-24 h-1 bg-gradient-to-r from-gradient-purple-start to-gradient-purple-end mx-auto rounded-full animate-pulse-glow"
+                    class="w-20 sm:w-24 md:w-28 h-1.5 sm:h-2 bg-gradient-to-r from-pink-500 to-rose-500 mx-auto rounded-full"
                   ></div>
                 </div>
 
-                <div class="space-y-4 sm:space-y-6 text-white">
+                <div class="space-y-4 sm:space-y-6 md:space-y-8 text-gray-700">
                   <p
-                    class="text-base sm:text-lg md:text-xl leading-relaxed text-center max-w-3xl mx-auto px-2"
+                    class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl leading-relaxed text-center max-w-4xl mx-auto px-2 font-reading"
                   >
                     Моя любимая, этот домен — это твоё
                     <span
-                      class="font-semibold bg-gradient-to-r from-gradient-mint-start to-gradient-mint-end bg-clip-text text-transparent"
+                      class="font-bold bg-gradient-to-r from-green-500 to-teal-500 bg-clip-text text-transparent"
                       >стратегическое пространство</span
                     >
                     для создания платформы осознанного развития. Здесь ты
@@ -149,63 +147,75 @@
 
                   <!-- Concept Cards -->
                   <div
-                    class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mt-6 md:mt-8 mb-6 md:mb-8"
+                    class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mt-6 sm:mt-8 md:mt-12 mb-6 sm:mb-8 md:mb-12"
                   >
                     <div
-                      class="bg-white/10 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/20 text-center transform hover:scale-110 hover:bg-white/15 transition-all duration-300 cursor-pointer hover:rotate-3"
+                      class="bg-white/80 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 border border-purple-200 text-center transform hover:scale-110 hover:bg-white transition-all duration-300 cursor-pointer hover:rotate-3 shadow-lg"
                       @mouseenter="createSparkles($event)"
                     >
                       <div
-                        class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 bg-gradient-to-br from-purple-400 to-purple-600 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg animate-float"
+                        class="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 mx-auto mb-3 sm:mb-4 md:mb-6 bg-gradient-to-br from-purple-400 to-purple-600 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg animate-float"
                       >
                         <i
-                          class="fas fa-brain text-xl sm:text-2xl text-white"
+                          class="fas fa-brain text-xl sm:text-2xl md:text-3xl text-white"
                         ></i>
                       </div>
-                      <h3 class="text-xl sm:text-2xl font-bold text-white mb-2">
+                      <h3
+                        class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-2 sm:mb-3 font-greeting"
+                      >
                         Mind
                       </h3>
-                      <p class="text-xs sm:text-sm text-white/80">
+                      <p
+                        class="text-xs sm:text-sm md:text-base text-gray-600 font-reading"
+                      >
                         Разум, мышление и сознание
                       </p>
                     </div>
 
                     <div
-                      class="bg-white/10 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/20 text-center transform hover:scale-110 hover:bg-white/15 transition-all duration-300 cursor-pointer hover:rotate-3"
+                      class="bg-white/80 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 border border-pink-200 text-center transform hover:scale-110 hover:bg-white transition-all duration-300 cursor-pointer hover:rotate-3 shadow-lg"
                       @mouseenter="createSparkles($event)"
                     >
                       <div
-                        class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 bg-gradient-to-br from-pink-400 to-pink-600 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg animate-float"
+                        class="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 mx-auto mb-3 sm:mb-4 md:mb-6 bg-gradient-to-br from-pink-400 to-pink-600 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg animate-float"
                         style="animation-delay: 0.2s"
                       >
                         <i
-                          class="fas fa-chart-line text-xl sm:text-2xl text-white"
+                          class="fas fa-chart-line text-xl sm:text-2xl md:text-3xl text-white"
                         ></i>
                       </div>
-                      <h3 class="text-xl sm:text-2xl font-bold text-white mb-2">
+                      <h3
+                        class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-2 sm:mb-3 font-greeting"
+                      >
                         Q
                       </h3>
-                      <p class="text-xs sm:text-sm text-white/80">
+                      <p
+                        class="text-xs sm:text-sm md:text-base text-gray-600 font-reading"
+                      >
                         Коэффициенты развития
                       </p>
                     </div>
 
                     <div
-                      class="bg-white/10 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/20 text-center transform hover:scale-110 hover:bg-white/15 transition-all duration-300 cursor-pointer hover:rotate-3"
+                      class="bg-white/80 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 border border-green-200 text-center transform hover:scale-110 hover:bg-white transition-all duration-300 cursor-pointer hover:rotate-3 shadow-lg"
                       @mouseenter="createSparkles($event)"
                     >
                       <div
-                        class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 bg-gradient-to-br from-green-400 to-green-600 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg animate-float"
+                        class="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 mx-auto mb-3 sm:mb-4 md:mb-6 bg-gradient-to-br from-green-400 to-green-600 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg animate-float"
                         style="animation-delay: 0.4s"
                       >
                         <i
-                          class="fas fa-flask text-xl sm:text-2xl text-white"
+                          class="fas fa-flask text-xl sm:text-2xl md:text-3xl text-white"
                         ></i>
                       </div>
-                      <h3 class="text-xl sm:text-2xl font-bold text-white mb-2">
+                      <h3
+                        class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-2 sm:mb-3 font-greeting"
+                      >
                         Lab
                       </h3>
-                      <p class="text-xs sm:text-sm text-white/80">
+                      <p
+                        class="text-xs sm:text-sm md:text-base text-gray-600 font-reading"
+                      >
                         Лаборатория экспериментов
                       </p>
                     </div>
@@ -213,82 +223,100 @@
 
                   <!-- Platform Features -->
                   <div
-                    class="bg-white/5 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 border border-white/20 hover:border-white/30 transition-all duration-300"
+                    class="bg-white/80 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-10 border border-blue-200 hover:border-blue-300 transition-all duration-300 shadow-lg"
                   >
                     <h4
-                      class="text-xl sm:text-2xl font-bold text-center text-white mb-4 sm:mb-6 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3"
+                      class="text-xl sm:text-2xl md:text-3xl font-bold text-center text-gray-800 mb-4 sm:mb-6 md:mb-8 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 md:gap-4 font-greeting"
                     >
                       <i
-                        class="fas fa-compass text-yellow-400 animate-spin-slow"
+                        class="fas fa-compass text-yellow-500 animate-spin-slow text-lg sm:text-xl md:text-2xl"
                       ></i>
                       <span>Твоя платформа личностного роста</span>
                     </h4>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                    <div
+                      class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 md:gap-6"
+                    >
                       <div
-                        class="bg-gradient-to-br from-blue-500/20 to-blue-600/20 backdrop-blur-sm p-3 sm:p-4 rounded-lg sm:rounded-xl border border-blue-400/30 transform hover:scale-105 transition-all duration-300 cursor-pointer hover:-rotate-1"
+                        class="bg-gradient-to-br from-blue-100 to-blue-200 backdrop-blur-sm p-3 sm:p-4 md:p-6 rounded-lg sm:rounded-xl border border-blue-300 transform hover:scale-105 transition-all duration-300 cursor-pointer hover:-rotate-1"
                       >
-                        <div class="flex items-center gap-2 sm:gap-3 mb-2">
+                        <div
+                          class="flex items-center gap-2 sm:gap-3 md:gap-4 mb-2 sm:mb-3"
+                        >
                           <i
-                            class="fas fa-book-open text-blue-400 text-lg sm:text-xl"
+                            class="fas fa-book-open text-blue-500 text-base sm:text-xl md:text-2xl"
                           ></i>
                           <span
-                            class="font-bold text-white text-sm sm:text-base"
+                            class="font-bold text-gray-800 text-base sm:text-lg md:text-xl font-greeting"
                             >Курсы и гайды</span
                           >
                         </div>
-                        <p class="text-xs sm:text-sm text-white/80">
+                        <p
+                          class="text-xs sm:text-sm md:text-base text-gray-600 font-reading"
+                        >
                           Образовательные программы для осознанного развития
                         </p>
                       </div>
 
                       <div
-                        class="bg-gradient-to-br from-purple-500/20 to-purple-600/20 backdrop-blur-sm p-3 sm:p-4 rounded-lg sm:rounded-xl border border-purple-400/30 transform hover:scale-105 transition-all duration-300 cursor-pointer hover:rotate-1"
+                        class="bg-gradient-to-br from-purple-100 to-purple-200 backdrop-blur-sm p-3 sm:p-4 md:p-6 rounded-lg sm:rounded-xl border border-purple-300 transform hover:scale-105 transition-all duration-300 cursor-pointer hover:rotate-1"
                       >
-                        <div class="flex items-center gap-2 sm:gap-3 mb-2">
+                        <div
+                          class="flex items-center gap-2 sm:gap-3 md:gap-4 mb-2 sm:mb-3"
+                        >
                           <i
-                            class="fas fa-podcast text-purple-400 text-lg sm:text-xl"
+                            class="fas fa-podcast text-purple-500 text-base sm:text-xl md:text-2xl"
                           ></i>
                           <span
-                            class="font-bold text-white text-sm sm:text-base"
+                            class="font-bold text-gray-800 text-base sm:text-lg md:text-xl font-greeting"
                             >Подкасты</span
                           >
                         </div>
-                        <p class="text-xs sm:text-sm text-white/80">
+                        <p
+                          class="text-xs sm:text-sm md:text-base text-gray-600 font-reading"
+                        >
                           Инсайты и советы по личностному росту
                         </p>
                       </div>
 
                       <div
-                        class="bg-gradient-to-br from-green-500/20 to-green-600/20 backdrop-blur-sm p-3 sm:p-4 rounded-lg sm:rounded-xl border border-green-400/30 transform hover:scale-105 transition-all duration-300 cursor-pointer hover:-rotate-1"
+                        class="bg-gradient-to-br from-green-100 to-green-200 backdrop-blur-sm p-3 sm:p-4 md:p-6 rounded-lg sm:rounded-xl border border-green-300 transform hover:scale-105 transition-all duration-300 cursor-pointer hover:-rotate-1"
                       >
-                        <div class="flex items-center gap-2 sm:gap-3 mb-2">
+                        <div
+                          class="flex items-center gap-2 sm:gap-3 md:gap-4 mb-2 sm:mb-3"
+                        >
                           <i
-                            class="fas fa-tools text-green-400 text-lg sm:text-xl"
+                            class="fas fa-tools text-green-500 text-base sm:text-xl md:text-2xl"
                           ></i>
                           <span
-                            class="font-bold text-white text-sm sm:text-base"
+                            class="font-bold text-gray-800 text-base sm:text-lg md:text-xl font-greeting"
                             >Инструменты осознанности</span
                           >
                         </div>
-                        <p class="text-xs sm:text-sm text-white/80">
+                        <p
+                          class="text-xs sm:text-sm md:text-base text-gray-600 font-reading"
+                        >
                           Эмоциональный компас, Колесо баланса и другие
                         </p>
                       </div>
 
                       <div
-                        class="bg-gradient-to-br from-pink-500/20 to-pink-600/20 backdrop-blur-sm p-3 sm:p-4 rounded-lg sm:rounded-xl border border-pink-400/30 transform hover:scale-105 transition-all duration-300 cursor-pointer hover:rotate-1"
+                        class="bg-gradient-to-br from-pink-100 to-pink-200 backdrop-blur-sm p-3 sm:p-4 md:p-6 rounded-lg sm:rounded-xl border border-pink-300 transform hover:scale-105 transition-all duration-300 cursor-pointer hover:rotate-1"
                       >
-                        <div class="flex items-center gap-2 sm:gap-3 mb-2">
+                        <div
+                          class="flex items-center gap-2 sm:gap-3 md:gap-4 mb-2 sm:mb-3"
+                        >
                           <i
-                            class="fas fa-users text-pink-400 text-lg sm:text-xl"
+                            class="fas fa-users text-pink-500 text-base sm:text-xl md:text-2xl"
                           ></i>
                           <span
-                            class="font-bold text-white text-sm sm:text-base"
+                            class="font-bold text-gray-800 text-base sm:text-lg md:text-xl font-greeting"
                             >Сообщество</span
                           >
                         </div>
-                        <p class="text-xs sm:text-sm text-white/80">
+                        <p
+                          class="text-xs sm:text-sm md:text-base text-gray-600 font-reading"
+                        >
                           Пространство для роста и поддержки
                         </p>
                       </div>
@@ -297,140 +325,129 @@
 
                   <!-- Intelligence Types -->
                   <div
-                    class="bg-white/5 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 border border-white/20"
+                    class="bg-white/80 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-10 border border-orange-200"
                   >
                     <h4
-                      class="text-xl sm:text-2xl font-bold text-center text-white mb-4 sm:mb-6 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3"
+                      class="text-xl sm:text-2xl md:text-3xl font-bold text-center text-gray-800 mb-4 sm:mb-6 md:mb-8 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 md:gap-4 font-greeting"
                     >
                       <i
-                        class="fas fa-lightbulb text-yellow-400 animate-pulse"
+                        class="fas fa-lightbulb text-yellow-500 text-lg sm:text-xl md:text-2xl"
                       ></i>
                       <span>Все виды интеллекта в одном месте</span>
                     </h4>
 
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+                    <div
+                      class="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6"
+                    >
                       <div
                         v-for="(intel, idx) in intelligenceTypes"
                         :key="intel.code"
-                        class="bg-gradient-to-br backdrop-blur-sm p-3 sm:p-4 rounded-lg sm:rounded-xl border transform hover:scale-110 transition-all duration-300 cursor-pointer"
+                        class="bg-gradient-to-br backdrop-blur-sm p-3 sm:p-4 md:p-5 rounded-lg sm:rounded-xl border transform hover:scale-110 transition-all duration-300 cursor-pointer shadow-md"
                         :class="intel.classes"
                         :style="{ animationDelay: idx * 0.1 + 's' }"
                         @click="playSound"
                       >
                         <div
-                          class="flex items-center gap-1 sm:gap-2 mb-1 sm:mb-2"
+                          class="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3"
                         >
                           <i
                             :class="intel.icon"
-                            class="text-sm sm:text-base"
+                            class="text-base sm:text-lg md:text-xl"
                           ></i>
                           <span
-                            class="font-bold text-sm sm:text-base"
+                            class="font-bold text-base sm:text-lg md:text-xl font-greeting"
                             :class="intel.textColor"
                             >{{ intel.code }}</span
                           >
                         </div>
-                        <p class="text-xs text-white/80">{{ intel.desc }}</p>
+                        <p
+                          class="text-xs sm:text-sm text-gray-600 font-reading"
+                        >
+                          {{ intel.desc }}
+                        </p>
                       </div>
                     </div>
                   </div>
 
                   <!-- Vision Section -->
                   <div
-                    class="bg-gradient-to-r from-white/10 to-white/5 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-6 border-l-4 border-gradient-blue-start hover:border-l-8 transition-all duration-300"
+                    class="bg-gradient-to-r from-pink-100 to-orange-100 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 border-l-4 border-blue-500 hover:border-l-8 transition-all duration-300 shadow-lg"
                   >
                     <h4
-                      class="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4 flex items-center gap-2"
+                      class="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-3 sm:mb-4 md:mb-6 flex items-center gap-2 sm:gap-3 font-greeting"
                     >
                       <i
-                        class="fas fa-rocket text-gradient-orange-start animate-bounce"
+                        class="fas fa-rocket text-orange-500 animate-bounce text-base sm:text-lg md:text-xl"
                       ></i>
                       <span>Твой путь к воплощению мечты</span>
                     </h4>
-                    <div class="space-y-2 sm:space-y-3 text-white/90">
+                    <div
+                      class="space-y-2 sm:space-y-3 md:space-y-4 text-gray-700"
+                    >
                       <div
                         v-for="(item, idx) in visionItems"
                         :key="idx"
-                        class="flex items-start gap-2 sm:gap-3 hover:translate-x-2 transition-transform duration-300"
+                        class="flex items-start gap-2 sm:gap-3 md:gap-4 hover:translate-x-2 transition-transform duration-300"
                       >
                         <i
-                          class="fas fa-check-circle text-gradient-mint-start mt-1 flex-shrink-0 text-sm sm:text-base animate-pulse"
-                          :style="{ animationDelay: idx * 0.2 + 's' }"
+                          class="fas fa-check-circle text-green-500 mt-0.5 sm:mt-1 flex-shrink-0 text-sm sm:text-base md:text-xl"
                         ></i>
-                        <span class="text-sm sm:text-base">{{ item }}</span>
+                        <span
+                          class="text-sm sm:text-base md:text-lg font-reading"
+                          >{{ item }}</span
+                        >
                       </div>
                     </div>
                   </div>
 
                   <!-- Closing Message -->
-                  <div class="text-center py-4 sm:py-6">
+                  <div class="text-center py-4 sm:py-6 md:py-8">
                     <p
-                      class="text-lg sm:text-xl md:text-2xl font-semibold bg-gradient-to-r from-gradient-mint-start to-gradient-purple-end bg-clip-text text-transparent mb-4 sm:mb-6 px-2 animate-gradient-x"
+                      class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-green-500 to-purple-500 bg-clip-text text-transparent mb-4 sm:mb-6 md:mb-8 px-2 animate-gradient-x font-greeting"
                     >
                       MindQLab — это бесконечное пространство для твоего
                       творчества и помощи людям!
                     </p>
                     <div
-                      class="max-w-2xl mx-auto bg-white/5 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/20 hover:border-white/30 transition-all duration-300 hover:scale-105"
+                      class="max-w-3xl mx-auto bg-white/80 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 border border-pink-200 hover:border-pink-300 transition-all duration-300 hover:scale-105 shadow-lg"
                     >
                       <p
-                        class="text-sm sm:text-base text-white/90 leading-relaxed italic"
+                        class="text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed italic font-reading"
                       >
-                        <i class="fas fa-quote-left text-white/40 mr-2"></i>
+                        <i
+                          class="fas fa-quote-left text-gray-400 mr-2 sm:mr-3"
+                        ></i>
                         Я верю в тебя и знаю, что ты создашь нечто удивительное.
                         Наша семья — твоя самая надёжная поддержка. Наши дети
                         учатся у тебя каждый день, как расти и развиваться, как
                         быть сильной и мудрой.
-                        <i class="fas fa-quote-right text-white/40 ml-2"></i>
+                        <i
+                          class="fas fa-quote-right text-gray-400 ml-2 sm:ml-3"
+                        ></i>
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
 
+              <!-- Kids Gallery Integrated -->
               <KidsGallery />
-
-              <!-- Kids Section -->
-              <div
-                class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mt-6 md:mt-8"
-              >
-                <div
-                  v-for="(kid, idx) in kids"
-                  :key="kid.name"
-                  class="group bg-white/10 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/20 text-center transform hover:scale-110 hover:bg-white/15 transition-all duration-300 cursor-pointer"
-                  :style="{ animationDelay: idx * 0.15 + 's' }"
-                  @click="celebrateKid(kid.name)"
-                >
-                  <div
-                    :class="kid.bgGradient"
-                    class="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 sm:mb-4 rounded-full flex items-center justify-center shadow-lg transition-shadow animate-float"
-                    :style="{ animationDelay: idx * 0.2 + 's' }"
-                  >
-                    <i
-                      :class="kid.icon"
-                      class="text-2xl sm:text-3xl text-white"
-                    ></i>
-                  </div>
-                  <h4 class="font-bold text-lg sm:text-xl text-white mb-2">
-                    {{ kid.name }}
-                  </h4>
-                  <p class="text-xs sm:text-sm text-white/80">
-                    {{ kid.message }}
-                  </p>
-                </div>
-              </div>
             </div>
           </transition>
         </div>
 
         <!-- Footer Message -->
-        <div class="text-center mt-6 md:mt-8 px-4">
-          <p class="text-white/70 text-base sm:text-lg animate-pulse">
-            <i class="fas fa-heart text-red-400 animate-heartbeat"></i>
+        <div class="text-center mt-6 sm:mt-8 md:mt-12 px-4">
+          <p
+            class="text-gray-600 text-base sm:text-lg md:text-xl font-greeting"
+          >
+            <i class="fas fa-heart text-red-500 animate-heartbeat"></i>
             С безграничной любовью, твоя семья
-            <i class="fas fa-heart text-red-400 animate-heartbeat"></i>
+            <i class="fas fa-heart text-red-500 animate-heartbeat"></i>
           </p>
-          <p class="text-white/50 text-sm mt-2">
+          <p
+            class="text-gray-500 text-sm sm:text-base mt-2 sm:mt-3 font-reading"
+          >
             💡 Кликай везде для волшебства! ✨
           </p>
         </div>
@@ -442,7 +459,7 @@
       <div
         v-for="kiss in kisses"
         :key="'kiss-' + kiss.id"
-        class="fixed pointer-events-none text-2xl sm:text-3xl md:text-4xl z-50"
+        class="fixed pointer-events-none text-xl sm:text-2xl md:text-3xl lg:text-4xl z-50"
         :style="{
           left: kiss.x + 'px',
           top: kiss.y + 'px',
@@ -458,7 +475,7 @@
       <div
         v-for="sparkle in sparkles"
         :key="'sparkle-' + sparkle.id"
-        class="fixed pointer-events-none text-xl z-50"
+        class="fixed pointer-events-none text-base sm:text-lg md:text-xl z-50"
         :style="{
           left: sparkle.x + 'px',
           top: sparkle.y + 'px',
@@ -472,7 +489,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onUnmounted } from "vue";
 import KidsGallery from "@/components/KidsGallery.vue";
 import confetti from "canvas-confetti";
 
@@ -483,61 +500,62 @@ definePageMeta({
 const showSurprise = ref(false);
 const confettiTrigger = ref(null);
 const kisses = ref([]);
-const floatingHearts = ref([]);
+const floatingBalloons = ref([]);
 const sparkles = ref([]);
 const clickCount = ref(0);
 let kissIdCounter = 0;
-let heartIdCounter = 0;
+let balloonIdCounter = 0;
 let sparkleIdCounter = 0;
+let revealInterval = null;
 
 const intelligenceTypes = [
   {
     code: "IQ",
     desc: "Логическое мышление",
-    icon: "fas fa-puzzle-piece text-blue-400",
-    textColor: "text-blue-300",
+    icon: "fas fa-puzzle-piece text-blue-500",
+    textColor: "text-blue-600",
     classes:
-      "from-blue-500/20 to-blue-600/20 border-blue-400/30 hover:from-blue-500/30 hover:to-blue-600/30",
+      "from-blue-100 to-blue-200 border-blue-300 hover:from-blue-200 hover:to-blue-300",
   },
   {
     code: "EQ",
     desc: "Эмоциональный интеллект",
-    icon: "fas fa-heart text-green-400",
-    textColor: "text-green-300",
+    icon: "fas fa-heart text-green-500",
+    textColor: "text-green-600",
     classes:
-      "from-green-500/20 to-green-600/20 border-green-400/30 hover:from-green-500/30 hover:to-green-600/30",
+      "from-green-100 to-green-200 border-green-300 hover:from-green-200 hover:to-green-300",
   },
   {
     code: "AQ",
     desc: "Адаптивность",
-    icon: "fas fa-sync text-red-400",
-    textColor: "text-red-300",
+    icon: "fas fa-sync text-red-500",
+    textColor: "text-red-600",
     classes:
-      "from-red-500/20 to-red-600/20 border-red-400/30 hover:from-red-500/30 hover:to-red-600/30",
+      "from-red-100 to-red-200 border-red-300 hover:from-red-200 hover:to-red-300",
   },
   {
     code: "CQ",
     desc: "Креативность",
-    icon: "fas fa-palette text-yellow-400",
-    textColor: "text-yellow-300",
+    icon: "fas fa-palette text-yellow-500",
+    textColor: "text-yellow-600",
     classes:
-      "from-yellow-500/20 to-yellow-600/20 border-yellow-400/30 hover:from-yellow-500/30 hover:to-yellow-600/30",
+      "from-yellow-100 to-yellow-200 border-yellow-300 hover:from-yellow-200 hover:to-yellow-300",
   },
   {
     code: "SQ",
     desc: "Социальный интеллект",
-    icon: "fas fa-users text-indigo-400",
-    textColor: "text-indigo-300",
+    icon: "fas fa-users text-indigo-500",
+    textColor: "text-indigo-600",
     classes:
-      "from-indigo-500/20 to-indigo-600/20 border-indigo-400/30 hover:from-indigo-500/30 hover:to-indigo-600/30",
+      "from-indigo-100 to-indigo-200 border-indigo-300 hover:from-indigo-200 hover:to-indigo-300",
   },
   {
     code: "+ новые Q",
     desc: "Которые ты откроешь",
-    icon: "fas fa-infinity text-pink-400",
-    textColor: "text-pink-300",
+    icon: "fas fa-infinity text-pink-500",
+    textColor: "text-pink-600",
     classes:
-      "from-pink-500/20 to-pink-600/20 border-pink-400/30 hover:from-pink-500/30 hover:to-pink-600/30",
+      "from-pink-100 to-pink-200 border-pink-300 hover:from-pink-200 hover:to-pink-300",
   },
 ];
 
@@ -547,30 +565,6 @@ const visionItems = [
   "Создавай уникальные инструменты самопознания",
   "Строй сообщество осознанных людей",
   "Помогай людям находить их путь к целостности",
-];
-
-const kids = [
-  {
-    name: "Амели",
-    icon: "fas fa-crown",
-    message: "Видит в тебе пример сильной женщины",
-    bgGradient:
-      "bg-gradient-to-br from-pink-400 to-pink-600 group-hover:shadow-pink-500/50",
-  },
-  {
-    name: "Натаниэль",
-    icon: "fas fa-star",
-    message: "Твой самый вдохновлённый ученик",
-    bgGradient:
-      "bg-gradient-to-br from-blue-400 to-blue-600 group-hover:shadow-blue-500/50",
-  },
-  {
-    name: "Адриэль",
-    icon: "fas fa-heart",
-    message: "Чувствует твою мудрость каждый день",
-    bgGradient:
-      "bg-gradient-to-br from-green-400 to-green-600 group-hover:shadow-green-500/50",
-  },
 ];
 
 const revealSurprise = () => {
@@ -584,11 +578,13 @@ const revealSurprise = () => {
       return Math.random() * (max - min) + min;
     }
 
-    const interval = setInterval(function () {
+    revealInterval = setInterval(function () {
       const timeLeft = animationEnd - Date.now();
 
       if (timeLeft <= 0) {
-        return clearInterval(interval);
+        clearInterval(revealInterval);
+        revealInterval = null;
+        return;
       }
 
       const particleCount = 50 * (timeLeft / duration);
@@ -597,13 +593,13 @@ const revealSurprise = () => {
         ...defaults,
         particleCount,
         origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
-        colors: ["#B44CFF", "#FF4DFF", "#00FF88", "#3A1CFF"],
+        colors: ["#EC4899", "#F59E0B", "#3B82F6", "#10B981"],
       });
       confetti({
         ...defaults,
         particleCount,
         origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
-        colors: ["#B44CFF", "#FF4DFF", "#00FF88", "#3A1CFF"],
+        colors: ["#EC4899", "#F59E0B", "#3B82F6", "#10B981"],
       });
     }, 250);
 
@@ -644,19 +640,21 @@ const createKissEffect = () => {
 };
 
 const handleMouseMove = (e) => {
-  // Occasionally spawn a heart on mouse move
+  // Occasionally spawn a balloon on mouse move
   if (Math.random() > 0.97) {
-    const heart = {
-      id: heartIdCounter++,
+    const balloon = {
+      id: balloonIdCounter++,
       x: e.clientX,
       y: e.clientY,
     };
-    floatingHearts.value.push(heart);
+    floatingBalloons.value.push(balloon);
 
     setTimeout(() => {
-      const index = floatingHearts.value.findIndex((h) => h.id === heart.id);
+      const index = floatingBalloons.value.findIndex(
+        (h) => h.id === balloon.id
+      );
       if (index > -1) {
-        floatingHearts.value.splice(index, 1);
+        floatingBalloons.value.splice(index, 1);
       }
     }, 2000);
   }
@@ -704,29 +702,29 @@ const triggerSpecialEffect = () => {
   fire(0.25, {
     spread: 26,
     startVelocity: 55,
-    colors: ["#B44CFF", "#FF4DFF", "#00FF88"],
+    colors: ["#EC4899", "#F59E0B", "#10B981"],
   });
   fire(0.2, {
     spread: 60,
-    colors: ["#3A1CFF", "#FFD700", "#FF1493"],
+    colors: ["#3B82F6", "#F59E0B", "#EC4899"],
   });
   fire(0.35, {
     spread: 100,
     decay: 0.91,
     scalar: 0.8,
-    colors: ["#00FF88", "#B44CFF", "#FF4DFF"],
+    colors: ["#10B981", "#EC4899", "#F59E0B"],
   });
   fire(0.1, {
     spread: 120,
     startVelocity: 25,
     decay: 0.92,
     scalar: 1.2,
-    colors: ["#FFD700", "#3A1CFF", "#FF1493"],
+    colors: ["#F59E0B", "#3B82F6", "#EC4899"],
   });
   fire(0.1, {
     spread: 120,
     startVelocity: 45,
-    colors: ["#B44CFF", "#00FF88", "#FFD700"],
+    colors: ["#EC4899", "#10B981", "#F59E0B"],
   });
 };
 
@@ -754,44 +752,34 @@ const createSparkles = (event) => {
   }
 };
 
-const celebrateKid = (kidName) => {
-  // Hearts explosion for kid
-  const duration = 1500;
-  const animationEnd = Date.now() + duration;
-
-  const interval = setInterval(() => {
-    const timeLeft = animationEnd - Date.now();
-
-    if (timeLeft <= 0) {
-      return clearInterval(interval);
-    }
-
-    confetti({
-      particleCount: 3,
-      angle: 60,
-      spread: 55,
-      origin: { x: 0, y: 0.8 },
-      colors: ["#FF1493", "#FFD700", "#FF69B4", "#FF4DFF"],
-      shapes: ["circle"],
-      zIndex: 100,
-    });
-    confetti({
-      particleCount: 3,
-      angle: 120,
-      spread: 55,
-      origin: { x: 1, y: 0.8 },
-      colors: ["#FF1493", "#FFD700", "#FF69B4", "#FF4DFF"],
-      shapes: ["circle"],
-      zIndex: 100,
-    });
-  }, 50);
+const playSound = () => {
+  // You can add sound effects here if needed
 };
-defineExpose({
-  celebrateKid,
+
+// Cleanup on component unmount
+onUnmounted(() => {
+  if (revealInterval) {
+    clearInterval(revealInterval);
+  }
 });
 </script>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap");
+
+.font-birthday {
+  font-family: "Dancing Script", cursive;
+}
+
+.font-greeting {
+  font-family: "Dancing Script", cursive;
+  font-weight: 600;
+}
+
+.font-reading {
+  font-family: "Poppins", sans-serif;
+}
+
 @keyframes float-up {
   0% {
     opacity: 1;
@@ -826,10 +814,10 @@ defineExpose({
 @keyframes pulse-glow {
   0%,
   100% {
-    box-shadow: 0 0 20px rgba(180, 76, 255, 0.5);
+    box-shadow: 0 0 20px rgba(236, 72, 153, 0.5);
   }
   50% {
-    box-shadow: 0 0 40px rgba(180, 76, 255, 0.8);
+    box-shadow: 0 0 40px rgba(236, 72, 153, 0.8);
   }
 }
 
@@ -970,25 +958,25 @@ defineExpose({
   transform: translate(-50%, -50%) scale(0) rotate(45deg);
 }
 
-.heart-float-enter-active {
+.balloon-float-enter-active {
   transition: all 2s ease-out;
 }
 
-.heart-float-leave-active {
+.balloon-float-leave-active {
   transition: all 0.5s ease-out;
 }
 
-.heart-float-enter-from {
+.balloon-float-enter-from {
   opacity: 0;
   transform: translate(-50%, -50%) scale(0);
 }
 
-.heart-float-enter-to {
+.balloon-float-enter-to {
   opacity: 1;
   transform: translate(-50%, -50%) translateY(-80px) scale(1.2);
 }
 
-.heart-float-leave-to {
+.balloon-float-leave-to {
   opacity: 0;
   transform: translate(-50%, -50%) translateY(-120px) scale(0.5);
 }
@@ -1020,11 +1008,11 @@ defineExpose({
 @keyframes slow-pulse {
   0%,
   100% {
-    opacity: 0.2;
+    opacity: 0.3;
     transform: scale(1);
   }
   50% {
-    opacity: 0.3;
+    opacity: 0.4;
     transform: scale(1.05);
   }
 }
@@ -1052,9 +1040,9 @@ defineExpose({
   }
 }
 
-.animate-slow-pulse {
+/* .animate-slow-pulse {
   animation: slow-pulse 4s ease-in-out infinite;
-}
+} */
 
 .animate-slow-drift {
   animation: slow-drift 8s ease-in-out infinite;
