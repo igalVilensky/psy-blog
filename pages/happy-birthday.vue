@@ -388,6 +388,8 @@
                 </div>
               </div>
 
+              <KidsGallery />
+
               <!-- Kids Section -->
               <div
                 class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mt-6 md:mt-8"
@@ -471,6 +473,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
+import KidsGallery from "@/components/KidsGallery.vue";
 import confetti from "canvas-confetti";
 
 definePageMeta({
@@ -783,6 +786,9 @@ const celebrateKid = (kidName) => {
     });
   }, 50);
 };
+defineExpose({
+  celebrateKid,
+});
 </script>
 
 <style scoped>
