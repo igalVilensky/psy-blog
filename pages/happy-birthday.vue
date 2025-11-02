@@ -105,6 +105,10 @@
               v-if="showSurprise"
               class="space-y-6 sm:space-y-8 md:space-y-12"
             >
+              <!-- Kids Gallery Integrated -->
+              <FamilyPhotoCard />
+              <!-- Kids Gallery Integrated -->
+              <KidsGallery />
               <!-- Main Gift Section -->
               <div
                 class="bg-white/90 backdrop-blur-lg rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-10 lg:p-14 border border-pink-200 shadow-xl hover:border-pink-300 transition-all duration-300"
@@ -429,9 +433,6 @@
                   </div>
                 </div>
               </div>
-
-              <!-- Kids Gallery Integrated -->
-              <KidsGallery />
             </div>
           </transition>
         </div>
@@ -491,6 +492,7 @@
 <script setup>
 import { ref, onUnmounted } from "vue";
 import KidsGallery from "@/components/KidsGallery.vue";
+import FamilyPhotoCard from "~/components/FamilyPhotoCard.vue";
 import confetti from "canvas-confetti";
 
 definePageMeta({
