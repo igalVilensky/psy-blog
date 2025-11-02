@@ -5,53 +5,52 @@ import {
   setPersistence,
   browserLocalPersistence,
   onAuthStateChanged,
-} from "firebase/auth"; // Добавляем onAuthStateChanged для отслеживания состояния
+} from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getAnalytics, isSupported } from "firebase/analytics";
 
-// Конфигурация Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyBDAcXz1bPfNsZABO3IEGJALknCshuwFTo",
-  authDomain: "psy-blog-2e076.firebaseapp.com",
-  projectId: "psy-blog-2e076",
-  storageBucket: "psy-blog-2e076.appspot.com",
-  messagingSenderId: "692633026576",
-  appId: "1:692633026576:web:35c000a35f47ee391b8a95",
-  measurementId: "G-0R4CT7M1RY",
-};
-
-// Инициализация Firebase
-const app = initializeApp(firebaseConfig);
-
-// Инициализация сервисов
-const auth = getAuth(app);
-const firestore = getFirestore(app);
-
-// Установка persistence для Auth
-setPersistence(auth, browserLocalPersistence).catch((error) => {
-  console.error("Ошибка установки persistence:", error);
-});
-
-// Инициализация Analytics (только на клиенте)
-let analytics = null;
-if (typeof window !== "undefined" && isSupported()) {
-  analytics = getAnalytics(app);
-}
-
-// Экспорт Firestore как утилита (опционально)
-export const useFirestore = () => firestore;
-
 export default defineNuxtPlugin((nuxtApp) => {
+  const config = useRuntimeConfig();
+
+  // Конфигурация Firebase из environment variables
+  const firebaseConfig = {
+    apiKey: config.public.firebaseApiKey,
+    authDomain: config.public.firebaseAuthDomain,
+    projectId: config.public.firebaseProjectId,
+    storageBucket: config.public.firebaseStorageBucket,
+    messagingSenderId: config.public.firebaseMessagingSenderId,
+    appId: config.public.firebaseAppId,
+    measurementId: config.public.firebaseMeasurementId,
+  };
+
+  // Инициализация Firebase
+  const app = initializeApp(firebaseConfig);
+
+  // Инициализация сервисов
+  const auth = getAuth(app);
+  const firestore = getFirestore(app);
+
+  // Установка persistence для Auth
+  setPersistence(auth, browserLocalPersistence).catch((error) => {
+    console.error("Ошибка установки persistence:", error);
+  });
+
+  // Инициализация Analytics (только на клиенте)
+  let analytics = null;
+  if (typeof window !== "undefined" && isSupported()) {
+    analytics = getAnalytics(app);
+  }
+
   // Переменная для хранения текущего userId
   let userId = ref(null);
 
   // Отслеживание состояния аутентификации
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      userId.value = user.uid; // Обновляем userId, если пользователь вошёл
+      userId.value = user.uid;
       console.log("Пользователь вошёл:", userId.value);
     } else {
-      userId.value = null; // Сбрасываем, если пользователь вышел
+      userId.value = null;
       console.log("Пользователь вышел");
     }
   });
@@ -59,10 +58,16 @@ export default defineNuxtPlugin((nuxtApp) => {
   // Предоставляем сервисы и userId через Nuxt
   nuxtApp.provide("auth", auth);
   nuxtApp.provide("firestore", firestore);
-  nuxtApp.provide("userId", () => userId.value); // Динамический доступ к userId
+  nuxtApp.provide("userId", () => userId.value);
 
   // Analytics только на клиенте
   if (analytics) {
     nuxtApp.provide("analytics", analytics);
   }
 });
+
+// Экспорт Firestore как утилита (опционально)
+export const useFirestore = () => {
+  const { $firestore } = useNuxtApp();
+  return $firestore;
+};
