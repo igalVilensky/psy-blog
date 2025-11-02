@@ -1,6 +1,6 @@
 <template>
   <div
-    class="min-h-screen bg-gradient-to-br from-pink-50 via-orange-50 to-yellow-50 relative overflow-hidden"
+    class="min-h-screen bg-gradient-to-br from-pink-50 via-orange-50 to-yellow-50 relative overflow-hidden pt-4"
   >
     <!-- Animated Background Elements -->
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
@@ -37,7 +37,7 @@
       <div class="max-w-6xl w-full">
         <!-- Main Card -->
         <div
-          class="bg-white/80 backdrop-blur-xl rounded-2xl sm:rounded-3xl shadow-2xl border border-white/60 p-4 sm:p-6 md:p-10 lg:p-16 transform hover:scale-[1.01] transition-all duration-500"
+          class="bg-white/80 backdrop-blur-xl rounded-2xl sm:rounded-3xl shadow-2xl border border-white/60 px-4 pt-6 sm:p-6 md:p-10 lg:p-16 transform hover:scale-[1.01] transition-all duration-500"
         >
           <!-- Header Section -->
           <div ref="confettiTrigger" class="text-center mb-6 sm:mb-8 md:mb-16">
@@ -349,7 +349,6 @@
                         class="bg-gradient-to-br backdrop-blur-sm p-3 sm:p-4 md:p-5 rounded-lg sm:rounded-xl border transform hover:scale-110 transition-all duration-300 cursor-pointer shadow-md"
                         :class="intel.classes"
                         :style="{ animationDelay: idx * 0.1 + 's' }"
-                        @click="playSound"
                       >
                         <div
                           class="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3"
@@ -494,6 +493,7 @@ import { ref, onUnmounted } from "vue";
 import KidsGallery from "@/components/KidsGallery.vue";
 import FamilyPhotoCard from "~/components/FamilyPhotoCard.vue";
 import confetti from "canvas-confetti";
+import * as Tone from "tone";
 
 definePageMeta({
   layout: "empty",
@@ -570,6 +570,7 @@ const visionItems = [
 ];
 
 const revealSurprise = () => {
+  playHappyBirthdayMelody();
   if (!showSurprise.value) {
     // Epic confetti celebration
     const duration = 3000;
@@ -754,8 +755,85 @@ const createSparkles = (event) => {
   }
 };
 
-const playSound = () => {
-  // You can add sound effects here if needed
+const playHappyBirthdayMelody = async () => {
+  // Happy Birthday melody with notes and durations
+  const melody = [
+    { note: "G4", duration: "8n" },
+    { note: "G4", duration: "8n" },
+    { note: "A4", duration: "4n" },
+    { note: "G4", duration: "4n" },
+    { note: "C5", duration: "4n" },
+    { note: "B4", duration: "2n" },
+
+    { note: "G4", duration: "8n" },
+    { note: "G4", duration: "8n" },
+    { note: "A4", duration: "4n" },
+    { note: "G4", duration: "4n" },
+    { note: "D5", duration: "4n" },
+    { note: "C5", duration: "2n" },
+
+    { note: "G4", duration: "8n" },
+    { note: "G4", duration: "8n" },
+    { note: "G5", duration: "4n" },
+    { note: "E5", duration: "4n" },
+    { note: "C5", duration: "4n" },
+    { note: "B4", duration: "4n" },
+    { note: "A4", duration: "2n" },
+
+    { note: "F5", duration: "8n" },
+    { note: "F5", duration: "8n" },
+    { note: "E5", duration: "4n" },
+    { note: "C5", duration: "4n" },
+    { note: "D5", duration: "4n" },
+    { note: "C5", duration: "2n" },
+  ];
+
+  const synth = new Tone.Synth({
+    oscillator: { type: "triangle" },
+    envelope: {
+      attack: 0.02,
+      decay: 0.1,
+      sustain: 0.3,
+      release: 0.8,
+    },
+    volume: -8,
+  }).toDestination();
+
+  const now = Tone.now();
+  let time = 0;
+
+  melody.forEach(({ note, duration }) => {
+    synth.triggerAttackRelease(note, duration, now + time);
+    time += Tone.Time(duration).toSeconds();
+  });
+};
+
+const playSound = (type = "default") => {
+  // For intelligence cards - keep simple pleasant tones
+  const sounds = {
+    IQ: { note: "C5", type: "sine" },
+    EQ: { note: "E5", type: "triangle" },
+    AQ: { note: "G5", type: "square" },
+    CQ: { note: "A5", type: "sawtooth" },
+    SQ: { note: "C6", type: "sine" },
+    "+ новые Q": { note: "D6", type: "triangle" },
+    default: { note: "D5", type: "sine" },
+  };
+
+  const soundConfig = sounds[type] || sounds.default;
+
+  const synth = new Tone.Synth({
+    oscillator: { type: soundConfig.type },
+    envelope: {
+      attack: 0.005,
+      decay: 0.1,
+      sustain: 0.3,
+      release: 0.5,
+    },
+    volume: -10,
+  }).toDestination();
+
+  synth.triggerAttackRelease(soundConfig.note, "8n");
 };
 
 // Cleanup on component unmount
