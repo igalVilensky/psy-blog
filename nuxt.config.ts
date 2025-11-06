@@ -35,5 +35,6 @@ export default defineNuxtConfig({
       firebaseAppId: process.env.FIREBASE_APP_ID,
       firebaseMeasurementId: process.env.FIREBASE_MEASUREMENT_ID,
     },
+    css: ["~/assets/css/main.css"],
   },
 });

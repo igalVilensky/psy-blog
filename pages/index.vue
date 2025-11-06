@@ -11,12 +11,7 @@
             class="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-cyan-300 mb-8 leading-tight"
           >
             Ваш Путь к Личностному
-            <span class="whitespace-nowrap relative text-white">
-              Р<i
-                class="fas fa-compass text-2xl md:text-4xl text-sky-400 animate-pulse absolute top-3 md:top-6"
-              ></i
-              ><span class="md:pl-10 pl-6">сту</span>
-            </span>
+            <span class="whitespace-nowrap relative text-white"> Росту </span>
           </h1>
 
           <!-- Hero description -->

@@ -31,6 +31,7 @@
     "vue-router": "latest"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.19",
     "autoprefixer": "^10.4.20",
     "eslint-plugin-tailwindcss": "^3.17.5",
     "postcss": "^8.4.49",

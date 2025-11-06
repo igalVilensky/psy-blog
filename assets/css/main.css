@@ -1,0 +1,38 @@
+/* assets/css/main.css */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;600&display=swap&subset=cyrillic");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Define your base CSS variables, especially for dark mode */
+:root {
+  --color-primary-base: #5c6bc0;
+  --color-text-base: #212121;
+  --color-bg-base: #f8f8f8;
+  --color-surface-base: #ffffff; /* Default card/element background */
+}
+
+/* Dark mode specific variables */
+html.dark {
+  --color-primary-base: #6f8bef; /* A slightly different shade for dark mode if desired */
+  --color-text-base: #e0e0e0;
+  --color-bg-base: #1a1a1a;
+  --color-surface-base: #2c2c2c;
+}
+
+/* Optional: Fallback utility for directly using these variables if not via Tailwind */
+.text-primary-var {
+  color: var(--color-primary-base);
+}
+.bg-background-var {
+  background-color: var(--color-bg-base);
+}
+/* etc. */
+
+/* Apply global background and text colors based on variables or Tailwind classes */
+html {
+  @apply text-mindqlab-text bg-mindqlab-bg-soft;
+}
+html.dark {
+  @apply text-mindqlab-dark-text bg-mindqlab-dark-bg;
+}
