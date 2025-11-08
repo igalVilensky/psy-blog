@@ -517,6 +517,38 @@ const authStore = useAuthStore();
 // Computed properties to reactively check the logged-in state
 const isLoggedIn = computed(() => !!authStore.user);
 const userName = computed(() => authStore.user?.displayName || "Гость");
+// --- SEO & SOCIAL SHARING META TAGS ---
+
+// 1. Get the base URL from the runtime config
+const {
+  public: { siteUrl },
+} = useRuntimeConfig();
+
+// 2. Define the content for your meta tags
+const title = "MindQLab: Ваш Путь к Личностному Росту";
+const description =
+  "Начните путешествие к лучшей версии себя с нашей платформой личностного роста, основанной на научных исследованиях.";
+const imageUrl = `${siteUrl}/mindqlab-social-card.png`; // Use the dedicated social card image
+
+// 3. Use the useSeoMeta composable to generate the tags
+useSeoMeta({
+  title: title,
+  description: description,
+
+  // Open Graph (Facebook, Telegram, WhatsApp, etc.)
+  ogTitle: title,
+  ogDescription: description,
+  ogImage: imageUrl,
+  ogUrl: siteUrl, // The canonical URL for your homepage
+  ogType: "website",
+  ogSiteName: "MindQLab",
+
+  // Twitter Cards
+  twitterCard: "summary_large_image", // This type shows a large image preview
+  twitterTitle: title,
+  twitterDescription: description,
+  twitterImage: imageUrl,
+});
 </script>
 
 <style scoped>

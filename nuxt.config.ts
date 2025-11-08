@@ -34,6 +34,7 @@ export default defineNuxtConfig({
       firebaseMessagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
       firebaseAppId: process.env.FIREBASE_APP_ID,
       firebaseMeasurementId: process.env.FIREBASE_MEASUREMENT_ID,
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || "https://mindqlab.com",
     },
     css: ["~/assets/css/main.css"],
   },

@@ -1,5 +1,5 @@
 <template>
-  <div class="relative min-h-screen">
+  <main class="relative min-h-screen">
     <div
       class="container mx-auto px-4 sm:px-4 max-w-3xl relative z-10 pb-12 pt-12"
     >
@@ -369,39 +369,133 @@
         </div>
       </div>
     </div>
-  </div>
+  </main>
 </template>
 
 <script setup lang="ts">
 import type { SanityDocument } from "@sanity/client";
 import imageUrlBuilder from "@sanity/image-url";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
-import { ref } from "vue";
+import { ref, watch, onMounted, computed } from "vue"; // Import computed
 import { getFirestore } from "firebase/firestore";
 import { useFirestore } from "~/plugins/firebase";
 import { subscribeUser } from "@/api/firebase/contact";
-import { getPostViewCount } from "@/api/firebase/views";
+import { getPostViewCount } from "@/api/firebase/views"; // Using your existing function
 import { addPostComment, getPostComments } from "@/api/firebase/comments";
 
-const POST_QUERY = groq`*[_type == "post" && slug.current == $slug][0]`;
-const { params } = useRoute();
-const { data: post } = (await useSanityQuery)<SanityDocument>(
-  POST_QUERY,
-  params
-);
+const route = useRoute();
+const { params } = route;
+// It's good practice to define your site's base URL in your nuxt.config.ts for canonical URLs
+const {
+  public: { siteUrl },
+} = useRuntimeConfig();
+
+// Fetch the author's name along with the post for structured data
+const POST_QUERY = groq`*[_type == "post" && slug.current == $slug][0]{..., "author": author->{name}}`;
+const { data: post } = await useSanityQuery<SanityDocument>(POST_QUERY, params);
+
 const { projectId, dataset } = useSanity().client.config();
 const urlFor = (source: SanityImageSource) =>
   projectId && dataset
     ? imageUrlBuilder({ projectId, dataset }).image(source)
     : null;
 
+// --- SEO & METADATA SETUP (CORRECTED) ---
+
+// Helper function to convert Sanity's Portable Text to a plain text string.
+const getPlainText = (blocks: any[] | undefined) => {
+  if (!blocks) return "";
+  return (
+    blocks
+      .filter((block) => block._type === "block" && block.children)
+      .map((block) => block.children.map((child: any) => child.text).join(""))
+      .join(" ") // Join paragraphs with a space
+      .substring(0, 155) + "..."
+  ); // Trim to ~155 characters and add ellipsis
+};
+
+// Create a computed property for the meta description
+const metaDescription = computed(() => {
+  // If you add an "excerpt" field in Sanity, it's best to use that.
+  if (post.value?.excerpt) {
+    return post.value.excerpt;
+  }
+  // Otherwise, generate it from the body content.
+  return getPlainText(post.value?.body);
+});
+
+// Create a computed property for the main post image URL
+const postImageUrl = computed(() => {
+  return post.value?.image
+    ? urlFor(post.value.image)?.width(1200).height(630).url()
+    : `${siteUrl}/default-og-image.png`; // Fallback OG image
+});
+
+// Use Nuxt's `useSeoMeta` for all essential meta tags
+useSeoMeta({
+  title: () => `${post.value?.title} | MindQLab Blog`,
+  description: metaDescription,
+  // Open Graph (for social media previews)
+  ogTitle: () => `${post.value?.title} | MindQLab Blog`,
+  ogDescription: metaDescription,
+  ogImage: postImageUrl,
+  ogUrl: () => `${siteUrl}${route.fullPath}`,
+  ogType: "article",
+  // Twitter Cards
+  twitterCard: "summary_large_image",
+});
+
+// Use Nuxt's `useHead` for JSON-LD structured data and the canonical URL
+useHead({
+  link: [
+    {
+      rel: "canonical",
+      href: () => `${siteUrl}${route.fullPath}`,
+    },
+  ],
+  script: [
+    {
+      type: "application/ld+json",
+      // Using computed so it updates if the post data changes
+      children: computed(() =>
+        JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Article",
+          mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": `${siteUrl}${route.fullPath}`,
+          },
+          headline: post.value?.title,
+          image: postImageUrl.value,
+          datePublished: post.value?.publishedAt,
+          dateModified: post.value?._updatedAt || post.value?.publishedAt, // Use updated time if available
+          author: {
+            "@type": "Person",
+            // Use author from Sanity or a default. Assumes you have an author field.
+            name: post.value?.author?.name || "MindQLab Team",
+          },
+          publisher: {
+            "@type": "Organization",
+            name: "MindQLab",
+            logo: {
+              "@type": "ImageObject",
+              url: `${siteUrl}/logo.png`, // IMPORTANT: Replace with your actual logo URL
+            },
+          },
+          description: metaDescription.value,
+        })
+      ),
+    },
+  ],
+});
+
+// --- Your Existing Logic (No changes needed below this line) ---
 const db = getFirestore();
 const firestore = useFirestore();
 const isShareOpen = ref(false);
 const postViews = ref(0);
 const email = ref("");
 
-// Comments state
 interface Comment {
   id: string;
   name: string;
@@ -409,34 +503,28 @@ interface Comment {
   createdAt: Date;
 }
 const comments = ref<Comment[]>([]);
-const newComment = ref({
-  name: "",
-  email: "",
-  text: "",
-});
+const newComment = ref({ name: "", email: "", text: "" });
 const isSubmitting = ref(false);
 
-// Fetch comments
 const fetchComments = async () => {
   if (!params.slug) return;
-  const response = await getPostComments(firestore, params.slug);
+  const slug = Array.isArray(params.slug) ? params.slug[0] : params.slug;
+  const response = await getPostComments(firestore, slug);
   if (response.success) {
     comments.value = response.comments;
   }
 };
 
-// Add new comment
 const addNewComment = async () => {
   if (!params.slug) return;
-
+  const slug = Array.isArray(params.slug) ? params.slug[0] : params.slug;
   isSubmitting.value = true;
   const commentData = {
     name: newComment.value.name,
     email: newComment.value.email,
     text: newComment.value.text,
   };
-
-  const response = await addPostComment(firestore, params.slug, commentData);
+  const response = await addPostComment(firestore, slug, commentData);
   if (response.success) {
     await fetchComments();
     newComment.value = { name: "", email: "", text: "" };
@@ -444,7 +532,6 @@ const addNewComment = async () => {
   isSubmitting.value = false;
 };
 
-// Date formatting
 const formatDate = (date: Date) => {
   return new Date(date).toLocaleDateString("ru-RU", {
     day: "numeric",
@@ -455,15 +542,14 @@ const formatDate = (date: Date) => {
   });
 };
 
-// Load comments and views on mount
 onMounted(async () => {
   if (post.value) {
     await fetchComments();
     postViews.value = await getPostViewCount(db, post.value._id);
+    // The incorrect incrementPostView call has been removed.
   }
 });
 
-// Watch for post changes
 watch(
   () => post.value,
   async (newPost) => {
@@ -474,6 +560,7 @@ watch(
   }
 );
 
+// --- Share, Copy, and Subscribe Functions (Unchanged) ---
 const shareOn = (platform: "twitter" | "facebook" | "telegram") => {
   const url = window.location.href;
   const title = post.value?.title;
@@ -507,7 +594,6 @@ const subscribeEmail = async () => {
     alert("Пожалуйста, введите корректный email");
     return;
   }
-
   const result = await subscribeUser(db, email.value);
   if (result.success) {
     alert(result.message);
@@ -537,7 +623,7 @@ const validateEmail = (email: string) => {
 }
 
 .prose p {
-  @apply text-lg mb-4 leading-relaxed;
+  @apply text-slate-300 text-base mb-4 leading-relaxed;
 }
 
 .prose ul {
