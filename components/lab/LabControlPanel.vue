@@ -1,7 +1,150 @@
 <!-- components/lab/LabControlPanel.vue -->
 <template>
+  <div class="mobile-controls lg:hidden fixed top-0 left-0 right-0 z-50">
+    <!-- Mobile Header -->
+    <div class="mobile-header bg-slate-900 border-b border-cyan-500/20 p-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="relative">
+            <div
+              class="w-2 h-2 bg-cyan-400 rounded-full"
+              :class="{ 'animate-pulse': systemActive }"
+            ></div>
+            <div
+              v-if="systemActive"
+              class="absolute inset-0 w-2 h-2 bg-cyan-400/30 rounded-full animate-ping"
+            ></div>
+          </div>
+          <h3 class="text-xs font-mono text-cyan-300 tracking-widest">
+            СИСТЕМА АКТИВНА
+          </h3>
+        </div>
+
+        <!-- Mobile Menu Toggle -->
+        <button
+          @click="toggleMobileMenu"
+          class="p-2 rounded-lg bg-slate-800/50 border border-cyan-500/20 hover:border-cyan-500/40 transition-all"
+        >
+          <i
+            class="fas text-cyan-400 transition-transform duration-300"
+            :class="mobileMenuOpen ? 'fa-times' : 'fa-bars'"
+          ></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div
+      v-if="mobileMenuOpen"
+      class="mobile-menu-overlay fixed inset-0 bg-black/50 z-40"
+      @click="closeMobileMenu"
+    ></div>
+
+    <!-- Mobile Menu Panel -->
+    <div
+      class="mobile-menu-panel fixed top-16 left-0 right-0 bg-slate-900 border-b border-cyan-500/20 z-50 transition-all duration-300 overflow-y-auto"
+      :class="mobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'"
+    >
+      <div class="p-4 space-y-4">
+        <!-- Lab Logo Mobile -->
+        <NuxtLink
+          to="/lab"
+          class="lab-logo-mobile group block"
+          @click.native="closeMobileMenu"
+        >
+          <div
+            class="flex items-center space-x-3 p-4 rounded-xl bg-slate-800/50 border border-cyan-500/10 hover:border-cyan-500/30 transition-all"
+          >
+            <div
+              class="petri-dish w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 flex items-center justify-center relative overflow-hidden"
+            >
+              <div
+                class="absolute inset-0 bg-gradient-to-br from-cyan-400/20 to-purple-500/20"
+              ></div>
+              <i class="fas fa-brain text-white text-lg relative z-10"></i>
+            </div>
+            <div>
+              <div class="text-white font-bold text-base font-montserrat">
+                MIND Q LAB
+              </div>
+              <div class="text-cyan-400/70 text-xs font-mono">
+                v2.0 ЭКСПЕРИМЕНТАЛЬНАЯ
+              </div>
+            </div>
+          </div>
+        </NuxtLink>
+
+        <!-- Mobile Stations Grid -->
+        <div class="grid grid-cols-2 gap-2">
+          <MobileStationLink
+            v-for="station in mobileStations"
+            :key="station.to"
+            :to="station.to"
+            :icon="station.icon"
+            :title="station.title"
+            :subtitle="station.subtitle"
+            :active="route.path === station.to"
+            @click="closeMobileMenu"
+          />
+        </div>
+
+        <!-- User Section Mobile -->
+        <div class="user-section-mobile pt-4 border-t border-cyan-500/10">
+          <div v-if="user" class="space-y-2">
+            <div
+              class="flex items-center space-x-3 p-3 rounded-lg bg-slate-800/30"
+            >
+              <div
+                class="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-white text-xs font-bold"
+              >
+                {{ getUserInitials(user) }}
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="text-white font-medium text-sm truncate">
+                  {{ user.displayName || user.email }}
+                </div>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <NuxtLink
+                to="/lab/profile"
+                class="text-center py-2 px-3 bg-slate-700/50 hover:bg-slate-700 rounded-lg text-slate-300 text-xs font-medium transition-all border border-slate-600/50"
+                @click.native="closeMobileMenu"
+              >
+                Профиль
+              </NuxtLink>
+              <button
+                @click="logout"
+                class="text-center py-2 px-3 bg-red-500/10 hover:bg-red-500/20 rounded-lg text-red-400 text-xs font-medium transition-all border border-red-500/20"
+              >
+                Выход
+              </button>
+            </div>
+          </div>
+          <div v-else class="space-y-2">
+            <NuxtLink
+              to="/login"
+              class="block w-full text-center py-2.5 px-3 bg-slate-800/50 hover:bg-slate-800 rounded-lg text-slate-300 text-sm font-medium transition-all border border-slate-700/50"
+              @click.native="closeMobileMenu"
+            >
+              Вход
+            </NuxtLink>
+            <NuxtLink
+              to="/register"
+              class="block w-full text-center py-2.5 px-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 rounded-lg text-white text-sm font-medium transition-all"
+              @click.native="closeMobileMenu"
+            >
+              Регистрация
+            </NuxtLink>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Desktop Sidebar -->
   <aside
-    class="lab-control-panel bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 border-r border-cyan-500/10 h-screen sticky top-0 overflow-y-auto"
+    class="lab-control-panel hidden lg:flex flex-col bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 border-r border-cyan-500/10 h-screen sticky top-0 overflow-y-auto"
   >
     <!-- Panel Header -->
     <div class="panel-header border-b border-cyan-500/20 p-6">
@@ -56,138 +199,113 @@
     </div>
 
     <!-- Research Stations -->
-    <div class="research-stations p-4 space-y-3">
+    <div class="research-stations p-4 space-y-2 flex-1">
       <div class="text-xs font-mono text-slate-500 mb-3 px-2">
         ИССЛЕДОВАТЕЛЬСКИЕ СТАНЦИИ
       </div>
 
+      <!-- Interactive Tests Station -->
+      <StationLink
+        to="/lab/tests"
+        icon="fa-brain"
+        title="Когнитивные Тесты"
+        subtitle="Оценка функций"
+        :active="route.path === '/lab/tests'"
+        gradient-from="blue-500"
+        gradient-to="indigo-600"
+      />
+
+      <!-- Brain Games Station -->
+      <StationLink
+        to="/lab/games"
+        icon="fa-chess"
+        title="Развивающие Игры"
+        subtitle="Логика и память"
+        :active="route.path === '/lab/games'"
+        gradient-from="green-500"
+        gradient-to="emerald-600"
+      />
+
+      <!-- Psychology Station -->
+      <StationLink
+        to="/lab"
+        icon="fa-book-open"
+        title="Психология"
+        subtitle="Теории и техники"
+        :active="route.path === '/lab/psychology'"
+        gradient-from="purple-500"
+        gradient-to="pink-600"
+      />
+
+      <!-- Meditation Station -->
+      <StationLink
+        to="/lab"
+        icon="fa-spa"
+        title="Медитация"
+        subtitle="Аудио и видео"
+        :active="route.path === '/lab/meditation'"
+        gradient-from="teal-500"
+        gradient-to="cyan-600"
+      />
+
+      <!-- Brain Map Station -->
+      <StationLink
+        to="/lab/brain-map"
+        icon="fa-map"
+        title="Карта Мозга"
+        subtitle="Интерактивная"
+        :active="route.path === '/lab/brain-map'"
+        gradient-from="orange-500"
+        gradient-to="red-600"
+      />
+
       <!-- Neuro Analysis Station -->
-      <NuxtLink
+      <StationLink
         to="/lab/dashboard"
-        class="station group flex items-center space-x-3 p-4 rounded-xl transition-all duration-300 relative overflow-hidden"
-        :class="
-          route.path === '/lab/dashboard'
-            ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-500/40 shadow-lg shadow-cyan-500/10'
-            : 'bg-slate-800/30 border border-transparent hover:bg-slate-800/50 hover:border-cyan-500/20'
-        "
-        @mouseenter="hoverStation = 'dashboard'"
-        @mouseleave="hoverStation = null"
-      >
-        <div
-          class="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        ></div>
-        <div
-          class="instrument-icon w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center relative z-10 transition-transform duration-300"
-          :class="{ 'scale-110': hoverStation === 'dashboard' }"
-        >
-          <i class="fas fa-brain-circuit text-white"></i>
-        </div>
-        <div class="flex-1 relative z-10">
-          <div class="text-white font-medium text-sm">Нейро Анализ</div>
-          <div class="text-slate-400 text-xs">Картирование мозга</div>
-        </div>
-        <div
-          v-if="route.path === '/lab/dashboard'"
-          class="activity-pulse w-2 h-2 bg-cyan-400 rounded-full animate-pulse relative z-10"
-        ></div>
-      </NuxtLink>
+        icon="fa-microchip"
+        title="Нейро Анализ"
+        subtitle="Картирование мозга"
+        :active="route.path === '/lab/dashboard'"
+        gradient-from="cyan-500"
+        gradient-to="blue-600"
+      />
 
       <!-- Experiments Station -->
-      <NuxtLink
+      <StationLink
         to="/lab/experiments"
-        class="station group flex items-center space-x-3 p-4 rounded-xl transition-all duration-300 relative overflow-hidden"
-        :class="
-          route.path === '/lab/experiments'
-            ? 'bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/40 shadow-lg shadow-purple-500/10'
-            : 'bg-slate-800/30 border border-transparent hover:bg-slate-800/50 hover:border-purple-500/20'
-        "
-        @mouseenter="hoverStation = 'experiments'"
-        @mouseleave="hoverStation = null"
-      >
-        <div
-          class="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        ></div>
-        <div
-          class="instrument-icon w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center relative z-10 transition-transform duration-300"
-          :class="{ 'scale-110': hoverStation === 'experiments' }"
-        >
-          <i class="fas fa-atom text-white"></i>
-        </div>
-        <div class="flex-1 relative z-10">
-          <div class="text-white font-medium text-sm">Эксперименты</div>
-          <div class="text-slate-400 text-xs">Инструменты и тесты</div>
-        </div>
-        <div
-          v-if="route.path === '/lab/experiments'"
-          class="activity-pulse w-2 h-2 bg-purple-400 rounded-full animate-pulse relative z-10"
-        ></div>
-      </NuxtLink>
+        icon="fa-atom"
+        title="Эксперименты"
+        subtitle="Инструменты и тесты"
+        :active="route.path === '/lab/experiments'"
+        gradient-from="purple-500"
+        gradient-to="pink-600"
+      />
 
       <!-- Growth Observatory -->
-      <NuxtLink
+      <StationLink
         to="/lab/analysis"
-        class="station group flex items-center space-x-3 p-4 rounded-xl transition-all duration-300 relative overflow-hidden"
-        :class="
-          route.path === '/lab/analysis'
-            ? 'bg-gradient-to-r from-emerald-500/20 to-green-500/20 border border-emerald-500/40 shadow-lg shadow-emerald-500/10'
-            : 'bg-slate-800/30 border border-transparent hover:bg-slate-800/50 hover:border-emerald-500/20'
-        "
-        @mouseenter="hoverStation = 'analysis'"
-        @mouseleave="hoverStation = null"
-      >
-        <div
-          class="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        ></div>
-        <div
-          class="instrument-icon w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center relative z-10 transition-transform duration-300"
-          :class="{ 'scale-110': hoverStation === 'analysis' }"
-        >
-          <i class="fas fa-chart-network text-white"></i>
-        </div>
-        <div class="flex-1 relative z-10">
-          <div class="text-white font-medium text-sm">Обсерватория Роста</div>
-          <div class="text-slate-400 text-xs">Прогресс и аналитика</div>
-        </div>
-        <div
-          v-if="route.path === '/lab/analysis'"
-          class="activity-pulse w-2 h-2 bg-emerald-400 rounded-full animate-pulse relative z-10"
-        ></div>
-      </NuxtLink>
+        icon="fa-chart-line"
+        title="Обсерватория Роста"
+        subtitle="Прогресс и аналитика"
+        :active="route.path === '/lab/analysis'"
+        gradient-from="emerald-500"
+        gradient-to="green-600"
+      />
 
       <!-- Community Hub -->
-      <NuxtLink
+      <StationLink
         to="/lab/community"
-        class="station group flex items-center space-x-3 p-4 rounded-xl transition-all duration-300 relative overflow-hidden"
-        :class="
-          route.path === '/lab/community'
-            ? 'bg-gradient-to-r from-orange-500/20 to-amber-500/20 border border-orange-500/40 shadow-lg shadow-orange-500/10'
-            : 'bg-slate-800/30 border border-transparent hover:bg-slate-800/50 hover:border-orange-500/20'
-        "
-        @mouseenter="hoverStation = 'community'"
-        @mouseleave="hoverStation = null"
-      >
-        <div
-          class="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        ></div>
-        <div
-          class="instrument-icon w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center relative z-10 transition-transform duration-300"
-          :class="{ 'scale-110': hoverStation === 'community' }"
-        >
-          <i class="fas fa-users text-white"></i>
-        </div>
-        <div class="flex-1 relative z-10">
-          <div class="text-white font-medium text-sm">Сообщество</div>
-          <div class="text-slate-400 text-xs">Исследователи онлайн</div>
-        </div>
-        <div
-          v-if="route.path === '/lab/community'"
-          class="activity-pulse w-2 h-2 bg-orange-400 rounded-full animate-pulse relative z-10"
-        ></div>
-      </NuxtLink>
+        icon="fa-users"
+        title="Сообщество"
+        subtitle="Исследователи онлайн"
+        :active="route.path === '/lab/community'"
+        gradient-from="orange-500"
+        gradient-to="amber-600"
+      />
     </div>
 
     <!-- User Section -->
-    <div class="user-section border-t border-cyan-500/10 p-4 mt-4">
+    <div class="user-section border-t border-cyan-500/10 p-4 mt-auto">
       <div
         v-if="user"
         class="user-info p-4 rounded-xl bg-slate-800/50 border border-cyan-500/10"
@@ -239,7 +357,7 @@
     </div>
 
     <!-- System Status -->
-    <div class="system-status border-t border-cyan-500/10 p-4 mt-2">
+    <div class="system-status border-t border-cyan-500/10 p-4">
       <div class="text-xs font-mono text-slate-500 mb-3 px-1">
         СТАТУС СИСТЕМЫ
       </div>
@@ -283,9 +401,10 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useAuthStore } from "~/stores/auth";
-
+import StationLink from "~/components/lab/StationLink.vue";
+import MobileStationLink from "~/components/lab/MobileStationLink.vue";
 const auth = useAuthStore();
 const route = useRoute();
 
@@ -299,6 +418,81 @@ defineProps({
 const systemActive = ref(true);
 const brainPulsing = ref(false);
 const hoverStation = ref(null);
+const mobileMenuOpen = ref(false);
+
+// Mobile stations data for consistent rendering
+const mobileStations = computed(() => [
+  {
+    to: "/lab/tests",
+    icon: "fa-brain",
+    title: "Тесты",
+    subtitle: "Когнитивные",
+  },
+  {
+    to: "/lab/games",
+    icon: "fa-chess",
+    title: "Игры",
+    subtitle: "Развивающие",
+  },
+  {
+    to: "/lab/psychology",
+    icon: "fa-book-open",
+    title: "Психология",
+    subtitle: "Теории",
+  },
+  {
+    to: "/lab/meditation",
+    icon: "fa-spa",
+    title: "Медитация",
+    subtitle: "Аудио/видео",
+  },
+  {
+    to: "/lab/brain-map",
+    icon: "fa-map",
+    title: "Карта Мозга",
+    subtitle: "Интерактивная",
+  },
+  {
+    to: "/lab/dashboard",
+    icon: "fa-microchip",
+    title: "Нейро Анализ",
+    subtitle: "Картирование",
+  },
+  {
+    to: "/lab/experiments",
+    icon: "fa-atom",
+    title: "Эксперименты",
+    subtitle: "Инструменты",
+  },
+  {
+    to: "/lab/analysis",
+    icon: "fa-chart-line",
+    title: "Обсерватория",
+    subtitle: "Рост",
+  },
+  {
+    to: "/lab/community",
+    icon: "fa-users",
+    title: "Сообщество",
+    subtitle: "Исследователи",
+  },
+]);
+
+const toggleMobileMenu = () => {
+  mobileMenuOpen.value = !mobileMenuOpen.value;
+};
+
+const closeMobileMenu = () => {
+  mobileMenuOpen.value = false;
+};
+
+// Close mobile menu when route changes
+watch(
+  () => route.path,
+  () => {
+    closeMobileMenu();
+  }
+);
 
 const startBrainPulse = () => {
   brainPulsing.value = true;
@@ -323,6 +517,7 @@ const getUserInitials = (user) => {
 const logout = async () => {
   await auth.logout();
   navigateTo("/lab");
+  closeMobileMenu();
 };
 </script>
 
@@ -347,5 +542,9 @@ const logout = async () => {
 
 .lab-control-panel::-webkit-scrollbar-thumb:hover {
   background-color: rgba(6, 182, 212, 0.5);
+}
+
+.mobile-menu-panel {
+  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 </style>

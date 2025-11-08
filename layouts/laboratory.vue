@@ -130,6 +130,11 @@ const currentStation = computed(() => {
     "/lab/analysis": "АНАЛИЗ_ДАННЫХ",
     "/lab/community": "СООБЩЕСТВО",
     "/lab/profile": "ПРОФИЛЬ",
+    "/lab/tests": "КОГНИТИВНЫЕ_ТЕСТЫ",
+    "/lab/games": "ИГРОВАЯ_СТАНЦИЯ",
+    "/lab/psychology": "ПСИХОЛОГИЯ",
+    "/lab/meditation": "МЕДИТАЦИЯ",
+    "/lab/brain-map": "КАРТА_МОЗГА",
   };
   return stationMap[route.path] || "ИССЛЕДОВАТЕЛЬСКАЯ_СТАНЦИЯ";
 });
