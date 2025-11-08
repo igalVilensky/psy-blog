@@ -27,7 +27,7 @@
           <i class="fas fa-sign-in-alt mr-1"></i> Войти
         </NuxtLink>
         <NuxtLink
-          to="/signup"
+          to="/register"
           class="px-5 py-2 bg-[#F4A261] text-white rounded-md font-medium hover:bg-[#FF8C42] transition duration-200 shadow-sm"
         >
           <i class="fas fa-user-plus mr-1"></i> Регистрация
@@ -63,7 +63,7 @@
           <i class="fas fa-sign-in-alt mr-2"></i> Войти
         </NuxtLink>
         <NuxtLink
-          to="/signup"
+          to="/register"
           class="w-full text-center px-6 py-2 bg-[#F4A261] text-white rounded-md font-medium hover:bg-[#FF8C42] transition duration-200"
         >
           <i class="fas fa-user-plus mr-1"></i> Регистрация

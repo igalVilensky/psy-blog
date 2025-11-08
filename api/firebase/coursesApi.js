@@ -1,6 +1,5 @@
-// ~/api/coursesApi.js
+// ~/api/firebase/coursesApi.js
 import {
-  getFirestore,
   doc,
   setDoc,
   getDoc,
@@ -12,8 +11,11 @@ import {
   where,
 } from "firebase/firestore";
 
-// Initialize Firestore
-const db = getFirestore();
+// Get Firestore instance from Nuxt plugin
+const getDb = () => {
+  const { $firestore } = useNuxtApp();
+  return $firestore;
+};
 
 /**
  * Purchase a course and create an entry in the coursesData collection.
@@ -23,13 +25,15 @@ const db = getFirestore();
  */
 export const purchaseCourse = async (userId, course) => {
   try {
+    const db = getDb();
+
     // Define the data structure for the purchased course
     const courseData = {
       category: course.category,
       certificateEarned: false,
       courseId: course.id,
       description: course.description,
-      discount: 20, // Example discount value
+      discount: 20,
       hasPractical: course.hasPractical,
       id: course.id,
       image: course.image || "course-placeholder.jpg",
@@ -38,9 +42,9 @@ export const purchaseCourse = async (userId, course) => {
       link: `/courses/${course.slug}`,
       price: course.price,
       progress: {
-        completedLessons: [], // Initially, no lessons are completed
-        progressPercentage: 0, // Initial progress is 0%
-        timeSpent: "0ч", // Initial time spent is 0 hours
+        completedLessons: [],
+        progressPercentage: 0,
+        timeSpent: "0ч",
         totalLessons: course.lessonsCount,
       },
       purchaseDate: serverTimestamp(),
@@ -51,7 +55,7 @@ export const purchaseCourse = async (userId, course) => {
     };
 
     // Add the course data to the coursesData collection
-    const courseRef = doc(db, "coursesData", `${userId}_${course.id}`); // Unique ID for the user-course combination
+    const courseRef = doc(db, "coursesData", `${userId}_${course.id}`);
     await setDoc(courseRef, courseData);
 
     console.log("Course purchased successfully:", courseData);
@@ -68,6 +72,8 @@ export const purchaseCourse = async (userId, course) => {
  */
 export const getPurchasedCourses = async (userId) => {
   try {
+    const db = getDb();
+
     // Query the coursesData collection for documents where userId matches
     const coursesRef = collection(db, "coursesData");
     const q = query(coursesRef, where("userId", "==", userId));
@@ -97,6 +103,8 @@ export const getPurchasedCourses = async (userId) => {
  */
 export const updateCourseProgress = async (userId, courseId, lessonId) => {
   try {
+    const db = getDb();
+
     // Reference to the course document
     const courseRef = doc(db, "coursesData", `${userId}_${courseId}`);
 
@@ -162,6 +170,8 @@ export const updateCourseProgress = async (userId, courseId, lessonId) => {
  */
 export const checkLessonCompletion = async (userId, courseId, lessonId) => {
   try {
+    const db = getDb();
+
     // Reference to the course document
     const courseRef = doc(db, "coursesData", `${userId}_${courseId}`);
 

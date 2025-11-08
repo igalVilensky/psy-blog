@@ -180,7 +180,7 @@
             </NuxtLink>
 
             <NuxtLink
-              to="/signup"
+              to="/register"
               class="group px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-medium text-center border border-slate-700 transition-all duration-300 shadow-lg shadow-slate-900/50 relative overflow-hidden"
             >
               <span class="relative z-10">Создать аккаунт</span>

@@ -406,14 +406,16 @@
 <script setup lang="ts">
 import type { SanityDocument } from "@sanity/client";
 import imageUrlBuilder from "@sanity/image-url";
-import { useFirestore } from "~/plugins/firebase";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { ref, reactive, onMounted } from "vue";
+import { useRoute } from "vue-router";
 import { GUIDE_BY_SLUG_QUERY } from "~/api/sanity/queries";
 import { addGuideComment, getGuideComments } from "@/api/firebase/comments";
 
-const firestore = useFirestore();
-const { params } = useRoute();
-const { data: guide } = (await useSanityQuery)<SanityDocument>(
+// --- Route & Sanity ---
+const route = useRoute();
+const { params } = route;
+const { data: guide } = await useSanityQuery<SanityDocument>(
   GUIDE_BY_SLUG_QUERY,
   params
 );
@@ -423,15 +425,27 @@ const urlFor = (source: SanityImageSource) =>
     ? imageUrlBuilder({ projectId, dataset }).image(source)
     : null;
 
-// Define Comment interface
+// --- Firestore (client only) ---
+let firestore: ReturnType<
+  typeof import("~/plugins/firebase").useFirestore
+> | null = null;
+const getClientFirestore = () => {
+  if (!process.client) return null;
+  if (!firestore) {
+    const { useFirestore } = require("~/plugins/firebase");
+    firestore = useFirestore();
+  }
+  return firestore;
+};
+
+// --- Comments ---
 interface Comment {
   id: string;
   name: string;
   text: string;
-  createdAt: Date; // Changed from 'date' to match Firebase field
+  createdAt: Date;
 }
 
-// Comments state
 const comments = ref<Comment[]>([]);
 const newComment = reactive({
   name: "",
@@ -440,30 +454,31 @@ const newComment = reactive({
 });
 const isSubmitting = ref(false);
 
-// Fetch comments
 const fetchComments = async () => {
   if (!params.slug) return;
-  const response = await getGuideComments(firestore, params.slug);
+  const fs = getClientFirestore();
+  if (!fs) return;
+  const response = await getGuideComments(fs, params.slug);
   if (response.success) {
     comments.value = response.comments;
   }
 };
 
-// Add new comment
 const addNewComment = async () => {
   if (!params.slug) return;
+  const fs = getClientFirestore();
+  if (!fs) return;
 
   isSubmitting.value = true;
   const commentData = {
     name: newComment.name,
     email: newComment.email,
     text: newComment.text,
-    // Remove local id and date generation - let Firebase handle these
   };
 
-  const response = await addGuideComment(firestore, params.slug, commentData);
+  const response = await addGuideComment(fs, params.slug, commentData);
   if (response.success) {
-    await fetchComments(); // Refresh comments list from Firebase
+    await fetchComments();
     newComment.name = "";
     newComment.email = "";
     newComment.text = "";
@@ -471,42 +486,38 @@ const addNewComment = async () => {
   isSubmitting.value = false;
 };
 
-// Load comments on mount
+// --- Lifecycle ---
 onMounted(async () => {
   if (guide.value) {
     await fetchComments();
   }
 });
 
-// Date formatting function
-const formatDate = (date: Date) => {
-  return new Date(date).toLocaleDateString("ru-RU", {
+// --- Utility ---
+const formatDate = (date: Date) =>
+  new Date(date).toLocaleDateString("ru-RU", {
     day: "numeric",
     month: "long",
     year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
   });
-};
 
-// Share methods
+// --- Share Functions ---
 const shareViaWhatsApp = () => {
-  const shareUrl = encodeURIComponent(window.location.href);
+  const url = encodeURIComponent(window.location.href);
   const text = encodeURIComponent(
     `${guide.value?.title} - Check out this guide!`
   );
-  window.open(
-    `https://api.whatsapp.com/send?text=${text}%20${shareUrl}`,
-    "_blank"
-  );
+  window.open(`https://api.whatsapp.com/send?text=${text}%20${url}`, "_blank");
 };
 
 const shareViaTelegram = () => {
-  const shareUrl = encodeURIComponent(window.location.href);
+  const url = encodeURIComponent(window.location.href);
   const text = encodeURIComponent(
     guide.value?.title || "Check out this guide!"
   );
-  window.open(`https://t.me/share/url?url=${shareUrl}&text=${text}`, "_blank");
+  window.open(`https://t.me/share/url?url=${url}&text=${text}`, "_blank");
 };
 
 const shareViaEmail = () => {
@@ -518,11 +529,8 @@ const shareViaEmail = () => {
 };
 
 const shareViaFacebook = () => {
-  const shareUrl = encodeURIComponent(window.location.href);
-  window.open(
-    `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`,
-    "_blank"
-  );
+  const url = encodeURIComponent(window.location.href);
+  window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, "_blank");
 };
 
 const shareViaInstagram = () => {

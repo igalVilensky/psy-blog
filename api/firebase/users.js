@@ -1,11 +1,25 @@
-import { useFirestore } from "~/plugins/firebase";
+// ~/utils/users.js
 import { collection, getDocs } from "firebase/firestore";
+import { useFirestore } from "~/plugins/firebase";
 
-// Initialize Firestore
-const firestore = useFirestore();
+/**
+ * Get Firestore instance (client-only)
+ */
+const getClientFirestore = () => {
+  if (!process.client) return null;
+  return useFirestore();
+};
 
-// Fetch all users from the users collection
+/**
+ * Fetch all users from Firestore
+ */
 export const getUsers = async () => {
+  const firestore = getClientFirestore();
+  if (!firestore) {
+    console.warn("Firestore is not available on the server.");
+    return []; // SSR-safe fallback
+  }
+
   try {
     const usersRef = collection(firestore, "users");
     const snapshot = await getDocs(usersRef);
@@ -16,6 +30,6 @@ export const getUsers = async () => {
     return users;
   } catch (error) {
     console.error("Error fetching users:", error);
-    throw error;
+    return []; // fallback
   }
 };

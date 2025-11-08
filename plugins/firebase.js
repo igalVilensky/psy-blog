@@ -12,7 +12,7 @@ import { getAnalytics, isSupported } from "firebase/analytics";
 export default defineNuxtPlugin((nuxtApp) => {
   const config = useRuntimeConfig();
 
-  // Конфигурация Firebase из environment variables
+  // Firebase configuration from environment variables
   const firebaseConfig = {
     apiKey: config.public.firebaseApiKey,
     authDomain: config.public.firebaseAuthDomain,
@@ -23,51 +23,54 @@ export default defineNuxtPlugin((nuxtApp) => {
     measurementId: config.public.firebaseMeasurementId,
   };
 
-  // Инициализация Firebase
+  // Initialize Firebase app
   const app = initializeApp(firebaseConfig);
 
-  // Инициализация сервисов
+  // Initialize services
   const auth = getAuth(app);
   const firestore = getFirestore(app);
 
-  // Установка persistence для Auth
-  setPersistence(auth, browserLocalPersistence).catch((error) => {
-    console.error("Ошибка установки persistence:", error);
-  });
-
-  // Инициализация Analytics (только на клиенте)
+  // Analytics (client only)
   let analytics = null;
-  if (typeof window !== "undefined" && isSupported()) {
-    analytics = getAnalytics(app);
+  if (process.client) {
+    isSupported().then((supported) => {
+      if (supported) {
+        analytics = getAnalytics(app);
+        nuxtApp.provide("analytics", analytics);
+      }
+    });
+
+    // Set Auth persistence (client only)
+    setPersistence(auth, browserLocalPersistence).catch((error) => {
+      console.error("Ошибка установки persistence:", error);
+    });
   }
 
-  // Переменная для хранения текущего userId
-  let userId = ref(null);
+  // Current user ID ref
+  const userId = ref(null);
 
-  // Отслеживание состояния аутентификации
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      userId.value = user.uid;
-      console.log("Пользователь вошёл:", userId.value);
-    } else {
-      userId.value = null;
-      console.log("Пользователь вышел");
-    }
-  });
+  // Track auth state changes (client only)
+  if (process.client) {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        userId.value = user.uid;
+        // console.log("Пользователь вошёл:", userId.value);
+      } else {
+        userId.value = null;
+        // console.log("Пользователь вышел");
+      }
+    });
+  }
 
-  // Предоставляем сервисы и userId через Nuxt
+  // Provide services via Nuxt
   nuxtApp.provide("auth", auth);
   nuxtApp.provide("firestore", firestore);
   nuxtApp.provide("userId", () => userId.value);
-
-  // Analytics только на клиенте
-  if (analytics) {
-    nuxtApp.provide("analytics", analytics);
-  }
 });
 
-// Экспорт Firestore как утилита (опционально)
+// Optional Firestore composable
 export const useFirestore = () => {
+  if (!process.client) return null; // SSR-safe guard
   const { $firestore } = useNuxtApp();
   return $firestore;
 };

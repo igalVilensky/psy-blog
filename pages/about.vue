@@ -234,7 +234,7 @@
               через Древо Себя и наше поддерживающее сообщество.
             </p>
             <Button
-              to="/tree-of-self"
+              to="/"
               text="Исследовать Древо Себя"
               iconClass="fas fa-tree"
               gradientStart="#00E6FF"

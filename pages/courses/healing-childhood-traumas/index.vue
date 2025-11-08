@@ -222,7 +222,8 @@ const subscribeEmail = async () => {
     return;
   }
 
-  const result = await subscribeUser(db, email.value);
+  // Remove the db parameter - your subscribeUser function should get db internally
+  const result = await subscribeUser(email.value);
   if (result.success) {
     alert(result.message);
     email.value = "";

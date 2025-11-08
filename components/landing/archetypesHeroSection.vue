@@ -160,7 +160,7 @@
               Пройти тест
             </NuxtLink>
             <NuxtLink
-              to="/signup"
+              to="/register"
               class="px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white rounded-lg border border-slate-700 transition-all"
             >
               Создать аккаунт

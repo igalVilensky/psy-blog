@@ -435,13 +435,13 @@ const mobileStations = computed(() => [
     subtitle: "Развивающие",
   },
   {
-    to: "/lab/psychology",
+    to: "/lab",
     icon: "fa-book-open",
     title: "Психология",
     subtitle: "Теории",
   },
   {
-    to: "/lab/meditation",
+    to: "/lab",
     icon: "fa-spa",
     title: "Медитация",
     subtitle: "Аудио/видео",

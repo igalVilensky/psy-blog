@@ -30,7 +30,7 @@
         <p class="mb-4">
           Следите за своим ростом с помощью ежедневных уведомлений!
         </p>
-        <a href="/signup" class="btn btn-primary"
+        <a href="/register" class="btn btn-primary"
           >Зарегистрируйтесь, чтобы начать</a
         >
       </div>

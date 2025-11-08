@@ -62,15 +62,15 @@
 </template>
 
 <script setup>
+import { ref, computed, onMounted } from "vue";
 import { useAuthStore } from "~/stores/auth";
-import { computed, ref, onMounted } from "vue";
-import { useFirestore } from "~/plugins/firebase";
 import { fetchPosts } from "~/api/sanity/posts";
 import { getPostViewCount } from "~/api/firebase/views";
 import { getLatestUserAssessment } from "~/api/firebase/assessments";
 import { getPurchasedCourses } from "~/api/firebase/coursesApi";
-import { getEmotionBarometerData } from "~/api/firebase/emotionBarometer"; // Updated import
+import { getEmotionBarometerData } from "~/api/firebase/emotionBarometer";
 import { getDailyGrowthSparkData } from "~/api/firebase/dailyGrowthSpark";
+
 import HeroSection from "~/components/home-page/HeroSection.vue";
 import BlogPosts from "~/components/home-page/BlogPosts.vue";
 import RecentUpdates from "~/components/home-page/RecentUpdates.vue";
@@ -82,14 +82,21 @@ import DailyGrowthSpark from "~/components/growth-spark/DailyGrowthSpark.vue";
 import DailyGrowthSparkSummary from "~/components/growth-spark/DailyGrowthSparkSummary.vue";
 
 const authStore = useAuthStore();
-const firestore = useFirestore();
 const isLoggedIn = computed(() => !!authStore.user);
 
-const stats = ref({
-  tests: null,
-  courses: null,
-  tools: null,
-});
+// Client-only Firestore helper
+let firestore = null;
+const getFirestore = () => {
+  if (!process.client) return null;
+  if (!firestore) {
+    const { useFirestore } = require("~/plugins/firebase");
+    firestore = useFirestore();
+  }
+  return firestore;
+};
+
+// Reactive state
+const stats = ref({ tests: null, courses: null, tools: null });
 const recentActions = ref([]);
 const recommendations = ref([]);
 const blogPosts = ref([]);
@@ -98,49 +105,23 @@ const successStories = ref([]);
 const profilingReasons = ref([]);
 const notifications = ref([]);
 
-const fetchNotifications = async (userId) => {
-  if (!userId) {
-    notifications.value = [];
-    return;
-  }
-  const today = new Date().toISOString().split("T")[0];
-
-  const hasEmotionalEntry = await checkEmotionalCompassEntry(userId, today);
-  const hasDailySpark = await checkDailySparkCompletion(userId, today);
-
-  notifications.value = [];
-  if (!hasEmotionalEntry) {
-    notifications.value.push({
-      id: 1,
-      message: "Не забудьте записать свои эмоции сегодня!",
-      routePath: "/awareness-tools/emotional-compass",
-      ctaText: "Записать сейчас",
-    });
-  }
-  if (!hasDailySpark) {
-    notifications.value.push({
-      id: 2,
-      message: "Выполните задание Daily Spark для получения бонуса!",
-      routePath: "/home",
-      ctaText: "Начать сейчас",
-    });
-  }
-};
-
 const latestBlogPosts = computed(() => {
   return blogPosts.value
     .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
     .slice(0, 3);
 });
 
+// --- Firestore & API functions ---
 const loadBlogPosts = async () => {
   try {
     const initialPosts = await fetchPosts();
     blogPosts.value = Array.isArray(initialPosts) ? initialPosts : [];
-    if (blogPosts.value.length > 0) {
+
+    const fs = getFirestore();
+    if (fs && blogPosts.value.length > 0) {
       await Promise.all(
         blogPosts.value.map(async (post) => {
-          post.views = await getPostViewCount(firestore, post._id);
+          post.views = await getPostViewCount(fs, post._id);
         })
       );
     }
@@ -151,7 +132,11 @@ const loadBlogPosts = async () => {
 };
 
 const fetchUserStats = async (userId) => {
-  const assessmentResponse = await getLatestUserAssessment(firestore, userId);
+  const fs = getFirestore();
+  if (!fs) return;
+
+  // Latest assessment
+  const assessmentResponse = await getLatestUserAssessment(fs, userId);
   if (assessmentResponse.success) {
     const scores = assessmentResponse.assessment.scores;
     const topArchetypes = Object.entries(scores)
@@ -172,6 +157,7 @@ const fetchUserStats = async (userId) => {
     };
   }
 
+  // Courses
   const coursesResponse = await getPurchasedCourses(userId);
   if (coursesResponse.success && coursesResponse.data.length > 0) {
     stats.value.courses = {
@@ -182,16 +168,14 @@ const fetchUserStats = async (userId) => {
       cta: null,
     };
   } else {
-    stats.value.courses = {
-      purchasedCourses: [],
-      cta: { link: "/courses" },
-    };
+    stats.value.courses = { purchasedCourses: [], cta: { link: "/courses" } };
   }
 
-  const emotionStatsResponse = await getEmotionBarometerData(firestore, userId); // Updated to use data
+  // Emotion Barometer
+  const emotionStatsResponse = await getEmotionBarometerData(fs, userId);
   if (
     emotionStatsResponse.success &&
-    emotionStatsResponse.data.entries.length > 0
+    emotionStatsResponse.data.entries.length
   ) {
     stats.value.tools = {
       emotionStats: { totalEntries: emotionStatsResponse.data.entries.length },
@@ -207,105 +191,125 @@ const fetchUserStats = async (userId) => {
   }
 };
 
-const fetchRecentActions = async () => {
-  return [
-    {
+const fetchNotifications = async (userId) => {
+  if (!userId) {
+    notifications.value = [];
+    return;
+  }
+
+  const today = new Date().toISOString().split("T")[0];
+  const fs = getFirestore();
+  const hasEmotionalEntry = fs
+    ? await checkEmotionalCompassEntry(userId, today)
+    : false;
+  const hasDailySpark = fs
+    ? await checkDailySparkCompletion(userId, today)
+    : false;
+
+  notifications.value = [];
+  if (!hasEmotionalEntry) {
+    notifications.value.push({
       id: 1,
-      description: "Завершили тест: Большая пятёрка",
-      date: "02.03.2025",
-    },
-    {
+      message: "Не забудьте записать свои эмоции сегодня!",
+      routePath: "/awareness-tools/emotional-compass",
+      ctaText: "Записать сейчас",
+    });
+  }
+  if (!hasDailySpark) {
+    notifications.value.push({
       id: 2,
-      description: "Начали тест: Эмоциональный компас",
-      date: "01.03.2025",
-    },
-  ];
-};
-
-const fetchRecommendations = async () => {
-  return [
-    { id: 1, text: "Завершите тест: Эмоциональный компас" },
-    { id: 2, text: "Попробуйте курс: Основы осознанности" },
-  ];
-};
-
-const fetchRecentUpdates = async () => {
-  return [
-    {
-      id: 1,
-      title: "Новый тест",
-      description: "Добавлен тест на стрессоустойчивость.",
-    },
-    {
-      id: 2,
-      title: "Обновление",
-      description: "Большая пятёрка теперь с пояснениями.",
-    },
-  ];
-};
-
-const fetchSuccessStories = async () => {
-  return [
-    { id: 1, quote: "Тесты помогли мне понять себя.", author: "Анна, 34" },
-    {
-      id: 2,
-      quote: "Я стала увереннее благодаря профилю.",
-      author: "Мария, 28",
-    },
-  ];
-};
-
-const fetchProfilingReasons = async () => {
-  return [
-    {
-      id: 1,
-      title: "Самопознание",
-      description: "Узнайте свои сильные и слабые стороны.",
-      icon: "brain",
-    },
-    {
-      id: 2,
-      title: "Развитие",
-      description: "Ставьте цели, основанные на вашем профиле.",
-      icon: "target",
-    },
-    {
-      id: 3,
-      title: "Понимание",
-      description: "Осознайте свои эмоциональные паттерны.",
-      icon: "heart",
-    },
-  ];
+      message: "Выполните задание Daily Spark для получения бонуса!",
+      routePath: "/home",
+      ctaText: "Начать сейчас",
+    });
+  }
 };
 
 const checkEmotionalCompassEntry = async (userId, date) => {
+  const fs = getFirestore();
+  if (!fs) return false;
   try {
-    const emotionData = await getEmotionBarometerData(firestore, userId);
+    const emotionData = await getEmotionBarometerData(fs, userId);
     if (emotionData.success) {
       const { lastUpdated } = emotionData.data;
       return lastUpdated && lastUpdated.split("T")[0] === date;
     }
-    return false; // No entries exist yet
-  } catch (error) {
-    console.error("Error checking Emotional Compass entry:", error);
+    return false;
+  } catch {
     return false;
   }
 };
 
 const checkDailySparkCompletion = async (userId, date) => {
+  const fs = getFirestore();
+  if (!fs) return false;
   try {
-    const response = await getDailyGrowthSparkData(firestore, userId);
+    const response = await getDailyGrowthSparkData(fs, userId);
     if (response.success) {
       const { lastUpdated } = response.data;
       return lastUpdated && lastUpdated.split("T")[0] === date;
     }
     return false;
-  } catch (error) {
-    console.error("Error checking Daily Spark completion:", error);
+  } catch {
     return false;
   }
 };
 
+// Dummy static data
+const fetchRecentActions = async () => [
+  { id: 1, description: "Завершили тест: Большая пятёрка", date: "02.03.2025" },
+  {
+    id: 2,
+    description: "Начали тест: Эмоциональный компас",
+    date: "01.03.2025",
+  },
+];
+
+const fetchRecommendations = async () => [
+  { id: 1, text: "Завершите тест: Эмоциональный компас" },
+  { id: 2, text: "Попробуйте курс: Основы осознанности" },
+];
+
+const fetchRecentUpdates = async () => [
+  {
+    id: 1,
+    title: "Новый тест",
+    description: "Добавлен тест на стрессоустойчивость.",
+  },
+  {
+    id: 2,
+    title: "Обновление",
+    description: "Большая пятёрка теперь с пояснениями.",
+  },
+];
+
+const fetchSuccessStories = async () => [
+  { id: 1, quote: "Тесты помогли мне понять себя.", author: "Анна, 34" },
+  { id: 2, quote: "Я стала увереннее благодаря профилю.", author: "Мария, 28" },
+];
+
+const fetchProfilingReasons = async () => [
+  {
+    id: 1,
+    title: "Самопознание",
+    description: "Узнайте свои сильные и слабые стороны.",
+    icon: "brain",
+  },
+  {
+    id: 2,
+    title: "Развитие",
+    description: "Ставьте цели, основанные на вашем профиле.",
+    icon: "target",
+  },
+  {
+    id: 3,
+    title: "Понимание",
+    description: "Осознайте свои эмоциональные паттерны.",
+    icon: "heart",
+  },
+];
+
+// --- On Mounted ---
 onMounted(async () => {
   recentUpdates.value = await fetchRecentUpdates();
   profilingReasons.value = await fetchProfilingReasons();

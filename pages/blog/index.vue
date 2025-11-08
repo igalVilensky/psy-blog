@@ -1,16 +1,14 @@
-<!-- pages/blog/index.vue -->
 <template>
   <div class="relative min-h-screen">
     <div class="relative z-10">
-      <!-- Enhanced Header Section -->
+      <!-- Header Section -->
       <header class="pt-8 px-4 relative">
-        <!-- Animated Background Gradient -->
         <div
           class="absolute -bottom-2 sm:bottom-0 inset-0 bg-gradient-to-r from-[#0EA5E9]/10 via-[#E879F9]/10 to-[#0EA5E9]/10 animate-gradient-x"
         ></div>
 
         <div class="container mx-auto max-w-6xl relative">
-          <!-- Enhanced Breadcrumb -->
+          <!-- Breadcrumb -->
           <nav class="mb-6">
             <ol class="flex items-center space-x-2 text-sm">
               <li class="flex items-center group">
@@ -34,7 +32,7 @@
             </ol>
           </nav>
 
-          <!-- Enhanced Title Section -->
+          <!-- Title -->
           <div class="mb-6">
             <div class="md:inline-block w-full md:w-auto">
               <div
@@ -45,14 +43,13 @@
             </div>
           </div>
 
-          <!-- Enhanced Category Navigation -->
+          <!-- Categories Navigation -->
           <nav class="relative" aria-label="Категории блога">
-            <!-- Gradient border -->
             <div
               class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"
             ></div>
 
-            <!-- Mobile Dropdown Button -->
+            <!-- Mobile Dropdown -->
             <div class="block md:hidden relative">
               <button
                 type="button"
@@ -66,7 +63,6 @@
                 ></i>
               </button>
 
-              <!-- Mobile Dropdown Menu -->
               <transition
                 enter-active-class="transition duration-200 ease-out"
                 enter-from-class="transform scale-y-0 opacity-0"
@@ -106,7 +102,7 @@
               </transition>
             </div>
 
-            <!-- Desktop Navigation -->
+            <!-- Desktop -->
             <ul class="hidden md:flex flex-wrap -mb-px relative">
               <li v-for="category in categories" :key="category" class="mr-2">
                 <button
@@ -126,12 +122,10 @@
                   >
                     {{ getCategoryCount(category) }}
                   </span>
-                  <!-- Active Indicator -->
                   <div
                     v-if="activeCategory === category"
                     class="absolute bottom-0 left-0 right-0 h-0.5 bg-[#0EA5E9]"
                   ></div>
-                  <!-- Hover Indicator -->
                   <div
                     v-else
                     class="absolute bottom-0 left-0 right-0 h-0.5 bg-[#0EA5E9] opacity-0 transform scale-x-0 transition-all duration-300 group-hover:opacity-100 group-hover:scale-x-100"
@@ -145,7 +139,7 @@
 
       <!-- Blog Posts Grid -->
       <main class="container mx-auto max-w-6xl px-4 xl:px-0 pb-24 mt-4 sm:mt-8">
-        <!-- Loading State -->
+        <!-- Loading -->
         <div
           v-if="isLoading"
           class="text-center py-16 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10"
@@ -159,17 +153,16 @@
           </p>
         </div>
 
-        <!-- Posts Grid with CTA Card -->
+        <!-- Posts -->
         <div
           v-else-if="filteredPosts.length > 0"
           class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
           <template v-for="(post, index) in filteredPosts" :key="post._id">
-            <!-- Blog Post Card -->
+            <!-- Post Card -->
             <article
               class="group bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
             >
-              <!-- Image Container -->
               <div class="relative aspect-[4/3] overflow-hidden">
                 <nuxt-img
                   v-if="post.image"
@@ -234,134 +227,6 @@
                 @click="incrementViewCount(post._id)"
               ></NuxtLink>
             </article>
-
-            <!-- CTA Card (After Second Post) -->
-            <div
-              v-if="index === 0"
-              class="group bg-gradient-to-br from-white/5 via-white/10 to-white/5 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
-            >
-              <!-- Image Container with Overlay -->
-              <div class="relative aspect-[4/3] overflow-hidden">
-                <img
-                  :src="emCompasImage"
-                  alt="Эмоциональный компас"
-                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  loading="lazy"
-                />
-                <!-- Gradient Overlay -->
-                <div
-                  class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-70"
-                ></div>
-
-                <!-- Quick Stats -->
-                <div
-                  class="absolute bottom-4 left-4 right-4 flex justify-between text-xs text-white"
-                >
-                  <div
-                    class="flex items-center space-x-1.5 bg-black/40 backdrop-blur-sm px-2 py-1 rounded"
-                  >
-                    <i class="far fa-user text-[#0EA5E9]"></i>
-                    <span>5,000+ пользователей</span>
-                  </div>
-                  <div
-                    class="flex items-center space-x-1.5 bg-black/40 backdrop-blur-sm px-2 py-1 rounded"
-                  >
-                    <i class="far fa-clock text-[#F59E0B]"></i>
-                    <span>5 мин</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="p-6">
-                <!-- Dynamic Heading Based on Category -->
-                <h2
-                  class="text-xl font-bold text-white/90 mb-3 group-hover:text-[#0EA5E9] transition-colors duration-300"
-                >
-                  {{
-                    activeCategory === "Отношения"
-                      ? "Проблемы в отношениях? Решение есть!"
-                      : activeCategory === "Личностный рост"
-                      ? "Раскрой потенциал своих эмоций!"
-                      : activeCategory === "Продуктивность"
-                      ? "Найди эмоциональный баланс в работе!"
-                      : "Узнай свои истинные эмоции!"
-                  }}
-                </h2>
-
-                <!-- Dynamic Description Based on Category -->
-                <p class="text-slate-300 mb-4">
-                  {{
-                    activeCategory === "Отношения"
-                      ? "Эмоциональный компас поможет распознать истинные чувства и улучшить взаимопонимание в отношениях."
-                      : activeCategory === "Личностный рост"
-                      ? "Используй эмоциональный компас для глубокого понимания своих эмоций и личностного роста."
-                      : activeCategory === "Продуктивность"
-                      ? "Эмоциональный компас поможет найти идеальный баланс между работой и эмоциональным состоянием."
-                      : "Научись лучше понимать свои чувства и управлять ими."
-                  }}
-                </p>
-
-                <!-- Benefits List -->
-                <div class="grid grid-cols-2 gap-2 mb-4">
-                  <div
-                    class="flex items-center space-x-1.5 text-xs text-white/80"
-                  >
-                    <i
-                      :class="[
-                        activeCategory === 'Отношения'
-                          ? 'fas fa-heart text-[#E879F9]'
-                          : activeCategory === 'Личностный рост'
-                          ? 'fas fa-brain text-[#0EA5E9]'
-                          : activeCategory === 'Продуктивность'
-                          ? 'fas fa-chart-line text-[#10B981]'
-                          : 'fas fa-lightbulb text-[#0EA5E9]',
-                      ]"
-                    ></i>
-                    <span>{{
-                      activeCategory === "Отношения"
-                        ? "Улучшит взаимопонимание"
-                        : activeCategory === "Личностный рост"
-                        ? "Развивает самосознание"
-                        : activeCategory === "Продуктивность"
-                        ? "Повышает эффективность"
-                        : "Улучшает самопонимание"
-                    }}</span>
-                  </div>
-                  <div
-                    class="flex items-center space-x-1.5 text-xs text-white/80"
-                  >
-                    <i class="fas fa-check-circle text-[#10B981]"></i>
-                    <span>5-минутная оценка</span>
-                  </div>
-                </div>
-
-                <!-- Action Button -->
-                <div class="flex items-center space-x-2">
-                  <NuxtLink
-                    to="/awareness-tools/emotional-compass"
-                    :class="[
-                      activeCategory === 'Отношения'
-                        ? 'bg-[#E879F9]'
-                        : activeCategory === 'Личностный рост'
-                        ? 'bg-[#0EA5E9]'
-                        : activeCategory === 'Продуктивность'
-                        ? 'bg-[#10B981]'
-                        : 'bg-[#0EA5E9]',
-                      'flex-grow text-center py-3 px-4 text-white rounded-lg hover:opacity-90 transition-all duration-300 flex items-center justify-center group-hover:shadow-lg',
-                    ]"
-                  >
-                    <i class="fas fa-compass mr-2"></i>
-                    <span>Открыть компас</span>
-                  </NuxtLink>
-                </div>
-              </div>
-
-              <!-- Full card link -->
-              <NuxtLink
-                to="/awareness-tools/emotional-compass"
-                class="absolute inset-0 z-10"
-              ></NuxtLink>
-            </div>
           </template>
         </div>
 
@@ -383,58 +248,21 @@
             категорию.
           </p>
         </div>
-
-        <!-- End of Content CTA -->
-        <div
-          v-if="filteredPosts.length > 0"
-          class="mt-16 p-8 rounded-2xl bg-gradient-to-r from-[#0EA5E9]/30 via-[#E879F9]/30 to-[#0EA5E9]/30 animate-gradient-x border border-white/10 text-center"
-        >
-          <h3 class="text-2xl font-bold text-white mb-4">
-            Понравились статьи?
-          </h3>
-          <p class="text-slate-300 mb-6 max-w-2xl mx-auto">
-            Продолжите свой путь самопознания с нашими инструментами! Узнайте
-            свой архетип личности или используйте эмоциональный компас для
-            лучшего понимания себя.
-          </p>
-          <div class="flex flex-col sm:flex-row justify-center gap-4">
-            <NuxtLink
-              to="/awareness-tools/life-purpose-archetype"
-              class="px-6 py-3 bg-[#0EA5E9] text-white rounded-lg hover:bg-[#0EA5E9]/80 transition-colors duration-300"
-            >
-              <i class="fas fa-map-signs mr-2"></i>
-              Узнать свой архетип
-            </NuxtLink>
-            <NuxtLink
-              to="/awareness-tools/emotional-compass"
-              class="px-6 py-3 bg-[#E879F9] text-white rounded-lg hover:bg-[#E879F9]/80 transition-colors duration-300"
-            >
-              <i class="fas fa-compass mr-2"></i>
-              Открыть эмоциональный компас
-            </NuxtLink>
-          </div>
-        </div>
       </main>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
-import { useFirestore } from "~/plugins/firebase";
+import { ref, computed } from "vue";
+import { useAsyncData, useNuxtApp } from "#app";
 import { fetchPosts } from "~/api/sanity/posts";
 import { getImageUrl } from "~/api/sanity/client";
-import { incrementPostViewCount, getPostViewCount } from "~/api/firebase/views";
+import { getPostViewCount, incrementPostViewCount } from "~/api/firebase/views";
 import { useHead } from "@unhead/vue";
-import emCompasImage from "@/assets/images/awarenessTools/em_compass.png";
-const firestore = useFirestore();
-const { projectId, dataset } = useSanity().client.config();
-const urlFor = getImageUrl(projectId, dataset);
 
-const isOpen = ref(false);
+// Reactive state
 const posts = ref([]);
-const isLoading = ref(true);
-
 const categories = ref([
   "Все",
   "Личностный рост",
@@ -442,101 +270,75 @@ const categories = ref([
   "Продуктивность",
 ]);
 const activeCategory = ref("Все");
+const isOpen = ref(false);
+const isLoading = ref(true);
 
-const incrementViewCount = async (postId) => {
-  await incrementPostViewCount(firestore, postId);
+// Sanity image builder
+const { projectId, dataset } = useSanity().client.config();
+const urlFor = getImageUrl(projectId, dataset);
+
+// Nuxt plugin Firestore
+const getClientFirestore = () => {
+  if (!process.client) return null;
+  const nuxtApp = useNuxtApp();
+  return nuxtApp.$firestore;
 };
 
-const setActiveCategory = (category) => {
-  activeCategory.value = category;
-};
+// Fetch posts
+const { data: fetchedPosts } = await useAsyncData("posts", fetchPosts);
+posts.value = Array.isArray(fetchedPosts.value) ? fetchedPosts.value : [];
+isLoading.value = false;
 
+// Load view counts (client only)
+if (process.client) {
+  const fs = getClientFirestore();
+  if (fs) {
+    for (const post of posts.value) {
+      post.views = await getPostViewCount(fs, post._id);
+    }
+  }
+}
+
+// Computed filtered posts
+const filteredPosts = computed(() => {
+  if (!posts.value) return [];
+  if (activeCategory.value === "Все") return posts.value;
+  return posts.value.filter((p) => p.category === activeCategory.value);
+});
+
+// Helpers
+const setActiveCategory = (category) => (activeCategory.value = category);
 const selectCategory = (category) => {
   setActiveCategory(category);
   isOpen.value = false;
 };
-
-const filteredPosts = computed(() => {
-  if (activeCategory.value === "Все") {
-    return posts.value;
-  }
-  return posts.value.filter((post) => post.category === activeCategory.value);
-});
-
-const shouldShowEmotionalCompass = computed(() => {
-  if (activeCategory.value === "Отношения") return true;
-  return filteredPosts.value.some(
-    (post) =>
-      post.title?.toLowerCase().includes("эмоци") ||
-      post.title?.toLowerCase().includes("чувств") ||
-      post.title?.toLowerCase().includes("стресс")
-  );
-});
-
 const getCategoryCount = (category) => {
+  if (!posts.value) return 0;
   if (category === "Все") return posts.value.length;
-  return posts.value.filter((post) => post.category === category).length;
+  return posts.value.filter((p) => p.category === category).length;
 };
 
-const loadPosts = async () => {
-  try {
-    isLoading.value = true;
-    const fetchedPosts = await fetchPosts();
-    posts.value = Array.isArray(fetchedPosts) ? fetchedPosts : [];
-    if (posts.value.length > 0) {
-      await Promise.all(
-        posts.value.map(async (post) => {
-          post.views = await getPostViewCount(firestore, post._id);
-        })
-      );
-    }
-  } catch (error) {
-    console.error("Error loading posts:", error);
-    posts.value = [];
-  } finally {
-    isLoading.value = false;
-  }
+// Firestore view count
+const incrementViewCount = async (postId) => {
+  const fs = getClientFirestore();
+  if (!fs) return;
+  await incrementPostViewCount(fs, postId);
 };
 
-onMounted(() => {
-  loadPosts();
-});
-
-// SEO with useHead
+// SEO
 useHead({
   title: "Блог о личностном росте и самопознании",
   meta: [
     {
       name: "description",
       content:
-        "Читайте статьи о личностном росте, психологии, продуктивности и отношениях. Узнайте, как раскрыть свой потенциал с помощью наших инструментов самопознания.",
+        "Читайте статьи о личностном росте, психологии, продуктивности и отношениях.",
     },
     {
       name: "keywords",
       content:
         "личностный рост, психология, продуктивность, самопознание, блог",
     },
-    { name: "robots", content: "index, follow" },
-    { property: "og:title", content: "Блог о личностном росте и самопознании" },
-    {
-      property: "og:description",
-      content:
-        "Полезные статьи и инструменты для личностного роста, психологии и отношений. Начните свой путь самопознания!",
-    },
-    { property: "og:type", content: "website" },
-    { property: "og:url", content: "https://yourwebsite.com/blog" }, // Replace with your domain
-    { property: "og:image", content: "/images/blog-og-image.webp" }, // Replace with a real image
-    { name: "twitter:card", content: "summary_large_image" },
-    {
-      name: "twitter:title",
-      content: "Блог о личностном росте и самопознании",
-    },
-    {
-      name: "twitter:description",
-      content:
-        "Полезные статьи и инструменты для личностного роста, психологии и отношений. Начните свой путь самопознания!",
-    },
-    { name: "twitter:image", content: "/images/blog-og-image.webp" }, // Replace with a real image
   ],
 });
 </script>

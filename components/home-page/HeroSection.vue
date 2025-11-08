@@ -469,7 +469,7 @@
                     Пройти тест на архетипы
                   </p>
                   <a
-                    href="/tests/archetypes"
+                    href="/awareness-tools/life-purpose-archetype"
                     class="mt-2 inline-flex items-center text-xs font-medium text-amber-400 hover:text-amber-300"
                   >
                     Подробнее
@@ -500,7 +500,7 @@
                     Попробовать оценку личности по Большой пятерке
                   </p>
                   <a
-                    href="/tests/big-five"
+                    href="/awareness-tools/big-5-model"
                     class="mt-2 inline-flex items-center text-xs font-medium text-emerald-400 hover:text-emerald-300"
                   >
                     Подробнее

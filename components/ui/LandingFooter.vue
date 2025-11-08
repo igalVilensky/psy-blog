@@ -24,12 +24,10 @@
               <NuxtLink to="/about" class="footer-link">О нас</NuxtLink>
             </li>
             <li>
-              <NuxtLink to="/features" class="footer-link"
-                >Возможности</NuxtLink
-              >
+              <NuxtLink to="/" class="footer-link">Возможности</NuxtLink>
             </li>
             <li>
-              <NuxtLink to="/pricing" class="footer-link">Тарифы</NuxtLink>
+              <NuxtLink to="/contact" class="footer-link">Тарифы</NuxtLink>
             </li>
             <li>
               <NuxtLink to="/contact" class="footer-link">Контакты</NuxtLink>
@@ -72,13 +70,17 @@
         class="mt-8 pt-6 border-t border-[#D1D9E0] text-center text-xs text-gray-500"
       >
         <div class="flex flex-wrap justify-center space-x-4 mb-2">
-          <NuxtLink to="/privacy" class="hover:text-[#2D89EF] transition-colors"
+          <NuxtLink
+            to="/legal/privacy"
+            class="hover:text-[#2D89EF] transition-colors"
             >Политика конфиденциальности</NuxtLink
           >
-          <NuxtLink to="/terms" class="hover:text-[#2D89EF] transition-colors"
+          <NuxtLink
+            to="/legal/terms"
+            class="hover:text-[#2D89EF] transition-colors"
             >Условия использования</NuxtLink
           >
-          <NuxtLink to="/cookies" class="hover:text-[#2D89EF] transition-colors"
+          <NuxtLink to="/" class="hover:text-[#2D89EF] transition-colors"
             >Политика cookie</NuxtLink
           >
         </div>
