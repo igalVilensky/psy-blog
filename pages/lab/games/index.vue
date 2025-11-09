@@ -438,7 +438,7 @@ const games = [
     progress: 80,
   },
   {
-    id: 5,
+    id: "memory",
     title: "Парные карточки",
     description: "Находите пары одинаковых карточек, тренируя память",
     icon: "fas fa-clone",
@@ -464,7 +464,7 @@ const games = [
     progress: 0,
   },
   {
-    id: 7,
+    id: "stroop",
     title: "Цветовой Струп",
     description: "Назовите цвет текста, игнорируя его значение",
     icon: "fas fa-palette",

@@ -136,6 +136,7 @@ const currentStation = computed(() => {
     "/lab/games/memory": "ТЕСТ_ПАМЯТИ",
     "/lab/games/logic": "ЛОГИЧЕСКИЕ_ИГРЫ",
     "/lab/games/attention": "ТЕСТ_ВНИМАНИЯ",
+    "/lab/games/stroop": "Цветовой Струп",
     "/lab/psychology": "ПСИХОЛОГИЯ",
     "/lab/meditation": "МЕДИТАЦИЯ",
     "/lab/brain-map": "КАРТА_МОЗГА",
