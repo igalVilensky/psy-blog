@@ -94,7 +94,10 @@
                   <span class="text-sm">~{{ featuredGame.duration }}</span>
                 </div>
               </div>
-              <button @click="playGame(featuredGame)" class="btn-primary">
+              <button
+                @click="$router.push('/lab/games/reaction')"
+                class="btn-primary"
+              >
                 <i class="fas fa-play mr-2"></i>
                 Начать игру
               </button>
@@ -368,14 +371,13 @@ const categories = [
 ];
 
 const featuredGame = {
-  id: "featured-1",
-  title: "Мастер паттернов",
-  description:
-    "Найдите скрытые закономерности в последовательностях. Тренирует абстрактное мышление и способность к анализу. Идеально подходит для развития логических навыков.",
-  icon: "fas fa-shapes",
-  plays: "2.5K",
-  rating: "4.8",
-  duration: "5-10 мин",
+  id: "reaction",
+  title: "Скоростная реакция",
+  description: "Кликните как можно быстрее после сигнала зелёного цвета",
+  icon: "fas fa-bolt",
+  plays: "1.2K",
+  rating: "4.7",
+  duration: "2-3 мин",
   difficulty: "Средняя",
   category: "logic",
   gradient: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
@@ -573,8 +575,16 @@ const getDifficultyClass = (difficulty) => {
   return classes[difficulty] || "difficulty-medium";
 };
 
-const playGame = () => {
-  navigateTo(`/lab/games`);
+const playGame = (game) => {
+  console.log("Playing game:", game.title);
+
+  // Navigate to reaction.vue for the reaction game
+  if (game.id === "reaction") {
+    navigateTo("/lab/games/reaction");
+  } else {
+    // For other games, use their ID
+    navigateTo(`/lab/games/${game.id}`);
+  }
 };
 </script>
 
