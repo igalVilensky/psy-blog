@@ -156,12 +156,9 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { useDirectusAuthStore } from "~/stores/auth2";
 import { useRuntimeConfig } from "#app/nuxt";
-import { getCurrentDirectusUser } from "~/api/directus";
 
 const router = useRouter();
-const directusAuthStore = useDirectusAuthStore();
 
 // Form state
 const email = ref("");
@@ -169,10 +166,6 @@ const password = ref("");
 const error = ref("");
 const showPassword = ref(false);
 const isLoading = ref(false);
-
-// Runtime config for Directus settings
-const { useDirectus } = useRuntimeConfig().public;
-const API_URL = "http://localhost:8055";
 
 // Toggle password visibility
 const togglePassword = () => {
