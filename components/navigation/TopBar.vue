@@ -285,23 +285,19 @@
           >О проекте</NuxtLink
         >
 
-        <!-- Ежедневная искра CTA (Logged-in only) -->
-        <!-- <NuxtLink
-          v-if="auth.user"
-          to="/awareness-tools/daily-growth-spark"
-          class="flex items-center space-x-2 px-4 py-2 rounded-lg bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] hover:from-[#22D3EE] hover:to-[#C084FC] transition-all duration-300"
-          exact-active-class="bg-gradient-to-r from-[#22D3EE] to-[#C084FC]"
-        >
-          <i class="fas fa-bolt text-white"></i>
-          <span class="text-white font-medium">Искра дня</span>
-        </NuxtLink> -->
-
         <!-- Profile / Auth Section -->
         <div v-if="auth.user" class="relative group">
           <button
             class="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-white/5 transition-all duration-300"
           >
-            <i class="fas fa-user text-[#0EA5E9] text-lg"></i>
+            <!-- Replace the user icon with circle avatar -->
+            <div class="relative">
+              <div
+                class="w-8 h-8 rounded-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] flex items-center justify-center text-white font-semibold text-sm"
+              >
+                {{ getUserInitials }}
+              </div>
+            </div>
             <span class="text-slate-300 font-medium group-hover:text-white">{{
               auth.user.displayName || auth.user.email
             }}</span>
@@ -309,8 +305,14 @@
               class="fas fa-chevron-down text-xs text-slate-400 group-hover:text-white group-hover:-rotate-180 transition-all duration-300"
             ></i>
           </button>
+
+          <!-- Add the missing hover underline -->
+          <span
+            class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:w-full transition-all duration-300"
+          ></span>
+
           <div
-            class="absolute top-12 right-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300"
+            class="absolute top-12 right-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50"
           >
             <div
               class="bg-gradient-to-b from-[#1A1F35] to-[#1E293B] rounded-xl shadow-[0_4px_20px_rgba(123,97,255,0.2)] border border-white/10 min-w-[200px]"
