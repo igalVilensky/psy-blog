@@ -4,10 +4,18 @@
   </NuxtLayout>
 </template>
 
-<script>
-import "@fortawesome/fontawesome-free/css/all.min.css"; // For all icons
+<script setup>
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import { useHead, useRoute } from "#imports";
 
-export default {
-  name: "App",
-};
+const route = useRoute();
+
+useHead({
+  link: [
+    {
+      rel: "canonical",
+      href: `https://www.mindqlab.com${route.path || "/"}`,
+    },
+  ],
+});
 </script>
