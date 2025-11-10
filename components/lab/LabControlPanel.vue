@@ -417,7 +417,6 @@ defineProps({
 
 const systemActive = ref(true);
 const brainPulsing = ref(false);
-const hoverStation = ref(null);
 const mobileMenuOpen = ref(false);
 
 // Mobile stations data for consistent rendering
@@ -441,7 +440,7 @@ const mobileStations = computed(() => [
     subtitle: "Теории",
   },
   {
-    to: "/lab",
+    to: "/lab/mindfulness",
     icon: "fa-spa",
     title: "Медитация",
     subtitle: "Аудио/видео",
