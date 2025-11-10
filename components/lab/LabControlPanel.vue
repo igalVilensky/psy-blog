@@ -228,7 +228,7 @@
 
       <!-- Psychology Station -->
       <StationLink
-        to="/lab"
+        to="/lab/psychology"
         icon="fa-book-open"
         title="Психология"
         subtitle="Теории и техники"
@@ -239,11 +239,11 @@
 
       <!-- Meditation Station -->
       <StationLink
-        to="/lab"
+        to="/lab/psychology/mindfulness"
         icon="fa-spa"
         title="Медитация"
         subtitle="Аудио и видео"
-        :active="route.path === '/lab/meditation'"
+        :active="route.path === '/lab/psychology/mindfulness'"
         gradient-from="teal-500"
         gradient-to="cyan-600"
       />
@@ -435,7 +435,7 @@ const mobileStations = computed(() => [
     subtitle: "Развивающие",
   },
   {
-    to: "/lab",
+    to: "/lab/psychology",
     icon: "fa-book-open",
     title: "Психология",
     subtitle: "Теории",

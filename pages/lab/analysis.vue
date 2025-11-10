@@ -577,7 +577,3 @@ const getHeatmapColor = (week, day) => {
   return colors[activity];
 };
 </script>
-
-<style scoped>
-/* Add any additional styles if needed */
-</style>
