@@ -138,7 +138,7 @@ const currentStation = computed(() => {
     "/lab/games/attention": "ТЕСТ_ВНИМАНИЯ",
     "/lab/games/stroop": "Цветовой Струп",
     "/lab/psychology": "ПСИХОЛОГИЯ",
-    "/lab/psychology/mindfulness": "МЕДИТАЦИЯ",
+    "/lab/mindfulness": "МЕДИТАЦИЯ",
     "/lab/brain-map": "КАРТА_МОЗГА",
   };
   return stationMap[route.path] || "ИССЛЕДОВАТЕЛЬСКАЯ_СТАНЦИЯ";
