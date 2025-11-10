@@ -181,7 +181,7 @@ const labSections = [
     description: "Практики присутствия и медитативные упражнения",
     icon: "fas fa-spa",
     gradient: "from-teal-500 to-cyan-500",
-    path: "/lab/psychology/mindfulness",
+    path: "/lab/mindfulness",
   },
 ];
 

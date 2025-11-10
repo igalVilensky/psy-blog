@@ -239,11 +239,11 @@
 
       <!-- Meditation Station -->
       <StationLink
-        to="/lab/psychology/mindfulness"
+        to="/lab/mindfulness"
         icon="fa-spa"
         title="Медитация"
         subtitle="Аудио и видео"
-        :active="route.path === '/lab/psychology/mindfulness'"
+        :active="route.path === '/lab/mindfulness'"
         gradient-from="teal-500"
         gradient-to="cyan-600"
       />
