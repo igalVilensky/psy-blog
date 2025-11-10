@@ -28,8 +28,14 @@
       </div>
     </div>
 
+    <!-- Loading State -->
+    <div v-if="loading" class="flex flex-col items-center justify-center h-64">
+      <i class="fas fa-spinner fa-spin text-4xl text-cyan-400 mb-4"></i>
+      <p class="text-slate-300">Загрузка данных лаборатории...</p>
+    </div>
+
     <!-- Quick Stats -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8">
+    <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8">
       <!-- Cognitive Scan Card -->
       <div
         class="bg-gradient-to-br from-slate-800/50 to-slate-800/30 rounded-xl p-6 border border-cyan-500/20 backdrop-blur-sm hover:border-cyan-500/40 transition-all duration-300 group relative overflow-hidden"
@@ -42,7 +48,7 @@
         <div class="relative z-10">
           <div class="flex items-center justify-between mb-4">
             <div class="text-cyan-400/70 text-xs font-mono tracking-wider">
-              КОГНИТИВНОЕ СКАНИРОВАНИЕ
+              ЭМОЦИОНАЛЬНЫЙ АНАЛИЗ
             </div>
             <div
               class="w-10 h-10 rounded-lg bg-cyan-500/10 flex items-center justify-center transition-transform duration-300"
@@ -53,14 +59,19 @@
           </div>
           <div class="mb-3">
             <div class="text-3xl font-bold text-white mb-1 font-mono">
-              {{ animatedStats.cognitive }}%
+              {{ animatedStats.emotionEntries }}
             </div>
-            <div class="text-slate-400 text-sm">Степень завершения</div>
+            <div class="text-slate-400 text-sm">Записей в барометре</div>
           </div>
           <div class="w-full bg-slate-700/50 rounded-full h-2 overflow-hidden">
             <div
               class="h-full bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full transition-all duration-1000"
-              :style="{ width: `${animatedStats.cognitive}%` }"
+              :style="{
+                width: `${Math.min(
+                  100,
+                  (animatedStats.emotionEntries / 10) * 100
+                )}%`,
+              }"
             ></div>
           </div>
         </div>
@@ -78,7 +89,7 @@
         <div class="relative z-10">
           <div class="flex items-center justify-between mb-4">
             <div class="text-purple-400/70 text-xs font-mono tracking-wider">
-              АКТИВНЫЕ ТЕСТЫ
+              АРХЕТИПЫ
             </div>
             <div
               class="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center transition-transform duration-300"
@@ -89,17 +100,19 @@
           </div>
           <div class="mb-3">
             <div class="text-3xl font-bold text-white mb-1 font-mono">
-              {{ stats.activeTests.current }}/{{ stats.activeTests.total }}
+              {{ archetypeScores.length }}
             </div>
-            <div class="text-slate-400 text-sm">Экспериментов запущено</div>
+            <div class="text-slate-400 text-sm">
+              Проанализированных архетипов
+            </div>
           </div>
           <div class="flex space-x-1">
             <div
-              v-for="i in stats.activeTests.total"
+              v-for="i in 5"
               :key="i"
               class="flex-1 h-2 rounded-full transition-all duration-300"
               :class="
-                i <= stats.activeTests.current
+                i <= Math.min(5, archetypeScores.length)
                   ? 'bg-gradient-to-r from-purple-500 to-pink-500'
                   : 'bg-slate-700/50'
               "
@@ -120,7 +133,7 @@
         <div class="relative z-10">
           <div class="flex items-center justify-between mb-4">
             <div class="text-emerald-400/70 text-xs font-mono tracking-wider">
-              ТОЧКИ ДАННЫХ
+              СТАТИСТИКА
             </div>
             <div
               class="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center transition-transform duration-300"
@@ -131,24 +144,28 @@
           </div>
           <div class="mb-3">
             <div class="text-3xl font-bold text-white mb-1 font-mono">
-              {{ formatNumber(animatedStats.dataPoints) }}
+              {{ animatedStats.averageIntensity.toFixed(1) }}
             </div>
-            <div class="text-slate-400 text-sm">Собранных инсайтов</div>
+            <div class="text-slate-400 text-sm">
+              Средняя интенсивность эмоций
+            </div>
           </div>
           <div class="flex items-center space-x-2 text-emerald-400 text-sm">
-            <i class="fas fa-arrow-up text-xs"></i>
-            <span class="font-mono">+{{ stats.dataPointsGrowth }}%</span>
-            <span class="text-slate-500">за неделю</span>
+            <i class="fas fa-heart text-xs"></i>
+            <span class="font-mono">{{
+              emotionBarometerStats.mostCommonEmotion
+            }}</span>
+            <span class="text-slate-500">частая эмоция</span>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Recent Experiments -->
-    <div class="mb-8">
+    <div v-if="!loading" class="mb-8">
       <div class="flex items-center justify-between mb-6">
         <h2 class="text-2xl font-bold text-white font-montserrat">
-          Последние Эксперименты
+          Последние Активности
         </h2>
         <button
           class="text-cyan-400 hover:text-cyan-300 text-sm font-medium flex items-center space-x-2 transition-colors"
@@ -158,72 +175,179 @@
         </button>
       </div>
       <div class="space-y-3">
+        <!-- Emotion Barometer Activity -->
         <div
-          v-for="experiment in recentExperiments"
-          :key="experiment.id"
+          v-if="emotionBarometerStats.totalEntries > 0"
           class="flex items-center justify-between p-4 rounded-xl bg-slate-800/30 border border-slate-700/50 hover:bg-slate-800/50 hover:border-slate-600/50 transition-all duration-300 group"
         >
           <div class="flex items-center space-x-4 flex-1 min-w-0">
             <div class="relative">
-              <div
-                :class="getStatusColorClass(experiment.status)"
-                class="w-3 h-3 rounded-full"
-              ></div>
-              <div
-                v-if="experiment.status === 'in-progress'"
-                :class="getStatusColorClass(experiment.status, true)"
-                class="absolute inset-0 w-3 h-3 rounded-full animate-ping"
-              ></div>
+              <div class="w-3 h-3 rounded-full bg-emerald-400"></div>
             </div>
             <div
-              class="w-12 h-12 rounded-lg flex items-center justify-center"
-              :class="getExperimentBgClass(experiment.type)"
+              class="w-12 h-12 rounded-lg flex items-center justify-center bg-emerald-500/10"
             >
-              <i :class="experiment.icon" class="text-lg"></i>
+              <i class="fas fa-heart-pulse text-emerald-400 text-lg"></i>
             </div>
             <div class="flex-1 min-w-0">
               <div
-                class="text-white font-medium mb-1 group-hover:text-cyan-400 transition-colors"
+                class="text-white font-medium mb-1 group-hover:text-emerald-400 transition-colors"
               >
-                {{ experiment.name }}
+                Эмоциональный Компас
               </div>
               <div class="text-slate-400 text-sm">
-                {{ experiment.description }}
+                {{ emotionBarometerStats.totalEntries }} записей, средняя
+                интенсивность:
+                {{ emotionBarometerStats.averageIntensity.toFixed(1) }}
               </div>
             </div>
           </div>
           <div class="flex items-center space-x-4">
             <div class="text-right hidden sm:block">
-              <div class="text-slate-400 text-xs font-mono mb-1">
-                {{ experiment.date }}
-              </div>
-              <div
-                class="text-xs font-medium"
-                :class="getStatusTextClass(experiment.status)"
-              >
-                {{ getStatusLabel(experiment.status) }}
-              </div>
+              <div class="text-slate-400 text-xs font-mono mb-1">Активно</div>
+              <div class="text-xs font-medium text-emerald-400">Завершено</div>
             </div>
-            <button
+            <NuxtLink
+              to="/awareness-tools/emotional-compass"
               class="w-8 h-8 rounded-lg bg-slate-700/50 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-all"
             >
               <i class="fas fa-chevron-right text-xs"></i>
+            </NuxtLink>
+          </div>
+        </div>
+
+        <!-- Archetype Assessment Activity -->
+        <div
+          v-if="archetypeScores.length > 0"
+          class="flex items-center justify-between p-4 rounded-xl bg-slate-800/30 border border-slate-700/50 hover:bg-slate-800/50 hover:border-slate-600/50 transition-all duration-300 group"
+        >
+          <div class="flex items-center space-x-4 flex-1 min-w-0">
+            <div class="relative">
+              <div class="w-3 h-3 rounded-full bg-amber-400"></div>
+            </div>
+            <div
+              class="w-12 h-12 rounded-lg flex items-center justify-center bg-amber-500/10"
+            >
+              <i class="fas fa-brain text-amber-400 text-lg"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div
+                class="text-white font-medium mb-1 group-hover:text-amber-400 transition-colors"
+              >
+                Анализ Архетипов
+              </div>
+              <div class="text-slate-400 text-sm">
+                {{ archetypeScores.length }} архетипов проанализировано
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center space-x-4">
+            <div class="text-right hidden sm:block">
+              <div class="text-slate-400 text-xs font-mono mb-1">Активно</div>
+              <div class="text-xs font-medium text-amber-400">Завершено</div>
+            </div>
+            <button
+              class="w-8 h-8 rounded-lg bg-slate-700/50 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-all"
+              @click="viewArchetypes"
+            >
+              <i class="fas fa-chevron-right text-xs"></i>
             </button>
+          </div>
+        </div>
+
+        <!-- User Profile Activity -->
+        <div
+          class="flex items-center justify-between p-4 rounded-xl bg-slate-800/30 border border-slate-700/50 hover:bg-slate-800/50 hover:border-slate-600/50 transition-all duration-300 group"
+        >
+          <div class="flex items-center space-x-4 flex-1 min-w-0">
+            <div class="relative">
+              <div class="w-3 h-3 rounded-full bg-cyan-400"></div>
+            </div>
+            <div
+              class="w-12 h-12 rounded-lg flex items-center justify-center bg-cyan-500/10"
+            >
+              <i class="fas fa-user text-cyan-400 text-lg"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div
+                class="text-white font-medium mb-1 group-hover:text-cyan-400 transition-colors"
+              >
+                Профиль Пользователя
+              </div>
+              <div class="text-slate-400 text-sm">
+                {{ authStore.user?.displayName || "Пользователь" }} •
+                {{ profession || "Профессия не указана" }}
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center space-x-4">
+            <div class="text-right hidden sm:block">
+              <div class="text-slate-400 text-xs font-mono mb-1">Обновлено</div>
+              <div class="text-xs font-medium text-cyan-400">Активно</div>
+            </div>
+            <NuxtLink
+              to="/profile"
+              class="w-8 h-8 rounded-lg bg-slate-700/50 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-all"
+            >
+              <i class="fas fa-chevron-right text-xs"></i>
+            </NuxtLink>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Quick Actions -->
-    <div>
+    <div v-if="!loading">
       <h2 class="text-2xl font-bold text-white mb-6 font-montserrat">
         Быстрые Действия
       </h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <NuxtLink
+          to="/awareness-tools/emotional-compass"
+          class="p-5 rounded-xl bg-slate-800/30 border border-slate-700/50 hover:border-emerald-500/50 hover:bg-slate-800/50 transition-all duration-300 group text-left relative overflow-hidden"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          ></div>
+          <div class="relative z-10">
+            <div
+              class="w-12 h-12 rounded-lg bg-emerald-500/10 group-hover:bg-emerald-500/20 flex items-center justify-center mb-4 transition-all duration-300 group-hover:scale-110"
+            >
+              <i class="fas fa-heart-pulse text-xl text-emerald-400"></i>
+            </div>
+            <div
+              class="text-white font-medium mb-2 group-hover:text-emerald-400 transition-colors"
+            >
+              Эмоциональный Компас
+            </div>
+            <div class="text-slate-400 text-sm">Запись эмоций и анализ</div>
+          </div>
+        </NuxtLink>
+
         <button
-          v-for="action in quickActions"
-          :key="action.name"
-          @click="action.handler"
+          @click="viewArchetypes"
+          class="p-5 rounded-xl bg-slate-800/30 border border-slate-700/50 hover:border-amber-500/50 hover:bg-slate-800/50 transition-all duration-300 group text-left relative overflow-hidden"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          ></div>
+          <div class="relative z-10">
+            <div
+              class="w-12 h-12 rounded-lg bg-amber-500/10 group-hover:bg-amber-500/20 flex items-center justify-center mb-4 transition-all duration-300 group-hover:scale-110"
+            >
+              <i class="fas fa-brain text-xl text-amber-400"></i>
+            </div>
+            <div
+              class="text-white font-medium mb-2 group-hover:text-amber-400 transition-colors"
+            >
+              Архетипы
+            </div>
+            <div class="text-slate-400 text-sm">Просмотр результатов теста</div>
+          </div>
+        </button>
+
+        <NuxtLink
+          to="/profile"
           class="p-5 rounded-xl bg-slate-800/30 border border-slate-700/50 hover:border-cyan-500/50 hover:bg-slate-800/50 transition-all duration-300 group text-left relative overflow-hidden"
         >
           <div
@@ -233,14 +357,36 @@
             <div
               class="w-12 h-12 rounded-lg bg-cyan-500/10 group-hover:bg-cyan-500/20 flex items-center justify-center mb-4 transition-all duration-300 group-hover:scale-110"
             >
-              <i :class="action.icon" class="text-xl text-cyan-400"></i>
+              <i class="fas fa-user text-xl text-cyan-400"></i>
             </div>
             <div
               class="text-white font-medium mb-2 group-hover:text-cyan-400 transition-colors"
             >
-              {{ action.name }}
+              Профиль
             </div>
-            <div class="text-slate-400 text-sm">{{ action.description }}</div>
+            <div class="text-slate-400 text-sm">Управление данными</div>
+          </div>
+        </NuxtLink>
+
+        <button
+          class="p-5 rounded-xl bg-slate-800/30 border border-slate-700/50 hover:border-purple-500/50 hover:bg-slate-800/50 transition-all duration-300 group text-left relative overflow-hidden"
+          @click="refreshData"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          ></div>
+          <div class="relative z-10">
+            <div
+              class="w-12 h-12 rounded-lg bg-purple-500/10 group-hover:bg-purple-500/20 flex items-center justify-center mb-4 transition-all duration-300 group-hover:scale-110"
+            >
+              <i class="fas fa-sync text-xl text-purple-400"></i>
+            </div>
+            <div
+              class="text-white font-medium mb-2 group-hover:text-purple-400 transition-colors"
+            >
+              Обновить
+            </div>
+            <div class="text-slate-400 text-sm">Синхронизировать данные</div>
           </div>
         </button>
       </div>
@@ -249,138 +395,98 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, computed } from "vue";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "~/stores/auth";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getEmotionBarometerStats } from "~/api/firebase/emotionBarometer";
+import { getLatestUserAssessment } from "~/api/firebase/assessments";
 
 definePageMeta({
   layout: "laboratory",
 });
 
+const router = useRouter();
+const authStore = useAuthStore();
+
+// Loading state
+const loading = ref(true);
+
+// Data from profile
+const emotionBarometerStats = ref({
+  totalEntries: 0,
+  mostCommonEmotion: "",
+  averageIntensity: 0,
+  mostCommonTag: "",
+  emotionDistribution: {},
+});
+
+const archetypeScores = ref([]);
+const profession = ref("");
+
+// UI state
 const activeCard = ref(null);
+
+// Animated stats
+const animatedStats = reactive({
+  emotionEntries: 0,
+  averageIntensity: 0,
+});
 
 const sessionId = computed(() => {
   return `LAB-${Date.now().toString(36).toUpperCase()}`;
 });
 
-const stats = reactive({
-  cognitive: 87.3,
-  activeTests: {
-    current: 3,
-    total: 5,
-  },
-  dataPoints: 1247,
-  dataPointsGrowth: 12.5,
-});
+// Fetch user data
+const fetchUserData = async () => {
+  if (!authStore.user) return;
 
-const animatedStats = reactive({
-  cognitive: 0,
-  dataPoints: 0,
-});
+  try {
+    // Fetch bio data
+    const db = getFirestore();
+    const userRef = doc(db, "users", authStore.user.uid);
+    const userSnap = await getDoc(userRef);
+    if (userSnap.exists()) {
+      const data = userSnap.data();
+      profession.value = data.profession || "";
+    }
 
-const recentExperiments = ref([
-  {
-    id: 1,
-    name: "Эмоциональный Компас",
-    description: "Оценка эмоционального интеллекта",
-    status: "completed",
-    date: "2 часа назад",
-    icon: "fas fa-heart-pulse text-emerald-400",
-    type: "emotional",
-  },
-  {
-    id: 2,
-    name: "Анализ Большой Пятёрки",
-    description: "Картирование личностных черт",
-    status: "in-progress",
-    date: "1 день назад",
-    icon: "fas fa-brain text-amber-400",
-    type: "personality",
-  },
-  {
-    id: 3,
-    name: "Идентификация Архетипов",
-    description: "Открытие юнгианских архетипов",
-    status: "pending",
-    date: "3 дня назад",
-    icon: "fas fa-masks-theater text-slate-400",
-    type: "archetype",
-  },
-  {
-    id: 4,
-    name: "Когнитивные Паттерны",
-    description: "Анализ мыслительных процессов",
-    status: "completed",
-    date: "5 дней назад",
-    icon: "fas fa-network-wired text-emerald-400",
-    type: "cognitive",
-  },
-]);
+    // Fetch emotion barometer stats
+    const { success, stats } = await getEmotionBarometerStats(
+      db,
+      authStore.user.uid
+    );
+    if (success) {
+      emotionBarometerStats.value = stats;
+    }
 
-const quickActions = [
-  {
-    name: "Новое Сканирование",
-    description: "Запустить когнитивную оценку",
-    icon: "fas fa-brain-circuit",
-    handler: () => console.log("Starting new scan..."),
-  },
-  {
-    name: "Экспорт Данных",
-    description: "Скачать данные исследований",
-    icon: "fas fa-download",
-    handler: () => console.log("Exporting data..."),
-  },
-  {
-    name: "Обновить Профиль",
-    description: "Актуализировать личные данные",
-    icon: "fas fa-sync",
-    handler: () => console.log("Updating profile..."),
-  },
-  {
-    name: "Настройки",
-    description: "Конфигурация лаборатории",
-    icon: "fas fa-cog",
-    handler: () => console.log("Opening settings..."),
-  },
-];
-
-const getStatusColorClass = (status, isPing = false) => {
-  const colors = {
-    completed: isPing ? "bg-emerald-400/30" : "bg-emerald-400",
-    "in-progress": isPing ? "bg-amber-400/30" : "bg-amber-400",
-    pending: isPing ? "bg-slate-400/30" : "bg-slate-400",
-  };
-  return colors[status] || colors.pending;
+    // Fetch archetype assessment
+    const { success: assessmentSuccess, assessment } =
+      await getLatestUserAssessment(db, authStore.user.uid);
+    if (assessmentSuccess && assessment) {
+      archetypeScores.value = Object.entries(assessment.scores).map(
+        ([name, level]) => ({
+          name,
+          level: parseFloat(level),
+        })
+      );
+    }
+  } catch (error) {
+    console.error("Error fetching dashboard data:", error);
+  } finally {
+    loading.value = false;
+    setTimeout(animateNumbers, 300);
+  }
 };
 
-const getStatusTextClass = (status) => {
-  const colors = {
-    completed: "text-emerald-400",
-    "in-progress": "text-amber-400",
-    pending: "text-slate-400",
-  };
-  return colors[status] || colors.pending;
+const viewArchetypes = () => {
+  // Navigate to profile or archetypes section
+  router.push("/profile#psychological-profile");
 };
 
-const getStatusLabel = (status) => {
-  const labels = {
-    completed: "Завершено",
-    "in-progress": "В процессе",
-    pending: "Ожидает",
-  };
-  return labels[status] || "Неизвестно";
-};
-
-const getExperimentBgClass = (type) => {
-  const classes = {
-    emotional: "bg-emerald-500/10",
-    personality: "bg-amber-500/10",
-    archetype: "bg-slate-500/10",
-    cognitive: "bg-cyan-500/10",
-  };
-  return classes[type] || "bg-slate-500/10";
-};
-
-const formatNumber = (num) => {
-  return num.toLocaleString("ru-RU");
+const refreshData = () => {
+  loading.value = true;
+  fetchUserData();
 };
 
 const animateNumbers = () => {
@@ -394,18 +500,27 @@ const animateNumbers = () => {
     currentStep++;
     const progress = currentStep / steps;
 
-    animatedStats.cognitive = Math.floor(stats.cognitive * progress * 10) / 10;
-    animatedStats.dataPoints = Math.floor(stats.dataPoints * progress);
+    animatedStats.emotionEntries = Math.floor(
+      emotionBarometerStats.value.totalEntries * progress
+    );
+    animatedStats.averageIntensity =
+      emotionBarometerStats.value.averageIntensity * progress;
 
     if (currentStep >= steps) {
-      animatedStats.cognitive = stats.cognitive;
-      animatedStats.dataPoints = stats.dataPoints;
+      animatedStats.emotionEntries = emotionBarometerStats.value.totalEntries;
+      animatedStats.averageIntensity =
+        emotionBarometerStats.value.averageIntensity;
       clearInterval(timer);
     }
   }, interval);
 };
 
-onMounted(() => {
-  setTimeout(animateNumbers, 300);
+onMounted(async () => {
+  await authStore.initAuth();
+  if (authStore.user) {
+    await fetchUserData();
+  } else {
+    loading.value = false;
+  }
 });
 </script>
