@@ -100,6 +100,7 @@ defineEmits(["start"]);
 const selectDuration = () => {
   // Default behavior if clicked on card (not duration button)
   // Could show a modal or auto-select middle duration
+  console.log("test");
 };
 </script>
 
