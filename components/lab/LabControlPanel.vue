@@ -4,21 +4,34 @@
     <!-- Mobile Header -->
     <div class="mobile-header bg-slate-900 border-b border-cyan-500/20 p-4">
       <div class="flex items-center justify-between">
-        <div class="flex items-center space-x-3">
+        <NuxtLink
+          to="/"
+          class="flex items-center space-x-3 group"
+          @click.native="closeMobileMenu"
+        >
           <div class="relative">
             <div
-              class="w-2 h-2 bg-cyan-400 rounded-full"
-              :class="{ 'animate-pulse': systemActive }"
-            ></div>
+              class="w-8 h-8 rounded-full bg-slate-950 flex items-center justify-center overflow-hidden border border-purple-400/30"
+            >
+              <img
+                src="/mindqlab-logo.png"
+                alt="MindQLab Logo"
+                class="relative w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+              />
+            </div>
             <div
-              v-if="systemActive"
-              class="absolute inset-0 w-2 h-2 bg-cyan-400/30 rounded-full animate-ping"
+              class="absolute -inset-1 bg-purple-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             ></div>
           </div>
-          <h3 class="text-xs font-mono text-cyan-300 tracking-widest">
-            СИСТЕМА АКТИВНА
-          </h3>
-        </div>
+          <div>
+            <div
+              class="text-xs font-mono text-purple-300 tracking-widest group-hover:text-purple-200 transition-colors"
+            >
+              ГЛАВНАЯ
+            </div>
+            <div class="text-xs text-purple-400/70">mindqlab.com</div>
+          </div>
+        </NuxtLink>
 
         <!-- Mobile Menu Toggle -->
         <button
@@ -148,21 +161,30 @@
   >
     <!-- Panel Header -->
     <div class="panel-header border-b border-cyan-500/20 p-6">
-      <div class="flex items-center space-x-3 mb-4">
+      <NuxtLink to="/" class="flex items-center space-x-3 mb-4 group">
         <div class="relative">
           <div
-            class="w-2 h-2 bg-cyan-400 rounded-full"
-            :class="{ 'animate-pulse': systemActive }"
-          ></div>
+            class="w-10 h-10 rounded-full bg-slate-950 flex items-center justify-center overflow-hidden border border-purple-400/30"
+          >
+            <img
+              src="/mindqlab-logo.png"
+              alt="MindQLab Logo"
+              class="relative w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+            />
+          </div>
           <div
-            v-if="systemActive"
-            class="absolute inset-0 w-2 h-2 bg-cyan-400/30 rounded-full animate-ping"
+            class="absolute -inset-1 bg-purple-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           ></div>
         </div>
-        <h3 class="text-xs font-mono text-cyan-300 tracking-widest">
-          СИСТЕМА АКТИВНА
-        </h3>
-      </div>
+        <div>
+          <div
+            class="text-xs font-mono text-purple-300 tracking-widest group-hover:text-purple-200 transition-colors"
+          >
+            ГЛАВНАЯ
+          </div>
+          <div class="text-xs text-purple-400/70">mindqlab.com</div>
+        </div>
+      </NuxtLink>
 
       <!-- Lab Logo -->
       <NuxtLink to="/lab" class="lab-logo group block">

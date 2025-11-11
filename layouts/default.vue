@@ -12,7 +12,7 @@
     /> -->
 
     <!-- TopBar (Fixed) -->
-    <div class="mb-16">
+    <div class="bg-slate-950 pb-16">
       <TopBar />
     </div>
 

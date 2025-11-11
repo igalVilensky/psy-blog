@@ -1,6 +1,6 @@
 <!-- pages/lab/analysis.vue -->
 <template>
-  <div class="min-h-screen">
+  <div class="min-h-screen px-4 sm:px-6 lg:px-8 py-8">
     <!-- Page Header -->
     <div class="mb-8">
       <div
