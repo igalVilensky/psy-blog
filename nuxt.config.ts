@@ -24,23 +24,6 @@ export default defineNuxtConfig({
   // Modules
   modules: ["@nuxtjs/sanity", "@pinia/nuxt", "@nuxt/image", "@vueuse/nuxt"],
 
-  // Nitro prerendering
-  nitro: {
-    prerender: {
-      routes: [
-        "/",
-        "/about",
-        "/contact",
-        "/faq",
-        "/login",
-        "/register",
-        "/happy-birthday",
-        "/lab",
-        "/legal/privacy",
-      ],
-    },
-  },
-
   // Plugins
   plugins: [
     "~/plugins/firebase.js",
