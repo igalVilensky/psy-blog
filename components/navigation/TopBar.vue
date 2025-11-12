@@ -14,7 +14,7 @@
       <!-- Logo -->
       <NuxtLink to="/home" class="group relative block" @click="closeDropdown">
         <div
-          class="relative w-10 h-10 rounded-full overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 transition-all duration-300 group-hover:shadow-lg group-hover:shadow-cyan-500/20 border border-slate-700 group-hover:border-cyan-500/40"
+          class="w-8 h-8 sm:h-10 sm:w-10 rounded-full bg-slate-950 flex items-center justify-center overflow-hidden border border-purple-400/30"
         >
           <img
             src="/mindqlab-logo.png"

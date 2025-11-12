@@ -2,7 +2,9 @@
 <template>
   <div class="mobile-controls lg:hidden fixed top-0 left-0 right-0 z-50">
     <!-- Mobile Header -->
-    <div class="mobile-header bg-slate-900 border-b border-cyan-500/20 p-4">
+    <div
+      class="mobile-header bg-slate-900 border-b border-cyan-500/20 px-4 py-3"
+    >
       <div class="flex items-center justify-between">
         <NuxtLink
           to="/"

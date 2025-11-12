@@ -17,71 +17,75 @@
 
     <!-- Main Content -->
     <main
-      class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-12 lg:py-16 relative"
+      class="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-0 py-12 lg:py-16 relative"
     >
       <!-- Hero Section -->
       <section class="text-center mb-16 md:mb-24">
         <div class="hero-content">
           <!-- Animated Petri Dish with Enhanced Effects -->
-          <div class="relative inline-block mb-8">
-            <div
-              class="petri-dish w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 flex items-center justify-center relative overflow-hidden mx-auto group cursor-pointer shadow-2xl hover:shadow-cyan-500/50 transition-all duration-500"
-              @mouseenter="labActive = true"
-              @mouseleave="labActive = false"
-            >
-              <!-- Glow effect -->
+          <div class="text-center w-full mb-8">
+            <div class="relative inline-block">
               <div
-                class="absolute inset-0 bg-gradient-to-br from-cyan-400/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-              ></div>
-
-              <!-- Rotating ring -->
-              <div
-                class="absolute inset-2 border-2 border-cyan-400/30 rounded-full animate-spin-slow"
-              ></div>
-
-              <!-- Flask icon -->
-              <i
-                class="fas fa-flask text-white text-5xl sm:text-6xl md:text-7xl relative z-10 transition-all duration-500 group-hover:scale-110 group-hover:rotate-12"
-              ></i>
-
-              <!-- Pulse ring on hover -->
-              <div
-                v-if="labActive"
-                class="absolute inset-0 border-4 border-cyan-400/60 rounded-full animate-ping"
-              ></div>
-
-              <!-- Enhanced floating particles -->
-              <div class="absolute inset-0 overflow-hidden pointer-events-none">
+                class="petri-dish w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 rounded-full bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 flex items-center justify-center relative overflow-hidden mx-auto group cursor-pointer shadow-2xl hover:shadow-cyan-500/50 transition-all duration-500"
+                @mouseenter="labActive = true"
+                @mouseleave="labActive = false"
+              >
+                <!-- Glow effect -->
                 <div
-                  v-for="i in 6"
-                  :key="i"
-                  class="particle"
-                  :style="`top: ${Math.random() * 100}%; left: ${
-                    Math.random() * 100
-                  }%; animation-delay: ${i * 0.5}s;`"
+                  class="absolute inset-0 bg-gradient-to-br from-cyan-400/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                 ></div>
-              </div>
-            </div>
 
-            <!-- Floating badges -->
-            <div
-              class="absolute -top-4 -right-4 sm:-top-6 sm:-right-6 bg-gradient-to-br from-green-500 to-emerald-600 text-white text-xs sm:text-sm font-bold px-3 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-lg animate-bounce-slow"
-            >
-              🎯 Научно
-            </div>
-            <div
-              class="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 bg-gradient-to-br from-pink-500 to-rose-600 text-white text-xs sm:text-sm font-bold px-3 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-lg animate-bounce-slow"
-              style="animation-delay: 0.5s"
-            >
-              ✨ Интересно
+                <!-- Rotating ring -->
+                <div
+                  class="absolute inset-2 border-2 border-cyan-400/30 rounded-full animate-spin-slow"
+                ></div>
+
+                <!-- Flask icon -->
+                <i
+                  class="fas fa-flask text-white text-5xl sm:text-6xl md:text-7xl relative z-10 transition-all duration-500 group-hover:scale-110 group-hover:rotate-12"
+                ></i>
+
+                <!-- Pulse ring on hover -->
+                <div
+                  v-if="labActive"
+                  class="absolute inset-0 border-4 border-cyan-400/60 rounded-full animate-ping"
+                ></div>
+
+                <!-- Enhanced floating particles -->
+                <div
+                  class="absolute inset-0 overflow-hidden pointer-events-none"
+                >
+                  <div
+                    v-for="i in 6"
+                    :key="i"
+                    class="particle"
+                    :style="`top: ${Math.random() * 100}%; left: ${
+                      Math.random() * 100
+                    }%; animation-delay: ${i * 0.5}s;`"
+                  ></div>
+                </div>
+              </div>
+
+              <!-- Floating badges -->
+              <div
+                class="absolute -top-4 -right-4 sm:-top-6 sm:-right-6 bg-gradient-to-br from-green-500 to-emerald-600 text-white text-xs sm:text-sm font-bold px-3 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-lg animate-bounce-slow"
+              >
+                🎯 Научно
+              </div>
+              <div
+                class="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 bg-gradient-to-br from-pink-500 to-rose-600 text-white text-xs sm:text-sm font-bold px-3 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-lg animate-bounce-slow"
+                style="animation-delay: 0.5s"
+              >
+                ✨ Интересно
+              </div>
             </div>
           </div>
 
           <!-- Enhanced Title with Better Typography -->
           <h1
-            class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight px-4"
+            class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center mb-6 leading-tight"
           >
-            О <span class="inline-block">MindQ Lab</span> —
+            О MindQ Lab —
             <span
               class="block mt-2 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-400 to-fuchsia-400 animate-gradient"
             >
@@ -407,91 +411,41 @@
 <script setup>
 import { ref } from "vue";
 
-// --- UI STATE ---
 const labActive = ref(false);
 
-// --- FEATURES ---
 const features = [
   {
+    icon: "fas fa-microscope",
     title: "Научный подход",
     description:
-      "Все методики основаны на современных психологических исследованиях и нейронауках",
-    icon: "fas fa-microscope",
+      "Все методики основаны на проверенных психологических исследованиях",
   },
   {
-    title: "Интерактивные инструменты",
-    description:
-      "Практические упражнения для развития эмоционального интеллекта и самопознания",
-    icon: "fas fa-tools",
-  },
-  {
-    title: "Геймификация",
-    description:
-      "Увлекательные тесты и игры делают процесс развития интересным и мотивирующим",
-    icon: "fas fa-gamepad",
-  },
-  {
-    title: "Персонализация",
-    description:
-      "Индивидуальные рекомендации на основе ваших результатов и прогресса",
     icon: "fas fa-user-cog",
+    title: "Персонализация",
+    description: "Индивидуальные рекомендации на основе ваших результатов",
+  },
+  {
+    icon: "fas fa-trophy",
+    title: "Геймификация",
+    description: "Увлекательные игры для развития когнитивных способностей",
+  },
+  {
+    icon: "fas fa-chart-bar",
+    title: "Отслеживание",
+    description: "Визуализация вашего роста и достижений",
   },
 ];
 
 const stats = [
-  { value: "12+", label: "Психологических тестов", color: "text-cyan-400" },
-  { value: "8+", label: "Развивающих игр", color: "text-purple-400" },
-  { value: "25+", label: "Образовательных курсов", color: "text-pink-400" },
-  { value: "5+", label: "Интерактивных инструментов", color: "text-green-400" },
+  { value: "12+", label: "Тестов", color: "text-cyan-400" },
+  { value: "8+", label: "Игр", color: "text-purple-400" },
+  { value: "25+", label: "Курсов", color: "text-pink-400" },
+  { value: "247+", label: "Участников", color: "text-emerald-400" },
 ];
 </script>
 
 <style scoped>
-/* Enhanced Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes fadeInRight {
-  from {
-    opacity: 0;
-    transform: translateX(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
 @keyframes gradient {
   0%,
   100% {
@@ -533,17 +487,37 @@ const stats = [
   }
 }
 
-/* Animation classes */
-.animate-fade-in-up {
-  animation: fadeInUp 0.8s ease-out backwards;
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.animate-fade-in-left {
-  animation: fadeInLeft 0.8s ease-out backwards;
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-.animate-fade-in-right {
-  animation: fadeInRight 0.8s ease-out backwards;
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .animate-gradient {
@@ -559,17 +533,18 @@ const stats = [
   animation: bounce-slow 2s ease-in-out infinite;
 }
 
-/* Feature and stat cards */
-.feature-card,
-.stat-card {
+.animate-fade-in-up {
   animation: fadeInUp 0.8s ease-out backwards;
 }
 
-.team-card {
-  animation: fadeInUp 1s ease-out backwards;
+.animate-fade-in-left {
+  animation: fadeInLeft 0.8s ease-out backwards;
 }
 
-/* Floating particles */
+.animate-fade-in-right {
+  animation: fadeInRight 0.8s ease-out backwards;
+}
+
 .particle {
   position: absolute;
   width: 6px;
@@ -581,12 +556,6 @@ const stats = [
   --float-y: -20px;
 }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Enhanced focus states for accessibility */
 a:focus-visible,
 button:focus-visible {
   outline: 2px solid theme("colors.cyan.400");
@@ -594,7 +563,6 @@ button:focus-visible {
   border-radius: 0.5rem;
 }
 
-/* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

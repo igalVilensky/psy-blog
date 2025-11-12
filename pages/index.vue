@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-slate-950 text-white overflow-hidden">
     <!-- Main Content -->
     <main
-      class="container mx-auto max-w-6xl px-4 sm:px-0 py-8 md:py-12 lg:py-16 relative"
+      class="container mx-auto max-w-6xl px-4 sm:px-0 py-12 lg:py-16 relative"
     >
       <div
         class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center mb-16 md:mb-24"
