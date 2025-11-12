@@ -1,9 +1,0 @@
-
-User-agent: *
-Allow: /
-
-# Contact: vilenskyigal@gmail.com
-# Last updated: 2025-11-09
-
-
-Sitemap: https://www.mindqlab.com/sitemap.xml

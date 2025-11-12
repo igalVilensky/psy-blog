@@ -382,6 +382,7 @@ import { useFirestore } from "~/plugins/firebase";
 import { subscribeUser } from "@/api/firebase/contact";
 import { getPostViewCount } from "@/api/firebase/views";
 import { addPostComment, getPostComments } from "@/api/firebase/comments";
+import { createError } from "h3"; // for 404 throwing
 
 const route = useRoute();
 const { params } = route;
@@ -399,7 +400,7 @@ const urlFor = (source: SanityImageSource) =>
     ? imageUrlBuilder({ projectId, dataset }).image(source)
     : null;
 
-// --- SEO / Structured Data (unchanged) ---
+// --- SEO / Structured Data ---
 const getPlainText = (blocks: any[] | undefined) => {
   if (!blocks) return "";
   return (
@@ -420,10 +421,17 @@ const postImageUrl = computed(() =>
     : `${siteUrl}/default-og-image.png`
 );
 
+// --- If post not found -> return 404
+if (!post.value) {
+  // Throw 404 so search engines won't index empty pages
+  throw createError({ statusCode: 404, statusMessage: "Статья не найдена" });
+}
+
+// Localized SEO (RU) — useSeoMeta must be implemented in your project (or use useHead)
 useSeoMeta({
-  title: () => `${post.value?.title} | MindQLab Blog`,
+  title: () => `${post.value?.title} | MindQLab`,
   description: metaDescription,
-  ogTitle: () => `${post.value?.title} | MindQLab Blog`,
+  ogTitle: () => `${post.value?.title} | MindQLab`,
   ogDescription: metaDescription,
   ogImage: postImageUrl,
   ogUrl: () => `${siteUrl}${route.fullPath}`,
@@ -433,6 +441,11 @@ useSeoMeta({
 
 useHead({
   link: [{ rel: "canonical", href: () => `${siteUrl}${route.fullPath}` }],
+  htmlAttrs: { lang: "ru" },
+  meta: [
+    { name: "robots", content: "index, follow" },
+    { property: "og:locale", content: "ru_RU" },
+  ],
   script: [
     {
       type: "application/ld+json",
@@ -450,7 +463,7 @@ useHead({
           dateModified: post.value?._updatedAt || post.value?.publishedAt,
           author: {
             "@type": "Person",
-            name: post.value?.author?.name || "MindQLab Team",
+            name: post.value?.author?.name || "Команда MindQLab",
           },
           publisher: {
             "@type": "Organization",
@@ -510,7 +523,7 @@ const formatDate = (date: Date) =>
     minute: "2-digit",
   });
 
-// **Wrapped in onMounted to prevent SSR errors**
+// Wrapped inside onMounted to prevent SSR errors for client-only operations
 onMounted(async () => {
   if (post.value) {
     await fetchComments();
@@ -528,28 +541,33 @@ watch(
   }
 );
 
-// --- Share, Copy, Subscribe Logic (UNCHANGED) ---
+// Share, Copy, Subscribe Logic
 const shareOn = (platform: "twitter" | "facebook" | "telegram") => {
-  const url = window.location.href;
+  const url =
+    typeof window !== "undefined"
+      ? window.location.href
+      : `${siteUrl}${route.fullPath}`;
   const title = post.value?.title;
   const shareUrls = {
     twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(
       url
-    )}&text=${encodeURIComponent(title)}`,
+    )}&text=${encodeURIComponent(title || "")}`,
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
       url
     )}`,
     telegram: `https://t.me/share/url?url=${encodeURIComponent(
       url
-    )}&text=${encodeURIComponent(title)}`,
+    )}&text=${encodeURIComponent(title || "")}`,
   };
-  window.open(shareUrls[platform], "_blank");
+  if (typeof window !== "undefined") window.open(shareUrls[platform], "_blank");
 };
 
 const copyLink = async () => {
   try {
-    await navigator.clipboard.writeText(window.location.href);
-    alert("Ссылка скопирована!");
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      await navigator.clipboard.writeText(window.location.href);
+      alert("Ссылка скопирована!");
+    }
   } catch (err) {
     console.error("Failed to copy link:", err);
   }

@@ -315,10 +315,10 @@ const stations = [
   { name: "Когнитивные тесты", link: "/lab/tests", icon: "fas fa-vial" },
   { name: "Развивающие игры", link: "/lab/games", icon: "fas fa-gamepad" },
   { name: "Психология", link: "/lab/psychology", icon: "fas fa-brain" },
-  { name: "Медитация", link: "/lab/meditation", icon: "fas fa-infinity" },
+  { name: "Медитация", link: "/lab/mindfulness", icon: "fas fa-infinity" },
   {
     name: "Обсерватория роста",
-    link: "/lab/growth",
+    link: "/lab/analysis",
     icon: "fas fa-chart-line",
   },
   { name: "Сообщество", link: "/community", icon: "fas fa-users" },

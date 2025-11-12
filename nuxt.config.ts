@@ -6,7 +6,6 @@ export default defineNuxtConfig({
     "@fortawesome/fontawesome-free/css/all.min.css",
   ],
 
-  // PostCSS for Tailwind
   postcss: {
     plugins: {
       tailwindcss: {},
@@ -14,35 +13,70 @@ export default defineNuxtConfig({
     },
   },
 
-  // Nuxt 3 compatibility date
   compatibilityDate: "2024-12-14",
+
   router: {
     options: {
       strict: false, // allows both /about and /about/
     },
   },
-  // Modules
-  modules: ["@nuxtjs/sanity", "@pinia/nuxt", "@nuxt/image", "@vueuse/nuxt"],
 
-  // Plugins
+  modules: [
+    "@nuxtjs/sanity",
+    "@pinia/nuxt",
+    "@nuxt/image",
+    "@vueuse/nuxt",
+    "@nuxtjs/robots",
+    "@nuxtjs/sitemap",
+  ],
+
+  robots: {
+    // @ts-ignore
+
+    rules: [
+      {
+        userAgent: "*",
+        allow: "/",
+      },
+    ],
+    sitemap: "https://mindqlab.com/sitemap.xml",
+    host: "https://www.mindqlab.com",
+  },
+
+  sitemap: {
+    // @ts-ignore
+
+    siteUrl: "https://www.mindqlab.com",
+    cacheTtl: 3600, // cache sitemap for 1 hour
+    autoLastmod: true,
+    defaults: {
+      changefreq: "weekly",
+      priority: 0.8,
+    },
+    // @ts-ignore
+
+    gzip: true,
+    routes: async () => {
+      // Replace this with your dynamic Sanity fetch if needed
+      return ["/contact", "/faq"];
+    },
+  },
+
   plugins: [
     "~/plugins/firebase.js",
     "~/plugins/initAuth.js",
     "~/plugins/inAppReminder.js",
   ],
 
-  // Sanity configuration
   sanity: {
     projectId: "wlg2lkvy",
     dataset: "production",
   },
 
-  // Nuxt image module config
   image: {
     provider: "ipx",
   },
 
-  // Runtime config
   runtimeConfig: {
     public: {
       firebaseApiKey: process.env.FIREBASE_API_KEY,
