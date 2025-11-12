@@ -16,7 +16,11 @@ export default defineNuxtConfig({
 
   // Nuxt 3 compatibility date
   compatibilityDate: "2024-12-14",
-
+  router: {
+    options: {
+      strict: false, // allows both /about and /about/
+    },
+  },
   // Modules
   modules: ["@nuxtjs/sanity", "@pinia/nuxt", "@nuxt/image", "@vueuse/nuxt"],
 
