@@ -224,14 +224,28 @@ const props = defineProps({
 
 // SEO Meta
 useHead({
-  title: "404 - Страница не найдена",
+  title: `Ошибка ${props.error?.statusCode || "404"} - Страница не найдена`,
   meta: [
     {
       name: "description",
       content:
         "Страница не найдена. Вернитесь на главную страницу или перейдите в лабораторию.",
     },
-    { name: "robots", content: "noindex, nofollow" },
+    {
+      name: "robots",
+      content: "noindex, nofollow, noarchive, nosnippet",
+    },
+    {
+      name: "googlebot",
+      content: "noindex, nofollow, noarchive, nosnippet",
+    },
+  ],
+  // Optional: Set canonical URL to homepage to avoid duplicate content
+  link: [
+    {
+      rel: "canonical",
+      href: "https://www.mindqlab.com/",
+    },
   ],
 });
 
