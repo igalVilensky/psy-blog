@@ -64,6 +64,7 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { useAuthStore } from "~/stores/auth";
+import { useFirestore } from "~/composables/useFirestore";
 import { fetchPosts } from "~/api/sanity/posts";
 import { getPostViewCount } from "~/api/firebase/views";
 import { getLatestUserAssessment } from "~/api/firebase/assessments";
@@ -85,15 +86,7 @@ const authStore = useAuthStore();
 const isLoggedIn = computed(() => !!authStore.user);
 
 // Client-only Firestore helper
-let firestore = null;
-const getFirestore = () => {
-  if (!process.client) return null;
-  if (!firestore) {
-    const { useFirestore } = require("~/plugins/firebase");
-    firestore = useFirestore();
-  }
-  return firestore;
-};
+const getFirestore = () => useFirestore();
 
 // Reactive state
 const stats = ref({ tests: null, courses: null, tools: null });
