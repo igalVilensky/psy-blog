@@ -182,6 +182,10 @@ const socialLinks = [
     icon: "fab fa-linkedin",
     link: "https://www.linkedin.com/company/mindqlab",
   },
+  {
+    icon: "fab fa-facebook",
+    link: "https://www.facebook.com/people/MindQlab/61583775061278/",
+  },
 ];
 
 const subscribeEmail = () => {
