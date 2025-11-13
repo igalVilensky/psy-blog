@@ -13,6 +13,6 @@ export default defineNuxtRouteMiddleware((to) => {
 
   // If there's no language segment at all, redirect to default /ru
   if (!lang) {
-    return navigateTo("/ru" + to.fullPath);
+    // return navigateTo("/ru" + to.fullPath);
   }
 });
