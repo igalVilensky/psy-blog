@@ -375,6 +375,7 @@ const incrementViewCount = async (postId) => {
 // SEO
 useHead({
   title: "Блог о личностном росте и самопознании | MindQ Lab",
+  link: [{ rel: "canonical", href: "https://www.mindqlab.com/blog" }],
   meta: [
     {
       name: "description",

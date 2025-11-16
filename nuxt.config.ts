@@ -32,20 +32,18 @@ export default defineNuxtConfig({
 
   robots: {
     // @ts-ignore
-
     rules: [
       {
         userAgent: "*",
         allow: "/",
       },
     ],
-    sitemap: "https://mindqlab.com/sitemap.xml",
+    sitemap: "https://www.mindqlab.com/sitemap.xml",
     host: "https://www.mindqlab.com",
   },
 
   sitemap: {
     // @ts-ignore
-
     siteUrl: "https://www.mindqlab.com",
     cacheTtl: 3600, // cache sitemap for 1 hour
     autoLastmod: true,
@@ -54,11 +52,62 @@ export default defineNuxtConfig({
       priority: 0.8,
     },
     // @ts-ignore
-
     gzip: true,
     routes: async () => {
-      // Replace this with your dynamic Sanity fetch if needed
-      return ["/contact", "/faq"];
+      // Import Sanity client
+      const { createClient } = await import("@sanity/client");
+
+      // Create Sanity client
+      const client = createClient({
+        projectId: "wlg2lkvy",
+        dataset: "production",
+        apiVersion: "2024-01-01",
+        useCdn: true,
+      });
+
+      try {
+        // Fetch all published blog posts from Sanity
+        const posts = await client.fetch(`
+          *[_type == "post" && defined(slug.current)] {
+            "slug": slug.current,
+            _updatedAt,
+            publishedAt
+          }
+        `);
+
+        // Map posts to sitemap URLs
+        const blogRoutes = posts.map((post: any) => ({
+          url: `/blog/${post.slug}`,
+          lastmod: post._updatedAt || post.publishedAt,
+          changefreq: "weekly",
+          priority: 0.7,
+        }));
+
+        // Add static routes
+        const staticRoutes = [
+          { url: "/", changefreq: "daily", priority: 1.0 },
+          { url: "/blog", changefreq: "daily", priority: 0.9 },
+          { url: "/contact", changefreq: "monthly", priority: 0.6 },
+          { url: "/faq", changefreq: "monthly", priority: 0.6 },
+          { url: "/about", changefreq: "monthly", priority: 0.7 },
+          { url: "/courses", changefreq: "weekly", priority: 0.8 },
+          { url: "/tests", changefreq: "monthly", priority: 0.8 },
+          { url: "/awareness-tools", changefreq: "monthly", priority: 0.8 },
+          { url: "/lab", changefreq: "weekly", priority: 0.8 },
+          { url: "/lab/games", changefreq: "weekly", priority: 0.7 },
+        ];
+
+        return [...staticRoutes, ...blogRoutes];
+      } catch (error) {
+        console.error("Error fetching blog posts for sitemap:", error);
+        // Return static routes only if Sanity fetch fails
+        return [
+          { url: "/", changefreq: "daily", priority: 1.0 },
+          { url: "/blog", changefreq: "daily", priority: 0.9 },
+          { url: "/contact", changefreq: "monthly", priority: 0.6 },
+          { url: "/faq", changefreq: "monthly", priority: 0.6 },
+        ];
+      }
     },
   },
 

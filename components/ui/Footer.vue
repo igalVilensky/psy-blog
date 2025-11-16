@@ -8,7 +8,7 @@
     ></div>
 
     <div
-      class="relative container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl py-12 md:py-16"
+      class="relative container mx-auto px-4 sm:px-0 max-w-6xl py-12 md:py-16"
     >
       <div
         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12"

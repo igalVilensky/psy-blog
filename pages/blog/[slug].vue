@@ -1,12 +1,10 @@
 <template>
-  <main class="relative min-h-screen">
-    <div
-      class="container mx-auto px-4 sm:px-4 max-w-3xl relative z-10 pb-12 pt-12"
-    >
+  <main class="relative min-h-screen bg-slate-950">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <!-- Back Navigation -->
       <nuxt-link
         to="/blog"
-        class="inline-flex items-center text-[#0EA5E9] hover:text-[#22D3EE] transition-colors mb-8 group pl-3 sm:pl-0"
+        class="inline-flex items-center text-cyan-400 hover:text-cyan-300 transition-colors mb-8 group"
       >
         <i
           class="fas fa-arrow-left mr-2 transform transition-transform group-hover:-translate-x-1"
@@ -14,358 +12,273 @@
         Вернуться к статьям
       </nuxt-link>
 
-      <article
-        v-if="post"
-        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl sm:rounded-2xl border border-white/10 overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
-      >
+      <article v-if="post" class="blog-post-container">
         <!-- Featured Image Container -->
-        <div
-          class="relative w-full h-[200px] sm:h-[250px] md:h-[350px] overflow-hidden"
-        >
+        <div class="featured-image-wrapper">
           <nuxt-img
             v-if="post.image"
             :src="urlFor(post?.image)?.width(1200).height(675).url()"
             :alt="post?.title"
-            class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+            class="featured-image"
             width="1200"
             height="675"
             loading="lazy"
             format="webp"
             quality="80"
           />
-          <div
-            class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"
-          ></div>
+          <div class="image-overlay"></div>
 
           <!-- Category Badge -->
-          <span
-            :class="[
-              'absolute top-4 left-4 px-3 py-1 rounded-full text-sm font-medium shadow-md backdrop-blur-sm text-white',
-              {
-                'bg-[#0EA5E9]/80 border border-[#0EA5E9]/50':
-                  post.category === 'Личностный рост',
-                'bg-[#F59E0B]/80 border border-[#F59E0B]/50':
-                  post.category === 'Отношения',
-                'bg-[#E879F9]/80 border border-[#E879F9]/50':
-                  post.category === 'Продуктивность',
-                'bg-gray-500/80 border border-gray-500/50': !post.category,
-              },
-            ]"
-          >
-            {{ post.category }}
+          <span :class="['category-badge', getCategoryClass(post.category)]">
+            {{ post.category || "Статья" }}
           </span>
         </div>
 
         <!-- Content Container -->
-        <div class="px-4 sm:px-6 md:px-8 py-6 sm:py-8">
+        <div class="content-wrapper">
           <!-- Title -->
-          <h1
-            class="text-2xl sm:text-3xl md:text-4xl font-bold text-white/90 mb-6"
-          >
+          <h1 class="article-title">
             {{ post.title }}
           </h1>
 
-          <!-- Meta Information Row with Share Button -->
-          <div
-            class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 sm:mb-8 border-b border-white/10 pb-6 sm:pb-8 text-sm text-slate-400"
-          >
-            <div
-              class="flex flex-wrap items-center gap-3 sm:gap-4 md:gap-8 text-sm sm:text-base mb-4 sm:mb-0"
-            >
-              <div class="flex items-center gap-2">
-                <i class="far fa-calendar text-[#0EA5E9]"></i>
-                <span>{{
-                  new Date(post.publishedAt).toLocaleDateString("ru-RU", {
-                    day: "numeric",
-                    month: "short",
-                  })
-                }}</span>
+          <!-- Meta Information -->
+          <div class="meta-info-container">
+            <div class="meta-info-row">
+              <div class="meta-item">
+                <i class="far fa-calendar text-cyan-400"></i>
+                <span>{{ formatPublishDate(post.publishedAt) }}</span>
               </div>
-              <div class="flex items-center gap-2">
-                <i class="far fa-clock text-[#F59E0B]"></i>
+              <div class="meta-item">
+                <i class="far fa-clock text-purple-400"></i>
                 <span>{{ post.readtime }} мин чтения</span>
               </div>
-              <div class="flex items-center gap-2">
-                <i class="far fa-eye text-[#E879F9]"></i>
+              <div class="meta-item">
+                <i class="far fa-eye text-pink-400"></i>
                 <span>{{ postViews }} просмотров</span>
               </div>
             </div>
-            <button
-              @click="isShareOpen = true"
-              class="flex items-center gap-2 hover:text-[#0EA5E9] transition-colors"
-            >
-              <i class="fas fa-share-alt"></i>
-              <span>Поделиться</span>
+            <button @click="isShareOpen = true" class="share-button">
+              <i class="fas fa-share-alt mr-2"></i>
+              Поделиться
             </button>
           </div>
 
           <!-- Article Content -->
-          <div
-            class="prose prose-invert max-w-none prose-img:rounded-lg prose-img:mx-auto"
-          >
+          <div class="prose-container">
             <SanityContent v-if="post.body" :blocks="post.body" />
           </div>
         </div>
       </article>
 
-      <!-- Comments Section - Improved for responsiveness -->
-      <div
-        v-if="post"
-        class="mt-8 sm:mt-12 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl sm:rounded-2xl border border-white/10 p-4 sm:p-6 md:p-8"
-      >
-        <h2
-          class="text-xl sm:text-2xl font-bold text-white/90 mb-4 sm:mb-6 flex items-center"
-        >
-          <i class="fas fa-comments text-[#0EA5E9] mr-3"></i>
-          Комментарии
-        </h2>
-
-        <!-- Comment Form - Improved for mobile -->
-        <form @submit.prevent="addNewComment" class="mb-6 sm:mb-8">
-          <div class="flex flex-col gap-4">
-            <div class="flex flex-col sm:flex-row gap-4">
-              <input
-                v-model="newComment.name"
-                type="text"
-                placeholder="Ваше имя"
-                class="flex-1 px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 text-white placeholder-slate-400 focus:outline-none focus:border-[#0EA5E9] focus:ring-1 focus:ring-[#0EA5E9] transition-all"
-                required
-              />
-              <input
-                v-model="newComment.email"
-                type="email"
-                placeholder="Ваш email (не публикуется)"
-                class="flex-1 px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 text-white placeholder-slate-400 focus:outline-none focus:border-[#0EA5E9] focus:ring-1 focus:ring-[#0EA5E9] transition-all"
-                required
-              />
+      <!-- Share Section -->
+      <div class="share-section">
+        <div class="share-header">
+          <div class="flex items-center gap-3 mb-2">
+            <div class="share-icon-wrapper">
+              <i class="fas fa-share-alt text-cyan-400"></i>
             </div>
-            <textarea
-              v-model="newComment.text"
-              placeholder="Ваш комментарий"
-              class="px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 text-white placeholder-slate-400 min-h-[100px] sm:min-h-[120px] focus:outline-none focus:border-[#0EA5E9] focus:ring-1 focus:ring-[#0EA5E9] transition-all"
-              required
-            ></textarea>
-            <button
-              type="submit"
-              :disabled="isSubmitting"
-              class="self-start px-4 sm:px-6 py-2 sm:py-3 bg-[#0EA5E9] hover:bg-[#22D3EE] rounded-lg text-white font-medium transition-colors disabled:bg-gray-600"
-            >
-              {{ isSubmitting ? "Отправка..." : "Отправить" }}
-            </button>
+            <h3 class="text-xl font-bold text-white">Поделиться статьей</h3>
           </div>
-        </form>
-
-        <!-- Comments List - Improved for mobile -->
-        <div class="space-y-4 sm:space-y-6">
-          <div
-            v-for="comment in comments"
-            :key="comment.id"
-            class="bg-[#1A1F35]/60 rounded-lg p-3 sm:p-4 border border-white/10"
-          >
-            <div
-              class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2"
-            >
-              <span class="font-medium text-[#0EA5E9] mb-1 sm:mb-0">{{
-                comment.name
-              }}</span>
-              <span class="text-xs sm:text-sm text-slate-400">
-                {{ formatDate(comment.createdAt) }}
-              </span>
-            </div>
-            <p class="text-slate-300 text-sm sm:text-base">
-              {{ comment.text }}
-            </p>
-          </div>
-          <p v-if="comments.length === 0" class="text-slate-400 text-center">
-            Пока нет комментариев. Будьте первым!
-          </p>
-        </div>
-      </div>
-
-      <!-- Share Modal - Improved for mobile -->
-      <div
-        v-if="isShareOpen"
-        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 backdrop-blur-sm p-4"
-      >
-        <div
-          class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-4 sm:p-6 max-w-md w-full"
-        >
-          <div class="flex justify-between items-center mb-4">
-            <h3 class="text-lg sm:text-xl font-bold text-white/90">
-              Поделиться статьей
-            </h3>
-            <button
-              @click="isShareOpen = false"
-              class="text-slate-300 hover:text-[#0EA5E9] p-2"
-            >
-              <i class="fas fa-times"></i>
-            </button>
-          </div>
-          <div class="flex flex-col gap-3">
-            <button
-              @click="shareOn('twitter')"
-              class="flex items-center gap-3 w-full p-3 rounded-lg bg-[#1DA1F2] text-white hover:bg-opacity-90"
-            >
-              <i class="fab fa-twitter"></i>
-              Twitter
-            </button>
-            <button
-              @click="shareOn('facebook')"
-              class="flex items-center gap-3 w-full p-3 rounded-lg bg-[#4267B2] text-white hover:bg-opacity-90"
-            >
-              <i class="fab fa-facebook"></i>
-              Facebook
-            </button>
-            <button
-              @click="shareOn('telegram')"
-              class="flex items-center gap-3 w-full p-3 rounded-lg bg-[#0088cc] text-white hover:bg-opacity-90"
-            >
-              <i class="fab fa-telegram"></i>
-              Telegram
-            </button>
-            <button
-              @click="copyLink"
-              class="flex items-center gap-3 w-full p-3 rounded-lg bg-[#0EA5E9]/20 text-[#0EA5E9] hover:bg-[#0EA5E9]/30"
-            >
-              <i class="fas fa-link"></i>
-              Копировать ссылку
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Bottom Share Section - Improved for mobile -->
-      <div
-        class="mt-8 sm:mt-12 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl sm:rounded-2xl border border-white/10 p-4 sm:p-6 md:p-8"
-      >
-        <div class="text-center mb-4 sm:mb-6">
-          <div class="flex items-center justify-center gap-2 mb-2">
-            <i class="fas fa-share-alt text-[#0EA5E9]"></i>
-            <h3 class="text-lg sm:text-xl font-semibold text-white/90">
-              Поделиться статьей
-            </h3>
-          </div>
-          <p class="text-slate-300 text-sm sm:text-base">
+          <p class="text-slate-400 text-sm">
             Понравилась статья? Поделитесь с друзьями!
           </p>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
-          <!-- Twitter Share Button with Hover Effect -->
+        <div class="share-buttons-grid">
           <button
             @click="shareOn('twitter')"
-            class="relative inline-flex items-center justify-center px-2 sm:px-4 py-2 sm:py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group backdrop-blur-sm border border-[#1DA1F2]/20"
+            class="social-share-btn twitter-btn"
           >
-            <span
-              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#1DA1F2] to-[#1DA1F2]/80 group-hover:translate-x-0 ease"
-            >
-              <i class="fab fa-twitter"></i>
-            </span>
-            <span
-              class="absolute flex items-center justify-center w-full h-full text-[#1DA1F2] transition-all duration-300 transform group-hover:translate-x-full ease text-xs sm:text-base"
-            >
-              <i class="fab fa-twitter mr-1 sm:mr-2"></i>
-              <span class="hidden sm:inline">Twitter</span>
-              <span class="inline sm:hidden">Twitter</span>
-            </span>
-            <span class="relative invisible">Twitter</span>
+            <div class="social-btn-bg"></div>
+            <div class="social-btn-content">
+              <i class="fab fa-twitter text-xl"></i>
+              <span class="hidden sm:inline ml-2">Twitter</span>
+            </div>
           </button>
 
-          <!-- Facebook Share Button with Hover Effect -->
           <button
             @click="shareOn('facebook')"
-            class="relative inline-flex items-center justify-center px-2 sm:px-4 py-2 sm:py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group backdrop-blur-sm border border-[#4267B2]/20"
+            class="social-share-btn facebook-btn"
           >
-            <span
-              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#4267B2] to-[#4267B2]/80 group-hover:translate-x-0 ease"
-            >
-              <i class="fab fa-facebook"></i>
-            </span>
-            <span
-              class="absolute flex items-center justify-center w-full h-full text-[#4267B2] transition-all duration-300 transform group-hover:translate-x-full ease text-xs sm:text-base"
-            >
-              <i class="fab fa-facebook mr-1 sm:mr-2"></i>
-              <span class="hidden sm:inline">Facebook</span>
-              <span class="inline sm:hidden">FB</span>
-            </span>
-            <span class="relative invisible">Facebook</span>
+            <div class="social-btn-bg"></div>
+            <div class="social-btn-content">
+              <i class="fab fa-facebook text-xl"></i>
+              <span class="hidden sm:inline ml-2">Facebook</span>
+            </div>
           </button>
 
-          <!-- Telegram Share Button with Hover Effect -->
           <button
             @click="shareOn('telegram')"
-            class="relative inline-flex items-center justify-center px-2 sm:px-4 py-2 sm:py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group backdrop-blur-sm border border-[#0088cc]/20"
+            class="social-share-btn telegram-btn"
           >
-            <span
-              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0088cc] to-[#0088cc]/80 group-hover:translate-x-0 ease"
-            >
-              <i class="fab fa-telegram"></i>
-            </span>
-            <span
-              class="absolute flex items-center justify-center w-full h-full text-[#0088cc] transition-all duration-300 transform group-hover:translate-x-full ease text-xs sm:text-base"
-            >
-              <i class="fab fa-telegram mr-1 sm:mr-2"></i>
-              <span class="hidden sm:inline">Telegram</span>
-              <span class="inline sm:hidden">TG</span>
-            </span>
-            <span class="relative invisible">Telegram</span>
+            <div class="social-btn-bg"></div>
+            <div class="social-btn-content">
+              <i class="fab fa-telegram text-xl"></i>
+              <span class="hidden sm:inline ml-2">Telegram</span>
+            </div>
           </button>
 
-          <!-- Copy Link Button with Hover Effect -->
-          <button
-            @click="copyLink"
-            class="relative inline-flex items-center justify-center px-2 sm:px-4 py-2 sm:py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group backdrop-blur-sm border border-[#0EA5E9]/20"
-          >
-            <span
-              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
-            >
-              <i class="fas fa-link"></i>
-            </span>
-            <span
-              class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease text-xs sm:text-base"
-            >
-              <i class="fas fa-link mr-1 sm:mr-2"></i>
-              <span class="hidden sm:inline">Копировать</span>
-              <span class="inline sm:hidden">Копировать</span>
-            </span>
-            <span class="relative invisible">Копировать</span>
+          <button @click="copyLink" class="social-share-btn copy-btn">
+            <div class="social-btn-bg"></div>
+            <div class="social-btn-content">
+              <i class="fas fa-link text-xl"></i>
+              <span class="hidden sm:inline ml-2">Копировать</span>
+            </div>
           </button>
         </div>
       </div>
 
-      <!-- Newsletter Section - Improved for mobile -->
-      <div
-        class="mt-8 sm:mt-12 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl sm:rounded-2xl border border-white/10 p-4 sm:p-6 md:p-8 text-center"
-      >
-        <h2 class="text-xl sm:text-2xl font-bold text-white/90 mb-2 sm:mb-4">
-          Понравилась статья?
-        </h2>
-        <p class="text-slate-300 text-sm sm:text-base mb-4 sm:mb-6">
-          Подпишитесь на нашу рассылку, чтобы получать новые статьи первыми
-        </p>
-        <div class="flex flex-col sm:flex-row">
-          <input
-            type="email"
-            v-model="email"
-            placeholder="Введите ваш email"
-            class="w-full px-4 py-3 rounded-lg sm:rounded-r-none sm:rounded-l-lg bg-slate-800/50 border border-slate-700 text-white placeholder-slate-400 focus:outline-none focus:border-[#C084FC] focus:ring-1 focus:ring-[#C084FC] transition-all mb-3 sm:mb-0"
-          />
-          <button
-            @click="subscribeEmail"
-            class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg sm:rounded-l-none sm:rounded-r-lg group"
+      <!-- Comments Section -->
+      <div v-if="post" class="comments-section">
+        <div class="comments-header">
+          <div class="flex items-center gap-3">
+            <div class="comments-icon-wrapper">
+              <i class="fas fa-comments text-purple-400"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-white">Комментарии</h2>
+          </div>
+          <p class="text-slate-400 text-sm mt-2">
+            {{ comments.length }} {{ getCommentsWord(comments.length) }}
+          </p>
+        </div>
+
+        <!-- Comment Form -->
+        <form @submit.prevent="addNewComment" class="comment-form">
+          <div class="form-fields-grid">
+            <input
+              v-model="newComment.name"
+              type="text"
+              placeholder="Ваше имя"
+              class="form-input"
+              required
+            />
+            <input
+              v-model="newComment.email"
+              type="email"
+              placeholder="Email (не публикуется)"
+              class="form-input"
+              required
+            />
+          </div>
+          <textarea
+            v-model="newComment.text"
+            placeholder="Ваш комментарий..."
+            class="form-textarea"
+            rows="4"
+            required
+          ></textarea>
+          <div class="flex justify-end">
+            <button
+              type="submit"
+              :disabled="isSubmitting"
+              class="submit-button"
+            >
+              <i class="fas fa-paper-plane mr-2"></i>
+              {{ isSubmitting ? "Отправка..." : "Отправить комментарий" }}
+            </button>
+          </div>
+        </form>
+
+        <!-- Comments List -->
+        <div class="comments-list">
+          <div
+            v-for="comment in comments"
+            :key="comment.id"
+            class="comment-card"
           >
-            <span
-              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-500 group-hover:translate-x-0 ease"
+            <div class="comment-header">
+              <div class="comment-avatar">
+                <i class="fas fa-user"></i>
+              </div>
+              <div class="flex-1">
+                <span class="comment-author">{{ comment.name }}</span>
+                <span class="comment-date">{{
+                  formatDate(comment.createdAt)
+                }}</span>
+              </div>
+            </div>
+            <p class="comment-text">{{ comment.text }}</p>
+          </div>
+          <div v-if="comments.length === 0" class="no-comments">
+            <i class="fas fa-comment-slash text-4xl text-slate-600 mb-3"></i>
+            <p class="text-slate-400">Пока нет комментариев. Будьте первым!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Newsletter Section -->
+      <div class="newsletter-section">
+        <div class="newsletter-content">
+          <div class="newsletter-icon">
+            <i class="fas fa-envelope text-3xl"></i>
+          </div>
+          <h2 class="text-2xl font-bold text-white mb-2">
+            Понравилась статья?
+          </h2>
+          <p class="text-slate-300 mb-6">
+            Подпишитесь на рассылку и получайте новые статьи первыми
+          </p>
+          <div class="newsletter-form">
+            <input
+              type="email"
+              v-model="email"
+              placeholder="Введите ваш email"
+              class="newsletter-input"
+            />
+            <button @click="subscribeEmail" class="newsletter-button">
+              <span class="button-gradient"></span>
+              <span class="button-text">
+                <i class="fas fa-bell mr-2"></i>
+                Подписаться
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Share Modal -->
+      <div
+        v-if="isShareOpen"
+        class="modal-overlay"
+        @click="isShareOpen = false"
+      >
+        <div class="modal-content" @click.stop>
+          <div class="modal-header">
+            <h3 class="text-xl font-bold text-white">Поделиться статьей</h3>
+            <button @click="isShareOpen = false" class="modal-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="modal-body">
+            <button
+              @click="shareOn('twitter')"
+              class="modal-share-btn bg-[#1DA1F2]"
             >
-              <i class="fas fa-envelope"></i>
-            </span>
-            <span
-              class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:translate-x-full ease"
+              <i class="fab fa-twitter mr-3"></i>
+              Twitter
+            </button>
+            <button
+              @click="shareOn('facebook')"
+              class="modal-share-btn bg-[#4267B2]"
             >
-              Подписаться
-            </span>
-            <span class="relative invisible">Подписаться</span>
-          </button>
+              <i class="fab fa-facebook mr-3"></i>
+              Facebook
+            </button>
+            <button
+              @click="shareOn('telegram')"
+              class="modal-share-btn bg-[#0088cc]"
+            >
+              <i class="fab fa-telegram mr-3"></i>
+              Telegram
+            </button>
+            <button
+              @click="copyLink"
+              class="modal-share-btn bg-cyan-500/20 text-cyan-400 border border-cyan-500/30"
+            >
+              <i class="fas fa-link mr-3"></i>
+              Копировать ссылку
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -382,7 +295,7 @@ import { useFirestore } from "~/plugins/firebase";
 import { subscribeUser } from "@/api/firebase/contact";
 import { getPostViewCount } from "@/api/firebase/views";
 import { addPostComment, getPostComments } from "@/api/firebase/comments";
-import { createError } from "h3"; // for 404 throwing
+import { createError } from "h3";
 
 const route = useRoute();
 const { params } = route;
@@ -400,7 +313,7 @@ const urlFor = (source: SanityImageSource) =>
     ? imageUrlBuilder({ projectId, dataset }).image(source)
     : null;
 
-// --- SEO / Structured Data ---
+// SEO
 const getPlainText = (blocks: any[] | undefined) => {
   if (!blocks) return "";
   return (
@@ -421,13 +334,10 @@ const postImageUrl = computed(() =>
     : `${siteUrl}/default-og-image.png`
 );
 
-// --- If post not found -> return 404
 if (!post.value) {
-  // Throw 404 so search engines won't index empty pages
   throw createError({ statusCode: 404, statusMessage: "Статья не найдена" });
 }
 
-// Localized SEO (RU) — useSeoMeta must be implemented in your project (or use useHead)
 useSeoMeta({
   title: () => `${post.value?.title} | MindQLab`,
   description: metaDescription,
@@ -477,7 +387,7 @@ useHead({
   ],
 });
 
-// --- Client-only Firestore / Comments / Views ---
+// Client-only state
 const db = getFirestore();
 const firestore = useFirestore();
 const isShareOpen = ref(false);
@@ -523,7 +433,29 @@ const formatDate = (date: Date) =>
     minute: "2-digit",
   });
 
-// Wrapped inside onMounted to prevent SSR errors for client-only operations
+const formatPublishDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("ru-RU", {
+    day: "numeric",
+    month: "short",
+  });
+};
+
+const getCategoryClass = (category: string) => {
+  const classes: Record<string, string> = {
+    "Личностный рост": "category-growth",
+    Отношения: "category-relations",
+    Продуктивность: "category-productivity",
+  };
+  return classes[category] || "category-default";
+};
+
+const getCommentsWord = (count: number) => {
+  if (count === 1) return "комментарий";
+  if (count >= 2 && count <= 4) return "комментария";
+  return "комментариев";
+};
+
 onMounted(async () => {
   if (post.value) {
     await fetchComments();
@@ -541,7 +473,6 @@ watch(
   }
 );
 
-// Share, Copy, Subscribe Logic
 const shareOn = (platform: "twitter" | "facebook" | "telegram") => {
   const url =
     typeof window !== "undefined"
@@ -591,64 +522,335 @@ const validateEmail = (email: string) =>
   /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email.toLowerCase());
 </script>
 
-<style>
-.prose {
-  @apply text-slate-300 text-lg;
+<style scoped>
+.blog-post-container {
+  @apply rounded-2xl bg-slate-900/50 border border-cyan-500/20 overflow-hidden 
+         backdrop-blur-sm hover:border-cyan-500/30 transition-all duration-300 mb-12;
 }
 
-.prose h2 {
-  @apply text-2xl sm:text-3xl font-semibold text-white/90 mt-8 mb-4;
+.featured-image-wrapper {
+  @apply relative w-full h-[250px] sm:h-[350px] md:h-[450px] overflow-hidden;
 }
 
-.prose h3 {
-  @apply text-2xl font-medium text-white/90 mt-6 mb-3;
+.featured-image {
+  @apply w-full h-full object-cover transition-transform duration-700 hover:scale-110;
 }
 
-.prose p {
-  @apply text-slate-300 text-base mb-4 leading-relaxed;
+.image-overlay {
+  @apply absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent;
 }
 
-.prose ul {
-  @apply list-disc list-inside mb-4;
+.category-badge {
+  @apply absolute top-6 left-6 px-4 py-2 rounded-xl text-sm font-medium 
+         backdrop-blur-md border shadow-lg;
 }
 
-.prose ol {
-  @apply list-decimal list-inside mb-4;
+.category-growth {
+  @apply bg-cyan-500/20 text-cyan-300 border-cyan-500/40;
 }
 
-.prose li {
-  @apply mb-2;
+.category-relations {
+  @apply bg-orange-500/20 text-orange-300 border-orange-500/40;
 }
 
-.prose a {
-  @apply text-[#0EA5E9] hover:text-[#22D3EE] underline;
+.category-productivity {
+  @apply bg-purple-500/20 text-purple-300 border-purple-500/40;
 }
 
-.prose img {
-  @apply rounded-lg my-6;
+.category-default {
+  @apply bg-slate-500/20 text-slate-300 border-slate-500/40;
 }
 
-.prose blockquote {
-  @apply border-l-4 border-[#0EA5E9]/50 pl-4 text-slate-300 italic;
+.content-wrapper {
+  @apply px-6 sm:px-8 md:px-12 py-8 sm:py-10;
 }
 
-.prose blockquote p {
-  @apply italic mb-0;
+.article-title {
+  @apply text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 
+         leading-tight bg-gradient-to-r from-cyan-400 to-purple-400 
+         bg-clip-text text-transparent;
 }
 
-.prose code {
-  @apply bg-[#0EA5E9]/20 rounded px-1 text-slate-300;
+.meta-info-container {
+  @apply flex flex-col sm:flex-row sm:items-center sm:justify-between 
+         pb-6 mb-8 border-b border-cyan-500/20 gap-4;
 }
 
-.prose pre {
-  @apply bg-[#0EA5E9]/20 text-slate-300 p-4 rounded-lg my-6 overflow-x-auto;
+.meta-info-row {
+  @apply flex flex-wrap items-center gap-4 sm:gap-6 text-sm;
 }
 
-/* Add spacing between multi-level lists */
-.prose ul ul,
-.prose ol ol,
-.prose ul ol,
-.prose ol ul {
-  @apply mt-2 ml-6;
+.meta-item {
+  @apply flex items-center gap-2 text-slate-400;
+}
+
+.share-button {
+  @apply flex items-center gap-2 px-4 py-2 rounded-lg bg-cyan-500/10 
+         text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500/20 
+         hover:border-cyan-500/50 transition-all duration-300 text-sm font-medium;
+}
+
+.prose-container {
+  @apply text-slate-300 text-base sm:text-lg leading-relaxed;
+}
+
+.share-section {
+  @apply p-6 sm:p-8 rounded-2xl bg-slate-900/50 border border-cyan-500/20 
+         backdrop-blur-sm mb-12;
+}
+
+.share-header {
+  @apply text-center mb-6;
+}
+
+.share-icon-wrapper {
+  @apply w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 
+         flex items-center justify-center;
+}
+
+.share-buttons-grid {
+  @apply grid grid-cols-2 sm:grid-cols-4 gap-4;
+}
+
+.social-share-btn {
+  @apply relative p-4 rounded-xl border overflow-hidden 
+         transition-all duration-300 hover:transform hover:scale-105;
+}
+
+.social-btn-bg {
+  @apply absolute inset-0 opacity-0 transition-opacity duration-300;
+}
+
+.social-share-btn:hover .social-btn-bg {
+  @apply opacity-100;
+}
+
+.social-btn-content {
+  @apply relative z-10 flex items-center justify-center text-white font-medium;
+}
+
+.twitter-btn {
+  @apply border-[#1DA1F2]/30 hover:border-[#1DA1F2];
+}
+
+.twitter-btn .social-btn-bg {
+  @apply bg-gradient-to-r from-[#1DA1F2] to-[#1DA1F2]/80;
+}
+
+.facebook-btn {
+  @apply border-[#4267B2]/30 hover:border-[#4267B2];
+}
+
+.facebook-btn .social-btn-bg {
+  @apply bg-gradient-to-r from-[#4267B2] to-[#4267B2]/80;
+}
+
+.telegram-btn {
+  @apply border-[#0088cc]/30 hover:border-[#0088cc];
+}
+
+.telegram-btn .social-btn-bg {
+  @apply bg-gradient-to-r from-[#0088cc] to-[#0088cc]/80;
+}
+
+.copy-btn {
+  @apply border-cyan-500/30 hover:border-cyan-500;
+}
+
+.copy-btn .social-btn-bg {
+  @apply bg-gradient-to-r from-cyan-500 to-purple-500;
+}
+
+.comments-section {
+  @apply p-6 sm:p-8 rounded-2xl bg-slate-900/50 border border-purple-500/20 
+         backdrop-blur-sm mb-12;
+}
+
+.comments-header {
+  @apply mb-8;
+}
+
+.comments-icon-wrapper {
+  @apply w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 
+         flex items-center justify-center;
+}
+
+.comment-form {
+  @apply mb-8 p-6 rounded-xl bg-slate-800/30 border border-slate-700/50;
+}
+
+.form-fields-grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4;
+}
+
+.form-input {
+  @apply w-full px-4 py-3 rounded-lg bg-slate-900/50 border border-slate-700 
+         text-white placeholder-slate-400 focus:outline-none 
+         focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all;
+}
+
+.form-textarea {
+  @apply w-full px-4 py-3 rounded-lg bg-slate-900/50 border border-slate-700 
+         text-white placeholder-slate-400 resize-y mb-4
+         focus:outline-none focus:border-cyan-500 focus:ring-1 
+         focus:ring-cyan-500 transition-all;
+}
+
+.submit-button {
+  @apply px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-500 
+         text-white font-medium hover:from-cyan-600 hover:to-purple-600 
+         transition-all duration-300 transform hover:scale-105 
+         shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40
+         disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
+         disabled:shadow-none inline-flex items-center justify-center;
+}
+
+.comments-list {
+  @apply space-y-4;
+}
+
+.comment-card {
+  @apply p-4 rounded-xl bg-slate-800/30 border border-slate-700/50 
+         hover:border-purple-500/30 transition-all duration-300;
+}
+
+.comment-header {
+  @apply flex items-center gap-3 mb-3;
+}
+
+.comment-avatar {
+  @apply w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-purple-500 
+         flex items-center justify-center text-white flex-shrink-0;
+}
+
+.comment-author {
+  @apply block font-medium text-cyan-400 text-sm;
+}
+
+.comment-date {
+  @apply block text-xs text-slate-500;
+}
+
+.comment-text {
+  @apply text-slate-300 text-sm leading-relaxed;
+}
+
+.no-comments {
+  @apply text-center py-12 text-slate-400;
+}
+
+.newsletter-section {
+  @apply p-8 sm:p-12 rounded-2xl bg-gradient-to-br from-purple-500/10 
+         via-pink-500/10 to-cyan-500/10 border border-purple-500/20 
+         backdrop-blur-sm;
+}
+
+.newsletter-content {
+  @apply text-center max-w-2xl mx-auto;
+}
+
+.newsletter-icon {
+  @apply w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br 
+         from-purple-500/20 to-pink-500/20 flex items-center justify-center 
+         text-purple-400;
+}
+
+.newsletter-form {
+  @apply flex flex-col sm:flex-row gap-3;
+}
+
+.newsletter-input {
+  @apply flex-1 px-4 py-3 rounded-lg sm:rounded-r-none bg-slate-900/50 
+         border border-slate-700 text-white placeholder-slate-400 
+         focus:outline-none focus:border-purple-500 focus:ring-1 
+         focus:ring-purple-500 transition-all;
+}
+
+.newsletter-button {
+  @apply relative px-8 py-3 rounded-lg sm:rounded-l-none overflow-hidden 
+         transition-all duration-300;
+}
+
+.newsletter-button:hover .button-gradient {
+  @apply scale-110;
+}
+
+.button-gradient {
+  @apply absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 
+         to-cyan-500 transition-transform duration-300;
+}
+
+.button-text {
+  @apply relative z-10 text-white font-medium flex items-center justify-center;
+}
+
+.modal-overlay {
+  @apply fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center 
+         justify-center z-50 p-4;
+}
+
+.modal-content {
+  @apply bg-slate-900/95 backdrop-blur-xl rounded-2xl border border-cyan-500/20 
+         p-6 max-w-md w-full;
+}
+
+.modal-header {
+  @apply flex justify-between items-center mb-6;
+}
+
+.modal-close {
+  @apply text-slate-400 hover:text-cyan-400 transition-colors p-2;
+}
+
+.modal-body {
+  @apply space-y-3;
+}
+
+.modal-share-btn {
+  @apply w-full p-4 rounded-xl text-white font-medium flex items-center 
+         justify-center hover:opacity-90 transition-all duration-300;
+}
+
+/* Prose styles for article content */
+:deep(.prose-container h2) {
+  @apply text-2xl sm:text-3xl font-bold text-white mt-8 mb-4;
+}
+
+:deep(.prose-container h3) {
+  @apply text-xl sm:text-2xl font-semibold text-white mt-6 mb-3;
+}
+
+:deep(.prose-container p) {
+  @apply text-slate-300 mb-4 leading-relaxed;
+}
+
+:deep(.prose-container ul),
+:deep(.prose-container ol) {
+  @apply mb-4 pl-6;
+}
+
+:deep(.prose-container li) {
+  @apply mb-2 text-slate-300;
+}
+
+:deep(.prose-container a) {
+  @apply text-cyan-400 hover:text-cyan-300 underline;
+}
+
+:deep(.prose-container img) {
+  @apply rounded-xl my-6 border border-cyan-500/20;
+}
+
+:deep(.prose-container blockquote) {
+  @apply border-l-4 border-cyan-500/50 pl-4 py-2 my-6 italic text-slate-300;
+}
+
+:deep(.prose-container code) {
+  @apply bg-cyan-500/10 text-cyan-300 px-2 py-1 rounded;
+}
+
+:deep(.prose-container pre) {
+  @apply bg-slate-800/50 border border-slate-700 text-slate-300 p-4 
+         rounded-xl my-6 overflow-x-auto;
 }
 </style>
