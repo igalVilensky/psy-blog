@@ -1,5 +1,18 @@
 <template>
-  <div class="relative min-h-screen px-4 xl:px-0">
+  <div
+    v-if="!isAuthenticated"
+    class="min-h-screen flex items-center justify-center bg-slate-900"
+  >
+    <div class="text-center">
+      <div class="flex flex-col items-center gap-4">
+        <i class="fas fa-spinner fa-spin fa-2x text-cyan-500"></i>
+        <p class="text-slate-300 text-lg">Проверка авторизации...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main content when authenticated -->
+  <div v-else class="relative min-h-screen px-4 xl:px-0">
     <div class="container mx-auto max-w-6xl relative z-10 py-16">
       <!-- Enhanced Profile Header -->
       <ProfileHeader
@@ -12,6 +25,7 @@
         @logout="logoutUser"
         @notify="handleNotification($event)"
       />
+
       <!-- Bio Section -->
       <BioSection
         :loading="loadingBio"
@@ -54,7 +68,6 @@
         </div>
 
         <!-- No Data State -->
-
         <div
           v-else-if="emotionBarometerStats.totalEntries === 0"
           class="empty-state"
@@ -182,8 +195,8 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, nextTick } from "vue";
-import { useRouter } from "vue-router";
+import { ref, onMounted, nextTick } from "vue";
+import { useRouter, useRoute } from "vue-router"; // ADD useRoute import
 import { useNotification } from "@/composables/useNotification";
 import { useAuthStore } from "~/stores/auth";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
@@ -239,6 +252,7 @@ const loadingEmotionBarometer = ref(true);
 const loadingAssessments = ref(false);
 const avatarUrl = ref(null);
 const emotionChart = ref(null);
+const isAuthenticated = ref(false);
 
 // Bio Data
 const profession = ref("");
@@ -261,9 +275,62 @@ const latestAssessment = ref(null);
 const assessmentError = ref(null);
 const archetypeScores = ref([]);
 
-// Initialize auth store
+// Initialize auth store and router
 const authStore = useAuthStore();
 const router = useRouter();
+const route = useRoute(); // ADD THIS: Initialize useRoute
+
+// Auth protection at the start of onMounted
+onMounted(async () => {
+  // First: Check authentication
+  await authStore.initAuth();
+
+  if (!authStore.user) {
+    console.log("🚫 User not authenticated, redirecting to login");
+    router.push("/login");
+    return;
+  }
+
+  // User is authenticated, set flag and continue loading data
+  isAuthenticated.value = true;
+
+  // Verify username matches current user
+  const currentUsername = authStore.user.displayName?.replace(/\s/g, "-");
+  if (route.params.username !== currentUsername) {
+    console.log("🔄 Username mismatch, redirecting to correct profile");
+    router.push(`/profile/${currentUsername}`);
+    return;
+  }
+
+  // Now load the user's data - run all data fetches in parallel for better performance
+  await loadUserData();
+});
+
+// Separate function for loading user data
+const loadUserData = async () => {
+  try {
+    // Start all data loading operations in parallel
+    const [avatarData, bioData, emotionData, assessmentData] =
+      await Promise.allSettled([
+        fetchUserAvatarUrl(authStore.user.uid),
+        fetchBioData(authStore.user.uid),
+        fetchEmotionBarometerData(authStore.user.uid),
+        fetchLatestAssessment(authStore.user.uid),
+      ]);
+
+    // Handle results
+    if (avatarData.status === "fulfilled") {
+      avatarUrl.value = avatarData.value;
+    }
+
+    // Note: bioData, emotionData, and assessmentData are handled within their respective functions
+  } catch (error) {
+    console.error("Error loading user data:", error);
+    showNotification("Произошла ошибка при загрузке данных", "error");
+  } finally {
+    loading.value = false;
+  }
+};
 
 // Fetch Bio Data
 const fetchBioData = async (userId) => {
@@ -279,12 +346,64 @@ const fetchBioData = async (userId) => {
       age.value = data.age || "";
       gender.value = data.gender || "";
       aboutYourself.value = data.aboutYourself || "";
-      console.log(data);
     }
   } catch (error) {
     console.error("Error fetching bio data:", error);
   } finally {
     loadingBio.value = false;
+  }
+};
+
+// Fetch Emotion Barometer Data
+const fetchEmotionBarometerData = async (userId) => {
+  try {
+    const db = getFirestore();
+    const { success, stats } = await getEmotionBarometerStats(db, userId);
+
+    if (success) {
+      emotionBarometerStats.value = stats;
+
+      // Use nextTick to ensure the DOM is updated before initializing chart
+      await nextTick();
+
+      // Initialize the emotion distribution chart if there are entries
+      if (emotionBarometerStats.value.totalEntries > 0 && emotionChart.value) {
+        const distribution = emotionBarometerStats.value.emotionDistribution;
+        new Chart(emotionChart.value, {
+          type: "doughnut",
+          data: {
+            labels: Object.keys(distribution),
+            datasets: [
+              {
+                data: Object.values(distribution),
+                backgroundColor: [
+                  "rgba(255, 99, 132, 0.6)",
+                  "rgba(54, 162, 235, 0.6)",
+                  "rgba(255, 206, 86, 0.6)",
+                  "rgba(75, 192, 192, 0.6)",
+                  "rgba(153, 102, 255, 0.6)",
+                ],
+                borderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: "bottom",
+              },
+            },
+          },
+        });
+      }
+    } else {
+      console.error("Failed to fetch emotion barometer stats");
+    }
+  } catch (error) {
+    console.error("Error loading emotion barometer data:", error);
+  } finally {
+    loadingEmotionBarometer.value = false;
   }
 };
 
@@ -306,7 +425,7 @@ const fetchLatestAssessment = async (userId) => {
           name,
           level: parseFloat(level),
           icon: getIconForArchetype(name),
-          guideUrl: archetypeGuides[name] || "#", // Add guide URL
+          guideUrl: archetypeGuides[name] || "#",
         })
       );
     } else {
@@ -323,104 +442,21 @@ const fetchLatestAssessment = async (userId) => {
 // Get icon for archetype
 const getIconForArchetype = (name) => {
   const icons = {
-    творец: "fa-paint-brush", // Painter's brush for creators
-    исследователь: "fa-compass", // Compass for explorers
-    мудрец: "fa-book-open", // Open book for sages
-    воин: "fa-shield-alt", // Shield for warriors
-    маг: "fa-magic", // Magic wand for magicians
-    заботливый: "fa-heart", // Hands with a heart for caregivers
-    наставник: "fa-chalkboard-teacher", // Chalkboard teacher for mentors
-    правитель: "fa-crown", // Crown for rulers
-    друг: "fa-handshake", // Handshake for friends
-    шут: "fa-laugh", // Laughing face for jesters
-    мятежник: "fa-fire", // Fire for rebels
-    герой: "fa-medal", // Medal for heroes (unique icon)
+    творец: "fa-paint-brush",
+    исследователь: "fa-compass",
+    мудрец: "fa-book-open",
+    воин: "fa-shield-alt",
+    маг: "fa-magic",
+    заботливый: "fa-heart",
+    наставник: "fa-chalkboard-teacher",
+    правитель: "fa-crown",
+    друг: "fa-handshake",
+    шут: "fa-laugh",
+    мятежник: "fa-fire",
+    герой: "fa-medal",
   };
-  return icons[name] || "fa-question"; // Default to question mark if not found
+  return icons[name] || "fa-question";
 };
-
-// Initialize auth and fetch data
-onMounted(async () => {
-  await authStore.initAuth(); // Initialize auth
-
-  if (authStore.user) {
-    // Fetch the user's avatar URL
-    avatarUrl.value = await fetchUserAvatarUrl(authStore.user.uid);
-
-    // Fetch bio data
-    await fetchBioData(authStore.user.uid);
-
-    // Fetch emotion barometer stats
-    try {
-      const db = getFirestore();
-      const { success, stats } = await getEmotionBarometerStats(
-        db,
-        authStore.user.uid
-      );
-
-      if (success) {
-        // Update the emotion barometer stats
-        emotionBarometerStats.value = stats;
-
-        // Use nextTick to ensure the DOM is updated
-        await nextTick();
-
-        // Initialize the emotion distribution chart if there are entries
-        if (
-          emotionBarometerStats.value.totalEntries > 0 &&
-          emotionChart.value
-        ) {
-          const distribution = emotionBarometerStats.value.emotionDistribution;
-          new Chart(emotionChart.value, {
-            type: "doughnut",
-            data: {
-              labels: Object.keys(distribution),
-              datasets: [
-                {
-                  data: Object.values(distribution),
-                  backgroundColor: [
-                    "rgba(255, 99, 132, 0.6)",
-                    "rgba(54, 162, 235, 0.6)",
-                    "rgba(255, 206, 86, 0.6)",
-                    "rgba(75, 192, 192, 0.6)",
-                    "rgba(153, 102, 255, 0.6)",
-                  ],
-                  borderWidth: 1,
-                },
-              ],
-            },
-            options: {
-              responsive: true,
-              plugins: {
-                legend: {
-                  position: "bottom",
-                },
-              },
-            },
-          });
-        }
-      } else {
-        console.error(
-          "Failed to fetch emotion barometer stats:",
-          stats?.message || "Unknown error"
-        );
-      }
-    } catch (error) {
-      console.error("Error loading emotion barometer data:", error);
-    } finally {
-      loadingEmotionBarometer.value = false; // Set loading to false after data is fetched
-    }
-
-    // Fetch the latest assessment results
-    await fetchLatestAssessment(authStore.user.uid);
-
-    // Set loading to false after all data is fetched
-    loading.value = false;
-  } else {
-    // If the user is not logged in, clear the avatar URL
-    avatarUrl.value = null;
-  }
-});
 
 // Logout user
 const logoutUser = async () => {

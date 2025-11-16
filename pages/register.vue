@@ -255,7 +255,20 @@ import { ref, computed } from "vue";
 import { useRoute } from "vue-router";
 import { registerUser } from "~/api/firebase/userProfile";
 import { getFirestore, doc, updateDoc } from "firebase/firestore";
-import { useHead } from "@unhead/vue";
+
+definePageMeta({
+  seo: {
+    noindex: true,
+    nofollow: true,
+  },
+});
+
+useHead({
+  title: "Регистрация - MindQLab",
+  htmlAttrs: {
+    lang: "ru",
+  },
+});
 
 const route = useRoute();
 const firestore = getFirestore();
@@ -272,19 +285,6 @@ const acceptTerms = ref(false);
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
 const isLoading = ref(false);
-
-useHead({
-  title: "Регистрация - Присоединяйтесь к нашему сообществу",
-  meta: [
-    {
-      name: "description",
-      content:
-        "Зарегистрируйтесь, чтобы получить доступ к эксклюзивному контенту и общению с единомышленниками.",
-    },
-    { name: "robots", content: "index, follow" },
-  ],
-  htmlAttrs: { lang: "ru" },
-});
 
 const isFormValid = computed(() => {
   return (

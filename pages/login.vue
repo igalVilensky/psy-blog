@@ -156,7 +156,20 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { useRuntimeConfig } from "#app/nuxt";
+
+definePageMeta({
+  seo: {
+    noindex: true,
+    nofollow: true,
+  },
+});
+
+useHead({
+  title: "Вход в аккаунт - MindQLab",
+  htmlAttrs: {
+    lang: "ru",
+  },
+});
 
 const router = useRouter();
 

@@ -34,14 +34,18 @@ const router = useRouter();
 const authStore = useAuthStore();
 
 onMounted(async () => {
-  await authStore.initAuth(); // Wait for auth to initialize
+  await authStore.initAuth();
 
-  if (authStore.user && authStore.user.displayName) {
-    // Replace spaces with dashes or remove them
-    const formattedUsername = authStore.user.displayName.replace(/\s/g, "-"); // or .replace(/\s/g, '') for no spaces
+  if (!authStore.user) {
+    router.push("/login");
+    return;
+  }
+
+  if (authStore.user.displayName) {
+    const formattedUsername = authStore.user.displayName.replace(/\s/g, "-");
     router.push(`/profile/${formattedUsername}`);
   } else {
-    // Redirect to login if no user is logged in
+    // Handle users without displayName
     router.push("/login");
   }
 });
