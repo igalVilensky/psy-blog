@@ -1,40 +1,42 @@
 <template>
-  <div
-    class="bg-gradient-to-b from-[#1A1F35]/60 to-[#1E293B]/80 backdrop-blur-xl rounded-2xl border border-white/10 p-6 sm:p-8 mb-8 shadow-2xl"
-  >
-    <!-- Title and Progress Bar -->
-    <div
-      class="flex flex-col sm:flex-row items-start justify-between gap-4 sm:gap-8 mb-8"
-    >
-      <h2 class="text-2xl font-bold text-white/90 flex-shrink-0">
-        <i class="fas fa-user-edit text-[#0EA5E9] mr-3"></i>О себе
-      </h2>
-      <div class="w-full sm:w-auto flex items-center gap-4 sm:gap-4">
-        <span class="text-slate-400 text-sm whitespace-nowrap">Заполнено:</span>
-        <div class="w-24 sm:w-32 bg-[#1A1F35]/40 rounded-full h-2 flex-grow">
-          <div
-            class="bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] h-2 rounded-full transition-all duration-500"
-            :style="{ width: bioCompletionPercentage + '%' }"
-          ></div>
+  <div class="bio-section-container">
+    <!-- Header with Progress -->
+    <div class="section-header">
+      <div class="header-title">
+        <div class="title-icon-wrapper">
+          <i class="fas fa-user-edit text-cyan-400"></i>
         </div>
-        <span class="text-slate-300 text-sm font-medium whitespace-nowrap">
-          {{ bioCompletionPercentage }}%
-        </span>
+        <h2 class="title-text">О себе</h2>
+      </div>
+
+      <div class="progress-wrapper">
+        <span class="progress-label">Заполнено:</span>
+        <div class="progress-bar-container">
+          <div class="progress-bar-bg">
+            <div
+              class="progress-bar-fill"
+              :style="{ width: bioCompletionPercentage + '%' }"
+            ></div>
+          </div>
+          <span class="progress-percentage"
+            >{{ bioCompletionPercentage }}%</span
+          >
+        </div>
       </div>
     </div>
 
     <!-- Loading State -->
-    <div v-if="loading" class="flex flex-col items-center justify-center h-64">
-      <i class="fas fa-spinner fa-spin text-4xl text-[#0EA5E9] mb-4"></i>
-      <p class="text-slate-300">Загрузка данных...</p>
+    <div v-if="loading" class="loading-state">
+      <div class="loading-content">
+        <i class="fas fa-spinner fa-spin text-4xl text-cyan-400 mb-4"></i>
+        <p class="text-slate-300">Загрузка данных...</p>
+      </div>
     </div>
 
-    <!-- Bio Data -->
-    <div v-else class="space-y-8">
+    <!-- Bio Content -->
+    <div v-else class="bio-content">
       <!-- Info Cards Grid -->
-      <div
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
-      >
+      <div class="info-cards-grid">
         <BioInfoCard
           title="Профессия"
           :value="profession"
@@ -58,42 +60,32 @@
         />
       </div>
 
-      <!-- About Text -->
-      <div class="bg-[#1A1F35]/40 p-6 sm:p-8 rounded-2xl border border-white/5">
-        <div class="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
-          <div
-            class="w-10 h-10 sm:w-12 sm:h-12 bg-[#0EA5E9]/20 rounded-xl flex items-center justify-center"
-          >
-            <i class="fas fa-quote-right text-[#0EA5E9] text-lg sm:text-xl"></i>
+      <!-- About Text Card -->
+      <div class="about-card">
+        <div class="about-header">
+          <div class="about-icon-wrapper">
+            <i class="fas fa-quote-right text-cyan-400"></i>
           </div>
-          <p class="text-slate-400 font-medium text-base sm:text-lg">О себе</p>
+          <p class="about-label">О себе</p>
         </div>
-        <p
-          v-if="aboutYourself"
-          class="text-white/90 text-base sm:text-lg leading-relaxed whitespace-pre-line"
-        >
+        <p v-if="aboutYourself" class="about-text">
           {{ aboutYourself }}
         </p>
-        <p v-else class="text-slate-400 text-sm">Расскажите о себе...</p>
+        <p v-else class="about-placeholder">
+          <i class="fas fa-pen text-slate-500 mr-2"></i>
+          Расскажите о себе...
+        </p>
       </div>
 
-      <!-- CTA to Fill Missing Data -->
-      <div v-if="bioCompletionPercentage < 100" class="text-center">
-        <NuxtLink
-          to="/profile/settings"
-          class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 hover:shadow-lg"
-        >
-          <span
-            class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] group-hover:translate-x-0 ease"
-          >
-            <i class="fas fa-plus"></i>
+      <!-- CTA Button -->
+      <div v-if="bioCompletionPercentage < 100" class="cta-container">
+        <NuxtLink to="/profile/settings" class="cta-button">
+          <span class="cta-gradient"></span>
+          <span class="cta-content">
+            <i class="fas fa-plus mr-2"></i>
+            <span class="hidden sm:inline">Добавить информацию</span>
+            <span class="sm:hidden">Добавить</span>
           </span>
-          <span
-            class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
-          >
-            <i class="fas fa-plus mr-2"></i>Добавить информацию
-          </span>
-          <span class="relative invisible">Добавить информацию</span>
         </NuxtLink>
       </div>
     </div>
@@ -150,6 +142,145 @@ const bioCompletionPercentage = computed(() => {
     props.aboutYourself,
   ];
   const filledFields = fields.filter((field) => field).length;
-  return (filledFields / fields.length) * 100;
+  return Math.round((filledFields / fields.length) * 100);
 });
 </script>
+
+<style scoped>
+.bio-section-container {
+  @apply p-6 sm:p-8 rounded-2xl bg-slate-900/50 border border-cyan-500/20 
+         backdrop-blur-sm mb-8 hover:border-cyan-500/30 transition-all duration-300;
+}
+
+.section-header {
+  @apply flex flex-col sm:flex-row items-start sm:items-center 
+         justify-between gap-4 mb-8 pb-6 border-b border-cyan-500/10;
+}
+
+.header-title {
+  @apply flex items-center gap-3;
+}
+
+.title-icon-wrapper {
+  @apply w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 
+         flex items-center justify-center text-xl;
+}
+
+.title-text {
+  @apply text-2xl font-bold text-white;
+}
+
+.progress-wrapper {
+  @apply flex items-center gap-3 sm:gap-4;
+}
+
+.progress-label {
+  @apply text-slate-400 text-sm whitespace-nowrap;
+}
+
+.progress-bar-container {
+  @apply flex items-center gap-3;
+}
+
+.progress-bar-bg {
+  @apply w-24 sm:w-32 bg-slate-800/50 rounded-full h-2.5 border border-slate-700/50 
+         overflow-hidden;
+}
+
+.progress-bar-fill {
+  @apply h-full rounded-full transition-all duration-500 ease-out
+         bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500
+         shadow-lg shadow-cyan-500/50;
+}
+
+.progress-percentage {
+  @apply text-cyan-400 text-sm font-bold whitespace-nowrap;
+}
+
+.loading-state {
+  @apply flex items-center justify-center py-24;
+}
+
+.loading-content {
+  @apply flex flex-col items-center text-center;
+}
+
+.bio-content {
+  @apply space-y-6;
+}
+
+.info-cards-grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4;
+}
+
+.about-card {
+  @apply p-6 sm:p-8 rounded-xl bg-slate-800/30 border border-slate-700/50 
+         hover:border-cyan-500/30 transition-all duration-300;
+}
+
+.about-header {
+  @apply flex items-center gap-4 mb-4;
+}
+
+.about-icon-wrapper {
+  @apply w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500/20 to-purple-500/20 
+         flex items-center justify-center;
+}
+
+.about-label {
+  @apply text-slate-400 font-medium;
+}
+
+.about-text {
+  @apply text-white text-base leading-relaxed whitespace-pre-line;
+}
+
+.about-placeholder {
+  @apply text-slate-500 text-sm italic flex items-center;
+}
+
+.cta-container {
+  @apply flex justify-center sm:justify-start pt-2;
+}
+
+.cta-button {
+  @apply relative inline-flex items-center justify-center 
+         px-8 py-3 rounded-xl overflow-hidden 
+         transition-all duration-300 hover:scale-105 
+         hover:shadow-lg hover:shadow-cyan-500/25;
+}
+
+.cta-gradient {
+  @apply absolute inset-0 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500;
+}
+
+.cta-button:hover .cta-gradient {
+  @apply scale-110;
+}
+
+.cta-content {
+  @apply relative z-10 text-white font-medium flex items-center;
+}
+
+@media (max-width: 640px) {
+  .bio-section-container {
+    @apply p-4;
+  }
+
+  .section-header {
+    @apply pb-4;
+  }
+
+  .title-icon-wrapper {
+    @apply w-10 h-10;
+  }
+
+  .title-text {
+    @apply text-xl;
+  }
+
+  .about-card {
+    @apply p-4;
+  }
+}
+</style>

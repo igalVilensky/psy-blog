@@ -366,9 +366,9 @@ const {
   public: { siteUrl },
 } = useRuntimeConfig();
 
-const title = "MindQLab — Твоя лаборатория осознанного роста";
+const title = "MindQLab – Твоя лаборатория осознанного роста";
 const description =
-  "Исследуй себя, проходи тесты, развивай мышление и личность с MindQLab — психологической лабораторией нового поколения.";
+  "Исследуй себя, проходи тесты, развивай мышление и личность с MindQLab – психологической лабораторией нового поколения.";
 const imageUrl = `${siteUrl}/mindqlab-social-card.png`;
 
 useSeoMeta({

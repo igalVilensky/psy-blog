@@ -4,10 +4,7 @@
     :style="{ width: size + 'px', height: size + 'px' }"
   >
     <!-- Avatar with Image -->
-    <div
-      v-if="avatarUrl && !loading"
-      class="w-full h-full rounded-full overflow-hidden ring-4 ring-offset-4 ring-offset-[#1A1F35] ring-[#0EA5E9]/30 transition-all duration-300"
-    >
+    <div v-if="avatarUrl && !loading" class="avatar-container">
       <nuxt-img
         :src="avatarUrl"
         alt="Avatar"
@@ -21,23 +18,17 @@
     </div>
 
     <!-- Loading State -->
-    <div
-      v-else-if="loading"
-      class="w-full h-full rounded-full bg-gradient-to-r from-[#0EA5E9]/10 to-[#E879F9]/10 flex items-center justify-center ring-4 ring-offset-4 ring-offset-[#1A1F35] ring-[#0EA5E9]/30"
-    >
+    <div v-else-if="loading" class="avatar-placeholder">
       <i
-        class="fas fa-spinner fa-spin text-[#0EA5E9]"
+        class="fas fa-spinner fa-spin text-cyan-400"
         :style="{ fontSize: Math.max(size * 0.3) + 'px' }"
       ></i>
     </div>
 
     <!-- Initial State -->
-    <div
-      v-else
-      class="w-full h-full rounded-full bg-gradient-to-r from-[#0EA5E9]/10 to-[#E879F9]/10 flex items-center justify-center ring-4 ring-offset-4 ring-offset-[#1A1F35] ring-[#0EA5E9]/30"
-    >
+    <div v-else class="avatar-placeholder">
       <span
-        class="font-bold text-[#0EA5E9]"
+        class="font-bold text-cyan-400"
         :style="{ fontSize: Math.max(size * 0.4) + 'px' }"
       >
         {{ userInitial }}
@@ -45,39 +36,20 @@
     </div>
 
     <!-- Upload Overlay (Conditional) -->
-    <label
-      v-if="!noUpload"
-      class="absolute inset-0 w-full h-full cursor-pointer rounded-full"
-    >
+    <label v-if="!noUpload" class="upload-overlay">
       <input
         type="file"
         @change="onFileChange"
-        accept="image/*"
+        accept="image/jpeg,image/jpg,image/png,image/gif,image/webp,image/bmp,image/svg+xml"
         class="hidden"
       />
-      <div
-        class="absolute inset-0 bg-gradient-to-r from-[#0EA5E9]/80 to-[#E879F9]/80 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center backdrop-blur-sm"
-      >
-        <div class="text-white flex flex-col items-center gap-2">
+      <div class="upload-overlay-content">
+        <div class="upload-icon-wrapper">
           <i class="fas fa-camera text-2xl"></i>
-          <span class="text-sm font-medium">Change Photo</span>
+          <span class="text-sm font-medium">Изменить фото</span>
         </div>
       </div>
     </label>
-
-    <!-- PRO Badge (Conditional) -->
-    <div v-if="!noUpload" class="absolute -top-2 -right-2">
-      <div class="relative">
-        <div
-          class="absolute inset-0 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] rounded-full blur opacity-75"
-        ></div>
-        <div
-          class="relative px-3 py-1 rounded-full text-sm font-bold bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white shadow-lg border border-white/20"
-        >
-          PRO
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -147,3 +119,50 @@ const uploadAvatar = async (file) => {
   }
 };
 </script>
+
+<style scoped>
+.avatar-container {
+  @apply w-full h-full rounded-full overflow-hidden 
+         ring-4 ring-cyan-500/30 ring-offset-4 ring-offset-slate-950
+         transition-all duration-300 
+         group-hover:ring-cyan-500/50
+         group-hover:shadow-2xl group-hover:shadow-cyan-500/25
+         group-hover:scale-105;
+}
+
+.avatar-placeholder {
+  @apply w-full h-full rounded-full 
+         bg-gradient-to-br from-cyan-500/10 via-purple-500/10 to-pink-500/10
+         flex items-center justify-center 
+         ring-4 ring-cyan-500/30 ring-offset-4 ring-offset-slate-950
+         border border-cyan-500/20
+         transition-all duration-300
+         group-hover:border-cyan-500/40;
+}
+
+.upload-overlay {
+  @apply absolute inset-0 w-full h-full cursor-pointer rounded-full;
+}
+
+.upload-overlay-content {
+  @apply absolute inset-0 bg-gradient-to-br from-cyan-500/90 via-purple-500/90 to-pink-500/90
+         rounded-full opacity-0 group-hover:opacity-100 
+         transition-all duration-300 flex items-center justify-center 
+         backdrop-blur-md
+         shadow-lg shadow-cyan-500/30;
+}
+
+.upload-icon-wrapper {
+  @apply text-white flex flex-col items-center gap-2 
+         transform transition-transform duration-300
+         group-hover:scale-110;
+}
+
+.upload-icon-wrapper i {
+  @apply drop-shadow-lg;
+}
+
+.upload-icon-wrapper span {
+  @apply font-semibold tracking-wide;
+}
+</style>

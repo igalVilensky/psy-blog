@@ -59,7 +59,10 @@
         >
           <!-- Archetypes Tab -->
           <div v-if="activeTab === 'archetypes'" key="archetypes">
-            <div v-if="archetypes.length === 0" class="empty-state">
+            <div
+              v-if="!archetypes || archetypes.length === 0"
+              class="empty-state"
+            >
               <div
                 class="flex flex-col items-center justify-center h-64 text-center"
               >
@@ -97,7 +100,7 @@
                     <i
                       :class="[
                         'fas',
-                        archetype.icon,
+                        archetype.icon || 'fa-question',
                         `text-[#E879F9] text-2xl`,
                       ]"
                     ></i>
@@ -107,16 +110,16 @@
                       {{ archetype.name }}
                     </h3>
                     <p class="text-sm text-slate-400 mb-2">
-                      {{ archetype.description || "Описание отсутствует" }}
+                      {{ getArchetypeDescription(archetype.name) }}
                     </p>
                     <div class="flex items-center">
                       <div class="h-2 bg-[#0EA5E9]/20 rounded-full flex-1">
                         <div
                           class="h-2 rounded-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] transition-all duration-1000"
                           :style="{
-                            width: `${
-                              ((archetype.level - 6) / (30 - 6)) * 100
-                            }%`,
+                            width: `${calculateArchetypePercentage(
+                              archetype.level
+                            )}%`,
                           }"
                         ></div>
                       </div>
@@ -126,7 +129,11 @@
                     </div>
                     <!-- Download Button -->
                     <button
-                      v-if="isAuthenticated && archetype.guideUrl !== '#'"
+                      v-if="
+                        isAuthenticated &&
+                        archetype.guideUrl &&
+                        archetype.guideUrl !== '#'
+                      "
                       @click="handleDownload(archetype.guideUrl)"
                       class="mt-4 w-full bg-[#1A2038] hover:bg-[#0EA5E9]/20 text-[#0EA5E9] py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition-all duration-300 border border-[#0EA5E9]/20"
                     >
@@ -180,7 +187,7 @@
               >
                 <div
                   class="absolute h-2 rounded-full transition-all duration-1000 animate-widthExpand"
-                  :class="`bg-gradient-to-r from-${trait.color}-500 to-${trait.color}-400`"
+                  :class="`bg-${trait.color}-500`"
                   :style="{ width: `${trait.value}%` }"
                 ></div>
               </div>
@@ -249,10 +256,7 @@
               <div
                 class="h-1.5 rounded-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9]"
                 :style="{
-                  width:
-                    typeof stat.value === 'string'
-                      ? stat.value.split('/')[0] * 10 + '%'
-                      : stat.value,
+                  width: getStatWidth(stat.value),
                 }"
               ></div>
             </div>
@@ -323,18 +327,39 @@ const isInitialLoading = ref(true);
 const isAuthenticated = computed(() => !!authStore.user);
 
 const tabs = [
-  { id: "archetypes", name: "Архетипы", icon: "fa-masks-theater" },
+  {
+    id: "archetypes",
+    name: "Архетипы",
+    icon: "fa-masks-theater",
+    count: props.archetypes?.length || 0,
+  },
   { id: "bigFive", name: "Big Five", icon: "fa-star" },
   { id: "cognitive", name: "Когнитивные стили", icon: "fa-brain" },
 ];
 
-const sortedArchetypes = computed(() =>
-  props.archetypes.slice().sort((a, b) => b.level - a.level)
+const sortedArchetypes = computed(
+  () => props.archetypes?.slice().sort((a, b) => b.level - a.level) || []
 );
 
 const visibleArchetypes = computed(() =>
   showMore.value ? sortedArchetypes.value : sortedArchetypes.value.slice(0, 4)
 );
+
+// Archetype descriptions
+const archetypeDescriptions = {
+  воин: "Сильный и решительный лидер, стремящийся к достижению целей",
+  мудрец: "Искатель знаний и истины, стремящийся к пониманию мира",
+  искатель: "Любознательный исследователь, ищущий новые горизонты",
+  творец: "Инноватор и художник, создающий новое и прекрасное",
+  правитель: "Организатор и лидер, стремящийся к порядку и стабильности",
+  маг: "Мистик и преобразователь, видящий скрытые возможности",
+  любовник: "Чувственный и страстный, ценящий красоту и отношения",
+  шут: "Свободный дух, приносящий радость и легкость",
+  сирота: "Реалист, стремящийся к безопасности и принадлежности",
+  опекун: "Заботливый помощник, поддерживающий других",
+  простодушный: "Оптимист, верящий в добро и простые истины",
+  бунтарь: "Революционер, бросающий вызов установленным нормам",
+};
 
 const bigFiveTraits = [
   {
@@ -433,6 +458,32 @@ const formatDate = (date) => {
   }).format(date);
 };
 
+// Calculate archetype percentage for progress bar
+const calculateArchetypePercentage = (level) => {
+  // Assuming level is between 6-30 (from your data)
+  const min = 6;
+  const max = 30;
+  return ((level - min) / (max - min)) * 100;
+};
+
+// Get archetype description
+const getArchetypeDescription = (name) => {
+  return archetypeDescriptions[name] || "Описание архетипа";
+};
+
+// Get stat width for progress bars
+const getStatWidth = (value) => {
+  if (typeof value === "string") {
+    if (value.includes("/")) {
+      const [current, max] = value.split("/").map(Number);
+      return `${(current / max) * 100}%`;
+    } else if (value.includes("%")) {
+      return value;
+    }
+  }
+  return "0%";
+};
+
 // Switch tab function
 const switchTab = (tabId) => {
   activeTab.value = tabId;
@@ -445,7 +496,7 @@ const toggleShowMore = () => {
 
 // Handle download logic
 const handleDownload = (url) => {
-  if (url === "#") {
+  if (!url || url === "#") {
     console.log("No guide available for this archetype");
     return;
   }
@@ -453,6 +504,7 @@ const handleDownload = (url) => {
   const link = document.createElement("a");
   link.href = url;
   link.download = "";
+  link.target = "_blank"; // Open in new tab for Google Drive
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -468,6 +520,18 @@ watch(
       }, 500);
     }
   }
+);
+
+// Watch archetypes to update tab count
+watch(
+  () => props.archetypes,
+  (newArchetypes) => {
+    console.log(
+      "🔄 Archetypes updated in PsychologicalProfile:",
+      newArchetypes
+    );
+  },
+  { immediate: true }
 );
 </script>
 
@@ -529,5 +593,22 @@ watch(
 
 .animate-widthExpand {
   animation: widthExpand 1s ease-out forwards;
+}
+
+/* Fix for dynamic color classes */
+.bg-pink-500 {
+  background-color: rgb(236, 72, 153);
+}
+.bg-blue-500 {
+  background-color: rgb(59, 130, 246);
+}
+.bg-green-500 {
+  background-color: rgb(34, 197, 94);
+}
+.bg-purple-500 {
+  background-color: rgb(168, 85, 247);
+}
+.bg-yellow-500 {
+  background-color: rgb(234, 179, 8);
 }
 </style>
