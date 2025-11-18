@@ -389,9 +389,19 @@
             :disabled="betweenLevels"
             :class="{ 'match-active': matchPressed }"
           >
-            <div class="text-xs text-slate-400 mb-1">SPACE или нажми</div>
-            <div class="text-2xl sm:text-3xl font-black">MATCH</div>
-            <div class="text-xs text-slate-500 mt-1">Совпадение с N-назад</div>
+            <div class="flex flex-col items-center justify-center h-full">
+              <div class="text-xs text-white/80 mb-1 leading-tight">
+                SPACE или нажми
+              </div>
+              <div
+                class="text-2xl sm:text-3xl font-black text-white leading-none"
+              >
+                MATCH
+              </div>
+              <div class="text-xs text-white/70 mt-1 leading-tight">
+                Совпадение с N-назад
+              </div>
+            </div>
           </button>
         </div>
 
@@ -1128,16 +1138,17 @@ onUnmounted(() => {
 }
 
 .match-button {
-  @apply w-48 sm:w-56 lg:w-64 h-20 sm:h-24 lg:h-32 rounded-2xl bg-gradient-to-br from-purple-500 via-blue-500 to-cyan-500
-         text-white font-black cursor-pointer
-         transition-all duration-200 transform hover:scale-105
-         shadow-2xl shadow-purple-500/30 hover:shadow-purple-500/50
+  @apply w-full max-w-xs mx-auto sm:max-w-sm lg:max-w-md h-20 sm:h-24 lg:h-28 rounded-2xl bg-gradient-to-br from-purple-600 via-blue-600 to-cyan-600
+         text-white font-black cursor-pointer border-2 border-white/20
+         transition-all duration-200 transform hover:scale-105 hover:shadow-2xl
+         shadow-lg shadow-purple-500/40 hover:shadow-purple-500/60
          disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
-         active:scale-95;
+         active:scale-95 flex items-center justify-center;
 }
 
 .match-active {
-  @apply scale-95 brightness-75;
+  @apply scale-95 brightness-110 bg-gradient-to-br from-purple-700 via-blue-700 to-cyan-700
+         shadow-inner border-white/30;
 }
 
 .between-levels {
@@ -1208,7 +1219,7 @@ kbd {
   }
 
   .match-button {
-    @apply w-40 h-16;
+    @apply h-20 max-w-[280px] mx-auto;
   }
 
   .game-area {
@@ -1231,6 +1242,13 @@ kbd {
 
   .stat-box div:last-child {
     @apply text-lg;
+  }
+  .match-button {
+    @apply h-16 max-w-[260px];
+  }
+
+  .match-button .text-2xl {
+    @apply text-xl;
   }
 }
 
