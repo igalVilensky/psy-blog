@@ -118,6 +118,8 @@ import { ref, computed, onMounted, onUnmounted } from "vue";
 import { useAuthStore } from "~/stores/auth";
 
 const auth = useAuthStore();
+console.log(auth.user);
+
 const route = useRoute();
 
 const currentTime = ref("");
@@ -129,7 +131,7 @@ const currentStation = computed(() => {
     "/lab/experiments": "ЭКСПЕРИМЕНТАЛЬНАЯ",
     "/lab/analysis": "АНАЛИЗ_ДАННЫХ",
     "/lab/community": "СООБЩЕСТВО",
-    "/lab/profile": "ПРОФИЛЬ",
+    "/profile": "ПРОФИЛЬ",
     "/lab/tests": "КОГНИТИВНЫЕ_ТЕСТЫ",
     "/lab/games": "ИГРОВАЯ_СТАНЦИЯ",
     "/lab/games/reaction": "ТЕСТ_РЕАКЦИИ",

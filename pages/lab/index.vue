@@ -82,6 +82,34 @@
           персональные рекомендации и обучающие программы — всё в одном месте.
         </p>
 
+        <!-- AI Tip Section -->
+        <div class="mt-12 max-w-3xl mx-auto text-center">
+          <button
+            @click="fetchAiTip"
+            class="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 rounded-2xl font-semibold text-white shadow-2xl hover:scale-105 hover:shadow-cyan-500/50 transition-all duration-300 mb-6"
+          >
+            <i class="fas fa-robot transition-transform duration-300"></i>
+            Получить персональный совет AI
+          </button>
+
+          <div
+            v-if="aiTip"
+            class="my-4 bg-gradient-to-br from-slate-900/70 via-slate-900/50 to-slate-900/70 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-cyan-500/30 shadow-2xl animate-fade-in-up text-left"
+          >
+            <div class="flex items-center mb-4">
+              <i
+                class="fas fa-robot text-cyan-400 text-2xl sm:text-3xl mr-3"
+              ></i>
+              <h3 class="text-xl sm:text-2xl font-bold text-cyan-400">
+                Совет для тебя, {{ auth.user.displayName }}:
+              </h3>
+            </div>
+            <p class="text-slate-300 leading-relaxed whitespace-pre-line">
+              {{ aiTip }}
+            </p>
+          </div>
+        </div>
+
         <!-- Enhanced CTA Buttons (matching main index style) -->
         <div
           class="flex flex-col sm:flex-row gap-4 justify-center items-stretch sm:items-center mb-6"
@@ -170,39 +198,29 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
+import { useAuthStore } from "~/stores/auth";
 
-definePageMeta({
-  layout: "laboratory",
-});
 const labActive = ref(false);
+const auth = useAuthStore();
 
+// Stats animation (keep your existing code)
 const animatedStats = reactive({
   researchers: 0,
   experiments: 0,
   insights: 0,
 });
-
-const targetStats = {
-  researchers: 247,
-  experiments: 42,
-  insights: 1893,
-};
-
+const targetStats = { researchers: 247, experiments: 42, insights: 1893 };
 const animateStats = () => {
   const duration = 2000;
   const steps = 60;
   const interval = duration / steps;
-
   let currentStep = 0;
-
   const timer = setInterval(() => {
     currentStep++;
     const progress = currentStep / steps;
-
     animatedStats.researchers = Math.floor(targetStats.researchers * progress);
     animatedStats.experiments = Math.floor(targetStats.experiments * progress);
     animatedStats.insights = Math.floor(targetStats.insights * progress);
-
     if (currentStep >= steps) {
       animatedStats.researchers = targetStats.researchers;
       animatedStats.experiments = targetStats.experiments;
@@ -215,6 +233,41 @@ const animateStats = () => {
 onMounted(() => {
   setTimeout(animateStats, 500);
 });
+
+// AI Tip logic
+const aiTip = ref("");
+
+async function fetchAiTip() {
+  aiTip.value = "Генерируется персональный совет…";
+
+  try {
+    const prompt = `Ты помощник экспериментальной платформы MindQ Lab. 
+Пользователь: ${auth.user.displayName}, возраст ${auth.user.age}, профессия: ${
+      auth.user.profession
+    }.
+Кратко о себе: ${auth.user.aboutYourself || "Нет информации"}.
+
+Предложи практические рекомендации и конкретные действия, что пользователю изучить или попробовать в MindQ Lab: когнитивные тесты, развивающие игры, медитации, эксперименты и аналитические инструменты. 
+Совет должен быть на русском языке, в дружелюбной форме, с примерами, **не более 20 строк**.`;
+
+    const res = await fetch("/.netlify/functions/groqChat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt }),
+    });
+
+    const data = await res.json();
+
+    if (data?.choices?.[0]?.message?.content) {
+      aiTip.value = data.choices[0].message.content;
+    } else {
+      aiTip.value = "Извини, AI не смог дать совет. Попробуй ещё раз.";
+    }
+  } catch (err) {
+    console.error("AI Tip fetch error:", err);
+    aiTip.value = "Произошла ошибка при получении совета AI.";
+  }
+}
 </script>
 
 <style scoped>

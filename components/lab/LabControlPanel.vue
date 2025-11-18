@@ -122,7 +122,7 @@
             </div>
             <div class="grid grid-cols-2 gap-2">
               <NuxtLink
-                to="/lab/profile"
+                to="/profile"
                 class="text-center py-2 px-3 bg-slate-700/50 hover:bg-slate-700 rounded-lg text-slate-300 text-xs font-medium transition-all border border-slate-600/50"
                 @click.native="closeMobileMenu"
               >
@@ -351,7 +351,7 @@
         </div>
         <div class="flex space-x-2">
           <NuxtLink
-            to="/lab/profile"
+            to="/profile"
             class="flex-1 text-center py-2.5 px-3 bg-slate-700/50 hover:bg-slate-700 rounded-lg text-slate-300 text-xs font-medium transition-all border border-slate-600/50"
           >
             Профиль
@@ -439,7 +439,6 @@ defineProps({
   },
 });
 
-const systemActive = ref(true);
 const brainPulsing = ref(false);
 const mobileMenuOpen = ref(false);
 

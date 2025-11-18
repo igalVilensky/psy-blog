@@ -443,6 +443,32 @@ const stats = [
   { value: "25+", label: "Курсов", color: "text-pink-400" },
   { value: "247+", label: "Участников", color: "text-emerald-400" },
 ];
+
+async function getGroqResponse(prompt) {
+  try {
+    const res = await fetch("/.netlify/functions/groqChat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt }),
+    });
+
+    const data = await res.json();
+    if (data.error) {
+      console.error("Groq error:", data.error);
+      return null;
+    }
+    return data;
+  } catch (err) {
+    console.error("Fetch error:", err);
+    return null;
+  }
+}
+
+// Example usage
+const result = await getGroqResponse(
+  "Give me a personalized tip for cognitive growth"
+);
+console.log(result);
 </script>
 
 <style scoped>
