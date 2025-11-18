@@ -1,4 +1,4 @@
-<!-- pages/lab/tests.vue -->
+<!-- pages/lab/tests/index.vue -->
 <template>
   <div
     class="cognitive-tests-station min-h-screen bg-slate-950 px-4 sm:px-6 lg:px-8 py-8"
@@ -53,6 +53,49 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Digit Span Test - NEW -->
+          <NuxtLink to="/lab/tests/digit-span" class="test-category-card group">
+            <!-- Icon Header -->
+            <div class="flex items-start justify-between mb-4">
+              <div
+                class="icon-wrapper bg-gradient-to-br from-cyan-500 to-purple-600"
+              >
+                <i class="fas fa-brain text-white text-xl"></i>
+              </div>
+              <span class="difficulty-badge difficulty-medium"> Средняя </span>
+            </div>
+
+            <!-- Content -->
+            <h3
+              class="text-lg font-semibold text-white mb-2 group-hover:text-cyan-400 transition-colors"
+            >
+              Digit Span Test
+            </h3>
+            <p class="text-sm text-slate-400 mb-1">Объем рабочей памяти</p>
+            <p class="text-sm text-slate-300 leading-relaxed mb-4">
+              Классический тест на оценку рабочей памяти. Используется в
+              нейропсихологии и тестах IQ (WAIS)
+            </p>
+
+            <!-- Footer -->
+            <div
+              class="flex items-center justify-between pt-4 border-t border-slate-700/50"
+            >
+              <div class="flex items-center gap-2 text-cyan-400">
+                <i class="fas fa-clock text-xs"></i>
+                <span class="text-xs font-medium">5-8 мин</span>
+              </div>
+              <div class="flex items-center gap-2 text-purple-400">
+                <i class="fas fa-check-circle text-xs"></i>
+                <span class="text-xs font-medium">Доступен</span>
+              </div>
+            </div>
+
+            <!-- Hover Effect -->
+            <div class="card-shine"></div>
+          </NuxtLink>
+
+          <!-- Existing Test Cards -->
           <div
             v-for="test in testCategories"
             :key="test.id"
@@ -113,6 +156,21 @@
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+          <!-- Digit Span Quick Link -->
+          <NuxtLink to="/lab/tests/digit-span" class="quick-test-card">
+            <div
+              class="quick-icon-wrapper"
+              style="
+                background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+              "
+            >
+              <i class="fas fa-brain text-white text-lg"></i>
+            </div>
+            <h4 class="text-white text-sm font-medium mt-3 mb-1">Digit Span</h4>
+            <p class="text-slate-400 text-xs">5 мин</p>
+          </NuxtLink>
+
+          <!-- Existing Quick Tests -->
           <div
             v-for="quickTest in quickTests"
             :key="quickTest.id"
@@ -405,9 +463,9 @@ const recentResults = [
 const recommendations = [
   {
     id: 1,
-    title: "Попробуйте тест на пространственное мышление",
+    title: "Попробуйте Digit Span Test",
     description:
-      "Вы давно не проходили этот тест. Рекомендуем пройти для полной оценки",
+      "Новый тест на рабочую память. Узнайте свой объем кратковременной памяти",
   },
   {
     id: 2,
