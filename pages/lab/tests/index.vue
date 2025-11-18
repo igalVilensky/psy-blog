@@ -95,6 +95,49 @@
             <div class="card-shine"></div>
           </NuxtLink>
 
+          <!-- N-Back Test -->
+          <NuxtLink to="/lab/tests/nback" class="test-category-card group">
+            <!-- Icon Header -->
+            <div class="flex items-start justify-between mb-4">
+              <div
+                class="icon-wrapper bg-gradient-to-br from-cyan-500 to-blue-600"
+              >
+                <i class="fas fa-layer-group text-white text-xl"></i>
+              </div>
+              <span class="difficulty-badge difficulty-hard">Сложная</span>
+            </div>
+
+            <!-- Content -->
+            <h3
+              class="text-lg font-semibold text-white mb-2 group-hover:text-cyan-400 transition-colors"
+            >
+              N-Back Test
+            </h3>
+            <p class="text-sm text-slate-400 mb-1">Рабочая память и внимание</p>
+            <p class="text-sm text-slate-300 leading-relaxed mb-4">
+              Определяйте совпадения с N шагов назад. Золотой стандарт
+              тренировки рабочей памяти, улучшает флюидный интеллект и
+              когнитивный контроль.
+            </p>
+
+            <!-- Footer -->
+            <div
+              class="flex items-center justify-between pt-4 border-t border-slate-700/50"
+            >
+              <div class="flex items-center gap-2 text-cyan-400">
+                <i class="fas fa-clock text-xs"></i>
+                <span class="text-xs font-medium">5-8 мин</span>
+              </div>
+              <div class="flex items-center gap-2 text-purple-400">
+                <i class="fas fa-check-circle text-xs"></i>
+                <span class="text-xs font-medium">Доступен</span>
+              </div>
+            </div>
+
+            <!-- Hover Effect -->
+            <div class="card-shine"></div>
+          </NuxtLink>
+
           <!-- Existing Test Cards -->
           <div
             v-for="test in testCategories"
