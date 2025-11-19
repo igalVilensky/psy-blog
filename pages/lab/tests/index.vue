@@ -53,7 +53,7 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <!-- Digit Span Test - NEW -->
+          <!-- Digit Span Test -->
           <NuxtLink to="/lab/tests/digit-span" class="test-category-card group">
             <!-- Icon Header -->
             <div class="flex items-start justify-between mb-4">
@@ -100,7 +100,7 @@
             <!-- Icon Header -->
             <div class="flex items-start justify-between mb-4">
               <div
-                class="icon-wrapper bg-gradient-to-br from-cyan-500 to-blue-600"
+                class="icon-wrapper bg-gradient-to-br from-purple-500 to-pink-600"
               >
                 <i class="fas fa-layer-group text-white text-xl"></i>
               </div>
@@ -116,19 +116,63 @@
             <p class="text-sm text-slate-400 mb-1">Рабочая память и внимание</p>
             <p class="text-sm text-slate-300 leading-relaxed mb-4">
               Определяйте совпадения с N шагов назад. Золотой стандарт
-              тренировки рабочей памяти, улучшает флюидный интеллект и
-              когнитивный контроль.
+              тренировки рабочей памяти и флюидного интеллекта.
             </p>
 
             <!-- Footer -->
             <div
               class="flex items-center justify-between pt-4 border-t border-slate-700/50"
             >
-              <div class="flex items-center gap-2 text-cyan-400">
+              <div class="flex items-center gap-2 text-purple-400">
                 <i class="fas fa-clock text-xs"></i>
                 <span class="text-xs font-medium">5-8 мин</span>
               </div>
-              <div class="flex items-center gap-2 text-purple-400">
+              <div class="flex items-center gap-2 text-pink-400">
+                <i class="fas fa-check-circle text-xs"></i>
+                <span class="text-xs font-medium">Доступен</span>
+              </div>
+            </div>
+
+            <!-- Hover Effect -->
+            <div class="card-shine"></div>
+          </NuxtLink>
+
+          <!-- Trail Making Test -->
+          <NuxtLink
+            to="/lab/tests/trail-making"
+            class="test-category-card group"
+          >
+            <!-- Icon Header -->
+            <div class="flex items-start justify-between mb-4">
+              <div
+                class="icon-wrapper bg-gradient-to-br from-emerald-500 to-cyan-600"
+              >
+                <i class="fas fa-route text-white text-xl"></i>
+              </div>
+              <span class="difficulty-badge difficulty-easy">Легкая</span>
+            </div>
+
+            <!-- Content -->
+            <h3
+              class="text-lg font-semibold text-white mb-2 group-hover:text-cyan-400 transition-colors"
+            >
+              Trail Making Test
+            </h3>
+            <p class="text-sm text-slate-400 mb-1">Скорость обработки</p>
+            <p class="text-sm text-slate-300 leading-relaxed mb-4">
+              Соединяйте точки в правильном порядке. Оценка исполнительных
+              функций и когнитивной гибкости.
+            </p>
+
+            <!-- Footer -->
+            <div
+              class="flex items-center justify-between pt-4 border-t border-slate-700/50"
+            >
+              <div class="flex items-center gap-2 text-emerald-400">
+                <i class="fas fa-clock text-xs"></i>
+                <span class="text-xs font-medium">3-5 мин</span>
+              </div>
+              <div class="flex items-center gap-2 text-cyan-400">
                 <i class="fas fa-check-circle text-xs"></i>
                 <span class="text-xs font-medium">Доступен</span>
               </div>
