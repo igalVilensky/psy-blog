@@ -212,6 +212,10 @@
 import { ref, reactive, onMounted } from "vue";
 import { useAuthStore } from "~/stores/auth";
 
+definePageMeta({
+  layout: "laboratory",
+});
+
 const labActive = ref(false);
 const auth = useAuthStore();
 
