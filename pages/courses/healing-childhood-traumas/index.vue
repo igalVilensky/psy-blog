@@ -102,16 +102,11 @@
               </NuxtLink>
             </div>
             <div v-else>
-              <button
-                @click="purchaseCourseHandler(course.id)"
-                :disabled="isPurchasing"
-                class="relative inline-flex items-center justify-center overflow-hidden font-medium transition-all duration-300 rounded-lg bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-8 py-4 text-white disabled:bg-gray-400 disabled:cursor-not-allowed"
-              >
-                <span class="flex items-center gap-2">
-                  <i class="fas fa-shopping-cart text-lg"></i>
-                  {{ isPurchasing ? "Обработка..." : "Купить курс за 4900₽" }}
-                </span>
-              </button>
+              <!-- PayPal Button Container -->
+              <div id="paypal-button-container" class="max-w-xs mx-auto"></div>
+              <p v-if="!authStore.user" class="text-sm text-gray-400 mt-2">
+                Пожалуйста, войдите в систему для покупки
+              </p>
             </div>
           </div>
         </div>
@@ -155,8 +150,10 @@ import { ref, onMounted } from "vue";
 import { useAuthStore } from "~/stores/auth";
 import { course } from "~/data/courses/healing-childhood-traumas";
 import { purchaseCourse, getPurchasedCourses } from "~/api/firebase/coursesApi";
+import { loadScript } from "@paypal/paypal-js";
 
 const authStore = useAuthStore();
+const config = useRuntimeConfig();
 const email = ref("");
 const isPurchasing = ref(false); // Loading state for purchase
 const purchasedCourses = ref([]); // Array to store purchased courses
@@ -183,6 +180,11 @@ onMounted(async () => {
       console.error("Error fetching purchased courses:", error);
     }
   }
+
+  // Initialize PayPal if course not purchased
+  if (!isCoursePurchased(course.id)) {
+    initializePayPal();
+  }
 });
 
 // Check if a course is already purchased
@@ -190,28 +192,65 @@ const isCoursePurchased = (courseId) => {
   return purchasedCourses.value.some((course) => course.courseId === courseId);
 };
 
-// Function to handle purchase
-const purchaseCourseHandler = async (courseId) => {
-  if (!authStore.user) {
-    alert("Пожалуйста, войдите в систему, чтобы приобрести курс.");
-    return;
-  }
-
-  isPurchasing.value = true; // Start loading
-
+// Initialize PayPal Buttons
+const initializePayPal = async () => {
   try {
-    await purchaseCourse(authStore.user.uid, course);
-    alert("Курс успешно приобретен!");
-    // Refresh the list of purchased courses
-    const result = await getPurchasedCourses(authStore.user.uid);
-    if (result.success) {
-      purchasedCourses.value = result.data;
+    const paypal = await loadScript({
+      "client-id": config.public.paypalClientId || "test", // Fallback to 'test' if not set
+      currency: "RUB",
+    });
+
+    if (paypal) {
+      paypal
+        .Buttons({
+          createOrder: (data, actions) => {
+            if (!authStore.user) {
+              alert("Пожалуйста, войдите в систему, чтобы приобрести курс.");
+              return actions.reject();
+            }
+            return actions.order.create({
+              purchase_units: [
+                {
+                  description: course.title,
+                  amount: {
+                    value: course.price.toString(),
+                  },
+                },
+              ],
+            });
+          },
+          onApprove: async (data, actions) => {
+            isPurchasing.value = true;
+            try {
+              const order = await actions.order.capture();
+              console.log("Payment successful:", order);
+
+              // Grant access to the course
+              await purchaseCourse(authStore.user.uid, course);
+              
+              alert("Курс успешно приобретен!");
+              
+              // Refresh purchased courses
+              const result = await getPurchasedCourses(authStore.user.uid);
+              if (result.success) {
+                purchasedCourses.value = result.data;
+              }
+            } catch (error) {
+              console.error("Error capturing order:", error);
+              alert("Произошла ошибка при завершении оплаты.");
+            } finally {
+              isPurchasing.value = false;
+            }
+          },
+          onError: (err) => {
+            console.error("PayPal Error:", err);
+            alert("Произошла ошибка PayPal. Попробуйте позже.");
+          },
+        })
+        .render("#paypal-button-container");
     }
   } catch (error) {
-    console.error("Ошибка при покупке курса:", error);
-    alert("Произошла ошибка при покупке курса. Пожалуйста, попробуйте снова.");
-  } finally {
-    isPurchasing.value = false; // Stop loading
+    console.error("Failed to load PayPal SDK:", error);
   }
 };
 

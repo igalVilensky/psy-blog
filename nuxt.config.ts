@@ -136,6 +136,7 @@ export default defineNuxtConfig({
       firebaseAppId: process.env.FIREBASE_APP_ID,
       firebaseMeasurementId: process.env.FIREBASE_MEASUREMENT_ID,
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || "https://mindqlab.com",
+      paypalClientId: process.env.NUXT_PUBLIC_PAYPAL_CLIENT_ID,
     },
   },
 });
