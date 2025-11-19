@@ -92,8 +92,19 @@
             Получить персональный совет AI
           </button>
 
+          <!-- Loading shimmer -->
           <div
-            v-if="aiTip"
+            v-if="aiLoading"
+            class="my-4 bg-slate-900/60 rounded-3xl p-6 border border-cyan-500/20 animate-pulse"
+          >
+            <div class="h-4 bg-slate-700/50 rounded mb-3"></div>
+            <div class="h-4 bg-slate-700/40 rounded mb-3"></div>
+            <div class="h-4 bg-slate-700/30 rounded w-2/3"></div>
+          </div>
+
+          <!-- Final AI Tip -->
+          <div
+            v-if="!aiLoading && aiTip"
             class="my-4 bg-gradient-to-br from-slate-900/70 via-slate-900/50 to-slate-900/70 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-cyan-500/30 shadow-2xl animate-fade-in-up text-left"
           >
             <div class="flex items-center mb-4">
@@ -101,9 +112,10 @@
                 class="fas fa-robot text-cyan-400 text-2xl sm:text-3xl mr-3"
               ></i>
               <h3 class="text-xl sm:text-2xl font-bold text-cyan-400">
-                Совет для тебя, {{ auth.user.displayName }}:
+                Совет для тебя:
               </h3>
             </div>
+
             <p class="text-slate-300 leading-relaxed whitespace-pre-line">
               {{ aiTip }}
             </p>
@@ -236,19 +248,59 @@ onMounted(() => {
 
 // AI Tip logic
 const aiTip = ref("");
+const aiLoading = ref(false);
+
+// Safe user fallback
+function getUserSafe() {
+  if (!auth.user) {
+    return {
+      displayName: "Гость",
+      age: "не указано",
+      profession: "не указано",
+      aboutYourself: "",
+    };
+  }
+  return auth.user;
+}
+
+// Animated dots for “AI думает…”
+
+let thinkingInterval = null;
+
+function startThinkingDots() {
+  if (thinkingInterval) clearInterval(thinkingInterval);
+
+  let dots = 0;
+  aiTip.value = "AI думает";
+
+  thinkingInterval = setInterval(() => {
+    if (!aiLoading.value) {
+      clearInterval(thinkingInterval);
+      thinkingInterval = null;
+      return;
+    }
+
+    dots = (dots + 1) % 4;
+    aiTip.value = "AI думает" + ".".repeat(dots);
+  }, 350);
+}
 
 async function fetchAiTip() {
-  aiTip.value = "Генерируется персональный совет…";
+  const user = getUserSafe();
+  aiLoading.value = true;
+  aiTip.value = "";
+  startThinkingDots();
 
   try {
-    const prompt = `Ты помощник экспериментальной платформы MindQ Lab. 
-Пользователь: ${auth.user.displayName}, возраст ${auth.user.age}, профессия: ${
-      auth.user.profession
+    const prompt = `Ты помощник экспериментальной платформы MindQ Lab.
+Пользователь: ${user.displayName}, возраст ${user.age}, профессия: ${
+      user.profession
     }.
-Кратко о себе: ${auth.user.aboutYourself || "Нет информации"}.
+Кратко о себе: ${user.aboutYourself || "Нет информации"}.
 
-Предложи практические рекомендации и конкретные действия, что пользователю изучить или попробовать в MindQ Lab: когнитивные тесты, развивающие игры, медитации, эксперименты и аналитические инструменты. 
-Совет должен быть на русском языке, в дружелюбной форме, с примерами, **не более 20 строк**.`;
+Дай рекомендации, что ему изучить или попробовать в MindQ Lab.
+Формат: советы с конкретными действиями. 
+Ответ на русском. Не более 10 строк.`; // ← LIMIT ENFORCED
 
     const res = await fetch("/.netlify/functions/groqChat", {
       method: "POST",
@@ -258,14 +310,17 @@ async function fetchAiTip() {
 
     const data = await res.json();
 
-    if (data?.choices?.[0]?.message?.content) {
-      aiTip.value = data.choices[0].message.content;
+    aiLoading.value = false;
+
+    if (data && typeof data.reply === "string") {
+      aiTip.value = data.reply.trim();
     } else {
-      aiTip.value = "Извини, AI не смог дать совет. Попробуй ещё раз.";
+      aiTip.value = "AI не смог сформировать совет. Попробуй ещё раз.";
     }
   } catch (err) {
     console.error("AI Tip fetch error:", err);
-    aiTip.value = "Произошла ошибка при получении совета AI.";
+    aiLoading.value = false;
+    aiTip.value = "Произошла ошибка при обращении к AI.";
   }
 }
 </script>
@@ -311,6 +366,20 @@ async function fetchAiTip() {
     transform: translate(var(--float-x, 10px), var(--float-y, -15px)) scale(1.3);
     opacity: 0.8;
   }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease-out forwards;
 }
 
 .animate-gradient {
