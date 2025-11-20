@@ -543,8 +543,8 @@ const isMusicPlaying = ref(false);
 const musicVolume = ref(30); // Default volume at 30%
 const isYouTubeReady = ref(false);
 
-// YouTube meditation music video ID (audio only)
-const MEDITATION_MUSIC_VIDEO_ID = "lTRiuFIWV54"; // 3-hour relaxing meditation music
+// YouTube meditation music video ID (8-hour ambient music)
+const MEDITATION_MUSIC_VIDEO_ID = "lTRiuFIWV54"; // 8-hour peaceful relaxing music
 
 // Stats
 const totalSessions = ref(47);
@@ -923,10 +923,20 @@ const playMusic = () => {
   }
   
   try {
+    // Check if player is ready and play
+    const playerState = youtubePlayer.value.getPlayerState();
+    if (playerState === -1 || playerState === 5) {
+      // Unstarted or cued, seek to start position and play
+      youtubePlayer.value.seekTo(16, true);
+    }
     youtubePlayer.value.playVideo();
     isMusicPlaying.value = true;
   } catch (err) {
     console.log("YouTube play error:", err);
+    // Try to reinitialize if there's an error
+    isYouTubeReady.value = false;
+    youtubePlayer.value = null;
+    initYouTubePlayer();
   }
 };
 
@@ -978,15 +988,32 @@ const createPlayer = () => {
       controls: 0,
       loop: 1,
       playlist: MEDITATION_MUSIC_VIDEO_ID,
-      start: 16, // Start at 20 seconds to skip intro
+      start: 16, // Start at 16 seconds to skip intro
     },
     events: {
       onReady: (event) => {
         isYouTubeReady.value = true;
         event.target.setVolume(musicVolume.value);
-        event.target.seekTo(16, true); // Seek to 20 seconds
+        event.target.seekTo(16, true); // Seek to 16 seconds
         event.target.playVideo();
         isMusicPlaying.value = true;
+      },
+      onStateChange: (event) => {
+        // YouTube Player States: -1 (unstarted), 0 (ended), 1 (playing), 2 (paused), 3 (buffering), 5 (video cued)
+        if (event.data === 0) {
+          // Video ended, restart from beginning (16 seconds)
+          event.target.seekTo(16, true);
+          event.target.playVideo();
+        } else if (event.data === 1) {
+          // Playing
+          isMusicPlaying.value = true;
+        } else if (event.data === 2) {
+          // Paused
+          if (isMusicPlaying.value && !isSessionPaused.value) {
+            // If we expect it to be playing but it paused, resume it
+            event.target.playVideo();
+          }
+        }
       },
     },
   });
