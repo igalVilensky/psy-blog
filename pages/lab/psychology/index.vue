@@ -194,6 +194,13 @@ const quickTools = [
     path: "/awareness-tools/emotional-compass"
   },
   {
+    id: "wheel-of-life",
+    title: "Колесо баланса",
+    icon: "fas fa-chart-pie",
+    color: "text-cyan-400",
+    path: "/awareness-tools/wheel-of-life"
+  },
+  {
     id: "mood-tracker",
     title: "Настроение",
     icon: "fas fa-smile",
