@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen text-slate-200">
-    <div class="container mx-auto px-4 xl:px-0 max-w-6xl relative z-10 pt-12">
+    <div class="container mx-auto px-4 xl:px-0 max-w-6xl relative z-10 pt-12 pb-8 md:pb-12">
       <!-- Hero Section -->
       <section v-if="showStartButton" class="text-center mb-12">
         <h1

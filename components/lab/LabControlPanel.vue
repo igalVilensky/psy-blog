@@ -58,7 +58,7 @@
     <!-- Mobile Menu Panel -->
     <div
       class="mobile-menu-panel fixed top-16 left-0 right-0 bg-slate-900 border-b border-cyan-500/20 z-50 transition-all duration-300 overflow-y-auto"
-      :class="mobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'"
+      :class="mobileMenuOpen ? 'max-h-[65%] opacity-100' : 'max-h-0 opacity-0'"
     >
       <div class="p-4 space-y-4">
         <!-- Lab Logo Mobile -->
