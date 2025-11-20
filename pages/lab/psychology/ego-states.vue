@@ -1,4 +1,3 @@
-<!-- pages/lab/psychology/ego-states.vue -->
 <template>
   <div class="min-h-screen bg-slate-950 px-4 sm:px-6 lg:px-8 py-8">
     <div class="max-w-7xl mx-auto">
@@ -92,7 +91,7 @@
         </div>
       </div>
 
-      <!-- Ego State Cards with Enhanced Interactivity -->
+      <!-- Ego State Cards (Tabs on Mobile, Grid on Desktop) -->
       <div class="mb-12">
         <h2
           class="text-xl md:text-2xl font-bold text-white mb-6 flex items-center gap-3"
@@ -102,29 +101,84 @@
           ></span>
           Три эго-состояния личности
         </h2>
-        <div
-          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
-        >
-          <EgoStateCard
+
+        <!-- Mobile Tabs -->
+        <div class="md:hidden flex space-x-1 bg-slate-800/50 p-1 rounded-xl mb-4 overflow-x-auto">
+          <button
             v-for="state in egoStates"
             :key="state.id"
-            :state="state"
-            :is-active="activeState === state.id"
-            :usage-percentage="getStateUsage(state.id)"
             @click="setActiveState(state.id)"
-          />
+            class="flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all duration-200 whitespace-nowrap"
+            :class="activeState === state.id ? 'bg-slate-700 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'"
+          >
+             <i :class="[state.icon, 'mr-2']"></i>
+             {{ state.title }}
+          </button>
+        </div>
+
+        <!-- Cards Container -->
+        <!-- Added -mb-[2px] to overlap with details container, items-end for bottom alignment -->
+        <!-- Cards Container -->
+        <!-- Grid overlaps details container by 2px. Wrappers handle the gap via padding. -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 relative z-10 -mb-[2px]">
+           <!-- On mobile, only show active state. On desktop, show all. -->
+          <template v-for="state in egoStates" :key="state.id">
+             <div 
+               v-show="isMobile ? activeState === state.id : true" 
+               class="h-full flex flex-col transition-all duration-300"
+               :class="activeState === state.id ? 'pb-0 z-20' : 'pb-6 z-10'"
+             >
+                <EgoStateCard
+                  :state="state"
+                  :is-active="activeState === state.id"
+                  :usage-percentage="getStateUsage(state.id)"
+                  @click="setActiveState(state.id)"
+                  class="h-full"
+                />
+             </div>
+          </template>
         </div>
 
         <!-- Detailed Info for Active State -->
-        <transition name="slide-fade">
+        <!-- Added dynamic rounded corners logic and border matching -->
+        <transition name="fade" mode="out-in">
           <div
             v-if="activeState"
-            class="mt-6 bg-slate-800/30 rounded-2xl p-6 border border-cyan-500/20"
+            :key="activeState"
+            class="rounded-2xl p-6 border-2 relative z-0"
+            :class="{
+              // Parent state (cyan) - left card
+              'bg-cyan-950/50 rounded-tl-none border-cyan-500/50': activeState === 'parent' && !isMobile,
+              'bg-cyan-950/50 rounded-t-none border-cyan-500/50': activeState === 'parent' && isMobile,
+              // Adult state (emerald) - center card
+              'bg-emerald-950/50 border-emerald-500/50': activeState === 'adult' && !isMobile,
+              'bg-emerald-950/50 rounded-t-none border-emerald-500/50': activeState === 'adult' && isMobile,
+              // Child state (orange) - right card
+              'bg-orange-950/50 rounded-tr-none border-orange-500/50': activeState === 'child' && !isMobile,
+              'bg-orange-950/50 rounded-t-none border-orange-500/50': activeState === 'child' && isMobile,
+            }"
           >
+            <!-- Border cover for seamless merge - hides border where card connects -->
+            <div 
+              v-if="!isMobile"
+              class="absolute top-0 h-[2px] z-10"
+              :class="{
+                'left-0 w-1/3 bg-cyan-950/50': activeState === 'parent',
+                'left-1/3 w-1/3 bg-emerald-950/50': activeState === 'adult',
+                'right-0 w-1/3 bg-orange-950/50': activeState === 'child',
+              }"
+              style="margin-top: -2px;"
+            ></div>
+            
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <h3
-                  class="text-lg font-semibold text-cyan-400 mb-3 flex items-center gap-2"
+                  class="text-lg font-semibold mb-3 flex items-center gap-2"
+                  :class="{
+                    'text-cyan-400': activeState === 'parent',
+                    'text-emerald-400': activeState === 'adult',
+                    'text-orange-400': activeState === 'child',
+                  }"
                 >
                   <i class="fas fa-lightbulb"></i>
                   Когда это состояние полезно
@@ -142,7 +196,11 @@
               </div>
               <div>
                 <h3
-                  class="text-lg font-semibold text-orange-400 mb-3 flex items-center gap-2"
+                  class="text-lg font-semibold mb-3 flex items-center gap-2"
+                  :class="{
+                    'text-red-400': activeState === 'child',
+                    'text-orange-400': activeState !== 'child',
+                  }"
                 >
                   <i class="fas fa-exclamation-triangle"></i>
                   Потенциальные ловушки
@@ -163,10 +221,13 @@
         </transition>
       </div>
 
-      <!-- Interactive Assessment Section -->
+      <!-- Interactive Assessment Section (Wizard Flow) -->
       <div
-        class="bg-gradient-to-br from-purple-500/5 to-pink-500/5 rounded-2xl p-4 md:p-8 border border-purple-500/20 mb-12"
+        class="bg-gradient-to-br from-purple-500/5 to-pink-500/5 rounded-2xl p-4 md:p-8 border border-purple-500/20 mb-12 relative overflow-hidden"
       >
+        <!-- Background decoration -->
+        <div class="absolute top-0 right-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl -z-10"></div>
+
         <div class="text-center mb-8">
           <h2 class="text-2xl md:text-3xl font-bold text-white mb-3">
             Интерактивная диагностика
@@ -176,364 +237,364 @@
           </p>
         </div>
 
-        <!-- Progress Bar -->
-        <div class="mb-8">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-slate-400 text-sm">Прогресс</span>
-            <span class="text-cyan-400 text-sm font-mono"
-              >{{ completedScenarios.length }}/{{ scenarios.length }}</span
-            >
-          </div>
-          <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
-            <div
-              class="h-full bg-gradient-to-r from-cyan-500 to-purple-500 transition-all duration-500 ease-out"
-              :style="{
-                width: `${
-                  (completedScenarios.length / scenarios.length) * 100
-                }%`,
-              }"
-            ></div>
-          </div>
+        <!-- Start Screen -->
+        <div v-if="!assessmentStarted" class="text-center py-12">
+           <div class="w-20 h-20 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
+             <i class="fas fa-play text-3xl text-purple-400 ml-1"></i>
+           </div>
+           <h3 class="text-xl font-bold text-white mb-4">Готовы проверить себя?</h3>
+           <p class="text-slate-400 mb-8 max-w-md mx-auto">
+             Вам будет предложено {{ scenarios.length }} жизненных ситуаций. Выберите реакцию, которая вам ближе всего.
+           </p>
+           <button 
+             @click="startAssessment"
+             class="btn-primary text-lg px-8 py-4"
+           >
+             Начать диагностику
+           </button>
         </div>
 
-        <!-- Scenario Selector with Enhanced UI -->
-        <div class="mb-8">
-          <h3
-            class="text-lg font-semibold text-white mb-4 flex items-center gap-2"
-          >
-            <i class="fas fa-sitemap text-purple-400"></i>
-            Выберите жизненную ситуацию:
-          </h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            <button
-              v-for="scenario in scenarios"
-              :key="scenario.id"
-              @click="selectScenario(scenario)"
-              class="scenario-btn group relative overflow-hidden"
-              :class="[
-                selectedScenario?.id === scenario.id ? 'scenario-active' : '',
-                completedScenarios.includes(scenario.id)
-                  ? 'scenario-completed'
-                  : '',
-              ]"
-            >
-              <div class="flex items-center gap-3">
-                <div
-                  class="w-10 h-10 rounded-lg flex items-center justify-center bg-slate-700/50 group-hover:bg-purple-500/20 transition-colors"
-                >
-                  <i :class="scenario.icon" class="text-lg"></i>
-                </div>
-                <div class="flex-1 text-left">
-                  <div class="font-medium">{{ scenario.title }}</div>
-                  <div
-                    class="text-xs text-slate-500 group-hover:text-slate-400"
-                  >
-                    {{ scenario.category }}
-                  </div>
-                </div>
-                <i
-                  v-if="completedScenarios.includes(scenario.id)"
-                  class="fas fa-check-circle text-emerald-400"
-                ></i>
-              </div>
-            </button>
-          </div>
-        </div>
-
-        <!-- Response Options with Better UX -->
-        <transition name="slide-fade">
-          <div v-if="selectedScenario" class="mb-8">
-            <div
-              class="bg-slate-900/50 rounded-xl p-6 mb-6 border border-slate-700/50"
-            >
-              <div class="flex items-start gap-4">
-                <div
-                  class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center flex-shrink-0"
-                >
-                  <i
-                    :class="selectedScenario.icon"
-                    class="text-purple-400 text-xl"
-                  ></i>
-                </div>
-                <div>
-                  <h4 class="text-white font-semibold mb-2">
-                    {{ selectedScenario.title }}
-                  </h4>
-                  <p class="text-slate-300 text-sm">
-                    {{ selectedScenario.description }}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <h3
-              class="text-lg font-semibold text-white mb-4 flex items-center gap-2"
-            >
-              <i class="fas fa-comment-dots text-cyan-400"></i>
-              Как бы вы отреагировали?
-            </h3>
-            <div class="space-y-3">
-              <button
-                v-for="response in selectedScenario.responses"
-                :key="response.egoState"
-                @click="selectResponse(response)"
-                class="response-option group"
-                :class="[
-                  getResponseClass(response.egoState),
-                  userResponse?.egoState === response.egoState
-                    ? 'response-selected'
-                    : '',
-                ]"
+        <!-- Wizard Flow -->
+        <div v-else-if="!assessmentCompleted">
+          <!-- Progress Bar -->
+          <div class="mb-8">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-slate-400 text-sm">Ситуация {{ currentScenarioIndex + 1 }} из {{ scenarios.length }}</span>
+              <span class="text-cyan-400 text-sm font-mono"
+                >{{ Math.round(((currentScenarioIndex + 1) / scenarios.length) * 100) }}%</span
               >
-                <div class="flex items-start gap-4 w-full">
+            </div>
+            <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+              <div
+                class="h-full bg-gradient-to-r from-cyan-500 to-purple-500 transition-all duration-500 ease-out"
+                :style="{
+                  width: `${
+                    ((currentScenarioIndex + 1) / scenarios.length) * 100
+                  }%`,
+                }"
+              ></div>
+            </div>
+          </div>
+
+          <!-- Scenario Content -->
+          <transition name="slide-fade" mode="out-in">
+            <div :key="currentScenario.id" class="mb-8">
+              <!-- Scenario Card -->
+              <div
+                class="bg-slate-900/50 rounded-xl p-6 mb-6 border border-slate-700/50 shadow-xl"
+              >
+                <div class="flex flex-col md:flex-row items-start md:items-center gap-4">
                   <div
-                    class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors"
-                    :class="getStateIconBg(response.egoState)"
+                    class="w-14 h-14 rounded-xl bg-purple-500/20 flex items-center justify-center flex-shrink-0"
                   >
                     <i
-                      :class="getStateIcon(response.egoState)"
-                      class="text-sm"
+                      :class="currentScenario.icon"
+                      class="text-purple-400 text-2xl"
                     ></i>
                   </div>
-                  <div class="flex-1 text-left">
-                    <p class="mb-2">{{ response.text }}</p>
-                    <span
-                      class="text-xs px-2 py-1 rounded-full"
-                      :class="getStateBadgeClass(response.egoState)"
-                    >
-                      {{ getStateLabel(response.egoState) }}
-                    </span>
-                  </div>
-                </div>
-              </button>
-            </div>
-          </div>
-        </transition>
-
-        <!-- Enhanced Results with Animations -->
-        <transition name="fade-scale">
-          <div v-if="userResponse" class="mt-8">
-            <div
-              class="bg-slate-900/70 rounded-2xl p-6 border-2 border-cyan-500/30 backdrop-blur-sm"
-            >
-              <div class="flex items-center gap-3 mb-6">
-                <div
-                  class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center"
-                >
-                  <i class="fas fa-analytics text-cyan-400 text-xl"></i>
-                </div>
-                <h3 class="text-xl md:text-2xl font-bold text-white">
-                  Анализ вашей реакции
-                </h3>
-              </div>
-
-              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                <div
-                  class="bg-slate-800/50 rounded-xl p-5 border border-cyan-500/20"
-                >
-                  <h4
-                    class="text-cyan-400 font-semibold mb-3 flex items-center gap-2"
-                  >
-                    <i class="fas fa-user-circle"></i>
-                    Эго-состояние: {{ getStateLabel(userResponse.egoState) }}
-                  </h4>
-                  <p class="text-slate-300 text-sm leading-relaxed mb-4">
-                    {{ getStateAnalysis(userResponse.egoState) }}
-                  </p>
-                  <div class="flex items-center gap-2 text-xs text-slate-400">
-                    <i class="fas fa-chart-line"></i>
-                    <span
-                      >Частота использования:
-                      {{ getStateUsage(userResponse.egoState) }}%</span
-                    >
-                  </div>
-                </div>
-
-                <div
-                  class="bg-slate-800/50 rounded-xl p-5 border border-purple-500/20"
-                >
-                  <h4
-                    class="text-purple-400 font-semibold mb-3 flex items-center gap-2"
-                  >
-                    <i class="fas fa-lightbulb"></i>
-                    Рекомендация
-                  </h4>
-                  <p class="text-slate-300 text-sm leading-relaxed mb-4">
-                    {{ userResponse.recommendation }}
-                  </p>
-                  <div class="flex items-center gap-2 text-xs text-slate-400">
-                    <i class="fas fa-target"></i>
-                    <span
-                      >Оптимальное состояние: {{ userResponse.optimal }}</span
-                    >
+                  <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xs font-bold tracking-wider text-purple-400 uppercase bg-purple-500/10 px-2 py-0.5 rounded">
+                            {{ currentScenario.category }}
+                        </span>
+                    </div>
+                    <h4 class="text-xl text-white font-bold mb-2">
+                      {{ currentScenario.title }}
+                    </h4>
+                    <p class="text-slate-300 text-base leading-relaxed">
+                      {{ currentScenario.description }}
+                    </p>
                   </div>
                 </div>
               </div>
 
-              <!-- Action Buttons -->
-              <div class="flex flex-col sm:flex-row gap-3">
-                <button
-                  @click="nextScenario"
-                  class="flex-1 px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-500 text-white font-medium hover:from-cyan-600 hover:to-purple-600 transition-all duration-300 shadow-lg hover:shadow-cyan-500/50 flex items-center justify-center gap-2"
-                >
-                  <span>Следующий сценарий</span>
-                  <i class="fas fa-arrow-right"></i>
-                </button>
-                <button
-                  @click="showDetailedInsights = true"
-                  class="px-6 py-3 rounded-xl bg-slate-800 border border-purple-500/30 text-purple-400 font-medium hover:bg-purple-500/10 transition-all duration-300 flex items-center justify-center gap-2"
-                >
-                  <i class="fas fa-chart-pie"></i>
-                  <span>Подробная статистика</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </transition>
-      </div>
-
-      <!-- Pattern Recognition & Insights -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
-        <!-- Pattern Chart -->
-        <div
-          class="lg:col-span-2 bg-slate-800/30 rounded-2xl p-6 border border-slate-700/50"
-        >
-          <div class="flex items-center justify-between mb-6">
-            <h3 class="text-xl font-bold text-white flex items-center gap-2">
-              <i class="fas fa-chart-bar text-cyan-400"></i>
-              Ваши паттерны реакций
-            </h3>
-            <button
-              @click="showInsights = !showInsights"
-              class="text-xs px-3 py-1.5 rounded-lg bg-slate-700/50 text-slate-300 hover:bg-slate-700 transition-colors"
-            >
-              <i class="fas fa-info-circle mr-1"></i>
-              {{ showInsights ? "Скрыть" : "Показать" }} детали
-            </button>
-          </div>
-
-          <div class="h-72 flex items-end justify-between gap-4 mb-6">
-            <div
-              v-for="pattern in patternData"
-              :key="pattern.state"
-              class="flex-1 flex flex-col items-center group cursor-pointer relative"
-              @mouseenter="hoveredPattern = pattern.state"
-              @mouseleave="hoveredPattern = null"
-            >
-              <transition name="slide-up">
-                <div
-                  v-if="hoveredPattern === pattern.state"
-                  class="absolute -top-16 left-1/2 transform -translate-x-1/2 bg-slate-900 border border-cyan-500/50 rounded-lg px-3 py-2 text-xs text-white font-mono shadow-xl z-10 whitespace-nowrap"
-                >
-                  <div class="font-bold text-cyan-400">
-                    {{ pattern.percentage }}%
-                  </div>
-                  <div class="text-slate-400">{{ pattern.count }} реакций</div>
-                </div>
-              </transition>
-
-              <div
-                class="w-full rounded-t-xl transition-all duration-700 ease-out relative overflow-hidden"
-                :class="pattern.color"
-                :style="{ height: `${pattern.percentage}%` }"
+              <h3
+                class="text-lg font-semibold text-white mb-4 flex items-center gap-2"
               >
-                <div
-                  class="absolute inset-0 bg-gradient-to-t from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
-                ></div>
-              </div>
-
-              <div class="text-center mt-3">
-                <div class="text-white font-medium text-sm mb-1">
-                  {{ pattern.label }}
-                </div>
-                <div class="text-slate-500 text-xs font-mono">
-                  {{ pattern.percentage }}%
-                </div>
+                <i class="fas fa-comment-dots text-cyan-400"></i>
+                Как бы вы отреагировали?
+              </h3>
+              
+              <div class="space-y-3">
+                <button
+                  v-for="response in currentScenario.responses"
+                  :key="response.egoState"
+                  @click="selectResponse(response)"
+                  :disabled="!!userResponse"
+                  class="response-option group relative overflow-hidden"
+                  :class="[
+                    userResponse?.egoState === response.egoState
+                      ? 'response-selected ring-2 ring-cyan-500 ring-offset-2 ring-offset-slate-900'
+                      : 'hover:bg-slate-800/50',
+                     !!userResponse && userResponse?.egoState !== response.egoState ? 'opacity-50 grayscale' : ''
+                  ]"
+                >
+                  <div class="flex items-start gap-4 w-full relative z-10">
+                    <div
+                      class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors"
+                      :class="userResponse ? getStateIconBg(response.egoState) : 'bg-slate-700/50 text-slate-400 group-hover:text-white'"
+                    >
+                      <i
+                        :class="getStateIcon(response.egoState)"
+                        class="text-lg"
+                      ></i>
+                    </div>
+                    <div class="flex-1 text-left">
+                      <p class="mb-1 text-base font-medium" :class="userResponse ? 'text-white' : 'text-slate-200'">{{ response.text }}</p>
+                      
+                      <!-- Reveal state only after selection -->
+                      <transition name="fade">
+                          <span
+                            v-if="userResponse"
+                            class="text-xs px-2 py-1 rounded-full inline-block mt-2"
+                            :class="getStateBadgeClass(response.egoState)"
+                          >
+                            {{ getStateLabel(response.egoState) }}
+                          </span>
+                      </transition>
+                    </div>
+                  </div>
+                </button>
               </div>
             </div>
-          </div>
+          </transition>
 
-          <transition name="slide-fade">
-            <div
-              v-if="showInsights"
-              class="bg-slate-900/50 rounded-xl p-4 border border-cyan-500/20"
-            >
-              <h4 class="text-sm font-semibold text-cyan-400 mb-3">
-                💡 Анализ баланса
-              </h4>
-              <p class="text-slate-300 text-sm leading-relaxed">
-                {{ getBalanceAnalysis() }}
-              </p>
+          <!-- Feedback / Result for current step -->
+          <transition name="fade-scale">
+            <div v-if="userResponse" class="mt-8">
+              <div
+                class="bg-slate-900/70 rounded-2xl p-6 border-2 border-cyan-500/30 backdrop-blur-sm relative overflow-hidden"
+              >
+                 <!-- Decorative background -->
+                 <div class="absolute top-0 right-0 w-full h-full bg-gradient-to-b from-cyan-500/5 to-transparent pointer-events-none"></div>
+
+                <div class="flex items-center gap-3 mb-6 relative">
+                  <div
+                    class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center"
+                  >
+                    <i class="fas fa-analytics text-cyan-400 text-xl"></i>
+                  </div>
+                  <h3 class="text-xl md:text-2xl font-bold text-white">
+                    Анализ реакции
+                  </h3>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 relative">
+                  <div
+                    class="bg-slate-800/50 rounded-xl p-5 border border-cyan-500/20"
+                  >
+                    <h4
+                      class="text-cyan-400 font-semibold mb-3 flex items-center gap-2"
+                    >
+                      <i class="fas fa-user-circle"></i>
+                      Ваше состояние: {{ getStateLabel(userResponse.egoState) }}
+                    </h4>
+                    <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                      {{ getStateAnalysis(userResponse.egoState) }}
+                    </p>
+                  </div>
+
+                  <div
+                    class="bg-slate-800/50 rounded-xl p-5 border border-purple-500/20"
+                  >
+                    <h4
+                      class="text-purple-400 font-semibold mb-3 flex items-center gap-2"
+                    >
+                      <i class="fas fa-lightbulb"></i>
+                      Рекомендация
+                    </h4>
+                    <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                      {{ userResponse.recommendation }}
+                    </p>
+                     <div class="flex items-center gap-2 text-xs text-slate-400 bg-slate-900/50 p-2 rounded-lg inline-flex">
+                      <i class="fas fa-target text-purple-400"></i>
+                      <span
+                        >Оптимально: <span class="text-purple-300">{{ userResponse.optimal }}</span></span
+                      >
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-3 relative">
+                  <button
+                    @click="nextStep"
+                    class="flex-1 px-6 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-500 text-white font-bold text-lg hover:from-cyan-600 hover:to-purple-600 transition-all duration-300 shadow-lg hover:shadow-cyan-500/50 flex items-center justify-center gap-2"
+                  >
+                    <span v-if="isLastScenario">Завершить и посмотреть результаты</span>
+                    <span v-else>Следующая ситуация</span>
+                    <i class="fas fa-arrow-right"></i>
+                  </button>
+                </div>
+              </div>
             </div>
           </transition>
         </div>
 
-        <!-- Quick Tips Card -->
-        <div
-          class="bg-gradient-to-br from-emerald-500/10 to-cyan-500/10 rounded-2xl p-6 border border-emerald-500/20"
-        >
-          <div class="flex items-center gap-3 mb-4">
-            <div
-              class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center"
-            >
-              <i class="fas fa-compass text-emerald-400 text-xl"></i>
-            </div>
-            <div>
-              <h3 class="text-lg font-bold text-white">Советы эксперта</h3>
-              <p class="text-slate-400 text-xs">Как работать с состояниями</p>
-            </div>
-          </div>
-
-          <div class="space-y-4">
-            <div
-              class="bg-slate-900/30 rounded-lg p-4 border border-emerald-500/10"
-            >
-              <div class="flex items-start gap-3">
-                <i class="fas fa-check-circle text-emerald-400 mt-1"></i>
-                <div>
-                  <h4 class="text-white font-medium text-sm mb-1">
-                    Баланс — это ключ
-                  </h4>
-                  <p class="text-slate-400 text-xs">
-                    Идеальное распределение: 50% Взрослый, 25% Родитель, 25%
-                    Ребёнок
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div
-              class="bg-slate-900/30 rounded-lg p-4 border border-cyan-500/10"
-            >
-              <div class="flex items-start gap-3">
-                <i class="fas fa-brain text-cyan-400 mt-1"></i>
-                <div>
-                  <h4 class="text-white font-medium text-sm mb-1">
-                    Осознанность
-                  </h4>
-                  <p class="text-slate-400 text-xs">
-                    Замечайте, из какого состояния вы действуете прямо сейчас
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div
-              class="bg-slate-900/30 rounded-lg p-4 border border-purple-500/10"
-            >
-              <div class="flex items-start gap-3">
-                <i class="fas fa-exchange-alt text-purple-400 mt-1"></i>
-                <div>
-                  <h4 class="text-white font-medium text-sm mb-1">Гибкость</h4>
-                  <p class="text-slate-400 text-xs">
-                    Учитесь переключаться между состояниями по необходимости
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+        <!-- Completion Screen -->
+        <div v-else class="text-center py-12">
+           <div class="w-24 h-24 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+             <i class="fas fa-check text-4xl text-emerald-400"></i>
+           </div>
+           <h3 class="text-2xl font-bold text-white mb-4">Диагностика завершена!</h3>
+           <p class="text-slate-400 mb-8 max-w-md mx-auto">
+             Мы проанализировали ваши реакции. Ниже представлены ваши паттерны и рекомендации.
+           </p>
+           <button 
+             @click="restartAssessment"
+             class="px-6 py-3 rounded-xl bg-slate-800 border border-slate-700 text-slate-300 hover:text-white hover:bg-slate-700 transition-all"
+           >
+             <i class="fas fa-redo mr-2"></i>
+             Пройти заново
+           </button>
         </div>
       </div>
+
+      <!-- Pattern Recognition & Insights (Only show after completion) -->
+      <transition name="slide-up">
+        <div v-if="assessmentCompleted" class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
+            <!-- Pattern Chart -->
+            <div
+            class="lg:col-span-2 bg-slate-800/30 rounded-2xl p-6 border border-slate-700/50"
+            >
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                <i class="fas fa-chart-bar text-cyan-400"></i>
+                Ваши паттерны реакций
+                </h3>
+                <button
+                @click="showInsights = !showInsights"
+                class="text-xs px-3 py-1.5 rounded-lg bg-slate-700/50 text-slate-300 hover:bg-slate-700 transition-colors"
+                >
+                <i class="fas fa-info-circle mr-1"></i>
+                {{ showInsights ? "Скрыть" : "Показать" }} детали
+                </button>
+            </div>
+
+            <div class="h-72 flex items-end justify-between gap-4 mb-6 px-4">
+                <div
+                v-for="pattern in patternData"
+                :key="pattern.state"
+                class="flex-1 flex flex-col items-center group cursor-pointer relative h-full justify-end"
+                @mouseenter="hoveredPattern = pattern.state"
+                @mouseleave="hoveredPattern = null"
+                >
+                <transition name="slide-up">
+                    <div
+                    v-if="hoveredPattern === pattern.state"
+                    class="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-slate-900 border border-cyan-500/50 rounded-lg px-3 py-2 text-xs text-white font-mono shadow-xl z-10 whitespace-nowrap"
+                    >
+                    <div class="font-bold text-cyan-400">
+                        {{ pattern.percentage }}%
+                    </div>
+                    <div class="text-slate-400">{{ pattern.count }} реакций</div>
+                    </div>
+                </transition>
+
+                <!-- Bar -->
+                <div
+                    class="w-full max-w-[60px] rounded-t-xl transition-all duration-1000 ease-out relative overflow-hidden"
+                    :class="pattern.color"
+                    :style="{ height: `${Math.max(pattern.percentage, 5)}%` }"
+                >
+                    <div
+                    class="absolute inset-0 bg-gradient-to-t from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
+                    ></div>
+                </div>
+
+                <div class="text-center mt-3">
+                    <div class="text-white font-medium text-sm mb-1">
+                    {{ pattern.label }}
+                    </div>
+                    <div class="text-slate-500 text-xs font-mono">
+                    {{ pattern.percentage }}%
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <transition name="slide-fade">
+                <div
+                v-if="showInsights"
+                class="bg-slate-900/50 rounded-xl p-4 border border-cyan-500/20"
+                >
+                <h4 class="text-sm font-semibold text-cyan-400 mb-3">
+                    💡 Анализ баланса
+                </h4>
+                <p class="text-slate-300 text-sm leading-relaxed">
+                    {{ getBalanceAnalysis() }}
+                </p>
+                </div>
+            </transition>
+            </div>
+
+            <!-- Quick Tips Card -->
+            <div
+            class="bg-gradient-to-br from-emerald-500/10 to-cyan-500/10 rounded-2xl p-6 border border-emerald-500/20"
+            >
+            <div class="flex items-center gap-3 mb-4">
+                <div
+                class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center"
+                >
+                <i class="fas fa-compass text-emerald-400 text-xl"></i>
+                </div>
+                <div>
+                <h3 class="text-lg font-bold text-white">Советы эксперта</h3>
+                <p class="text-slate-400 text-xs">Как работать с состояниями</p>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div
+                class="bg-slate-900/30 rounded-lg p-4 border border-emerald-500/10"
+                >
+                <div class="flex items-start gap-3">
+                    <i class="fas fa-check-circle text-emerald-400 mt-1"></i>
+                    <div>
+                    <h4 class="text-white font-medium text-sm mb-1">
+                        Баланс — это ключ
+                    </h4>
+                    <p class="text-slate-400 text-xs">
+                        Идеальное распределение: 50% Взрослый, 25% Родитель, 25%
+                        Ребёнок
+                    </p>
+                    </div>
+                </div>
+                </div>
+
+                <div
+                class="bg-slate-900/30 rounded-lg p-4 border border-cyan-500/10"
+                >
+                <div class="flex items-start gap-3">
+                    <i class="fas fa-brain text-cyan-400 mt-1"></i>
+                    <div>
+                    <h4 class="text-white font-medium text-sm mb-1">
+                        Осознанность
+                    </h4>
+                    <p class="text-slate-400 text-xs">
+                        Замечайте, из какого состояния вы действуете прямо сейчас
+                    </p>
+                    </div>
+                </div>
+                </div>
+
+                <div
+                class="bg-slate-900/30 rounded-lg p-4 border border-purple-500/10"
+                >
+                <div class="flex items-start gap-3">
+                    <i class="fas fa-exchange-alt text-purple-400 mt-1"></i>
+                    <div>
+                    <h4 class="text-white font-medium text-sm mb-1">Гибкость</h4>
+                    <p class="text-slate-400 text-xs">
+                        Учитесь переключаться между состояниями по необходимости
+                    </p>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+      </transition>
 
       <!-- Course Promotion -->
       <div
@@ -651,21 +712,30 @@
 
 <script setup>
 import EgoStateCard from "~/components/lab/psychology/EgoStateCard.vue";
+import { useWindowSize } from '@vueuse/core';
 
 definePageMeta({
   layout: "laboratory",
 });
 
+const { width } = useWindowSize();
+const isMobile = computed(() => width.value < 768);
+
 const activeState = ref("adult");
-const selectedScenario = ref(null);
+const assessmentStarted = ref(false);
+const assessmentCompleted = ref(false);
+const currentScenarioIndex = ref(0);
 const userResponse = ref(null);
 const hoveredPattern = ref(null);
 const completedScenarios = ref([]);
 const showInsights = ref(false);
-const showDetailedInsights = ref(false);
 const sessionStartTime = ref(Date.now());
 const sessionTime = ref("0:00");
 const sessionResponses = ref({ parent: 0, adult: 0, child: 0 });
+
+// Computed
+const currentScenario = computed(() => scenarios[currentScenarioIndex.value]);
+const isLastScenario = computed(() => currentScenarioIndex.value === scenarios.length - 1);
 
 // Stats
 const stats = computed(() => ({
@@ -703,6 +773,7 @@ const egoStates = [
     description: "Усвоенные модели поведения от родителей и авторитетных фигур",
     icon: "fas fa-user-shield",
     color: "from-blue-500 to-cyan-500",
+    colorName: "cyan",
     characteristics: [
       "Критикующий",
       "Заботливый",
@@ -717,6 +788,7 @@ const egoStates = [
       "Рациональное, объективное восприятие реальности здесь-и-сейчас",
     icon: "fas fa-brain",
     color: "from-emerald-500 to-green-500",
+    colorName: "emerald",
     characteristics: ["Логичный", "Объективный", "Адаптивный", "Решающий"],
   },
   {
@@ -725,6 +797,7 @@ const egoStates = [
     description: "Эмоциональные реакции, спонтанность и творческое начало",
     icon: "fas fa-child",
     color: "from-orange-500 to-red-500",
+    colorName: "orange",
     characteristics: ["Естественный", "Адаптивный", "Бунтующий", "Творческий"],
   },
 ];
@@ -957,26 +1030,37 @@ const setActiveState = (stateId) => {
   activeState.value = stateId;
 };
 
-const selectScenario = (scenario) => {
-  selectedScenario.value = scenario;
+const startAssessment = () => {
+  assessmentStarted.value = true;
+  assessmentCompleted.value = false;
+  currentScenarioIndex.value = 0;
   userResponse.value = null;
+  completedScenarios.value = [];
+  sessionResponses.value = { parent: 0, adult: 0, child: 0 };
+};
+
+const restartAssessment = () => {
+  startAssessment();
 };
 
 const selectResponse = (response) => {
+  if (userResponse.value) return; // Prevent changing answer
   userResponse.value = response;
   sessionResponses.value[response.egoState]++;
 
-  if (!completedScenarios.value.includes(selectedScenario.value.id)) {
-    completedScenarios.value.push(selectedScenario.value.id);
+  if (!completedScenarios.value.includes(currentScenario.value.id)) {
+    completedScenarios.value.push(currentScenario.value.id);
   }
 };
 
-const nextScenario = () => {
-  const currentIndex = scenarios.findIndex(
-    (s) => s.id === selectedScenario.value?.id
-  );
-  const nextIndex = (currentIndex + 1) % scenarios.length;
-  selectScenario(scenarios[nextIndex]);
+const nextStep = () => {
+  if (isLastScenario.value) {
+    assessmentCompleted.value = true;
+    showInsights.value = true;
+  } else {
+    currentScenarioIndex.value++;
+    userResponse.value = null;
+  }
 };
 
 const getStateLabel = (egoState) => {
@@ -998,17 +1082,6 @@ const getStateAnalysis = (egoState) => {
       "Вы руководствуетесь эмоциями и спонтанными реакциями. Это состояние дает доступ к креативности и аутентичным чувствам, но не всегда практично для решения проблем.",
   };
   return analyses[egoState];
-};
-
-const getResponseClass = (egoState) => {
-  const classes = {
-    parent: "border-blue-500/30 hover:border-blue-500/50 hover:bg-blue-500/5",
-    adult:
-      "border-emerald-500/30 hover:border-emerald-500/50 hover:bg-emerald-500/5",
-    child:
-      "border-orange-500/30 hover:border-orange-500/50 hover:bg-orange-500/5",
-  };
-  return classes[egoState];
 };
 
 const getStateIcon = (egoState) => {
@@ -1155,9 +1228,8 @@ const getBalanceAnalysis = () => {
 }
 
 .response-option {
-  @apply p-5 rounded-xl bg-slate-800/30 border transition-all duration-300 
-         text-slate-300 hover:text-white w-full text-left 
-         hover:shadow-lg transform hover:-translate-y-0.5;
+  @apply p-5 rounded-xl bg-slate-800/30 border border-slate-700/50 transition-all duration-300 
+         w-full text-left;
 }
 
 .response-selected {
@@ -1213,6 +1285,16 @@ const getBalanceAnalysis = () => {
 
 .slide-up-leave-to {
   transform: translateY(-10px);
+  opacity: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
 }
 </style>

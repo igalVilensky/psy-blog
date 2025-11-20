@@ -1,36 +1,31 @@
 <!-- components/lab/psychology/EgoStateCard.vue -->
 <template>
   <div
-    class="ego-state-card relative p-6 rounded-2xl border-2 transition-all duration-500 cursor-pointer overflow-hidden group"
+    class="ego-state-card relative p-6 border-2 transition-all duration-300 cursor-pointer overflow-hidden group h-full flex flex-col"
     :class="[
       isActive
-        ? 'scale-105 border-cyan-500/50 bg-cyan-500/5 shadow-2xl shadow-cyan-500/20'
-        : 'border-slate-700/50 bg-slate-800/30 hover:border-slate-600/50 hover:shadow-xl hover:shadow-slate-900/50',
+        ? `border-${state.colorName}-500/50 border-b-0 rounded-t-2xl rounded-b-none bg-${state.colorName}-950/50`
+        : 'bg-slate-800/30 border-slate-700/50 rounded-2xl hover:border-slate-600/50 hover:shadow-xl hover:shadow-slate-900/50',
     ]"
     @click="$emit('click')"
   >
     <!-- Animated Background Gradient -->
     <div
+      v-if="!isActive"
       class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
       :class="`bg-gradient-to-br ${state.color}`"
       style="opacity: 0.03"
     ></div>
 
-    <!-- Pulse Effect on Active -->
-    <div
-      v-if="isActive"
-      class="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-purple-500/10 animate-pulse"
-    ></div>
-
     <!-- Content -->
-    <div class="relative z-10">
+    <div class="relative z-10 flex-1 flex flex-col">
       <!-- Icon with Badge -->
       <div class="flex items-start justify-between mb-4">
         <div
           class="w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 relative"
           :class="[
             isActive
-              ? 'bg-cyan-500/20 text-cyan-400 shadow-lg shadow-cyan-500/30'
+              ? `bg-${state.colorName}-500/20 text-${state.colorName}-400 shadow-lg shadow-${state.colorName}-500/30`
               : 'bg-slate-700/50 text-slate-400 group-hover:text-white group-hover:bg-slate-700/70',
           ]"
         >
@@ -42,7 +37,7 @@
             class="absolute -top-2 -right-2 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300"
             :class="[
               isActive
-                ? 'bg-cyan-500 text-white shadow-lg shadow-cyan-500/50'
+                ? `bg-${state.colorName}-500 text-white shadow-lg shadow-${state.colorName}-500/50`
                 : 'bg-slate-700 text-slate-300 group-hover:bg-slate-600',
             ]"
           >
@@ -62,7 +57,7 @@
         class="text-xl font-bold mb-2 transition-all duration-300 tracking-wide"
         :class="
           isActive
-            ? 'text-cyan-400 drop-shadow-glow'
+            ? `text-${state.colorName}-400 drop-shadow-glow`
             : 'text-white group-hover:text-cyan-300 group-hover:tracking-wider'
         "
       >
@@ -71,20 +66,20 @@
 
       <!-- Description -->
       <p
-        class="text-slate-400 text-sm mb-5 leading-relaxed min-h-[3rem] group-hover:text-slate-300 transition-colors duration-300"
+        class="text-slate-400 text-sm mb-5 leading-relaxed group-hover:text-slate-300 transition-colors duration-300 flex-1"
       >
         {{ state.description }}
       </p>
 
       <!-- Characteristics with Enhanced Styling -->
-      <div class="space-y-2">
+      <div class="space-y-2 mt-auto">
         <div
           v-for="(char, index) in state.characteristics"
           :key="char"
           class="text-xs px-3 py-2 rounded-lg border transition-all duration-300 flex items-center gap-2 transform hover:translate-x-1"
           :class="[
             isActive
-              ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30 shadow-sm'
+              ? `bg-${state.colorName}-500/10 text-${state.colorName}-400 border-${state.colorName}-500/30 shadow-sm`
               : 'bg-slate-700/30 text-slate-500 border-slate-600/30 group-hover:bg-slate-700/50 group-hover:text-slate-300 group-hover:border-slate-500/50',
           ]"
           :style="{ transitionDelay: `${index * 50}ms` }"
@@ -92,7 +87,7 @@
           <div
             class="w-1.5 h-1.5 rounded-full"
             :class="
-              isActive ? 'bg-cyan-400' : 'bg-slate-500 group-hover:bg-slate-400'
+              isActive ? `bg-${state.colorName}-400` : 'bg-slate-500 group-hover:bg-slate-400'
             "
           ></div>
           <span class="font-medium">{{ char }}</span>
@@ -111,11 +106,11 @@
       </div>
 
       <!-- Active State Info -->
-      <div class="mt-4 pt-4 border-t border-cyan-500/30" v-if="isActive">
+      <div class="mt-4 pt-4 border-t" :class="`border-${state.colorName}-500/30`" v-if="isActive">
         <div class="flex items-center justify-between text-xs">
-          <span class="text-cyan-400 font-medium">Активное состояние</span>
+          <span class="font-medium" :class="`text-${state.colorName}-400`">Активное состояние</span>
           <div class="flex items-center gap-1">
-            <i class="fas fa-check-circle text-cyan-400"></i>
+            <i class="fas fa-check-circle" :class="`text-${state.colorName}-400`"></i>
           </div>
         </div>
       </div>
