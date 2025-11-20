@@ -25,7 +25,7 @@
         </div>
 
         <!-- Stats -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-8">
+        <!-- <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-8">
           <div
             class="stat-card group hover:scale-105 transition-transform duration-300"
           >
@@ -89,16 +89,21 @@
               Осознанность
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <!-- Active Session Display -->
       <transition name="slide-fade">
         <div
           v-if="activeSession"
-          class="mb-12 bg-gradient-to-br from-teal-500/10 to-cyan-500/10 rounded-2xl p-6 md:p-8 border border-teal-500/30"
+          class="mb-12 bg-gradient-to-br from-teal-500/10 to-cyan-500/10 rounded-2xl p-6 md:p-8 border border-teal-500/30 relative overflow-hidden"
         >
-          <div class="text-center">
+          <!-- Visuals Background -->
+          <div class="absolute inset-0 rounded-2xl overflow-hidden z-0">
+            <MeditationVisuals :is-active="!isSessionPaused" :intensity="0.5" />
+          </div>
+          
+          <div class="relative z-10 text-center">
             <!-- Session Type -->
             <div class="mb-6">
               <div
@@ -524,6 +529,7 @@
 import MeditationCard from "~/components/lab/psychology/MeditationCard.vue";
 import BreathingCard from "~/components/lab/psychology/BreathingCard.vue";
 import MindfulnessActivityCard from "~/components/lab/psychology/MindfulnessActivityCard.vue";
+import MeditationVisuals from "~/components/lab/psychology/MeditationVisuals.vue";
 
 definePageMeta({
   layout: "laboratory",
