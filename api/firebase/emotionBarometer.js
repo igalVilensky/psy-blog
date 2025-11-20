@@ -51,9 +51,6 @@ export const saveEmotionBarometerEntry = async (
   }
 
   const userRef = doc(firestore, "emotion_barometer", userId);
-  const progressRef = doc(firestore, `users/${userId}/progress/sefirot`);
-  const today = new Date().toISOString().split("T")[0];
-  const dailyRef = doc(firestore, `users/${userId}/daily/${today}`);
 
   const newEntry = {
     emotion: entryData.emotion,
@@ -68,37 +65,6 @@ export const saveEmotionBarometerEntry = async (
   };
 
   try {
-    // Check if daily actions document exists and initialize if not
-    const dailySnap = await getDoc(dailyRef);
-    if (!dailySnap.exists()) {
-      const initialDailyData = {
-        keter: { actions: 0 },
-        chokhmah: { actions: 0 },
-        binah: { actions: 0 },
-        chesed: { actions: 0 },
-        gevurah: { actions: 0 },
-        tiferet: { actions: 0 },
-        netzach: { actions: 0 },
-        hod: { actions: 0 },
-        yesod: { actions: 0 },
-        malkhut: { actions: 0 },
-      };
-      await setDoc(dailyRef, initialDailyData);
-    } else {
-      // Check if max actions (3) for Binah have been reached
-      const dailyData = dailySnap.data();
-      if (dailyData.binah?.actions >= 3) {
-        showNotification(
-          "Достигнуто максимальное количество действий для Бины сегодня.",
-          "warning"
-        );
-        return {
-          success: false,
-          message: "Max daily actions for Binah reached",
-        };
-      }
-    }
-
     // Save the Emotion Barometer entry
     const docSnap = await getDoc(userRef);
     if (docSnap.exists()) {
@@ -113,34 +79,23 @@ export const saveEmotionBarometerEntry = async (
       });
     }
 
-    // Update Sefirot progress (add 10 points to Binah)
-    await updateDoc(progressRef, {
-      "binah.points": increment(10),
-      "binah.lastActive": new Date(),
-    });
-
-    // Update daily actions (add 1 action to Binah)
-    await updateDoc(dailyRef, {
-      "binah.actions": increment(1),
-    });
-
     showNotification(
-      "Запись успешно сохранена и прогресс обновлен!",
+      "Запись успешно сохранена!",
       "success"
     );
     return {
       success: true,
-      message: "Entry saved and progress updated successfully",
+      message: "Entry saved successfully",
     };
   } catch (error) {
-    console.error("Error saving entry or updating progress:", error);
+    console.error("Error saving entry:", error);
     showNotification(
-      "Ошибка сохранения записи или обновления прогресса. Пожалуйста, попробуйте еще раз.",
+      "Ошибка сохранения записи. Пожалуйста, попробуйте еще раз.",
       "error"
     );
     return {
       success: false,
-      message: "Failed to save entry or update progress",
+      message: "Failed to save entry",
     };
   }
 };

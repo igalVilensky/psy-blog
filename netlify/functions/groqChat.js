@@ -33,7 +33,12 @@ export async function handler(event, context) {
       };
     }
 
-    const { prompt: rawPrompt, user } = parsed;
+    const {
+      prompt: rawPrompt,
+      user,
+      maxLines = 10,
+      systemPrompt = "Ответь на русском языке. Дай практичные, короткие шаги и рекомендации.",
+    } = parsed;
 
     if (!rawPrompt || typeof rawPrompt !== "string") {
       return {
@@ -57,7 +62,8 @@ export async function handler(event, context) {
 Профессия: ${userProfession}
 О себе: ${userAbout}
 
-Ответь на русском языке. Дай практичные, короткие шаги и рекомендации; в конечном выводе оставь не более 10 строк (line breaks).`;
+${systemPrompt}
+В конечном выводе оставь не более ${maxLines} строк (line breaks).`;
 
     // 4) Call Groq
     const groqRes = await fetch(
@@ -71,7 +77,7 @@ export async function handler(event, context) {
         body: JSON.stringify({
           model: "llama-3.3-70b-versatile",
           messages: [{ role: "user", content: prompt }],
-          max_tokens: 300,
+          max_tokens: 800,
         }),
       }
     );
@@ -111,12 +117,12 @@ export async function handler(event, context) {
       assistantContent = JSON.stringify(groqJson).slice(0, 1000);
     }
 
-    // 7) Truncate to first 10 non-empty lines
+    // 7) Truncate to requested max lines (default 10)
     const lines = assistantContent
       .split(/\r?\n/)
       .map((l) => l.trim())
       .filter((l) => l.length > 0)
-      .slice(0, 10);
+      .slice(0, maxLines);
 
     const reply = lines.join("\n");
 
