@@ -163,8 +163,9 @@
         </div>
 
         <!-- Инструменты Dropdown (Logged-in only) -->
-        <div v-if="auth.user" class="relative group">
-          <button
+        <ClientOnly>
+          <div v-if="auth.user" class="relative group">
+            <button
             class="flex items-center space-x-2 px-3.5 py-2 rounded-lg text-[15px] font-medium text-slate-300 hover:text-white hover:bg-slate-800/50 transition-all duration-200"
             :class="{ 'bg-slate-800/50 text-white': isToolsRouteActive }"
           >
@@ -227,7 +228,8 @@
               </NuxtLink>
             </div>
           </div>
-        </div>
+          </div>
+        </ClientOnly>
 
         <!-- Сообщество Dropdown -->
         <div class="relative group">
@@ -298,7 +300,31 @@
         </NuxtLink>
 
         <!-- Profile / Auth Section -->
-        <div v-if="auth.user" class="relative group ml-2">
+        <ClientOnly>
+          <template #fallback>
+            <!-- Loading Skeleton State -->
+            <div class="flex items-center space-x-2 ml-2">
+              <div class="px-3.5 py-2 rounded-lg border border-slate-700/50 animate-pulse">
+                <div class="w-12 h-4 bg-slate-700/50 rounded"></div>
+              </div>
+              <div class="px-3.5 py-2 rounded-lg bg-slate-700/50 animate-pulse">
+                <div class="w-20 h-4 bg-slate-600/50 rounded"></div>
+              </div>
+            </div>
+          </template>
+
+          <!-- Loading Skeleton State (client-side) -->
+          <div v-if="auth.loading" class="flex items-center space-x-2 ml-2">
+            <div class="px-3.5 py-2 rounded-lg border border-slate-700/50 animate-pulse">
+              <div class="w-12 h-4 bg-slate-700/50 rounded"></div>
+            </div>
+            <div class="px-3.5 py-2 rounded-lg bg-slate-700/50 animate-pulse">
+              <div class="w-20 h-4 bg-slate-600/50 rounded"></div>
+            </div>
+          </div>
+
+          <!-- Logged-in State -->
+        <div v-else-if="auth.user" class="relative group ml-2">
           <button
             class="flex items-center space-x-2 px-3.5 py-2 rounded-lg hover:bg-slate-800/50 transition-all duration-200 border border-slate-700/50"
           >
@@ -370,6 +396,7 @@
             Регистрация
           </NuxtLink>
         </div>
+        </ClientOnly>
       </div>
 
       <!-- Mobile Hamburger Menu -->
@@ -579,8 +606,9 @@
           </div>
 
           <!-- Инструменты (Logged-in only) -->
-          <div v-if="auth.user">
-            <button
+          <ClientOnly>
+            <div v-if="auth.user">
+              <button
               @click="toggleMobileSubmenu('tools')"
               class="w-full flex items-center justify-between p-3 rounded-lg bg-slate-800/50 hover:bg-slate-800/70 transition-all duration-200 border border-slate-700/50"
               :class="{ 'bg-slate-800/70': isToolsRouteActive }"
@@ -653,8 +681,9 @@
                   <span>Ежедневная искра роста</span>
                 </NuxtLink>
               </div>
+              </div>
             </div>
-          </div>
+          </ClientOnly>
 
           <!-- Сообщество -->
           <div>
@@ -740,7 +769,33 @@
 
           <!-- Auth Section -->
           <div class="pt-3 border-t border-slate-800/60 mt-3">
-            <template v-if="auth.user">
+            <ClientOnly>
+              <template #fallback>
+                <!-- Loading Skeleton State (SSR) -->
+                <div class="space-y-2">
+                  <div class="p-3 rounded-lg bg-slate-800/50 border border-slate-700/50 animate-pulse">
+                    <div class="h-4 bg-slate-700/50 rounded w-3/4"></div>
+                  </div>
+                  <div class="p-3 rounded-lg bg-slate-700/50 animate-pulse">
+                    <div class="h-4 bg-slate-600/50 rounded w-1/2"></div>
+                  </div>
+                </div>
+              </template>
+
+              <!-- Loading Skeleton State (client-side) -->
+              <template v-if="auth.loading">
+                <div class="space-y-2">
+                  <div class="p-3 rounded-lg bg-slate-800/50 border border-slate-700/50 animate-pulse">
+                    <div class="h-4 bg-slate-700/50 rounded w-3/4"></div>
+                  </div>
+                  <div class="p-3 rounded-lg bg-slate-700/50 animate-pulse">
+                    <div class="h-4 bg-slate-600/50 rounded w-1/2"></div>
+                  </div>
+                </div>
+              </template>
+
+              <!-- Logged-in State -->
+            <template v-else-if="auth.user">
               <div
                 class="mb-3 p-3 rounded-lg bg-slate-800/50 border border-slate-700/50"
               >
@@ -777,6 +832,8 @@
                 </button>
               </div>
             </template>
+
+            <!-- Logged-out State -->
             <template v-else>
               <div class="space-y-2">
                 <NuxtLink
@@ -799,6 +856,7 @@
                 </NuxtLink>
               </div>
             </template>
+            </ClientOnly>
           </div>
         </div>
       </div>
@@ -883,8 +941,7 @@ const formattedUsername = computed(() => {
   return auth.user.displayName.replace(/\s/g, "-");
 });
 
-onMounted(async () => {
-  await auth.initAuth();
+onMounted(() => {
   document.addEventListener("click", handleOutsideClick);
 });
 

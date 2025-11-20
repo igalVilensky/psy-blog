@@ -16,6 +16,7 @@ export const useAuthStore = defineStore("auth", {
 
   actions: {
     async initAuth() {
+      this.loading = true;
       const auth = getAuth();
 
       return new Promise((resolve) => {
