@@ -68,7 +68,7 @@ export default defineNuxtConfig({
       try {
         // Fetch all published blog posts from Sanity
         const posts = await client.fetch(`
-          *[_type == "post" && defined(slug.current)] {
+          *[_type == "post" && defined(slug.current) && !(_id in path("drafts.**"))] {
             "slug": slug.current,
             _updatedAt,
             publishedAt
