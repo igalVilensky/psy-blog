@@ -28,16 +28,18 @@
       <div class="hidden lg:flex items-center space-x-2">
         <!-- Лаборатория Dropdown -->
         <div class="relative group">
-          <button
+          <NuxtLink
+            to="/lab"
             class="flex items-center space-x-2 px-3.5 py-2 rounded-lg text-[15px] font-medium text-slate-300 hover:text-white hover:bg-slate-800/50 transition-all duration-200"
             :class="{ 'bg-slate-800/50 text-white': isLabRouteActive }"
+            @click="closeDropdown"
           >
             <i class="fas fa-flask text-cyan-400"></i>
             <span>Лаборатория</span>
             <i
               class="fas fa-chevron-down text-xs text-slate-400 group-hover:text-slate-300 transition-transform duration-200 group-hover:rotate-180"
             ></i>
-          </button>
+          </NuxtLink>
           <div
             class="absolute top-full left-0 mt-1 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200"
           >
@@ -79,6 +81,24 @@
               >
                 <i class="fas fa-infinity text-green-400 w-4"></i>
                 <span>Медитация</span>
+              </NuxtLink>
+              <NuxtLink
+                to="/lab/analysis"
+                class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors duration-150"
+                exact-active-class="bg-slate-700/50 text-white"
+                @click="closeDropdown"
+              >
+                <i class="fas fa-chart-line text-pink-400 w-4"></i>
+                <span>Обсерватория роста</span>
+              </NuxtLink>
+              <NuxtLink
+                to="/community"
+                class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors duration-150"
+                exact-active-class="bg-slate-700/50 text-white"
+                @click="closeDropdown"
+              >
+                <i class="fas fa-users text-yellow-400 w-4"></i>
+                <span>Сообщество</span>
               </NuxtLink>
             </div>
           </div>
@@ -394,24 +414,32 @@
         <div class="p-4 space-y-2">
           <!-- Лаборатория -->
           <div>
-            <button
-              @click="toggleMobileSubmenu('lab')"
-              class="w-full flex items-center justify-between p-3 rounded-lg bg-slate-800/50 hover:bg-slate-800/70 transition-all duration-200 border border-slate-700/50"
+            <div
+              class="w-full flex items-center justify-between p-1 rounded-lg bg-slate-800/50 border border-slate-700/50"
               :class="{ 'bg-slate-800/70': isLabRouteActive }"
             >
-              <div class="flex items-center space-x-4">
+              <NuxtLink
+                to="/lab"
+                class="flex-1 flex items-center space-x-4 p-2 rounded-lg hover:bg-slate-700/50 transition-all duration-200"
+                @click="closeDropdown"
+              >
                 <i class="fas fa-flask text-cyan-400"></i>
                 <span class="font-medium text-slate-200">Лаборатория</span>
-              </div>
-              <i
-                class="fas fa-chevron-down text-slate-400 text-sm transition-transform duration-200"
-                :class="[
-                  mobileSubmenuStates.lab || isLabRouteActive
-                    ? 'rotate-180'
-                    : '',
-                ]"
-              ></i>
-            </button>
+              </NuxtLink>
+              <button
+                @click="toggleMobileSubmenu('lab')"
+                class="p-2 rounded-lg hover:bg-slate-700/50 transition-colors duration-200"
+              >
+                <i
+                  class="fas fa-chevron-down text-slate-400 text-sm transition-transform duration-200"
+                  :class="[
+                    mobileSubmenuStates.lab || isLabRouteActive
+                      ? 'rotate-180'
+                      : '',
+                  ]"
+                ></i>
+              </button>
+            </div>
             <div
               class="mt-1.5 rounded-lg overflow-hidden transition-all duration-300 ease-in-out"
               :class="[
@@ -456,6 +484,24 @@
                 >
                   <i class="fas fa-infinity text-green-400 text-xs w-4"></i>
                   <span>Медитация</span>
+                </NuxtLink>
+                <NuxtLink
+                  to="/lab/analysis"
+                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
+                  exact-active-class="bg-slate-700/50 text-white"
+                  @click="closeDropdown"
+                >
+                  <i class="fas fa-chart-line text-pink-400 text-xs w-4"></i>
+                  <span>Обсерватория роста</span>
+                </NuxtLink>
+                <NuxtLink
+                  to="/community"
+                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
+                  exact-active-class="bg-slate-700/50 text-white"
+                  @click="closeDropdown"
+                >
+                  <i class="fas fa-users text-yellow-400 text-xs w-4"></i>
+                  <span>Сообщество</span>
                 </NuxtLink>
               </div>
             </div>
