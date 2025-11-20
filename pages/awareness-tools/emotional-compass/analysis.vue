@@ -16,11 +16,11 @@
         </div>
 
         <!-- Analysis Section -->
-        <div class="bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-cyan-500/30 p-6 sm:p-8 shadow-[0_0_30px_rgba(6,182,212,0.1)]">
-          <div v-if="entries.length > 0">
-             <EmotionalAnalysis :patterns="emotionPatterns" :entries="entries" />
-          </div>
-          <div v-else class="text-center py-12">
+        <div v-if="entries.length > 0">
+           <EmotionalAnalysis :patterns="emotionPatterns" :entries="entries" />
+        </div>
+        <div v-else class="bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-cyan-500/30 p-6 sm:p-8 shadow-[0_0_30px_rgba(6,182,212,0.1)]">
+          <div class="text-center py-12">
             <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-800 flex items-center justify-center">
               <i class="fas fa-database text-slate-600 text-2xl"></i>
             </div>
