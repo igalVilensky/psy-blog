@@ -188,6 +188,37 @@
                 <span>Завершить</span>
               </button>
             </div>
+
+            <!-- Music Controls -->
+            <div class="mt-6 pt-6 border-t border-teal-500/20">
+              <div class="flex items-center justify-center gap-4">
+                <button
+                  @click="toggleMusic"
+                  class="px-4 py-2 rounded-lg bg-slate-800/50 border border-slate-600/50 text-slate-300 hover:text-teal-400 hover:border-teal-500/50 transition-all duration-300 flex items-center gap-2"
+                >
+                  <i
+                    :class="isMusicPlaying ? 'fas fa-volume-up' : 'fas fa-volume-mute'"
+                  ></i>
+                  <span>{{ isMusicPlaying ? "Музыка вкл" : "Музыка выкл" }}</span>
+                </button>
+                <div
+                  v-if="isMusicPlaying"
+                  class="flex items-center gap-2"
+                >
+                  <i class="fas fa-volume-down text-slate-500 text-sm"></i>
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    v-model="musicVolume"
+                    @input="updateVolume"
+                    class="w-24 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-teal-500"
+                  />
+                  <i class="fas fa-volume-up text-slate-500 text-sm"></i>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </transition>
@@ -212,7 +243,7 @@
             v-for="technique in meditationTechniques"
             :key="technique.id"
             :technique="technique"
-            @start="startMeditation(technique)"
+            @start="(tech, dur) => startMeditation(tech, dur)"
           />
         </div>
       </div>
@@ -235,7 +266,7 @@
             v-for="breathing in breathingExercises"
             :key="breathing.id"
             :exercise="breathing"
-            @start="startBreathing(breathing)"
+            @start="(ex, dur) => startBreathing(ex, dur)"
           />
         </div>
       </div>
@@ -483,6 +514,9 @@
         </div>
       </div>
     </div>
+    
+    <!-- Hidden YouTube Player for Background Music -->
+    <div id="youtube-player" style="display: none;"></div>
   </div>
 </template>
 
@@ -502,6 +536,15 @@ const sessionTotalTime = ref(0);
 const isSessionPaused = ref(false);
 const sessionMessage = ref("");
 let sessionInterval = null;
+
+// Music player state (YouTube)
+const youtubePlayer = ref(null);
+const isMusicPlaying = ref(false);
+const musicVolume = ref(30); // Default volume at 30%
+const isYouTubeReady = ref(false);
+
+// YouTube meditation music video ID (audio only)
+const MEDITATION_MUSIC_VIDEO_ID = "lTRiuFIWV54"; // 3-hour relaxing meditation music
 
 // Stats
 const totalSessions = ref(47);
@@ -739,18 +782,28 @@ const formatTime = (seconds) => {
   return `${mins}:${secs.toString().padStart(2, "0")}`;
 };
 
-const startMeditation = (technique) => {
+const startMeditation = (technique, selectedDuration) => {
+  console.log("🧘 Starting meditation:", technique);
+  console.log("📊 Selected duration:", selectedDuration);
+  console.log("📊 Duration array:", technique.duration);
+  
   activeSession.value = technique;
-  sessionTotalTime.value = technique.duration[1] * 60; // Use middle duration as default
+  // Use selectedDuration if provided, otherwise fallback to middle duration
+  const duration = selectedDuration || technique.duration[1];
+  console.log("⏱️ Final duration used:", duration, "minutes");
+  
+  sessionTotalTime.value = duration * 60;
   sessionTimeRemaining.value = sessionTotalTime.value;
   isSessionPaused.value = false;
   sessionMessage.value = "Найдите удобное положение и закройте глаза...";
   startSessionTimer();
 };
 
-const startBreathing = (exercise) => {
+const startBreathing = (exercise, selectedDuration) => {
   activeSession.value = exercise;
-  sessionTotalTime.value = exercise.duration[1] * 60;
+  // Use selectedDuration if provided, otherwise fallback to middle duration
+  const duration = selectedDuration || exercise.duration[1];
+  sessionTotalTime.value = duration * 60;
   sessionTimeRemaining.value = sessionTotalTime.value;
   isSessionPaused.value = false;
   sessionMessage.value = `Следуйте паттерну: ${exercise.pattern}`;
@@ -795,11 +848,25 @@ const startSessionTimer = () => {
 const pauseSession = () => {
   isSessionPaused.value = true;
   sessionMessage.value = "Практика приостановлена";
+  if (isMusicPlaying.value && youtubePlayer.value) {
+    try {
+      youtubePlayer.value.pauseVideo();
+    } catch (err) {
+      console.log("YouTube pause error:", err);
+    }
+  }
 };
 
 const resumeSession = () => {
   isSessionPaused.value = false;
   sessionMessage.value = "Продолжаем практику...";
+  if (isMusicPlaying.value && youtubePlayer.value) {
+    try {
+      youtubePlayer.value.playVideo();
+    } catch (err) {
+      console.log("YouTube resume error:", err);
+    }
+  }
 };
 
 const endSession = () => {
@@ -817,6 +884,9 @@ const endSession = () => {
   sessionTimeRemaining.value = 0;
   sessionTotalTime.value = 0;
   isSessionPaused.value = false;
+  
+  // Stop music when session ends
+  stopMusic();
 };
 
 const completeSession = () => {
@@ -833,11 +903,98 @@ const completeSession = () => {
     activeSession.value = null;
     sessionTimeRemaining.value = 0;
     sessionTotalTime.value = 0;
+    stopMusic();
   }, 3000);
+};
+
+// YouTube Music control methods
+const toggleMusic = () => {
+  if (isMusicPlaying.value) {
+    stopMusic();
+  } else {
+    playMusic();
+  }
+};
+
+const playMusic = () => {
+  if (!isYouTubeReady.value || !youtubePlayer.value) {
+    initYouTubePlayer();
+    return;
+  }
+  
+  try {
+    youtubePlayer.value.playVideo();
+    isMusicPlaying.value = true;
+  } catch (err) {
+    console.log("YouTube play error:", err);
+  }
+};
+
+const stopMusic = () => {
+  if (!youtubePlayer.value) return;
+  
+  try {
+    youtubePlayer.value.pauseVideo();
+    isMusicPlaying.value = false;
+  } catch (err) {
+    console.log("YouTube stop error:", err);
+  }
+};
+
+const updateVolume = () => {
+  if (!youtubePlayer.value) return;
+  try {
+    youtubePlayer.value.setVolume(musicVolume.value);
+  } catch (err) {
+    console.log("YouTube volume error:", err);
+  }
+};
+
+const initYouTubePlayer = () => {
+  if (process.client && !youtubePlayer.value) {
+    // Load YouTube IFrame API
+    if (!window.YT) {
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      const firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+      
+      window.onYouTubeIframeAPIReady = () => {
+        createPlayer();
+      };
+    } else {
+      createPlayer();
+    }
+  }
+};
+
+const createPlayer = () => {
+  youtubePlayer.value = new window.YT.Player('youtube-player', {
+    height: '0',
+    width: '0',
+    videoId: MEDITATION_MUSIC_VIDEO_ID,
+    playerVars: {
+      autoplay: 0,
+      controls: 0,
+      loop: 1,
+      playlist: MEDITATION_MUSIC_VIDEO_ID,
+      start: 16, // Start at 20 seconds to skip intro
+    },
+    events: {
+      onReady: (event) => {
+        isYouTubeReady.value = true;
+        event.target.setVolume(musicVolume.value);
+        event.target.seekTo(16, true); // Seek to 20 seconds
+        event.target.playVideo();
+        isMusicPlaying.value = true;
+      },
+    },
+  });
 };
 
 onUnmounted(() => {
   if (sessionInterval) clearInterval(sessionInterval);
+  stopMusic();
 });
 </script>
 

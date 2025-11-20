@@ -66,7 +66,7 @@
           <button
             v-for="duration in exercise.duration"
             :key="duration"
-            @click="$emit('start', { ...exercise, selectedDuration: duration })"
+            @click="$emit('start', exercise, duration)"
             class="text-xs px-4 py-2 rounded-lg bg-slate-700/30 text-slate-400 border border-slate-600/30 hover:bg-cyan-500/20 hover:border-cyan-500/30 hover:text-cyan-400 transition-all duration-300 font-medium"
           >
             {{ duration }} мин
