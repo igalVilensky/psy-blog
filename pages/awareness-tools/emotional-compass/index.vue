@@ -1,106 +1,77 @@
 <template>
-  <div class="relative min-h-screen">
-    <div class="container mx-auto px-4 xl:px-0 max-w-6xl relative z-10 pt-6">
-      <!-- Hero Section (hidden when showStartButton is false) -->
-      <section v-if="showStartButton" class="text-center">
+  <div class="min-h-screen text-slate-200">
+    <div class="container mx-auto px-4 xl:px-0 max-w-6xl relative z-10 pt-12">
+      <!-- Hero Section -->
+      <section v-if="showStartButton" class="text-center mb-12">
         <h1
-          class="text-4xl sm:text-5xl font-bold my-6 bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] tracking-tight"
+          class="text-4xl sm:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400 tracking-tight font-mono"
         >
-          Анализ и понимание эмоций
+          ЭМОЦИОНАЛЬНЫЙ КОМПАС
         </h1>
-        <p class="text-slate-300 max-w-2xl mx-auto leading-relaxed px-2">
-          Эмоциональный компас — это твой личный дневник эмоций. Здесь ты можешь
-          записать ситуацию, выбрать свою эмоцию и её интенсивность, а затем
-          получить шаги для осознания своих потребностей и полезные советы. Это
-          инструмент, который поможет лучше понимать себя, управлять своими
-          чувствами и находить баланс в жизни.
+        <p class="text-cyan-100/70 max-w-2xl mx-auto leading-relaxed px-2 text-lg">
+          Система анализа и калибровки эмоционального состояния. Зафиксируйте
+          текущие показатели для дальнейшей обработки и получения рекомендаций.
         </p>
+        
+        <!-- Guest Warning -->
+        <div v-if="!user" class="mt-6 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 text-yellow-200/80 text-sm">
+          <i class="fas fa-exclamation-triangle"></i>
+          <span>Гостевой режим: данные сохраняются только в этом браузере</span>
+        </div>
       </section>
 
       <!-- Loading State -->
       <div
         v-if="loading"
-        class="flex flex-col items-center gap-3 sm:gap-4 mt-24"
+        class="flex flex-col items-center gap-4 mt-24"
       >
-        <i class="fas fa-spinner fa-spin text-4xl text-[#0EA5E9]"></i>
-        <p class="text-slate-300 text-base sm:text-lg font-medium">
-          Пожалуйста, подождите...
+        <div class="w-12 h-12 border-4 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin"></div>
+        <p class="text-cyan-400 font-mono animate-pulse">
+          ЗАГРУЗКА МОДУЛЕЙ...
         </p>
       </div>
 
       <div v-else class="mt-8">
-        <!-- Unauthenticated Section -->
-        <div
-          v-if="!user"
-          class="relative text-center bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-12 mb-12 max-w-2xl mx-auto"
-        >
-          <p class="text-xl text-slate-300 mb-8">
-            Чтобы начать использовать инструмент, пожалуйста, войдите или
-            зарегистрируйтесь.
-          </p>
-          <div class="flex justify-center gap-6 flex-col sm:flex-row">
-            <Button
-              text="Войти"
-              iconClass="fas fa-sign-in-alt"
-              gradientStart="#8B5CF6"
-              gradientEnd="#06B6D4"
-              textColor="#FFFFFF"
-              customClass="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group border-[#0EA5E9]"
-              :isLink="true"
-              to="/login"
-            />
-            <Button
-              text="Зарегистрироваться"
-              iconClass="fas fa-user-plus"
-              gradientStart="#8B5CF6"
-              gradientEnd="#06B6D4"
-              textColor="#FFFFFF"
-              customClass="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group border-[#0EA5E9]"
-              :isLink="true"
-              to="/register"
-            />
-          </div>
-        </div>
-
-        <!-- Start Button and Binah Progress -->
-        <div v-if="user && showStartButton" class="text-center mb-8">
-          <Button
-            text="Добавить запись"
-            iconClass="fas fa-plus"
-            gradientStart="#8B5CF6"
-            gradientEnd="#06B6D4"
-            textColor="#FFFFFF"
-            customClass="relative bg-gradient-to-r from-purple-500 to-cyan-500 border-[#06B6D4] inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group"
-            :isLink="false"
+        <!-- Start Button -->
+        <div v-if="showStartButton" class="text-center mb-16">
+          <button
             @click="startEntry"
-          />
-
+            class="group relative inline-flex items-center justify-center px-8 py-4 font-mono font-bold text-white transition-all duration-200 bg-cyan-600 font-lg rounded-lg hover:bg-cyan-500 focus:outline-none ring-offset-2 focus:ring-2 ring-cyan-400"
+          >
+            <span class="absolute w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
+            <span class="relative flex items-center gap-3">
+              <i class="fas fa-plus-circle text-xl"></i>
+              НОВАЯ ЗАПИСЬ
+            </span>
+          </button>
         </div>
 
-        <!-- Main Barometer Section (shown only when showStartButton is false) -->
+        <!-- Main Barometer Section -->
         <div
-          v-if="user && !showStartButton"
-          class="relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-12 mb-12 max-w-4xl mx-auto transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+          v-if="!showStartButton"
+          class="relative bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-cyan-500/30 p-6 sm:p-12 mb-12 max-w-4xl mx-auto shadow-[0_0_50px_-12px_rgba(6,182,212,0.25)]"
         >
           <!-- Step Progress -->
-          <div class="flex items-center justify-center gap-2 sm:gap-3 px-4">
+          <div class="flex items-center justify-center gap-2 sm:gap-3 px-4 mb-12">
             <template v-for="step in 5" :key="step">
               <div class="flex items-center">
                 <div
                   :class="[
-                    'w-3 h-3 sm:w-4 sm:h-4 rounded-full transition-all duration-500',
+                    'w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-mono text-sm transition-all duration-500 border-2',
                     currentStep >= step
-                      ? 'bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] scale-100'
-                      : 'bg-white/20 scale-90',
+                      ? 'bg-cyan-500/20 border-cyan-400 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.5)]'
+                      : 'bg-slate-800/50 border-slate-700 text-slate-500',
                   ]"
-                ></div>
+                >
+                  {{ step }}
+                </div>
                 <div
                   v-if="step < 5"
                   :class="[
                     'h-0.5 w-8 sm:w-16 transition-all duration-500',
                     currentStep > step
-                      ? 'bg-gradient-to-r from-[#0EA5E9] to-[#E879F9]'
-                      : 'bg-white/20',
+                      ? 'bg-gradient-to-r from-cyan-500 to-purple-500'
+                      : 'bg-slate-800',
                   ]"
                 ></div>
               </div>
@@ -108,151 +79,126 @@
           </div>
 
           <!-- Step Content -->
-          <div
-            v-if="currentStep === 1"
-            key="emotion"
-            class="transition-all duration-300"
-          >
-            <EmotionSelection
-              :emotions="emotionsRef"
-              :selected-emotion="selectedEmotion"
-              @select-emotion="selectEmotion"
-            />
-          </div>
+          <div class="min-h-[400px]">
+            <div v-if="currentStep === 1" key="emotion" class="animate-fadeIn">
+              <h3 class="text-2xl font-mono text-cyan-300 mb-6 text-center">ВЫБОР ЭМОЦИИ</h3>
+              <EmotionSelection
+                :emotions="emotionsRef"
+                :selected-emotion="selectedEmotion"
+                @select-emotion="selectEmotion"
+              />
+            </div>
 
-          <div v-if="currentStep === 2 && selectedEmotion" key="subemotion">
-            <SubEmotionSelection
-              :sub-emotions="subEmotions"
-              :selected-sub-emotion="selectedSubEmotion"
-              @select-sub-emotion="selectSubEmotion"
-            />
-          </div>
+            <div v-if="currentStep === 2 && selectedEmotion" key="subemotion" class="animate-fadeIn">
+               <h3 class="text-2xl font-mono text-cyan-300 mb-6 text-center">УТОЧНЕНИЕ СОСТОЯНИЯ</h3>
+              <SubEmotionSelection
+                :sub-emotions="subEmotions"
+                :selected-sub-emotion="selectedSubEmotion"
+                @select-sub-emotion="selectSubEmotion"
+              />
+            </div>
 
-          <div v-if="currentStep === 3 && selectedEmotion" key="intensity">
-            <IntensityLevel
-              :selected-emotion="selectedEmotion"
-              v-model:intensity-level="intensityLevel"
-            />
-          </div>
+            <div v-if="currentStep === 3 && selectedEmotion" key="intensity" class="animate-fadeIn">
+               <h3 class="text-2xl font-mono text-cyan-300 mb-6 text-center">УРОВЕНЬ ИНТЕНСИВНОСТИ</h3>
+              <IntensityLevel
+                :selected-emotion="selectedEmotion"
+                v-model:intensity-level="intensityLevel"
+              />
+            </div>
 
-          <div v-if="currentStep === 4 && selectedEmotion" key="journal">
-            <JournalEntry
-              v-model:journal-entry="journalEntry"
-              v-model:perception-entry="perceptionEntry"
-              v-model:coping-entry="copingEntry"
-              v-model:action-entry="actionEntry"
-            />
-          </div>
+            <div v-if="currentStep === 4 && selectedEmotion" key="journal" class="animate-fadeIn">
+               <h3 class="text-2xl font-mono text-cyan-300 mb-6 text-center">ЖУРНАЛ НАБЛЮДЕНИЙ</h3>
+              <JournalEntry
+                v-model:journal-entry="journalEntry"
+                v-model:perception-entry="perceptionEntry"
+                v-model:coping-entry="copingEntry"
+                v-model:action-entry="actionEntry"
+              />
+            </div>
 
-          <div v-if="currentStep === 5 && selectedEmotion" key="spheres">
-            <LifeSpheresSelection
-              :life-spheres="lifeSpheresRef"
-              :selected-tags="selectedTags"
-              @toggle-tag="toggleTag"
-            />
+            <div v-if="currentStep === 5 && selectedEmotion" key="spheres" class="animate-fadeIn">
+               <h3 class="text-2xl font-mono text-cyan-300 mb-6 text-center">СФЕРЫ ВЛИЯНИЯ</h3>
+              <LifeSpheresSelection
+                :life-spheres="lifeSpheresRef"
+                :selected-tags="selectedTags"
+                @toggle-tag="toggleTag"
+              />
+            </div>
           </div>
 
           <!-- Navigation -->
-          <div
-            class="flex justify-between sm:justify-end mt-6 gap-4 w-full max-w-2xl mx-auto"
-          >
-            <!-- Previous Button -->
-            <Button
+          <div class="flex justify-between mt-12 pt-6 border-t border-cyan-500/20">
+            <button
               v-if="currentStep > 1"
-              text="Назад"
-              iconClass="fas fa-arrow-left"
-              gradientStart="#8B5CF6"
-              gradientEnd="#06B6D4"
-              textColor="#FFFFFF"
-              customClass="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group border-[#0EA5E9]"
-              :isLink="false"
               @click="previousStep"
-            />
+              class="px-6 py-2 rounded-lg border border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/10 transition-colors font-mono flex items-center gap-2"
+            >
+              <i class="fas fa-chevron-left"></i> НАЗАД
+            </button>
+            <div v-else></div>
 
-            <!-- Next Button -->
-            <Button
+            <button
               v-if="currentStep < 5"
-              text="Далее"
-              iconClass="fas fa-arrow-right"
-              gradientStart="#8B5CF6"
-              gradientEnd="#06B6D4"
-              textColor="#FFFFFF"
-              customClass="relative bg-gradient-to-r from-purple-500 to-cyan-500 inline-flex border-[#0EA5E9] items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group ml-auto sm:ml-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gradient-to-r disabled:hover:from-purple-500 disabled:hover:to-cyan-500"
-              :isLink="false"
-              :disabled="!canProceed"
               @click="nextStep"
-            />
+              :disabled="!canProceed"
+              class="px-6 py-2 rounded-lg bg-cyan-600 text-white hover:bg-cyan-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-mono flex items-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.3)]"
+            >
+              ДАЛЕЕ <i class="fas fa-chevron-right"></i>
+            </button>
 
-            <!-- Save Button -->
-            <Button
+            <button
               v-if="currentStep === 5"
-              text="Сохранить"
-              iconClass="fas fa-save"
-              gradientStart="#8B5CF6"
-              gradientEnd="#06B6D4"
-              textColor="#FFFFFF"
-              customClass="relative inline-flex disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gradient-to-r disabled:hover:from-purple-500 disabled:hover:to-cyan-500 items-center border-[#0EA5E9] bg-gradient-to-r from-purple-500 to-cyan-500 justify-center px-8 py-3 overflow-hidden font-medium transition-all duration-300 ease-out rounded-lg group ml-auto sm:ml-0"
-              :isLink="false"
-              :disabled="!canSubmit"
               @click="handleSubmit"
-            />
+              :disabled="!canSubmit"
+              class="px-8 py-2 rounded-lg bg-gradient-to-r from-cyan-600 to-purple-600 text-white hover:from-cyan-500 hover:to-purple-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-mono flex items-center gap-2 shadow-[0_0_20px_rgba(147,51,234,0.3)]"
+            >
+              <i class="fas fa-save"></i> СОХРАНИТЬ ДАННЫЕ
+            </button>
           </div>
         </div>
 
         <!-- Tools Section -->
         <div
-          v-if="user && showStartButton"
+          v-if="showStartButton"
           class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto"
         >
-          <template v-if="hasStatsData">
-            <NuxtLink
-              to="/awareness-tools/emotional-compass/analysis"
-              class="group relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl p-6 sm:p-8 border border-[#0EA5E9]/20 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)] transition-all duration-300"
-            >
-              <div
-                class="absolute inset-0 bg-gradient-to-r from-[#0EA5E9]/10 to-[#E879F9]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"
-              ></div>
-              <h3 class="text-2xl font-semibold text-[#0EA5E9] mb-3">
-                Анализ Эмоций
-              </h3>
-              <p class="text-slate-300">Изучите свои эмоциональные паттерны</p>
-            </NuxtLink>
+          <NuxtLink
+            to="/awareness-tools/emotional-compass/analysis"
+            :class="[
+              'group relative overflow-hidden rounded-2xl p-8 border transition-all duration-300',
+              hasStatsData 
+                ? 'bg-slate-900/50 border-cyan-500/30 hover:border-cyan-400 hover:shadow-[0_0_30px_rgba(6,182,212,0.2)]' 
+                : 'bg-slate-900/30 border-slate-800 opacity-75'
+            ]"
+          >
+            <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="relative z-10">
+              <div class="w-12 h-12 rounded-lg bg-cyan-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                <i class="fas fa-chart-pie text-2xl text-cyan-400"></i>
+              </div>
+              <h3 class="text-xl font-mono font-bold text-cyan-300 mb-2">АНАЛИЗ ЭМОЦИЙ</h3>
+              <p class="text-slate-400 text-sm">Визуализация паттернов и статистика состояний</p>
+            </div>
+          </NuxtLink>
 
-            <NuxtLink
-              to="/awareness-tools/emotional-compass/journal-history"
-              class="group relative bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl p-6 sm:p-8 border border-[#0EA5E9]/20 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)] transition-all duration-300"
-            >
-              <div
-                class="absolute inset-0 bg-gradient-to-r from-[#0EA5E9]/10 to-[#E879F9]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"
-              ></div>
-              <h3 class="text-2xl font-semibold text-[#0EA5E9] mb-3">
-                История Журнала
-              </h3>
-              <p class="text-slate-300">Просмотрите ваши прошлые записи</p>
-            </NuxtLink>
-          </template>
-          <template v-else>
-            <div
-              class="bg-[#1A1F35]/70 backdrop-blur-sm rounded-2xl shadow-2xl p-6 opacity-50 cursor-not-allowed text-center border border-[#0EA5E9]/20"
-            >
-              <h3 class="text-xl font-semibold text-[#0EA5E9] mb-2">
-                Анализ Эмоций
-              </h3>
-              <p class="text-sm text-slate-300">
-                Изучите свои эмоциональные паттерны
-              </p>
+          <NuxtLink
+            to="/awareness-tools/emotional-compass/journal-history"
+            :class="[
+              'group relative overflow-hidden rounded-2xl p-8 border transition-all duration-300',
+              hasStatsData 
+                ? 'bg-slate-900/50 border-purple-500/30 hover:border-purple-400 hover:shadow-[0_0_30px_rgba(168,85,247,0.2)]' 
+                : 'bg-slate-900/30 border-slate-800 opacity-75'
+            ]"
+          >
+            <div class="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="relative z-10">
+              <div class="w-12 h-12 rounded-lg bg-purple-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                <i class="fas fa-history text-2xl text-purple-400"></i>
+              </div>
+              <h3 class="text-xl font-mono font-bold text-purple-300 mb-2">ИСТОРИЯ_ЖУРНАЛА</h3>
+              <p class="text-slate-400 text-sm">Хронология записей и наблюдений</p>
             </div>
-            <div
-              class="bg-[#1A1F35]/70 backdrop-blur-sm rounded-2xl shadow-2xl p-6 opacity-50 cursor-not-allowed text-center border border-[#0EA5E9]/20"
-            >
-              <h3 class="text-xl font-semibold text-[#0EA5E9] mb-2">
-                История Журнала
-              </h3>
-              <p class="text-sm text-slate-300">
-                Просмотрите ваши прошлые записи
-              </p>
-            </div>
-          </template>
+          </NuxtLink>
         </div>
       </div>
     </div>
@@ -268,6 +214,7 @@
       :coping-entry="copingEntry"
       :action-entry="actionEntry"
       :selected-tags="selectedTags"
+      :is-guest="!user"
       @close="closeModal"
     />
 
@@ -282,9 +229,9 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getFirestore, doc, getDoc, onSnapshot } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
 import AIRecommendationsModal from "~/components/emotional-compass/AIRecommendationsModal.vue";
 import EmotionSelection from "~/components/emotional-compass/EmotionSelection.vue";
 import IntensityLevel from "~/components/emotional-compass/IntensityLevel.vue";
@@ -293,15 +240,14 @@ import LifeSpheresSelection from "~/components/emotional-compass/LifeSpheresSele
 import SubEmotionSelection from "~/components/emotional-compass/SubEmotionSelection.vue";
 import Notification from "~/components/base/Notification.vue";
 import { useNotification } from "@/composables/useNotification";
-import {
-  getEmotionBarometerStats,
-  saveEmotionBarometerEntry,
-} from "~/api/firebase/emotionBarometer";
+import { emotionBarometerService } from "~/services/emotionBarometerService";
 import { emotions } from "~/data/emotionalBarometer/emotions.js";
 import { subEmotionsMap } from "~/data/emotionalBarometer/subEmotionsMap";
 import { lifeSpheres } from "~/data/emotionalBarometer/lifeSpheres";
 
-import Button from "~/components/base/Button.vue";
+definePageMeta({
+  layout: "laboratory",
+});
 
 const {
   notificationMessage,
@@ -313,7 +259,6 @@ const {
 const emotionsRef = ref(emotions);
 const subEmotionsMapRef = ref(subEmotionsMap);
 const lifeSpheresRef = ref(lifeSpheres);
-
 
 const user = ref(null);
 const loading = ref(true);
@@ -333,9 +278,6 @@ const subEmotions = ref([]);
 const selectedSubEmotion = ref(null);
 const showStartButton = ref(true);
 
-
-
-// Poluchayem dostup k $markEntry cherez NuxtApp
 const { $markEntry } = useNuxtApp();
 
 // Validation for each step
@@ -366,26 +308,19 @@ const startEntry = () => {
   currentStep.value = 1;
 };
 
-// Recommendations based on patterns
-
-
-
-
 // Listen for auth state changes
 onAuthStateChanged(auth, async (currentUser) => {
   loading.value = true;
-  if (currentUser) {
-    user.value = currentUser;
-    const statsResult = await getEmotionBarometerStats(db, currentUser.uid);
-    if (statsResult.success) {
-      stats.value = statsResult.stats;
-    } else {
-      stats.value = null;
-    }
+  user.value = currentUser; // Can be null
+  
+  // Fetch stats for both user and guest
+  const statsResult = await emotionBarometerService.getStats(db, currentUser);
+  if (statsResult.success) {
+    stats.value = statsResult.stats;
   } else {
-    user.value = null;
     stats.value = null;
   }
+  
   loading.value = false;
 });
 
@@ -420,6 +355,8 @@ const closeModal = () => {
   copingEntry.value = "";
   actionEntry.value = "";
   selectedTags.value = [];
+  subEmotions.value = [];
+  showStartButton.value = true;
 };
 
 // Emotion and tag selection
@@ -442,9 +379,8 @@ const toggleTag = (tag) => {
   }
 };
 
-// Modified handleSubmit to provide progress feedback
 const handleSubmit = async () => {
-  if (!canSubmit.value || !user.value) return;
+  if (!canSubmit.value) return;
 
   const entryData = {
     emotion: selectedEmotion.value.name,
@@ -457,23 +393,18 @@ const handleSubmit = async () => {
     tags: selectedTags.value,
   };
 
-  const response = await saveEmotionBarometerEntry(
+  const response = await emotionBarometerService.saveEntry(
     db,
-    user.value.uid,
+    user.value,
     entryData,
     showNotification
   );
 
   if (response.success) {
-    $markEntry("emotion"); // Reset Emotional Compass reminder
+    if (user.value) {
+        $markEntry("emotion"); // Only mark progress for logged users
+    }
 
-    // Provide feedback about Binah progress
-    showNotification(
-      "Запись сохранена!",
-      "success"
-    );
-
-    // Always show the AI Recommendations Modal after submission
     showModal.value = true;
 
     // Reset state
@@ -486,6 +417,29 @@ const handleSubmit = async () => {
     selectedTags.value = [];
     subEmotions.value = [];
     showStartButton.value = true;
+    
+    // Refresh stats
+    const statsResult = await emotionBarometerService.getStats(db, user.value);
+    if (statsResult.success) {
+      stats.value = statsResult.stats;
+    }
   }
 };
 </script>
+
+<style scoped>
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>

@@ -1,72 +1,28 @@
 <template>
-  <div class="w-full max-w-2xl mx-auto">
-    <!-- Header Section -->
-    <div class="text-center my-4">
-      <p class="text-slate-300 text-lg">
-        Уточните ваше эмоциональное состояние, выбрав один из вариантов ниже.
-      </p>
-    </div>
-
-    <!-- Sub-emotions Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6">
-      <button
-        v-for="emotion in subEmotions"
-        :key="emotion"
-        @click="$emit('select-sub-emotion', emotion)"
-        class="group relative"
-      >
-        <!-- Hover Effect Background -->
-        <div
-          class="absolute inset-0 bg-gradient-to-r from-[#0EA5E9]/20 to-[#E879F9]/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-        ></div>
-
-        <!-- Main Button Content -->
-        <div
-          :class="[
-            'relative p-4 rounded-xl transition-all duration-300 backdrop-blur-sm border w-full h-full flex items-center justify-center',
-
-            selectedSubEmotion === emotion
-              ? 'bg-gradient-to-r from-[#0EA5E9]/40 to-[#E879F9]/40 border-[#0EA5E9]/50 shadow-lg shadow-[#0EA5E9]/20'
-              : 'bg-[#1A1F35]/40 border-[#0EA5E9]/20 group-hover:border-[#0EA5E9]/30',
-          ]"
-        >
-          <!-- Sub-emotion Text -->
-          <div
-            class="text-sm sm:text-base font-medium text-slate-300 break-words"
-          >
-            {{ emotion }}
-          </div>
-
-          <!-- Selection Indicator -->
-          <div
-            v-if="selectedSubEmotion === emotion"
-            class="absolute -top-1.5 -right-1.5 w-4 h-4 sm:w-5 sm:h-5"
-          >
-            <div
-              class="absolute inset-0 bg-[#0EA5E9] rounded-full animate-ping opacity-75"
-            ></div>
-            <div class="absolute inset-0 bg-[#0EA5E9] rounded-full"></div>
-            <div class="absolute inset-0.5 bg-white rounded-full"></div>
-          </div>
-        </div>
-      </button>
-    </div>
-
-    <!-- Helper Text -->
-    <div class="mt-4 text-center">
-      <p class="text-sm text-slate-400">
-        {{
-          selectedSubEmotion
-            ? "Выбрано: " + selectedSubEmotion
-            : "Выберите один вариант"
-        }}
-      </p>
-    </div>
+  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+    <button
+      v-for="subEmotion in subEmotions"
+      :key="subEmotion"
+      @click="$emit('select-sub-emotion', subEmotion)"
+      class="group relative px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 border overflow-hidden"
+      :class="[
+        selectedSubEmotion === subEmotion
+          ? 'bg-cyan-500/10 border-cyan-500/50 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.2)]'
+          : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200'
+      ]"
+    >
+      <span class="relative z-10">{{ subEmotion }}</span>
+      
+      <!-- Hover Gradient -->
+      <div
+        class="absolute inset-0 bg-gradient-to-r from-cyan-500/0 via-cyan-500/5 to-cyan-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"
+      ></div>
+    </button>
   </div>
 </template>
 
 <script setup>
-const props = defineProps({
+defineProps({
   subEmotions: {
     type: Array,
     required: true,

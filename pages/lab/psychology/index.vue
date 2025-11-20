@@ -187,28 +187,39 @@ const labSections = [
 
 const quickTools = [
   {
+    id: "emotional-compass",
+    title: "Эмоциональный компас",
+    icon: "fas fa-compass",
+    color: "text-purple-400",
+    path: "/awareness-tools/emotional-compass"
+  },
+  {
     id: "mood-tracker",
     title: "Настроение",
     icon: "fas fa-smile",
     color: "text-yellow-400",
+    path: "/lab/psychology/mood-tracker"
   },
   {
     id: "stress-test",
     title: "Стресс-тест",
     icon: "fas fa-heartbeat",
     color: "text-red-400",
+    path: "/lab/psychology/stress-test"
   },
   {
     id: "focus-timer",
     title: "Фокус",
     icon: "fas fa-hourglass-half",
     color: "text-blue-400",
+    path: "/lab/psychology/focus-timer"
   },
   {
     id: "breathing",
     title: "Дыхание",
     icon: "fas fa-wind",
     color: "text-green-400",
+    path: "/lab/psychology/breathing"
   },
 ];
 

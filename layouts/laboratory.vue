@@ -105,7 +105,7 @@
         </div>
 
         <!-- Experiment Area -->
-        <div class="experiment-area sm:p-6">
+        <div class="experiment-area">
           <NuxtPage />
         </div>
       </div>

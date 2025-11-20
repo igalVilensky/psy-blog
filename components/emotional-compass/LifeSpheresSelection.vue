@@ -1,87 +1,64 @@
 <template>
-  <div class="w-full max-w-2xl mx-auto">
-    <div class="text-center my-4 sm:mb-8">
-      <p class="text-slate-300 text-lg">
-        Отметьте, к каким сферам жизни относится эта эмоция:
-      </p>
-    </div>
-
-    <div class="flex flex-wrap gap-3">
-      <button
-        v-for="sphere in lifeSpheres"
-        :key="sphere.name"
-        @click="$emit('toggle-tag', sphere.name)"
-        class="group relative"
-      >
-        <!-- Hover Effect Background -->
-        <div
-          class="absolute inset-0 bg-gradient-to-r from-[#0EA5E9]/20 to-[#E879F9]/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-        ></div>
-
-        <!-- Main Button Content -->
-        <div
-          :class="[
-            'relative p-4 rounded-xl transition-all duration-300',
-            'backdrop-blur-sm border',
-            'group-hover:transform group-hover:-translate-y-0.5',
-            selectedTags.includes(sphere.name)
-              ? 'bg-gradient-to-r from-[#0EA5E9]/40 to-[#E879F9]/40 border-[#0EA5E9]/50 shadow-lg shadow-[#0EA5E9]/20'
-              : 'bg-[#1A1F35]/40 border-[#0EA5E9]/20 group-hover:border-[#0EA5E9]/30',
-          ]"
-        >
-          <div class="flex items-center gap-2">
-            <span
-              :class="[
-                'w-2 h-2 rounded-full transition-all duration-300',
-                selectedTags.includes(sphere.name)
-                  ? 'bg-white'
-                  : 'bg-[#0EA5E9]/50',
-              ]"
-            ></span>
-            <span class="text-sm font-medium text-slate-300">
-              {{ sphere.name }}
-            </span>
-          </div>
-
-          <!-- Selection Indicator -->
-          <div
-            v-if="selectedTags.includes(sphere.name)"
-            class="absolute -top-1.5 -right-1.5 w-4 h-4 sm:w-5 sm:h-5"
-          >
-            <div
-              class="absolute inset-0 bg-[#0EA5E9] rounded-full animate-ping opacity-75"
-            ></div>
-            <div class="absolute inset-0 bg-[#0EA5E9] rounded-full"></div>
-            <div class="absolute inset-0.5 bg-white rounded-full"></div>
-          </div>
-        </div>
-      </button>
-    </div>
-
-    <!-- Selected Tags Display -->
-    <div class="mt-6 flex flex-wrap gap-2">
-      <span
-        v-for="tag in selectedTags"
-        :key="tag"
-        class="inline-flex items-center px-3 py-1 rounded-lg bg-[#1A1F35]/40 backdrop-blur-sm border border-[#0EA5E9]/20 text-xs text-slate-300"
-      >
-        #{{ tag }}
+  <div class="flex flex-wrap justify-center gap-3 max-w-3xl mx-auto">
+    <button
+      v-for="sphere in lifeSpheres"
+      :key="sphere.name"
+      @click="$emit('toggle-tag', sphere.name)"
+      class="group relative px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 border overflow-hidden"
+      :class="[
+        selectedTags.includes(sphere.name)
+          ? 'bg-slate-800 border-transparent ring-1 ring-offset-1 ring-offset-slate-900'
+          : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200'
+      ]"
+      :style="{
+          '--ring-color': sphere.color ? extractColor(sphere.color) : '#06b6d4'
+      }"
+    >
+      <!-- Active Background -->
+      <div
+        v-if="selectedTags.includes(sphere.name)"
+        class="absolute inset-0 opacity-20 transition-opacity duration-300"
+        :class="sphere.color"
+      ></div>
+      
+      <span class="relative z-10 flex items-center gap-2">
+        <i v-if="selectedTags.includes(sphere.name)" class="fas fa-check text-xs"></i>
+        {{ sphere.name }}
       </span>
-    </div>
+
+      <!-- Ring Color Style -->
+      <component is="style" v-if="selectedTags.includes(sphere.name)">
+        .ring-offset-slate-900 { --tw-ring-color: var(--ring-color); }
+      </component>
+    </button>
   </div>
 </template>
 
 <script setup>
-const props = defineProps({
+defineProps({
   lifeSpheres: {
     type: Array,
     required: true,
   },
   selectedTags: {
     type: Array,
-    required: true,
+    default: () => [],
   },
 });
 
-const emit = defineEmits(["toggle-tag"]);
+defineEmits(["toggle-tag"]);
+
+// Helper to extract a color from the gradient class string (simplified)
+// In a real app, you might have a better mapping, but for now we default to cyan if complex
+const extractColor = (gradientClass) => {
+    // This is a hacky way to get a color for the ring. 
+    // Ideally pass a solid color prop or map it.
+    if (gradientClass.includes('orange')) return '#f97316';
+    if (gradientClass.includes('blue')) return '#0ea5e9';
+    if (gradientClass.includes('purple')) return '#a855f7';
+    if (gradientClass.includes('red')) return '#ef4444';
+    if (gradientClass.includes('green')) return '#22c55e';
+    if (gradientClass.includes('teal')) return '#14b8a6';
+    return '#06b6d4';
+}
 </script>

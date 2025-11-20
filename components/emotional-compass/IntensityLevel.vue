@@ -1,172 +1,96 @@
 <template>
-  <div class="w-full max-w-2xl mx-auto">
-    <!-- Header section with icon -->
-    <div class="my-4 md:mb-8 text-center">
-      <p
-        class="text-slate-300 text-base md:text-lg flex items-center justify-center gap-2"
-      >
-        <i class="fas fa-sliders-h text-[#0EA5E9]"></i>
-        Передвиньте ползунок, чтобы указать интенсивность
-      </p>
+  <div class="max-w-2xl mx-auto">
+    <div class="mb-12 text-center">
+      <div class="text-6xl font-mono font-bold mb-4 transition-colors duration-300"
+           :class="intensityColor">
+        {{ intensityLevel }}
+      </div>
+      <p class="text-slate-400 text-lg">{{ intensityDescription }}</p>
     </div>
 
-    <!-- Intensity Categories with icons -->
-    <div class="grid grid-cols-3 gap-2 md:gap-4 mb-6 md:mb-8">
-      <!-- Weak -->
-      <div
-        class="flex flex-col items-center justify-center min-h-[72px] px-2 py-1 md:py-2 rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 bg-[#1A1F35]/40 group hover:bg-[#1A1F35]/60 transition-all duration-300"
-      >
+    <div class="relative h-16 flex items-center">
+      <!-- Track -->
+      <div class="absolute w-full h-4 bg-slate-800 rounded-full overflow-hidden">
         <div
-          class="text-green-400 font-medium text-sm md:text-base flex items-center gap-2"
-        >
-          <i class="fas fa-feather-alt"></i>
-          <span class="hidden md:inline">Слабое</span>
-          <span class="inline md:hidden">1-3</span>
-        </div>
-        <div class="text-[10px] sm:text-sm text-green-300/80">
-          <span class="inline md:hidden">Слабое</span>
-          <span class="hidden md:inline">1-3</span>
-        </div>
+          class="h-full transition-all duration-300"
+          :class="trackGradient"
+          :style="{ width: `${((intensityLevel - 1) / 9) * 100}%` }"
+        ></div>
       </div>
 
-      <!-- Medium -->
-      <div
-        class="flex flex-col items-center justify-center min-h-[72px] px-2 py-1 md:py-2 rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 bg-[#1A1F35]/40 group hover:bg-[#1A1F35]/60 transition-all duration-300"
-      >
-        <div
-          class="text-yellow-400 font-medium text-sm md:text-base flex items-center gap-2"
-        >
-          <i class="fas fa-wind"></i>
-          <span class="hidden md:inline">Умеренное</span>
-          <span class="inline md:hidden">4-7</span>
-        </div>
-        <div class="text-[10px] sm:text-sm text-yellow-300/80">
-          <span class="inline md:hidden">Умеренное</span>
-          <span class="hidden md:inline">4-7</span>
-        </div>
-      </div>
-
-      <!-- Strong -->
-      <div
-        class="flex flex-col items-center justify-center min-h-[72px] px-2 py-1 md:py-2 rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 bg-[#1A1F35]/40 group hover:bg-[#1A1F35]/60 transition-all duration-300"
-      >
-        <div
-          class="text-red-400 font-medium text-sm md:text-base flex items-center gap-2"
-        >
-          <i class="fas fa-fire"></i>
-          <span class="hidden md:inline">Сильное</span>
-          <span class="inline md:hidden">8-10</span>
-        </div>
-        <div class="text-[10px] sm:text-sm text-red-300/80">
-          <span class="inline md:hidden">Сильное</span>
-          <span class="hidden md:inline">8-10</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Step Progress Intensity Selector -->
-    <div class="relative mt-8 mb-6">
-      <!-- Steps Container -->
-      <div class="flex items-center justify-between px-4 mb-2">
-        <template v-for="n in 10" :key="n">
-          <div class="flex items-center flex-1">
-            <!-- Circle with tooltip -->
-            <div class="relative group">
-              <div
-                :class="[
-                  'w-4 h-4 md:w-5 md:h-5 rounded-full transition-all duration-300',
-                  getStepStyle(n),
-                ]"
-              >
-                <div
-                  class="absolute -top-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none"
-                >
-                  <div
-                    class="bg-slate-800 px-2 py-1 rounded text-xs whitespace-nowrap"
-                  >
-                    Уровень {{ n }}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Connecting Line -->
-            <div
-              v-if="n < 10"
-              :class="[
-                'flex-1 h-0.5 transition-all duration-300',
-                getLineStyle(n),
-              ]"
-            ></div>
-          </div>
-        </template>
-      </div>
-
-      <!-- Actual Slider Input -->
+      <!-- Slider Input -->
       <input
         type="range"
-        :value="intensityLevel"
-        @input="(e) => emit('update:intensity-level', parseInt(e.target.value))"
         min="1"
         max="10"
         step="1"
-        class="absolute inset-0 w-full opacity-0 cursor-pointer"
+        :value="intensityLevel"
+        @input="$emit('update:intensityLevel', Number($event.target.value))"
+        class="absolute w-full h-full opacity-0 cursor-pointer z-20"
       />
-    </div>
 
-    <!-- Enhanced Current Value Display -->
-    <div class="text-center">
-      <span
-        class="inline-flex items-center gap-2 px-4 md:px-6 py-1.5 md:py-2 rounded-xl backdrop-blur-sm border border-[#0EA5E9]/20 bg-[#1A1F35]/40 text-xs md:text-sm font-medium transition-all duration-300 text-[#0EA5E9]"
-      >
-        <i :class="getCurrentIcon"></i>
-        Текущая интенсивность:
-        <span :class="getCurrentTextColor"> {{ intensityLevel }}/10 </span>
-      </span>
+      <!-- Thumb (Visual only, follows input) -->
+      <div
+        class="absolute h-8 w-8 bg-white rounded-full shadow-lg border-4 transition-all duration-100 pointer-events-none z-10"
+        :class="thumbBorderColor"
+        :style="{ left: `calc(${((intensityLevel - 1) / 9) * 100}%)`, transform: 'translateX(-50%)' }"
+      ></div>
+      
+      <!-- Ticks -->
+      <div class="absolute w-full flex justify-between px-1 pointer-events-none mt-12">
+        <span v-for="n in 10" :key="n" class="text-xs font-mono text-slate-600">{{ n }}</span>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { computed } from "vue";
+
 const props = defineProps({
+  selectedEmotion: {
+    type: Object,
+    required: true,
+  },
   intensityLevel: {
     type: Number,
-    default: 5,
+    required: true,
   },
 });
 
-const emit = defineEmits(["update:intensity-level"]);
+defineEmits(["update:intensityLevel"]);
 
-const getCurrentTextColor = computed(() => {
-  if (props.intensityLevel <= 3) return "text-green-400";
+const intensityColor = computed(() => {
+  if (props.intensityLevel <= 3) return "text-emerald-400";
   if (props.intensityLevel <= 7) return "text-yellow-400";
   return "text-red-400";
 });
 
-const getCurrentIcon = computed(() => {
-  if (props.intensityLevel <= 3) return "fas fa-feather-alt text-green-400";
-  if (props.intensityLevel <= 7) return "fas fa-wind text-yellow-400";
-  return "fas fa-fire text-red-400";
+const trackGradient = computed(() => {
+  if (props.intensityLevel <= 3) return "bg-gradient-to-r from-emerald-500/20 to-emerald-500";
+  if (props.intensityLevel <= 7) return "bg-gradient-to-r from-emerald-500 to-yellow-500";
+  return "bg-gradient-to-r from-yellow-500 to-red-500";
 });
 
-function getStepStyle(step) {
-  const isActive = props.intensityLevel >= step;
-  const baseStyle = "border-2 shadow-lg";
+const thumbBorderColor = computed(() => {
+  if (props.intensityLevel <= 3) return "border-emerald-500";
+  if (props.intensityLevel <= 7) return "border-yellow-500";
+  return "border-red-500";
+});
 
-  if (!isActive) return `${baseStyle} border-slate-600 bg-slate-700/50`;
-
-  if (step <= 3) return `${baseStyle} border-green-400 bg-green-500`;
-  if (step <= 7) return `${baseStyle} border-yellow-400 bg-yellow-500`;
-  return `${baseStyle} border-red-400 bg-red-500`;
-}
-
-function getLineStyle(step) {
-  const isActive = props.intensityLevel > step;
-
-  if (!isActive) return "bg-slate-600";
-
-  if (step <= 3) return "bg-green-400";
-  if (step <= 7) return "bg-yellow-400";
-  return "bg-red-400";
-}
+const intensityDescription = computed(() => {
+  const descriptions = {
+    1: "Едва заметно",
+    2: "Очень слабо",
+    3: "Слабо",
+    4: "Умеренно",
+    5: "Средне",
+    6: "Ощутимо",
+    7: "Сильно",
+    8: "Очень сильно",
+    9: "Интенсивно",
+    10: "Максимально",
+  };
+  return descriptions[props.intensityLevel] || "";
+});
 </script>

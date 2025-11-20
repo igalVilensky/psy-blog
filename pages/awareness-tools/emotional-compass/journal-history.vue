@@ -1,34 +1,56 @@
 <template>
-  <div class="relative min-h-screen">
-    <div class="container mx-auto px-4 xl:px-0 max-w-6xl relative z-10 py-8">
-      <div class="grid grid-cols-1 gap-4 sm:gap-8">
-        <!-- Back Navigation -->
-        <nuxt-link
-          to="/awareness-tools/emotional-compass"
-          class="inline-flex items-center text-[#0EA5E9] hover:text-[#22D3EE] transition-colors group"
-        >
-          <i
-            class="fas fa-arrow-left mr-2 transform transition-transform group-hover:-translate-x-1"
-          ></i>
-          <span class="text-sm font-medium">Вернуться</span>
-        </nuxt-link>
-
-        <!-- Journal History Section -->
-        <div
-          class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 sm:p-8 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
-        >
-          <JournalHistory
-            :emotions="emotions"
-            :life-spheres="lifeSpheres"
-            :entries="entries"
-          />
+  <div class="relative min-h-screen text-slate-200">
+    <div class="container mx-auto px-4 xl:px-0 max-w-6xl relative z-10 py-12">
+      <div class="grid grid-cols-1 gap-8">
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-4">
+          <h1 class="text-3xl font-mono font-bold text-purple-300">
+            <i class="fas fa-history mr-3"></i>ИСТОРИЯ ЖУРНАЛА
+          </h1>
+          <NuxtLink
+            to="/awareness-tools/emotional-compass"
+            class="px-4 py-2 rounded-lg border border-purple-500/30 text-purple-300 hover:bg-purple-500/10 transition-colors font-mono flex items-center gap-2 text-sm"
+          >
+            <i class="fas fa-arrow-left"></i> НАЗАД
+          </NuxtLink>
         </div>
 
-        <!-- Emotion Chart -->
-        <div
-          class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 sm:p-8 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
-        >
-          <EmotionChart :entries="entries" :emotions="emotions" />
+        <div v-if="entries.length > 0" class="grid grid-cols-1 gap-8">
+           <!-- Journal History Section -->
+          <div
+            class="bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-purple-500/30 p-6 sm:p-8 shadow-[0_0_30px_rgba(168,85,247,0.1)]"
+          >
+            <JournalHistory
+              :emotions="emotions"
+              :life-spheres="lifeSpheres"
+              :entries="entries"
+            />
+          </div>
+
+          <!-- Emotion Chart -->
+          <div
+            class="bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-cyan-500/30 p-6 sm:p-8 shadow-[0_0_30px_rgba(6,182,212,0.1)]"
+          >
+            <h3 class="text-xl font-mono font-bold text-cyan-300 mb-6">ГРАФИК ЭМОЦИЙ</h3>
+            <EmotionChart :entries="entries" :emotions="emotions" />
+          </div>
+        </div>
+        
+        <!-- Empty State -->
+        <div v-else class="bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-slate-700 p-12 text-center">
+           <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-800 flex items-center justify-center">
+              <i class="fas fa-book-open text-slate-600 text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-mono text-slate-400 mb-2">ЖУРНАЛ ПУСТ</h3>
+            <p class="text-slate-500 max-w-md mx-auto">
+              Записи отсутствуют. Начните вести дневник эмоций, чтобы отслеживать свое состояние во времени.
+            </p>
+            <NuxtLink
+              to="/awareness-tools/emotional-compass"
+              class="inline-block mt-6 px-6 py-2 rounded-lg bg-purple-600/20 text-purple-400 border border-purple-500/30 hover:bg-purple-600/30 transition-all font-mono"
+            >
+              СОЗДАТЬ ЗАПИСЬ
+            </NuxtLink>
         </div>
       </div>
     </div>
@@ -36,14 +58,18 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { getEmotionBarometerData } from "~/api/firebase/emotionBarometer";
+import { emotionBarometerService } from "~/services/emotionBarometerService";
 import JournalHistory from "~/components/emotional-compass/JournalHistory.vue";
 import EmotionChart from "~/components/emotional-compass/EmotionChart.vue";
 
-// Static data for emotions and life spheres
+definePageMeta({
+  layout: "laboratory",
+});
+
+// Static data for emotions and life spheres (kept for chart colors/mapping)
 const emotions = ref([
   {
     id: 1,
@@ -94,41 +120,33 @@ const auth = getAuth();
 const db = getFirestore();
 const entries = ref([]);
 
-// Fetch entries using API method
-const fetchEntries = async (userId) => {
-  try {
-    const result = await getEmotionBarometerData(db, userId);
-    if (result.success) {
-      entries.value = result.data.entries.map((entry) => ({
-        ...entry,
-        entry: entry.entry || "",
-        perception: entry.perception || "",
-        coping: entry.coping || "",
-        action: entry.action || "",
-        emotion: entry.emotion || "",
-        subEmotion: entry.subEmotion || "",
-        intensity: entry.intensity || 0,
-        timestamp: entry.timestamp || "",
-        tags: entry.tags || [],
-      }));
-    } else {
-      console.error("Failed to fetch entries:", result.message);
-      entries.value = [];
-    }
-  } catch (error) {
-    console.error("Error fetching entries:", error);
+// Fetch entries using service
+const fetchEntries = async (currentUser) => {
+  const result = await emotionBarometerService.getHistory(db, currentUser);
+  
+  if (result.success) {
+    entries.value = result.data.entries.map((entry) => ({
+      ...entry,
+      entry: entry.entry || "",
+      perception: entry.perception || "",
+      coping: entry.coping || "",
+      action: entry.action || "",
+      emotion: entry.emotion || "",
+      subEmotion: entry.subEmotion || "",
+      intensity: entry.intensity || 0,
+      timestamp: entry.timestamp || "",
+      tags: entry.tags || [],
+    }));
+  } else {
+    console.error("Failed to fetch entries:", result.message);
     entries.value = [];
   }
 };
 
 // Listen for auth state changes
 onAuthStateChanged(auth, async (currentUser) => {
-  if (currentUser) {
-    user.value = currentUser;
-    await fetchEntries(currentUser.uid);
-  } else {
-    user.value = null;
-    entries.value = []; // Clear entries if user logs out
-  }
+  user.value = currentUser;
+  // Fetch entries regardless of auth state (supports guest mode)
+  await fetchEntries(currentUser);
 });
 </script>

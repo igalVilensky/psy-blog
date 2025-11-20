@@ -82,45 +82,7 @@
           персональные рекомендации и обучающие программы — всё в одном месте.
         </p>
 
-        <!-- AI Tip Section -->
-        <div class="mt-12 max-w-3xl mx-auto text-center">
-          <button
-            @click="fetchAiTip"
-            class="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 rounded-2xl font-semibold text-white shadow-2xl hover:scale-105 hover:shadow-cyan-500/50 transition-all duration-300 mb-6"
-          >
-            <i class="fas fa-robot transition-transform duration-300"></i>
-            Получить персональный совет AI
-          </button>
 
-          <!-- Loading shimmer -->
-          <div
-            v-if="aiLoading"
-            class="my-4 bg-slate-900/60 rounded-3xl p-6 border border-cyan-500/20 animate-pulse"
-          >
-            <div class="h-4 bg-slate-700/50 rounded mb-3"></div>
-            <div class="h-4 bg-slate-700/40 rounded mb-3"></div>
-            <div class="h-4 bg-slate-700/30 rounded w-2/3"></div>
-          </div>
-
-          <!-- Final AI Tip -->
-          <div
-            v-if="!aiLoading && aiTip"
-            class="my-4 bg-gradient-to-br from-slate-900/70 via-slate-900/50 to-slate-900/70 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-cyan-500/30 shadow-2xl animate-fade-in-up text-left"
-          >
-            <div class="flex items-center mb-4">
-              <i
-                class="fas fa-robot text-cyan-400 text-2xl sm:text-3xl mr-3"
-              ></i>
-              <h3 class="text-xl sm:text-2xl font-bold text-cyan-400">
-                Совет для тебя:
-              </h3>
-            </div>
-
-            <p class="text-slate-300 leading-relaxed whitespace-pre-line">
-              {{ aiTip }}
-            </p>
-          </div>
-        </div>
 
         <!-- Enhanced CTA Buttons (matching main index style) -->
         <div
@@ -250,83 +212,7 @@ onMounted(() => {
   setTimeout(animateStats, 500);
 });
 
-// AI Tip logic
-const aiTip = ref("");
-const aiLoading = ref(false);
 
-// Safe user fallback
-function getUserSafe() {
-  if (!auth.user) {
-    return {
-      displayName: "Гость",
-      age: "не указано",
-      profession: "не указано",
-      aboutYourself: "",
-    };
-  }
-  return auth.user;
-}
-
-// Animated dots for “AI думает…”
-
-let thinkingInterval = null;
-
-function startThinkingDots() {
-  if (thinkingInterval) clearInterval(thinkingInterval);
-
-  let dots = 0;
-  aiTip.value = "AI думает";
-
-  thinkingInterval = setInterval(() => {
-    if (!aiLoading.value) {
-      clearInterval(thinkingInterval);
-      thinkingInterval = null;
-      return;
-    }
-
-    dots = (dots + 1) % 4;
-    aiTip.value = "AI думает" + ".".repeat(dots);
-  }, 350);
-}
-
-async function fetchAiTip() {
-  const user = getUserSafe();
-  aiLoading.value = true;
-  aiTip.value = "";
-  startThinkingDots();
-
-  try {
-    const prompt = `Ты помощник экспериментальной платформы MindQ Lab.
-Пользователь: ${user.displayName}, возраст ${user.age}, профессия: ${
-      user.profession
-    }.
-Кратко о себе: ${user.aboutYourself || "Нет информации"}.
-
-Дай рекомендации, что ему изучить или попробовать в MindQ Lab.
-Формат: советы с конкретными действиями. 
-Ответ на русском. Не более 10 строк.`; // ← LIMIT ENFORCED
-
-    const res = await fetch("/.netlify/functions/groqChat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prompt }),
-    });
-
-    const data = await res.json();
-
-    aiLoading.value = false;
-
-    if (data && typeof data.reply === "string") {
-      aiTip.value = data.reply.trim();
-    } else {
-      aiTip.value = "AI не смог сформировать совет. Попробуй ещё раз.";
-    }
-  } catch (err) {
-    console.error("AI Tip fetch error:", err);
-    aiLoading.value = false;
-    aiTip.value = "Произошла ошибка при обращении к AI.";
-  }
-}
 </script>
 
 <style scoped>
