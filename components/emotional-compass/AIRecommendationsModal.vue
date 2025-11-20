@@ -1,14 +1,14 @@
 <template>
   <div
     v-if="isOpen"
-    class="fixed inset-0 z-[60] flex items-start justify-center p-4 pt-20 overflow-y-auto"
+    class="fixed inset-0 z-[100] flex items-start justify-center p-4 pt-24 overflow-y-auto"
   >
     <!-- Backdrop -->
     <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
 
     <!-- Modal -->
     <div
-      class="relative w-full max-w-2xl bg-[#1A1F35]/95 rounded-2xl border border-[#0EA5E9]/20 shadow-xl overflow-hidden my-8"
+      class="relative w-full max-w-2xl bg-[#1A1F35]/95 rounded-2xl border border-[#0EA5E9]/20 shadow-xl overflow-hidden"
     >
       <!-- Close button -->
       <button
@@ -79,7 +79,7 @@
 
         <!-- Initial State: CTA (Logged in) -->
         <div v-else-if="status === 'idle'" class="flex-1 flex flex-col items-center justify-center text-center space-y-6">
-           <div class="w-20 h-20 rounded-full bg-[#0EA5E9]/20 flex items-center justify-center mb-4 animate-pulse">
+           <div class="w-20 h-20 rounded-full bg-[#0EA5E9]/20 flex items-center justify-center animate-pulse">
               <i class="fas fa-magic text-3xl text-[#0EA5E9]"></i>
            </div>
            <p class="text-slate-300 max-w-md">
