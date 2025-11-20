@@ -55,79 +55,51 @@
       </div>
 
       <!-- SVG Brain -->
-      <div
-        class="relative w-full"
-        style="padding-bottom: 60%; min-height: 400px"
-      >
+      <div class="brain-container relative w-full overflow-hidden rounded-3xl bg-slate-900/50 border border-slate-800/50 backdrop-blur-sm">
+      <!-- Scrollable container for mobile to prevent tiny shrinking -->
+      <div class="overflow-x-auto w-full">
         <svg
-          class="absolute inset-0 w-full h-full"
+          class="w-full h-full min-w-[800px] md:min-w-0" 
           viewBox="0 0 1000 600"
           @mousemove="handleMouseMove"
           @mouseleave="hoveredRegion = null"
         >
-          <!-- Defs for gradients -->
           <defs>
-            <linearGradient
-              id="brainGradient"
-              x1="0%"
-              y1="0%"
-              x2="100%"
-              y2="100%"
-            >
-              <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.1" />
-              <stop offset="100%" stop-color="#a855f7" stop-opacity="0.1" />
+            <linearGradient id="brainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="rgba(6, 182, 212, 0.1)" />
+              <stop offset="100%" stop-color="rgba(168, 85, 247, 0.1)" />
             </linearGradient>
-
-            <!-- Arrow markers for orientation -->
-            <marker
-              id="arrowFront"
-              markerWidth="10"
-              markerHeight="10"
-              refX="5"
-              refY="5"
-              orient="auto"
-            >
-              <polygon points="0,0 10,5 0,10" fill="rgba(6, 182, 212, 0.8)" />
+            
+            <!-- Markers definitions (arrows) -->
+            <marker id="arrowFront" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+              <path d="M0,0 L0,6 L9,3 z" fill="rgba(6, 182, 212, 0.6)" />
             </marker>
-            <marker
-              id="arrowBack"
-              markerWidth="10"
-              markerHeight="10"
-              refX="5"
-              refY="5"
-              orient="auto"
-            >
-              <polygon points="0,0 10,5 0,10" fill="rgba(168, 85, 247, 0.8)" />
-            </marker>
-            <marker
-              id="arrowTop"
-              markerWidth="10"
-              markerHeight="10"
-              refX="5"
-              refY="5"
-              orient="auto"
-            >
-              <polygon points="0,0 10,5 0,10" fill="rgba(34, 197, 94, 0.8)" />
-            </marker>
-            <marker
-              id="arrowBottom"
-              markerWidth="10"
-              markerHeight="10"
-              refX="5"
-              refY="5"
-              orient="auto"
-            >
-              <polygon points="0,0 10,5 0,10" fill="rgba(249, 115, 22, 0.8)" />
+            <marker id="arrowBack" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+              <path d="M0,0 L0,6 L9,3 z" fill="rgba(168, 85, 247, 0.6)" />
             </marker>
           </defs>
 
-          <!-- Brain Outline -->
+          <!-- Realistic Brain Image Background -->
+          <image
+            href="/images/brain-lateral.jpg"
+            x="100"
+            y="50"
+            width="800"
+            height="500"
+            preserveAspectRatio="xMidYMid slice"
+            class="brain-image"
+          />
+          
+          <!-- Overlay Gradient for blending -->
+          <rect x="100" y="50" width="800" height="500" fill="url(#brainGradient)" class="mix-blend-overlay pointer-events-none" />
+
+          <!-- Brain Outline (Hidden or subtle) -->
           <path
             :d="brainOutline"
             fill="none"
-            stroke="rgba(6, 182, 212, 0.2)"
+            stroke="rgba(6, 182, 212, 0.3)"
             stroke-width="2"
-            class="brain-outline"
+            class="brain-outline opacity-50"
           />
 
           <!-- Orientation Markers -->
@@ -138,14 +110,14 @@
               y1="250"
               x2="120"
               y2="250"
-              stroke="rgba(6, 182, 212, 0.6)"
-              stroke-width="2"
+              stroke="rgba(6, 182, 212, 0.8)"
+              stroke-width="3"
               marker-end="url(#arrowFront)"
             />
-            <text x="50" y="245" class="text-xs fill-cyan-400 font-medium">
+            <text x="50" y="245" class="text-sm fill-cyan-300 font-bold drop-shadow-md">
               ПЕРЕДНЯЯ
             </text>
-            <text x="65" y="260" class="text-[10px] fill-slate-400">(Лоб)</text>
+            <text x="65" y="260" class="text-xs fill-slate-300 font-medium drop-shadow-md">(Лоб)</text>
           </g>
 
           <!-- Back marker -->
@@ -155,47 +127,15 @@
               y1="280"
               x2="890"
               y2="280"
-              stroke="rgba(168, 85, 247, 0.6)"
-              stroke-width="2"
+              stroke="rgba(168, 85, 247, 0.8)"
+              stroke-width="3"
               marker-end="url(#arrowBack)"
             />
-            <text x="900" y="285" class="text-xs fill-purple-400 font-medium">
+            <text x="900" y="285" class="text-sm fill-purple-300 font-bold drop-shadow-md">
               ЗАДНЯЯ
             </text>
-            <text x="905" y="300" class="text-[10px] fill-slate-400">
+            <text x="905" y="300" class="text-xs fill-slate-300 font-medium drop-shadow-md">
               (Затылок)
-            </text>
-          </g>
-
-          <!-- Top marker -->
-          <g class="orientation-marker">
-            <line
-              x1="500"
-              y1="60"
-              x2="500"
-              y2="20"
-              stroke="rgba(34, 197, 94, 0.6)"
-              stroke-width="2"
-              marker-end="url(#arrowTop)"
-            />
-            <text x="510" y="35" class="text-xs fill-emerald-400 font-medium">
-              ВЕРХ
-            </text>
-          </g>
-
-          <!-- Bottom marker -->
-          <g class="orientation-marker">
-            <line
-              x1="500"
-              y1="510"
-              x2="500"
-              y2="550"
-              stroke="rgba(249, 115, 22, 0.6)"
-              stroke-width="2"
-              marker-end="url(#arrowBottom)"
-            />
-            <text x="510" y="545" class="text-xs fill-orange-400 font-medium">
-              НИЗ
             </text>
           </g>
 
@@ -205,29 +145,24 @@
               :d="region.path"
               :fill="getRegionFill(region)"
               :stroke="getRegionStroke(region)"
-              :stroke-width="region.id === selectedRegion?.id ? 3 : 1.5"
-              class="brain-region cursor-pointer transition-all duration-300"
-              :class="{ 'region-active': region.id === selectedRegion?.id }"
-              @mouseenter="hoveredRegion = region"
-              @mouseleave="hoveredRegion = null"
+              stroke-width="3" 
+              class="region-path"
               @click="selectRegion(region)"
+              @mouseenter="hoveredRegion = region"
             />
-
-            <!-- Region Labels (only in detailed view) -->
-            <text
-              v-if="activeView === 'detailed'"
-              :x="region.labelPos.x"
-              :y="region.labelPos.y"
-              class="region-label text-xs font-medium pointer-events-none"
-              :class="
-                region.id === selectedRegion?.id
-                  ? 'fill-cyan-300'
-                  : 'fill-slate-400'
-              "
-              text-anchor="middle"
-            >
-              {{ region.name }}
-            </text>
+            
+            <!-- Region Label with Background for Contrast -->
+             <g v-if="!selectedRegion || selectedRegion.id === region.id" class="pointer-events-none">
+                <!-- Text Shadow/Outline effect via duplication or CSS -->
+                <text
+                  :x="region.labelPos.x"
+                  :y="region.labelPos.y"
+                  text-anchor="middle"
+                  class="region-label"
+                >
+                  {{ region.name }}
+                </text>
+             </g>
           </g>
 
           <!-- Connection Lines (only in functional view) -->
@@ -316,6 +251,7 @@
           </g>
         </svg>
       </div>
+    </div>
 
       <!-- Selected Region Details -->
       <transition
@@ -461,7 +397,7 @@ const regionTypes = [
 const brainOutline =
   "M200,250 Q180,180 220,130 Q280,80 360,70 Q480,65 600,80 Q700,95 760,150 Q810,210 820,280 Q820,350 780,410 Q730,470 650,490 Q570,505 480,500 Q400,495 330,470 Q260,440 220,380 Q190,330 200,250 Z";
 
-// Brain regions with anatomically accurate paths
+// Brain regions with anatomically accurate paths aligned to brain-lateral.jpg (approx 100,50 to 900,550)
 const brainRegions = ref([
   {
     id: "frontal",
@@ -477,9 +413,10 @@ const brainRegions = ref([
       "Контроль импульсов",
       "Рабочая память",
     ],
-    path: "M200,250 Q190,200 220,150 Q260,110 320,95 Q380,85 440,90 Q480,95 500,110 L480,180 Q460,220 420,240 Q360,260 300,260 Q240,255 200,250 Z",
-    labelPos: { x: 360, y: 170 },
-    center: { x: 350, y: 180 },
+    // Expanded Anterior part
+    path: "M180,380 Q150,250 200,130 Q280,70 400,60 Q500,55 540,80 L520,250 Q470,290 420,320 L370,340 Q280,370 180,380 Z",
+    labelPos: { x: 300, y: 200 },
+    center: { x: 320, y: 200 },
   },
   {
     id: "parietal",
@@ -495,9 +432,10 @@ const brainRegions = ref([
       "Пространственная ориентация",
       "Координация движений",
     ],
-    path: "M500,110 Q560,100 620,105 Q680,115 720,140 Q760,170 780,210 Q790,250 780,290 L720,270 Q680,260 640,260 Q580,260 540,250 Q500,230 480,200 L500,110 Z",
-    labelPos: { x: 640, y: 190 },
-    center: { x: 640, y: 200 },
+    // Expanded Superior-Posterior
+    path: "M540,80 Q620,70 720,90 Q800,120 830,180 L780,280 Q680,260 580,250 L540,80 Z",
+    labelPos: { x: 650, y: 180 },
+    center: { x: 650, y: 180 },
   },
   {
     id: "temporal",
@@ -513,9 +451,10 @@ const brainRegions = ref([
       "Формирование памяти",
       "Распознавание лиц",
     ],
-    path: "M300,260 Q240,270 200,300 Q180,340 190,380 Q210,420 250,440 Q300,455 360,450 Q420,445 460,425 L480,380 Q470,340 440,310 Q400,280 360,270 Q330,265 300,260 Z",
-    labelPos: { x: 330, y: 360 },
-    center: { x: 340, y: 360 },
+    // Expanded Inferior
+    path: "M350,340 Q400,320 550,300 Q650,310 740,340 Q720,420 620,480 Q500,490 400,470 Q280,420 350,340 Z",
+    labelPos: { x: 500, y: 380 },
+    center: { x: 500, y: 380 },
   },
   {
     id: "occipital",
@@ -531,9 +470,10 @@ const brainRegions = ref([
       "Обработка движения",
       "Пространственное зрение",
     ],
-    path: "M720,270 Q760,270 790,290 Q815,320 820,360 Q815,400 790,430 Q750,460 700,475 Q650,485 600,480 L580,440 Q590,400 620,370 Q660,330 690,300 L720,270 Z",
-    labelPos: { x: 710, y: 380 },
-    center: { x: 710, y: 380 },
+    // Expanded Posterior pole
+    path: "M780,280 Q830,200 880,250 Q930,300 910,400 Q830,430 740,340 L780,280 Z",
+    labelPos: { x: 800, y: 320 },
+    center: { x: 800, y: 320 },
   },
   {
     id: "motor-cortex",
@@ -549,9 +489,10 @@ const brainRegions = ref([
       "Мелкая моторика",
       "Координация",
     ],
-    path: "M420,240 Q460,220 500,210 Q540,205 580,210 L590,240 Q580,270 560,290 Q530,305 490,305 Q450,300 420,280 L420,240 Z",
-    labelPos: { x: 500, y: 255 },
-    center: { x: 500, y: 260 },
+    // Expanded Strip
+    path: "M500,90 Q540,80 560,90 L580,240 Q540,250 500,240 L500,90 Z",
+    labelPos: { x: 520, y: 180 },
+    center: { x: 520, y: 180 },
   },
   {
     id: "prefrontal",
@@ -567,9 +508,10 @@ const brainRegions = ref([
       "Концентрация внимания",
       "Абстрактное мышление",
     ],
-    path: "M220,150 Q200,130 200,100 Q210,70 240,55 Q280,45 330,45 Q380,48 420,60 L440,90 Q420,120 380,135 Q330,150 280,150 Q240,148 220,150 Z",
-    labelPos: { x: 320, y: 100 },
-    center: { x: 320, y: 100 },
+    // Expanded Anterior tip
+    path: "M180,320 Q150,200 200,130 Q250,100 300,90 L320,250 Q280,290 180,320 Z",
+    labelPos: { x: 250, y: 200 },
+    center: { x: 250, y: 200 },
   },
   {
     id: "cerebellum",
@@ -585,9 +527,10 @@ const brainRegions = ref([
       "Мышечный тонус",
       "Точность движений",
     ],
-    path: "M580,440 Q620,460 670,470 Q720,475 760,465 Q790,450 800,420 L770,430 Q730,445 690,450 Q640,455 600,445 L580,440 Z",
-    labelPos: { x: 690, y: 450 },
-    center: { x: 690, y: 445 },
+    // Expanded Inferior-Posterior
+    path: "M620,480 Q670,460 770,470 Q820,500 770,550 Q670,570 620,530 Z",
+    labelPos: { x: 700, y: 490 },
+    center: { x: 700, y: 490 },
   },
   {
     id: "limbic",
@@ -603,9 +546,10 @@ const brainRegions = ref([
       "Мотивация",
       "Обучение",
     ],
-    path: "M460,280 Q480,300 510,310 Q540,315 570,310 Q590,300 600,280 L590,320 Q570,340 540,345 Q510,345 480,335 Q460,320 460,280 Z",
-    labelPos: { x: 530, y: 315 },
-    center: { x: 530, y: 315 },
+    // Expanded Deep structure
+    path: "M450,310 Q500,290 550,300 Q600,330 550,360 Q500,370 450,340 Z",
+    labelPos: { x: 520, y: 320 },
+    center: { x: 520, y: 320 },
   },
 ]);
 
@@ -634,12 +578,13 @@ const getRegionFill = (region) => {
   };
 
   if (region.id === selectedRegion.value?.id) {
-    return colors[region.type].replace("0.3", "0.5");
-  }
-  if (region.id === hoveredRegion.value?.id) {
     return colors[region.type].replace("0.3", "0.4");
   }
-  return colors[region.type];
+  if (region.id === hoveredRegion.value?.id) {
+    return colors[region.type].replace("0.3", "0.2");
+  }
+  // Transparent by default to show the image
+  return "transparent";
 };
 
 const getRegionStroke = (region) => {
@@ -715,8 +660,56 @@ const handleMouseMove = (event) => {
   height: 100%;
 }
 
+.brain-container {
+  position: relative;
+  width: 100%;
+  /* Ensure minimum height/width for mobile readability */
+  min-height: 300px;
+  overflow-x: auto; /* Allow scrolling on very small screens if needed */
+}
+
+.brain-image {
+  filter: grayscale(100%) contrast(120%) brightness(0.8);
+  mix-blend-mode: luminosity;
+  opacity: 0.8;
+  transition: all 0.5s ease;
+}
+
+.brain-container:hover .brain-image {
+  filter: grayscale(80%) contrast(110%) brightness(0.9);
+  opacity: 1;
+}
+
 .brain-outline {
-  filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.3));
+  filter: drop-shadow(0 0 2px rgba(6, 182, 212, 0.8));
+  transition: all 0.3s ease;
+}
+
+.region-path {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.region-path:hover {
+  filter: drop-shadow(0 0 8px rgba(6, 182, 212, 0.6));
+}
+
+.region-label {
+  font-size: 14px;
+  font-weight: 700;
+  fill: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9), 0 0 10px rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+  transition: all 0.3s ease;
+  opacity: 0.9;
+}
+
+/* Mobile optimization for labels */
+@media (max-width: 768px) {
+  .region-label {
+    font-size: 18px; /* Larger text on mobile */
+    font-weight: 800;
+  }
 }
 
 .brain-region {
