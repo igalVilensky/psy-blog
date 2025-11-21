@@ -27,11 +27,11 @@
           </div>
           <div>
             <div
-              class="text-xs font-mono text-purple-600 dark:text-purple-300 tracking-widest group-hover:text-purple-500 dark:group-hover:text-purple-200 transition-colors"
+              class="text-xs font-mono text-slate-600 dark:text-cyan-400 tracking-widest group-hover:text-slate-800 dark:group-hover:text-cyan-300 transition-colors font-semibold"
             >
               ГЛАВНАЯ
             </div>
-            <div class="text-xs text-purple-500/70 dark:text-purple-400/70">mindqlab.com</div>
+            <div class="text-xs text-slate-500 dark:text-slate-400">mindqlab.com</div>
           </div>
         </NuxtLink>
 
@@ -112,6 +112,8 @@
             :title="station.title"
             :subtitle="station.subtitle"
             :active="route.path === station.to"
+            :gradient-from="station.gradientFrom"
+            :gradient-to="station.gradientTo"
             @click="closeMobileMenu"
           />
         </div>
@@ -193,11 +195,11 @@
         </div>
         <div>
           <div
-            class="text-xs font-mono text-purple-700 dark:text-purple-300 tracking-widest group-hover:text-purple-600 dark:group-hover:text-purple-200 transition-colors"
+            class="text-xs font-mono text-slate-600 dark:text-cyan-400 tracking-widest group-hover:text-slate-800 dark:group-hover:text-cyan-300 transition-colors font-semibold"
           >
             ГЛАВНАЯ
           </div>
-          <div class="text-xs text-purple-600/80 dark:text-purple-400/70">mindqlab.com</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400">mindqlab.com</div>
         </div>
       </NuxtLink>
 
@@ -470,54 +472,72 @@ const mobileStations = computed(() => [
     icon: "fa-brain",
     title: "Тесты",
     subtitle: "Когнитивные",
+    gradientFrom: "blue-500",
+    gradientTo: "indigo-600",
   },
   {
     to: "/lab/games",
     icon: "fa-chess",
     title: "Игры",
     subtitle: "Развивающие",
+    gradientFrom: "green-500",
+    gradientTo: "emerald-600",
   },
   {
     to: "/lab/psychology",
     icon: "fa-book-open",
     title: "Психология",
     subtitle: "Теории",
+    gradientFrom: "purple-500",
+    gradientTo: "pink-600",
   },
   {
     to: "/lab/mindfulness",
     icon: "fa-spa",
     title: "Медитация",
     subtitle: "Аудио/видео",
+    gradientFrom: "teal-500",
+    gradientTo: "cyan-600",
   },
   {
     to: "/lab/brain-map",
     icon: "fa-map",
     title: "Карта Мозга",
     subtitle: "Интерактивная",
+    gradientFrom: "orange-500",
+    gradientTo: "red-600",
   },
   {
     to: "/lab/dashboard",
     icon: "fa-microchip",
     title: "Нейро Анализ",
     subtitle: "Картирование",
+    gradientFrom: "cyan-500",
+    gradientTo: "blue-600",
   },
   {
     to: "/lab/experiments",
     icon: "fa-atom",
     title: "Эксперименты",
     subtitle: "Инструменты",
+    gradientFrom: "purple-500",
+    gradientTo: "pink-600",
   },
   {
     to: "/lab/analysis",
     icon: "fa-chart-line",
     title: "Обсерватория",
     subtitle: "Рост",
+    gradientFrom: "emerald-500",
+    gradientTo: "green-600",
   },
   {
     to: "/lab/community",
     icon: "fa-users",
     title: "Сообщество",
     subtitle: "Исследователи",
+    gradientFrom: "orange-500",
+    gradientTo: "amber-600",
   },
 ]);
 

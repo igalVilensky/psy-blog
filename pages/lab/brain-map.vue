@@ -4,7 +4,7 @@
     class="brain-map-station min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500 px-4 sm:px-0 pb-8"
   >
     <!-- Header Section -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-8">
+    <div class="max-w-7xl mx-auto sm:px-8 py-8 space-y-8">
       <Breadcrumbs />
       <div
         class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6"
