@@ -1,5 +1,5 @@
 <template>
-  <nav aria-label="Breadcrumb" class="flex items-center text-sm font-medium mb-6">
+  <nav aria-label="Breadcrumb" class="flex items-center text-sm font-medium mb-8">
     <ol class="flex items-center space-x-2">
       <li>
         <NuxtLink

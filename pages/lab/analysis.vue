@@ -1,25 +1,26 @@
 <!-- pages/lab/analysis.vue -->
 <template>
   <div
-    class="min-h-screen px-4 sm:px-6 lg:px-8 py-8 bg-slate-50 dark:bg-slate-950 transition-colors duration-500"
+    class="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500"
   >
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
     <Breadcrumbs />
     <!-- Page Header -->
     <div class="mb-8">
       <div
-        class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6"
+        class="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
       >
         <div>
           <h1
-            class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white font-montserrat mb-2"
+            class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white font-montserrat mb-3 tracking-tight"
           >
             Обсерватория Роста
           </h1>
-          <p class="text-slate-600 dark:text-slate-400">
+          <p class="text-slate-600 dark:text-slate-400 mb-4">
             Визуализация прогресса и аналитика личностного развития
           </p>
         </div>
-        <div class="flex items-center space-x-3">
+        <div class="flex items-center space-x-3 mb-4 sm:mb-0">
           <select
             v-model="selectedPeriod"
             class="px-4 py-2 rounded-lg bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 text-slate-700 dark:text-slate-300 text-sm font-medium focus:outline-none focus:border-emerald-500/50 transition-all"
@@ -427,6 +428,7 @@
         <span>52 недели активности</span>
         <span>{{ metrics.totalActiveDays }} активных дней</span>
       </div>
+    </div>
     </div>
   </div>
 </template>

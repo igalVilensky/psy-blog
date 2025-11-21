@@ -2,9 +2,9 @@
 <template>
   <div
     @click="$emit('start', activity)"
-    class="activity-card group relative p-5 rounded-xl border-2 transition-all duration-500 cursor-pointer overflow-hidden hover:scale-105"
+    class="activity-card group relative p-5 rounded-xl border transition-all duration-500 cursor-pointer overflow-hidden hover:scale-105"
     :class="[
-      'border-slate-200 dark:border-slate-700/50 bg-white dark:bg-slate-800/30 hover:border-slate-300 dark:hover:border-slate-600/50 hover:shadow-lg dark:hover:shadow-xl shadow-sm dark:shadow-none',
+      'border-slate-200/50 dark:border-slate-700/50 bg-white/80 dark:bg-slate-800/50 backdrop-blur-xl hover:border-slate-300/50 dark:hover:border-slate-600/50 hover:shadow-lg dark:hover:shadow-xl shadow-sm dark:shadow-none',
     ]"
   >
     <!-- Background Gradient -->

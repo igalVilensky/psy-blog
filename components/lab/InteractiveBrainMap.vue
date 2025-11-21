@@ -47,7 +47,7 @@
 
     <!-- Brain Visualization -->
     <div
-      class="brain-container relative bg-slate-900/30 rounded-2xl border border-cyan-500/10 p-4 sm:p-8 overflow-hidden"
+      class="brain-container relative bg-slate-900/30 rounded-3xl border border-cyan-500/10   overflow-hidden"
     >
       <!-- Background Grid -->
       <div class="absolute inset-0 opacity-5">

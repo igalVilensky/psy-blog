@@ -1,38 +1,10 @@
 <!-- pages/lab/dashboard.vue -->
 <template>
   <div
-    class="min-h-screen px-4 sm:px-6 lg:px-8 py-8 bg-slate-50 dark:bg-slate-950 transition-colors duration-500 relative"
+    class="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500 relative"
   >
-    <Breadcrumbs />
-    <!-- Dashboard Header -->
-    <div class="mb-8">
-      <div
-        class="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
-      >
-        <div>
-          <h1
-            class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white font-montserrat mb-2"
-          >
-            Нейро Анализ
-          </h1>
-          <p class="text-slate-600 dark:text-slate-400">
-            Картирование когнитивных функций и личностная оценка в реальном
-            времени
-          </p>
-        </div>
-        <div class="flex items-center space-x-3">
-          <div
-            class="bg-white dark:bg-slate-800/50 rounded-xl px-4 py-3 border border-slate-200 dark:border-cyan-500/20 backdrop-blur-sm shadow-sm dark:shadow-none"
-          >
-            <div class="text-cyan-600 dark:text-cyan-400/70 text-xs font-mono mb-1">ID СЕССИИ</div>
-            <div class="text-slate-800 dark:text-white font-mono text-sm">{{ sessionId }}</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- Loading State -->
-    <div v-if="loading" class="loading-overlay">
+    <div v-if="loading" class="fixed inset-0 z-50 bg-slate-50 dark:bg-slate-950 flex items-center justify-center">
       <div class="loading-container">
         <div class="loading-spinner-wrapper">
           <div class="spinner-ring spinner-ring-1"></div>
@@ -52,8 +24,37 @@
       </div>
     </div>
 
+    <div v-else class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <Breadcrumbs />
+      <!-- Dashboard Header -->
+      <div class="mb-8">
+        <div
+          class="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+        >
+          <div>
+            <h1
+              class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white font-montserrat mb-3 tracking-tight"
+            >
+              Нейро Анализ
+            </h1>
+            <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
+              Картирование когнитивных функций и личностная оценка в реальном
+              времени
+            </p>
+          </div>
+          <div class="flex items-center space-x-3">
+            <div
+              class="bg-white dark:bg-slate-800/50 rounded-xl px-4 py-3 border border-slate-200 dark:border-cyan-500/20 backdrop-blur-sm shadow-sm dark:shadow-none"
+            >
+              <div class="text-cyan-600 dark:text-cyan-400/70 text-xs font-mono mb-1">ID СЕССИИ</div>
+              <div class="text-slate-800 dark:text-white font-mono text-sm">{{ sessionId }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     <!-- Quick Stats -->
-    <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8">
       <!-- Cognitive Scan Card -->
       <div
         class="bg-gradient-to-br from-white to-slate-50 dark:from-slate-800/50 dark:to-slate-800/30 rounded-xl p-6 border border-cyan-500/20 backdrop-blur-sm hover:border-cyan-500/40 transition-all duration-300 group relative overflow-hidden shadow-sm dark:shadow-none"
@@ -409,6 +410,7 @@
         </button>
       </div>
     </div>
+    </div>
   </div>
 </template>
 
@@ -546,9 +548,7 @@ onMounted(async () => {
 
 <style scoped>
 /* Loading State Styles */
-.loading-overlay {
-  @apply absolute inset-0 bg-slate-50 dark:bg-slate-950 z-10 flex items-center justify-center;
-}
+
 
 .loading-container {
   @apply flex flex-col items-center gap-8;

@@ -1,12 +1,12 @@
 <!-- pages/lab/games.vue -->
 <template>
   <div
-    class="games-station min-h-screen bg-slate-50 dark:bg-slate-950 px-4 sm:px-6 lg:px-8 py-8 transition-colors duration-500"
+    class="games-station min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500"
   >
-    <div class="max-w-7xl mx-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       <Breadcrumbs />
       <!-- Header Section -->
-      <div class="mb-10">
+      <div class="mb-8">
         <div
           class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6"
         >

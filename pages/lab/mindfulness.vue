@@ -1,15 +1,15 @@
 <!-- pages/lab/psychology/mindfulness.vue -->
 <template>
   <div
-    class="min-h-screen bg-slate-50 dark:bg-slate-950 px-4 sm:px-6 lg:px-8 py-8 transition-colors duration-500"
+    class="min-h-screen bg-slate-50 dark:bg-slate-950 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-teal-500/5 via-slate-50 to-slate-50 dark:from-teal-500/10 dark:via-slate-950 dark:to-slate-950 pb-8 transition-colors duration-500"
   >
-    <div class="max-w-7xl mx-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       <Breadcrumbs />
       <!-- Header -->
       <div class="mb-8">
         <div class="flex-1">
           <h1
-            class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white font-montserrat"
+            class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white font-montserrat mb-3 tracking-tight"
           >
             ОСОЗНАННОСТЬ И МЕДИТАЦИЯ
           </h1>
@@ -91,7 +91,7 @@
       <transition name="slide-fade">
         <div
           v-if="activeSession"
-          class="mb-12 bg-white dark:bg-gradient-to-br dark:from-teal-500/10 dark:to-cyan-500/10 rounded-2xl p-6 md:p-8 border border-teal-500/30 relative overflow-hidden shadow-lg dark:shadow-none"
+          class="mb-12 bg-white/80 dark:bg-slate-800/50 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-teal-200/50 dark:border-teal-500/30 relative overflow-hidden shadow-lg dark:shadow-none ring-1 ring-teal-500/10"
         >
           <!-- Visuals Background -->
           <div class="absolute inset-0 rounded-2xl overflow-hidden z-0">
@@ -300,7 +300,7 @@
         class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12"
       >
         <!-- Weekly Progress -->
-        <div class="bg-white dark:bg-slate-800/30 rounded-2xl p-6 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none">
+        <div class="bg-white/80 dark:bg-slate-800/50 backdrop-blur-xl rounded-2xl p-6 border border-slate-200/50 dark:border-slate-700/50 shadow-sm dark:shadow-none hover:border-teal-500/30 transition-colors duration-300">
           <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
             <i class="fas fa-chart-line text-teal-600 dark:text-teal-400"></i>
             Прогресс за неделю
@@ -342,7 +342,7 @@
         </div>
 
         <!-- Achievements -->
-        <div class="bg-white dark:bg-slate-800/30 rounded-2xl p-6 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none">
+        <div class="bg-white/80 dark:bg-slate-800/50 backdrop-blur-xl rounded-2xl p-6 border border-slate-200/50 dark:border-slate-700/50 shadow-sm dark:shadow-none hover:border-yellow-500/30 transition-colors duration-300">
           <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
             <i class="fas fa-trophy text-yellow-500 dark:text-yellow-400"></i>
             Достижения
@@ -382,7 +382,7 @@
       <!-- Resources & Tips -->
       <div
         v-if="!activeSession"
-        class="bg-gradient-to-br from-purple-500/5 to-pink-500/5 rounded-2xl p-6 md:p-8 border border-purple-500/20"
+        class="bg-gradient-to-br from-purple-500/5 to-pink-500/5 dark:from-purple-500/10 dark:to-pink-500/10 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-purple-500/20 dark:border-purple-500/30"
       >
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div>
@@ -400,7 +400,7 @@
 
             <div class="space-y-4">
               <div
-                class="bg-white dark:bg-slate-900/30 rounded-lg p-4 border border-purple-500/10 shadow-sm dark:shadow-none"
+                class="bg-white/60 dark:bg-slate-900/40 backdrop-blur-sm rounded-lg p-4 border border-purple-500/10 hover:border-purple-500/30 transition-colors shadow-sm dark:shadow-none"
               >
                 <h4 class="text-slate-900 dark:text-white font-medium mb-2 flex items-center gap-2">
                   <i class="fas fa-lightbulb text-yellow-500 dark:text-yellow-400 text-sm"></i>
@@ -455,7 +455,7 @@
 
             <div class="grid grid-cols-1 gap-3">
               <div
-                class="flex items-start gap-3 bg-white dark:bg-slate-900/30 rounded-lg p-4 border border-teal-500/10 shadow-sm dark:shadow-none"
+                class="flex items-start gap-3 bg-white/60 dark:bg-slate-900/40 backdrop-blur-sm rounded-lg p-4 border border-teal-500/10 hover:border-teal-500/30 transition-colors shadow-sm dark:shadow-none"
               >
                 <i class="fas fa-brain text-teal-600 dark:text-teal-400 mt-1"></i>
                 <div>

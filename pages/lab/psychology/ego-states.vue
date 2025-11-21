@@ -2,13 +2,13 @@
   <div
     class="min-h-screen bg-slate-50 dark:bg-slate-950 px-4 sm:px-6 lg:px-8 py-8 transition-colors duration-500"
   >
-    <div class="max-w-7xl mx-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       <Breadcrumbs />
       <!-- Header -->
       <div class="mb-8">
         <div class="flex-1">
           <h1
-            class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white font-montserrat"
+            class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white font-montserrat mb-3 tracking-tight"
           >
             ЭГО-СОСТОЯНИЯ
           </h1>

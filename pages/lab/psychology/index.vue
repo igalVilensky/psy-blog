@@ -1,10 +1,10 @@
 <!-- pages/lab/psychology/index.vue -->
 <template>
-  <div class="min-h-screen bg-slate-50 dark:bg-slate-950 px-4 sm:px-6 lg:px-8 py-8 transition-colors duration-500">
-    <div class="max-w-7xl mx-auto">
+  <div class="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <Breadcrumbs />
       <!-- Header Section - Fixed to match your style -->
-      <div class="mb-10">
+      <div class="mb-8">
         <div
           class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6"
         >
