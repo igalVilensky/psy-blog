@@ -1,13 +1,13 @@
 <template>
   <div class="space-y-6">
-    <h3 class="text-xl font-bold text-white font-montserrat flex items-center space-x-2">
-      <i class="fas fa-comments text-orange-400"></i>
+    <h3 class="text-xl font-bold text-slate-900 dark:text-white font-montserrat flex items-center space-x-2">
+      <i class="fas fa-comments text-orange-500 dark:text-orange-400"></i>
       <span>Комментарии</span>
-      <span class="text-slate-500 text-sm font-normal ml-2">({{ comments.length }})</span>
+      <span class="text-slate-400 dark:text-slate-500 text-sm font-normal ml-2">({{ comments.length }})</span>
     </h3>
 
     <!-- Add Comment Form -->
-    <div v-if="authStore.user" class="bg-slate-800/30 rounded-xl border border-slate-700/50 p-4">
+    <div v-if="authStore.user" class="bg-white dark:bg-slate-800/30 rounded-xl border border-slate-200 dark:border-slate-700/50 p-4 shadow-sm dark:shadow-none">
       <div class="flex items-start space-x-3">
         <div
           v-if="authStore.user.photoURL"
@@ -25,13 +25,13 @@
             v-model="newComment"
             rows="3"
             placeholder="Напишите комментарий..."
-            class="w-full bg-slate-900/50 border border-slate-700 rounded-lg p-3 text-white placeholder-slate-500 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50 transition-all resize-none text-sm"
+            class="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-lg p-3 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50 transition-all resize-none text-sm"
           ></textarea>
           <div class="flex justify-end mt-2">
             <button
               @click="submitComment"
               :disabled="!newComment.trim() || isSubmitting"
-              class="px-4 py-2 bg-orange-500 hover:bg-orange-600 disabled:bg-slate-700 disabled:cursor-not-allowed text-white rounded-lg text-sm font-medium transition-all flex items-center space-x-2"
+              class="px-4 py-2 bg-orange-500 hover:bg-orange-600 disabled:bg-slate-300 dark:disabled:bg-slate-700 disabled:cursor-not-allowed text-white rounded-lg text-sm font-medium transition-all flex items-center space-x-2"
             >
               <i v-if="isSubmitting" class="fas fa-spinner fa-spin"></i>
               <span>Отправить</span>
@@ -41,9 +41,9 @@
       </div>
     </div>
     
-    <div v-else class="bg-slate-800/30 rounded-xl border border-slate-700/50 p-6 text-center">
-      <p class="text-slate-400 mb-4">Войдите, чтобы оставить комментарий</p>
-      <NuxtLink to="/auth" class="inline-block px-6 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-sm font-medium transition-colors">
+    <div v-else class="bg-white dark:bg-slate-800/30 rounded-xl border border-slate-200 dark:border-slate-700/50 p-6 text-center shadow-sm dark:shadow-none">
+      <p class="text-slate-600 dark:text-slate-400 mb-4">Войдите, чтобы оставить комментарий</p>
+      <NuxtLink to="/auth" class="inline-block px-6 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-900 dark:text-white rounded-lg text-sm font-medium transition-colors">
         Войти
       </NuxtLink>
     </div>
@@ -54,7 +54,7 @@
         <i class="fas fa-spinner fa-spin text-2xl text-orange-400"></i>
       </div>
       
-      <div v-else-if="comments.length === 0" class="text-center py-8 text-slate-500">
+      <div v-else-if="comments.length === 0" class="text-center py-8 text-slate-500 dark:text-slate-500">
         <p>Пока нет комментариев. Будьте первым!</p>
       </div>
 
@@ -62,7 +62,7 @@
         v-else
         v-for="comment in comments"
         :key="comment.id"
-        class="bg-slate-800/30 rounded-xl border border-slate-700/50 p-4"
+        class="bg-white dark:bg-slate-800/30 rounded-xl border border-slate-200 dark:border-slate-700/50 p-4 shadow-sm dark:shadow-none"
       >
         <div class="flex items-start space-x-3">
           <div
@@ -78,10 +78,10 @@
           </div>
           <div class="flex-1">
             <div class="flex items-center justify-between mb-1">
-              <span class="text-white font-medium text-sm">{{ comment.authorName }}</span>
-              <span class="text-slate-500 text-xs">{{ formatTime(comment.createdAt) }}</span>
+              <span class="text-slate-900 dark:text-white font-medium text-sm">{{ comment.authorName }}</span>
+              <span class="text-slate-400 dark:text-slate-500 text-xs">{{ formatTime(comment.createdAt) }}</span>
             </div>
-            <p class="text-slate-300 text-sm leading-relaxed">{{ comment.content }}</p>
+            <p class="text-slate-700 dark:text-slate-300 text-sm leading-relaxed">{{ comment.content }}</p>
           </div>
         </div>
       </div>

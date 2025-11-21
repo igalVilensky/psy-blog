@@ -4,7 +4,7 @@
     @click="$emit('start', activity)"
     class="activity-card group relative p-5 rounded-xl border-2 transition-all duration-500 cursor-pointer overflow-hidden hover:scale-105"
     :class="[
-      'border-slate-700/50 bg-slate-800/30 hover:border-slate-600/50 hover:shadow-xl',
+      'border-slate-200 dark:border-slate-700/50 bg-white dark:bg-slate-800/30 hover:border-slate-300 dark:hover:border-slate-600/50 hover:shadow-lg dark:hover:shadow-xl shadow-sm dark:shadow-none',
     ]"
   >
     <!-- Background Gradient -->
@@ -20,17 +20,17 @@
       <div class="flex items-center justify-between mb-4">
         <div
           class="w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110"
-          :class="`bg-slate-700/50 text-slate-400 group-hover:shadow-lg`"
+          :class="`bg-slate-100 dark:bg-slate-700/50 text-slate-600 dark:text-slate-400 group-hover:shadow-lg`"
         >
           <i
             :class="activity.icon"
-            class="text-xl group-hover:text-white transition-colors"
+            class="text-xl group-hover:text-slate-900 dark:group-hover:text-white transition-colors"
           ></i>
         </div>
 
         <!-- Duration Badge -->
         <div
-          class="flex items-center gap-1 text-xs px-3 py-1 rounded-full bg-slate-700/50 text-slate-400 border border-slate-600/30"
+          class="flex items-center gap-1 text-xs px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-700/50 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-600/30"
         >
           <i class="fas fa-clock"></i>
           <span>{{ activity.duration }} мин</span>
@@ -39,21 +39,21 @@
 
       <!-- Title -->
       <h3
-        class="text-base font-bold text-white mb-2 group-hover:text-purple-300 transition-colors"
+        class="text-base font-bold text-slate-900 dark:text-white mb-2 group-hover:text-purple-700 dark:group-hover:text-purple-300 transition-colors"
       >
         {{ activity.title }}
       </h3>
 
       <!-- Description -->
       <p
-        class="text-slate-400 text-sm leading-relaxed group-hover:text-slate-300 transition-colors mb-4"
+        class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed group-hover:text-slate-700 dark:group-hover:text-slate-300 transition-colors mb-4"
       >
         {{ activity.description }}
       </p>
 
       <!-- Start Button -->
       <button
-        class="w-full py-2.5 rounded-lg bg-slate-700/30 text-slate-400 border border-slate-600/30 group-hover:bg-purple-500/20 group-hover:border-purple-500/30 group-hover:text-purple-400 transition-all duration-300 text-sm font-medium flex items-center justify-center gap-2"
+        class="w-full py-2.5 rounded-lg bg-slate-100 dark:bg-slate-700/30 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-600/30 group-hover:bg-purple-500/20 group-hover:border-purple-500/30 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-all duration-300 text-sm font-medium flex items-center justify-center gap-2"
       >
         <i class="fas fa-play"></i>
         <span>Начать практику</span>

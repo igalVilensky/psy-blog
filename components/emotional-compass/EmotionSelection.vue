@@ -7,8 +7,8 @@
       class="group relative p-4 rounded-2xl transition-all duration-300 border hover:-translate-y-1"
       :class="[
         selectedEmotion?.id === emotion.id
-          ? 'bg-slate-800 border-transparent ring-2 ring-offset-2 ring-offset-slate-900'
-          : 'bg-slate-900/50 border-slate-800 hover:border-slate-700'
+          ? 'bg-white dark:bg-slate-800 border-transparent ring-2 ring-offset-2 ring-offset-white dark:ring-offset-slate-900'
+          : 'bg-slate-50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
       ]"
       :style="{
         '--ring-color': emotion.color || '#06b6d4'
@@ -26,8 +26,8 @@
         class="relative w-12 h-12 mx-auto mb-3 rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
         :class="[
           selectedEmotion?.id === emotion.id
-            ? 'bg-white/10'
-            : 'bg-slate-800'
+            ? 'bg-slate-100 dark:bg-white/10'
+            : 'bg-slate-200 dark:bg-slate-800'
         ]"
         :style="{
             background: selectedEmotion?.id === emotion.id ? emotion.activeColor : ''
@@ -42,8 +42,8 @@
           class="block text-sm font-bold tracking-wide transition-colors duration-300"
           :class="[
             selectedEmotion?.id === emotion.id
-              ? 'text-white'
-              : 'text-slate-400 group-hover:text-slate-200'
+              ? 'text-slate-900 dark:text-white'
+              : 'text-slate-600 dark:text-slate-400 group-hover:text-slate-800 dark:group-hover:text-slate-200'
           ]"
         >
           {{ emotion.name }}
@@ -52,6 +52,7 @@
       
       <!-- Ring Color Style -->
       <component is="style" v-if="selectedEmotion?.id === emotion.id">
+        .ring-offset-white { --tw-ring-color: {{ emotion.activeColor ? 'var(--tw-ring-color)' : '#06b6d4' }}; }
         .ring-offset-slate-900 { --tw-ring-color: {{ emotion.activeColor ? 'var(--tw-ring-color)' : '#06b6d4' }}; }
       </component>
     </button>

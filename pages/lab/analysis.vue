@@ -3,6 +3,7 @@
   <div
     class="min-h-screen px-4 sm:px-6 lg:px-8 py-8 bg-slate-50 dark:bg-slate-950 transition-colors duration-500"
   >
+    <Breadcrumbs />
     <!-- Page Header -->
     <div class="mb-8">
       <div
@@ -432,6 +433,7 @@
 
 <script setup>
 import { ref, computed } from "vue";
+import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
 
 definePageMeta({
   layout: "laboratory",

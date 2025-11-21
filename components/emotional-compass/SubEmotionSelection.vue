@@ -7,8 +7,8 @@
       class="group relative px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 border overflow-hidden"
       :class="[
         selectedSubEmotion === subEmotion
-          ? 'bg-cyan-500/10 border-cyan-500/50 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.2)]'
-          : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200'
+          ? 'bg-cyan-50 dark:bg-cyan-500/10 border-cyan-500/50 text-cyan-700 dark:text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.2)]'
+          : 'bg-white dark:bg-slate-900/50 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-700 hover:text-slate-900 dark:hover:text-slate-200'
       ]"
     >
       <span class="relative z-10">{{ subEmotion }}</span>

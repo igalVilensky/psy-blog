@@ -7,19 +7,19 @@
       @click.self="closeModal"
     >
       <div
-        class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-2xl shadow-2xl relative max-h-[90vh] overflow-y-auto"
+        class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl w-full max-w-2xl shadow-2xl relative max-h-[90vh] overflow-y-auto"
       >
         <!-- Header -->
         <div
-          class="sticky top-0 bg-slate-900 border-b border-slate-700 p-6 flex items-center justify-between z-10"
+          class="sticky top-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 p-6 flex items-center justify-between z-10"
         >
-          <h3 class="text-2xl font-bold text-white flex items-center gap-3">
+          <h3 class="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-3">
             <i class="fas fa-pen-fancy text-orange-400"></i>
             Создать пост
           </h3>
           <button
             @click="closeModal"
-            class="text-slate-400 hover:text-white transition-colors"
+            class="text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors"
           >
             <i class="fas fa-times text-xl"></i>
           </button>
@@ -29,7 +29,7 @@
         <form @submit.prevent="handleSubmit" class="p-6 space-y-6">
           <!-- Title -->
           <div>
-            <label class="block text-sm font-medium text-slate-300 mb-2">
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
               Заголовок <span class="text-red-400">*</span>
             </label>
             <input
@@ -37,7 +37,7 @@
               type="text"
               placeholder="Введите заголовок поста..."
               maxlength="100"
-              class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 outline-none transition-all"
+              class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 outline-none transition-all"
               required
             />
             <div class="text-xs text-slate-500 mt-1 text-right">
@@ -47,12 +47,12 @@
 
           <!-- Category -->
           <div>
-            <label class="block text-sm font-medium text-slate-300 mb-2">
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
               Категория <span class="text-red-400">*</span>
             </label>
             <select
               v-model="formData.category"
-              class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-white focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 outline-none transition-all"
+              class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3 text-slate-900 dark:text-white focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 outline-none transition-all"
               required
             >
               <option
@@ -67,7 +67,7 @@
 
           <!-- Content -->
           <div>
-            <label class="block text-sm font-medium text-slate-300 mb-2">
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
               Содержание <span class="text-red-400">*</span>
             </label>
             <textarea
@@ -75,7 +75,7 @@
               rows="8"
               placeholder="Поделитесь своими мыслями, опытом или вопросом..."
               maxlength="2000"
-              class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 outline-none transition-all resize-none"
+              class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 outline-none transition-all resize-none"
               required
             ></textarea>
             <div class="text-xs text-slate-500 mt-1 text-right">
@@ -85,20 +85,20 @@
 
           <!-- Tags -->
           <div>
-            <label class="block text-sm font-medium text-slate-300 mb-2">
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
               Теги
             </label>
             <div class="flex flex-wrap gap-2 mb-3">
               <span
                 v-for="(tag, index) in formData.tags"
                 :key="index"
-                class="px-3 py-1 bg-slate-700/50 rounded-full text-slate-300 text-sm flex items-center gap-2"
+                class="px-3 py-1 bg-slate-100 dark:bg-slate-700/50 rounded-full text-slate-700 dark:text-slate-300 text-sm flex items-center gap-2"
               >
                 #{{ tag }}
                 <button
                   type="button"
                   @click="removeTag(index)"
-                  class="text-slate-400 hover:text-red-400 transition-colors"
+                  class="text-slate-400 hover:text-red-500 dark:hover:text-red-400 transition-colors"
                 >
                   <i class="fas fa-times text-xs"></i>
                 </button>
@@ -110,13 +110,13 @@
                 type="text"
                 placeholder="Добавить тег..."
                 maxlength="20"
-                class="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-white placeholder-slate-500 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 outline-none transition-all"
+                class="flex-1 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 outline-none transition-all"
                 @keydown.enter.prevent="addTag"
               />
               <button
                 type="button"
                 @click="addTag"
-                class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
+                class="px-4 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-white rounded-lg transition-colors"
               >
                 <i class="fas fa-plus"></i>
               </button>
@@ -136,11 +136,11 @@
           </div>
 
           <!-- Actions -->
-          <div class="flex justify-end gap-3 pt-4 border-t border-slate-700">
+          <div class="flex justify-end gap-3 pt-4 border-t border-slate-200 dark:border-slate-700">
             <button
               type="button"
               @click="closeModal"
-              class="px-6 py-2.5 text-slate-400 hover:text-white transition-colors"
+              class="px-6 py-2.5 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-white transition-colors"
               :disabled="submitting"
             >
               Отмена

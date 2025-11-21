@@ -2,6 +2,7 @@
 <template>
   <div class="min-h-screen bg-slate-50 dark:bg-slate-950 px-4 sm:px-6 lg:px-8 py-8 transition-colors duration-500">
     <div class="max-w-7xl mx-auto">
+      <Breadcrumbs />
       <!-- Header Section - Fixed to match your style -->
       <div class="mb-10">
         <div
@@ -9,7 +10,7 @@
         >
           <div>
             <h1
-              class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight gradient-text"
+              class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight"
             >
               ПСИХОЛОГИЧЕСКАЯ ЛАБОРАТОРИЯ
             </h1>
@@ -129,6 +130,7 @@
 <script setup>
 import LabSectionCard from "~/components/lab/psychology/LabSectionCard.vue";
 import QuickToolCard from "~/components/lab/psychology/QuickToolCard.vue";
+import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
 definePageMeta({
   layout: "laboratory",
 });
@@ -242,12 +244,7 @@ const navigateToSection = (section) => {
 </script>
 
 <style scoped>
-.gradient-text {
-  background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
+
 
 .stat-card {
   @apply text-center px-4 py-3 rounded-xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/10 shadow-sm dark:shadow-none;

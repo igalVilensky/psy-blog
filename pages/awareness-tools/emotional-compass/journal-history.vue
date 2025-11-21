@@ -1,24 +1,21 @@
 <template>
-  <div class="relative min-h-screen text-slate-200">
+  <div class="relative min-h-screen text-slate-800 dark:text-slate-200">
     <div class="container mx-auto px-4 xl:px-0 max-w-6xl relative z-10 py-12">
       <div class="grid grid-cols-1 gap-8">
+        <!-- Breadcrumbs -->
+        <Breadcrumbs />
+
         <!-- Header -->
         <div class="flex items-center justify-between mb-4">
-          <h1 class="text-3xl font-mono font-bold text-purple-300">
+          <h1 class="text-3xl font-mono font-bold text-purple-600 dark:text-purple-300">
             <i class="fas fa-history mr-3"></i>ИСТОРИЯ ЖУРНАЛА
           </h1>
-          <NuxtLink
-            to="/awareness-tools/emotional-compass"
-            class="px-4 py-2 rounded-lg border border-purple-500/30 text-purple-300 hover:bg-purple-500/10 transition-colors font-mono flex items-center gap-2 text-sm"
-          >
-            <i class="fas fa-arrow-left"></i> НАЗАД
-          </NuxtLink>
         </div>
 
         <div v-if="entries.length > 0" class="grid grid-cols-1 gap-8">
            <!-- Journal History Section -->
           <div
-            class="bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-purple-500/30 p-6 sm:p-8 shadow-[0_0_30px_rgba(168,85,247,0.1)]"
+            class="bg-white dark:bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-purple-500/30 p-6 sm:p-8 shadow-[0_0_30px_rgba(168,85,247,0.1)]"
           >
             <JournalHistory
               :emotions="emotions"
@@ -29,25 +26,25 @@
 
           <!-- Emotion Chart -->
           <div
-            class="bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-cyan-500/30 p-6 sm:p-8 shadow-[0_0_30px_rgba(6,182,212,0.1)]"
+            class="bg-white dark:bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-cyan-500/30 p-6 sm:p-8 shadow-[0_0_30px_rgba(6,182,212,0.1)]"
           >
-            <h3 class="text-xl font-mono font-bold text-cyan-300 mb-6">ГРАФИК ЭМОЦИЙ</h3>
+            <h3 class="text-xl font-mono font-bold text-cyan-600 dark:text-cyan-300 mb-6">ГРАФИК ЭМОЦИЙ</h3>
             <EmotionChart :entries="entries" :emotions="emotions" />
           </div>
         </div>
         
         <!-- Empty State -->
-        <div v-else class="bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-slate-700 p-12 text-center">
-           <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-800 flex items-center justify-center">
-              <i class="fas fa-book-open text-slate-600 text-2xl"></i>
+        <div v-else class="bg-white dark:bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-slate-700 p-12 text-center">
+           <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+              <i class="fas fa-book-open text-slate-400 dark:text-slate-600 text-2xl"></i>
             </div>
-            <h3 class="text-xl font-mono text-slate-400 mb-2">ЖУРНАЛ ПУСТ</h3>
-            <p class="text-slate-500 max-w-md mx-auto">
+            <h3 class="text-xl font-mono text-slate-500 dark:text-slate-400 mb-2">ЖУРНАЛ ПУСТ</h3>
+            <p class="text-slate-600 dark:text-slate-500 max-w-md mx-auto">
               Записи отсутствуют. Начните вести дневник эмоций, чтобы отслеживать свое состояние во времени.
             </p>
             <NuxtLink
               to="/awareness-tools/emotional-compass"
-              class="inline-block mt-6 px-6 py-2 rounded-lg bg-purple-600/20 text-purple-400 border border-purple-500/30 hover:bg-purple-600/30 transition-all font-mono"
+              class="inline-block mt-6 px-6 py-2 rounded-lg bg-purple-600/20 text-purple-600 dark:text-purple-400 border border-purple-500/30 hover:bg-purple-600/30 transition-all font-mono"
             >
               СОЗДАТЬ ЗАПИСЬ
             </NuxtLink>
@@ -64,6 +61,7 @@ import { getFirestore } from "firebase/firestore";
 import { emotionBarometerService } from "~/services/emotionBarometerService";
 import JournalHistory from "~/components/emotional-compass/JournalHistory.vue";
 import EmotionChart from "~/components/emotional-compass/EmotionChart.vue";
+import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
 
 definePageMeta({
   layout: "laboratory",

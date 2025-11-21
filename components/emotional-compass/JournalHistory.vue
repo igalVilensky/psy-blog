@@ -10,7 +10,7 @@
           aria-hidden="true"
         ></i>
       </div>
-      <h2 class="text-3xl font-extrabold text-white/90 tracking-tight">
+      <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white/90 tracking-tight">
         История эмоций
       </h2>
     </div>
@@ -19,7 +19,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 px-4 sm:px-0">
       <select
         v-model="emotionFilter"
-        class="w-full px-4 py-2.5 rounded-lg border border-[#0EA5E9]/20 text-sm focus:ring-2 focus:ring-[#0EA5E9]/20 focus:border-[#0EA5E9] outline-none transition-all bg-[#1A1F35]/40 text-slate-300"
+        class="w-full px-4 py-2.5 rounded-lg border border-cyan-500/20 text-sm focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 outline-none transition-all bg-white dark:bg-[#1A1F35]/40 text-slate-600 dark:text-slate-300"
         aria-label="Фильтр по эмоциям"
       >
         <option value="">Все эмоции</option>
@@ -33,7 +33,7 @@
       </select>
       <select
         v-model="sphereFilter"
-        class="w-full px-4 py-2.5 rounded-lg border border-[#0EA5E9]/20 text-sm focus:ring-2 focus:ring-[#0EA5E9]/20 focus:border-[#0EA5E9] outline-none transition-all bg-[#1A1F35]/40 text-slate-300"
+        class="w-full px-4 py-2.5 rounded-lg border border-cyan-500/20 text-sm focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 outline-none transition-all bg-white dark:bg-[#1A1F35]/40 text-slate-600 dark:text-slate-300"
         aria-label="Фильтр по сферам жизни"
       >
         <option value="">Все сферы</option>
@@ -49,7 +49,7 @@
         <input
           v-model="searchQuery"
           placeholder="Поиск в записях..."
-          class="w-full px-4 py-2.5 rounded-lg border border-[#0EA5E9]/20 text-sm focus:ring-2 focus:ring-[#0EA5E9]/20 focus:border-[#0EA5E9] outline-none transition-all bg-[#1A1F35]/40 text-slate-300"
+          class="w-full px-4 py-2.5 rounded-lg border border-cyan-500/20 text-sm focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 outline-none transition-all bg-white dark:bg-[#1A1F35]/40 text-slate-600 dark:text-slate-300"
           aria-label="Поиск по записям"
         />
         <button
@@ -70,7 +70,7 @@
           aria-hidden="true"
         ></i>
       </div>
-      <p class="text-slate-400 text-base font-medium">
+      <p class="text-slate-500 dark:text-slate-400 text-base font-medium">
         Загрузка ваших эмоциональных записей...
       </p>
     </div>
@@ -84,7 +84,7 @@
         class="fas fa-journal-whills text-4xl text-[#0EA5E9]/50"
         aria-hidden="true"
       ></i>
-      <p class="text-slate-400 text-lg">
+      <p class="text-slate-500 dark:text-slate-400 text-lg">
         Пока нет записей, соответствующих выбранным фильтрам
       </p>
     </div>
@@ -103,24 +103,24 @@
         <div
           v-for="(entry, index) in filteredEntries"
           :key="index"
-          class="p-6 bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+          class="p-6 bg-gradient-to-b from-white to-slate-50 dark:from-[#1A1F35]/40 dark:to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-cyan-500/20 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
         >
           <!-- Entry Header -->
           <div class="flex flex-col sm:flex-row sm:justify-between gap-3 mb-4">
             <div class="flex flex-wrap items-center gap-3">
-              <span class="text-lg font-bold text-white/90">
+              <span class="text-lg font-bold text-slate-900 dark:text-white/90">
                 {{ entry.emotion }}
-                <span class="text-slate-300 text-sm font-semibold ml-2">
+                <span class="text-slate-500 dark:text-slate-300 text-sm font-semibold ml-2">
                   ({{ entry.subEmotion }})
                 </span>
               </span>
               <span
-                class="px-3 py-1 bg-[#1A1F35]/40 text-[#0EA5E9] text-sm font-medium rounded-full border border-[#0EA5E9]/20"
+                class="px-3 py-1 bg-slate-100 dark:bg-[#1A1F35]/40 text-[#0EA5E9] text-sm font-medium rounded-full border border-[#0EA5E9]/20"
               >
                 Интенсивность: {{ entry.intensity }}/10
               </span>
             </div>
-            <span class="text-sm text-slate-300 sm:text-right">
+            <span class="text-sm text-slate-500 dark:text-slate-300 sm:text-right">
               {{ formatDate(entry.timestamp) }}
             </span>
           </div>
@@ -165,7 +165,7 @@
                   Описание
                 </h3>
                 <p
-                  class="text-sm text-slate-300 pl-4 border-l-2 border-[#0EA5E9]/30 leading-relaxed"
+                  class="text-sm text-slate-600 dark:text-slate-300 pl-4 border-l-2 border-[#0EA5E9]/30 leading-relaxed"
                 >
                   {{ entry.entry }}
                 </p>
@@ -180,7 +180,7 @@
                   Восприятие
                 </h3>
                 <p
-                  class="text-sm text-slate-300 pl-4 border-l-2 border-[#0EA5E9]/30 leading-relaxed"
+                  class="text-sm text-slate-600 dark:text-slate-300 pl-4 border-l-2 border-[#0EA5E9]/30 leading-relaxed"
                 >
                   {{ entry.perception }}
                 </p>
@@ -195,7 +195,7 @@
                   Стратегии совладания
                 </h3>
                 <p
-                  class="text-sm text-slate-300 pl-4 border-l-2 border-[#0EA5E9]/30 leading-relaxed"
+                  class="text-sm text-slate-600 dark:text-slate-300 pl-4 border-l-2 border-[#0EA5E9]/30 leading-relaxed"
                 >
                   {{ entry.coping }}
                 </p>
@@ -210,7 +210,7 @@
                   Действия
                 </h3>
                 <p
-                  class="text-sm text-slate-300 pl-4 border-l-2 border-[#0EA5E9]/30 leading-relaxed"
+                  class="text-sm text-slate-600 dark:text-slate-300 pl-4 border-l-2 border-[#0EA5E9]/30 leading-relaxed"
                 >
                   {{ entry.action }}
                 </p>
@@ -240,7 +240,7 @@
         class="absolute bottom-4 left-0 right-0 flex justify-center pointer-events-none"
       >
         <div
-          class="flex items-center gap-2 bg-[#1A1F35]/80 text-[#0EA5E9] px-4 py-2 rounded-full text-sm font-medium transition-opacity duration-300 z-10"
+          class="flex items-center gap-2 bg-white/90 dark:bg-[#1A1F35]/80 text-[#0EA5E9] px-4 py-2 rounded-full text-sm font-medium transition-opacity duration-300 z-10 shadow-lg"
         >
           <span class="text-[#0EA5E9]">Больше записей ниже</span>
           <i

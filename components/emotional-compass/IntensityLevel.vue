@@ -5,12 +5,12 @@
            :class="intensityColor">
         {{ intensityLevel }}
       </div>
-      <p class="text-slate-400 text-lg">{{ intensityDescription }}</p>
+      <p class="text-slate-600 dark:text-slate-400 text-lg">{{ intensityDescription }}</p>
     </div>
 
     <div class="relative h-16 flex items-center">
       <!-- Track -->
-      <div class="absolute w-full h-4 bg-slate-800 rounded-full overflow-hidden">
+      <div class="absolute w-full h-4 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
         <div
           class="h-full transition-all duration-300"
           :class="trackGradient"
@@ -38,7 +38,7 @@
       
       <!-- Ticks -->
       <div class="absolute w-full flex justify-between px-1 pointer-events-none mt-12">
-        <span v-for="n in 10" :key="n" class="text-xs font-mono text-slate-600">{{ n }}</span>
+        <span v-for="n in 10" :key="n" class="text-xs font-mono text-slate-500 dark:text-slate-600">{{ n }}</span>
       </div>
     </div>
   </div>

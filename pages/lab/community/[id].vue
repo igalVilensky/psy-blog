@@ -1,14 +1,8 @@
 <template>
   <div class="min-h-screen px-4 sm:px-6 lg:px-8 py-8">
     <div class="max-w-3xl mx-auto">
-      <!-- Back Button -->
-      <NuxtLink
-        to="/lab/community"
-        class="inline-flex items-center space-x-2 text-slate-400 hover:text-white mb-6 transition-colors"
-      >
-        <i class="fas fa-arrow-left"></i>
-        <span>Назад в сообщество</span>
-      </NuxtLink>
+      <!-- Breadcrumbs -->
+      <Breadcrumbs :items="breadcrumbItems" class="mb-6" />
 
       <!-- Loading State -->
       <div v-if="loading" class="bg-slate-800/30 rounded-xl border border-slate-700/50 p-5 animate-pulse">
@@ -84,6 +78,7 @@ import { useNuxtApp } from "#app";
 import PostCard from "~/components/community/PostCard.vue";
 import CommentSection from "~/components/community/CommentSection.vue";
 import Notification from "~/components/base/Notification.vue";
+import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
 
 definePageMeta({
   layout: "laboratory",
@@ -106,6 +101,23 @@ const loading = ref(true);
 const error = ref(null);
 const savedPosts = ref([]);
 let unsubscribe = null;
+
+// Breadcrumb items with post title
+const breadcrumbItems = computed(() => {
+  const items = [
+    { label: 'Сообщество', to: '/lab/community' }
+  ];
+  
+  if (post.value?.title) {
+    // Truncate title if too long
+    const title = post.value.title.length > 50 
+      ? post.value.title.substring(0, 50) + '...' 
+      : post.value.title;
+    items.push({ label: title, to: null });
+  }
+  
+  return items;
+});
 
 // Subscribe to post updates
 const subscribeToSinglePost = (postId) => {

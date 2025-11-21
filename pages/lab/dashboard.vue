@@ -1,8 +1,9 @@
 <!-- pages/lab/dashboard.vue -->
 <template>
   <div
-    class="min-h-screen px-4 sm:px-6 lg:px-8 py-8 bg-slate-50 dark:bg-slate-950 transition-colors duration-500"
+    class="min-h-screen px-4 sm:px-6 lg:px-8 py-8 bg-slate-50 dark:bg-slate-950 transition-colors duration-500 relative"
   >
+    <Breadcrumbs />
     <!-- Dashboard Header -->
     <div class="mb-8">
       <div
@@ -31,9 +32,24 @@
     </div>
 
     <!-- Loading State -->
-    <div v-if="loading" class="flex flex-col items-center justify-center h-64">
-      <i class="fas fa-spinner fa-spin text-4xl text-cyan-600 dark:text-cyan-400 mb-4"></i>
-      <p class="text-slate-600 dark:text-slate-300">Загрузка данных лаборатории...</p>
+    <div v-if="loading" class="loading-overlay">
+      <div class="loading-container">
+        <div class="loading-spinner-wrapper">
+          <div class="spinner-ring spinner-ring-1"></div>
+          <div class="spinner-ring spinner-ring-2"></div>
+          <div class="spinner-ring spinner-ring-3"></div>
+          <div class="spinner-core">
+            <i class="fas fa-brain text-3xl text-cyan-600 dark:text-cyan-400"></i>
+          </div>
+        </div>
+        <div class="loading-text">
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Загрузка лаборатории</h3>
+          <p class="text-slate-600 dark:text-slate-400 text-sm">Анализируем ваши данные...</p>
+        </div>
+        <div class="loading-progress">
+          <div class="progress-bar"></div>
+        </div>
+      </div>
     </div>
 
     <!-- Quick Stats -->
@@ -403,6 +419,7 @@ import { useAuthStore } from "~/stores/auth";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { getEmotionBarometerStats } from "~/api/firebase/emotionBarometer";
 import { getLatestUserAssessment } from "~/api/firebase/assessments";
+import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
 
 definePageMeta({
   layout: "laboratory",
@@ -526,3 +543,93 @@ onMounted(async () => {
   }
 });
 </script>
+
+<style scoped>
+/* Loading State Styles */
+.loading-overlay {
+  @apply absolute inset-0 bg-slate-50 dark:bg-slate-950 z-10 flex items-center justify-center;
+}
+
+.loading-container {
+  @apply flex flex-col items-center gap-8;
+}
+
+.loading-spinner-wrapper {
+  @apply relative w-32 h-32;
+}
+
+.spinner-ring {
+  @apply absolute inset-0 rounded-full border-4 border-transparent;
+  animation: spin 3s linear infinite;
+}
+
+.spinner-ring-1 {
+  @apply border-t-cyan-500;
+  animation-duration: 2s;
+}
+
+.spinner-ring-2 {
+  @apply border-r-blue-500;
+  animation-duration: 3s;
+  animation-direction: reverse;
+}
+
+.spinner-ring-3 {
+  @apply border-b-purple-500;
+  animation-duration: 4s;
+}
+
+.spinner-core {
+  @apply absolute inset-0 flex items-center justify-center;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.95);
+  }
+}
+
+.loading-text {
+  @apply text-center;
+}
+
+.loading-progress {
+  @apply w-64 h-1 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden;
+}
+
+.progress-bar {
+  @apply h-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-full;
+  animation: progress 2s ease-in-out infinite;
+}
+
+@keyframes progress {
+  0% {
+    width: 0%;
+    margin-left: 0%;
+  }
+  50% {
+    width: 75%;
+    margin-left: 0%;
+  }
+  100% {
+    width: 0%;
+    margin-left: 100%;
+  }
+}
+</style>

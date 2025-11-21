@@ -5,7 +5,7 @@
     :class="
       active
         ? `bg-gradient-to-r from-${gradientFrom}/20 to-${gradientTo}/20 border border-${gradientFrom}/40 shadow-lg shadow-${gradientFrom}/10`
-        : 'bg-slate-800/30 border border-transparent hover:bg-slate-800/50 hover:border-slate-500/20'
+        : 'bg-slate-100 dark:bg-slate-800/30 border border-slate-200 dark:border-transparent hover:bg-slate-200 dark:hover:bg-slate-800/50 hover:border-slate-300 dark:hover:border-slate-500/20'
     "
   >
     <div
@@ -15,10 +15,10 @@
       <i class="fas text-white text-sm" :class="icon"></i>
     </div>
     <div class="flex-1 relative z-10 min-w-0">
-      <div class="text-white font-medium text-sm leading-tight truncate">
+      <div class="text-slate-900 dark:text-white font-medium text-sm leading-tight truncate">
         {{ title }}
       </div>
-      <div class="text-slate-400 text-xs leading-tight truncate">
+      <div class="text-slate-500 dark:text-slate-400 text-xs leading-tight truncate">
         {{ subtitle }}
       </div>
     </div>

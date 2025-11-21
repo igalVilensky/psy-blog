@@ -1,9 +1,9 @@
 <template>
   <div
-    class="bg-slate-800/30 rounded-xl border border-slate-700/50 hover:border-slate-600/50 transition-all duration-300 overflow-hidden group"
+    class="bg-white dark:bg-slate-800/30 rounded-xl border border-slate-200 dark:border-slate-700/50 hover:border-slate-300 dark:hover:border-slate-600/50 transition-all duration-300 overflow-hidden group shadow-sm dark:shadow-none"
   >
     <!-- Post Header -->
-    <div class="p-5 border-b border-slate-700/50">
+    <div class="p-5 border-b border-slate-200 dark:border-slate-700/50">
       <div class="flex items-start space-x-3">
         <div
           class="w-12 h-12 rounded-full bg-gradient-to-br flex items-center justify-center text-white font-bold flex-shrink-0"
@@ -14,23 +14,23 @@
         <div class="flex-1 min-w-0">
           <div class="flex items-center justify-between mb-1">
             <div class="flex items-center space-x-2">
-              <span class="text-white font-medium truncate">
+              <span class="text-slate-900 dark:text-white font-medium truncate">
                 {{ post.authorName }}
               </span>
               <span
                 v-if="post.authorId === authStore.user?.uid"
-                class="px-2 py-0.5 rounded-full bg-orange-500/10 text-orange-400 text-xs font-medium border border-orange-500/20"
+                class="px-2 py-0.5 rounded-full bg-orange-500/10 text-orange-600 dark:text-orange-400 text-xs font-medium border border-orange-500/30 dark:border-orange-500/20"
               >
                 Вы
               </span>
             </div>
-            <span class="text-slate-400 text-xs whitespace-nowrap">
+            <span class="text-slate-500 dark:text-slate-400 text-xs whitespace-nowrap">
               {{ formatTime(post.createdAt) }}
             </span>
           </div>
           <div class="flex items-center space-x-2">
             <i :class="getCategoryIcon(post.category)" class="text-xs"></i>
-            <span class="text-slate-400 text-xs">{{ post.category }}</span>
+            <span class="text-slate-500 dark:text-slate-400 text-xs">{{ post.category }}</span>
           </div>
         </div>
       </div>
@@ -39,10 +39,10 @@
     <!-- Post Content -->
     <div class="p-5">
       <NuxtLink :to="`/lab/community/${post.id}`" class="block group-hover:opacity-90 transition-opacity">
-        <h3 class="text-xl font-bold text-white mb-3 leading-tight">
+        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3 leading-tight">
           {{ post.title }}
         </h3>
-        <p class="text-slate-300 text-sm leading-relaxed mb-4 line-clamp-4">
+        <p class="text-slate-700 dark:text-slate-300 text-sm leading-relaxed mb-4 line-clamp-4">
           {{ post.content }}
         </p>
       </NuxtLink>
@@ -52,7 +52,7 @@
         <span
           v-for="tag in post.tags"
           :key="tag"
-          class="px-3 py-1 bg-slate-700/50 rounded-full text-slate-400 text-xs hover:bg-slate-700 transition-colors cursor-pointer"
+          class="px-3 py-1 bg-slate-100 dark:bg-slate-700/50 rounded-full text-slate-600 dark:text-slate-400 text-xs hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors cursor-pointer"
         >
           #{{ tag }}
         </span>
@@ -60,17 +60,17 @@
 
       <!-- Post Actions -->
       <div
-        class="flex items-center space-x-6 pt-4 border-t border-slate-700/50"
+        class="flex items-center space-x-6 pt-4 border-t border-slate-200 dark:border-slate-700/50"
       >
         <button
           @click="$emit('like', post)"
           :disabled="!authStore.user"
           class="flex items-center space-x-2 transition-colors group/like"
-          :class="isLiked ? 'text-cyan-400' : 'text-slate-400 hover:text-cyan-400'"
+          :class="isLiked ? 'text-cyan-600 dark:text-cyan-400' : 'text-slate-500 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400'"
         >
           <div
             class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
-            :class="isLiked ? 'bg-cyan-500/10' : 'bg-slate-700/50 group-hover/like:bg-cyan-500/10'"
+            :class="isLiked ? 'bg-cyan-500/10' : 'bg-slate-100 dark:bg-slate-700/50 group-hover/like:bg-cyan-500/10'"
           >
             <i class="fas fa-heart text-sm"></i>
           </div>
@@ -78,10 +78,10 @@
         </button>
         <NuxtLink
           :to="`/lab/community/${post.id}`"
-          class="flex items-center space-x-2 text-slate-400 hover:text-purple-400 transition-colors group/comment"
+          class="flex items-center space-x-2 text-slate-500 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors group/comment"
         >
           <div
-            class="w-8 h-8 rounded-lg bg-slate-700/50 group-hover/comment:bg-purple-500/10 flex items-center justify-center transition-colors"
+            class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-700/50 group-hover/comment:bg-purple-500/10 flex items-center justify-center transition-colors"
           >
             <i class="fas fa-comment text-sm"></i>
           </div>
@@ -89,10 +89,10 @@
         </NuxtLink>
         <button
           @click="$emit('share', post)"
-          class="flex items-center space-x-2 text-slate-400 hover:text-emerald-400 transition-colors group/share"
+          class="flex items-center space-x-2 text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors group/share"
         >
           <div
-            class="w-8 h-8 rounded-lg bg-slate-700/50 group-hover/share:bg-emerald-500/10 flex items-center justify-center transition-colors"
+            class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-700/50 group-hover/share:bg-emerald-500/10 flex items-center justify-center transition-colors"
           >
             <i class="fas fa-share text-sm"></i>
           </div>
@@ -102,11 +102,11 @@
           @click="$emit('save', post)"
           :disabled="!authStore.user"
           class="ml-auto flex items-center space-x-2 transition-colors group/save"
-          :class="isSaved ? 'text-amber-400' : 'text-slate-400 hover:text-amber-400'"
+          :class="isSaved ? 'text-amber-600 dark:text-amber-400' : 'text-slate-500 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400'"
         >
           <div
             class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
-            :class="isSaved ? 'bg-amber-500/10' : 'bg-slate-700/50 group-hover/save:bg-amber-500/10'"
+            :class="isSaved ? 'bg-amber-500/10' : 'bg-slate-100 dark:bg-slate-700/50 group-hover/save:bg-amber-500/10'"
           >
             <i class="fas text-sm" :class="isSaved ? 'fa-bookmark' : 'fa-bookmark'"></i>
           </div>

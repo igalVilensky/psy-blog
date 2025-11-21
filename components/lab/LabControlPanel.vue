@@ -193,11 +193,11 @@
         </div>
         <div>
           <div
-            class="text-xs font-mono text-purple-600 dark:text-purple-300 tracking-widest group-hover:text-purple-500 dark:group-hover:text-purple-200 transition-colors"
+            class="text-xs font-mono text-purple-700 dark:text-purple-300 tracking-widest group-hover:text-purple-600 dark:group-hover:text-purple-200 transition-colors"
           >
             ГЛАВНАЯ
           </div>
-          <div class="text-xs text-purple-500/70 dark:text-purple-400/70">mindqlab.com</div>
+          <div class="text-xs text-purple-600/80 dark:text-purple-400/70">mindqlab.com</div>
         </div>
       </NuxtLink>
 
@@ -224,10 +224,10 @@
             ></div>
           </div>
           <div>
-            <div class="text-slate-800 dark:text-white font-bold text-lg font-montserrat">
+            <div class="text-slate-900 dark:text-white font-bold text-lg font-montserrat">
               MIND Q LAB
             </div>
-            <div class="text-cyan-600 dark:text-cyan-400/70 text-xs font-mono">
+            <div class="text-cyan-700 dark:text-cyan-400/70 text-xs font-mono">
               v2.0 ЭКСПЕРИМЕНТАЛЬНАЯ
             </div>
           </div>
@@ -237,7 +237,7 @@
 
     <!-- Research Stations -->
     <div class="research-stations p-4 space-y-2 flex-1">
-      <div class="text-xs font-mono text-slate-500 mb-3 px-2">
+      <div class="text-xs font-mono text-slate-500 dark:text-slate-500 mb-3 px-2 font-semibold">
         ИССЛЕДОВАТЕЛЬСКИЕ СТАНЦИИ
       </div>
 
@@ -354,10 +354,10 @@
             {{ getUserInitials(user) }}
           </div>
           <div class="flex-1 min-w-0">
-            <div class="text-xs font-mono text-cyan-600 dark:text-cyan-400/70 mb-0.5">
+            <div class="text-xs font-mono text-cyan-700 dark:text-cyan-400/70 mb-0.5">
               ИССЛЕДОВАТЕЛЬ
             </div>
-            <div class="text-slate-800 dark:text-white font-medium text-sm truncate">
+            <div class="text-slate-900 dark:text-white font-medium text-sm truncate">
               {{ user.displayName || user.email }}
             </div>
           </div>
@@ -365,13 +365,13 @@
         <div class="flex space-x-2">
           <NuxtLink
             to="/profile"
-            class="flex-1 text-center py-2.5 px-3 bg-slate-200/50 dark:bg-slate-700/50 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg text-slate-600 dark:text-slate-300 text-xs font-medium transition-all border border-slate-300/50 dark:border-slate-600/50"
+            class="flex-1 text-center py-2.5 px-3 bg-white dark:bg-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg text-slate-700 dark:text-slate-300 text-xs font-medium transition-all border border-slate-200 dark:border-slate-600/50"
           >
             Профиль
           </NuxtLink>
           <button
             @click="logout"
-            class="flex-1 text-center py-2.5 px-3 bg-red-500/10 hover:bg-red-500/20 rounded-lg text-red-500 dark:text-red-400 text-xs font-medium transition-all border border-red-500/20"
+            class="flex-1 text-center py-2.5 px-3 bg-red-50 hover:bg-red-100 dark:bg-red-500/10 dark:hover:bg-red-500/20 rounded-lg text-red-600 dark:text-red-400 text-xs font-medium transition-all border border-red-200 dark:border-red-500/20"
           >
             Выход
           </button>
@@ -380,7 +380,7 @@
       <div v-else class="auth-buttons space-y-2">
         <NuxtLink
           to="/login"
-          class="block w-full text-center py-3 px-4 bg-slate-200/50 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-xl text-slate-600 dark:text-slate-300 text-sm font-medium transition-all border border-slate-300/50 dark:border-slate-700/50"
+          class="block w-full text-center py-3 px-4 bg-slate-100 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-xl text-slate-700 dark:text-slate-300 text-sm font-medium transition-all border border-slate-200 dark:border-slate-700/50"
         >
           Вход для исследователей
         </NuxtLink>
@@ -395,45 +395,45 @@
 
     <!-- System Status -->
     <div class="system-status border-t border-slate-200 dark:border-cyan-500/10 p-4">
-      <div class="text-xs font-mono text-slate-500 mb-3 px-1">
+      <div class="text-xs font-mono text-slate-500 dark:text-slate-500 mb-3 px-1 font-semibold">
         СТАТУС СИСТЕМЫ
       </div>
       <div class="space-y-2.5">
         <div
-          class="flex justify-between items-center p-2 rounded-lg bg-slate-100 dark:bg-slate-800/30 border border-emerald-500/10"
+          class="flex justify-between items-center p-2 rounded-lg bg-slate-50 dark:bg-slate-800/30 border border-emerald-500/20 dark:border-emerald-500/10"
         >
-          <span class="text-slate-600 dark:text-slate-300 text-xs flex items-center space-x-2">
-            <i class="fas fa-network-wired text-emerald-500 dark:text-emerald-400 text-xs"></i>
+          <span class="text-slate-700 dark:text-slate-300 text-xs flex items-center space-x-2">
+            <i class="fas fa-network-wired text-emerald-600 dark:text-emerald-400 text-xs"></i>
             <span>Нейросеть</span>
           </span>
-          <span class="text-emerald-600 dark:text-emerald-400 font-mono text-xs font-medium">
+          <span class="text-emerald-700 dark:text-emerald-400 font-mono text-xs font-medium">
             ОНЛАЙН
           </span>
         </div>
         <div
-          class="flex justify-between items-center p-2 rounded-lg bg-slate-100 dark:bg-slate-800/30 border border-cyan-500/10"
+          class="flex justify-between items-center p-2 rounded-lg bg-slate-50 dark:bg-slate-800/30 border border-cyan-500/20 dark:border-cyan-500/10"
         >
-          <span class="text-slate-600 dark:text-slate-300 text-xs flex items-center space-x-2">
-            <i class="fas fa-stream text-cyan-500 dark:text-cyan-400 text-xs"></i>
+          <span class="text-slate-700 dark:text-slate-300 text-xs flex items-center space-x-2">
+            <i class="fas fa-stream text-cyan-600 dark:text-cyan-400 text-xs"></i>
             <span>Поток данных</span>
           </span>
-          <span class="text-cyan-600 dark:text-cyan-400 font-mono text-xs font-medium">
+          <span class="text-cyan-700 dark:text-cyan-400 font-mono text-xs font-medium">
             АКТИВЕН
           </span>
         </div>
         <!-- Theme Toggle -->
         <button
           @click="themeStore.toggleTheme()"
-          class="w-full flex justify-between items-center p-2 rounded-lg bg-slate-100 dark:bg-slate-800/30 border border-yellow-500/10 hover:bg-slate-200 dark:hover:bg-slate-800/50 transition-colors group"
+          class="w-full flex justify-between items-center p-2 rounded-lg bg-slate-50 dark:bg-slate-800/30 border border-yellow-500/20 dark:border-yellow-500/10 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors group"
         >
-          <span class="text-slate-600 dark:text-slate-300 text-xs flex items-center space-x-2">
+          <span class="text-slate-700 dark:text-slate-300 text-xs flex items-center space-x-2">
             <i
-              class="fas text-yellow-500 dark:text-yellow-400 text-xs transition-transform duration-300 group-hover:rotate-90"
+              class="fas text-yellow-600 dark:text-yellow-400 text-xs transition-transform duration-300 group-hover:rotate-90"
               :class="themeStore.theme === 'dark' ? 'fa-moon' : 'fa-sun'"
             ></i>
             <span>Режим</span>
           </span>
-          <span class="text-yellow-600 dark:text-yellow-400 font-mono text-xs font-medium">
+          <span class="text-yellow-700 dark:text-yellow-400 font-mono text-xs font-medium">
             {{ themeStore.theme === "dark" ? "НОЧНОЙ" : "ДНЕВНОЙ" }}
           </span>
         </button>

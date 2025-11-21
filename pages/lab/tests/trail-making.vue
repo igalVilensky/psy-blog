@@ -3,6 +3,7 @@
     class="trail-making-test min-h-screen bg-slate-50 dark:bg-slate-950 px-4 sm:px-6 lg:px-8 py-8 transition-colors duration-500"
   >
     <div class="max-w-6xl mx-auto">
+      <Breadcrumbs />
       <!-- Intro Screen -->
       <div v-if="phase === 'intro'" class="text-center max-w-4xl mx-auto">
         <div class="mb-8">
@@ -21,7 +22,7 @@
         </div>
 
         <h1
-          class="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-4 tracking-tight gradient-text"
+          class="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-4 tracking-tight"
         >
           TRAIL MAKING TEST
         </h1>
@@ -99,10 +100,10 @@
       <!-- Instructions Screen -->
       <div v-if="phase === 'instructions'" class="max-w-2xl mx-auto">
         <div class="text-center mb-8">
-          <h2 class="text-3xl font-bold text-white mb-4 gradient-text">
+          <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4">
             Инструкция
           </h2>
-          <p class="text-slate-300">Соединяйте точки в правильном порядке</p>
+          <p class="text-slate-600 dark:text-slate-300">Соединяйте точки в правильном порядке</p>
         </div>
 
         <div class="space-y-6 mb-8">
@@ -114,17 +115,17 @@
                 <span class="text-white font-bold">A</span>
               </div>
               <div class="text-left flex-1">
-                <h3 class="text-lg font-semibold text-white mb-2">
+                <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-2">
                   Часть A: Только цифры
                 </h3>
-                <p class="text-slate-300 text-sm leading-relaxed mb-3">
+                <p class="text-slate-700 dark:text-slate-300 text-sm leading-relaxed mb-3">
                   Соединяйте кружки с цифрами по порядку:
-                  <span class="text-emerald-400 font-mono"
+                  <span class="text-emerald-600 dark:text-emerald-400 font-mono"
                     >1 → 2 → 3 → 4...</span
                   >
                 </p>
                 <div
-                  class="flex items-center gap-2 p-3 bg-slate-800/50 rounded-lg"
+                  class="flex items-center gap-2 p-3 bg-slate-100 dark:bg-slate-800/50 rounded-lg"
                 >
                   <div class="flex items-center gap-2">
                     <div
@@ -158,17 +159,17 @@
                 <span class="text-white font-bold">B</span>
               </div>
               <div class="text-left flex-1">
-                <h3 class="text-lg font-semibold text-white mb-2">
+                <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-2">
                   Часть B: Цифры и буквы
                 </h3>
-                <p class="text-slate-300 text-sm leading-relaxed mb-3">
+                <p class="text-slate-700 dark:text-slate-300 text-sm leading-relaxed mb-3">
                   Чередуйте цифры и буквы:
-                  <span class="text-cyan-400 font-mono"
+                  <span class="text-cyan-600 dark:text-cyan-400 font-mono"
                     >1 → A → 2 → B → 3 → C...</span
                   >
                 </p>
                 <div
-                  class="flex items-center gap-2 p-3 bg-slate-800/50 rounded-lg"
+                  class="flex items-center gap-2 p-3 bg-slate-100 dark:bg-slate-800/50 rounded-lg"
                 >
                   <div class="flex items-center gap-2">
                     <div
@@ -208,22 +209,22 @@
                 <i class="fas fa-lightbulb text-white"></i>
               </div>
               <div class="text-left flex-1">
-                <h3 class="text-lg font-semibold text-white mb-2">Правила</h3>
-                <ul class="text-slate-300 text-sm space-y-2">
+                <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-2">Правила</h3>
+                <ul class="text-slate-700 dark:text-slate-300 text-sm space-y-2">
                   <li class="flex items-start gap-2">
-                    <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                    <i class="fas fa-check text-emerald-600 dark:text-emerald-400 mt-1 text-xs"></i>
                     <span>Кликайте или касайтесь кружков по порядку</span>
                   </li>
                   <li class="flex items-start gap-2">
-                    <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                    <i class="fas fa-check text-emerald-600 dark:text-emerald-400 mt-1 text-xs"></i>
                     <span>Линия соединения появится автоматически</span>
                   </li>
                   <li class="flex items-start gap-2">
-                    <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                    <i class="fas fa-check text-emerald-600 dark:text-emerald-400 mt-1 text-xs"></i>
                     <span>При ошибке вы получите подсказку</span>
                   </li>
                   <li class="flex items-start gap-2">
-                    <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                    <i class="fas fa-check text-emerald-600 dark:text-emerald-400 mt-1 text-xs"></i>
                     <span>Работайте максимально быстро, но без ошибок!</span>
                   </li>
                 </ul>
@@ -236,10 +237,10 @@
           class="bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 border border-emerald-500/20 rounded-2xl p-6 mb-8"
         >
           <div class="flex items-start gap-3">
-            <i class="fas fa-trophy text-yellow-400 text-xl mt-1"></i>
+            <i class="fas fa-trophy text-yellow-500 dark:text-yellow-400 text-xl mt-1"></i>
             <div>
-              <h4 class="text-white font-semibold mb-1">Цель</h4>
-              <p class="text-slate-300 text-sm">
+              <h4 class="text-slate-900 dark:text-white font-semibold mb-1">Цель</h4>
+              <p class="text-slate-700 dark:text-slate-300 text-sm">
                 Завершите каждую часть как можно быстрее. Время завершения —
                 ключевой показатель. Средний взрослый проходит часть A за 29
                 секунд, часть B за 75 секунд.
@@ -583,6 +584,7 @@
 </template>
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from "vue";
+import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
 
 definePageMeta({
   layout: "laboratory",
@@ -893,13 +895,6 @@ onUnmounted(() => {
 });
 </script>
 <style scoped>
-.gradient-text {
-  background: linear-gradient(135deg, #10b981 0%, #14b8a6 50%, #06b6d4 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
 .btn-primary {
   @apply inline-flex items-center justify-center px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 
          text-white font-semibold hover:from-emerald-600 hover:via-teal-600 hover:to-cyan-600 
@@ -909,33 +904,33 @@ onUnmounted(() => {
 }
 
 .btn-secondary {
-  @apply inline-flex items-center justify-center px-6 py-3 rounded-xl bg-slate-800/50 border border-slate-600/50 
-         text-slate-300 font-semibold hover:bg-slate-700 hover:border-slate-500 
-         transition-all duration-300 transform hover:scale-105;
+  @apply inline-flex items-center justify-center px-6 py-3 rounded-xl bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-600/50 
+         text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-500 
+         transition-all duration-300 transform hover:scale-105 shadow-sm dark:shadow-none;
 }
 
 .info-card {
-  @apply p-6 rounded-2xl bg-slate-900/50 border border-emerald-500/10 backdrop-blur-sm;
+  @apply p-6 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-emerald-500/10 backdrop-blur-sm shadow-sm dark:shadow-none;
 }
 
 .info-card-small {
-  @apply p-5 rounded-xl bg-slate-900/40 border border-emerald-500/10 text-center;
+  @apply p-5 rounded-xl bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-emerald-500/10 text-center shadow-sm dark:shadow-none;
 }
 
 .instruction-card {
-  @apply p-5 rounded-xl bg-slate-900/40 border border-emerald-500/10 hover:border-emerald-500/30 transition-all duration-300;
+  @apply p-5 rounded-xl bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-emerald-500/10 hover:border-emerald-500/30 transition-all duration-300 shadow-sm dark:shadow-none;
 }
 
 .result-card {
-  @apply p-6 rounded-2xl bg-slate-900/50 border border-emerald-500/20 hover:border-emerald-500/40 transition-all duration-300;
+  @apply p-6 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-emerald-500/20 hover:border-emerald-500/40 transition-all duration-300 shadow-sm dark:shadow-none;
 }
 
 .performance-card {
-  @apply p-8 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-800/80 border border-emerald-500/30;
+  @apply p-8 rounded-2xl bg-gradient-to-br from-slate-50 to-white dark:from-slate-900/80 dark:to-slate-800/80 border border-slate-200 dark:border-emerald-500/30 shadow-sm dark:shadow-none;
 }
 
 .stat-comparison {
-  @apply p-4 rounded-xl bg-slate-900/40 border border-slate-700/50 text-center;
+  @apply p-4 rounded-xl bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-700/50 text-center;
 }
 
 .part-badge {
@@ -943,13 +938,13 @@ onUnmounted(() => {
 }
 
 .timer-display {
-  @apply px-6 py-3 rounded-xl bg-slate-900/60 border border-cyan-500/20 
-         text-2xl font-mono font-bold text-cyan-400;
+  @apply px-6 py-3 rounded-xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-cyan-500/20 
+         text-2xl font-mono font-bold text-cyan-600 dark:text-cyan-400 shadow-sm dark:shadow-none;
 }
 
 .canvas-container {
-  @apply relative rounded-2xl overflow-hidden bg-slate-900/50 border-2 border-emerald-500/20
-         shadow-2xl shadow-emerald-500/10;
+  @apply relative rounded-2xl overflow-hidden bg-white dark:bg-slate-900/50 border-2 border-slate-200 dark:border-emerald-500/20
+         shadow-xl shadow-slate-200/50 dark:shadow-emerald-500/10;
 }
 
 .trail-canvas {
@@ -963,32 +958,32 @@ onUnmounted(() => {
 }
 
 .node-default-a {
-  @apply fill-slate-800 stroke-emerald-500;
+  @apply fill-white dark:fill-slate-800 stroke-emerald-500;
   stroke-width: 3;
 }
 
 .node-default-a:hover {
-  @apply fill-slate-700 stroke-emerald-400;
+  @apply fill-emerald-50 dark:fill-slate-700 stroke-emerald-400;
   stroke-width: 4;
 }
 
 .node-default-b-number {
-  @apply fill-slate-800 stroke-cyan-500;
+  @apply fill-white dark:fill-slate-800 stroke-cyan-500;
   stroke-width: 3;
 }
 
 .node-default-b-number:hover {
-  @apply fill-slate-700 stroke-cyan-400;
+  @apply fill-cyan-50 dark:fill-slate-700 stroke-cyan-400;
   stroke-width: 4;
 }
 
 .node-default-b-letter {
-  @apply fill-slate-800 stroke-teal-500;
+  @apply fill-white dark:fill-slate-800 stroke-teal-500;
   stroke-width: 3;
 }
 
 .node-default-b-letter:hover {
-  @apply fill-slate-700 stroke-teal-400;
+  @apply fill-teal-50 dark:fill-slate-700 stroke-teal-400;
   stroke-width: 4;
 }
 
@@ -1017,7 +1012,7 @@ onUnmounted(() => {
 }
 
 .node-text {
-  @apply text-2xl font-black fill-white pointer-events-none select-none;
+  @apply text-2xl font-black fill-slate-800 dark:fill-white pointer-events-none select-none;
 }
 
 .node-text-completed {

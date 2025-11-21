@@ -3,26 +3,19 @@
     class="min-h-screen bg-slate-50 dark:bg-slate-950 px-4 sm:px-6 lg:px-8 py-8 transition-colors duration-500"
   >
     <div class="max-w-7xl mx-auto">
-      <!-- Header with Back Button -->
+      <Breadcrumbs />
+      <!-- Header -->
       <div class="mb-8">
-        <div class="flex items-center gap-4 mb-6">
-          <NuxtLink
-            to="/lab/psychology"
-            class="w-10 h-10 rounded-lg bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 flex items-center justify-center text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 hover:border-cyan-500/50 transition-all duration-300 shadow-sm dark:shadow-none"
+        <div class="flex-1">
+          <h1
+            class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white font-montserrat"
           >
-            <i class="fas fa-arrow-left"></i>
-          </NuxtLink>
-          <div class="flex-1">
-            <h1
-              class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white font-montserrat gradient-text"
-            >
-              ЭГО-СОСТОЯНИЯ
-            </h1>
-            <p class="text-slate-600 dark:text-slate-400 mt-2 text-sm md:text-base">
-              Исследуйте три основные психологические роли по теории
-              транзактного анализа Эрика Берна
-            </p>
-          </div>
+            ЭГО-СОСТОЯНИЯ
+          </h1>
+          <p class="text-slate-600 dark:text-slate-400 mt-2 text-sm md:text-base">
+            Исследуйте три основные психологические роли по теории
+            транзактного анализа Эрика Берна
+          </p>
         </div>
 
         <!-- Enhanced Stats with Animation -->
@@ -715,6 +708,7 @@
 <script setup>
 import EgoStateCard from "~/components/lab/psychology/EgoStateCard.vue";
 import { useWindowSize } from '@vueuse/core';
+import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
 
 definePageMeta({
   layout: "laboratory",

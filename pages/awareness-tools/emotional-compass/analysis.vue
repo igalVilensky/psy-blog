@@ -1,36 +1,33 @@
 <template>
-  <div class="relative min-h-screen text-slate-200">
+  <div class="relative min-h-screen text-slate-800 dark:text-slate-200">
     <div class="container mx-auto max-w-6xl relative z-10 py-12 px-4 xl:px-0">
       <div class="grid grid-cols-1 gap-8">
+        <!-- Breadcrumbs -->
+        <Breadcrumbs />
+
         <!-- Header -->
         <div class="flex items-center justify-between mb-8">
-          <h1 class="text-3xl font-mono font-bold text-cyan-300">
+          <h1 class="text-3xl font-mono font-bold text-cyan-600 dark:text-cyan-300">
             <i class="fas fa-chart-network mr-3"></i>АНАЛИЗ ДАННЫХ
           </h1>
-          <NuxtLink
-            to="/awareness-tools/emotional-compass"
-            class="px-4 py-2 rounded-lg border border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/10 transition-colors font-mono flex items-center gap-2 text-sm"
-          >
-            <i class="fas fa-arrow-left"></i> НАЗАД
-          </NuxtLink>
         </div>
 
         <!-- Analysis Section -->
         <div v-if="entries.length > 0">
            <EmotionalAnalysis :patterns="emotionPatterns" :entries="entries" />
         </div>
-        <div v-else class="bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-cyan-500/30 p-6 sm:p-8 shadow-[0_0_30px_rgba(6,182,212,0.1)]">
+        <div v-else class="bg-white dark:bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-cyan-500/30 p-6 sm:p-8 shadow-[0_0_30px_rgba(6,182,212,0.1)]">
           <div class="text-center py-12">
-            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-800 flex items-center justify-center">
-              <i class="fas fa-database text-slate-600 text-2xl"></i>
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+              <i class="fas fa-database text-slate-400 dark:text-slate-600 text-2xl"></i>
             </div>
-            <h3 class="text-xl font-mono text-slate-400 mb-2">НЕТ ДАННЫХ</h3>
-            <p class="text-slate-500 max-w-md mx-auto">
+            <h3 class="text-xl font-mono text-slate-500 dark:text-slate-400 mb-2">НЕТ ДАННЫХ</h3>
+            <p class="text-slate-600 dark:text-slate-500 max-w-md mx-auto">
               База данных пуста. Создайте первую запись в Эмоциональном Компасе для активации аналитических модулей.
             </p>
             <NuxtLink
               to="/awareness-tools/emotional-compass"
-              class="inline-block mt-6 px-6 py-2 rounded-lg bg-cyan-600/20 text-cyan-400 border border-cyan-500/30 hover:bg-cyan-600/30 transition-all font-mono"
+              class="inline-block mt-6 px-6 py-2 rounded-lg bg-cyan-600/20 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 hover:bg-cyan-600/30 transition-all font-mono"
             >
               СОЗДАТЬ ЗАПИСЬ
             </NuxtLink>
@@ -47,6 +44,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { emotionBarometerService } from "~/services/emotionBarometerService";
 import EmotionalAnalysis from "~/components/emotional-compass/EmotionalAnalysis.vue";
+import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
 
 definePageMeta({
   layout: "laboratory",

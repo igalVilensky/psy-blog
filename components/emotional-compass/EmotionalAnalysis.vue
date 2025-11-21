@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 py-4 sm:p-8 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)] min-h-screen"
+    class="bg-gradient-to-b from-white to-slate-50 dark:from-[#1A1F35]/40 dark:to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-cyan-500/20 py-4 sm:p-8 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)] min-h-screen"
   >
     <!-- Back Navigation with Enhanced Accessibility -->
     <nuxt-link
@@ -21,7 +21,7 @@
       >
         <i class="far fa-face-smile text-xl text-[#0EA5E9]"></i>
       </div>
-      <h2 class="text-2xl sm:text-3xl font-bold text-white/90 tracking-tight">
+      <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white/90 tracking-tight">
         Анализ Эмоций
       </h2>
     </div>
@@ -33,7 +33,7 @@
       aria-live="polite"
     >
       <i class="fas fa-spinner fa-spin fa-2x text-[#0EA5E9] animate-spin"></i>
-      <p class="text-slate-300 text-base font-medium">
+      <p class="text-slate-600 dark:text-slate-300 text-base font-medium">
         Пожалуйста, подождите...
       </p>
     </div>
@@ -48,7 +48,7 @@
       <div
         v-for="(pattern, emotion) in patterns"
         :key="emotion"
-        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
+        class="bg-gradient-to-b from-white to-slate-50 dark:from-[#1A1F35]/40 dark:to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-cyan-500/20 p-6 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]"
       >
         <!-- Emotion Header with Enhanced Interactivity -->
         <div class="flex items-center justify-between mb-6">
@@ -58,10 +58,10 @@
               class="text-xl mr-2"
               :style="{ color: getEmotionColor(emotion) }"
             ></i>
-            <h3 class="font-bold text-lg text-white/90">{{ emotion }}</h3>
+            <h3 class="font-bold text-lg text-slate-900 dark:text-white/90">{{ emotion }}</h3>
           </div>
           <span
-            class="px-3 py-1.5 bg-[#1A1F35]/40 text-[#0EA5E9] text-sm font-medium rounded-full border border-[#0EA5E9]/20"
+            class="px-3 py-1.5 bg-slate-100 dark:bg-[#1A1F35]/40 text-[#0EA5E9] text-sm font-medium rounded-full border border-[#0EA5E9]/20"
           >
             {{
               pattern.count === 1
@@ -77,12 +77,12 @@
         <div
           v-if="pattern.subEmotions && Object.keys(pattern.subEmotions).length"
         >
-          <p class="text-sm font-medium text-white/90 mb-3">Подэмоции:</p>
+          <p class="text-sm font-medium text-slate-700 dark:text-white/90 mb-3">Подэмоции:</p>
           <ul class="space-y-2">
             <li
               v-for="(subPattern, subEmotion) in pattern.subEmotions"
               :key="subEmotion"
-              class="text-sm text-slate-300 bg-[#1A1F35]/20 rounded-lg p-2 flex justify-between items-center"
+              class="text-sm text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-[#1A1F35]/20 rounded-lg p-2 flex justify-between items-center"
             >
               <span>
                 <span class="font-semibold mr-2">{{ subEmotion }}</span
@@ -105,14 +105,14 @@
         <!-- Intensity Meter with Enhanced Visualization -->
         <div class="mt-6">
           <div class="flex justify-between items-center mb-2.5">
-            <span class="text-sm font-medium text-slate-300"
+            <span class="text-sm font-medium text-slate-600 dark:text-slate-300"
               >Средняя интенсивность</span
             >
-            <span class="font-semibold text-white/90">
+            <span class="font-semibold text-slate-900 dark:text-white/90">
               {{ pattern.avgIntensity.toFixed(1) }}/10
             </span>
           </div>
-          <div class="h-2 bg-[#1A1F35]/40 rounded-full overflow-hidden">
+          <div class="h-2 bg-slate-200 dark:bg-[#1A1F35]/40 rounded-full overflow-hidden">
             <div
               class="h-full rounded-full transition-all"
               :class="getEmotionActiveColor(emotion)"
@@ -123,7 +123,7 @@
 
         <!-- Common Spheres with Hover Effects -->
         <div v-if="Object.keys(pattern.commonSpheres).length" class="mt-6">
-          <p class="text-sm font-medium text-white/90 mb-3">
+          <p class="text-sm font-medium text-slate-700 dark:text-white/90 mb-3">
             Чаще всего в сферах:
           </p>
           <div class="flex flex-wrap gap-2">

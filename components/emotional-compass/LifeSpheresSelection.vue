@@ -7,8 +7,8 @@
       class="group relative px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 border overflow-hidden"
       :class="[
         selectedTags.includes(sphere.name)
-          ? 'bg-slate-800 border-transparent ring-1 ring-offset-1 ring-offset-slate-900'
-          : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200'
+          ? 'bg-white dark:bg-slate-800 border-transparent ring-1 ring-offset-1 ring-offset-white dark:ring-offset-slate-900'
+          : 'bg-white dark:bg-slate-900/50 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-700 hover:text-slate-900 dark:hover:text-slate-200'
       ]"
       :style="{
           '--ring-color': sphere.color ? extractColor(sphere.color) : '#06b6d4'
@@ -28,6 +28,7 @@
 
       <!-- Ring Color Style -->
       <component is="style" v-if="selectedTags.includes(sphere.name)">
+        .ring-offset-white { --tw-ring-color: var(--ring-color); }
         .ring-offset-slate-900 { --tw-ring-color: var(--ring-color); }
       </component>
     </button>

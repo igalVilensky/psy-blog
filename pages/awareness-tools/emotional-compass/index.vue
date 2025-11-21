@@ -1,6 +1,7 @@
 <template>
-  <div class="min-h-screen text-slate-200">
+  <div class="min-h-screen text-slate-800 dark:text-slate-200">
     <div class="container mx-auto px-4 xl:px-0 max-w-6xl relative z-10 pt-12 pb-8 md:pb-12">
+      <Breadcrumbs />
       <!-- Hero Section -->
       <section v-if="showStartButton" class="text-center mb-12">
         <h1
@@ -8,7 +9,7 @@
         >
           ЭМОЦИОНАЛЬНЫЙ КОМПАС
         </h1>
-        <p class="text-cyan-100/70 max-w-2xl mx-auto leading-relaxed px-2 text-lg">
+        <p class="text-slate-600 dark:text-cyan-100/70 max-w-2xl mx-auto leading-relaxed px-2 text-lg">
           Система анализа и калибровки эмоционального состояния. Зафиксируйте
           текущие показатели для дальнейшей обработки и получения рекомендаций.
         </p>
@@ -49,7 +50,7 @@
         <!-- Main Barometer Section -->
         <div
           v-if="!showStartButton"
-          class="relative bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-cyan-500/30 p-6 sm:p-12 mb-12 max-w-4xl mx-auto shadow-[0_0_50px_-12px_rgba(6,182,212,0.25)]"
+          class="relative bg-white dark:bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-cyan-500/30 p-6 sm:p-12 mb-12 max-w-4xl mx-auto shadow-lg dark:shadow-[0_0_50px_-12px_rgba(6,182,212,0.25)]"
         >
           <!-- Step Progress -->
           <div class="flex items-center justify-center gap-2 sm:gap-3 px-4 mb-12">
@@ -59,8 +60,8 @@
                   :class="[
                     'w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-mono text-sm transition-all duration-500 border-2',
                     currentStep >= step
-                      ? 'bg-cyan-500/20 border-cyan-400 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.5)]'
-                      : 'bg-slate-800/50 border-slate-700 text-slate-500',
+                      ? 'bg-cyan-500/20 border-cyan-400 text-cyan-600 dark:text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.5)]'
+                      : 'bg-slate-100 dark:bg-slate-800/50 border-slate-300 dark:border-slate-700 text-slate-400 dark:text-slate-500',
                   ]"
                 >
                   {{ step }}
@@ -71,7 +72,7 @@
                     'h-0.5 w-8 sm:w-16 transition-all duration-500',
                     currentStep > step
                       ? 'bg-gradient-to-r from-cyan-500 to-purple-500'
-                      : 'bg-slate-800',
+                      : 'bg-slate-200 dark:bg-slate-800',
                   ]"
                 ></div>
               </div>
@@ -81,7 +82,7 @@
           <!-- Step Content -->
           <div class="min-h-[400px]">
             <div v-if="currentStep === 1" key="emotion" class="animate-fadeIn">
-              <h3 class="text-2xl font-mono text-cyan-300 mb-6 text-center">ВЫБОР ЭМОЦИИ</h3>
+              <h3 class="text-2xl font-mono text-cyan-600 dark:text-cyan-300 mb-6 text-center">ВЫБОР ЭМОЦИИ</h3>
               <EmotionSelection
                 :emotions="emotionsRef"
                 :selected-emotion="selectedEmotion"
@@ -90,7 +91,7 @@
             </div>
 
             <div v-if="currentStep === 2 && selectedEmotion" key="subemotion" class="animate-fadeIn">
-               <h3 class="text-2xl font-mono text-cyan-300 mb-6 text-center">УТОЧНЕНИЕ СОСТОЯНИЯ</h3>
+               <h3 class="text-2xl font-mono text-cyan-600 dark:text-cyan-300 mb-6 text-center">УТОЧНЕНИЕ СОСТОЯНИЯ</h3>
               <SubEmotionSelection
                 :sub-emotions="subEmotions"
                 :selected-sub-emotion="selectedSubEmotion"
@@ -99,7 +100,7 @@
             </div>
 
             <div v-if="currentStep === 3 && selectedEmotion" key="intensity" class="animate-fadeIn">
-               <h3 class="text-2xl font-mono text-cyan-300 mb-6 text-center">УРОВЕНЬ ИНТЕНСИВНОСТИ</h3>
+               <h3 class="text-2xl font-mono text-cyan-600 dark:text-cyan-300 mb-6 text-center">УРОВЕНЬ ИНТЕНСИВНОСТИ</h3>
               <IntensityLevel
                 :selected-emotion="selectedEmotion"
                 v-model:intensity-level="intensityLevel"
@@ -107,7 +108,7 @@
             </div>
 
             <div v-if="currentStep === 4 && selectedEmotion" key="journal" class="animate-fadeIn">
-               <h3 class="text-2xl font-mono text-cyan-300 mb-6 text-center">ЖУРНАЛ НАБЛЮДЕНИЙ</h3>
+               <h3 class="text-2xl font-mono text-cyan-600 dark:text-cyan-300 mb-6 text-center">ЖУРНАЛ НАБЛЮДЕНИЙ</h3>
               <JournalEntry
                 v-model:journal-entry="journalEntry"
                 v-model:perception-entry="perceptionEntry"
@@ -117,7 +118,7 @@
             </div>
 
             <div v-if="currentStep === 5 && selectedEmotion" key="spheres" class="animate-fadeIn">
-               <h3 class="text-2xl font-mono text-cyan-300 mb-6 text-center">СФЕРЫ ВЛИЯНИЯ</h3>
+               <h3 class="text-2xl font-mono text-cyan-600 dark:text-cyan-300 mb-6 text-center">СФЕРЫ ВЛИЯНИЯ</h3>
               <LifeSpheresSelection
                 :life-spheres="lifeSpheresRef"
                 :selected-tags="selectedTags"
@@ -131,7 +132,7 @@
             <button
               v-if="currentStep > 1"
               @click="previousStep"
-              class="px-6 py-2 rounded-lg border border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/10 transition-colors font-mono flex items-center gap-2"
+              class="px-6 py-2 rounded-lg border border-cyan-500/30 text-cyan-600 dark:text-cyan-300 hover:bg-cyan-500/10 transition-colors font-mono flex items-center gap-2"
             >
               <i class="fas fa-chevron-left"></i> НАЗАД
             </button>
@@ -167,8 +168,8 @@
             :class="[
               'group relative overflow-hidden rounded-2xl p-8 border transition-all duration-300',
               hasStatsData 
-                ? 'bg-slate-900/50 border-cyan-500/30 hover:border-cyan-400 hover:shadow-[0_0_30px_rgba(6,182,212,0.2)]' 
-                : 'bg-slate-900/30 border-slate-800 opacity-75'
+                ? 'bg-white dark:bg-slate-900/50 border-cyan-500/30 hover:border-cyan-400 hover:shadow-lg dark:hover:shadow-[0_0_30px_rgba(6,182,212,0.2)]' 
+                : 'bg-slate-100 dark:bg-slate-900/30 border-slate-300 dark:border-slate-800 opacity-75'
             ]"
           >
             <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -176,8 +177,8 @@
               <div class="w-12 h-12 rounded-lg bg-cyan-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
                 <i class="fas fa-chart-pie text-2xl text-cyan-400"></i>
               </div>
-              <h3 class="text-xl font-mono font-bold text-cyan-300 mb-2">АНАЛИЗ ЭМОЦИЙ</h3>
-              <p class="text-slate-400 text-sm">Визуализация паттернов и статистика состояний</p>
+              <h3 class="text-xl font-mono font-bold text-cyan-600 dark:text-cyan-300 mb-2">АНАЛИЗ ЭМОЦИЙ</h3>
+              <p class="text-slate-600 dark:text-slate-400 text-sm">Визуализация паттернов и статистика состояний</p>
             </div>
           </NuxtLink>
 
@@ -186,8 +187,8 @@
             :class="[
               'group relative overflow-hidden rounded-2xl p-8 border transition-all duration-300',
               hasStatsData 
-                ? 'bg-slate-900/50 border-purple-500/30 hover:border-purple-400 hover:shadow-[0_0_30px_rgba(168,85,247,0.2)]' 
-                : 'bg-slate-900/30 border-slate-800 opacity-75'
+                ? 'bg-white dark:bg-slate-900/50 border-purple-500/30 hover:border-purple-400 hover:shadow-lg dark:hover:shadow-[0_0_30px_rgba(168,85,247,0.2)]' 
+                : 'bg-slate-100 dark:bg-slate-900/30 border-slate-300 dark:border-slate-800 opacity-75'
             ]"
           >
             <div class="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -195,8 +196,8 @@
               <div class="w-12 h-12 rounded-lg bg-purple-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
                 <i class="fas fa-history text-2xl text-purple-400"></i>
               </div>
-              <h3 class="text-xl font-mono font-bold text-purple-300 mb-2">ИСТОРИЯ_ЖУРНАЛА</h3>
-              <p class="text-slate-400 text-sm">Хронология записей и наблюдений</p>
+              <h3 class="text-xl font-mono font-bold text-purple-600 dark:text-purple-300 mb-2">ИСТОРИЯ_ЖУРНАЛА</h3>
+              <p class="text-slate-600 dark:text-slate-400 text-sm">Хронология записей и наблюдений</p>
             </div>
           </NuxtLink>
         </div>
@@ -244,6 +245,7 @@ import { emotionBarometerService } from "~/services/emotionBarometerService";
 import { emotions } from "~/data/emotionalBarometer/emotions.js";
 import { subEmotionsMap } from "~/data/emotionalBarometer/subEmotionsMap";
 import { lifeSpheres } from "~/data/emotionalBarometer/lifeSpheres";
+import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
 
 definePageMeta({
   layout: "laboratory",

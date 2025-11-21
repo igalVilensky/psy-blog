@@ -4,26 +4,19 @@
     class="min-h-screen bg-slate-50 dark:bg-slate-950 px-4 sm:px-6 lg:px-8 py-8 transition-colors duration-500"
   >
     <div class="max-w-7xl mx-auto">
+      <Breadcrumbs />
       <!-- Header -->
       <div class="mb-8">
-        <div class="flex items-center gap-4 mb-6">
-          <NuxtLink
-            to="/lab/psychology"
-            class="w-10 h-10 rounded-lg bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 flex items-center justify-center text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 hover:border-cyan-500/50 transition-all duration-300 shadow-sm dark:shadow-none"
+        <div class="flex-1">
+          <h1
+            class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white font-montserrat"
           >
-            <i class="fas fa-arrow-left"></i>
-          </NuxtLink>
-          <div class="flex-1">
-            <h1
-              class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white font-montserrat gradient-text"
-            >
-              ОСОЗНАННОСТЬ И МЕДИТАЦИЯ
-            </h1>
-            <p class="text-slate-600 dark:text-slate-400 mt-2 text-sm md:text-base">
-              Практики присутствия, медитативные техники и путь к внутреннему
-              спокойствию
-            </p>
-          </div>
+            ОСОЗНАННОСТЬ И МЕДИТАЦИЯ
+          </h1>
+          <p class="text-slate-600 dark:text-slate-400 mt-2 text-sm md:text-base">
+            Практики присутствия, медитативные техники и путь к внутреннему
+            спокойствию
+          </p>
         </div>
 
         <!-- Stats -->
@@ -98,7 +91,7 @@
       <transition name="slide-fade">
         <div
           v-if="activeSession"
-          class="mb-12 bg-gradient-to-br from-teal-500/10 to-cyan-500/10 rounded-2xl p-6 md:p-8 border border-teal-500/30 relative overflow-hidden"
+          class="mb-12 bg-white dark:bg-gradient-to-br dark:from-teal-500/10 dark:to-cyan-500/10 rounded-2xl p-6 md:p-8 border border-teal-500/30 relative overflow-hidden shadow-lg dark:shadow-none"
         >
           <!-- Visuals Background -->
           <div class="absolute inset-0 rounded-2xl overflow-hidden z-0">
@@ -189,7 +182,7 @@
               </button>
               <button
                 @click="endSession"
-                class="px-6 py-3 rounded-xl bg-red-500/10 dark:bg-red-500/20 border border-red-500/20 dark:border-red-500/30 text-red-600 dark:text-red-400 hover:bg-red-500/20 dark:hover:bg-red-500/30 transition-all duration-300 flex items-center gap-2"
+                class="px-6 py-3 rounded-xl bg-red-50 dark:bg-red-500/10 border border-red-300 dark:border-red-500/20 text-red-700 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-500/20 transition-all duration-300 flex items-center gap-2 shadow-sm dark:shadow-none"
               >
                 <i class="fas fa-stop"></i>
                 <span>Завершить</span>
@@ -532,6 +525,7 @@ import MeditationCard from "~/components/lab/psychology/MeditationCard.vue";
 import BreathingCard from "~/components/lab/psychology/BreathingCard.vue";
 import MindfulnessActivityCard from "~/components/lab/psychology/MindfulnessActivityCard.vue";
 import MeditationVisuals from "~/components/lab/psychology/MeditationVisuals.vue";
+import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
 
 definePageMeta({
   layout: "laboratory",
@@ -1034,12 +1028,7 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.gradient-text {
-  background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
+
 
 .stat-card {
   @apply bg-white dark:bg-slate-800/30 rounded-xl p-4 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none;
