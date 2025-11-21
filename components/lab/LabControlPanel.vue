@@ -3,7 +3,7 @@
   <div class="mobile-controls lg:hidden fixed top-0 left-0 right-0 z-50">
     <!-- Mobile Header -->
     <div
-      class="mobile-header bg-slate-900 border-b border-cyan-500/20 px-4 py-3"
+      class="mobile-header bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-cyan-500/20 px-4 py-3 transition-colors duration-500"
     >
       <div class="flex items-center justify-between">
         <NuxtLink
@@ -13,7 +13,7 @@
         >
           <div class="relative">
             <div
-              class="w-8 h-8 rounded-full bg-slate-950 flex items-center justify-center overflow-hidden border border-purple-400/30"
+              class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-950 flex items-center justify-center overflow-hidden border border-purple-400/30"
             >
               <img
                 src="/mindqlab-logo.png"
@@ -27,24 +27,37 @@
           </div>
           <div>
             <div
-              class="text-xs font-mono text-purple-300 tracking-widest group-hover:text-purple-200 transition-colors"
+              class="text-xs font-mono text-purple-600 dark:text-purple-300 tracking-widest group-hover:text-purple-500 dark:group-hover:text-purple-200 transition-colors"
             >
               ГЛАВНАЯ
             </div>
-            <div class="text-xs text-purple-400/70">mindqlab.com</div>
+            <div class="text-xs text-purple-500/70 dark:text-purple-400/70">mindqlab.com</div>
           </div>
         </NuxtLink>
 
-        <!-- Mobile Menu Toggle -->
-        <button
-          @click="toggleMobileMenu"
-          class="p-2 rounded-lg bg-slate-800/50 border border-cyan-500/20 hover:border-cyan-500/40 transition-all"
-        >
-          <i
-            class="fas text-cyan-400 transition-transform duration-300"
-            :class="mobileMenuOpen ? 'fa-times' : 'fa-bars'"
-          ></i>
-        </button>
+        <div class="flex items-center">
+          <!-- Theme Toggle Mobile -->
+          <button
+            @click="themeStore.toggleTheme()"
+            class="p-2 mr-2 rounded-lg bg-slate-100 dark:bg-slate-800/50 border border-yellow-500/20 hover:border-yellow-500/40 transition-all"
+          >
+            <i
+              class="fas text-yellow-500 dark:text-yellow-400 transition-transform duration-300"
+              :class="themeStore.theme === 'dark' ? 'fa-moon' : 'fa-sun'"
+            ></i>
+          </button>
+
+          <!-- Mobile Menu Toggle -->
+          <button
+            @click="toggleMobileMenu"
+            class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800/50 border border-cyan-500/20 hover:border-cyan-500/40 transition-all"
+          >
+            <i
+              class="fas text-cyan-600 dark:text-cyan-400 transition-transform duration-300"
+              :class="mobileMenuOpen ? 'fa-times' : 'fa-bars'"
+            ></i>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -57,7 +70,7 @@
 
     <!-- Mobile Menu Panel -->
     <div
-      class="mobile-menu-panel fixed top-16 left-0 right-0 bg-slate-900 border-b border-cyan-500/20 z-50 transition-all duration-300 overflow-y-auto"
+      class="mobile-menu-panel fixed top-16 left-0 right-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-cyan-500/20 z-50 transition-all duration-300 overflow-y-auto"
       :class="mobileMenuOpen ? 'max-h-[65%] opacity-100' : 'max-h-0 opacity-0'"
     >
       <div class="p-4 space-y-4">
@@ -68,7 +81,7 @@
           @click.native="closeMobileMenu"
         >
           <div
-            class="flex items-center space-x-3 p-4 rounded-xl bg-slate-800/50 border border-cyan-500/10 hover:border-cyan-500/30 transition-all"
+            class="flex items-center space-x-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-cyan-500/10 hover:border-cyan-500/30 transition-all"
           >
             <div
               class="petri-dish w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 flex items-center justify-center relative overflow-hidden"
@@ -79,10 +92,10 @@
               <i class="fas fa-brain text-white text-lg relative z-10"></i>
             </div>
             <div>
-              <div class="text-white font-bold text-base font-montserrat">
+              <div class="text-slate-800 dark:text-white font-bold text-base font-montserrat">
                 MIND Q LAB
               </div>
-              <div class="text-cyan-400/70 text-xs font-mono">
+              <div class="text-cyan-600 dark:text-cyan-400/70 text-xs font-mono">
                 v2.0 ЭКСПЕРИМЕНТАЛЬНАЯ
               </div>
             </div>
@@ -104,10 +117,10 @@
         </div>
 
         <!-- User Section Mobile -->
-        <div class="user-section-mobile pt-4 border-t border-cyan-500/10">
+        <div class="user-section-mobile pt-4 border-t border-slate-200 dark:border-cyan-500/10">
           <div v-if="user" class="space-y-2">
             <div
-              class="flex items-center space-x-3 p-3 rounded-lg bg-slate-800/30"
+              class="flex items-center space-x-3 p-3 rounded-lg bg-slate-100 dark:bg-slate-800/30"
             >
               <div
                 class="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-white text-xs font-bold"
@@ -115,7 +128,7 @@
                 {{ getUserInitials(user) }}
               </div>
               <div class="flex-1 min-w-0">
-                <div class="text-white font-medium text-sm truncate">
+                <div class="text-slate-800 dark:text-white font-medium text-sm truncate">
                   {{ user.displayName || user.email }}
                 </div>
               </div>
@@ -123,14 +136,14 @@
             <div class="grid grid-cols-2 gap-2">
               <NuxtLink
                 to="/profile"
-                class="text-center py-2 px-3 bg-slate-700/50 hover:bg-slate-700 rounded-lg text-slate-300 text-xs font-medium transition-all border border-slate-600/50"
+                class="text-center py-2 px-3 bg-slate-200/50 dark:bg-slate-700/50 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg text-slate-600 dark:text-slate-300 text-xs font-medium transition-all border border-slate-300/50 dark:border-slate-600/50"
                 @click.native="closeMobileMenu"
               >
                 Профиль
               </NuxtLink>
               <button
                 @click="logout"
-                class="text-center py-2 px-3 bg-red-500/10 hover:bg-red-500/20 rounded-lg text-red-400 text-xs font-medium transition-all border border-red-500/20"
+                class="text-center py-2 px-3 bg-red-500/10 hover:bg-red-500/20 rounded-lg text-red-500 dark:text-red-400 text-xs font-medium transition-all border border-red-500/20"
               >
                 Выход
               </button>
@@ -139,7 +152,7 @@
           <div v-else class="space-y-2">
             <NuxtLink
               to="/login"
-              class="block w-full text-center py-2.5 px-3 bg-slate-800/50 hover:bg-slate-800 rounded-lg text-slate-300 text-sm font-medium transition-all border border-slate-700/50"
+              class="block w-full text-center py-2.5 px-3 bg-slate-200/50 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg text-slate-600 dark:text-slate-300 text-sm font-medium transition-all border border-slate-300/50 dark:border-slate-700/50"
               @click.native="closeMobileMenu"
             >
               Вход
@@ -159,14 +172,14 @@
 
   <!-- Desktop Sidebar -->
   <aside
-    class="lab-control-panel hidden lg:flex flex-col bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 border-r border-cyan-500/10 h-screen sticky top-0 overflow-y-auto"
+    class="lab-control-panel hidden lg:flex flex-col bg-white dark:bg-gradient-to-b dark:from-slate-900 dark:via-slate-900 dark:to-slate-950 border-r border-slate-200 dark:border-cyan-500/10 h-screen sticky top-0 overflow-y-auto transition-colors duration-500"
   >
     <!-- Panel Header -->
-    <div class="panel-header border-b border-cyan-500/20 p-6">
+    <div class="panel-header border-b border-slate-200 dark:border-cyan-500/20 p-6">
       <NuxtLink to="/" class="flex items-center space-x-3 mb-4 group">
         <div class="relative">
           <div
-            class="w-10 h-10 rounded-full bg-slate-950 flex items-center justify-center overflow-hidden border border-purple-400/30"
+            class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-950 flex items-center justify-center overflow-hidden border border-purple-400/30"
           >
             <img
               src="/mindqlab-logo.png"
@@ -180,18 +193,18 @@
         </div>
         <div>
           <div
-            class="text-xs font-mono text-purple-300 tracking-widest group-hover:text-purple-200 transition-colors"
+            class="text-xs font-mono text-purple-600 dark:text-purple-300 tracking-widest group-hover:text-purple-500 dark:group-hover:text-purple-200 transition-colors"
           >
             ГЛАВНАЯ
           </div>
-          <div class="text-xs text-purple-400/70">mindqlab.com</div>
+          <div class="text-xs text-purple-500/70 dark:text-purple-400/70">mindqlab.com</div>
         </div>
       </NuxtLink>
 
       <!-- Lab Logo -->
       <NuxtLink to="/lab" class="lab-logo group block">
         <div
-          class="flex items-center space-x-3 p-4 rounded-xl bg-slate-800/50 border border-cyan-500/10 hover:border-cyan-500/30 hover:bg-slate-800/80 transition-all duration-300"
+          class="flex items-center space-x-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-cyan-500/10 hover:border-cyan-500/30 hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-all duration-300"
         >
           <div
             class="petri-dish w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 flex items-center justify-center relative overflow-hidden"
@@ -211,10 +224,10 @@
             ></div>
           </div>
           <div>
-            <div class="text-white font-bold text-lg font-montserrat">
+            <div class="text-slate-800 dark:text-white font-bold text-lg font-montserrat">
               MIND Q LAB
             </div>
-            <div class="text-cyan-400/70 text-xs font-mono">
+            <div class="text-cyan-600 dark:text-cyan-400/70 text-xs font-mono">
               v2.0 ЭКСПЕРИМЕНТАЛЬНАЯ
             </div>
           </div>
@@ -329,10 +342,10 @@
     </div>
 
     <!-- User Section -->
-    <div class="user-section border-t border-cyan-500/10 p-4 mt-auto">
+    <div class="user-section border-t border-slate-200 dark:border-cyan-500/10 p-4 mt-auto">
       <div
         v-if="user"
-        class="user-info p-4 rounded-xl bg-slate-800/50 border border-cyan-500/10"
+        class="user-info p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-cyan-500/10"
       >
         <div class="flex items-center space-x-3 mb-3">
           <div
@@ -341,10 +354,10 @@
             {{ getUserInitials(user) }}
           </div>
           <div class="flex-1 min-w-0">
-            <div class="text-xs font-mono text-cyan-400/70 mb-0.5">
+            <div class="text-xs font-mono text-cyan-600 dark:text-cyan-400/70 mb-0.5">
               ИССЛЕДОВАТЕЛЬ
             </div>
-            <div class="text-white font-medium text-sm truncate">
+            <div class="text-slate-800 dark:text-white font-medium text-sm truncate">
               {{ user.displayName || user.email }}
             </div>
           </div>
@@ -352,13 +365,13 @@
         <div class="flex space-x-2">
           <NuxtLink
             to="/profile"
-            class="flex-1 text-center py-2.5 px-3 bg-slate-700/50 hover:bg-slate-700 rounded-lg text-slate-300 text-xs font-medium transition-all border border-slate-600/50"
+            class="flex-1 text-center py-2.5 px-3 bg-slate-200/50 dark:bg-slate-700/50 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg text-slate-600 dark:text-slate-300 text-xs font-medium transition-all border border-slate-300/50 dark:border-slate-600/50"
           >
             Профиль
           </NuxtLink>
           <button
             @click="logout"
-            class="flex-1 text-center py-2.5 px-3 bg-red-500/10 hover:bg-red-500/20 rounded-lg text-red-400 text-xs font-medium transition-all border border-red-500/20"
+            class="flex-1 text-center py-2.5 px-3 bg-red-500/10 hover:bg-red-500/20 rounded-lg text-red-500 dark:text-red-400 text-xs font-medium transition-all border border-red-500/20"
           >
             Выход
           </button>
@@ -367,7 +380,7 @@
       <div v-else class="auth-buttons space-y-2">
         <NuxtLink
           to="/login"
-          class="block w-full text-center py-3 px-4 bg-slate-800/50 hover:bg-slate-800 rounded-xl text-slate-300 text-sm font-medium transition-all border border-slate-700/50"
+          class="block w-full text-center py-3 px-4 bg-slate-200/50 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-xl text-slate-600 dark:text-slate-300 text-sm font-medium transition-all border border-slate-300/50 dark:border-slate-700/50"
         >
           Вход для исследователей
         </NuxtLink>
@@ -381,55 +394,63 @@
     </div>
 
     <!-- System Status -->
-    <div class="system-status border-t border-cyan-500/10 p-4">
+    <div class="system-status border-t border-slate-200 dark:border-cyan-500/10 p-4">
       <div class="text-xs font-mono text-slate-500 mb-3 px-1">
         СТАТУС СИСТЕМЫ
       </div>
       <div class="space-y-2.5">
         <div
-          class="flex justify-between items-center p-2 rounded-lg bg-slate-800/30 border border-emerald-500/10"
+          class="flex justify-between items-center p-2 rounded-lg bg-slate-100 dark:bg-slate-800/30 border border-emerald-500/10"
         >
-          <span class="text-slate-300 text-xs flex items-center space-x-2">
-            <i class="fas fa-network-wired text-emerald-400 text-xs"></i>
+          <span class="text-slate-600 dark:text-slate-300 text-xs flex items-center space-x-2">
+            <i class="fas fa-network-wired text-emerald-500 dark:text-emerald-400 text-xs"></i>
             <span>Нейросеть</span>
           </span>
-          <span class="text-emerald-400 font-mono text-xs font-medium">
+          <span class="text-emerald-600 dark:text-emerald-400 font-mono text-xs font-medium">
             ОНЛАЙН
           </span>
         </div>
         <div
-          class="flex justify-between items-center p-2 rounded-lg bg-slate-800/30 border border-cyan-500/10"
+          class="flex justify-between items-center p-2 rounded-lg bg-slate-100 dark:bg-slate-800/30 border border-cyan-500/10"
         >
-          <span class="text-slate-300 text-xs flex items-center space-x-2">
-            <i class="fas fa-stream text-cyan-400 text-xs"></i>
+          <span class="text-slate-600 dark:text-slate-300 text-xs flex items-center space-x-2">
+            <i class="fas fa-stream text-cyan-500 dark:text-cyan-400 text-xs"></i>
             <span>Поток данных</span>
           </span>
-          <span class="text-cyan-400 font-mono text-xs font-medium">
+          <span class="text-cyan-600 dark:text-cyan-400 font-mono text-xs font-medium">
             АКТИВЕН
           </span>
         </div>
-        <div
-          class="flex justify-between items-center p-2 rounded-lg bg-slate-800/30 border border-purple-500/10"
+        <!-- Theme Toggle -->
+        <button
+          @click="themeStore.toggleTheme()"
+          class="w-full flex justify-between items-center p-2 rounded-lg bg-slate-100 dark:bg-slate-800/30 border border-yellow-500/10 hover:bg-slate-200 dark:hover:bg-slate-800/50 transition-colors group"
         >
-          <span class="text-slate-300 text-xs flex items-center space-x-2">
-            <i class="fas fa-shield-halved text-purple-400 text-xs"></i>
-            <span>Безопасность</span>
+          <span class="text-slate-600 dark:text-slate-300 text-xs flex items-center space-x-2">
+            <i
+              class="fas text-yellow-500 dark:text-yellow-400 text-xs transition-transform duration-300 group-hover:rotate-90"
+              :class="themeStore.theme === 'dark' ? 'fa-moon' : 'fa-sun'"
+            ></i>
+            <span>Режим</span>
           </span>
-          <span class="text-purple-400 font-mono text-xs font-medium">
-            ЗАЩИЩЕНО
+          <span class="text-yellow-600 dark:text-yellow-400 font-mono text-xs font-medium">
+            {{ themeStore.theme === "dark" ? "НОЧНОЙ" : "ДНЕВНОЙ" }}
           </span>
-        </div>
+        </button>
       </div>
     </div>
   </aside>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { useAuthStore } from "~/stores/auth";
+import { useThemeStore } from "~/stores/theme";
 import StationLink from "~/components/lab/StationLink.vue";
 import MobileStationLink from "~/components/lab/MobileStationLink.vue";
+
 const auth = useAuthStore();
+const themeStore = useThemeStore();
 const route = useRoute();
 
 defineProps({

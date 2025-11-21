@@ -1,6 +1,6 @@
 <!-- pages/lab/psychology/index.vue -->
 <template>
-  <div class="min-h-screen bg-slate-950 px-4 sm:px-6 lg:px-8 py-8">
+  <div class="min-h-screen bg-slate-50 dark:bg-slate-950 px-4 sm:px-6 lg:px-8 py-8 transition-colors duration-500">
     <div class="max-w-7xl mx-auto">
       <!-- Header Section - Fixed to match your style -->
       <div class="mb-10">
@@ -9,12 +9,12 @@
         >
           <div>
             <h1
-              class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-3 tracking-tight gradient-text"
+              class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight gradient-text"
             >
               ПСИХОЛОГИЧЕСКАЯ ЛАБОРАТОРИЯ
             </h1>
             <p
-              class="text-cyan-300/70 text-sm sm:text-base leading-relaxed max-w-2xl"
+              class="text-slate-600 dark:text-cyan-300/70 text-sm sm:text-base leading-relaxed max-w-2xl"
             >
               Исследуйте глубины разума через интерактивные эксперименты и
               практические инструменты
@@ -24,14 +24,14 @@
           <!-- Stats Overview -->
           <div class="flex items-center gap-4">
             <div class="stat-card">
-              <div class="text-2xl font-bold text-cyan-400">8</div>
-              <div class="text-xs text-slate-400 uppercase tracking-wide">
+              <div class="text-2xl font-bold text-cyan-600 dark:text-cyan-400">8</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                 Инструментов
               </div>
             </div>
             <div class="stat-card">
-              <div class="text-2xl font-bold text-purple-400">24</div>
-              <div class="text-xs text-slate-400 uppercase tracking-wide">
+              <div class="text-2xl font-bold text-purple-600 dark:text-purple-400">24</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                 Эксперимента
               </div>
             </div>
@@ -42,18 +42,18 @@
       <!-- Rest of the content remains the same -->
       <div class="mb-12">
         <div
-          class="bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20 rounded-2xl p-6"
+          class="bg-gradient-to-r from-purple-500/5 to-pink-500/5 dark:from-purple-500/10 dark:to-pink-500/10 border border-purple-200 dark:border-purple-500/20 rounded-2xl p-6 shadow-sm dark:shadow-none"
         >
           <div class="flex items-center justify-between">
             <div>
               <div class="flex items-center gap-2 mb-3">
-                <i class="fas fa-star text-yellow-400"></i>
-                <span class="text-yellow-400 font-semibold"
+                <i class="fas fa-star text-yellow-500 dark:text-yellow-400"></i>
+                <span class="text-yellow-600 dark:text-yellow-400 font-semibold"
                   >ЭКСПЕРИМЕНТ ДНЯ</span
                 >
               </div>
-              <h3 class="text-2xl font-bold text-white mb-2">Тест Струпа</h3>
-              <p class="text-slate-300 mb-4">
+              <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">Тест Струпа</h3>
+              <p class="text-slate-600 dark:text-slate-300 mb-4">
                 Измерьте свою когнитивную гибкость в классическом
                 психологическом тесте
               </p>
@@ -64,9 +64,9 @@
             </div>
             <div class="hidden md:block">
               <div
-                class="w-32 h-32 rounded-2xl bg-purple-500/20 flex items-center justify-center"
+                class="w-32 h-32 rounded-2xl bg-purple-100 dark:bg-purple-500/20 flex items-center justify-center"
               >
-                <i class="fas fa-brain text-purple-400 text-5xl"></i>
+                <i class="fas fa-brain text-purple-600 dark:text-purple-400 text-5xl"></i>
               </div>
             </div>
           </div>
@@ -86,7 +86,7 @@
       <!-- Quick Tools -->
       <div class="mb-12">
         <div class="flex items-center justify-between mb-6">
-          <h2 class="text-xl font-semibold text-white">Быстрые инструменты</h2>
+          <h2 class="text-xl font-semibold text-slate-900 dark:text-white">Быстрые инструменты</h2>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
           <QuickToolCard
@@ -98,26 +98,26 @@
       </div>
 
       <!-- Psychology Facts -->
-      <div class="bg-slate-800/30 rounded-2xl p-6 border border-cyan-500/20">
+      <div class="bg-white dark:bg-slate-800/30 rounded-2xl p-6 border border-slate-200 dark:border-cyan-500/20 shadow-sm dark:shadow-none">
         <div class="flex items-center gap-4 mb-4">
           <div
-            class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center"
+            class="w-12 h-12 rounded-xl bg-cyan-100 dark:bg-cyan-500/20 flex items-center justify-center"
           >
-            <i class="fas fa-lightbulb text-cyan-400 text-xl"></i>
+            <i class="fas fa-lightbulb text-cyan-600 dark:text-cyan-400 text-xl"></i>
           </div>
           <div>
-            <h3 class="text-xl font-bold text-white">Факт о психологии</h3>
-            <p class="text-slate-400">Узнавайте что-то новое каждый день</p>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Факт о психологии</h3>
+            <p class="text-slate-500 dark:text-slate-400">Узнавайте что-то новое каждый день</p>
           </div>
         </div>
-        <div class="text-slate-300 leading-relaxed">
+        <div class="text-slate-600 dark:text-slate-300 leading-relaxed">
           {{ dailyFact.content }}
         </div>
         <div class="flex items-center justify-between mt-4">
-          <span class="text-cyan-400 text-sm font-mono">{{
+          <span class="text-cyan-600 dark:text-cyan-400 text-sm font-mono">{{
             dailyFact.category
           }}</span>
-          <button class="text-slate-400 hover:text-cyan-400 transition-colors">
+          <button class="text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
             <i class="fas fa-sync-alt text-sm"></i>
           </button>
         </div>
@@ -190,42 +190,42 @@ const quickTools = [
     id: "emotional-compass",
     title: "Эмоциональный компас",
     icon: "fas fa-compass",
-    color: "text-purple-400",
+    color: "text-purple-600 dark:text-purple-400",
     path: "/awareness-tools/emotional-compass"
   },
   {
     id: "wheel-of-life",
     title: "Колесо баланса",
     icon: "fas fa-chart-pie",
-    color: "text-cyan-400",
+    color: "text-cyan-600 dark:text-cyan-400",
     path: "/awareness-tools/wheel-of-life"
   },
   {
     id: "mood-tracker",
     title: "Настроение",
     icon: "fas fa-smile",
-    color: "text-yellow-400",
+    color: "text-yellow-600 dark:text-yellow-400",
     path: "/lab/psychology/mood-tracker"
   },
   {
     id: "stress-test",
     title: "Стресс-тест",
     icon: "fas fa-heartbeat",
-    color: "text-red-400",
+    color: "text-red-600 dark:text-red-400",
     path: "/lab/psychology/stress-test"
   },
   {
     id: "focus-timer",
     title: "Фокус",
     icon: "fas fa-hourglass-half",
-    color: "text-blue-400",
+    color: "text-blue-600 dark:text-blue-400",
     path: "/lab/psychology/focus-timer"
   },
   {
     id: "breathing",
     title: "Дыхание",
     icon: "fas fa-wind",
-    color: "text-green-400",
+    color: "text-green-600 dark:text-green-400",
     path: "/lab/psychology/breathing"
   },
 ];
@@ -250,7 +250,7 @@ const navigateToSection = (section) => {
 }
 
 .stat-card {
-  @apply text-center px-4 py-3 rounded-xl bg-slate-900/50 border border-cyan-500/10;
+  @apply text-center px-4 py-3 rounded-xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/10 shadow-sm dark:shadow-none;
 }
 
 .btn-primary {

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="digit-span-test min-h-screen bg-slate-950 px-4 sm:px-6 lg:px-8 py-8"
+    class="digit-span-test min-h-screen bg-slate-50 dark:bg-slate-950 px-4 sm:px-6 lg:px-8 py-8 transition-colors duration-500"
   >
     <div class="max-w-4xl mx-auto">
       <!-- Intro Screen -->
@@ -21,12 +21,12 @@
         </div>
 
         <h1
-          class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4 tracking-tight gradient-text"
+          class="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-4 tracking-tight gradient-text"
         >
           ТЕСТ ОБЪЕМА ПАМЯТИ
         </h1>
         <p
-          class="text-cyan-300/80 text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto mb-8"
+          class="text-slate-600 dark:text-cyan-300/80 text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto mb-8"
         >
           Digit Span Test — классический тест рабочей памяти, используемый в
           нейропсихологии и оценке IQ
@@ -39,8 +39,8 @@
             >
               <i class="fas fa-clock text-cyan-400 text-xl"></i>
             </div>
-            <div class="text-2xl font-bold text-cyan-400 mb-1">5-8 мин</div>
-            <div class="text-sm text-slate-400">Длительность</div>
+            <div class="text-2xl font-bold text-cyan-600 dark:text-cyan-400 mb-1">5-8 мин</div>
+            <div class="text-sm text-slate-500 dark:text-slate-400">Длительность</div>
           </div>
           <div class="info-card-small">
             <div
@@ -48,8 +48,8 @@
             >
               <i class="fas fa-layer-group text-purple-400 text-xl"></i>
             </div>
-            <div class="text-2xl font-bold text-purple-400 mb-1">2 этапа</div>
-            <div class="text-sm text-slate-400">Прямой + Обратный</div>
+            <div class="text-2xl font-bold text-purple-600 dark:text-purple-400 mb-1">2 этапа</div>
+            <div class="text-sm text-slate-500 dark:text-slate-400">Прямой + Обратный</div>
           </div>
           <div class="info-card-small">
             <div
@@ -57,23 +57,23 @@
             >
               <i class="fas fa-chart-line text-emerald-400 text-xl"></i>
             </div>
-            <div class="text-2xl font-bold text-emerald-400 mb-1">Научно</div>
-            <div class="text-sm text-slate-400">Валидирован</div>
+            <div class="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mb-1">Научно</div>
+            <div class="text-sm text-slate-500 dark:text-slate-400">Валидирован</div>
           </div>
         </div>
 
         <div class="info-card max-w-2xl mx-auto mb-8">
           <div class="flex items-start gap-4">
             <div
-              class="w-10 h-10 rounded-lg bg-cyan-500/20 flex items-center justify-center flex-shrink-0"
+              class="w-10 h-10 rounded-lg bg-cyan-100 dark:bg-cyan-500/20 flex items-center justify-center flex-shrink-0"
             >
-              <i class="fas fa-info-circle text-cyan-400"></i>
+              <i class="fas fa-info-circle text-cyan-600 dark:text-cyan-400"></i>
             </div>
             <div class="text-left">
-              <h3 class="text-lg font-semibold text-white mb-2">
+              <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-2">
                 Что измеряет этот тест?
               </h3>
-              <p class="text-slate-300 text-sm leading-relaxed">
+              <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
                 Digit Span Test оценивает объем вашей
                 <strong class="text-cyan-400">рабочей памяти</strong> —
                 способность временно удерживать и манипулировать информацией.
@@ -97,10 +97,8 @@
       <!-- Instructions Screen -->
       <div v-if="phase === 'instructions'" class="max-w-2xl mx-auto">
         <div class="text-center mb-8">
-          <h2 class="text-3xl font-bold text-white mb-4 gradient-text">
-            Инструкция
-          </h2>
-          <p class="text-slate-300">Внимательно прочитайте перед началом</p>
+                Digit Span Test оценивает объем вашей
+                <strong class="text-cyan-600 dark:text-cyan-400">рабочей памяти</strong> —
         </div>
 
         <div class="space-y-6 mb-8">
@@ -112,10 +110,10 @@
                 <span class="text-white font-bold">1</span>
               </div>
               <div class="text-left flex-1">
-                <h3 class="text-lg font-semibold text-white mb-2">
+                <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-2">
                   Запоминайте последовательность
                 </h3>
-                <p class="text-slate-300 text-sm leading-relaxed">
+                <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
                   На экране будут появляться цифры по одной. Постарайтесь
                   запомнить их порядок.
                 </p>
@@ -131,24 +129,24 @@
                 <span class="text-white font-bold">2</span>
               </div>
               <div class="text-left flex-1">
-                <h3 class="text-lg font-semibold text-white mb-2">
+                <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-2">
                   Два режима тестирования
                 </h3>
-                <p class="text-slate-300 text-sm leading-relaxed mb-3">
-                  <strong class="text-cyan-400">Прямой порядок:</strong> Вводите
+                <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-3">
+                  <strong class="text-cyan-600 dark:text-cyan-400">Прямой порядок:</strong> Вводите
                   цифры в том же порядке, как они появились<br />
-                  <strong class="text-purple-400">Обратный порядок:</strong>
+                  <strong class="text-purple-600 dark:text-purple-400">Обратный порядок:</strong>
                   Вводите цифры в обратном порядке
                 </p>
-                <div class="bg-slate-800/50 p-3 rounded-lg">
-                  <div class="text-xs text-slate-400 mb-1">
+                <div class="bg-slate-100 dark:bg-slate-800/50 p-3 rounded-lg">
+                  <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">
                     Пример (обратный):
                   </div>
-                  <div class="text-sm text-white">
-                    Показали: <span class="text-cyan-400">3 → 7 → 2</span>
+                  <div class="text-sm text-slate-800 dark:text-white">
+                    Показали: <span class="text-cyan-600 dark:text-cyan-400">3 → 7 → 2</span>
                   </div>
-                  <div class="text-sm text-white">
-                    Вы вводите: <span class="text-purple-400">2 → 7 → 3</span>
+                  <div class="text-sm text-slate-800 dark:text-white">
+                    Вы вводите: <span class="text-purple-600 dark:text-purple-400">2 → 7 → 3</span>
                   </div>
                 </div>
               </div>
@@ -163,10 +161,10 @@
                 <span class="text-white font-bold">3</span>
               </div>
               <div class="text-left flex-1">
-                <h3 class="text-lg font-semibold text-white mb-2">
+                <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-2">
                   Прогрессивная сложность
                 </h3>
-                <p class="text-slate-300 text-sm leading-relaxed">
+                <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
                   Тест начинается с 3 цифр и становится сложнее. У вас есть 2
                   попытки на каждом уровне. Тест заканчивается после двух ошибок
                   подряд.
@@ -180,10 +178,10 @@
           class="bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-500/20 rounded-2xl p-6 mb-8"
         >
           <div class="flex items-start gap-3">
-            <i class="fas fa-lightbulb text-yellow-400 text-xl mt-1"></i>
+            <i class="fas fa-lightbulb text-yellow-500 dark:text-yellow-400 text-xl mt-1"></i>
             <div>
-              <h4 class="text-white font-semibold mb-1">Совет</h4>
-              <p class="text-slate-300 text-sm">
+              <h4 class="text-slate-900 dark:text-white font-semibold mb-1">Совет</h4>
+              <p class="text-slate-600 dark:text-slate-300 text-sm">
                 Проходите тест в тихом месте, когда вы отдохнувши и
                 сосредоточены. Это даст наиболее точные результаты.
               </p>
@@ -208,11 +206,11 @@
         <!-- Header -->
         <div class="text-center mb-8">
           <div
-            class="inline-flex items-center gap-3 px-6 py-3 bg-slate-900/60 border border-cyan-500/20 rounded-xl mb-4"
+            class="inline-flex items-center gap-3 px-6 py-3 bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-cyan-500/20 rounded-xl mb-4 shadow-sm dark:shadow-none"
           >
             <div
               :class="
-                testMode === 'forward' ? 'text-cyan-400' : 'text-purple-400'
+                testMode === 'forward' ? 'text-cyan-600 dark:text-cyan-400' : 'text-purple-600 dark:text-purple-400'
               "
             >
               <i
@@ -227,15 +225,15 @@
                 testMode === "forward" ? "ПРЯМОЙ ПОРЯДОК" : "ОБРАТНЫЙ ПОРЯДОК"
               }}
             </div>
-            <span class="text-slate-600">•</span>
-            <div class="text-slate-300">
+            <span class="text-slate-400 dark:text-slate-600">•</span>
+            <div class="text-slate-600 dark:text-slate-300">
               Уровень:
-              <span class="font-bold text-white">{{ currentLevel }}</span>
+              <span class="font-bold text-slate-900 dark:text-white">{{ currentLevel }}</span>
             </div>
-            <span class="text-slate-600">•</span>
-            <div class="text-slate-300">
+            <span class="text-slate-400 dark:text-slate-600">•</span>
+            <div class="text-slate-600 dark:text-slate-300">
               Попытка:
-              <span class="font-bold text-white"
+              <span class="font-bold text-slate-900 dark:text-white"
                 >{{ attempts.current + 1 }}/{{ attempts.max }}</span
               >
             </div>
@@ -247,7 +245,7 @@
           <!-- Showing Sequence -->
           <div v-if="showingSequence" class="text-center">
             <div class="mb-8">
-              <div class="text-slate-400 text-sm mb-4 uppercase tracking-wide">
+              <div class="text-slate-500 dark:text-slate-400 text-sm mb-4 uppercase tracking-wide">
                 Запоминайте...
               </div>
               <div class="digit-display">
@@ -261,10 +259,10 @@
                 class="w-3 h-3 rounded-full transition-all duration-300"
                 :class="
                   index === displayIndex
-                    ? 'bg-cyan-400 scale-125'
+                    ? 'bg-cyan-500 dark:bg-cyan-400 scale-125'
                     : index < displayIndex
-                    ? 'bg-cyan-400/30'
-                    : 'bg-slate-700'
+                    ? 'bg-cyan-500/30 dark:bg-cyan-400/30'
+                    : 'bg-slate-300 dark:bg-slate-700'
                 "
               ></div>
             </div>
@@ -273,7 +271,7 @@
           <!-- Input Phase -->
           <div v-else class="text-center">
             <div class="mb-6">
-              <div class="text-slate-400 text-sm mb-4 uppercase tracking-wide">
+              <div class="text-slate-500 dark:text-slate-400 text-sm mb-4 uppercase tracking-wide">
                 {{
                   testMode === "forward"
                     ? "Введите цифры в прямом порядке"
@@ -319,17 +317,17 @@
         <!-- Progress Indicator -->
         <div class="info-card">
           <div class="flex items-center justify-between text-sm">
-            <div class="text-slate-400">Ваш текущий результат:</div>
+            <div class="text-slate-600 dark:text-slate-400">Ваш текущий результат:</div>
             <div class="flex gap-4">
               <div>
-                <span class="text-cyan-400 font-semibold">Прямой:</span>
-                <span class="text-white font-bold ml-2">{{
+                <span class="text-cyan-600 dark:text-cyan-400 font-semibold">Прямой:</span>
+                <span class="text-slate-900 dark:text-white font-bold ml-2">{{
                   results.forward
                 }}</span>
               </div>
               <div>
-                <span class="text-purple-400 font-semibold">Обратный:</span>
-                <span class="text-white font-bold ml-2">{{
+                <span class="text-purple-600 dark:text-purple-400 font-semibold">Обратный:</span>
+                <span class="text-slate-900 dark:text-white font-bold ml-2">{{
                   results.backward
                 }}</span>
               </div>
@@ -348,10 +346,10 @@
               <i class="fas fa-trophy text-white text-5xl"></i>
             </div>
           </div>
-          <h2 class="text-4xl font-bold text-white mb-4 gradient-text">
+          <h2 class="text-4xl font-bold text-slate-900 dark:text-white mb-4 gradient-text">
             Тест завершен! 🎉
           </h2>
-          <p class="text-slate-300 text-lg">
+          <p class="text-slate-600 dark:text-slate-300 text-lg">
             Вот ваши результаты по тесту объема памяти
           </p>
         </div>
@@ -366,13 +364,13 @@
                 <i class="fas fa-arrow-right text-white text-xl"></i>
               </div>
               <div class="text-left">
-                <div class="text-sm text-slate-400">Прямой порядок</div>
-                <div class="text-2xl font-bold text-cyan-400">
+                <div class="text-sm text-slate-500 dark:text-slate-400">Прямой порядок</div>
+                <div class="text-2xl font-bold text-cyan-600 dark:text-cyan-400">
                   {{ results.forward }} цифр
                 </div>
               </div>
             </div>
-            <div class="text-sm text-slate-300 leading-relaxed">
+            <div class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
               {{ getForwardInterpretation() }}
             </div>
           </div>
@@ -385,13 +383,13 @@
                 <i class="fas fa-arrow-left text-white text-xl"></i>
               </div>
               <div class="text-left">
-                <div class="text-sm text-slate-400">Обратный порядок</div>
-                <div class="text-2xl font-bold text-purple-400">
+                <div class="text-sm text-slate-500 dark:text-slate-400">Обратный порядок</div>
+                <div class="text-2xl font-bold text-purple-600 dark:text-purple-400">
                   {{ results.backward }} цифр
                 </div>
               </div>
             </div>
-            <div class="text-sm text-slate-300 leading-relaxed">
+            <div class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
               {{ getBackwardInterpretation() }}
             </div>
           </div>
@@ -401,7 +399,7 @@
         <div class="mb-8">
           <div class="performance-card">
             <div class="text-center mb-6">
-              <div class="text-sm text-slate-400 uppercase tracking-wide mb-2">
+              <div class="text-sm text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-2">
                 Общий показатель
               </div>
               <div
@@ -409,11 +407,11 @@
               >
                 {{ totalScore }}
               </div>
-              <div class="text-lg text-slate-300 mt-2">
+              <div class="text-lg text-slate-600 dark:text-slate-300 mt-2">
                 {{ getTotalRating() }}
               </div>
             </div>
-            <div class="relative h-3 bg-slate-800 rounded-full overflow-hidden">
+            <div class="relative h-3 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
               <div
                 class="absolute inset-y-0 left-0 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full transition-all duration-1000"
                 :style="{ width: `${Math.min((totalScore / 20) * 100, 100)}%` }"
@@ -426,29 +424,29 @@
         <div class="info-card mb-8">
           <div class="flex items-start gap-4">
             <div
-              class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center flex-shrink-0"
+              class="w-10 h-10 rounded-lg bg-emerald-100 dark:bg-emerald-500/20 flex items-center justify-center flex-shrink-0"
             >
-              <i class="fas fa-brain text-emerald-400"></i>
+              <i class="fas fa-brain text-emerald-600 dark:text-emerald-400"></i>
             </div>
             <div class="text-left flex-1">
-              <h3 class="text-lg font-semibold text-white mb-3">
+              <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-3">
                 Что означают ваши результаты?
               </h3>
-              <div class="space-y-3 text-sm text-slate-300 leading-relaxed">
+              <div class="space-y-3 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
                 <p>
-                  <strong class="text-cyan-400">Прямой порядок</strong> отражает
+                  <strong class="text-cyan-600 dark:text-cyan-400">Прямой порядок</strong> отражает
                   вашу способность удерживать информацию в краткосрочной памяти.
                   Средний показатель взрослого человека — 7±2 цифры (закон
                   Миллера).
                 </p>
                 <p>
-                  <strong class="text-purple-400">Обратный порядок</strong>
+                  <strong class="text-purple-600 dark:text-purple-400">Обратный порядок</strong>
                   требует не только запоминания, но и манипуляции информацией,
                   что является показателем исполнительных функций и рабочей
                   памяти.
                 </p>
                 <p>
-                  <strong class="text-emerald-400">Общий показатель</strong>
+                  <strong class="text-emerald-600 dark:text-emerald-400">Общий показатель</strong>
                   коррелирует с общим интеллектом и используется в батарее
                   тестов WAIS (шкала интеллекта Векслера).
                 </p>
@@ -460,20 +458,20 @@
         <!-- Normative Data -->
         <div class="grid md:grid-cols-3 gap-4 mb-8">
           <div class="stat-comparison">
-            <div class="text-xs text-slate-400 mb-2">Средний показатель</div>
-            <div class="text-2xl font-bold text-slate-300">12-14</div>
+            <div class="text-xs text-slate-500 dark:text-slate-400 mb-2">Средний показатель</div>
+            <div class="text-2xl font-bold text-slate-700 dark:text-slate-300">12-14</div>
             <div class="text-xs text-slate-500 mt-1">Общая популяция</div>
           </div>
           <div class="stat-comparison">
-            <div class="text-xs text-slate-400 mb-2">Ваш результат</div>
-            <div class="text-2xl font-bold text-cyan-400">{{ totalScore }}</div>
+            <div class="text-xs text-slate-500 dark:text-slate-400 mb-2">Ваш результат</div>
+            <div class="text-2xl font-bold text-cyan-600 dark:text-cyan-400">{{ totalScore }}</div>
             <div class="text-xs" :class="getComparisonClass()">
               {{ getComparison() }}
             </div>
           </div>
           <div class="stat-comparison">
-            <div class="text-xs text-slate-400 mb-2">Отличный показатель</div>
-            <div class="text-2xl font-bold text-emerald-400">16+</div>
+            <div class="text-xs text-slate-500 dark:text-slate-400 mb-2">Отличный показатель</div>
+            <div class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">16+</div>
             <div class="text-xs text-slate-500 mt-1">Топ 10%</div>
           </div>
         </div>
@@ -482,38 +480,38 @@
         <div class="info-card mb-8">
           <div class="flex items-start gap-4">
             <div
-              class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center flex-shrink-0"
+              class="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-500/20 flex items-center justify-center flex-shrink-0"
             >
-              <i class="fas fa-lightbulb text-purple-400"></i>
+              <i class="fas fa-lightbulb text-purple-600 dark:text-purple-400"></i>
             </div>
             <div class="text-left flex-1">
-              <h3 class="text-lg font-semibold text-white mb-3">
+              <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-3">
                 Рекомендации для улучшения
               </h3>
-              <ul class="space-y-2 text-sm text-slate-300">
+              <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-300">
                 <li class="flex items-start gap-2">
-                  <i class="fas fa-check text-cyan-400 mt-1 text-xs"></i>
+                  <i class="fas fa-check text-cyan-600 dark:text-cyan-400 mt-1 text-xs"></i>
                   <span
                     >Тренируйте рабочую память с помощью N-back тестов и
                     головоломок</span
                   >
                 </li>
                 <li class="flex items-start gap-2">
-                  <i class="fas fa-check text-cyan-400 mt-1 text-xs"></i>
+                  <i class="fas fa-check text-cyan-600 dark:text-cyan-400 mt-1 text-xs"></i>
                   <span
                     >Практикуйте мнемонические техники (метод локусов,
                     ассоциации)</span
                   >
                 </li>
                 <li class="flex items-start gap-2">
-                  <i class="fas fa-check text-cyan-400 mt-1 text-xs"></i>
+                  <i class="fas fa-check text-cyan-600 dark:text-cyan-400 mt-1 text-xs"></i>
                   <span
                     >Регулярные аэробные упражнения улучшают когнитивные
                     функции</span
                   >
                 </li>
                 <li class="flex items-start gap-2">
-                  <i class="fas fa-check text-cyan-400 mt-1 text-xs"></i>
+                  <i class="fas fa-check text-cyan-600 dark:text-cyan-400 mt-1 text-xs"></i>
                   <span
                     >Качественный сон критически важен для консолидации
                     памяти</span
@@ -709,10 +707,10 @@ const getComparison = () => {
 
 const getComparisonClass = () => {
   const total = totalScore.value;
-  if (total >= 16) return "text-emerald-400";
-  if (total >= 13) return "text-cyan-400";
-  if (total >= 10) return "text-yellow-400";
-  return "text-orange-400";
+  if (total >= 16) return "text-emerald-600 dark:text-emerald-400";
+  if (total >= 13) return "text-cyan-600 dark:text-cyan-400";
+  if (total >= 10) return "text-yellow-600 dark:text-yellow-400";
+  return "text-orange-600 dark:text-orange-400";
 };
 
 const restartTest = () => {
@@ -761,43 +759,43 @@ const shareResults = () => {
 }
 
 .btn-secondary {
-  @apply inline-flex items-center justify-center px-6 py-3 rounded-xl bg-slate-800/50 border border-slate-600/50 
-         text-slate-300 font-semibold hover:bg-slate-700 hover:border-slate-500 
+  @apply inline-flex items-center justify-center px-6 py-3 rounded-xl bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-600/50 
+         text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-200 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-500 
          transition-all duration-300 transform hover:scale-105;
 }
 
 .info-card {
-  @apply p-6 rounded-2xl bg-slate-900/50 border border-cyan-500/10 backdrop-blur-sm;
+  @apply p-6 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/10 backdrop-blur-sm shadow-sm dark:shadow-none;
 }
 
 .info-card-small {
-  @apply p-5 rounded-xl bg-slate-900/40 border border-cyan-500/10 text-center;
+  @apply p-5 rounded-xl bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-cyan-500/10 text-center shadow-sm dark:shadow-none;
 }
 
 .instruction-card {
-  @apply p-5 rounded-xl bg-slate-900/40 border border-cyan-500/10 hover:border-cyan-500/30 transition-all duration-300;
+  @apply p-5 rounded-xl bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-cyan-500/10 hover:border-cyan-500/30 transition-all duration-300 shadow-sm dark:shadow-none;
 }
 
 .result-card {
-  @apply p-6 rounded-2xl bg-slate-900/50 border border-cyan-500/20 hover:border-cyan-500/40 transition-all duration-300;
+  @apply p-6 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/20 hover:border-cyan-500/40 transition-all duration-300 shadow-sm dark:shadow-none;
 }
 
 .performance-card {
-  @apply p-8 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-800/80 border border-cyan-500/30;
+  @apply p-8 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900/80 dark:to-slate-800/80 border border-slate-200 dark:border-cyan-500/30 shadow-sm dark:shadow-none;
 }
 
 .stat-comparison {
-  @apply p-4 rounded-xl bg-slate-900/40 border border-slate-700/50 text-center;
+  @apply p-4 rounded-xl bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-700/50 text-center shadow-sm dark:shadow-none;
 }
 
 .digit-display {
-  @apply text-8xl md:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400
+  @apply text-8xl md:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-purple-600 dark:from-cyan-400 dark:to-purple-400
          animate-pulse-slow;
 }
 
 .digit-input {
   @apply w-full max-w-md mx-auto px-6 py-5 text-4xl md:text-5xl font-bold text-center
-         bg-slate-900/50 border-2 border-cyan-500/30 rounded-2xl text-white
+         bg-white dark:bg-slate-900/50 border-2 border-slate-200 dark:border-cyan-500/30 rounded-2xl text-slate-900 dark:text-white
          focus:outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20
          placeholder-slate-700 transition-all duration-300 tracking-widest;
 }

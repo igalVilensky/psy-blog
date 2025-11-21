@@ -1,6 +1,8 @@
 <!-- pages/lab/analysis.vue -->
 <template>
-  <div class="min-h-screen px-4 sm:px-6 lg:px-8 py-8">
+  <div
+    class="min-h-screen px-4 sm:px-6 lg:px-8 py-8 bg-slate-50 dark:bg-slate-950 transition-colors duration-500"
+  >
     <!-- Page Header -->
     <div class="mb-8">
       <div
@@ -8,18 +10,18 @@
       >
         <div>
           <h1
-            class="text-3xl md:text-4xl font-bold text-white font-montserrat mb-2"
+            class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white font-montserrat mb-2"
           >
             Обсерватория Роста
           </h1>
-          <p class="text-slate-400">
+          <p class="text-slate-600 dark:text-slate-400">
             Визуализация прогресса и аналитика личностного развития
           </p>
         </div>
         <div class="flex items-center space-x-3">
           <select
             v-model="selectedPeriod"
-            class="px-4 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-300 text-sm font-medium focus:outline-none focus:border-emerald-500/50 transition-all"
+            class="px-4 py-2 rounded-lg bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 text-slate-700 dark:text-slate-300 text-sm font-medium focus:outline-none focus:border-emerald-500/50 transition-all"
           >
             <option value="week">Неделя</option>
             <option value="month">Месяц</option>
@@ -27,7 +29,7 @@
             <option value="year">Год</option>
           </select>
           <button
-            class="px-4 py-2 rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-sm font-medium hover:bg-emerald-500/30 transition-all flex items-center space-x-2"
+            class="px-4 py-2 rounded-lg bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 dark:border-emerald-500/40 text-sm font-medium hover:bg-emerald-500/20 dark:hover:bg-emerald-500/30 transition-all flex items-center space-x-2"
           >
             <i class="fas fa-download text-xs"></i>
             <span>Экспорт</span>
@@ -38,7 +40,7 @@
       <!-- Key Metrics -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div
-          class="bg-gradient-to-br from-slate-800/50 to-slate-800/30 rounded-xl p-5 border border-emerald-500/20 relative overflow-hidden group"
+          class="bg-gradient-to-br from-white to-slate-50 dark:from-slate-800/50 dark:to-slate-800/30 rounded-xl p-5 border border-emerald-500/20 relative overflow-hidden group shadow-sm dark:shadow-none"
           @mouseenter="activeMetric = 'growth'"
           @mouseleave="activeMetric = null"
         >
@@ -51,21 +53,21 @@
                 class="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center transition-transform duration-300"
                 :class="{ 'scale-110': activeMetric === 'growth' }"
               >
-                <i class="fas fa-arrow-trend-up text-emerald-400"></i>
+                <i class="fas fa-arrow-trend-up text-emerald-600 dark:text-emerald-400"></i>
               </div>
-              <div class="text-emerald-400 text-xs font-mono">
+              <div class="text-emerald-600 dark:text-emerald-400 text-xs font-mono">
                 +{{ metrics.growth }}%
               </div>
             </div>
-            <div class="text-2xl font-bold text-white mb-1 font-mono">
+            <div class="text-2xl font-bold text-slate-900 dark:text-white mb-1 font-mono">
               {{ metrics.growthScore }}
             </div>
-            <div class="text-slate-400 text-xs">Индекс роста</div>
+            <div class="text-slate-500 dark:text-slate-400 text-xs">Индекс роста</div>
           </div>
         </div>
 
         <div
-          class="bg-gradient-to-br from-slate-800/50 to-slate-800/30 rounded-xl p-5 border border-cyan-500/20 relative overflow-hidden group"
+          class="bg-gradient-to-br from-white to-slate-50 dark:from-slate-800/50 dark:to-slate-800/30 rounded-xl p-5 border border-cyan-500/20 relative overflow-hidden group shadow-sm dark:shadow-none"
           @mouseenter="activeMetric = 'activity'"
           @mouseleave="activeMetric = null"
         >
@@ -78,21 +80,21 @@
                 class="w-10 h-10 rounded-lg bg-cyan-500/10 flex items-center justify-center transition-transform duration-300"
                 :class="{ 'scale-110': activeMetric === 'activity' }"
               >
-                <i class="fas fa-bolt text-cyan-400"></i>
+                <i class="fas fa-bolt text-cyan-600 dark:text-cyan-400"></i>
               </div>
-              <div class="text-cyan-400 text-xs font-mono">
+              <div class="text-cyan-600 dark:text-cyan-400 text-xs font-mono">
                 {{ metrics.streakDays }}д
               </div>
             </div>
-            <div class="text-2xl font-bold text-white mb-1 font-mono">
+            <div class="text-2xl font-bold text-slate-900 dark:text-white mb-1 font-mono">
               {{ metrics.activityScore }}
             </div>
-            <div class="text-slate-400 text-xs">Активность</div>
+            <div class="text-slate-500 dark:text-slate-400 text-xs">Активность</div>
           </div>
         </div>
 
         <div
-          class="bg-gradient-to-br from-slate-800/50 to-slate-800/30 rounded-xl p-5 border border-purple-500/20 relative overflow-hidden group"
+          class="bg-gradient-to-br from-white to-slate-50 dark:from-slate-800/50 dark:to-slate-800/30 rounded-xl p-5 border border-purple-500/20 relative overflow-hidden group shadow-sm dark:shadow-none"
           @mouseenter="activeMetric = 'insights'"
           @mouseleave="activeMetric = null"
         >
@@ -105,21 +107,21 @@
                 class="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center transition-transform duration-300"
                 :class="{ 'scale-110': activeMetric === 'insights' }"
               >
-                <i class="fas fa-lightbulb text-purple-400"></i>
+                <i class="fas fa-lightbulb text-purple-600 dark:text-purple-400"></i>
               </div>
-              <div class="text-purple-400 text-xs font-mono">
+              <div class="text-purple-600 dark:text-purple-400 text-xs font-mono">
                 +{{ metrics.insightsNew }}
               </div>
             </div>
-            <div class="text-2xl font-bold text-white mb-1 font-mono">
+            <div class="text-2xl font-bold text-slate-900 dark:text-white mb-1 font-mono">
               {{ metrics.totalInsights }}
             </div>
-            <div class="text-slate-400 text-xs">Инсайтов</div>
+            <div class="text-slate-500 dark:text-slate-400 text-xs">Инсайтов</div>
           </div>
         </div>
 
         <div
-          class="bg-gradient-to-br from-slate-800/50 to-slate-800/30 rounded-xl p-5 border border-amber-500/20 relative overflow-hidden group"
+          class="bg-gradient-to-br from-white to-slate-50 dark:from-slate-800/50 dark:to-slate-800/30 rounded-xl p-5 border border-amber-500/20 relative overflow-hidden group shadow-sm dark:shadow-none"
           @mouseenter="activeMetric = 'completion'"
           @mouseleave="activeMetric = null"
         >
@@ -132,16 +134,16 @@
                 class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center transition-transform duration-300"
                 :class="{ 'scale-110': activeMetric === 'completion' }"
               >
-                <i class="fas fa-check-circle text-amber-400"></i>
+                <i class="fas fa-check-circle text-amber-600 dark:text-amber-400"></i>
               </div>
-              <div class="text-amber-400 text-xs font-mono">
+              <div class="text-amber-600 dark:text-amber-400 text-xs font-mono">
                 {{ metrics.completedTests }}/{{ metrics.totalTests }}
               </div>
             </div>
-            <div class="text-2xl font-bold text-white mb-1 font-mono">
+            <div class="text-2xl font-bold text-slate-900 dark:text-white mb-1 font-mono">
               {{ metrics.completionRate }}%
             </div>
-            <div class="text-slate-400 text-xs">Завершено</div>
+            <div class="text-slate-500 dark:text-slate-400 text-xs">Завершено</div>
           </div>
         </div>
       </div>
@@ -150,12 +152,12 @@
     <!-- Charts Section -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
       <!-- Progress Over Time -->
-      <div class="bg-slate-800/30 rounded-xl p-6 border border-slate-700/50">
+      <div class="bg-white dark:bg-slate-800/30 rounded-xl p-6 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none">
         <div class="flex items-center justify-between mb-6">
-          <h2 class="text-xl font-bold text-white font-montserrat">
+          <h2 class="text-xl font-bold text-slate-900 dark:text-white font-montserrat">
             Прогресс со временем
           </h2>
-          <button class="text-slate-400 hover:text-white transition-colors">
+          <button class="text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors">
             <i class="fas fa-expand text-sm"></i>
           </button>
         </div>
@@ -176,12 +178,12 @@
               }"
             ></div>
             <div class="text-center mt-2">
-              <div class="text-slate-400 text-xs font-mono">
+              <div class="text-slate-500 dark:text-slate-400 text-xs font-mono">
                 {{ bar.label }}
               </div>
               <div
                 v-if="hoveredBar === index"
-                class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-900 border border-cyan-500/50 rounded-lg px-2 py-1 text-xs text-white font-mono whitespace-nowrap"
+                class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-900 border border-cyan-500/50 rounded-lg px-2 py-1 text-xs text-white font-mono whitespace-nowrap z-10"
               >
                 {{ bar.value }}%
               </div>
@@ -191,12 +193,12 @@
       </div>
 
       <!-- Category Distribution -->
-      <div class="bg-slate-800/30 rounded-xl p-6 border border-slate-700/50">
+      <div class="bg-white dark:bg-slate-800/30 rounded-xl p-6 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none">
         <div class="flex items-center justify-between mb-6">
-          <h2 class="text-xl font-bold text-white font-montserrat">
+          <h2 class="text-xl font-bold text-slate-900 dark:text-white font-montserrat">
             Распределение по категориям
           </h2>
-          <button class="text-slate-400 hover:text-white transition-colors">
+          <button class="text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors">
             <i class="fas fa-expand text-sm"></i>
           </button>
         </div>
@@ -219,16 +221,16 @@
                 >
                   <i :class="category.icon" class="text-sm"></i>
                 </div>
-                <span class="text-white text-sm font-medium">{{
+                <span class="text-slate-700 dark:text-white text-sm font-medium">{{
                   category.name
                 }}</span>
               </div>
-              <span class="text-slate-400 text-sm font-mono"
+              <span class="text-slate-500 dark:text-slate-400 text-sm font-mono"
                 >{{ category.percentage }}%</span
               >
             </div>
             <div
-              class="w-full bg-slate-700/50 rounded-full h-2 overflow-hidden"
+              class="w-full bg-slate-100 dark:bg-slate-700/50 rounded-full h-2 overflow-hidden"
             >
               <div
                 class="h-full rounded-full transition-all duration-500"
@@ -250,13 +252,13 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
       <!-- Personality Radar -->
       <div
-        class="lg:col-span-2 bg-slate-800/30 rounded-xl p-6 border border-slate-700/50"
+        class="lg:col-span-2 bg-white dark:bg-slate-800/30 rounded-xl p-6 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none"
       >
         <div class="flex items-center justify-between mb-6">
-          <h2 class="text-xl font-bold text-white font-montserrat">
+          <h2 class="text-xl font-bold text-slate-900 dark:text-white font-montserrat">
             Профиль личности
           </h2>
-          <div class="text-xs text-slate-400 font-mono">
+          <div class="text-xs text-slate-500 dark:text-slate-400 font-mono">
             ОБНОВЛЕНО: {{ lastUpdated }}
           </div>
         </div>
@@ -267,7 +269,7 @@
             <div
               v-for="i in 5"
               :key="i"
-              class="absolute inset-0 border border-slate-700/30 rounded-full"
+              class="absolute inset-0 border border-slate-200 dark:border-slate-700/30 rounded-full"
               :style="{
                 width: `${i * 20}%`,
                 height: `${i * 20}%`,
@@ -288,7 +290,7 @@
                 width: '50%',
               }"
             >
-              <div class="w-full h-px bg-slate-700/50"></div>
+              <div class="w-full h-px bg-slate-200 dark:bg-slate-700/50"></div>
             </div>
 
             <!-- Trait labels and values -->
@@ -314,13 +316,13 @@
                   class="text-xs font-medium transition-colors duration-300"
                   :class="
                     hoveredTrait === trait.name
-                      ? 'text-white'
-                      : 'text-slate-400'
+                      ? 'text-slate-900 dark:text-white'
+                      : 'text-slate-500 dark:text-slate-400'
                   "
                 >
                   {{ trait.name }}
                 </div>
-                <div class="text-xs font-mono text-cyan-400">
+                <div class="text-xs font-mono text-cyan-600 dark:text-cyan-400">
                   {{ trait.value }}%
                 </div>
               </div>
@@ -330,8 +332,8 @@
       </div>
 
       <!-- Recent Achievements -->
-      <div class="bg-slate-800/30 rounded-xl p-6 border border-slate-700/50">
-        <h2 class="text-xl font-bold text-white mb-6 font-montserrat">
+      <div class="bg-white dark:bg-slate-800/30 rounded-xl p-6 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none">
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-6 font-montserrat">
           Достижения
         </h2>
         <div class="space-y-4">
@@ -341,15 +343,15 @@
             class="p-4 rounded-xl border transition-all duration-300 cursor-pointer group"
             :class="[
               achievement.unlocked
-                ? 'bg-slate-800/50 border-amber-500/30 hover:border-amber-500/50'
-                : 'bg-slate-800/20 border-slate-700/30 hover:border-slate-700/50',
+                ? 'bg-white dark:bg-slate-800/50 border-amber-500/30 hover:border-amber-500/50'
+                : 'bg-slate-50 dark:bg-slate-800/20 border-slate-200 dark:border-slate-700/30 hover:border-slate-300 dark:hover:border-slate-700/50',
             ]"
           >
             <div class="flex items-start space-x-3">
               <div
                 class="w-12 h-12 rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
                 :class="
-                  achievement.unlocked ? achievement.bgClass : 'bg-slate-700/50'
+                  achievement.unlocked ? achievement.bgClass : 'bg-slate-200 dark:bg-slate-700/50'
                 "
               >
                 <i
@@ -362,21 +364,21 @@
                 <h3
                   class="font-medium mb-1"
                   :class="
-                    achievement.unlocked ? 'text-white' : 'text-slate-500'
+                    achievement.unlocked ? 'text-slate-900 dark:text-white' : 'text-slate-500'
                   "
                 >
                   {{ achievement.name }}
                 </h3>
-                <p class="text-slate-400 text-xs mb-2">
+                <p class="text-slate-500 dark:text-slate-400 text-xs mb-2">
                   {{ achievement.description }}
                 </p>
                 <div
                   v-if="achievement.unlocked"
-                  class="text-xs text-amber-400 font-mono"
+                  class="text-xs text-amber-600 dark:text-amber-400 font-mono"
                 >
                   {{ achievement.date }}
                 </div>
-                <div v-else class="text-xs text-slate-500 font-mono">
+                <div v-else class="text-xs text-slate-400 dark:text-slate-500 font-mono">
                   Заблокировано
                 </div>
               </div>
@@ -387,15 +389,15 @@
     </div>
 
     <!-- Activity Heatmap -->
-    <div class="bg-slate-800/30 rounded-xl p-6 border border-slate-700/50">
+    <div class="bg-white dark:bg-slate-800/30 rounded-xl p-6 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none">
       <div class="flex items-center justify-between mb-6">
-        <h2 class="text-xl font-bold text-white font-montserrat">
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white font-montserrat">
           Тепловая карта активности
         </h2>
-        <div class="flex items-center space-x-2 text-xs text-slate-400">
+        <div class="flex items-center space-x-2 text-xs text-slate-500 dark:text-slate-400">
           <span>Меньше</span>
           <div class="flex space-x-1">
-            <div class="w-3 h-3 rounded bg-slate-700/50"></div>
+            <div class="w-3 h-3 rounded bg-slate-200 dark:bg-slate-700/50"></div>
             <div class="w-3 h-3 rounded bg-emerald-500/20"></div>
             <div class="w-3 h-3 rounded bg-emerald-500/40"></div>
             <div class="w-3 h-3 rounded bg-emerald-500/60"></div>
@@ -419,7 +421,7 @@
         </div>
       </div>
       <div
-        class="mt-4 flex items-center justify-between text-xs text-slate-400"
+        class="mt-4 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400"
       >
         <span>52 недели активности</span>
         <span>{{ metrics.totalActiveDays }} активных дней</span>
@@ -470,35 +472,35 @@ const categories = [
   {
     name: "Эмоциональный интеллект",
     percentage: 85,
-    icon: "fas fa-heart-pulse text-pink-400",
+    icon: "fas fa-heart-pulse text-pink-600 dark:text-pink-400",
     bgClass: "bg-pink-500/10",
     barClass: "bg-gradient-to-r from-pink-500 to-rose-500",
   },
   {
     name: "Личность",
     percentage: 72,
-    icon: "fas fa-brain text-purple-400",
+    icon: "fas fa-brain text-purple-600 dark:text-purple-400",
     bgClass: "bg-purple-500/10",
     barClass: "bg-gradient-to-r from-purple-500 to-indigo-500",
   },
   {
     name: "Когнитивные функции",
     percentage: 68,
-    icon: "fas fa-network-wired text-cyan-400",
+    icon: "fas fa-network-wired text-cyan-600 dark:text-cyan-400",
     bgClass: "bg-cyan-500/10",
     barClass: "bg-gradient-to-r from-cyan-500 to-blue-500",
   },
   {
     name: "Ценности",
     percentage: 91,
-    icon: "fas fa-gem text-emerald-400",
+    icon: "fas fa-gem text-emerald-600 dark:text-emerald-400",
     bgClass: "bg-emerald-500/10",
     barClass: "bg-gradient-to-r from-emerald-500 to-teal-500",
   },
   {
     name: "Креативность",
     percentage: 56,
-    icon: "fas fa-lightbulb text-amber-400",
+    icon: "fas fa-lightbulb text-amber-600 dark:text-amber-400",
     bgClass: "bg-amber-500/10",
     barClass: "bg-gradient-to-r from-amber-500 to-orange-500",
   },
@@ -517,7 +519,7 @@ const achievements = [
     id: 1,
     name: "Первооткрыватель",
     description: "Завершён первый эксперимент",
-    icon: "fas fa-rocket text-cyan-400",
+    icon: "fas fa-rocket text-cyan-600 dark:text-cyan-400",
     bgClass: "bg-cyan-500/10",
     unlocked: true,
     date: "3 дня назад",
@@ -526,7 +528,7 @@ const achievements = [
     id: 2,
     name: "Марафонец",
     description: "7 дней подряд активности",
-    icon: "fas fa-fire text-amber-400",
+    icon: "fas fa-fire text-amber-600 dark:text-amber-400",
     bgClass: "bg-amber-500/10",
     unlocked: true,
     date: "Сегодня",
@@ -535,7 +537,7 @@ const achievements = [
     id: 3,
     name: "Аналитик",
     description: "Завершено 10 экспериментов",
-    icon: "fas fa-chart-line text-emerald-400",
+    icon: "fas fa-chart-line text-emerald-600 dark:text-emerald-400",
     bgClass: "bg-emerald-500/10",
     unlocked: true,
     date: "1 неделю назад",
@@ -544,7 +546,7 @@ const achievements = [
     id: 4,
     name: "Мастер разума",
     description: "Завершено 50 экспериментов",
-    icon: "fas fa-crown text-purple-400",
+    icon: "fas fa-crown text-purple-600 dark:text-purple-400",
     bgClass: "bg-purple-500/10",
     unlocked: false,
     date: null,
@@ -567,7 +569,7 @@ const getHeatmapColor = (week, day) => {
   // Simulate activity data
   const activity = Math.floor(Math.random() * 6);
   const colors = [
-    "bg-slate-700/50",
+    "bg-slate-200 dark:bg-slate-700/50",
     "bg-emerald-500/20",
     "bg-emerald-500/40",
     "bg-emerald-500/60",

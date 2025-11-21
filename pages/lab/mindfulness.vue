@@ -1,23 +1,25 @@
 <!-- pages/lab/psychology/mindfulness.vue -->
 <template>
-  <div class="min-h-screen bg-slate-950 px-4 sm:px-6 lg:px-8 py-8">
+  <div
+    class="min-h-screen bg-slate-50 dark:bg-slate-950 px-4 sm:px-6 lg:px-8 py-8 transition-colors duration-500"
+  >
     <div class="max-w-7xl mx-auto">
       <!-- Header -->
       <div class="mb-8">
         <div class="flex items-center gap-4 mb-6">
           <NuxtLink
             to="/lab/psychology"
-            class="w-10 h-10 rounded-lg bg-slate-800/50 border border-slate-700/50 flex items-center justify-center text-slate-400 hover:text-cyan-400 hover:border-cyan-500/50 transition-all duration-300"
+            class="w-10 h-10 rounded-lg bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 flex items-center justify-center text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 hover:border-cyan-500/50 transition-all duration-300 shadow-sm dark:shadow-none"
           >
             <i class="fas fa-arrow-left"></i>
           </NuxtLink>
           <div class="flex-1">
             <h1
-              class="text-3xl md:text-4xl lg:text-5xl font-bold text-white font-montserrat gradient-text"
+              class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white font-montserrat gradient-text"
             >
               ОСОЗНАННОСТЬ И МЕДИТАЦИЯ
             </h1>
-            <p class="text-slate-400 mt-2 text-sm md:text-base">
+            <p class="text-slate-600 dark:text-slate-400 mt-2 text-sm md:text-base">
               Практики присутствия, медитативные техники и путь к внутреннему
               спокойствию
             </p>
@@ -30,14 +32,14 @@
             class="stat-card group hover:scale-105 transition-transform duration-300"
           >
             <div class="flex items-center justify-between mb-2">
-              <div class="text-2xl font-bold text-teal-400 font-mono">
+              <div class="text-2xl font-bold text-teal-600 dark:text-teal-400 font-mono">
                 {{ totalSessions }}
               </div>
               <i
                 class="fas fa-spa text-teal-400/30 group-hover:text-teal-400/60 transition-colors"
               ></i>
             </div>
-            <div class="text-slate-400 text-xs uppercase tracking-wide">
+            <div class="text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wide">
               Всего сессий
             </div>
           </div>
@@ -46,14 +48,14 @@
             class="stat-card group hover:scale-105 transition-transform duration-300"
           >
             <div class="flex items-center justify-between mb-2">
-              <div class="text-2xl font-bold text-purple-400 font-mono">
+              <div class="text-2xl font-bold text-purple-600 dark:text-purple-400 font-mono">
                 {{ totalMinutes }}
               </div>
               <i
                 class="fas fa-clock text-purple-400/30 group-hover:text-purple-400/60 transition-colors"
               ></i>
             </div>
-            <div class="text-slate-400 text-xs uppercase tracking-wide">
+            <div class="text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wide">
               Минут практики
             </div>
           </div>
@@ -62,14 +64,14 @@
             class="stat-card group hover:scale-105 transition-transform duration-300"
           >
             <div class="flex items-center justify-between mb-2">
-              <div class="text-2xl font-bold text-cyan-400 font-mono">
+              <div class="text-2xl font-bold text-cyan-600 dark:text-cyan-400 font-mono">
                 {{ currentStreak }}
               </div>
               <i
                 class="fas fa-fire text-cyan-400/30 group-hover:text-cyan-400/60 transition-colors"
               ></i>
             </div>
-            <div class="text-slate-400 text-xs uppercase tracking-wide">
+            <div class="text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wide">
               Дней подряд
             </div>
           </div>
@@ -78,14 +80,14 @@
             class="stat-card group hover:scale-105 transition-transform duration-300"
           >
             <div class="flex items-center justify-between mb-2">
-              <div class="text-2xl font-bold text-emerald-400 font-mono">
+              <div class="text-2xl font-bold text-emerald-600 dark:text-emerald-400 font-mono">
                 {{ mindfulnessScore }}%
               </div>
               <i
                 class="fas fa-heart text-emerald-400/30 group-hover:text-emerald-400/60 transition-colors"
               ></i>
             </div>
-            <div class="text-slate-400 text-xs uppercase tracking-wide">
+            <div class="text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wide">
               Осознанность
             </div>
           </div>
@@ -109,8 +111,8 @@
               <div
                 class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-500/20 border border-teal-500/30"
               >
-                <i :class="activeSession.icon" class="text-teal-400"></i>
-                <span class="text-teal-300 font-medium text-sm">{{
+                <i :class="activeSession.icon" class="text-teal-600 dark:text-teal-400"></i>
+                <span class="text-teal-700 dark:text-teal-300 font-medium text-sm">{{
                   activeSession.title
                 }}</span>
               </div>
@@ -119,11 +121,11 @@
             <!-- Timer Display -->
             <div class="mb-8">
               <div
-                class="text-7xl md:text-8xl font-bold text-white font-mono mb-4 tracking-wider"
+                class="text-7xl md:text-8xl font-bold text-slate-900 dark:text-white font-mono mb-4 tracking-wider"
               >
                 {{ formatTime(sessionTimeRemaining) }}
               </div>
-              <div class="text-slate-400 text-sm">{{ sessionMessage }}</div>
+              <div class="text-slate-600 dark:text-slate-400 text-sm">{{ sessionMessage }}</div>
             </div>
 
             <!-- Progress Circle -->
@@ -137,7 +139,7 @@
                     stroke="currentColor"
                     stroke-width="8"
                     fill="none"
-                    class="text-slate-800"
+                    class="text-slate-200 dark:text-slate-800"
                   />
                   <circle
                     cx="96"
@@ -146,7 +148,7 @@
                     stroke="currentColor"
                     stroke-width="8"
                     fill="none"
-                    class="text-teal-400 transition-all duration-1000"
+                    class="text-teal-500 dark:text-teal-400 transition-all duration-1000"
                     :style="{
                       strokeDasharray: `${2 * Math.PI * 88}`,
                       strokeDashoffset: `${
@@ -158,10 +160,10 @@
                 </svg>
                 <div class="absolute inset-0 flex items-center justify-center">
                   <div class="text-center">
-                    <div class="text-3xl font-bold text-white">
+                    <div class="text-3xl font-bold text-slate-900 dark:text-white">
                       {{ Math.round(sessionProgress * 100) }}%
                     </div>
-                    <div class="text-xs text-slate-400">завершено</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400">завершено</div>
                   </div>
                 </div>
               </div>
@@ -172,7 +174,7 @@
               <button
                 v-if="!isSessionPaused"
                 @click="pauseSession"
-                class="px-6 py-3 rounded-xl bg-slate-800 border border-slate-600 text-white hover:bg-slate-700 transition-all duration-300 flex items-center gap-2"
+                class="px-6 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-700 transition-all duration-300 flex items-center gap-2 shadow-sm dark:shadow-none"
               >
                 <i class="fas fa-pause"></i>
                 <span>Пауза</span>
@@ -180,14 +182,14 @@
               <button
                 v-else
                 @click="resumeSession"
-                class="px-6 py-3 rounded-xl bg-teal-500 border border-teal-400 text-white hover:bg-teal-600 transition-all duration-300 flex items-center gap-2"
+                class="px-6 py-3 rounded-xl bg-teal-500 border border-teal-400 text-white hover:bg-teal-600 transition-all duration-300 flex items-center gap-2 shadow-sm dark:shadow-none"
               >
                 <i class="fas fa-play"></i>
                 <span>Продолжить</span>
               </button>
               <button
                 @click="endSession"
-                class="px-6 py-3 rounded-xl bg-red-500/20 border border-red-500/30 text-red-400 hover:bg-red-500/30 transition-all duration-300 flex items-center gap-2"
+                class="px-6 py-3 rounded-xl bg-red-500/10 dark:bg-red-500/20 border border-red-500/20 dark:border-red-500/30 text-red-600 dark:text-red-400 hover:bg-red-500/20 dark:hover:bg-red-500/30 transition-all duration-300 flex items-center gap-2"
               >
                 <i class="fas fa-stop"></i>
                 <span>Завершить</span>
@@ -199,7 +201,7 @@
               <div class="flex items-center justify-center gap-4">
                 <button
                   @click="toggleMusic"
-                  class="px-4 py-2 rounded-lg bg-slate-800/50 border border-slate-600/50 text-slate-300 hover:text-teal-400 hover:border-teal-500/50 transition-all duration-300 flex items-center gap-2"
+                  class="px-4 py-2 rounded-lg bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-600/50 text-slate-600 dark:text-slate-300 hover:text-teal-600 dark:hover:text-teal-400 hover:border-teal-500/50 transition-all duration-300 flex items-center gap-2 shadow-sm dark:shadow-none"
                 >
                   <i
                     :class="isMusicPlaying ? 'fas fa-volume-up' : 'fas fa-volume-mute'"
@@ -217,7 +219,7 @@
                     max="100"
                     v-model="musicVolume"
                     @input="updateVolume"
-                    class="w-24 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-teal-500"
+                    class="w-24 h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-teal-500"
                   />
                   <i class="fas fa-volume-up text-slate-500 text-sm"></i>
                 </div>
@@ -232,7 +234,7 @@
       <div v-if="!activeSession" class="mb-12">
         <div class="flex items-center justify-between mb-6">
           <h2
-            class="text-xl md:text-2xl font-bold text-white flex items-center gap-3"
+            class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-3"
           >
             <span
               class="w-1 h-8 bg-gradient-to-b from-teal-500 to-cyan-500 rounded-full"
@@ -257,7 +259,7 @@
       <div v-if="!activeSession" class="mb-12">
         <div class="flex items-center justify-between mb-6">
           <h2
-            class="text-xl md:text-2xl font-bold text-white flex items-center gap-3"
+            class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-3"
           >
             <span
               class="w-1 h-8 bg-gradient-to-b from-cyan-500 to-blue-500 rounded-full"
@@ -280,7 +282,7 @@
       <div v-if="!activeSession" class="mb-12">
         <div class="flex items-center justify-between mb-6">
           <h2
-            class="text-xl md:text-2xl font-bold text-white flex items-center gap-3"
+            class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-3"
           >
             <span
               class="w-1 h-8 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full"
@@ -305,9 +307,9 @@
         class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12"
       >
         <!-- Weekly Progress -->
-        <div class="bg-slate-800/30 rounded-2xl p-6 border border-slate-700/50">
-          <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
-            <i class="fas fa-chart-line text-teal-400"></i>
+        <div class="bg-white dark:bg-slate-800/30 rounded-2xl p-6 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none">
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
+            <i class="fas fa-chart-line text-teal-600 dark:text-teal-400"></i>
             Прогресс за неделю
           </h3>
 
@@ -317,9 +319,9 @@
               :key="day.day"
               class="flex items-center gap-4"
             >
-              <div class="w-16 text-slate-400 text-sm">{{ day.day }}</div>
+              <div class="w-16 text-slate-500 dark:text-slate-400 text-sm">{{ day.day }}</div>
               <div
-                class="flex-1 h-8 bg-slate-900/50 rounded-lg overflow-hidden relative"
+                class="flex-1 h-8 bg-slate-100 dark:bg-slate-900/50 rounded-lg overflow-hidden relative"
               >
                 <div
                   class="h-full bg-gradient-to-r from-teal-500 to-cyan-500 transition-all duration-500"
@@ -328,7 +330,7 @@
                 <div
                   class="absolute inset-0 flex items-center justify-end px-3"
                 >
-                  <span class="text-xs font-mono text-white"
+                  <span class="text-xs font-mono text-slate-700 dark:text-white"
                     >{{ day.minutes }} мин</span
                   >
                 </div>
@@ -338,8 +340,8 @@
 
           <div class="bg-teal-500/10 rounded-xl p-4 border border-teal-500/20">
             <div class="flex items-center justify-between">
-              <span class="text-slate-300 text-sm">Среднее время в день</span>
-              <span class="text-teal-400 font-bold"
+              <span class="text-slate-600 dark:text-slate-300 text-sm">Среднее время в день</span>
+              <span class="text-teal-600 dark:text-teal-400 font-bold"
                 >{{ averageDaily }} мин</span
               >
             </div>
@@ -347,9 +349,9 @@
         </div>
 
         <!-- Achievements -->
-        <div class="bg-slate-800/30 rounded-2xl p-6 border border-slate-700/50">
-          <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
-            <i class="fas fa-trophy text-yellow-400"></i>
+        <div class="bg-white dark:bg-slate-800/30 rounded-2xl p-6 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none">
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
+            <i class="fas fa-trophy text-yellow-500 dark:text-yellow-400"></i>
             Достижения
           </h3>
 
@@ -367,14 +369,14 @@
               <div class="text-3xl mb-2">{{ achievement.icon }}</div>
               <div
                 class="text-sm font-semibold mb-1"
-                :class="achievement.unlocked ? 'text-white' : 'text-slate-600'"
+                :class="achievement.unlocked ? 'text-slate-900 dark:text-white' : 'text-slate-500 dark:text-slate-600'"
               >
                 {{ achievement.title }}
               </div>
               <div
                 class="text-xs"
                 :class="
-                  achievement.unlocked ? 'text-slate-400' : 'text-slate-700'
+                  achievement.unlocked ? 'text-slate-500 dark:text-slate-400' : 'text-slate-400 dark:text-slate-700'
                 "
               >
                 {{ achievement.description }}
@@ -387,7 +389,7 @@
       <!-- Resources & Tips -->
       <div
         v-if="!activeSession"
-        class="bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl p-6 md:p-8 border border-purple-500/20"
+        class="bg-gradient-to-br from-purple-500/5 to-pink-500/5 rounded-2xl p-6 md:p-8 border border-purple-500/20"
       >
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div>
@@ -395,49 +397,49 @@
               <div
                 class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center"
               >
-                <i class="fas fa-book-open text-purple-400 text-xl"></i>
+                <i class="fas fa-book-open text-purple-600 dark:text-purple-400 text-xl"></i>
               </div>
               <div>
-                <h3 class="text-xl font-bold text-white">Гид по медитации</h3>
-                <p class="text-slate-400 text-sm">Советы для начинающих</p>
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white">Гид по медитации</h3>
+                <p class="text-slate-600 dark:text-slate-400 text-sm">Советы для начинающих</p>
               </div>
             </div>
 
             <div class="space-y-4">
               <div
-                class="bg-slate-900/30 rounded-lg p-4 border border-purple-500/10"
+                class="bg-white dark:bg-slate-900/30 rounded-lg p-4 border border-purple-500/10 shadow-sm dark:shadow-none"
               >
-                <h4 class="text-white font-medium mb-2 flex items-center gap-2">
-                  <i class="fas fa-lightbulb text-yellow-400 text-sm"></i>
+                <h4 class="text-slate-900 dark:text-white font-medium mb-2 flex items-center gap-2">
+                  <i class="fas fa-lightbulb text-yellow-500 dark:text-yellow-400 text-sm"></i>
                   Создайте пространство
                 </h4>
-                <p class="text-slate-400 text-sm">
+                <p class="text-slate-600 dark:text-slate-400 text-sm">
                   Найдите тихое место, где вас никто не потревожит. Убедитесь,
                   что вам комфортно.
                 </p>
               </div>
 
               <div
-                class="bg-slate-900/30 rounded-lg p-4 border border-purple-500/10"
+                class="bg-white dark:bg-slate-900/30 rounded-lg p-4 border border-purple-500/10 shadow-sm dark:shadow-none"
               >
-                <h4 class="text-white font-medium mb-2 flex items-center gap-2">
-                  <i class="fas fa-clock text-cyan-400 text-sm"></i>
+                <h4 class="text-slate-900 dark:text-white font-medium mb-2 flex items-center gap-2">
+                  <i class="fas fa-clock text-cyan-600 dark:text-cyan-400 text-sm"></i>
                   Начните с малого
                 </h4>
-                <p class="text-slate-400 text-sm">
+                <p class="text-slate-600 dark:text-slate-400 text-sm">
                   5-10 минут в день достаточно для начала. Регулярность важнее
                   длительности.
                 </p>
               </div>
 
               <div
-                class="bg-slate-900/30 rounded-lg p-4 border border-purple-500/10"
+                class="bg-white dark:bg-slate-900/30 rounded-lg p-4 border border-purple-500/10 shadow-sm dark:shadow-none"
               >
-                <h4 class="text-white font-medium mb-2 flex items-center gap-2">
-                  <i class="fas fa-smile text-emerald-400 text-sm"></i>
+                <h4 class="text-slate-900 dark:text-white font-medium mb-2 flex items-center gap-2">
+                  <i class="fas fa-smile text-emerald-600 dark:text-emerald-400 text-sm"></i>
                   Будьте терпеливы
                 </h4>
-                <p class="text-slate-400 text-sm">
+                <p class="text-slate-600 dark:text-slate-400 text-sm">
                   Отвлечение мыслей — это нормально. Просто мягко возвращайте
                   внимание к практике.
                 </p>
@@ -450,66 +452,66 @@
               <div
                 class="w-12 h-12 rounded-xl bg-teal-500/20 flex items-center justify-center"
               >
-                <i class="fas fa-heart text-teal-400 text-xl"></i>
+                <i class="fas fa-heart text-teal-600 dark:text-teal-400 text-xl"></i>
               </div>
               <div>
-                <h3 class="text-xl font-bold text-white">Польза медитации</h3>
-                <p class="text-slate-400 text-sm">Научно доказанные эффекты</p>
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white">Польза медитации</h3>
+                <p class="text-slate-600 dark:text-slate-400 text-sm">Научно доказанные эффекты</p>
               </div>
             </div>
 
             <div class="grid grid-cols-1 gap-3">
               <div
-                class="flex items-start gap-3 bg-slate-900/30 rounded-lg p-4 border border-teal-500/10"
+                class="flex items-start gap-3 bg-white dark:bg-slate-900/30 rounded-lg p-4 border border-teal-500/10 shadow-sm dark:shadow-none"
               >
-                <i class="fas fa-brain text-teal-400 mt-1"></i>
+                <i class="fas fa-brain text-teal-600 dark:text-teal-400 mt-1"></i>
                 <div>
-                  <h4 class="text-white font-medium text-sm mb-1">
+                  <h4 class="text-slate-900 dark:text-white font-medium text-sm mb-1">
                     Улучшение концентрации
                   </h4>
-                  <p class="text-slate-400 text-xs">
+                  <p class="text-slate-600 dark:text-slate-400 text-xs">
                     Усиление способности фокусироваться на задачах
                   </p>
                 </div>
               </div>
 
               <div
-                class="flex items-start gap-3 bg-slate-900/30 rounded-lg p-4 border border-teal-500/10"
+                class="flex items-start gap-3 bg-white dark:bg-slate-900/30 rounded-lg p-4 border border-teal-500/10 shadow-sm dark:shadow-none"
               >
-                <i class="fas fa-shield-alt text-cyan-400 mt-1"></i>
+                <i class="fas fa-shield-alt text-cyan-600 dark:text-cyan-400 mt-1"></i>
                 <div>
-                  <h4 class="text-white font-medium text-sm mb-1">
+                  <h4 class="text-slate-900 dark:text-white font-medium text-sm mb-1">
                     Снижение стресса
                   </h4>
-                  <p class="text-slate-400 text-xs">
+                  <p class="text-slate-600 dark:text-slate-400 text-xs">
                     Уменьшение уровня кортизола и тревожности
                   </p>
                 </div>
               </div>
 
               <div
-                class="flex items-start gap-3 bg-slate-900/30 rounded-lg p-4 border border-teal-500/10"
+                class="flex items-start gap-3 bg-white dark:bg-slate-900/30 rounded-lg p-4 border border-teal-500/10 shadow-sm dark:shadow-none"
               >
-                <i class="fas fa-bed text-purple-400 mt-1"></i>
+                <i class="fas fa-bed text-purple-600 dark:text-purple-400 mt-1"></i>
                 <div>
-                  <h4 class="text-white font-medium text-sm mb-1">
+                  <h4 class="text-slate-900 dark:text-white font-medium text-sm mb-1">
                     Лучший сон
                   </h4>
-                  <p class="text-slate-400 text-xs">
+                  <p class="text-slate-600 dark:text-slate-400 text-xs">
                     Улучшение качества и глубины сна
                   </p>
                 </div>
               </div>
 
               <div
-                class="flex items-start gap-3 bg-slate-900/30 rounded-lg p-4 border border-teal-500/10"
+                class="flex items-start gap-3 bg-white dark:bg-slate-900/30 rounded-lg p-4 border border-teal-500/10 shadow-sm dark:shadow-none"
               >
-                <i class="fas fa-smile-beam text-yellow-400 mt-1"></i>
+                <i class="fas fa-smile-beam text-yellow-500 dark:text-yellow-400 mt-1"></i>
                 <div>
-                  <h4 class="text-white font-medium text-sm mb-1">
+                  <h4 class="text-slate-900 dark:text-white font-medium text-sm mb-1">
                     Эмоциональное здоровье
                   </h4>
-                  <p class="text-slate-400 text-xs">
+                  <p class="text-slate-600 dark:text-slate-400 text-xs">
                     Повышение позитивных эмоций и самооценки
                   </p>
                 </div>
@@ -1040,15 +1042,15 @@ onUnmounted(() => {
 }
 
 .stat-card {
-  @apply bg-slate-800/30 rounded-xl p-4 border border-slate-700/50;
+  @apply bg-white dark:bg-slate-800/30 rounded-xl p-4 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none;
 }
 
 .achievement-card {
-  @apply bg-slate-800/30 rounded-xl p-4 border border-slate-700/50 text-center transition-all duration-300;
+  @apply bg-white dark:bg-slate-800/30 rounded-xl p-4 border border-slate-200 dark:border-slate-700/50 text-center transition-all duration-300 shadow-sm dark:shadow-none;
 }
 
 .achievement-unlocked {
-  @apply border-yellow-500/30 bg-yellow-500/5 hover:scale-105;
+  @apply border-yellow-500/30 bg-yellow-50 dark:bg-yellow-500/5 hover:scale-105;
 }
 
 .achievement-locked {

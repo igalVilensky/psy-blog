@@ -1,7 +1,7 @@
 <!-- pages/lab/tests/index.vue -->
 <template>
   <div
-    class="cognitive-tests-station min-h-screen bg-slate-950 px-4 sm:px-6 lg:px-8 py-8"
+    class="cognitive-tests-station min-h-screen bg-slate-50 dark:bg-slate-950 px-4 sm:px-6 lg:px-8 py-8 transition-colors duration-500"
   >
     <div class="max-w-7xl mx-auto">
       <!-- Header Section -->
@@ -11,12 +11,12 @@
         >
           <div>
             <h1
-              class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-3 tracking-tight gradient-text"
+              class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight gradient-text"
             >
               КОГНИТИВНЫЕ ТЕСТЫ
             </h1>
             <p
-              class="text-cyan-300/70 text-sm sm:text-base leading-relaxed max-w-2xl"
+              class="text-slate-600 dark:text-cyan-300/70 text-sm sm:text-base leading-relaxed max-w-2xl"
             >
               Комплексная оценка когнитивных функций: память, внимание, логика и
               скорость реакции
@@ -26,14 +26,14 @@
           <!-- Stats Overview -->
           <div class="flex items-center gap-4">
             <div class="stat-card">
-              <div class="text-2xl font-bold text-cyan-400">12</div>
-              <div class="text-xs text-slate-400 uppercase tracking-wide">
+              <div class="text-2xl font-bold text-cyan-600 dark:text-cyan-400">12</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                 Тестов
               </div>
             </div>
             <div class="stat-card">
-              <div class="text-2xl font-bold text-purple-400">8</div>
-              <div class="text-xs text-slate-400 uppercase tracking-wide">
+              <div class="text-2xl font-bold text-purple-600 dark:text-purple-400">8</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                 Категорий
               </div>
             </div>
@@ -44,9 +44,9 @@
       <!-- Main Test Categories -->
       <div class="mb-12">
         <div class="flex items-center justify-between mb-6">
-          <h2 class="text-xl font-semibold text-white">ОСНОВНЫЕ ТЕСТЫ</h2>
+          <h2 class="text-xl font-semibold text-slate-900 dark:text-white">ОСНОВНЫЕ ТЕСТЫ</h2>
           <button
-            class="text-sm text-cyan-400 hover:text-cyan-300 transition-colors"
+            class="text-sm text-cyan-600 dark:text-cyan-400 hover:text-cyan-500 dark:hover:text-cyan-300 transition-colors"
           >
             Посмотреть все →
           </button>
@@ -67,25 +67,25 @@
 
             <!-- Content -->
             <h3
-              class="text-lg font-semibold text-white mb-2 group-hover:text-cyan-400 transition-colors"
+              class="text-lg font-semibold text-slate-900 dark:text-white mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors"
             >
               Digit Span Test
             </h3>
-            <p class="text-sm text-slate-400 mb-1">Объем рабочей памяти</p>
-            <p class="text-sm text-slate-300 leading-relaxed mb-4">
+            <p class="text-sm text-slate-500 dark:text-slate-400 mb-1">Объем рабочей памяти</p>
+            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
               Классический тест на оценку рабочей памяти. Используется в
               нейропсихологии и тестах IQ (WAIS)
             </p>
 
             <!-- Footer -->
             <div
-              class="flex items-center justify-between pt-4 border-t border-slate-700/50"
+              class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-700/50"
             >
-              <div class="flex items-center gap-2 text-cyan-400">
+              <div class="flex items-center gap-2 text-cyan-600 dark:text-cyan-400">
                 <i class="fas fa-clock text-xs"></i>
                 <span class="text-xs font-medium">5-8 мин</span>
               </div>
-              <div class="flex items-center gap-2 text-purple-400">
+              <div class="flex items-center gap-2 text-purple-600 dark:text-purple-400">
                 <i class="fas fa-check-circle text-xs"></i>
                 <span class="text-xs font-medium">Доступен</span>
               </div>
@@ -109,25 +109,25 @@
 
             <!-- Content -->
             <h3
-              class="text-lg font-semibold text-white mb-2 group-hover:text-cyan-400 transition-colors"
+              class="text-lg font-semibold text-slate-900 dark:text-white mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors"
             >
               N-Back Test
             </h3>
-            <p class="text-sm text-slate-400 mb-1">Рабочая память и внимание</p>
-            <p class="text-sm text-slate-300 leading-relaxed mb-4">
+            <p class="text-sm text-slate-500 dark:text-slate-400 mb-1">Рабочая память и внимание</p>
+            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
               Определяйте совпадения с N шагов назад. Золотой стандарт
               тренировки рабочей памяти и флюидного интеллекта.
             </p>
 
             <!-- Footer -->
             <div
-              class="flex items-center justify-between pt-4 border-t border-slate-700/50"
+              class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-700/50"
             >
-              <div class="flex items-center gap-2 text-purple-400">
+              <div class="flex items-center gap-2 text-purple-600 dark:text-purple-400">
                 <i class="fas fa-clock text-xs"></i>
                 <span class="text-xs font-medium">5-8 мин</span>
               </div>
-              <div class="flex items-center gap-2 text-pink-400">
+              <div class="flex items-center gap-2 text-pink-600 dark:text-pink-400">
                 <i class="fas fa-check-circle text-xs"></i>
                 <span class="text-xs font-medium">Доступен</span>
               </div>
@@ -154,25 +154,25 @@
 
             <!-- Content -->
             <h3
-              class="text-lg font-semibold text-white mb-2 group-hover:text-cyan-400 transition-colors"
+              class="text-lg font-semibold text-slate-900 dark:text-white mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors"
             >
               Trail Making Test
             </h3>
-            <p class="text-sm text-slate-400 mb-1">Скорость обработки</p>
-            <p class="text-sm text-slate-300 leading-relaxed mb-4">
+            <p class="text-sm text-slate-500 dark:text-slate-400 mb-1">Скорость обработки</p>
+            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
               Соединяйте точки в правильном порядке. Оценка исполнительных
               функций и когнитивной гибкости.
             </p>
 
             <!-- Footer -->
             <div
-              class="flex items-center justify-between pt-4 border-t border-slate-700/50"
+              class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-700/50"
             >
-              <div class="flex items-center gap-2 text-emerald-400">
+              <div class="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
                 <i class="fas fa-clock text-xs"></i>
                 <span class="text-xs font-medium">3-5 мин</span>
               </div>
-              <div class="flex items-center gap-2 text-cyan-400">
+              <div class="flex items-center gap-2 text-cyan-600 dark:text-cyan-400">
                 <i class="fas fa-check-circle text-xs"></i>
                 <span class="text-xs font-medium">Доступен</span>
               </div>
@@ -204,24 +204,24 @@
 
             <!-- Content -->
             <h3
-              class="text-lg font-semibold text-white mb-2 group-hover:text-cyan-400 transition-colors"
+              class="text-lg font-semibold text-slate-900 dark:text-white mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors"
             >
               {{ test.title }}
             </h3>
-            <p class="text-sm text-slate-400 mb-1">{{ test.subtitle }}</p>
-            <p class="text-sm text-slate-300 leading-relaxed mb-4">
+            <p class="text-sm text-slate-500 dark:text-slate-400 mb-1">{{ test.subtitle }}</p>
+            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
               {{ test.description }}
             </p>
 
             <!-- Footer -->
             <div
-              class="flex items-center justify-between pt-4 border-t border-slate-700/50"
+              class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-700/50"
             >
-              <div class="flex items-center gap-2 text-cyan-400">
+              <div class="flex items-center gap-2 text-cyan-600 dark:text-cyan-400">
                 <i class="fas fa-clock text-xs"></i>
                 <span class="text-xs font-medium">{{ test.duration }}</span>
               </div>
-              <div class="flex items-center gap-2 text-purple-400">
+              <div class="flex items-center gap-2 text-purple-600 dark:text-purple-400">
                 <i class="fas fa-tasks text-xs"></i>
                 <span class="text-xs font-medium"
                   >{{ test.tasksCount }} заданий</span
@@ -238,8 +238,8 @@
       <!-- Quick Tests Section -->
       <div class="mb-12">
         <div class="flex items-center justify-between mb-6">
-          <h2 class="text-xl font-semibold text-white">БЫСТРЫЕ ТЕСТЫ</h2>
-          <span class="text-sm text-slate-400">Менее 5 минут</span>
+          <h2 class="text-xl font-semibold text-slate-900 dark:text-white">БЫСТРЫЕ ТЕСТЫ</h2>
+          <span class="text-sm text-slate-500 dark:text-slate-400">Менее 5 минут</span>
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -253,8 +253,8 @@
             >
               <i class="fas fa-brain text-white text-lg"></i>
             </div>
-            <h4 class="text-white text-sm font-medium mt-3 mb-1">Digit Span</h4>
-            <p class="text-slate-400 text-xs">5 мин</p>
+            <h4 class="text-slate-800 dark:text-white text-sm font-medium mt-3 mb-1">Digit Span</h4>
+            <p class="text-slate-500 dark:text-slate-400 text-xs">5 мин</p>
           </NuxtLink>
 
           <!-- Existing Quick Tests -->
@@ -270,10 +270,10 @@
             >
               <i :class="quickTest.icon" class="text-white text-lg"></i>
             </div>
-            <h4 class="text-white text-sm font-medium mt-3 mb-1">
+            <h4 class="text-slate-800 dark:text-white text-sm font-medium mt-3 mb-1">
               {{ quickTest.title }}
             </h4>
-            <p class="text-slate-400 text-xs">{{ quickTest.time }}</p>
+            <p class="text-slate-500 dark:text-slate-400 text-xs">{{ quickTest.time }}</p>
           </div>
         </div>
       </div>
@@ -283,11 +283,11 @@
         <!-- Recent Tests -->
         <div class="info-card">
           <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold text-white">
+            <h3 class="text-lg font-semibold text-slate-900 dark:text-white">
               Последние результаты
             </h3>
             <button
-              class="text-xs text-cyan-400 hover:text-cyan-300 transition-colors"
+              class="text-xs text-cyan-600 dark:text-cyan-400 hover:text-cyan-500 dark:hover:text-cyan-300 transition-colors"
             >
               История
             </button>
@@ -307,10 +307,10 @@
                     <i :class="result.icon" class="text-white text-sm"></i>
                   </div>
                   <div>
-                    <div class="text-sm font-medium text-white">
+                    <div class="text-sm font-medium text-slate-800 dark:text-white">
                       {{ result.test }}
                     </div>
-                    <div class="text-xs text-slate-400">{{ result.date }}</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400">{{ result.date }}</div>
                   </div>
                 </div>
                 <div class="text-right">
@@ -320,7 +320,7 @@
                   >
                     {{ result.score }}%
                   </div>
-                  <div class="text-xs text-slate-400">
+                  <div class="text-xs text-slate-500 dark:text-slate-400">
                     {{ result.percentile }}
                   </div>
                 </div>
@@ -335,9 +335,9 @@
             <div
               class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center"
             >
-              <i class="fas fa-lightbulb text-purple-400"></i>
+              <i class="fas fa-lightbulb text-purple-600 dark:text-purple-400"></i>
             </div>
-            <h3 class="text-lg font-semibold text-white">Рекомендации</h3>
+            <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Рекомендации</h3>
           </div>
           <div class="space-y-3">
             <div
@@ -349,13 +349,13 @@
                 <div
                   class="w-6 h-6 rounded-full bg-cyan-500/20 flex items-center justify-center flex-shrink-0 mt-0.5"
                 >
-                  <i class="fas fa-check text-cyan-400 text-xs"></i>
+                  <i class="fas fa-check text-cyan-600 dark:text-cyan-400 text-xs"></i>
                 </div>
                 <div>
-                  <div class="text-sm font-medium text-white mb-1">
+                  <div class="text-sm font-medium text-slate-800 dark:text-white mb-1">
                     {{ recommendation.title }}
                   </div>
-                  <div class="text-xs text-slate-400 leading-relaxed">
+                  <div class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
                     {{ recommendation.description }}
                   </div>
                 </div>
@@ -375,11 +375,11 @@
           <div
             class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center flex-shrink-0"
           >
-            <i class="fas fa-info-circle text-cyan-400 text-xl"></i>
+            <i class="fas fa-info-circle text-cyan-600 dark:text-cyan-400 text-xl"></i>
           </div>
           <div class="flex-1">
-            <h4 class="text-white font-semibold mb-1">О когнитивных тестах</h4>
-            <p class="text-sm text-slate-300 leading-relaxed">
+            <h4 class="text-slate-900 dark:text-white font-semibold mb-1">О когнитивных тестах</h4>
+            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
               Регулярное прохождение когнитивных тестов помогает отслеживать
               динамику развития умственных способностей и выявлять области для
               улучшения. Рекомендуется проходить тесты в спокойной обстановке и
@@ -578,10 +578,10 @@ const getDifficultyClass = (difficulty) => {
 };
 
 const getScoreClass = (score) => {
-  if (score >= 90) return "text-emerald-400";
-  if (score >= 75) return "text-cyan-400";
-  if (score >= 60) return "text-yellow-400";
-  return "text-orange-400";
+  if (score >= 90) return "text-emerald-600 dark:text-emerald-400";
+  if (score >= 75) return "text-cyan-600 dark:text-cyan-400";
+  if (score >= 60) return "text-yellow-600 dark:text-yellow-400";
+  return "text-orange-600 dark:text-orange-400";
 };
 
 const navigateToTest = (test) => {
@@ -602,16 +602,16 @@ const startQuickTest = (test) => {
 }
 
 .stat-card {
-  @apply text-center px-4 py-3 rounded-xl bg-slate-900/50 border border-cyan-500/10;
+  @apply text-center px-4 py-3 rounded-xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/10 shadow-sm dark:shadow-none;
 }
 
 .test-category-card {
-  @apply relative p-6 rounded-2xl bg-slate-900/50 border border-cyan-500/10 
-         hover:border-cyan-500/30 transition-all duration-300 cursor-pointer overflow-hidden;
+  @apply relative p-6 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/10 
+         hover:border-cyan-500/30 transition-all duration-300 cursor-pointer overflow-hidden shadow-sm dark:shadow-none;
 }
 
 .test-category-card:hover {
-  @apply bg-slate-900/70 transform -translate-y-1 shadow-lg shadow-cyan-500/10;
+  @apply bg-slate-50 dark:bg-slate-900/70 transform -translate-y-1 shadow-lg shadow-cyan-500/10;
 }
 
 .card-shine {
@@ -632,21 +632,21 @@ const startQuickTest = (test) => {
 }
 
 .difficulty-easy {
-  @apply bg-emerald-500/10 text-emerald-400 border border-emerald-500/20;
+  @apply bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20;
 }
 
 .difficulty-medium {
-  @apply bg-cyan-500/10 text-cyan-400 border border-cyan-500/20;
+  @apply bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20;
 }
 
 .difficulty-hard {
-  @apply bg-orange-500/10 text-orange-400 border border-orange-500/20;
+  @apply bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20;
 }
 
 .quick-test-card {
-  @apply p-4 rounded-xl bg-slate-900/30 border border-purple-500/10 
-         hover:border-purple-500/30 hover:bg-slate-900/50 transition-all 
-         duration-300 cursor-pointer text-center;
+  @apply p-4 rounded-xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-purple-500/10 
+         hover:border-purple-500/30 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-all 
+         duration-300 cursor-pointer text-center shadow-sm dark:shadow-none;
 }
 
 .quick-test-card:hover {
@@ -658,16 +658,16 @@ const startQuickTest = (test) => {
 }
 
 .info-card {
-  @apply p-6 rounded-2xl bg-slate-900/50 border border-cyan-500/10 backdrop-blur-sm;
+  @apply p-6 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/10 backdrop-blur-sm shadow-sm dark:shadow-none;
 }
 
 .result-item {
-  @apply p-4 rounded-lg bg-slate-800/30 border border-slate-700/50 
+  @apply p-4 rounded-lg bg-slate-50 dark:bg-slate-800/30 border border-slate-200 dark:border-slate-700/50 
          hover:border-cyan-500/30 transition-all duration-300;
 }
 
 .recommendation-item {
-  @apply p-3 rounded-lg bg-slate-800/20 border border-slate-700/30;
+  @apply p-3 rounded-lg bg-slate-50 dark:bg-slate-800/20 border border-slate-200 dark:border-slate-700/30;
 }
 
 @media (max-width: 640px) {

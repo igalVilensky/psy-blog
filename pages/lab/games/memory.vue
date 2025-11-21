@@ -39,6 +39,16 @@ const icons = [
   "fas fa-bell",
   "fas fa-key",
   "fas fa-flag",
+  "fas fa-cat",
+  "fas fa-dog",
+  "fas fa-fish",
+  "fas fa-dove",
+  "fas fa-spider",
+  "fas fa-horse",
+  "fas fa-frog",
+  "fas fa-hippo",
+  "fas fa-otter",
+  "fas fa-crow",
 ];
 
 // Game state
@@ -84,10 +94,10 @@ const getMoveRating = computed(() => {
 const getMoveRatingClass = computed(() => {
   const rating = getMoveRating.value;
   return {
-    "text-emerald-400": rating === "Идеально!",
-    "text-cyan-400": rating === "Отлично",
-    "text-yellow-400": rating === "Хорошо",
-    "text-orange-400": rating === "Можно лучше",
+    "text-emerald-600 dark:text-emerald-400": rating === "Идеально!",
+    "text-cyan-600 dark:text-cyan-400": rating === "Отлично",
+    "text-yellow-600 dark:text-yellow-400": rating === "Хорошо",
+    "text-orange-600 dark:text-orange-400": rating === "Можно лучше",
   };
 });
 
@@ -103,10 +113,10 @@ const getTimeRating = computed(() => {
 const getTimeRatingClass = computed(() => {
   const rating = getTimeRating.value;
   return {
-    "text-emerald-400": rating === "Молниеносно!",
-    "text-cyan-400": rating === "Быстро",
-    "text-yellow-400": rating === "Нормально",
-    "text-orange-400": rating === "Не спеша",
+    "text-emerald-600 dark:text-emerald-400": rating === "Молниеносно!",
+    "text-cyan-600 dark:text-cyan-400": rating === "Быстро",
+    "text-yellow-600 dark:text-yellow-400": rating === "Нормально",
+    "text-orange-600 dark:text-orange-400": rating === "Не спеша",
   };
 });
 
@@ -258,7 +268,7 @@ onUnmounted(() => {
 
 <template>
   <div
-    class="memory-station min-h-screen bg-slate-950 px-4 sm:px-6 lg:px-8 py-8"
+    class="memory-station min-h-screen bg-slate-50 dark:bg-slate-950 px-4 sm:px-6 lg:px-8 py-8 transition-colors duration-500"
   >
     <div class="max-w-4xl mx-auto">
       <!-- Header Section -->
@@ -270,7 +280,7 @@ onUnmounted(() => {
             ПАРНЫЕ КАРТОЧКИ
           </h1>
           <p
-            class="text-cyan-300/80 text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto"
+            class="text-slate-600 dark:text-cyan-300/80 text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto"
           >
             Тренируйте память и внимание, находя пары одинаковых карточек
           </p>
@@ -279,26 +289,26 @@ onUnmounted(() => {
         <!-- Game Stats -->
         <div class="flex flex-wrap gap-4 justify-center">
           <div class="stat-card">
-            <div class="text-3xl lg:text-4xl font-black text-cyan-400">
+            <div class="text-3xl lg:text-4xl font-black text-cyan-600 dark:text-cyan-400">
               {{ moves }}
             </div>
-            <div class="text-xs uppercase tracking-wider text-slate-400">
+            <div class="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">
               Ходы
             </div>
           </div>
           <div class="stat-card">
-            <div class="text-3xl lg:text-4xl font-black text-emerald-400">
+            <div class="text-3xl lg:text-4xl font-black text-emerald-600 dark:text-emerald-400">
               {{ matches }} / {{ totalPairs }}
             </div>
-            <div class="text-xs uppercase tracking-wider text-slate-400">
+            <div class="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">
               Найдено пар
             </div>
           </div>
           <div class="stat-card">
-            <div class="text-3xl lg:text-4xl font-bold text-purple-400">
+            <div class="text-3xl lg:text-4xl font-bold text-purple-600 dark:text-purple-400">
               {{ timer }}s
             </div>
-            <div class="text-xs uppercase tracking-wider text-slate-400">
+            <div class="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">
               Время
             </div>
           </div>
@@ -324,9 +334,9 @@ onUnmounted(() => {
       <!-- Instructions -->
       <div v-if="!gameStarted" class="text-center max-w-2xl mx-auto mb-12">
         <div class="info-card">
-          <h3 class="text-2xl font-bold text-white mb-4">🎯 Как играть?</h3>
+          <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">🎯 Как играть?</h3>
           <ol
-            class="space-y-3 text-slate-300 text-left list-decimal list-inside"
+            class="space-y-3 text-slate-600 dark:text-slate-300 text-left list-decimal list-inside"
           >
             <li>Нажмите "Начать игру" чтобы стартовать</li>
             <li>Запомните расположение карточек за {{ previewTime }} секунд</li>
@@ -342,7 +352,7 @@ onUnmounted(() => {
         <!-- Preview Banner (FIXED: No longer covers cards) -->
         <div
           v-if="showPreview"
-          class="preview-banner absolute top-4 left-1/2 transform -translate-x-1/2 z-10 bg-cyan-600/90 text-white px-6 py-3 rounded-full border border-cyan-400/50 backdrop-blur-sm"
+          class="preview-banner absolute top-4 left-1/2 transform -translate-x-1/2 z-10 bg-cyan-600/90 text-white px-6 py-3 rounded-full border border-cyan-400/50 backdrop-blur-sm shadow-lg"
         >
           <div class="flex items-center gap-3">
             <div class="w-3 h-3 bg-white rounded-full animate-pulse"></div>
@@ -365,7 +375,7 @@ onUnmounted(() => {
               <!-- Card Front -->
               <div class="card-front">
                 <div class="card-pattern"></div>
-                <i class="fas fa-brain text-cyan-400/50 text-2xl"></i>
+                <i class="fas fa-brain text-cyan-600/50 dark:text-cyan-400/50 text-2xl"></i>
               </div>
 
               <!-- Card Back -->
@@ -380,10 +390,10 @@ onUnmounted(() => {
       <!-- Results -->
       <div v-if="gameCompleted" class="mt-12">
         <div class="text-center mb-8">
-          <h2 class="text-4xl font-bold text-white mb-4 gradient-text">
+          <h2 class="text-4xl font-bold text-slate-900 dark:text-white mb-4 gradient-text">
             Поздравляем! 🎉
           </h2>
-          <p class="text-xl text-slate-300">
+          <p class="text-xl text-slate-600 dark:text-slate-300">
             Вы нашли все пары за {{ moves }} ходов и {{ timer }} секунд!
           </p>
         </div>
@@ -391,29 +401,29 @@ onUnmounted(() => {
         <!-- Performance Stats -->
         <div class="grid md:grid-cols-3 gap-6 mb-8">
           <div class="performance-card">
-            <div class="text-4xl font-black text-cyan-400 mb-2">
+            <div class="text-4xl font-black text-cyan-600 dark:text-cyan-400 mb-2">
               {{ moves }}
             </div>
-            <div class="text-sm text-slate-400">Всего ходов</div>
+            <div class="text-sm text-slate-500 dark:text-slate-400">Всего ходов</div>
             <div class="mt-2 text-xs" :class="getMoveRatingClass">
               {{ getMoveRating }}
             </div>
           </div>
           <div class="performance-card">
-            <div class="text-4xl font-black text-emerald-400 mb-2">
+            <div class="text-4xl font-black text-emerald-600 dark:text-emerald-400 mb-2">
               {{ timer }}s
             </div>
-            <div class="text-sm text-slate-400">Время</div>
+            <div class="text-sm text-slate-500 dark:text-slate-400">Время</div>
             <div class="mt-2 text-xs" :class="getTimeRatingClass">
               {{ getTimeRating }}
             </div>
           </div>
           <div class="performance-card">
-            <div class="text-4xl font-black text-purple-400 mb-2">
+            <div class="text-4xl font-black text-purple-600 dark:text-purple-400 mb-2">
               {{ efficiency }}%
             </div>
-            <div class="text-sm text-slate-400">Эффективность</div>
-            <div class="mt-2 text-xs text-cyan-400">Точность</div>
+            <div class="text-sm text-slate-500 dark:text-slate-400">Эффективность</div>
+            <div class="mt-2 text-xs text-cyan-600 dark:text-cyan-400">Точность</div>
           </div>
         </div>
 
@@ -433,26 +443,26 @@ onUnmounted(() => {
       <!-- Tips -->
       <div class="mt-12 info-card">
         <h4
-          class="text-xl font-semibold text-white mb-4 flex items-center gap-2"
+          class="text-xl font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2"
         >
-          <i class="fas fa-lightbulb text-yellow-400"></i>
+          <i class="fas fa-lightbulb text-yellow-500 dark:text-yellow-400"></i>
           Советы для улучшения памяти
         </h4>
-        <div class="grid md:grid-cols-2 gap-4 text-sm text-slate-300">
+        <div class="grid md:grid-cols-2 gap-4 text-sm text-slate-600 dark:text-slate-300">
           <div class="flex items-start gap-2">
-            <span class="text-cyan-400 mt-1">•</span>
+            <span class="text-cyan-600 dark:text-cyan-400 mt-1">•</span>
             <span>Создавайте ассоциации между карточками</span>
           </div>
           <div class="flex items-start gap-2">
-            <span class="text-cyan-400 mt-1">•</span>
+            <span class="text-cyan-600 dark:text-cyan-400 mt-1">•</span>
             <span>Разделяйте поле на секции</span>
           </div>
           <div class="flex items-start gap-2">
-            <span class="text-cyan-400 mt-1">•</span>
+            <span class="text-cyan-600 dark:text-cyan-400 mt-1">•</span>
             <span>Запоминайте группы по 2-3 карточки</span>
           </div>
           <div class="flex items-start gap-2">
-            <span class="text-cyan-400 mt-1">•</span>
+            <span class="text-cyan-600 dark:text-cyan-400 mt-1">•</span>
             <span>Используйте мнемонические техники</span>
           </div>
         </div>
@@ -470,7 +480,7 @@ onUnmounted(() => {
 }
 
 .stat-card {
-  @apply text-center px-6 py-5 rounded-2xl bg-slate-900/60 border border-cyan-500/20 backdrop-blur-sm min-w-[120px];
+  @apply text-center px-6 py-5 rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-cyan-500/20 backdrop-blur-sm min-w-[120px] shadow-sm dark:shadow-none;
 }
 
 .btn-primary {
@@ -482,17 +492,17 @@ onUnmounted(() => {
 }
 
 .btn-secondary {
-  @apply inline-flex items-center px-6 py-3 rounded-xl bg-slate-800/50 border border-slate-600/50 
-         text-slate-300 font-semibold hover:bg-slate-700 hover:border-slate-500 
-         transition-all duration-300 transform hover:scale-105;
+  @apply inline-flex items-center px-6 py-3 rounded-xl bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-600/50 
+         text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-200 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-500 
+         transition-all duration-300 transform hover:scale-105 shadow-sm dark:shadow-none;
 }
 
 .info-card {
-  @apply p-6 rounded-2xl bg-slate-900/50 border border-cyan-500/10 backdrop-blur-sm;
+  @apply p-6 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/10 backdrop-blur-sm shadow-sm dark:shadow-none;
 }
 
 .performance-card {
-  @apply p-6 rounded-2xl bg-slate-900/50 border border-cyan-500/20 text-center;
+  @apply p-6 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/20 text-center shadow-sm dark:shadow-none;
 }
 
 .preview-banner {
@@ -525,12 +535,12 @@ onUnmounted(() => {
 }
 
 .card-front {
-  @apply bg-gradient-to-br from-cyan-500/20 to-purple-500/20 border-2 border-cyan-500/30;
+  @apply bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-cyan-500/30 shadow-sm dark:shadow-none;
   transform: rotateY(0deg);
 }
 
 .card-back {
-  @apply bg-gradient-to-br from-emerald-500 to-emerald-600 text-white;
+  @apply bg-gradient-to-br from-emerald-500 to-emerald-600 text-white shadow-md;
   transform: rotateY(180deg);
 }
 

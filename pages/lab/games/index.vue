@@ -1,7 +1,7 @@
 <!-- pages/lab/games.vue -->
 <template>
   <div
-    class="games-station min-h-screen bg-slate-950 px-4 sm:px-6 lg:px-8 py-8"
+    class="games-station min-h-screen bg-slate-50 dark:bg-slate-950 px-4 sm:px-6 lg:px-8 py-8 transition-colors duration-500"
   >
     <div class="max-w-7xl mx-auto">
       <!-- Header Section -->
@@ -11,12 +11,12 @@
         >
           <div>
             <h1
-              class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-3 tracking-tight gradient-text"
+              class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight gradient-text"
             >
               РАЗВИВАЮЩИЕ ИГРЫ
             </h1>
             <p
-              class="text-cyan-300/70 text-sm sm:text-base leading-relaxed max-w-2xl"
+              class="text-slate-600 dark:text-cyan-300/70 text-sm sm:text-base leading-relaxed max-w-2xl"
             >
               Тренируйте логику, память и внимание через увлекательные игровые
               задачи
@@ -26,18 +26,18 @@
           <!-- Stats Overview -->
           <div class="flex items-center gap-4">
             <div class="stat-card">
-              <div class="text-2xl font-bold text-cyan-400">
+              <div class="text-2xl font-bold text-cyan-600 dark:text-cyan-400">
                 {{ totalGames }}
               </div>
-              <div class="text-xs text-slate-400 uppercase tracking-wide">
+              <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                 Игр
               </div>
             </div>
             <div class="stat-card">
-              <div class="text-2xl font-bold text-purple-400">
+              <div class="text-2xl font-bold text-purple-600 dark:text-purple-400">
                 {{ userLevel }}
               </div>
-              <div class="text-xs text-slate-400 uppercase tracking-wide">
+              <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                 Уровень
               </div>
             </div>
@@ -71,25 +71,25 @@
               <div
                 class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/20 border border-cyan-500/40 mb-4"
               >
-                <i class="fas fa-star text-cyan-400 text-sm"></i>
-                <span class="text-xs font-medium text-cyan-300">ИГРА ДНЯ</span>
+                <i class="fas fa-star text-cyan-600 dark:text-cyan-400 text-sm"></i>
+                <span class="text-xs font-medium text-cyan-700 dark:text-cyan-300">ИГРА ДНЯ</span>
               </div>
-              <h2 class="text-3xl font-bold text-white mb-4">
+              <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4">
                 {{ featuredGame.title }}
               </h2>
-              <p class="text-slate-300 leading-relaxed mb-6">
+              <p class="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
                 {{ featuredGame.description }}
               </p>
               <div class="flex flex-wrap items-center gap-4 mb-6">
-                <div class="flex items-center gap-2 text-cyan-400">
+                <div class="flex items-center gap-2 text-cyan-600 dark:text-cyan-400">
                   <i class="fas fa-gamepad"></i>
                   <span class="text-sm">{{ featuredGame.plays }} игр</span>
                 </div>
-                <div class="flex items-center gap-2 text-purple-400">
+                <div class="flex items-center gap-2 text-purple-600 dark:text-purple-400">
                   <i class="fas fa-trophy"></i>
                   <span class="text-sm">{{ featuredGame.rating }} рейтинг</span>
                 </div>
-                <div class="flex items-center gap-2 text-emerald-400">
+                <div class="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
                   <i class="fas fa-clock"></i>
                   <span class="text-sm">~{{ featuredGame.duration }}</span>
                 </div>
@@ -116,14 +116,14 @@
       <!-- Games Grid -->
       <div class="mb-12">
         <div class="flex items-center justify-between mb-6">
-          <h2 class="text-xl font-semibold text-white">
+          <h2 class="text-xl font-semibold text-slate-900 dark:text-white">
             {{ getCategoryTitle(activeCategory) }}
           </h2>
           <div class="flex items-center gap-3">
-            <span class="text-sm text-slate-400">Сортировка:</span>
+            <span class="text-sm text-slate-500 dark:text-slate-400">Сортировка:</span>
             <select
               v-model="sortBy"
-              class="bg-slate-800/80 border border-cyan-500/20 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500/40 cursor-pointer"
+              class="bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-cyan-500/20 rounded-lg px-3 py-2 text-sm text-slate-700 dark:text-white focus:outline-none focus:border-cyan-500/40 cursor-pointer"
             >
               <option value="popular">Популярные</option>
               <option value="new">Новые</option>
@@ -151,7 +151,7 @@
             <!-- Game Info -->
             <div class="flex-1">
               <div class="flex items-start justify-between mb-2">
-                <h3 class="text-lg font-semibold text-white">
+                <h3 class="text-lg font-semibold text-slate-900 dark:text-white">
                   {{ game.title }}
                 </h3>
                 <span
@@ -161,23 +161,23 @@
                   {{ game.difficulty }}
                 </span>
               </div>
-              <p class="text-sm text-slate-400 mb-4 line-clamp-2">
+              <p class="text-sm text-slate-500 dark:text-slate-400 mb-4 line-clamp-2">
                 {{ game.description }}
               </p>
 
               <!-- Game Stats -->
               <div class="flex items-center justify-between text-xs">
                 <div class="flex items-center gap-3">
-                  <span class="text-slate-400">
-                    <i class="fas fa-gamepad mr-1 text-cyan-400"></i>
+                  <span class="text-slate-500 dark:text-slate-400">
+                    <i class="fas fa-gamepad mr-1 text-cyan-600 dark:text-cyan-400"></i>
                     {{ game.plays }}
                   </span>
-                  <span class="text-slate-400">
-                    <i class="fas fa-star mr-1 text-yellow-400"></i>
+                  <span class="text-slate-500 dark:text-slate-400">
+                    <i class="fas fa-star mr-1 text-yellow-500 dark:text-yellow-400"></i>
                     {{ game.rating }}
                   </span>
                 </div>
-                <span class="text-cyan-400 font-medium">{{
+                <span class="text-cyan-600 dark:text-cyan-400 font-medium">{{
                   game.duration
                 }}</span>
               </div>
@@ -185,12 +185,12 @@
               <!-- Progress Bar (if user played) -->
               <div v-if="game.progress > 0" class="mt-4">
                 <div class="flex items-center justify-between text-xs mb-1">
-                  <span class="text-slate-400">Прогресс</span>
-                  <span class="text-cyan-400 font-medium"
+                  <span class="text-slate-500 dark:text-slate-400">Прогресс</span>
+                  <span class="text-cyan-600 dark:text-cyan-400 font-medium"
                     >{{ game.progress }}%</span
                   >
                 </div>
-                <div class="w-full bg-slate-700 rounded-full h-1.5">
+                <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5">
                   <div
                     class="bg-gradient-to-r from-cyan-500 to-purple-500 h-1.5 rounded-full transition-all duration-500"
                     :style="{ width: `${game.progress}%` }"
@@ -216,10 +216,10 @@
               <i class="fas fa-calendar-day text-white"></i>
             </div>
             <div>
-              <h3 class="text-lg font-semibold text-white">
+              <h3 class="text-lg font-semibold text-slate-900 dark:text-white">
                 Ежедневный челлендж
               </h3>
-              <p class="text-xs text-slate-400">Обновляется каждый день</p>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Обновляется каждый день</p>
             </div>
           </div>
           <div class="space-y-3">
@@ -239,10 +239,10 @@
                     </div>
                   </div>
                   <div>
-                    <div class="text-sm font-medium text-white">
+                    <div class="text-sm font-medium text-slate-800 dark:text-white">
                       {{ challenge.title }}
                     </div>
-                    <div class="text-xs text-slate-400">
+                    <div class="text-xs text-slate-500 dark:text-slate-400">
                       {{ challenge.description }}
                     </div>
                   </div>
@@ -250,9 +250,9 @@
                 <div class="flex items-center gap-2">
                   <i
                     v-if="challenge.completed"
-                    class="fas fa-check-circle text-emerald-400"
+                    class="fas fa-check-circle text-emerald-500 dark:text-emerald-400"
                   ></i>
-                  <span v-else class="text-cyan-400 text-xs font-medium"
+                  <span v-else class="text-cyan-600 dark:text-cyan-400 text-xs font-medium"
                     >+{{ challenge.reward }} XP</span
                   >
                 </div>
@@ -270,8 +270,8 @@
               <i class="fas fa-trophy text-white"></i>
             </div>
             <div>
-              <h3 class="text-lg font-semibold text-white">Достижения</h3>
-              <p class="text-xs text-slate-400">
+              <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Достижения</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400">
                 {{ unlockedAchievements }}/{{ totalAchievements }}
                 разблокировано
               </p>
@@ -296,7 +296,7 @@
               </div>
               <div
                 class="text-xs text-center mt-2 font-medium"
-                :class="achievement.unlocked ? 'text-white' : 'text-slate-500'"
+                :class="achievement.unlocked ? 'text-slate-800 dark:text-white' : 'text-slate-400 dark:text-slate-500'"
               >
                 {{ achievement.title }}
               </div>
@@ -315,26 +315,26 @@
           <div
             class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center flex-shrink-0"
           >
-            <i class="fas fa-lightbulb text-purple-400 text-xl"></i>
+            <i class="fas fa-lightbulb text-purple-600 dark:text-purple-400 text-xl"></i>
           </div>
           <div class="flex-1">
-            <h4 class="text-white font-semibold mb-2">
+            <h4 class="text-slate-900 dark:text-white font-semibold mb-2">
               Советы для эффективной тренировки
             </h4>
-            <ul class="space-y-2 text-sm text-slate-300">
+            <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-300">
               <li class="flex items-start gap-2">
-                <span class="text-purple-400 mt-0.5">•</span>
+                <span class="text-purple-600 dark:text-purple-400 mt-0.5">•</span>
                 <span
                   >Занимайтесь регулярно - даже 10 минут в день приносят
                   результат</span
                 >
               </li>
               <li class="flex items-start gap-2">
-                <span class="text-purple-400 mt-0.5">•</span>
+                <span class="text-purple-600 dark:text-purple-400 mt-0.5">•</span>
                 <span>Чередуйте разные типы игр для комплексного развития</span>
               </li>
               <li class="flex items-start gap-2">
-                <span class="text-purple-400 mt-0.5">•</span>
+                <span class="text-purple-600 dark:text-purple-400 mt-0.5">•</span>
                 <span
                   >Постепенно увеличивайте сложность для лучших
                   результатов</span
@@ -597,17 +597,17 @@ const playGame = (game) => {
 }
 
 .stat-card {
-  @apply text-center px-4 py-3 rounded-xl bg-slate-900/50 border border-cyan-500/10;
+  @apply text-center px-4 py-3 rounded-xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/10 shadow-sm dark:shadow-none;
 }
 
 .filter-tab {
   @apply px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300
-         bg-slate-800/50 text-slate-400 hover:text-slate-200 border border-slate-700/50
+         bg-white dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 border border-slate-200 dark:border-slate-700/50
          hover:border-cyan-500/30;
 }
 
 .filter-tab-active {
-  @apply bg-cyan-500/20 text-cyan-300 border-cyan-500/40;
+  @apply bg-cyan-500/10 dark:bg-cyan-500/20 text-cyan-600 dark:text-cyan-300 border-cyan-500/40;
 }
 
 .btn-primary {
@@ -618,8 +618,8 @@ const playGame = (game) => {
 }
 
 .game-preview-card {
-  @apply w-full h-64 rounded-2xl bg-slate-900/50 border border-cyan-500/20 
-         flex items-center justify-center backdrop-blur-sm;
+  @apply w-full h-64 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/20 
+         flex items-center justify-center backdrop-blur-sm shadow-sm dark:shadow-none;
 }
 
 .preview-icon-wrapper {
@@ -628,13 +628,13 @@ const playGame = (game) => {
 }
 
 .game-card {
-  @apply relative p-6 rounded-2xl bg-slate-900/50 border border-cyan-500/10 
+  @apply relative p-6 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/10 
          hover:border-cyan-500/30 transition-all duration-300 cursor-pointer 
-         overflow-hidden flex flex-col;
+         overflow-hidden flex flex-col shadow-sm dark:shadow-none;
 }
 
 .game-card:hover {
-  @apply bg-slate-900/70 transform -translate-y-1 shadow-lg shadow-cyan-500/10;
+  @apply bg-slate-50 dark:bg-slate-900/70 transform -translate-y-1 shadow-lg shadow-cyan-500/10;
 }
 
 .card-glow {
@@ -655,28 +655,28 @@ const playGame = (game) => {
 }
 
 .difficulty-easy {
-  @apply bg-emerald-500/10 text-emerald-400 border border-emerald-500/20;
+  @apply bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20;
 }
 
 .difficulty-medium {
-  @apply bg-cyan-500/10 text-cyan-400 border border-cyan-500/20;
+  @apply bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20;
 }
 
 .difficulty-hard {
-  @apply bg-orange-500/10 text-orange-400 border border-orange-500/20;
+  @apply bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20;
 }
 
 .info-card {
-  @apply p-6 rounded-2xl bg-slate-900/50 border border-cyan-500/10 backdrop-blur-sm;
+  @apply p-6 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/10 backdrop-blur-sm shadow-sm dark:shadow-none;
 }
 
 .challenge-item {
-  @apply p-4 rounded-lg bg-slate-800/30 border border-slate-700/50 
+  @apply p-4 rounded-lg bg-slate-50 dark:bg-slate-800/30 border border-slate-200 dark:border-slate-700/50 
          hover:border-cyan-500/30 transition-all duration-300;
 }
 
 .achievement-item {
-  @apply p-3 rounded-xl bg-slate-800/30 border border-slate-700/50 
+  @apply p-3 rounded-xl bg-slate-50 dark:bg-slate-800/30 border border-slate-200 dark:border-slate-700/50 
          transition-all duration-300 cursor-pointer;
 }
 
@@ -690,7 +690,7 @@ const playGame = (game) => {
 
 .achievement-icon {
   @apply w-12 h-12 mx-auto rounded-lg bg-gradient-to-br from-yellow-500/20 to-orange-500/20 
-         flex items-center justify-center text-yellow-400;
+         flex items-center justify-center text-yellow-500 dark:text-yellow-400;
 }
 
 .line-clamp-2 {

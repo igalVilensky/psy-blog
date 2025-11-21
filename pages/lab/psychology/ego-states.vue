@@ -1,22 +1,24 @@
 <template>
-  <div class="min-h-screen bg-slate-950 px-4 sm:px-6 lg:px-8 py-8">
+  <div
+    class="min-h-screen bg-slate-50 dark:bg-slate-950 px-4 sm:px-6 lg:px-8 py-8 transition-colors duration-500"
+  >
     <div class="max-w-7xl mx-auto">
       <!-- Header with Back Button -->
       <div class="mb-8">
         <div class="flex items-center gap-4 mb-6">
           <NuxtLink
             to="/lab/psychology"
-            class="w-10 h-10 rounded-lg bg-slate-800/50 border border-slate-700/50 flex items-center justify-center text-slate-400 hover:text-cyan-400 hover:border-cyan-500/50 transition-all duration-300"
+            class="w-10 h-10 rounded-lg bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 flex items-center justify-center text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 hover:border-cyan-500/50 transition-all duration-300 shadow-sm dark:shadow-none"
           >
             <i class="fas fa-arrow-left"></i>
           </NuxtLink>
           <div class="flex-1">
             <h1
-              class="text-3xl md:text-4xl lg:text-5xl font-bold text-white font-montserrat gradient-text"
+              class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white font-montserrat gradient-text"
             >
               ЭГО-СОСТОЯНИЯ
             </h1>
-            <p class="text-slate-400 mt-2 text-sm md:text-base">
+            <p class="text-slate-600 dark:text-slate-400 mt-2 text-sm md:text-base">
               Исследуйте три основные психологические роли по теории
               транзактного анализа Эрика Берна
             </p>
@@ -29,14 +31,14 @@
             class="stat-card group hover:scale-105 transition-transform duration-300"
           >
             <div class="flex items-center justify-between mb-2">
-              <div class="text-2xl font-bold text-cyan-400 font-mono">
+              <div class="text-2xl font-bold text-cyan-600 dark:text-cyan-400 font-mono">
                 {{ stats.explored }}/3
               </div>
               <i
                 class="fas fa-brain text-cyan-400/30 group-hover:text-cyan-400/60 transition-colors"
               ></i>
             </div>
-            <div class="text-slate-400 text-xs uppercase tracking-wide">
+            <div class="text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wide">
               Состояний изучено
             </div>
           </div>
@@ -45,14 +47,14 @@
             class="stat-card group hover:scale-105 transition-transform duration-300"
           >
             <div class="flex items-center justify-between mb-2">
-              <div class="text-2xl font-bold text-purple-400 font-mono">
+              <div class="text-2xl font-bold text-purple-600 dark:text-purple-400 font-mono">
                 {{ completedScenarios.length }}
               </div>
               <i
                 class="fas fa-check-circle text-purple-400/30 group-hover:text-purple-400/60 transition-colors"
               ></i>
             </div>
-            <div class="text-slate-400 text-xs uppercase tracking-wide">
+            <div class="text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wide">
               Сценариев пройдено
             </div>
           </div>
@@ -61,14 +63,14 @@
             class="stat-card group hover:scale-105 transition-transform duration-300"
           >
             <div class="flex items-center justify-between mb-2">
-              <div class="text-2xl font-bold text-emerald-400 font-mono">
+              <div class="text-2xl font-bold text-emerald-600 dark:text-emerald-400 font-mono">
                 {{ awarenessLevel }}%
               </div>
               <i
                 class="fas fa-eye text-emerald-400/30 group-hover:text-emerald-400/60 transition-colors"
               ></i>
             </div>
-            <div class="text-slate-400 text-xs uppercase tracking-wide">
+            <div class="text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wide">
               Осознанность
             </div>
           </div>
@@ -77,14 +79,14 @@
             class="stat-card group hover:scale-105 transition-transform duration-300"
           >
             <div class="flex items-center justify-between mb-2">
-              <div class="text-2xl font-bold text-orange-400 font-mono">
+              <div class="text-2xl font-bold text-orange-600 dark:text-orange-400 font-mono">
                 {{ sessionTime }}
               </div>
               <i
                 class="fas fa-clock text-orange-400/30 group-hover:text-orange-400/60 transition-colors"
               ></i>
             </div>
-            <div class="text-slate-400 text-xs uppercase tracking-wide">
+            <div class="text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wide">
               Время сессии
             </div>
           </div>
@@ -94,7 +96,7 @@
       <!-- Ego State Cards (Tabs on Mobile, Grid on Desktop) -->
       <div class="mb-12">
         <h2
-          class="text-xl md:text-2xl font-bold text-white mb-6 flex items-center gap-3"
+          class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3"
         >
           <span
             class="w-1 h-8 bg-gradient-to-b from-cyan-500 to-purple-500 rounded-full"
@@ -103,13 +105,13 @@
         </h2>
 
         <!-- Mobile Tabs -->
-        <div class="md:hidden flex space-x-1 bg-slate-800/50 p-1 rounded-xl mb-4 overflow-x-auto">
+        <div class="md:hidden flex space-x-1 bg-slate-100 dark:bg-slate-800/50 p-1 rounded-xl mb-4 overflow-x-auto">
           <button
             v-for="state in egoStates"
             :key="state.id"
             @click="setActiveState(state.id)"
             class="flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all duration-200 whitespace-nowrap"
-            :class="activeState === state.id ? 'bg-slate-700 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'"
+            :class="activeState === state.id ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'"
           >
              <i :class="[state.icon, 'mr-2']"></i>
              {{ state.title }}
@@ -145,17 +147,17 @@
           <div
             v-if="activeState"
             :key="activeState"
-            class="rounded-2xl p-6 border-2 relative z-0"
+            class="rounded-2xl p-6 border-2 relative z-0 shadow-sm dark:shadow-none"
             :class="{
               // Parent state (cyan) - left card
-              'bg-cyan-950/50 rounded-tl-none border-cyan-500/50': activeState === 'parent' && !isMobile,
-              'bg-cyan-950/50 rounded-t-none border-cyan-500/50': activeState === 'parent' && isMobile,
+              'bg-cyan-50 dark:bg-cyan-950/50 rounded-tl-none border-cyan-200 dark:border-cyan-500/50': activeState === 'parent' && !isMobile,
+              'bg-cyan-50 dark:bg-cyan-950/50 rounded-t-none border-cyan-200 dark:border-cyan-500/50': activeState === 'parent' && isMobile,
               // Adult state (emerald) - center card
-              'bg-emerald-950/50 border-emerald-500/50': activeState === 'adult' && !isMobile,
-              'bg-emerald-950/50 rounded-t-none border-emerald-500/50': activeState === 'adult' && isMobile,
+              'bg-emerald-50 dark:bg-emerald-950/50 border-emerald-200 dark:border-emerald-500/50': activeState === 'adult' && !isMobile,
+              'bg-emerald-50 dark:bg-emerald-950/50 rounded-t-none border-emerald-200 dark:border-emerald-500/50': activeState === 'adult' && isMobile,
               // Child state (orange) - right card
-              'bg-orange-950/50 rounded-tr-none border-orange-500/50': activeState === 'child' && !isMobile,
-              'bg-orange-950/50 rounded-t-none border-orange-500/50': activeState === 'child' && isMobile,
+              'bg-orange-50 dark:bg-orange-950/50 rounded-tr-none border-orange-200 dark:border-orange-500/50': activeState === 'child' && !isMobile,
+              'bg-orange-50 dark:bg-orange-950/50 rounded-t-none border-orange-200 dark:border-orange-500/50': activeState === 'child' && isMobile,
             }"
           >
             <!-- Border cover for seamless merge - hides border where card connects -->
@@ -163,9 +165,9 @@
               v-if="!isMobile"
               class="absolute top-0 h-[2px] z-10"
               :class="{
-                'left-0 w-1/3 bg-cyan-950/50': activeState === 'parent',
-                'left-1/3 w-1/3 bg-emerald-950/50': activeState === 'adult',
-                'right-0 w-1/3 bg-orange-950/50': activeState === 'child',
+                'left-0 w-1/3 bg-cyan-50 dark:bg-cyan-950/50': activeState === 'parent',
+                'left-1/3 w-1/3 bg-emerald-50 dark:bg-emerald-950/50': activeState === 'adult',
+                'right-0 w-1/3 bg-orange-50 dark:bg-orange-950/50': activeState === 'child',
               }"
               style="margin-top: -2px;"
             ></div>
@@ -175,9 +177,9 @@
                 <h3
                   class="text-lg font-semibold mb-3 flex items-center gap-2"
                   :class="{
-                    'text-cyan-400': activeState === 'parent',
-                    'text-emerald-400': activeState === 'adult',
-                    'text-orange-400': activeState === 'child',
+                    'text-cyan-600 dark:text-cyan-400': activeState === 'parent',
+                    'text-emerald-600 dark:text-emerald-400': activeState === 'adult',
+                    'text-orange-600 dark:text-orange-400': activeState === 'child',
                   }"
                 >
                   <i class="fas fa-lightbulb"></i>
@@ -187,9 +189,9 @@
                   <li
                     v-for="(benefit, idx) in getStateBenefits(activeState)"
                     :key="idx"
-                    class="text-slate-300 text-sm flex items-start gap-2"
+                    class="text-slate-600 dark:text-slate-300 text-sm flex items-start gap-2"
                   >
-                    <i class="fas fa-check text-emerald-400 mt-1 text-xs"></i>
+                    <i class="fas fa-check text-emerald-500 dark:text-emerald-400 mt-1 text-xs"></i>
                     <span>{{ benefit }}</span>
                   </li>
                 </ul>
@@ -198,8 +200,8 @@
                 <h3
                   class="text-lg font-semibold mb-3 flex items-center gap-2"
                   :class="{
-                    'text-red-400': activeState === 'child',
-                    'text-orange-400': activeState !== 'child',
+                    'text-red-600 dark:text-red-400': activeState === 'child',
+                    'text-orange-600 dark:text-orange-400': activeState !== 'child',
                   }"
                 >
                   <i class="fas fa-exclamation-triangle"></i>
@@ -209,9 +211,9 @@
                   <li
                     v-for="(trap, idx) in getStateTraps(activeState)"
                     :key="idx"
-                    class="text-slate-300 text-sm flex items-start gap-2"
+                    class="text-slate-600 dark:text-slate-300 text-sm flex items-start gap-2"
                   >
-                    <i class="fas fa-times text-red-400 mt-1 text-xs"></i>
+                    <i class="fas fa-times text-red-500 dark:text-red-400 mt-1 text-xs"></i>
                     <span>{{ trap }}</span>
                   </li>
                 </ul>
@@ -229,21 +231,21 @@
         <div class="absolute top-0 right-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl -z-10"></div>
 
         <div class="text-center mb-8">
-          <h2 class="text-2xl md:text-3xl font-bold text-white mb-3">
+          <h2 class="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-3">
             Интерактивная диагностика
           </h2>
-          <p class="text-slate-300 text-sm md:text-base max-w-2xl mx-auto">
+          <p class="text-slate-600 dark:text-slate-300 text-sm md:text-base max-w-2xl mx-auto">
             Узнайте, какое эго-состояние доминирует в различных ситуациях
           </p>
         </div>
 
         <!-- Start Screen -->
         <div v-if="!assessmentStarted" class="text-center py-12">
-           <div class="w-20 h-20 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
-             <i class="fas fa-play text-3xl text-purple-400 ml-1"></i>
+           <div class="w-20 h-20 bg-purple-500/10 dark:bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
+             <i class="fas fa-play text-3xl text-purple-600 dark:text-purple-400 ml-1"></i>
            </div>
-           <h3 class="text-xl font-bold text-white mb-4">Готовы проверить себя?</h3>
-           <p class="text-slate-400 mb-8 max-w-md mx-auto">
+           <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4">Готовы проверить себя?</h3>
+           <p class="text-slate-600 dark:text-slate-400 mb-8 max-w-md mx-auto">
              Вам будет предложено {{ scenarios.length }} жизненных ситуаций. Выберите реакцию, которая вам ближе всего.
            </p>
            <button 
@@ -259,12 +261,12 @@
           <!-- Progress Bar -->
           <div class="mb-8">
             <div class="flex items-center justify-between mb-2">
-              <span class="text-slate-400 text-sm">Ситуация {{ currentScenarioIndex + 1 }} из {{ scenarios.length }}</span>
-              <span class="text-cyan-400 text-sm font-mono"
+              <span class="text-slate-500 dark:text-slate-400 text-sm">Ситуация {{ currentScenarioIndex + 1 }} из {{ scenarios.length }}</span>
+              <span class="text-cyan-600 dark:text-cyan-400 text-sm font-mono"
                 >{{ Math.round(((currentScenarioIndex + 1) / scenarios.length) * 100) }}%</span
               >
             </div>
-            <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+            <div class="w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
               <div
                 class="h-full bg-gradient-to-r from-cyan-500 to-purple-500 transition-all duration-500 ease-out"
                 :style="{
@@ -281,27 +283,27 @@
             <div :key="currentScenario.id" class="mb-8">
               <!-- Scenario Card -->
               <div
-                class="bg-slate-900/50 rounded-xl p-6 mb-6 border border-slate-700/50 shadow-xl"
+                class="bg-white dark:bg-slate-900/50 rounded-xl p-6 mb-6 border border-slate-200 dark:border-slate-700/50 shadow-xl"
               >
                 <div class="flex flex-col md:flex-row items-start md:items-center gap-4">
                   <div
-                    class="w-14 h-14 rounded-xl bg-purple-500/20 flex items-center justify-center flex-shrink-0"
+                    class="w-14 h-14 rounded-xl bg-purple-500/10 dark:bg-purple-500/20 flex items-center justify-center flex-shrink-0"
                   >
                     <i
                       :class="currentScenario.icon"
-                      class="text-purple-400 text-2xl"
+                      class="text-purple-600 dark:text-purple-400 text-2xl"
                     ></i>
                   </div>
                   <div>
                     <div class="flex items-center gap-2 mb-1">
-                        <span class="text-xs font-bold tracking-wider text-purple-400 uppercase bg-purple-500/10 px-2 py-0.5 rounded">
+                        <span class="text-xs font-bold tracking-wider text-purple-600 dark:text-purple-400 uppercase bg-purple-500/10 px-2 py-0.5 rounded">
                             {{ currentScenario.category }}
                         </span>
                     </div>
-                    <h4 class="text-xl text-white font-bold mb-2">
+                    <h4 class="text-xl text-slate-900 dark:text-white font-bold mb-2">
                       {{ currentScenario.title }}
                     </h4>
-                    <p class="text-slate-300 text-base leading-relaxed">
+                    <p class="text-slate-600 dark:text-slate-300 text-base leading-relaxed">
                       {{ currentScenario.description }}
                     </p>
                   </div>
@@ -309,9 +311,9 @@
               </div>
 
               <h3
-                class="text-lg font-semibold text-white mb-4 flex items-center gap-2"
+                class="text-lg font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2"
               >
-                <i class="fas fa-comment-dots text-cyan-400"></i>
+                <i class="fas fa-comment-dots text-cyan-600 dark:text-cyan-400"></i>
                 Как бы вы отреагировали?
               </h3>
               
@@ -324,15 +326,15 @@
                   class="response-option group relative overflow-hidden"
                   :class="[
                     userResponse?.egoState === response.egoState
-                      ? 'response-selected ring-2 ring-cyan-500 ring-offset-2 ring-offset-slate-900'
-                      : 'hover:bg-slate-800/50',
+                      ? 'response-selected ring-2 ring-cyan-500 ring-offset-2 ring-offset-slate-50 dark:ring-offset-slate-900'
+                      : 'hover:bg-slate-50 dark:hover:bg-slate-800/50',
                      !!userResponse && userResponse?.egoState !== response.egoState ? 'opacity-50 grayscale' : ''
                   ]"
                 >
                   <div class="flex items-start gap-4 w-full relative z-10">
                     <div
                       class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors"
-                      :class="userResponse ? getStateIconBg(response.egoState) : 'bg-slate-700/50 text-slate-400 group-hover:text-white'"
+                      :class="userResponse ? getStateIconBg(response.egoState) : 'bg-slate-100 dark:bg-slate-700/50 text-slate-400 dark:text-slate-400 group-hover:text-slate-600 dark:group-hover:text-white'"
                     >
                       <i
                         :class="getStateIcon(response.egoState)"
@@ -340,7 +342,7 @@
                       ></i>
                     </div>
                     <div class="flex-1 text-left">
-                      <p class="mb-1 text-base font-medium" :class="userResponse ? 'text-white' : 'text-slate-200'">{{ response.text }}</p>
+                      <p class="mb-1 text-base font-medium" :class="userResponse ? 'text-slate-900 dark:text-white' : 'text-slate-700 dark:text-slate-200'">{{ response.text }}</p>
                       
                       <!-- Reveal state only after selection -->
                       <transition name="fade">
@@ -363,7 +365,7 @@
           <transition name="fade-scale">
             <div v-if="userResponse" class="mt-8">
               <div
-                class="bg-slate-900/70 rounded-2xl p-6 border-2 border-cyan-500/30 backdrop-blur-sm relative overflow-hidden"
+                class="bg-white dark:bg-slate-900/70 rounded-2xl p-6 border-2 border-cyan-500/30 backdrop-blur-sm relative overflow-hidden shadow-lg dark:shadow-none"
               >
                  <!-- Decorative background -->
                  <div class="absolute top-0 right-0 w-full h-full bg-gradient-to-b from-cyan-500/5 to-transparent pointer-events-none"></div>
@@ -372,44 +374,44 @@
                   <div
                     class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center"
                   >
-                    <i class="fas fa-analytics text-cyan-400 text-xl"></i>
+                    <i class="fas fa-analytics text-cyan-600 dark:text-cyan-400 text-xl"></i>
                   </div>
-                  <h3 class="text-xl md:text-2xl font-bold text-white">
+                  <h3 class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white">
                     Анализ реакции
                   </h3>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 relative">
                   <div
-                    class="bg-slate-800/50 rounded-xl p-5 border border-cyan-500/20"
+                    class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-5 border border-cyan-500/20"
                   >
                     <h4
-                      class="text-cyan-400 font-semibold mb-3 flex items-center gap-2"
+                      class="text-cyan-600 dark:text-cyan-400 font-semibold mb-3 flex items-center gap-2"
                     >
                       <i class="fas fa-user-circle"></i>
                       Ваше состояние: {{ getStateLabel(userResponse.egoState) }}
                     </h4>
-                    <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                    <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-4">
                       {{ getStateAnalysis(userResponse.egoState) }}
                     </p>
                   </div>
 
                   <div
-                    class="bg-slate-800/50 rounded-xl p-5 border border-purple-500/20"
+                    class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-5 border border-purple-500/20"
                   >
                     <h4
-                      class="text-purple-400 font-semibold mb-3 flex items-center gap-2"
+                      class="text-purple-600 dark:text-purple-400 font-semibold mb-3 flex items-center gap-2"
                     >
                       <i class="fas fa-lightbulb"></i>
                       Рекомендация
                     </h4>
-                    <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                    <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-4">
                       {{ userResponse.recommendation }}
                     </p>
-                     <div class="flex items-center gap-2 text-xs text-slate-400 bg-slate-900/50 p-2 rounded-lg inline-flex">
-                      <i class="fas fa-target text-purple-400"></i>
+                     <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-900/50 p-2 rounded-lg inline-flex">
+                      <i class="fas fa-target text-purple-600 dark:text-purple-400"></i>
                       <span
-                        >Оптимально: <span class="text-purple-300">{{ userResponse.optimal }}</span></span
+                        >Оптимально: <span class="text-purple-700 dark:text-purple-300">{{ userResponse.optimal }}</span></span
                       >
                     </div>
                   </div>
@@ -433,16 +435,16 @@
 
         <!-- Completion Screen -->
         <div v-else class="text-center py-12">
-           <div class="w-24 h-24 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
-             <i class="fas fa-check text-4xl text-emerald-400"></i>
+           <div class="w-24 h-24 bg-emerald-500/10 dark:bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+             <i class="fas fa-check text-4xl text-emerald-600 dark:text-emerald-400"></i>
            </div>
-           <h3 class="text-2xl font-bold text-white mb-4">Диагностика завершена!</h3>
-           <p class="text-slate-400 mb-8 max-w-md mx-auto">
+           <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">Диагностика завершена!</h3>
+           <p class="text-slate-600 dark:text-slate-400 mb-8 max-w-md mx-auto">
              Мы проанализировали ваши реакции. Ниже представлены ваши паттерны и рекомендации.
            </p>
            <button 
              @click="restartAssessment"
-             class="px-6 py-3 rounded-xl bg-slate-800 border border-slate-700 text-slate-300 hover:text-white hover:bg-slate-700 transition-all"
+             class="px-6 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700 transition-all"
            >
              <i class="fas fa-redo mr-2"></i>
              Пройти заново
@@ -455,16 +457,16 @@
         <div v-if="assessmentCompleted" class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
             <!-- Pattern Chart -->
             <div
-            class="lg:col-span-2 bg-slate-800/30 rounded-2xl p-6 border border-slate-700/50"
+            class="lg:col-span-2 bg-white dark:bg-slate-800/30 rounded-2xl p-6 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none"
             >
             <div class="flex items-center justify-between mb-6">
-                <h3 class="text-xl font-bold text-white flex items-center gap-2">
-                <i class="fas fa-chart-bar text-cyan-400"></i>
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <i class="fas fa-chart-bar text-cyan-600 dark:text-cyan-400"></i>
                 Ваши паттерны реакций
                 </h3>
                 <button
                 @click="showInsights = !showInsights"
-                class="text-xs px-3 py-1.5 rounded-lg bg-slate-700/50 text-slate-300 hover:bg-slate-700 transition-colors"
+                class="text-xs px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
                 >
                 <i class="fas fa-info-circle mr-1"></i>
                 {{ showInsights ? "Скрыть" : "Показать" }} детали
@@ -503,10 +505,10 @@
                 </div>
 
                 <div class="text-center mt-3">
-                    <div class="text-white font-medium text-sm mb-1">
+                    <div class="text-slate-900 dark:text-white font-medium text-sm mb-1">
                     {{ pattern.label }}
                     </div>
-                    <div class="text-slate-500 text-xs font-mono">
+                    <div class="text-slate-500 dark:text-slate-500 text-xs font-mono">
                     {{ pattern.percentage }}%
                     </div>
                 </div>
@@ -516,12 +518,12 @@
             <transition name="slide-fade">
                 <div
                 v-if="showInsights"
-                class="bg-slate-900/50 rounded-xl p-4 border border-cyan-500/20"
+                class="bg-slate-50 dark:bg-slate-900/50 rounded-xl p-4 border border-cyan-500/20"
                 >
-                <h4 class="text-sm font-semibold text-cyan-400 mb-3">
+                <h4 class="text-sm font-semibold text-cyan-600 dark:text-cyan-400 mb-3">
                     💡 Анализ баланса
                 </h4>
-                <p class="text-slate-300 text-sm leading-relaxed">
+                <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
                     {{ getBalanceAnalysis() }}
                 </p>
                 </div>
@@ -536,25 +538,25 @@
                 <div
                 class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center"
                 >
-                <i class="fas fa-compass text-emerald-400 text-xl"></i>
+                <i class="fas fa-compass text-emerald-600 dark:text-emerald-400 text-xl"></i>
                 </div>
                 <div>
-                <h3 class="text-lg font-bold text-white">Советы эксперта</h3>
-                <p class="text-slate-400 text-xs">Как работать с состояниями</p>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white">Советы эксперта</h3>
+                <p class="text-slate-600 dark:text-slate-400 text-xs">Как работать с состояниями</p>
                 </div>
             </div>
 
             <div class="space-y-4">
                 <div
-                class="bg-slate-900/30 rounded-lg p-4 border border-emerald-500/10"
+                class="bg-white dark:bg-slate-900/30 rounded-lg p-4 border border-emerald-500/10 shadow-sm dark:shadow-none"
                 >
                 <div class="flex items-start gap-3">
-                    <i class="fas fa-check-circle text-emerald-400 mt-1"></i>
+                    <i class="fas fa-check-circle text-emerald-600 dark:text-emerald-400 mt-1"></i>
                     <div>
-                    <h4 class="text-white font-medium text-sm mb-1">
+                    <h4 class="text-slate-900 dark:text-white font-medium text-sm mb-1">
                         Баланс — это ключ
                     </h4>
-                    <p class="text-slate-400 text-xs">
+                    <p class="text-slate-600 dark:text-slate-400 text-xs">
                         Идеальное распределение: 50% Взрослый, 25% Родитель, 25%
                         Ребёнок
                     </p>
@@ -563,15 +565,15 @@
                 </div>
 
                 <div
-                class="bg-slate-900/30 rounded-lg p-4 border border-cyan-500/10"
+                class="bg-white dark:bg-slate-900/30 rounded-lg p-4 border border-cyan-500/10 shadow-sm dark:shadow-none"
                 >
                 <div class="flex items-start gap-3">
-                    <i class="fas fa-brain text-cyan-400 mt-1"></i>
+                    <i class="fas fa-brain text-cyan-600 dark:text-cyan-400 mt-1"></i>
                     <div>
-                    <h4 class="text-white font-medium text-sm mb-1">
+                    <h4 class="text-slate-900 dark:text-white font-medium text-sm mb-1">
                         Осознанность
                     </h4>
-                    <p class="text-slate-400 text-xs">
+                    <p class="text-slate-600 dark:text-slate-400 text-xs">
                         Замечайте, из какого состояния вы действуете прямо сейчас
                     </p>
                     </div>
@@ -579,13 +581,13 @@
                 </div>
 
                 <div
-                class="bg-slate-900/30 rounded-lg p-4 border border-purple-500/10"
+                class="bg-white dark:bg-slate-900/30 rounded-lg p-4 border border-purple-500/10 shadow-sm dark:shadow-none"
                 >
                 <div class="flex items-start gap-3">
-                    <i class="fas fa-exchange-alt text-purple-400 mt-1"></i>
+                    <i class="fas fa-exchange-alt text-purple-600 dark:text-purple-400 mt-1"></i>
                     <div>
-                    <h4 class="text-white font-medium text-sm mb-1">Гибкость</h4>
-                    <p class="text-slate-400 text-xs">
+                    <h4 class="text-slate-900 dark:text-white font-medium text-sm mb-1">Гибкость</h4>
+                    <p class="text-slate-600 dark:text-slate-400 text-xs">
                         Учитесь переключаться между состояниями по необходимости
                     </p>
                     </div>
@@ -598,7 +600,7 @@
 
       <!-- Course Promotion -->
       <div
-        class="bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl p-6 md:p-8 border border-purple-500/20"
+        class="bg-gradient-to-br from-purple-500/5 to-pink-500/5 rounded-2xl p-6 md:p-8 border border-purple-500/20"
       >
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div>
@@ -606,46 +608,46 @@
               <div
                 class="w-16 h-16 rounded-xl bg-purple-500/20 flex items-center justify-center"
               >
-                <i class="fas fa-graduation-cap text-purple-400 text-3xl"></i>
+                <i class="fas fa-graduation-cap text-purple-600 dark:text-purple-400 text-3xl"></i>
               </div>
               <div>
-                <h3 class="text-2xl font-bold text-white">
+                <h3 class="text-2xl font-bold text-slate-900 dark:text-white">
                   Глубокое погружение
                 </h3>
-                <p class="text-purple-300">
+                <p class="text-purple-700 dark:text-purple-300">
                   Мастер-курс по транзактному анализу
                 </p>
               </div>
             </div>
 
-            <p class="text-slate-300 mb-6 leading-relaxed">
+            <p class="text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">
               Освойте полный спектр работы с эго-состояниями: от диагностики до
               трансформации деструктивных паттернов
             </p>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
-              <div class="flex items-center gap-2 text-slate-300 text-sm">
-                <i class="fas fa-check text-emerald-400"></i>
+              <div class="flex items-center gap-2 text-slate-600 dark:text-slate-300 text-sm">
+                <i class="fas fa-check text-emerald-500 dark:text-emerald-400"></i>
                 <span>12 часов практики</span>
               </div>
-              <div class="flex items-center gap-2 text-slate-300 text-sm">
-                <i class="fas fa-check text-emerald-400"></i>
+              <div class="flex items-center gap-2 text-slate-600 dark:text-slate-300 text-sm">
+                <i class="fas fa-check text-emerald-500 dark:text-emerald-400"></i>
                 <span>Сертификат</span>
               </div>
-              <div class="flex items-center gap-2 text-slate-300 text-sm">
-                <i class="fas fa-check text-emerald-400"></i>
+              <div class="flex items-center gap-2 text-slate-600 dark:text-slate-300 text-sm">
+                <i class="fas fa-check text-emerald-500 dark:text-emerald-400"></i>
                 <span>Работа с внутренним ребёнком</span>
               </div>
-              <div class="flex items-center gap-2 text-slate-300 text-sm">
-                <i class="fas fa-check text-emerald-400"></i>
+              <div class="flex items-center gap-2 text-slate-600 dark:text-slate-300 text-sm">
+                <i class="fas fa-check text-emerald-500 dark:text-emerald-400"></i>
                 <span>Личный коучинг</span>
               </div>
-              <div class="flex items-center gap-2 text-slate-300 text-sm">
-                <i class="fas fa-check text-emerald-400"></i>
+              <div class="flex items-center gap-2 text-slate-600 dark:text-slate-300 text-sm">
+                <i class="fas fa-check text-emerald-500 dark:text-emerald-400"></i>
                 <span>Трансформация родителя</span>
               </div>
-              <div class="flex items-center gap-2 text-slate-300 text-sm">
-                <i class="fas fa-check text-emerald-400"></i>
+              <div class="flex items-center gap-2 text-slate-600 dark:text-slate-300 text-sm">
+                <i class="fas fa-check text-emerald-500 dark:text-emerald-400"></i>
                 <span>Балансировка состояний</span>
               </div>
             </div>
@@ -656,7 +658,7 @@
                 Узнать о курсе
               </button>
               <button
-                class="px-6 py-3 rounded-xl bg-slate-800 border border-purple-500/30 text-purple-400 font-medium hover:bg-purple-500/10 transition-all duration-300"
+                class="px-6 py-3 rounded-xl bg-white dark:bg-slate-800 border border-purple-500/30 text-purple-600 dark:text-purple-400 font-medium hover:bg-purple-50 dark:hover:bg-purple-500/10 transition-all duration-300 shadow-sm dark:shadow-none"
               >
                 <i class="fas fa-play-circle mr-2"></i>
                 Демо урок
@@ -670,32 +672,32 @@
                 class="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl blur-2xl opacity-20"
               ></div>
               <div
-                class="relative bg-slate-900/50 rounded-2xl p-6 border border-purple-500/30 backdrop-blur-sm"
+                class="relative bg-white dark:bg-slate-900/50 rounded-2xl p-6 border border-purple-500/30 backdrop-blur-sm shadow-lg dark:shadow-none"
               >
                 <div class="space-y-4">
                   <div class="flex items-center justify-between">
-                    <span class="text-slate-400 text-sm">Студентов</span>
-                    <span class="text-white font-bold">2,847</span>
+                    <span class="text-slate-500 dark:text-slate-400 text-sm">Студентов</span>
+                    <span class="text-slate-900 dark:text-white font-bold">2,847</span>
                   </div>
                   <div class="flex items-center justify-between">
-                    <span class="text-slate-400 text-sm">Рейтинг</span>
+                    <span class="text-slate-500 dark:text-slate-400 text-sm">Рейтинг</span>
                     <div class="flex items-center gap-1">
-                      <i class="fas fa-star text-yellow-400 text-xs"></i>
-                      <span class="text-white font-bold">4.9</span>
+                      <i class="fas fa-star text-yellow-500 dark:text-yellow-400 text-xs"></i>
+                      <span class="text-slate-900 dark:text-white font-bold">4.9</span>
                     </div>
                   </div>
                   <div class="flex items-center justify-between">
-                    <span class="text-slate-400 text-sm">Длительность</span>
-                    <span class="text-white font-bold">8 недель</span>
+                    <span class="text-slate-500 dark:text-slate-400 text-sm">Длительность</span>
+                    <span class="text-slate-900 dark:text-white font-bold">8 недель</span>
                   </div>
-                  <div class="h-px bg-slate-700/50"></div>
+                  <div class="h-px bg-slate-200 dark:bg-slate-700/50"></div>
                   <div class="flex items-center justify-between">
-                    <span class="text-slate-400 text-sm">Цена</span>
+                    <span class="text-slate-500 dark:text-slate-400 text-sm">Цена</span>
                     <div>
-                      <span class="text-slate-500 line-through text-sm"
+                      <span class="text-slate-400 dark:text-slate-500 line-through text-sm"
                         >₽24,990</span
                       >
-                      <span class="text-emerald-400 font-bold text-xl ml-2"
+                      <span class="text-emerald-600 dark:text-emerald-400 font-bold text-xl ml-2"
                         >₽14,990</span
                       >
                     </div>
@@ -1095,18 +1097,18 @@ const getStateIcon = (egoState) => {
 
 const getStateIconBg = (egoState) => {
   const bgs = {
-    parent: "bg-blue-500/20 text-blue-400 group-hover:bg-blue-500/30",
-    adult: "bg-emerald-500/20 text-emerald-400 group-hover:bg-emerald-500/30",
-    child: "bg-orange-500/20 text-orange-400 group-hover:bg-orange-500/30",
+    parent: "bg-blue-500/20 text-blue-600 dark:text-blue-400 group-hover:bg-blue-500/30",
+    adult: "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 group-hover:bg-emerald-500/30",
+    child: "bg-orange-500/20 text-orange-600 dark:text-orange-400 group-hover:bg-orange-500/30",
   };
   return bgs[egoState];
 };
 
 const getStateBadgeClass = (egoState) => {
   const classes = {
-    parent: "bg-blue-500/10 text-blue-400 border border-blue-500/20",
-    adult: "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
-    child: "bg-orange-500/10 text-orange-400 border border-orange-500/20",
+    parent: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20",
+    adult: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20",
+    child: "bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20",
   };
   return classes[egoState];
 };
@@ -1203,7 +1205,7 @@ const getBalanceAnalysis = () => {
 }
 
 .stat-card {
-  @apply bg-slate-800/30 rounded-xl p-4 border border-slate-700/50;
+  @apply bg-white dark:bg-slate-800/30 rounded-xl p-4 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none;
 }
 
 .btn-primary {
@@ -1214,13 +1216,13 @@ const getBalanceAnalysis = () => {
 }
 
 .scenario-btn {
-  @apply p-4 rounded-xl bg-slate-800/30 border border-slate-700/50 
-         text-slate-300 hover:text-white transition-all duration-300 
-         text-left hover:bg-slate-800/50 hover:border-slate-600/50;
+  @apply p-4 rounded-xl bg-white dark:bg-slate-800/30 border border-slate-200 dark:border-slate-700/50 
+         text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all duration-300 
+         text-left hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:border-slate-300 dark:hover:border-slate-600/50 shadow-sm dark:shadow-none;
 }
 
 .scenario-active {
-  @apply bg-purple-500/10 border-purple-500/40 text-white shadow-lg shadow-purple-500/20;
+  @apply bg-purple-500/10 border-purple-500/40 text-slate-900 dark:text-white shadow-lg shadow-purple-500/20;
 }
 
 .scenario-completed {
@@ -1228,12 +1230,12 @@ const getBalanceAnalysis = () => {
 }
 
 .response-option {
-  @apply p-5 rounded-xl bg-slate-800/30 border border-slate-700/50 transition-all duration-300 
-         w-full text-left;
+  @apply p-5 rounded-xl bg-white dark:bg-slate-800/30 border border-slate-200 dark:border-slate-700/50 transition-all duration-300 
+         w-full text-left shadow-sm dark:shadow-none;
 }
 
 .response-selected {
-  @apply bg-slate-700/50 border-cyan-500/50 shadow-lg shadow-cyan-500/20;
+  @apply bg-slate-100 dark:bg-slate-700/50 border-cyan-500/50 shadow-lg shadow-cyan-500/20;
 }
 
 /* Animations */

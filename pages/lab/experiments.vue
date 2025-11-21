@@ -1,6 +1,8 @@
 <!-- pages/lab/experiments.vue -->
 <template>
-  <div class="min-h-screen px-4 sm:px-6 lg:px-8 py-8">
+  <div
+    class="min-h-screen px-4 sm:px-6 lg:px-8 py-8 bg-slate-50 dark:bg-slate-950 transition-colors duration-500"
+  >
     <!-- Page Header -->
     <div class="mb-8">
       <div
@@ -8,11 +10,11 @@
       >
         <div>
           <h1
-            class="text-3xl md:text-4xl font-bold text-white font-montserrat mb-2"
+            class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white font-montserrat mb-2"
           >
             Экспериментальная Станция
           </h1>
-          <p class="text-slate-400">
+          <p class="text-slate-600 dark:text-slate-400">
             Психологические тесты и инструменты для глубокого самопознания
           </p>
         </div>
@@ -22,8 +24,8 @@
             class="px-4 py-2 rounded-lg text-sm font-medium transition-all"
             :class="
               activeFilter === 'all'
-                ? 'bg-purple-500/20 text-purple-400 border border-purple-500/40'
-                : 'bg-slate-800/50 text-slate-400 border border-slate-700/50 hover:border-slate-600/50'
+                ? 'bg-purple-500/10 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 border border-purple-500/20 dark:border-purple-500/40'
+                : 'bg-white dark:bg-slate-800/50 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700/50 hover:border-slate-300 dark:hover:border-slate-600/50'
             "
           >
             Все тесты
@@ -33,8 +35,8 @@
             class="px-4 py-2 rounded-lg text-sm font-medium transition-all"
             :class="
               activeFilter === 'active'
-                ? 'bg-purple-500/20 text-purple-400 border border-purple-500/40'
-                : 'bg-slate-800/50 text-slate-400 border border-slate-700/50 hover:border-slate-600/50'
+                ? 'bg-purple-500/10 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 border border-purple-500/20 dark:border-purple-500/40'
+                : 'bg-white dark:bg-slate-800/50 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700/50 hover:border-slate-300 dark:hover:border-slate-600/50'
             "
           >
             Активные
@@ -44,31 +46,37 @@
 
       <!-- Stats Overview -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="bg-slate-800/30 rounded-xl p-4 border border-purple-500/20">
-          <div class="text-2xl font-bold text-white mb-1 font-mono">
+        <div
+          class="bg-white dark:bg-slate-800/30 rounded-xl p-4 border border-purple-500/20 shadow-sm dark:shadow-none"
+        >
+          <div class="text-2xl font-bold text-slate-900 dark:text-white mb-1 font-mono">
             {{ stats.total }}
           </div>
-          <div class="text-slate-400 text-xs">Всего тестов</div>
+          <div class="text-slate-500 dark:text-slate-400 text-xs">Всего тестов</div>
         </div>
         <div
-          class="bg-slate-800/30 rounded-xl p-4 border border-emerald-500/20"
+          class="bg-white dark:bg-slate-800/30 rounded-xl p-4 border border-emerald-500/20 shadow-sm dark:shadow-none"
         >
-          <div class="text-2xl font-bold text-white mb-1 font-mono">
+          <div class="text-2xl font-bold text-slate-900 dark:text-white mb-1 font-mono">
             {{ stats.completed }}
           </div>
-          <div class="text-slate-400 text-xs">Завершено</div>
+          <div class="text-slate-500 dark:text-slate-400 text-xs">Завершено</div>
         </div>
-        <div class="bg-slate-800/30 rounded-xl p-4 border border-amber-500/20">
-          <div class="text-2xl font-bold text-white mb-1 font-mono">
+        <div
+          class="bg-white dark:bg-slate-800/30 rounded-xl p-4 border border-amber-500/20 shadow-sm dark:shadow-none"
+        >
+          <div class="text-2xl font-bold text-slate-900 dark:text-white mb-1 font-mono">
             {{ stats.inProgress }}
           </div>
-          <div class="text-slate-400 text-xs">В процессе</div>
+          <div class="text-slate-500 dark:text-slate-400 text-xs">В процессе</div>
         </div>
-        <div class="bg-slate-800/30 rounded-xl p-4 border border-cyan-500/20">
-          <div class="text-2xl font-bold text-white mb-1 font-mono">
+        <div
+          class="bg-white dark:bg-slate-800/30 rounded-xl p-4 border border-cyan-500/20 shadow-sm dark:shadow-none"
+        >
+          <div class="text-2xl font-bold text-slate-900 dark:text-white mb-1 font-mono">
             {{ stats.available }}
           </div>
-          <div class="text-slate-400 text-xs">Доступно</div>
+          <div class="text-slate-500 dark:text-slate-400 text-xs">Доступно</div>
         </div>
       </div>
     </div>
@@ -78,13 +86,13 @@
       <div
         v-for="experiment in filteredExperiments"
         :key="experiment.id"
-        class="experiment-card bg-slate-800/30 rounded-xl border border-slate-700/50 overflow-hidden hover:border-purple-500/40 transition-all duration-300 group"
+        class="experiment-card bg-white dark:bg-slate-800/30 rounded-xl border border-slate-200 dark:border-slate-700/50 overflow-hidden hover:border-purple-500/40 transition-all duration-300 group shadow-sm dark:shadow-none"
         @mouseenter="hoveredCard = experiment.id"
         @mouseleave="hoveredCard = null"
       >
         <!-- Card Header with Gradient -->
         <div
-          class="relative p-6 border-b border-slate-700/50"
+          class="relative p-6 border-b border-slate-100 dark:border-slate-700/50"
           :class="getGradientClass(experiment.category)"
         >
           <div
@@ -110,11 +118,11 @@
               </div>
             </div>
             <h3
-              class="text-xl font-bold text-white mb-2 group-hover:text-purple-400 transition-colors"
+              class="text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors"
             >
               {{ experiment.name }}
             </h3>
-            <p class="text-slate-400 text-sm leading-relaxed">
+            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
               {{ experiment.description }}
             </p>
           </div>
@@ -127,18 +135,18 @@
             <div>
               <div class="text-slate-500 text-xs mb-1">Длительность</div>
               <div
-                class="text-white text-sm font-medium flex items-center space-x-1"
+                class="text-slate-900 dark:text-white text-sm font-medium flex items-center space-x-1"
               >
-                <i class="fas fa-clock text-cyan-400 text-xs"></i>
+                <i class="fas fa-clock text-cyan-600 dark:text-cyan-400 text-xs"></i>
                 <span>{{ experiment.duration }}</span>
               </div>
             </div>
             <div>
               <div class="text-slate-500 text-xs mb-1">Вопросов</div>
               <div
-                class="text-white text-sm font-medium flex items-center space-x-1"
+                class="text-slate-900 dark:text-white text-sm font-medium flex items-center space-x-1"
               >
-                <i class="fas fa-list-check text-purple-400 text-xs"></i>
+                <i class="fas fa-list-check text-purple-600 dark:text-purple-400 text-xs"></i>
                 <span>{{ experiment.questions }}</span>
               </div>
             </div>
@@ -152,7 +160,7 @@
                   :class="
                     i <= experiment.difficulty
                       ? getDifficultyColor(experiment.difficulty)
-                      : 'text-slate-700'
+                      : 'text-slate-300 dark:text-slate-700'
                   "
                 ></i>
               </div>
@@ -162,13 +170,13 @@
           <!-- Progress Bar (if in progress) -->
           <div v-if="experiment.status === 'in-progress'" class="mb-6">
             <div class="flex justify-between items-center mb-2">
-              <span class="text-slate-400 text-xs">Прогресс</span>
-              <span class="text-amber-400 text-xs font-mono">
+              <span class="text-slate-500 dark:text-slate-400 text-xs">Прогресс</span>
+              <span class="text-amber-600 dark:text-amber-400 text-xs font-mono">
                 {{ experiment.progress }}%
               </span>
             </div>
             <div
-              class="w-full bg-slate-700/50 rounded-full h-2 overflow-hidden"
+              class="w-full bg-slate-200 dark:bg-slate-700/50 rounded-full h-2 overflow-hidden"
             >
               <div
                 class="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full transition-all duration-500"
@@ -182,7 +190,7 @@
             <span
               v-for="tag in experiment.tags"
               :key="tag"
-              class="px-2 py-1 bg-slate-700/50 rounded text-slate-400 text-xs"
+              class="px-2 py-1 bg-slate-100 dark:bg-slate-700/50 rounded text-slate-600 dark:text-slate-400 text-xs"
             >
               {{ tag }}
             </span>
@@ -204,12 +212,12 @@
     <!-- Empty State -->
     <div v-if="filteredExperiments.length === 0" class="text-center py-16">
       <div
-        class="w-20 h-20 rounded-full bg-slate-800/50 flex items-center justify-center mx-auto mb-4"
+        class="w-20 h-20 rounded-full bg-slate-100 dark:bg-slate-800/50 flex items-center justify-center mx-auto mb-4"
       >
-        <i class="fas fa-flask text-slate-600 text-3xl"></i>
+        <i class="fas fa-flask text-slate-400 dark:text-slate-600 text-3xl"></i>
       </div>
-      <h3 class="text-xl font-bold text-white mb-2">Нет экспериментов</h3>
-      <p class="text-slate-400">
+      <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Нет экспериментов</h3>
+      <p class="text-slate-500 dark:text-slate-400">
         В этой категории пока нет доступных экспериментов
       </p>
     </div>
@@ -240,7 +248,7 @@ const experiments = ref([
     description:
       "Глубокий анализ эмоционального интеллекта и способности к эмпатии",
     category: "emotional",
-    icon: "fas fa-heart-pulse text-pink-400",
+    icon: "fas fa-heart-pulse text-pink-600 dark:text-pink-400",
     duration: "15 мин",
     questions: 42,
     difficulty: 2,
@@ -254,7 +262,7 @@ const experiments = ref([
     description:
       "Классическая модель личности: экстраверсия, доброжелательность, добросовестность",
     category: "personality",
-    icon: "fas fa-brain text-purple-400",
+    icon: "fas fa-brain text-purple-600 dark:text-purple-400",
     duration: "20 мин",
     questions: 60,
     difficulty: 2,
@@ -267,7 +275,7 @@ const experiments = ref([
     name: "Юнгианские Архетипы",
     description: "Определение доминирующих архетипов в вашем бессознательном",
     category: "archetype",
-    icon: "fas fa-masks-theater text-indigo-400",
+    icon: "fas fa-masks-theater text-indigo-600 dark:text-indigo-400",
     duration: "25 мин",
     questions: 48,
     difficulty: 3,
@@ -280,7 +288,7 @@ const experiments = ref([
     name: "Когнитивные Стили",
     description: "Как вы обрабатываете информацию и принимаете решения",
     category: "cognitive",
-    icon: "fas fa-network-wired text-cyan-400",
+    icon: "fas fa-network-wired text-cyan-600 dark:text-cyan-400",
     duration: "18 мин",
     questions: 36,
     difficulty: 2,
@@ -293,7 +301,7 @@ const experiments = ref([
     description:
       "Исследование ваших глубинных ценностей и жизненных приоритетов",
     category: "values",
-    icon: "fas fa-gem text-emerald-400",
+    icon: "fas fa-gem text-emerald-600 dark:text-emerald-400",
     duration: "12 мин",
     questions: 30,
     difficulty: 1,
@@ -306,7 +314,7 @@ const experiments = ref([
     name: "Стили Привязанности",
     description: "Паттерны формирования отношений и эмоциональной близости",
     category: "relationships",
-    icon: "fas fa-users-line text-rose-400",
+    icon: "fas fa-users-line text-rose-600 dark:text-rose-400",
     duration: "16 мин",
     questions: 38,
     difficulty: 2,
@@ -319,7 +327,7 @@ const experiments = ref([
     name: "Творческий Потенциал",
     description: "Оценка креативности и способности к нестандартному мышлению",
     category: "creativity",
-    icon: "fas fa-lightbulb text-amber-400",
+    icon: "fas fa-lightbulb text-amber-600 dark:text-amber-400",
     duration: "22 мин",
     questions: 45,
     difficulty: 2,
@@ -331,7 +339,7 @@ const experiments = ref([
     name: "Стрессоустойчивость",
     description: "Анализ копинг-стратегий и реакций на стрессовые ситуации",
     category: "resilience",
-    icon: "fas fa-shield-heart text-blue-400",
+    icon: "fas fa-shield-heart text-blue-600 dark:text-blue-400",
     duration: "14 мин",
     questions: 32,
     difficulty: 1,
@@ -395,9 +403,9 @@ const getIconBg = (category) => {
 const getStatusBadge = (status) => {
   const badges = {
     completed:
-      "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30",
-    "in-progress": "bg-amber-500/20 text-amber-400 border border-amber-500/30",
-    available: "bg-cyan-500/20 text-cyan-400 border border-cyan-500/30",
+      "bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 dark:border-emerald-500/30",
+    "in-progress": "bg-amber-500/10 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/20 dark:border-amber-500/30",
+    available: "bg-cyan-500/10 dark:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20 dark:border-cyan-500/30",
   };
   return badges[status] || badges.available;
 };
@@ -413,9 +421,9 @@ const getStatusText = (status) => {
 
 const getDifficultyColor = (difficulty) => {
   const colors = {
-    1: "text-emerald-400",
-    2: "text-amber-400",
-    3: "text-red-400",
+    1: "text-emerald-600 dark:text-emerald-400",
+    2: "text-amber-600 dark:text-amber-400",
+    3: "text-red-600 dark:text-red-400",
   };
   return colors[difficulty] || "text-slate-400";
 };
@@ -423,7 +431,7 @@ const getDifficultyColor = (difficulty) => {
 const getActionButtonClass = (status) => {
   const classes = {
     completed:
-      "bg-slate-700/50 text-slate-300 hover:bg-slate-700 border border-slate-600/50",
+      "bg-slate-100 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-600/50",
     "in-progress":
       "bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:from-amber-600 hover:to-orange-600 shadow-lg shadow-amber-500/25",
     available:

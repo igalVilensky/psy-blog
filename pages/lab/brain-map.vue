@@ -1,7 +1,7 @@
 <!-- pages/lab/brain-map.vue -->
 <template>
   <div
-    class="brain-map-station min-h-screen bg-slate-950 px-4 sm:px-6 lg:px-8 py-8"
+    class="brain-map-station min-h-screen bg-slate-50 dark:bg-slate-950 px-4 sm:px-6 lg:px-8 py-8 transition-colors duration-500"
   >
     <!-- Header Section -->
     <div class="max-w-7xl mx-auto mb-8">
@@ -10,12 +10,12 @@
       >
         <div>
           <h1
-            class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-3 tracking-tight gradient-text"
+            class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight gradient-text"
           >
             ИНТЕРАКТИВНАЯ КАРТА МОЗГА
           </h1>
           <p
-            class="text-cyan-300/70 text-sm sm:text-base max-w-2xl leading-relaxed"
+            class="text-slate-600 dark:text-cyan-300/70 text-sm sm:text-base max-w-2xl leading-relaxed"
           >
             Исследуйте структуры и функции человеческого мозга. Нажмите на
             область для подробной информации.
@@ -25,14 +25,14 @@
         <!-- Stats Cards -->
         <div class="flex items-center gap-4 sm:gap-6">
           <div class="stat-card">
-            <div class="text-2xl sm:text-3xl font-bold text-cyan-400">8</div>
-            <div class="text-xs text-slate-400 uppercase tracking-wide">
+            <div class="text-2xl sm:text-3xl font-bold text-cyan-600 dark:text-cyan-400">8</div>
+            <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide">
               Областей
             </div>
           </div>
           <div class="stat-card">
-            <div class="text-2xl sm:text-3xl font-bold text-purple-400">12</div>
-            <div class="text-xs text-slate-400 uppercase tracking-wide">
+            <div class="text-2xl sm:text-3xl font-bold text-purple-600 dark:text-purple-400">12</div>
+            <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide">
               Функций
             </div>
           </div>
@@ -54,7 +54,7 @@
             class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center"
           >
             <svg
-              class="w-5 h-5 text-cyan-400"
+              class="w-5 h-5 text-cyan-600 dark:text-cyan-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -67,14 +67,14 @@
               />
             </svg>
           </div>
-          <h3 class="text-lg font-semibold text-white">Факты о мозге</h3>
+          <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Факты о мозге</h3>
         </div>
         <div class="space-y-3">
           <div v-for="fact in brainFacts" :key="fact.id" class="fact-item">
-            <div class="text-cyan-400 text-sm font-medium mb-1">
+            <div class="text-cyan-600 dark:text-cyan-400 text-sm font-medium mb-1">
               {{ fact.title }}
             </div>
-            <div class="text-slate-400 text-xs leading-relaxed">
+            <div class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
               {{ fact.description }}
             </div>
           </div>
@@ -88,7 +88,7 @@
             class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center"
           >
             <svg
-              class="w-5 h-5 text-purple-400"
+              class="w-5 h-5 text-purple-600 dark:text-purple-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -101,14 +101,14 @@
               />
             </svg>
           </div>
-          <h3 class="text-lg font-semibold text-white">Основные функции</h3>
+          <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Основные функции</h3>
         </div>
         <div class="space-y-3">
           <div v-for="func in mainFunctions" :key="func.id" class="fact-item">
-            <div class="text-purple-400 text-sm font-medium mb-1">
+            <div class="text-purple-600 dark:text-purple-400 text-sm font-medium mb-1">
               {{ func.title }}
             </div>
-            <div class="text-slate-400 text-xs leading-relaxed">
+            <div class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
               {{ func.description }}
             </div>
           </div>
@@ -122,7 +122,7 @@
             class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center"
           >
             <svg
-              class="w-5 h-5 text-emerald-400"
+              class="w-5 h-5 text-emerald-600 dark:text-emerald-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -135,14 +135,14 @@
               />
             </svg>
           </div>
-          <h3 class="text-lg font-semibold text-white">Знали ли вы?</h3>
+          <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Знали ли вы?</h3>
         </div>
         <div class="space-y-3">
           <div v-for="item in didYouKnow" :key="item.id" class="fact-item">
-            <div class="text-emerald-400 text-sm font-medium mb-1">
+            <div class="text-emerald-600 dark:text-emerald-400 text-sm font-medium mb-1">
               {{ item.title }}
             </div>
-            <div class="text-slate-400 text-xs leading-relaxed">
+            <div class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
               {{ item.description }}
             </div>
           </div>
@@ -229,19 +229,19 @@ const didYouKnow = [
 }
 
 .stat-card {
-  @apply text-center px-4 py-3 rounded-xl bg-slate-900/50 border border-cyan-500/10;
+  @apply text-center px-4 py-3 rounded-xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/10 shadow-sm dark:shadow-none;
 }
 
 .info-card {
-  @apply p-6 rounded-2xl bg-slate-900/50 border border-cyan-500/10 backdrop-blur-sm;
+  @apply p-6 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/10 backdrop-blur-sm shadow-sm dark:shadow-none;
 }
 
 .fact-item {
-  @apply p-3 rounded-lg bg-slate-800/30 border border-slate-700/50 transition-all duration-300;
+  @apply p-3 rounded-lg bg-slate-50 dark:bg-slate-800/30 border border-slate-200 dark:border-slate-700/50 transition-all duration-300;
 }
 
 .fact-item:hover {
-  @apply border-cyan-500/30 bg-slate-800/50;
+  @apply border-cyan-500/30 bg-slate-100 dark:bg-slate-800/50;
 }
 
 @media (max-width: 640px) {

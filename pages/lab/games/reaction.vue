@@ -1,19 +1,19 @@
 <!-- pages/lab/games/reaction.vue -->
 <template>
   <div
-    class="reaction-station min-h-screen bg-slate-950 px-4 sm:px-6 lg:px-8 py-6 sm:py-8"
+    class="reaction-station min-h-screen bg-slate-50 dark:bg-slate-950 px-4 sm:px-6 lg:px-8 py-6 sm:py-8 transition-colors duration-500"
   >
     <div class="max-w-5xl mx-auto">
       <!-- Header Section -->
       <div class="mb-8 sm:mb-12">
         <div class="text-center mb-6 sm:mb-8">
           <h1
-            class="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight gradient-text mb-3 sm:mb-4"
+            class="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-slate-900 dark:text-white mb-3 sm:mb-4 gradient-text"
           >
             СКОРОСТЬ РЕАКЦИИ
           </h1>
           <p
-            class="text-cyan-300/80 text-base sm:text-lg lg:text-xl leading-relaxed max-w-2xl mx-auto px-4"
+            class="text-slate-600 dark:text-cyan-300/80 text-base sm:text-lg lg:text-xl leading-relaxed max-w-2xl mx-auto px-4"
           >
             Измерьте время реакции на визуальный сигнал. 5 попыток. Чем меньше
             миллисекунд — тем лучше!
@@ -24,36 +24,36 @@
         <div class="flex flex-wrap gap-3 sm:gap-4 justify-center">
           <div class="stat-card flex-1 min-w-[140px] sm:min-w-[160px]">
             <div
-              class="text-2xl sm:text-3xl lg:text-4xl font-black text-cyan-400"
+              class="text-2xl sm:text-3xl lg:text-4xl font-black text-cyan-600 dark:text-cyan-400"
             >
               {{ formatTime(avgTime) }}
             </div>
             <div
-              class="text-[10px] sm:text-xs uppercase tracking-wider text-slate-400 mt-1"
+              class="text-[10px] sm:text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-1"
             >
               Среднее
             </div>
           </div>
           <div class="stat-card flex-1 min-w-[140px] sm:min-w-[160px]">
             <div
-              class="text-2xl sm:text-3xl lg:text-4xl font-black text-emerald-400"
+              class="text-2xl sm:text-3xl lg:text-4xl font-black text-emerald-600 dark:text-emerald-400"
             >
               {{ formatTime(sessionBest) }}
             </div>
             <div
-              class="text-[10px] sm:text-xs uppercase tracking-wider text-slate-400 mt-1"
+              class="text-[10px] sm:text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-1"
             >
               Лучшее
             </div>
           </div>
           <div class="stat-card flex-1 min-w-[140px] sm:min-w-[160px]">
             <div
-              class="text-2xl sm:text-3xl lg:text-4xl font-bold text-purple-400"
+              class="text-2xl sm:text-3xl lg:text-4xl font-bold text-purple-600 dark:text-purple-400"
             >
               {{ times.length }} / {{ maxTrials }}
             </div>
             <div
-              class="text-[10px] sm:text-xs uppercase tracking-wider text-slate-400 mt-1"
+              class="text-[10px] sm:text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-1"
             >
               Попыток
             </div>
@@ -67,64 +67,64 @@
         class="text-center space-y-6 sm:space-y-8 max-w-2xl mx-auto mb-12"
       >
         <div class="space-y-4 sm:space-y-6">
-          <h2 class="text-2xl sm:text-3xl font-bold text-white mb-4 sm:mb-6">
+          <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-4 sm:mb-6">
             Как играть:
           </h2>
           <div
             class="grid sm:grid-cols-2 gap-4 text-left max-w-lg mx-auto px-4"
           >
             <div
-              class="flex items-start gap-3 p-4 rounded-xl bg-slate-900/40 border border-slate-700/50"
+              class="flex items-start gap-3 p-4 rounded-xl bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none"
             >
               <div
-                class="flex-shrink-0 w-8 h-8 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400 font-bold"
+                class="flex-shrink-0 w-8 h-8 rounded-full bg-cyan-100 dark:bg-cyan-500/20 flex items-center justify-center text-cyan-600 dark:text-cyan-400 font-bold"
               >
                 1
               </div>
               <div>
-                <div class="font-semibold text-white mb-1">Начните тест</div>
-                <div class="text-sm text-slate-400">Нажмите кнопку старта</div>
+                <div class="font-semibold text-slate-900 dark:text-white mb-1">Начните тест</div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">Нажмите кнопку старта</div>
               </div>
             </div>
             <div
-              class="flex items-start gap-3 p-4 rounded-xl bg-slate-900/40 border border-slate-700/50"
+              class="flex items-start gap-3 p-4 rounded-xl bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none"
             >
               <div
-                class="flex-shrink-0 w-8 h-8 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400 font-bold"
+                class="flex-shrink-0 w-8 h-8 rounded-full bg-cyan-100 dark:bg-cyan-500/20 flex items-center justify-center text-cyan-600 dark:text-cyan-400 font-bold"
               >
                 2
               </div>
               <div>
-                <div class="font-semibold text-white mb-1">Ждите сигнала</div>
-                <div class="text-sm text-slate-400">Экран станет зелёным</div>
+                <div class="font-semibold text-slate-900 dark:text-white mb-1">Ждите сигнала</div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">Экран станет зелёным</div>
               </div>
             </div>
             <div
-              class="flex items-start gap-3 p-4 rounded-xl bg-slate-900/40 border border-slate-700/50"
+              class="flex items-start gap-3 p-4 rounded-xl bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none"
             >
               <div
-                class="flex-shrink-0 w-8 h-8 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400 font-bold"
+                class="flex-shrink-0 w-8 h-8 rounded-full bg-cyan-100 dark:bg-cyan-500/20 flex items-center justify-center text-cyan-600 dark:text-cyan-400 font-bold"
               >
                 3
               </div>
               <div>
-                <div class="font-semibold text-white mb-1">Кликните быстро</div>
-                <div class="text-sm text-slate-400">
+                <div class="font-semibold text-slate-900 dark:text-white mb-1">Кликните быстро</div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">
                   Как только увидите зелёный
                 </div>
               </div>
             </div>
             <div
-              class="flex items-start gap-3 p-4 rounded-xl bg-slate-900/40 border border-slate-700/50"
+              class="flex items-start gap-3 p-4 rounded-xl bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none"
             >
               <div
-                class="flex-shrink-0 w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center text-red-400 font-bold"
+                class="flex-shrink-0 w-8 h-8 rounded-full bg-red-100 dark:bg-red-500/20 flex items-center justify-center text-red-600 dark:text-red-400 font-bold"
               >
                 !
               </div>
               <div>
-                <div class="font-semibold text-white mb-1">Не спешите</div>
-                <div class="text-sm text-slate-400">
+                <div class="font-semibold text-slate-900 dark:text-white mb-1">Не спешите</div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">
                   Клик до сигнала — штраф
                 </div>
               </div>
@@ -151,14 +151,14 @@
       >
         <div class="max-w-md mx-auto">
           <div class="flex items-center justify-between mb-3">
-            <span class="text-sm sm:text-base font-medium text-slate-300"
+            <span class="text-sm sm:text-base font-medium text-slate-600 dark:text-slate-300"
               >Попытка {{ times.length + 1 }} из {{ maxTrials }}</span
             >
-            <span class="text-sm sm:text-base font-semibold text-cyan-400"
+            <span class="text-sm sm:text-base font-semibold text-cyan-600 dark:text-cyan-400"
               >{{ Math.round((times.length / maxTrials) * 100) }}%</span
             >
           </div>
-          <div class="h-2 bg-slate-800 rounded-full overflow-hidden">
+          <div class="h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
             <div
               class="h-full bg-gradient-to-r from-cyan-500 to-purple-500 transition-all duration-500 ease-out"
               :style="{ width: `${(times.length / maxTrials) * 100}%` }"
@@ -184,16 +184,16 @@
             <div v-if="state === 'waiting'" class="space-y-4 sm:space-y-6">
               <div class="flex justify-center mb-4">
                 <div
-                  class="w-12 h-12 sm:w-16 sm:h-16 border-4 border-slate-600 border-t-cyan-400 rounded-full animate-spin"
+                  class="w-12 h-12 sm:w-16 sm:h-16 border-4 border-slate-300 dark:border-slate-600 border-t-cyan-500 dark:border-t-cyan-400 rounded-full animate-spin"
                 ></div>
               </div>
               <div
-                class="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-200"
+                class="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-800 dark:text-slate-200"
               >
                 Приготовьтесь...
               </div>
               <p
-                class="text-lg sm:text-xl lg:text-2xl text-slate-400 font-medium"
+                class="text-lg sm:text-xl lg:text-2xl text-slate-600 dark:text-slate-400 font-medium"
               >
                 Ждите зелёного сигнала
               </p>
@@ -237,7 +237,7 @@
                 class="mt-4 sm:mt-6"
               >
                 <div
-                  class="inline-block px-4 py-2 rounded-full bg-slate-900/60 border border-slate-700/50 text-xs sm:text-sm text-slate-300"
+                  class="inline-block px-4 py-2 rounded-full bg-slate-800/60 border border-slate-700/50 text-xs sm:text-sm text-white dark:text-slate-300"
                 >
                   {{ getImprovementTip(feedbackTime) }}
                 </div>
@@ -246,10 +246,10 @@
 
             <!-- Results Preview -->
             <div v-else-if="state === 'results'" class="space-y-6 sm:space-y-8">
-              <div class="text-3xl sm:text-4xl font-bold text-emerald-400">
+              <div class="text-3xl sm:text-4xl font-bold text-emerald-600 dark:text-emerald-400">
                 Тест завершен! 🎉
               </div>
-              <p class="text-lg sm:text-xl text-slate-300">
+              <p class="text-lg sm:text-xl text-slate-600 dark:text-slate-300">
                 Смотрите результаты ниже
               </p>
             </div>
@@ -266,10 +266,10 @@
         <div class="text-center">
           <div
             v-if="newRecord"
-            class="inline-flex items-center gap-3 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 border-2 border-emerald-500/40 px-4 sm:px-6 py-3 sm:py-4 rounded-2xl mb-4 sm:mb-6 animate-scale-in"
+            class="inline-flex items-center gap-3 bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 dark:from-emerald-500/20 dark:to-cyan-500/20 border-2 border-emerald-500/40 px-4 sm:px-6 py-3 sm:py-4 rounded-2xl mb-4 sm:mb-6 animate-scale-in"
           >
             <svg
-              class="w-6 h-6 sm:w-8 sm:h-8 text-emerald-400"
+              class="w-6 h-6 sm:w-8 sm:h-8 text-emerald-600 dark:text-emerald-400"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
@@ -277,14 +277,14 @@
                 d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
               />
             </svg>
-            <span class="text-xl sm:text-2xl font-bold text-emerald-300"
+            <span class="text-xl sm:text-2xl font-bold text-emerald-700 dark:text-emerald-300"
               >Новый рекорд!</span
             >
           </div>
           <h2 class="text-3xl sm:text-4xl font-bold gradient-text mb-2">
             Ваши результаты
           </h2>
-          <p class="text-slate-400 text-sm sm:text-base">
+          <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
             {{ getPerformanceSummary() }}
           </p>
         </div>
@@ -293,67 +293,67 @@
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
           <div class="stat-card-large">
             <div
-              class="text-3xl sm:text-4xl lg:text-5xl font-black text-cyan-400"
+              class="text-3xl sm:text-4xl lg:text-5xl font-black text-cyan-600 dark:text-cyan-400"
             >
               {{ formatTime(avgTime) }}
             </div>
             <div
-              class="text-xs sm:text-sm uppercase tracking-wider text-slate-400 mt-2"
+              class="text-xs sm:text-sm uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-2"
             >
               Среднее время
             </div>
-            <div class="mt-2 text-xs text-slate-500">
+            <div class="mt-2 text-xs text-slate-500 dark:text-slate-500">
               {{ getComparisonText(avgTime) }}
             </div>
           </div>
           <div class="stat-card-large">
             <div
-              class="text-3xl sm:text-4xl lg:text-5xl font-black text-emerald-400"
+              class="text-3xl sm:text-4xl lg:text-5xl font-black text-emerald-600 dark:text-emerald-400"
             >
               {{ formatTime(sessionBest) }}
             </div>
             <div
-              class="text-xs sm:text-sm uppercase tracking-wider text-slate-400 mt-2"
+              class="text-xs sm:text-sm uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-2"
             >
               Лучшее в серии
             </div>
-            <div class="mt-2 text-xs text-slate-500">Ваш пик</div>
+            <div class="mt-2 text-xs text-slate-500 dark:text-slate-500">Ваш пик</div>
           </div>
           <div class="stat-card-large">
             <div
-              class="text-3xl sm:text-4xl lg:text-5xl font-black text-purple-400"
+              class="text-3xl sm:text-4xl lg:text-5xl font-black text-purple-600 dark:text-purple-400"
             >
               {{ percentile }}
             </div>
             <div
-              class="text-xs sm:text-sm uppercase tracking-wider text-slate-400 mt-2"
+              class="text-xs sm:text-sm uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-2"
             >
               Уровень
             </div>
-            <div class="mt-2 text-xs text-slate-500">Ваш рейтинг</div>
+            <div class="mt-2 text-xs text-slate-500 dark:text-slate-500">Ваш рейтинг</div>
           </div>
           <div class="stat-card-large">
             <div
-              class="text-3xl sm:text-4xl lg:text-5xl font-black text-yellow-400"
+              class="text-3xl sm:text-4xl lg:text-5xl font-black text-yellow-600 dark:text-yellow-400"
             >
               {{ formatTime(personalBest) }}
             </div>
             <div
-              class="text-xs sm:text-sm uppercase tracking-wider text-slate-400 mt-2"
+              class="text-xs sm:text-sm uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-2"
             >
               Личный рекорд
             </div>
-            <div class="mt-2 text-xs text-slate-500">Всё время</div>
+            <div class="mt-2 text-xs text-slate-500 dark:text-slate-500">Всё время</div>
           </div>
         </div>
 
         <!-- Trials List -->
         <div>
           <h3
-            class="text-xl sm:text-2xl font-semibold text-white mb-4 sm:mb-6 flex items-center gap-3 px-2"
+            class="text-xl sm:text-2xl font-semibold text-slate-900 dark:text-white mb-4 sm:mb-6 flex items-center gap-3 px-2"
           >
             <svg
-              class="w-5 h-5 sm:w-6 sm:h-6 text-cyan-400"
+              class="w-5 h-5 sm:w-6 sm:h-6 text-cyan-600 dark:text-cyan-400"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
@@ -370,14 +370,14 @@
             <div
               v-for="(time, index) in times"
               :key="index"
-              class="flex items-center justify-between p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-slate-800/40 border border-slate-700/50 hover:border-cyan-500/30 transition-all group"
+              class="flex items-center justify-between p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700/50 hover:border-cyan-500/30 transition-all group shadow-sm dark:shadow-none"
             >
               <div class="flex items-center gap-3 sm:gap-4">
                 <div
-                  class="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-slate-700/50 flex items-center justify-center"
+                  class="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-slate-100 dark:bg-slate-700/50 flex items-center justify-center"
                 >
                   <span
-                    class="text-sm sm:text-base font-bold text-slate-300 group-hover:text-cyan-300 transition-colors"
+                    class="text-sm sm:text-base font-bold text-slate-600 dark:text-slate-300 group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors"
                   >
                     {{ index + 1 }}
                   </span>
@@ -389,7 +389,7 @@
                   >
                     {{ formatTime(time) }}
                   </div>
-                  <div class="text-xs text-slate-500">
+                  <div class="text-xs text-slate-500 dark:text-slate-500">
                     {{ getTrialFeedback(time) }}
                   </div>
                 </div>
@@ -399,7 +399,7 @@
                 class="flex-shrink-0"
               >
                 <svg
-                  class="w-5 h-5 sm:w-6 sm:h-6 text-emerald-400"
+                  class="w-5 h-5 sm:w-6 sm:h-6 text-emerald-600 dark:text-emerald-400"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
@@ -435,13 +435,13 @@
       <!-- Reference Norms -->
       <div
         v-if="state !== 'instructions'"
-        class="mt-12 sm:mt-16 p-4 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-slate-900/60 to-slate-800/40 border border-cyan-500/20 backdrop-blur-sm"
+        class="mt-12 sm:mt-16 p-4 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl bg-white dark:bg-gradient-to-br dark:from-slate-900/60 dark:to-slate-800/40 border border-slate-200 dark:border-cyan-500/20 backdrop-blur-sm shadow-sm dark:shadow-none"
       >
         <h4
-          class="text-lg sm:text-xl font-semibold text-white mb-4 sm:mb-6 flex items-center gap-2"
+          class="text-lg sm:text-xl font-semibold text-slate-900 dark:text-white mb-4 sm:mb-6 flex items-center gap-2"
         >
           <svg
-            class="w-5 h-5 sm:w-6 sm:h-6 text-cyan-400"
+            class="w-5 h-5 sm:w-6 sm:h-6 text-cyan-600 dark:text-cyan-400"
             fill="currentColor"
             viewBox="0 0 20 20"
           >
@@ -457,31 +457,31 @@
           class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 text-sm sm:text-base"
         >
           <div
-            class="p-3 sm:p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30"
+            class="p-3 sm:p-4 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/30"
           >
-            <div class="font-bold text-emerald-400 mb-1">&lt; 250 мс</div>
-            <div class="text-slate-300">Отличная реакция</div>
+            <div class="font-bold text-emerald-600 dark:text-emerald-400 mb-1">&lt; 250 мс</div>
+            <div class="text-slate-600 dark:text-slate-300">Отличная реакция</div>
             <div class="text-xs text-slate-500 mt-1">Топ 10%</div>
           </div>
           <div
-            class="p-3 sm:p-4 rounded-xl bg-cyan-500/10 border border-cyan-500/30"
+            class="p-3 sm:p-4 rounded-xl bg-cyan-50 dark:bg-cyan-500/10 border border-cyan-200 dark:border-cyan-500/30"
           >
-            <div class="font-bold text-cyan-400 mb-1">250-350 мс</div>
-            <div class="text-slate-300">Хорошая реакция</div>
+            <div class="font-bold text-cyan-600 dark:text-cyan-400 mb-1">250-350 мс</div>
+            <div class="text-slate-600 dark:text-slate-300">Хорошая реакция</div>
             <div class="text-xs text-slate-500 mt-1">Топ 50%</div>
           </div>
           <div
-            class="p-3 sm:p-4 rounded-xl bg-yellow-500/10 border border-yellow-500/30"
+            class="p-3 sm:p-4 rounded-xl bg-yellow-50 dark:bg-yellow-500/10 border border-yellow-200 dark:border-yellow-500/30"
           >
-            <div class="font-bold text-yellow-400 mb-1">350-450 мс</div>
-            <div class="text-slate-300">Норма</div>
+            <div class="font-bold text-yellow-600 dark:text-yellow-400 mb-1">350-450 мс</div>
+            <div class="text-slate-600 dark:text-slate-300">Норма</div>
             <div class="text-xs text-slate-500 mt-1">Средний уровень</div>
           </div>
           <div
-            class="p-3 sm:p-4 rounded-xl bg-orange-500/10 border border-orange-500/30"
+            class="p-3 sm:p-4 rounded-xl bg-orange-50 dark:bg-orange-500/10 border border-orange-200 dark:border-orange-500/30"
           >
-            <div class="font-bold text-orange-400 mb-1">&gt; 450 мс</div>
-            <div class="text-slate-300">Есть потенциал</div>
+            <div class="font-bold text-orange-600 dark:text-orange-400 mb-1">&gt; 450 мс</div>
+            <div class="text-slate-600 dark:text-slate-300">Есть потенциал</div>
             <div class="text-xs text-slate-500 mt-1">Тренируйтесь!</div>
           </div>
         </div>
@@ -561,7 +561,7 @@ const percentile = computed(() => {
 });
 
 const areaClasses = computed(() => ({
-  "bg-slate-900/80 border-slate-700/50": [
+  "bg-slate-100 dark:bg-slate-900/80 border-slate-300 dark:border-slate-700/50": [
     "waiting",
     "feedback",
     "results",
@@ -595,10 +595,10 @@ const feedbackMsg = computed(() => {
 // HELPER FUNCTIONS FOR FEEDBACK
 // ===========================
 const getTimeClass = (time) => {
-  if (time < 250) return "text-emerald-400";
-  if (time < 350) return "text-cyan-400";
-  if (time < 450) return "text-yellow-400";
-  return "text-orange-400";
+  if (time < 250) return "text-emerald-600 dark:text-emerald-400";
+  if (time < 350) return "text-cyan-600 dark:text-cyan-400";
+  if (time < 450) return "text-yellow-600 dark:text-yellow-400";
+  return "text-orange-600 dark:text-orange-400";
 };
 
 const getTrialFeedback = (time) => {
@@ -724,19 +724,21 @@ onUnmounted(() => {
 .stat-card {
   @apply text-center px-4 py-3 sm:px-6 sm:py-4 
          rounded-xl sm:rounded-2xl 
-         bg-slate-900/60 border border-cyan-500/20 
+         bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-cyan-500/20 
          backdrop-blur-sm 
          transition-all duration-300
+         shadow-sm dark:shadow-none
          hover:border-cyan-500/40 hover:shadow-lg hover:shadow-cyan-500/10;
 }
 
 .stat-card-large {
   @apply text-center px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8 
          rounded-xl sm:rounded-2xl 
-         bg-slate-900/60 border border-cyan-500/20 
+         bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-cyan-500/20 
          backdrop-blur-sm 
          transition-all duration-300
-         hover:border-cyan-500/40 hover:bg-slate-900/80
+         shadow-sm dark:shadow-none
+         hover:border-cyan-500/40 hover:bg-slate-50 dark:hover:bg-slate-900/80
          hover:shadow-lg hover:shadow-cyan-500/10
          hover:-translate-y-0.5;
 }
@@ -762,9 +764,9 @@ onUnmounted(() => {
 .btn-secondary {
   @apply inline-flex items-center justify-center 
          px-6 py-3 rounded-xl 
-         bg-slate-800/50 border border-slate-600/50 
-         text-slate-300 font-semibold 
-         hover:bg-slate-700 hover:border-slate-400 
+         bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-600/50 
+         text-slate-600 dark:text-slate-300 font-semibold 
+         hover:bg-slate-200 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-400 
          transition-all duration-300 
          transform hover:scale-105 active:scale-95;
 }

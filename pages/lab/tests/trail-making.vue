@@ -1,6 +1,6 @@
 <template>
   <div
-    class="trail-making-test min-h-screen bg-slate-950 px-4 sm:px-6 lg:px-8 py-8"
+    class="trail-making-test min-h-screen bg-slate-50 dark:bg-slate-950 px-4 sm:px-6 lg:px-8 py-8 transition-colors duration-500"
   >
     <div class="max-w-6xl mx-auto">
       <!-- Intro Screen -->
@@ -21,12 +21,12 @@
         </div>
 
         <h1
-          class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4 tracking-tight gradient-text"
+          class="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-4 tracking-tight gradient-text"
         >
           TRAIL MAKING TEST
         </h1>
         <p
-          class="text-emerald-300/80 text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto mb-8"
+          class="text-slate-600 dark:text-emerald-300/80 text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto mb-8"
         >
           Классический нейропсихологический тест на скорость обработки
           информации и переключение внимания
@@ -39,8 +39,8 @@
             >
               <i class="fas fa-stopwatch text-emerald-400 text-xl"></i>
             </div>
-            <div class="text-2xl font-bold text-emerald-400 mb-1">3-5 мин</div>
-            <div class="text-sm text-slate-400">Длительность</div>
+            <div class="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mb-1">3-5 мин</div>
+            <div class="text-sm text-slate-500 dark:text-slate-400">Длительность</div>
           </div>
           <div class="info-card-small">
             <div
@@ -48,8 +48,8 @@
             >
               <i class="fas fa-exchange-alt text-teal-400 text-xl"></i>
             </div>
-            <div class="text-2xl font-bold text-teal-400 mb-1">2 части</div>
-            <div class="text-sm text-slate-400">A + B</div>
+            <div class="text-2xl font-bold text-teal-600 dark:text-teal-400 mb-1">2 части</div>
+            <div class="text-sm text-slate-500 dark:text-slate-400">A + B</div>
           </div>
           <div class="info-card-small">
             <div
@@ -57,28 +57,28 @@
             >
               <i class="fas fa-certificate text-cyan-400 text-xl"></i>
             </div>
-            <div class="text-2xl font-bold text-cyan-400 mb-1">Научно</div>
-            <div class="text-sm text-slate-400">Валидирован</div>
+            <div class="text-2xl font-bold text-cyan-600 dark:text-cyan-400 mb-1">Научно</div>
+            <div class="text-sm text-slate-500 dark:text-slate-400">Валидирован</div>
           </div>
         </div>
 
         <div class="info-card max-w-2xl mx-auto mb-8">
           <div class="flex items-start gap-4">
             <div
-              class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center flex-shrink-0"
+              class="w-10 h-10 rounded-lg bg-emerald-100 dark:bg-emerald-500/20 flex items-center justify-center flex-shrink-0"
             >
-              <i class="fas fa-info-circle text-emerald-400"></i>
+              <i class="fas fa-info-circle text-emerald-600 dark:text-emerald-400"></i>
             </div>
             <div class="text-left">
-              <h3 class="text-lg font-semibold text-white mb-2">
+              <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-2">
                 Что измеряет этот тест?
               </h3>
-              <p class="text-slate-300 text-sm leading-relaxed">
+              <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
                 Trail Making Test оценивает
-                <strong class="text-emerald-400"
+                <strong class="text-emerald-600 dark:text-emerald-400"
                   >скорость обработки информации</strong
-                >, <strong class="text-teal-400">визуальное внимание</strong> и
-                <strong class="text-cyan-400">исполнительные функции</strong>.
+                >, <strong class="text-teal-600 dark:text-teal-400">визуальное внимание</strong> и
+                <strong class="text-cyan-600 dark:text-cyan-400">исполнительные функции</strong>.
                 Часть B особенно чувствительна к когнитивной гибкости и
                 способности переключаться между задачами.
               </p>

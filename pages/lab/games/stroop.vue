@@ -1,19 +1,19 @@
 <!-- pages/lab/games/stroop.vue -->
 <template>
   <div
-    class="stroop-game min-h-screen bg-slate-950 px-4 sm:px-6 lg:px-8 py-6 sm:py-8"
+    class="stroop-game min-h-screen bg-slate-50 dark:bg-slate-950 px-4 sm:px-6 lg:px-8 py-6 sm:py-8 transition-colors duration-500"
   >
     <div class="max-w-5xl mx-auto">
       <!-- Header -->
       <div class="mb-8 sm:mb-12">
         <div class="text-center mb-6 sm:mb-8">
           <h1
-            class="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight gradient-text mb-3 sm:mb-4"
+            class="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-slate-900 dark:text-white mb-3 sm:mb-4 gradient-text"
           >
             ТЕСТ СТРУПА
           </h1>
           <p
-            class="text-cyan-300/80 text-base sm:text-lg lg:text-xl leading-relaxed max-w-2xl mx-auto px-4"
+            class="text-slate-600 dark:text-cyan-300/80 text-base sm:text-lg lg:text-xl leading-relaxed max-w-2xl mx-auto px-4"
           >
             Выберите ЦВЕТ текста, а не то, что написано. Тренируйте когнитивную
             гибкость!
@@ -24,48 +24,48 @@
         <div class="flex flex-wrap gap-3 sm:gap-4 justify-center">
           <div class="stat-card flex-1 min-w-[120px] sm:min-w-[140px]">
             <div
-              class="text-2xl sm:text-3xl lg:text-4xl font-black text-cyan-400"
+              class="text-2xl sm:text-3xl lg:text-4xl font-black text-cyan-600 dark:text-cyan-400"
             >
               {{ score }}
             </div>
             <div
-              class="text-[10px] sm:text-xs uppercase tracking-wider text-slate-400 mt-1"
+              class="text-[10px] sm:text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-1"
             >
               Очки
             </div>
           </div>
           <div class="stat-card flex-1 min-w-[120px] sm:min-w-[140px]">
             <div
-              class="text-2xl sm:text-3xl lg:text-4xl font-black text-emerald-400"
+              class="text-2xl sm:text-3xl lg:text-4xl font-black text-emerald-600 dark:text-emerald-400"
             >
               {{ correct }}
             </div>
             <div
-              class="text-[10px] sm:text-xs uppercase tracking-wider text-slate-400 mt-1"
+              class="text-[10px] sm:text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-1"
             >
               Верно
             </div>
           </div>
           <div class="stat-card flex-1 min-w-[120px] sm:min-w-[140px]">
             <div
-              class="text-2xl sm:text-3xl lg:text-4xl font-black text-red-400"
+              class="text-2xl sm:text-3xl lg:text-4xl font-black text-red-600 dark:text-red-400"
             >
               {{ incorrect }}
             </div>
             <div
-              class="text-[10px] sm:text-xs uppercase tracking-wider text-slate-400 mt-1"
+              class="text-[10px] sm:text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-1"
             >
               Ошибки
             </div>
           </div>
           <div class="stat-card flex-1 min-w-[120px] sm:min-w-[140px]">
             <div
-              class="text-2xl sm:text-3xl lg:text-4xl font-black text-purple-400"
+              class="text-2xl sm:text-3xl lg:text-4xl font-black text-purple-600 dark:text-purple-400"
             >
               {{ timeLeft }}
             </div>
             <div
-              class="text-[10px] sm:text-xs uppercase tracking-wider text-slate-400 mt-1"
+              class="text-[10px] sm:text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-1"
             >
               Секунд
             </div>
@@ -79,25 +79,25 @@
         class="text-center space-y-6 sm:space-y-8 max-w-2xl mx-auto"
       >
         <div class="space-y-4 sm:space-y-6">
-          <h2 class="text-2xl sm:text-3xl font-bold text-white mb-4 sm:mb-6">
+          <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-4 sm:mb-6">
             Как играть:
           </h2>
 
           <div
-            class="bg-slate-900/60 border border-cyan-500/20 rounded-2xl p-6 sm:p-8 backdrop-blur-sm"
+            class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-cyan-500/20 rounded-2xl p-6 sm:p-8 backdrop-blur-sm shadow-sm dark:shadow-none"
           >
             <div class="space-y-4">
               <div class="flex items-start gap-4">
                 <div
-                  class="flex-shrink-0 w-10 h-10 rounded-full bg-cyan-500/20 flex items-center justify-center"
+                  class="flex-shrink-0 w-10 h-10 rounded-full bg-cyan-100 dark:bg-cyan-500/20 flex items-center justify-center"
                 >
                   <span class="text-2xl">👁️</span>
                 </div>
                 <div class="text-left">
-                  <div class="font-semibold text-white mb-1">
+                  <div class="font-semibold text-slate-900 dark:text-white mb-1">
                     Смотрите на слово
                   </div>
-                  <div class="text-sm text-slate-400">
+                  <div class="text-sm text-slate-600 dark:text-slate-400">
                     Вы увидите название цвета
                   </div>
                 </div>
@@ -105,15 +105,15 @@
 
               <div class="flex items-start gap-4">
                 <div
-                  class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"
+                  class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-500/20 flex items-center justify-center"
                 >
                   <span class="text-2xl">🎨</span>
                 </div>
                 <div class="text-left">
-                  <div class="font-semibold text-white mb-1">
+                  <div class="font-semibold text-slate-900 dark:text-white mb-1">
                     Определите цвет
                   </div>
-                  <div class="text-sm text-slate-400">
+                  <div class="text-sm text-slate-600 dark:text-slate-400">
                     Нажмите кнопку с ЦВЕТОМ текста (не со значением слова!)
                   </div>
                 </div>
@@ -121,15 +121,15 @@
 
               <div class="flex items-start gap-4">
                 <div
-                  class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center"
+                  class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-500/20 flex items-center justify-center"
                 >
                   <span class="text-2xl">⚡</span>
                 </div>
                 <div class="text-left">
-                  <div class="font-semibold text-white mb-1">
+                  <div class="font-semibold text-slate-900 dark:text-white mb-1">
                     Играйте на время
                   </div>
-                  <div class="text-sm text-slate-400">
+                  <div class="text-sm text-slate-600 dark:text-slate-400">
                     60 секунд — успейте набрать максимум очков!
                   </div>
                 </div>
@@ -139,25 +139,25 @@
 
           <!-- Example -->
           <div
-            class="bg-gradient-to-br from-slate-900/60 to-slate-800/40 border border-yellow-500/30 rounded-2xl p-6 sm:p-8"
+            class="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900/60 dark:to-slate-800/40 border border-yellow-500/30 rounded-2xl p-6 sm:p-8 shadow-sm dark:shadow-none"
           >
-            <div class="text-sm text-yellow-300/90 mb-4 font-semibold">
+            <div class="text-sm text-yellow-600 dark:text-yellow-300/90 mb-4 font-semibold">
               Пример:
             </div>
             <div class="space-y-4">
               <div>
-                <div class="text-lg sm:text-xl text-slate-300 mb-2">
+                <div class="text-lg sm:text-xl text-slate-600 dark:text-slate-300 mb-2">
                   Если видите:
                 </div>
-                <div class="text-4xl sm:text-5xl font-black text-red-500 mb-3">
+                <div class="text-4xl sm:text-5xl font-black text-red-600 dark:text-red-500 mb-3">
                   СИНИЙ
                 </div>
                 <div
-                  class="text-base sm:text-lg text-emerald-400 font-semibold"
+                  class="text-base sm:text-lg text-emerald-600 dark:text-emerald-400 font-semibold"
                 >
                   ✓ Нажмите КРАСНЫЙ (цвет текста)
                 </div>
-                <div class="text-sm sm:text-base text-red-400/80 mt-1">
+                <div class="text-sm sm:text-base text-red-600/80 dark:text-red-400/80 mt-1">
                   ✗ Не нажимайте СИНИЙ (значение слова)
                 </div>
               </div>
@@ -183,14 +183,14 @@
         <!-- Progress Bar -->
         <div class="max-w-md mx-auto">
           <div class="flex items-center justify-between mb-3">
-            <span class="text-sm sm:text-base font-medium text-slate-300"
+            <span class="text-sm sm:text-base font-medium text-slate-600 dark:text-slate-300"
               >Прогресс</span
             >
-            <span class="text-sm sm:text-base font-semibold text-cyan-400"
+            <span class="text-sm sm:text-base font-semibold text-cyan-600 dark:text-cyan-400"
               >{{ Math.round((timeLeft / gameDuration) * 100) }}%</span
             >
           </div>
-          <div class="h-2 bg-slate-800 rounded-full overflow-hidden">
+          <div class="h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
             <div
               class="h-full transition-all duration-1000 ease-linear"
               :class="
@@ -220,8 +220,8 @@
                 class="inline-block px-6 py-3 rounded-full font-bold text-lg sm:text-xl animate-scale-in"
                 :class="
                   lastCorrect
-                    ? 'bg-emerald-500/20 border-2 border-emerald-500/50 text-emerald-300'
-                    : 'bg-red-500/20 border-2 border-red-500/50 text-red-300'
+                    ? 'bg-emerald-100 dark:bg-emerald-500/20 border-2 border-emerald-500/50 text-emerald-700 dark:text-emerald-300'
+                    : 'bg-red-100 dark:bg-red-500/20 border-2 border-red-500/50 text-red-700 dark:text-red-300'
                 "
               >
                 {{ lastCorrect ? "✓ Верно!" : "✗ Ошибка!" }}
@@ -248,7 +248,7 @@
               class="w-8 h-8 sm:w-10 sm:h-10 rounded-full mb-2 sm:mb-3 mx-auto transition-transform group-hover:scale-110"
               :style="{ backgroundColor: color.value }"
             ></div>
-            <div class="text-base sm:text-lg font-bold text-white">
+            <div class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
               {{ color.label }}
             </div>
           </button>
@@ -257,7 +257,7 @@
         <!-- Hint -->
         <div class="text-center">
           <div
-            class="inline-block px-4 py-2 rounded-full bg-slate-900/60 border border-slate-700/50 text-xs sm:text-sm text-slate-400"
+            class="inline-block px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/50 text-xs sm:text-sm text-slate-600 dark:text-slate-400"
           >
             💡 Совет: Фокусируйтесь на цвете, а не на значении слова
           </div>
@@ -269,10 +269,10 @@
         <div class="text-center">
           <div class="mb-6">
             <div
-              class="inline-flex items-center gap-3 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 border-2 border-emerald-500/40 px-4 sm:px-6 py-3 sm:py-4 rounded-2xl animate-scale-in"
+              class="inline-flex items-center gap-3 bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 dark:from-emerald-500/20 dark:to-cyan-500/20 border-2 border-emerald-500/40 px-4 sm:px-6 py-3 sm:py-4 rounded-2xl animate-scale-in"
             >
               <svg
-                class="w-8 h-8 sm:w-10 sm:h-10 text-emerald-400"
+                class="w-8 h-8 sm:w-10 sm:h-10 text-emerald-600 dark:text-emerald-400"
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -282,7 +282,7 @@
                   clip-rule="evenodd"
                 />
               </svg>
-              <span class="text-2xl sm:text-3xl font-bold text-emerald-300"
+              <span class="text-2xl sm:text-3xl font-bold text-emerald-700 dark:text-emerald-300"
                 >Игра завершена!</span
               >
             </div>
@@ -290,7 +290,7 @@
           <h2 class="text-3xl sm:text-4xl font-bold gradient-text mb-2">
             Ваши результаты
           </h2>
-          <p class="text-slate-400 text-sm sm:text-base">
+          <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
             {{ getPerformanceMessage() }}
           </p>
         </div>
@@ -298,70 +298,70 @@
         <!-- Stats Grid -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           <div class="stat-card-large">
-            <div class="text-4xl sm:text-5xl font-black text-cyan-400">
+            <div class="text-4xl sm:text-5xl font-black text-cyan-600 dark:text-cyan-400">
               {{ score }}
             </div>
             <div
-              class="text-xs sm:text-sm uppercase tracking-wider text-slate-400 mt-2"
+              class="text-xs sm:text-sm uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-2"
             >
               Итоговый счет
             </div>
-            <div class="mt-2 text-xs text-slate-500">
+            <div class="mt-2 text-xs text-slate-500 dark:text-slate-500">
               {{ getScoreRating() }}
             </div>
           </div>
 
           <div class="stat-card-large">
-            <div class="text-4xl sm:text-5xl font-black text-emerald-400">
+            <div class="text-4xl sm:text-5xl font-black text-emerald-600 dark:text-emerald-400">
               {{ correct }}
             </div>
             <div
-              class="text-xs sm:text-sm uppercase tracking-wider text-slate-400 mt-2"
+              class="text-xs sm:text-sm uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-2"
             >
               Правильно
             </div>
-            <div class="mt-2 text-xs text-slate-500">
+            <div class="mt-2 text-xs text-slate-500 dark:text-slate-500">
               {{ accuracy }}% точность
             </div>
           </div>
 
           <div class="stat-card-large">
-            <div class="text-4xl sm:text-5xl font-black text-red-400">
+            <div class="text-4xl sm:text-5xl font-black text-red-600 dark:text-red-400">
               {{ incorrect }}
             </div>
             <div
-              class="text-xs sm:text-sm uppercase tracking-wider text-slate-400 mt-2"
+              class="text-xs sm:text-sm uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-2"
             >
               Ошибок
             </div>
-            <div class="mt-2 text-xs text-slate-500">
+            <div class="mt-2 text-xs text-slate-500 dark:text-slate-500">
               Всего попыток: {{ totalAttempts }}
             </div>
           </div>
 
           <div class="stat-card-large">
-            <div class="text-4xl sm:text-5xl font-black text-purple-400">
+            <div class="text-4xl sm:text-5xl font-black text-purple-600 dark:text-purple-400">
               {{ avgResponseTime }}
             </div>
             <div
-              class="text-xs sm:text-sm uppercase tracking-wider text-slate-400 mt-2"
+              class="text-xs sm:text-sm uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-2"
             >
               Среднее время
             </div>
-            <div class="mt-2 text-xs text-slate-500">мс на ответ</div>
+            <div class="mt-2 text-xs text-slate-500 dark:text-slate-500">мс на ответ</div>
           </div>
         </div>
 
         <!-- Performance Analysis -->
         <div class="grid md:grid-cols-2 gap-4 sm:gap-6">
           <div
-            class="bg-slate-900/60 border border-cyan-500/20 rounded-2xl p-6 sm:p-8 backdrop-blur-sm"
+            class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-cyan-500/20 rounded-2xl p-6 sm:p-8 backdrop-blur-sm shadow-sm dark:shadow-none"
           >
             <h3
-              class="text-lg sm:text-xl font-semibold text-white mb-4 flex items-center gap-2"
+              class="text-lg sm:text-xl font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2"
             >
               <svg
-                class="w-5 h-5 sm:w-6 sm:h-6 text-cyan-400"
+                class="w-5 h-5 sm:w-6 sm:h-6 text-cyan-600 dark:text-cyan-400"
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -377,19 +377,19 @@
             >
               {{ getPerformanceLevel() }}
             </div>
-            <div class="text-sm text-slate-400">
+            <div class="text-sm text-slate-600 dark:text-slate-400">
               {{ getPerformanceDescription() }}
             </div>
           </div>
 
           <div
-            class="bg-slate-900/60 border border-cyan-500/20 rounded-2xl p-6 sm:p-8 backdrop-blur-sm"
+            class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-cyan-500/20 rounded-2xl p-6 sm:p-8 backdrop-blur-sm shadow-sm dark:shadow-none"
           >
             <h3
-              class="text-lg sm:text-xl font-semibold text-white mb-4 flex items-center gap-2"
+              class="text-lg sm:text-xl font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2"
             >
               <svg
-                class="w-5 h-5 sm:w-6 sm:h-6 text-emerald-400"
+                class="w-5 h-5 sm:w-6 sm:h-6 text-emerald-600 dark:text-emerald-400"
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -401,12 +401,12 @@
               </svg>
               Когнитивная гибкость
             </h3>
-            <div class="text-sm text-slate-300 space-y-2">
+            <div class="text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <p>
                 Тест Струпа измеряет вашу способность подавлять автоматические
                 реакции и фокусироваться на нужной информации.
               </p>
-              <p class="text-emerald-400 font-semibold">
+              <p class="text-emerald-600 dark:text-emerald-400 font-semibold">
                 {{ getCognitiveMessage() }}
               </p>
             </div>
@@ -436,13 +436,13 @@
       <!-- Info Panel -->
       <div
         v-if="state !== 'instructions'"
-        class="mt-12 sm:mt-16 p-4 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-slate-900/60 to-slate-800/40 border border-cyan-500/20 backdrop-blur-sm"
+        class="mt-12 sm:mt-16 p-4 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl bg-white dark:bg-gradient-to-br dark:from-slate-900/60 dark:to-slate-800/40 border border-slate-200 dark:border-cyan-500/20 backdrop-blur-sm shadow-sm dark:shadow-none"
       >
         <h4
-          class="text-lg sm:text-xl font-semibold text-white mb-4 sm:mb-6 flex items-center gap-2"
+          class="text-lg sm:text-xl font-semibold text-slate-900 dark:text-white mb-4 sm:mb-6 flex items-center gap-2"
         >
           <svg
-            class="w-5 h-5 sm:w-6 sm:h-6 text-cyan-400"
+            class="w-5 h-5 sm:w-6 sm:h-6 text-cyan-600 dark:text-cyan-400"
             fill="currentColor"
             viewBox="0 0 20 20"
           >
@@ -454,14 +454,14 @@
           </svg>
           О тесте Струпа
         </h4>
-        <div class="text-sm sm:text-base text-slate-300 space-y-3">
+        <div class="text-sm sm:text-base text-slate-600 dark:text-slate-300 space-y-3">
           <p>
             Эффект Струпа — классический феномен в психологии, открытый в 1935
             году. Он демонстрирует, как автоматические процессы (чтение) могут
             мешать выполнению другой задачи (определение цвета).
           </p>
-          <p class="text-cyan-300 font-semibold">Что тренирует:</p>
-          <ul class="list-disc list-inside space-y-1 text-slate-400 ml-2">
+          <p class="text-cyan-600 dark:text-cyan-300 font-semibold">Что тренирует:</p>
+          <ul class="list-disc list-inside space-y-1 text-slate-500 dark:text-slate-400 ml-2">
             <li>Когнитивную гибкость и переключение внимания</li>
             <li>Способность подавлять автоматические реакции</li>
             <li>Скорость обработки информации</li>
@@ -606,11 +606,11 @@ const getPerformanceLevel = () => {
 };
 
 const getPerformanceColor = () => {
-  if (accuracy.value >= 95) return "text-purple-400";
-  if (accuracy.value >= 85) return "text-emerald-400";
-  if (accuracy.value >= 75) return "text-cyan-400";
-  if (accuracy.value >= 65) return "text-yellow-400";
-  return "text-orange-400";
+  if (accuracy.value >= 95) return "text-purple-600 dark:text-purple-400";
+  if (accuracy.value >= 85) return "text-emerald-600 dark:text-emerald-400";
+  if (accuracy.value >= 75) return "text-cyan-600 dark:text-cyan-400";
+  if (accuracy.value >= 65) return "text-yellow-600 dark:text-yellow-400";
+  return "text-orange-600 dark:text-orange-400";
 };
 
 const getPerformanceDescription = () => {
@@ -672,19 +672,19 @@ onUnmounted(() => {
 
 .stat-card {
   @apply text-center px-4 py-3 sm:px-6 sm:py-4 
-         rounded-xl sm:rounded-2xl bg-slate-900/60 border border-slate-700/50 
-         backdrop-blur-sm transition-all duration-300 hover:border-cyan-500/30;
+         rounded-xl sm:rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/50 
+         backdrop-blur-sm transition-all duration-300 hover:border-cyan-500/30 shadow-sm dark:shadow-none;
 }
 
 .stat-card-large {
   @apply text-center px-6 py-4 sm:px-8 sm:py-6 
-         rounded-2xl bg-slate-900/60 border border-slate-700/50 
-         backdrop-blur-sm transition-all duration-300 hover:border-cyan-500/30;
+         rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/50 
+         backdrop-blur-sm transition-all duration-300 hover:border-cyan-500/30 shadow-sm dark:shadow-none;
 }
 
 .game-card {
-  @apply bg-slate-900/60 border border-cyan-500/20 rounded-3xl 
-         backdrop-blur-sm shadow-2xl shadow-cyan-500/10;
+  @apply bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-cyan-500/20 rounded-3xl 
+         backdrop-blur-sm shadow-lg dark:shadow-2xl shadow-cyan-500/5 dark:shadow-cyan-500/10;
 }
 
 .btn-primary {
@@ -774,15 +774,28 @@ button {
 }
 
 .stroop-game::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.dark .stroop-game::-webkit-scrollbar-track {
   background: #0f172a;
 }
 
 .stroop-game::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.dark .stroop-game::-webkit-scrollbar-thumb {
   background: #1e293b;
   border-radius: 3px;
 }
 
 .stroop-game::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.dark .stroop-game::-webkit-scrollbar-thumb:hover {
   background: #334155;
 }
 

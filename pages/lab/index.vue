@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-slate-950 text-white overflow-hidden">
+  <div class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white overflow-hidden transition-colors duration-500">
     <!-- Main Content -->
     <main
       class="container mx-auto max-w-6xl px-4 sm:px-0 py-12 lg:py-16 relative"
@@ -64,11 +64,11 @@
 
         <!-- Enhanced Title (matching main index style) -->
         <h1
-          class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center mb-6 leading-tight"
+          class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white text-center mb-6 leading-tight"
         >
           MindQ Lab —
           <span
-            class="block mt-2 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-400 to-fuchsia-400 animate-gradient"
+            class="block mt-2 bg-clip-text text-transparent bg-gradient-to-r from-cyan-600 via-blue-600 to-fuchsia-600 dark:from-cyan-400 dark:via-blue-400 dark:to-fuchsia-400 animate-gradient"
           >
             Твоя лаборатория осознанного роста
           </span>
@@ -76,7 +76,7 @@
 
         <!-- Enhanced Description (matching main index style) -->
         <p
-          class="text-slate-300 text-center text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-8 leading-relaxed"
+          class="text-slate-600 dark:text-slate-300 text-center text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-8 leading-relaxed"
         >
           Исследуй себя с помощью тестов и интерактивных инструментов, получай
           персональные рекомендации и обучающие программы — всё в одном месте.
@@ -90,7 +90,7 @@
         >
           <NuxtLink
             to="/lab/tests"
-            class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 rounded-2xl font-semibold text-base sm:text-lg shadow-2xl hover:shadow-cyan-500/50 hover:scale-105 transition-all duration-300"
+            class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 rounded-2xl font-semibold text-white text-base sm:text-lg shadow-2xl hover:shadow-cyan-500/50 hover:scale-105 transition-all duration-300"
           >
             <i
               class="fas fa-vial group-hover:rotate-12 transition-transform duration-300"
@@ -103,7 +103,7 @@
 
           <NuxtLink
             to="/"
-            class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-slate-800/60 border-2 border-cyan-500/40 rounded-2xl text-slate-200 font-semibold text-base sm:text-lg hover:bg-cyan-500/20 hover:border-cyan-500/60 hover:scale-105 transition-all duration-300"
+            class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-white/60 dark:bg-slate-800/60 border-2 border-cyan-500/40 rounded-2xl text-slate-700 dark:text-slate-200 font-semibold text-base sm:text-lg hover:bg-cyan-500/10 dark:hover:bg-cyan-500/20 hover:border-cyan-500/60 hover:scale-105 transition-all duration-300"
           >
             <i
               class="fas fa-home group-hover:scale-110 transition-transform duration-300"
@@ -115,19 +115,19 @@
         <!-- Enhanced Quick Links (matching main index style) -->
         <div class="text-center mb-12">
           <div
-            class="inline-flex items-center gap-3 px-6 py-3 bg-slate-900/40 backdrop-blur-sm border border-slate-800/40 rounded-xl"
+            class="inline-flex items-center gap-3 px-6 py-3 bg-white/40 dark:bg-slate-900/40 backdrop-blur-sm border border-slate-200 dark:border-slate-800/40 rounded-xl"
           >
-            <span class="text-slate-400 text-sm">Или сразу:</span>
+            <span class="text-slate-500 dark:text-slate-400 text-sm">Или сразу:</span>
             <NuxtLink
               to="/lab"
-              class="text-cyan-400 hover:text-cyan-300 font-medium text-sm hover:underline transition-colors"
+              class="text-cyan-600 dark:text-cyan-400 hover:text-cyan-500 dark:hover:text-cyan-300 font-medium text-sm hover:underline transition-colors"
             >
               Войти в лабораторию
             </NuxtLink>
-            <span class="text-slate-600">•</span>
+            <span class="text-slate-400 dark:text-slate-600">•</span>
             <NuxtLink
               to="/courses/courses"
-              class="text-purple-400 hover:text-purple-300 font-medium text-sm hover:underline transition-colors"
+              class="text-purple-600 dark:text-purple-400 hover:text-purple-500 dark:hover:text-purple-300 font-medium text-sm hover:underline transition-colors"
             >
               Курсы и гайды
             </NuxtLink>
@@ -135,33 +135,33 @@
         </div>
 
         <!-- Stats Bar -->
-        <div class="mt-12 pt-8 border-t border-slate-800">
+        <div class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800">
           <div class="grid grid-cols-3 gap-6">
             <div class="text-center">
               <div
-                class="text-2xl md:text-3xl font-bold text-cyan-400 mb-1 font-mono"
+                class="text-2xl md:text-3xl font-bold text-cyan-600 dark:text-cyan-400 mb-1 font-mono"
               >
                 {{ animatedStats.researchers }}
               </div>
-              <div class="text-slate-500 text-xs md:text-sm">
+              <div class="text-slate-600 dark:text-slate-500 text-xs md:text-sm">
                 Исследователей
               </div>
             </div>
             <div class="text-center">
               <div
-                class="text-2xl md:text-3xl font-bold text-purple-400 mb-1 font-mono"
+                class="text-2xl md:text-3xl font-bold text-purple-600 dark:text-purple-400 mb-1 font-mono"
               >
                 {{ animatedStats.experiments }}
               </div>
-              <div class="text-slate-500 text-xs md:text-sm">Экспериментов</div>
+              <div class="text-slate-600 dark:text-slate-500 text-xs md:text-sm">Экспериментов</div>
             </div>
             <div class="text-center">
               <div
-                class="text-2xl md:text-3xl font-bold text-emerald-400 mb-1 font-mono"
+                class="text-2xl md:text-3xl font-bold text-emerald-600 dark:text-emerald-400 mb-1 font-mono"
               >
                 {{ animatedStats.insights }}
               </div>
-              <div class="text-slate-500 text-xs md:text-sm">Инсайтов</div>
+              <div class="text-slate-600 dark:text-slate-500 text-xs md:text-sm">Инсайтов</div>
             </div>
           </div>
         </div>
