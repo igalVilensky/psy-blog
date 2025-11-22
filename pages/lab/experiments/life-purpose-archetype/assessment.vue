@@ -1,34 +1,36 @@
 <template>
-  <div class="relative min-h-screen">
+  <div class="relative min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500">
     <div class="container mx-auto max-w-3xl px-4 xl:px-0 py-8 sm:py-12">
+      <Breadcrumbs />
+      
       <!-- Question Card -->
       <div
         v-if="currentQuestion"
-        class="bg-slate-900/60 backdrop-blur-xl rounded-xl transition-all duration-300 hover:bg-slate-900/80 mb-12 border border-white/5"
+        class="bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl rounded-2xl transition-all duration-300 hover:shadow-xl border border-slate-200 dark:border-slate-800 shadow-lg mb-12"
       >
         <!-- Question Header -->
-        <div class="p-6 sm:p-8 border-b border-white/5">
-          <h2 class="text-xl sm:text-2xl font-bold text-white">
+        <div class="p-6 sm:p-8 border-b border-slate-200 dark:border-slate-800">
+          <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white leading-tight">
             {{ currentQuestion.questionText }}
           </h2>
         </div>
 
         <!-- Progress Bar -->
-        <div class="px-6 sm:px-8 py-4 border-b border-white/5">
-          <div class="flex justify-between text-sm text-slate-200 mb-2">
+        <div class="px-6 sm:px-8 py-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30">
+          <div class="flex justify-between text-sm font-medium text-slate-600 dark:text-slate-400 mb-2">
             <span
               >Вопрос {{ currentQuestionIndex + 1 }} из
               {{ totalQuestions }}</span
             >
-            <span
+            <span class="text-purple-600 dark:text-purple-400"
               >{{
                 Math.round(((currentQuestionIndex + 1) / totalQuestions) * 100)
               }}%</span
             >
           </div>
-          <div class="w-full bg-slate-800/50 rounded-full h-2">
+          <div class="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2.5 overflow-hidden">
             <div
-              class="bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 h-2 rounded-full transition-all duration-300"
+              class="bg-gradient-to-r from-purple-500 via-pink-500 to-purple-600 h-full rounded-full transition-all duration-500 ease-out shadow-[0_0_10px_rgba(168,85,247,0.4)]"
               :style="{
                 width: `${
                   ((currentQuestionIndex + 1) / totalQuestions) * 100
@@ -39,40 +41,39 @@
         </div>
 
         <!-- Answer Options -->
-        <div class="p-6 sm:p-8 space-y-4">
+        <div class="p-6 sm:p-8 space-y-3">
           <button
             v-for="(option, index) in answerOptions"
             :key="index"
             @click="handleAnswerSelection(index)"
             :disabled="isAnswering"
-            class="w-full text-left p-4 rounded-lg transition-all duration-200 group"
+            class="w-full text-left p-4 rounded-xl transition-all duration-200 group border-2 relative overflow-hidden"
             :class="[
               selectedAnswer === index
-                ? 'bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-blue-500/10 border-pink-500/50'
-                : 'bg-slate-800/50 hover:bg-slate-800/80 border-white/5',
-              'border',
+                ? 'bg-purple-50 dark:bg-purple-900/20 border-purple-500 dark:border-purple-500 shadow-md'
+                : 'bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 hover:border-purple-300 dark:hover:border-purple-700 hover:bg-slate-50 dark:hover:bg-slate-800',
             ]"
           >
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-4 relative z-10">
               <div
-                class="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors"
+                class="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors shrink-0"
                 :class="[
                   selectedAnswer === index
-                    ? 'border-pink-400'
-                    : 'border-slate-400 group-hover:border-pink-400/50',
+                    ? 'border-purple-500 dark:border-purple-400'
+                    : 'border-slate-300 dark:border-slate-600 group-hover:border-purple-400',
                 ]"
               >
                 <div
                   v-if="selectedAnswer === index"
-                  class="w-3 h-3 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full"
+                  class="w-3 h-3 bg-purple-500 dark:bg-purple-400 rounded-full"
                 ></div>
               </div>
               <span
-                class="text-base sm:text-lg"
+                class="text-base sm:text-lg font-medium transition-colors"
                 :class="[
                   selectedAnswer === index
-                    ? 'text-white'
-                    : 'text-slate-200 group-hover:text-white',
+                    ? 'text-purple-900 dark:text-white'
+                    : 'text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white',
                 ]"
               >
                 {{ option.text }}
@@ -86,7 +87,12 @@
           <button
             @click="previousQuestion"
             :disabled="currentQuestionIndex === 0"
-            class="w-full px-6 py-3 rounded-lg font-medium transition-all duration-300 bg-slate-800/50 hover:bg-slate-800/80 text-white disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 border border-white/5"
+            class="w-full px-6 py-3.5 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 border"
+            :class="[
+               currentQuestionIndex === 0 
+               ? 'bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-600 border-transparent cursor-not-allowed' 
+               : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm hover:shadow'
+            ]"
           >
             <i class="fas fa-arrow-left"></i>
             Предыдущий вопрос
@@ -107,6 +113,11 @@ import {
   saveAssessmentProgress,
 } from "~/api/firebase/assessments";
 import { questions } from "~/data/questions.js";
+import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
+
+definePageMeta({
+  layout: "laboratory",
+});
 
 const router = useRouter();
 const db = useFirestore();

@@ -1,13 +1,8 @@
 <template>
-  <div
-    class="relative min-h-screen bg-gradient-to-b from-[#0F172A] to-[#1A1F38]"
-  >
-    <div
-      class="absolute inset-0 bg-[url('/images/constellation-bg.svg')] opacity-20"
-    ></div>
-    <div
-      class="container mx-auto px-4 xl:px-0 max-w-6xl relative z-10 py-10 lg:py-20"
-    >
+  <div class="relative min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500">
+    <div class="container mx-auto px-4 xl:px-0 max-w-6xl relative z-10 py-10 lg:py-20">
+      <Breadcrumbs />
+      
       <!-- Loading State -->
       <div
         v-if="isLoading"
@@ -15,13 +10,13 @@
       >
         <div class="relative">
           <div
-            class="w-16 h-16 border-4 border-[#3A1CFF]/20 rounded-full animate-spin"
+            class="w-16 h-16 border-4 border-purple-200 dark:border-purple-900/30 rounded-full animate-spin"
           ></div>
           <div
-            class="w-16 h-16 border-4 border-t-[#00E6FF] rounded-full animate-spin absolute top-0 left-0"
+            class="w-16 h-16 border-4 border-t-purple-600 dark:border-t-purple-400 rounded-full animate-spin absolute top-0 left-0"
           ></div>
         </div>
-        <p class="mt-6 text-slate-300 text-lg animate-pulse">
+        <p class="mt-6 text-slate-600 dark:text-slate-300 text-lg animate-pulse">
           Анализируем ваши результаты...
         </p>
       </div>
@@ -29,24 +24,24 @@
       <!-- Error State -->
       <div
         v-else-if="error"
-        class="rounded-2xl bg-[#1A2038] backdrop-blur-xl border-2 border-[#FF3D00]/20 p-8 shadow-xl"
+        class="rounded-2xl bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl border border-red-200 dark:border-red-500/20 p-8 shadow-xl"
       >
         <div class="flex items-center gap-3">
-          <i class="fas fa-exclamation-circle text-[#FF3D00] text-xl"></i>
-          <p class="text-[#FF3D00]">{{ error }}</p>
+          <i class="fas fa-exclamation-circle text-red-500 text-xl"></i>
+          <p class="text-red-600 dark:text-red-400">{{ error }}</p>
         </div>
       </div>
 
       <!-- Results Display -->
       <div v-else-if="result" class="space-y-12">
         <!-- Header Section -->
-        <div class="text-center">
+        <div class="text-center animate-fade-in-up">
           <h1
-            class="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#3A1CFF] to-[#00E6FF] mb-4"
+            class="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 mb-4"
           >
             Ваш Архетип Жизненного Предназначения
           </h1>
-          <p class="text-slate-300">
+          <p class="text-slate-600 dark:text-slate-400">
             <i class="fas fa-calendar-alt mr-2"></i>
             {{ formatDate(result.timestamp) }}
           </p>
@@ -54,52 +49,41 @@
 
         <!-- Top 3 Archetypes Card -->
         <div
-          class="bg-[#1A2038]/80 backdrop-blur-xl rounded-2xl border border-[#3A1CFF]/30 py-8 px-4 sm:px-8 shadow-lg"
+          class="bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-slate-800 py-8 px-4 sm:px-8 shadow-xl"
         >
           <h2
-            class="text-2xl font-semibold text-white mb-8 flex items-center gap-3 flex-col text-center sm:flex-row sm:text-left"
+            class="text-2xl font-semibold text-slate-900 dark:text-white mb-8 flex items-center gap-3 flex-col text-center sm:flex-row sm:text-left"
           >
-            <i class="fas fa-crown text-[#F59E0B]"></i>
+            <i class="fas fa-crown text-amber-500"></i>
             Ваши Доминирующие Архетипы
           </h2>
 
           <!-- Registration CTA - Redesigned -->
           <div v-if="!auth.currentUser" class="mb-12">
             <div
-              class="relative overflow-hidden bg-gradient-to-r from-[#3A1CFF]/10 to-[#00E6FF]/10 rounded-xl p-1"
+              class="relative overflow-hidden bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-xl p-1"
             >
               <div
-                class="absolute inset-0 bg-[url('/images/pattern-bg.svg')] opacity-10"
-              ></div>
-              <div
-                class="bg-[#252B45]/90 rounded-lg py-8 px-4 sm:px-8 relative"
+                class="bg-white/90 dark:bg-slate-800/90 rounded-lg py-8 px-4 sm:px-8 relative backdrop-blur-sm"
               >
-                <div
-                  class="absolute top-0 right-0 transform translate-x-8 -translate-y-8"
-                >
-                  <div
-                    class="w-32 h-32 rounded-full bg-gradient-to-r from-[#3A1CFF] to-[#00E6FF] opacity-20 blur-2xl"
-                  ></div>
-                </div>
-
                 <div class="grid md:grid-cols-2 gap-8 items-center">
                   <!-- CTA Section -->
                   <div
-                    class="bg-[#1A2038] p-6 rounded-lg border border-[#3A1CFF]/30 shadow-xl text-center order-1 md:order-2"
+                    class="bg-slate-50 dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-lg text-center order-1 md:order-2"
                   >
                     <div class="inline-block mb-4">
                       <div
-                        class="w-16 h-16 bg-gradient-to-r from-[#3A1CFF]/20 to-[#00E6FF]/20 rounded-xl flex items-center justify-center"
+                        class="w-16 h-16 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center"
                       >
                         <i
-                          class="fas fa-unlock-alt text-2xl text-[#00E6FF]"
+                          class="fas fa-unlock-alt text-2xl text-purple-600 dark:text-purple-400"
                         ></i>
                       </div>
                     </div>
-                    <h4 class="text-xl font-semibold text-white mb-2">
+                    <h4 class="text-xl font-semibold text-slate-900 dark:text-white mb-2">
                       Хотите получить подробные гайды?
                     </h4>
-                    <p class="text-slate-400 mb-6">
+                    <p class="text-slate-600 dark:text-slate-400 mb-6">
                       Зарегистрируйтесь и скачайте их бесплатно!
                     </p>
                     <RouterLink
@@ -107,7 +91,7 @@
                         path: '/register',
                         query: { assessmentId: assessmentId },
                       }"
-                      class="w-full inline-block bg-gradient-to-r from-[#3A1CFF] to-[#00E6FF] text-white font-semibold py-3 px-6 rounded-lg hover:shadow-lg hover:from-[#2A15CC] hover:to-[#00B8D4] transition-all duration-300"
+                      class="w-full inline-block bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold py-3 px-6 rounded-xl hover:shadow-lg hover:from-purple-500 hover:to-pink-500 transition-all duration-300 shadow-md shadow-purple-500/20"
                     >
                       <i class="fas fa-user-plus mr-2"></i>
                       Создать бесплатный аккаунт
@@ -116,19 +100,19 @@
 
                   <!-- Benefits Section -->
                   <div class="order-2 md:order-1 hidden sm:block">
-                    <h3 class="text-2xl font-bold text-white mb-4">
+                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">
                       Преимущества регистрации
                     </h3>
-                    <p class="text-slate-300 mb-6">
+                    <p class="text-slate-600 dark:text-slate-400 mb-6">
                       Получите доступ к дополнительным возможностям для
                       раскрытия вашего потенциала:
                     </p>
-                    <ul class="space-y-3 text-left text-slate-200">
+                    <ul class="space-y-3 text-left text-slate-700 dark:text-slate-300">
                       <li class="flex items-start gap-3">
                         <div
-                          class="flex-shrink-0 w-6 h-6 rounded-full bg-gradient-to-r from-[#3A1CFF] to-[#00E6FF] flex items-center justify-center"
+                          class="flex-shrink-0 w-6 h-6 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center"
                         >
-                          <i class="fas fa-check text-xs text-white"></i>
+                          <i class="fas fa-check text-xs text-purple-600 dark:text-purple-400"></i>
                         </div>
                         <span
                           >Подробные гайды по вашим доминирующим архетипам</span
@@ -136,17 +120,17 @@
                       </li>
                       <li class="flex items-start gap-3">
                         <div
-                          class="flex-shrink-0 w-6 h-6 rounded-full bg-gradient-to-r from-[#3A1CFF] to-[#00E6FF] flex items-center justify-center"
+                          class="flex-shrink-0 w-6 h-6 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center"
                         >
-                          <i class="fas fa-check text-xs text-white"></i>
+                          <i class="fas fa-check text-xs text-purple-600 dark:text-purple-400"></i>
                         </div>
                         <span>Доступ к результатам в любое время</span>
                       </li>
                       <li class="flex items-start gap-3">
                         <div
-                          class="flex-shrink-0 w-6 h-6 rounded-full bg-gradient-to-r from-[#3A1CFF] to-[#00E6FF] flex items-center justify-center"
+                          class="flex-shrink-0 w-6 h-6 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center"
                         >
-                          <i class="fas fa-check text-xs text-white"></i>
+                          <i class="fas fa-check text-xs text-purple-600 dark:text-purple-400"></i>
                         </div>
                         <span>История тестов для отслеживания прогресса</span>
                       </li>
@@ -161,31 +145,31 @@
             <div
               v-for="({ archetype, score, guideUrl }, index) in topArchetypes"
               :key="archetype"
-              class="relative bg-gradient-to-r from-[#252B45] to-[#1E253A] rounded-xl p-6 border border-[#3A1CFF]/20 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#3A1CFF]/10 group"
+              class="relative bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group"
             >
               <div
-                class="absolute -top-3 -left-3 w-10 h-10 rounded-full bg-gradient-to-r from-[#B44CFF] to-[#FF4DFF] flex items-center justify-center text-white font-bold shadow-lg"
+                class="absolute -top-3 -left-3 w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold shadow-lg"
               >
                 {{ index + 1 }}
               </div>
               <div class="mb-4 mt-2">
                 <div
-                  class="w-12 h-12 rounded-lg bg-[#1A2038] border border-[#3A1CFF]/20 flex items-center justify-center mb-3 group-hover:bg-[#3A1CFF]/10 transition-all duration-300"
+                  class="w-12 h-12 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300 shadow-sm"
                 >
                   <i
                     :class="`fas ${getArchetypeIcon(
                       archetype
-                    )} text-[#00E6FF] text-xl`"
+                    )} text-purple-600 dark:text-purple-400 text-xl`"
                   ></i>
                 </div>
-                <h3 class="text-xl font-semibold text-white capitalize">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white capitalize">
                   {{ archetype }}
                 </h3>
               </div>
               <div class="flex items-end justify-between">
-                <div class="text-sm text-slate-400">Уровень</div>
+                <div class="text-sm text-slate-500 dark:text-slate-400">Уровень</div>
                 <div
-                  class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#3A1CFF] to-[#00E6FF]"
+                  class="text-2xl font-bold text-purple-600 dark:text-purple-400"
                 >
                   {{ score }}
                 </div>
@@ -193,7 +177,7 @@
               <button
                 v-if="auth.currentUser"
                 @click="handleDownload(guideUrl)"
-                class="mt-4 w-full bg-[#1A2038] hover:bg-[#3A1CFF]/10 text-[#00E6FF] py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition-all duration-300 border border-[#3A1CFF]/20"
+                class="mt-4 w-full bg-white dark:bg-slate-800 hover:bg-purple-50 dark:hover:bg-slate-700 text-purple-600 dark:text-purple-400 py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 border border-slate-200 dark:border-slate-700 hover:border-purple-200 dark:hover:border-purple-500/30 shadow-sm hover:shadow"
               >
                 <i class="fas fa-download"></i>
                 <span>Скачать гайд</span>
@@ -204,42 +188,42 @@
 
         <!-- Detailed Scores -->
         <div
-          class="bg-[#1A2038]/80 backdrop-blur-xl rounded-2xl border border-[#3A1CFF]/30 py-8 px-4 sm:px-8 shadow-lg"
+          class="bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-slate-800 py-8 px-4 sm:px-8 shadow-xl"
         >
           <h2
-            class="text-2xl font-semibold text-white mb-8 flex items-center gap-3"
+            class="text-2xl font-semibold text-slate-900 dark:text-white mb-8 flex items-center gap-3"
           >
-            <i class="fas fa-chart-bar text-[#00FF88]"></i>
+            <i class="fas fa-chart-bar text-emerald-500"></i>
             Подробный Анализ
           </h2>
           <div class="grid gap-4 md:grid-cols-2">
             <div
               v-for="(score, archetype) in result.scores"
               :key="archetype"
-              class="group bg-gradient-to-r from-[#252B45] to-[#1E253A] rounded-xl p-5 border border-[#3A1CFF]/20 transition-all duration-300 hover:border-[#00E6FF]/30 hover:shadow-md"
+              class="group bg-slate-50 dark:bg-slate-800/50 rounded-xl p-5 border border-slate-200 dark:border-slate-700 transition-all duration-300 hover:border-purple-300 dark:hover:border-purple-500/30 hover:shadow-md"
             >
               <div class="flex flex-wrap justify-between items-center mb-3">
                 <div class="flex items-center gap-3">
                   <div
-                    class="w-8 h-8 rounded-lg bg-[#1A2038] border border-[#3A1CFF]/20 flex items-center justify-center group-hover:bg-[#3A1CFF]/10 transition-all duration-300"
+                    class="w-8 h-8 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
                   >
                     <i
                       :class="`fas ${getArchetypeIcon(
                         archetype
-                      )} text-[#00E6FF] text-sm`"
+                      )} text-purple-600 dark:text-purple-400 text-sm`"
                     ></i>
                   </div>
-                  <span class="font-medium capitalize text-white">{{
+                  <span class="font-medium capitalize text-slate-900 dark:text-white">{{
                     archetype
                   }}</span>
                 </div>
-                <span class="text-[#00E6FF] font-semibold text-xl"
+                <span class="text-purple-600 dark:text-purple-400 font-bold text-lg"
                   >{{ Math.round(score) }}/30</span
                 >
               </div>
-              <div class="w-full bg-[#1A2038] rounded-full h-3 overflow-hidden">
+              <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5 overflow-hidden">
                 <div
-                  class="h-full rounded-full bg-gradient-to-r from-[#3A1CFF] to-[#00E6FF] transition-all duration-500 group-hover:shadow-[0_0_10px_rgba(0,230,255,0.5)]"
+                  class="h-full rounded-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-500"
                   :style="{ width: `${(score / 30) * 100}%` }"
                 ></div>
               </div>
@@ -249,22 +233,20 @@
 
         <!-- Navigation -->
         <div class="flex flex-col sm:flex-row justify-between gap-4 mt-8">
-          <Button
-            :text="'Вернуться к тесту'"
-            :iconClass="'fas fa-arrow-left'"
-            :textColor="'#CBD5E1'"
-            :customClass="'flex-1 p-4 bg-[#1A2038] hover:bg-[#252B45] border border-[#3A1CFF]/20 transition-all duration-300 rounded-xl'"
-            :to="'/lab/experiments/life-purpose-archetype'"
-            :isLink="true"
-          />
-          <Button
-            :text="'Изучить описания архетипов'"
-            :iconClass="'fas fa-book'"
-            :textColor="'#ffffff'"
-            :customClass="'flex-1 p-4 bg-gradient-to-r from-[#3A1CFF] to-[#00E6FF] inline-flex border-none rounded-xl hover:shadow-lg hover:from-[#2A15CC] hover:to-[#00B8D4] transition-all duration-300'"
-            :to="'/lab/experiments/life-purpose-archetype/explanation'"
-            :isLink="true"
-          />
+          <NuxtLink
+            to="/lab/experiments/life-purpose-archetype"
+            class="flex-1 p-4 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-medium rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-sm hover:shadow"
+          >
+            <i class="fas fa-arrow-left"></i>
+            Вернуться к тесту
+          </NuxtLink>
+          <NuxtLink
+            to="/lab/experiments/life-purpose-archetype/explanation"
+            class="flex-1 p-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold rounded-xl hover:shadow-lg hover:from-purple-500 hover:to-pink-500 transition-all duration-300 flex items-center justify-center gap-2 shadow-md shadow-purple-500/20"
+          >
+            <i class="fas fa-book"></i>
+            Изучить описания архетипов
+          </NuxtLink>
         </div>
       </div>
     </div>
@@ -277,6 +259,7 @@ import { useRoute, useRouter } from "vue-router";
 import { getAuth } from "firebase/auth";
 import { useFirestore } from "~/plugins/firebase";
 import Button from "~/components/base/Button.vue";
+import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
 import { getAssessment } from "~/api/firebase/assessments";
 
 // Google Drive links for the 12 archetypes (using Russian names from your data)

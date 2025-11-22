@@ -1,71 +1,60 @@
 <template>
-  <div class="relative min-h-screen">
+  <div class="relative min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500">
     <div class="container mx-auto max-w-4xl relative z-10 py-12 px-4 xl:px-0">
-      <!-- Back Navigation -->
-      <div>
-        <NuxtLink
-          to="/lab/experiments/life-purpose-archetype"
-          class="inline-flex items-center text-pink-500 hover:text-purple-500 transition-colors mb-8 group"
-        >
-          <i
-            class="fas fa-arrow-left mr-2 transform group-hover:-translate-x-1 transition-transform text-current"
-          ></i>
-          Вернуться
-        </NuxtLink>
-      </div>
-
+      <Breadcrumbs />
+      
       <!-- Header -->
-      <div class="mb-12 text-center px-4">
-        <h1
-          class="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-[#3A1CFF] to-[#00E6FF]"
-        >
-          Понимание 12 Архетипов
+      <div class="mb-12 text-center px-4 animate-fade-in-up">
+        <h1 class="text-4xl font-bold mb-4">
+          <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-400">
+            Понимание 12 Архетипов
+          </span>
         </h1>
-        <p class="text-xl text-slate-300 font-medium mb-8">
-          Откройте для себя глубокий смысл и характеристики архетипических
-          образов Юнга
+        <p class="text-xl text-slate-600 dark:text-slate-300 font-medium mb-8 max-w-2xl mx-auto">
+          Откройте для себя глубокий смысл и характеристики архетипических образов Юнга
         </p>
       </div>
 
       <!-- Introduction Card -->
       <ScrollGlowSection>
         <div
-          class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border-2 border-[#3A1CFF]/30 p-6 sm:p-8 mb-8"
+          class="bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-blue-500/30 p-6 sm:p-8 mb-8 shadow-xl"
         >
           <div class="flex items-start mb-6">
-            <div class="p-2 bg-[#3A1CFF]/10 rounded-lg mr-4">
-              <i class="fas fa-book text-[#00E6FF] text-xl"></i>
+            <div class="p-3 bg-blue-100 dark:bg-blue-500/10 rounded-xl mr-4">
+              <i class="fas fa-book text-blue-600 dark:text-cyan-400 text-xl"></i>
             </div>
-            <p class="text-lg text-slate-300 font-medium">Теория архетипов</p>
+            <div>
+              <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-1">Теория архетипов</h3>
+              <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                12 архетипов Карла Юнга представляют собой основные человеческие
+                переживания и мотивации, которые находят отклик в различных
+                культурах.
+              </p>
+            </div>
           </div>
 
-          <p class="text-slate-300 leading-relaxed text-lg mb-6">
-            12 архетипов Карла Юнга представляют собой основные человеческие
-            переживания и мотивации, которые находят отклик в различных
-            культурах.
-          </p>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div
-              class="bg-[#1A1F35]/40 p-4 rounded-lg backdrop-blur-sm border-2 border-[#3A1CFF]/30"
+              class="bg-slate-50 dark:bg-slate-800/40 p-5 rounded-xl border border-slate-200 dark:border-blue-500/20 hover:border-blue-400/50 transition-colors"
             >
-              <h3 class="text-slate-300 font-medium mb-2">
-                <i class="fas fa-crown text-[#F59E0B] mr-2"></i>
+              <h3 class="text-slate-900 dark:text-white font-bold mb-2 flex items-center">
+                <i class="fas fa-fingerprint text-amber-500 mr-2"></i>
                 Уникальность
               </h3>
-              <p class="text-slate-400">
+              <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
                 Каждый архетип воплощает уникальные черты, сильные стороны и
                 возможные области для развития.
               </p>
             </div>
             <div
-              class="bg-[#1A1F35]/40 p-4 rounded-lg backdrop-blur-sm border-2 border-[#3A1CFF]/30"
+              class="bg-slate-50 dark:bg-slate-800/40 p-5 rounded-xl border border-slate-200 dark:border-blue-500/20 hover:border-blue-400/50 transition-colors"
             >
-              <h3 class="text-slate-300 font-medium mb-2">
-                <i class="fas fa-star text-[#B44CFF] mr-2"></i>
+              <h3 class="text-slate-900 dark:text-white font-bold mb-2 flex items-center">
+                <i class="fas fa-lightbulb text-purple-500 mr-2"></i>
                 Самопознание
               </h3>
-              <p class="text-slate-400">
+              <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
                 Осознание своего доминирующего архетипа может дать ценные
                 инсайты о ваших естественных склонностях и жизненном
                 предназначении.
@@ -82,47 +71,51 @@
           :key="index"
         >
           <div
-            class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border-2 border-[#3A1CFF]/30 p-6 sm:p-8"
+            class="bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 hover:shadow-lg transition-all duration-300 group"
           >
             <div class="flex items-center mb-6">
-              <div class="p-3 bg-[#3A1CFF]/10 rounded-xl mr-4">
-                <i :class="[archetype.icon, 'text-2xl text-[#00E6FF]']"></i>
+              <div class="p-3 bg-slate-100 dark:bg-slate-800 rounded-xl mr-4 group-hover:scale-110 transition-transform duration-300">
+                <i :class="[archetype.icon, 'text-2xl text-blue-600 dark:text-cyan-400']"></i>
               </div>
-              <h2 class="ml-4 text-2xl font-bold text-white/90">
+              <h2 class="ml-2 text-2xl font-bold text-slate-900 dark:text-white">
                 {{ archetype.name }}
               </h2>
             </div>
 
             <div class="space-y-6">
-              <p class="text-slate-300 leading-relaxed">
+              <p class="text-slate-600 dark:text-slate-300 leading-relaxed text-lg">
                 {{ archetype.description }}
               </p>
 
-              <div>
-                <h3 class="font-bold text-white/90 mb-3">
-                  <i class="fas fa-chart-bar text-[#FF3D00] mr-2"></i>
-                  Ключевые характеристики:
-                </h3>
-                <div class="space-y-2">
-                  <div
-                    v-for="trait in archetype.traits"
-                    :key="trait"
-                    class="flex items-center p-3 rounded-lg bg-[#3A1CFF]/10 border-2 border-[#3A1CFF]/30"
-                  >
-                    <div class="w-2 h-2 bg-[#00FF88] rounded-full mr-3"></div>
-                    <span class="text-slate-300">{{ trait }}</span>
+              <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                  <h3 class="font-bold text-slate-900 dark:text-white mb-3 flex items-center">
+                    <i class="fas fa-check-circle text-emerald-500 mr-2"></i>
+                    Ключевые характеристики
+                  </h3>
+                  <div class="space-y-2">
+                    <div
+                      v-for="trait in archetype.traits"
+                      :key="trait"
+                      class="flex items-center p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700"
+                    >
+                      <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-3"></div>
+                      <span class="text-slate-700 dark:text-slate-300 text-sm">{{ trait }}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div>
-                <h3 class="font-bold text-white/90 mb-3">
-                  <i class="fas fa-arrow-trend-up text-[#00E6FF] mr-2"></i>
-                  Потенциал роста:
-                </h3>
-                <p class="text-slate-300 leading-relaxed">
-                  {{ archetype.growth }}
-                </p>
+                <div>
+                  <h3 class="font-bold text-slate-900 dark:text-white mb-3 flex items-center">
+                    <i class="fas fa-arrow-trend-up text-blue-500 mr-2"></i>
+                    Потенциал роста
+                  </h3>
+                  <div class="p-4 rounded-xl bg-blue-50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-500/20">
+                    <p class="text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
+                      {{ archetype.growth }}
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -134,6 +127,7 @@
 
 <script setup>
 import ScrollGlowSection from "~/components/ui/ScrollGlowSection.vue";
+import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
 
 const archetypes = ref([
   {
