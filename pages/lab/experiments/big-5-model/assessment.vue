@@ -1,44 +1,36 @@
 <template>
-  <div class="relative min-h-screen">
+  <div class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-200 transition-colors duration-500">
     <div class="container mx-auto max-w-3xl px-4 xl:px-0 py-8 sm:py-12">
       <Breadcrumbs />
+      
       <!-- Question Card -->
       <div
         v-if="currentQuestion && !showAgeInput && !showResults"
-        class="bg-slate-900/60 backdrop-blur-xl rounded-xl transition-all duration-300 hover:bg-slate-900/80 mb-12 border border-white/5"
+        class="bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl transition-all duration-300 mb-12"
       >
         <!-- Question Header -->
-        <div class="p-6 sm:p-8 border-b border-white/5">
-          <h2 class="text-xl sm:text-2xl font-bold text-white">
+        <div class="p-6 sm:p-8 border-b border-slate-200 dark:border-slate-800">
+          <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
             {{ currentQuestion.questionText }}
           </h2>
           <!-- Display Trait Name -->
-          <p class="text-sm text-slate-300 mt-2">
-            <strong>Текущий аспект:</strong> {{ currentQuestion.trait }}
-          </p>
+          <div class="flex items-center gap-2">
+            <span class="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300">
+              {{ currentQuestion.trait }}
+            </span>
+          </div>
         </div>
 
         <!-- Progress Bar -->
-        <div class="px-6 sm:px-8 py-4 border-b border-white/5">
-          <div class="flex justify-between text-sm text-slate-200 mb-2">
-            <span
-              >Вопрос {{ currentQuestionIndex + 1 }} из
-              {{ totalQuestions }}</span
-            >
-            <span
-              >{{
-                Math.round(((currentQuestionIndex + 1) / totalQuestions) * 100)
-              }}%</span
-            >
+        <div class="px-6 sm:px-8 py-6 border-b border-slate-200 dark:border-slate-800">
+          <div class="flex justify-between text-sm font-medium text-slate-600 dark:text-slate-400 mb-3">
+            <span>Вопрос {{ currentQuestionIndex + 1 }} из {{ totalQuestions }}</span>
+            <span>{{ Math.round(((currentQuestionIndex + 1) / totalQuestions) * 100) }}%</span>
           </div>
-          <div class="w-full bg-slate-800/50 rounded-full h-2">
+          <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-3 overflow-hidden">
             <div
-              class="bg-gradient-to-r from-blue-500 via-green-500 to-teal-500 h-2 rounded-full transition-all duration-300"
-              :style="{
-                width: `${
-                  ((currentQuestionIndex + 1) / totalQuestions) * 100
-                }%`,
-              }"
+              class="bg-gradient-to-r from-blue-500 to-indigo-500 h-full rounded-full transition-all duration-500 ease-out shadow-[0_0_10px_rgba(59,130,246,0.5)]"
+              :style="{ width: `${((currentQuestionIndex + 1) / totalQuestions) * 100}%` }"
             ></div>
           </div>
         </div>
@@ -50,34 +42,33 @@
             :key="index"
             @click="handleAnswerSelection(index)"
             :disabled="isAnswering"
-            class="w-full text-left p-4 rounded-lg transition-all duration-200 group"
+            class="w-full text-left p-4 rounded-xl transition-all duration-200 group border-2 relative overflow-hidden"
             :class="[
               selectedAnswer === index
-                ? 'bg-gradient-to-r from-blue-500/10 via-green-500/10 to-teal-500/10 border-blue-500/50'
-                : 'bg-slate-800/50 hover:bg-slate-800/80 border-white/5',
-              'border',
+                ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-500 dark:border-blue-500 shadow-md'
+                : 'bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-slate-50 dark:hover:bg-slate-800',
             ]"
           >
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-4 relative z-10">
               <div
-                class="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors"
+                class="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors duration-200"
                 :class="[
                   selectedAnswer === index
-                    ? 'border-blue-400'
-                    : 'border-slate-400 group-hover:border-blue-400/50',
+                    ? 'border-blue-500'
+                    : 'border-slate-300 dark:border-slate-600 group-hover:border-blue-400',
                 ]"
               >
                 <div
                   v-if="selectedAnswer === index"
-                  class="w-3 h-3 bg-gradient-to-r from-blue-400 to-teal-400 rounded-full"
+                  class="w-3 h-3 bg-blue-500 rounded-full"
                 ></div>
               </div>
               <span
-                class="text-base sm:text-lg"
+                class="text-base sm:text-lg font-medium transition-colors duration-200"
                 :class="[
                   selectedAnswer === index
-                    ? 'text-white'
-                    : 'text-slate-200 group-hover:text-white',
+                    ? 'text-blue-700 dark:text-blue-300'
+                    : 'text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white',
                 ]"
               >
                 {{ option.text }}
@@ -91,7 +82,12 @@
           <button
             @click="previousQuestion"
             :disabled="currentQuestionIndex === 0"
-            class="w-full px-6 py-3 rounded-lg font-medium transition-all duration-300 bg-slate-800/50 hover:bg-slate-800/80 text-white disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 border border-white/5"
+            class="w-full px-6 py-4 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 border"
+            :class="[
+               currentQuestionIndex === 0 
+               ? 'bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-600 border-transparent cursor-not-allowed' 
+               : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm hover:shadow'
+            ]"
           >
             <i class="fas fa-arrow-left"></i>
             Предыдущий вопрос
@@ -102,59 +98,98 @@
       <!-- Age Input Section -->
       <div
         v-if="showAgeInput"
-        class="bg-slate-900/60 backdrop-blur-xl rounded-xl transition-all duration-300 hover:bg-slate-900/80 mb-12 border border-white/5 p-8"
+        class="bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl p-8 animate-fade-in-up"
       >
-        <h2 class="text-xl sm:text-2xl font-bold text-white mb-4">
-          Пожалуйста, укажите ваш возраст:
+        <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 text-center">
+          Пожалуйста, укажите ваш возраст
         </h2>
-        <input
-          v-model="userAge"
-          type="number"
-          min="10"
-          max="100"
-          class="w-full p-3 rounded-lg bg-slate-800/50 border border-white/5 text-white focus:outline-none focus:border-blue-500"
-          placeholder="Введите ваш возраст"
-        />
-        <button
-          @click="submitAge"
-          class="mt-4 w-full px-6 py-3 rounded-lg font-medium transition-all duration-300 bg-slate-800/50 hover:bg-slate-800/80 text-white flex items-center justify-center gap-2 border border-white/5"
-        >
-          Подтвердить
-        </button>
+        <div class="max-w-sm mx-auto">
+          <input
+            v-model="userAge"
+            type="number"
+            min="10"
+            max="100"
+            class="w-full p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all text-center text-xl font-bold mb-6"
+            placeholder="Ваш возраст"
+          />
+          <button
+            @click="submitAge"
+            class="w-full px-6 py-4 rounded-xl font-bold text-white transition-all duration-300 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-lg hover:shadow-blue-500/25 transform hover:-translate-y-1"
+          >
+            Подтвердить и получить результаты
+          </button>
+        </div>
       </div>
 
       <!-- Final Scores Section -->
       <div
         v-if="showResults"
-        class="bg-slate-900/60 rounded-xl p-8 mt-12 border border-white/5"
+        class="space-y-8 animate-fade-in-up"
       >
-        <h3 class="text-2xl font-bold text-white">Ваши результаты</h3>
+        <div class="bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl p-8">
+          <h3 class="text-3xl font-bold text-slate-900 dark:text-white mb-8 text-center">
+            <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
+              Ваш Психологический Портрет
+            </span>
+          </h3>
 
-        <!-- Display Trait Scores -->
-        <div
-          v-for="(score, trait) in calculatedScores.traitScores"
-          :key="trait"
-          class="mt-4"
-        >
-          <p class="text-lg text-slate-200">
-            <strong>{{ trait }}:</strong> {{ Math.round(score) }} из 120
-          </p>
+          <!-- Display Trait Scores -->
+          <div class="grid gap-6">
+            <div
+              v-for="(score, trait) in calculatedScores.traitScores"
+              :key="trait"
+              class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-6 border border-slate-200 dark:border-slate-700"
+            >
+              <div class="flex justify-between items-end mb-4">
+                <h4 class="text-xl font-bold text-slate-900 dark:text-white capitalize">{{ trait }}</h4>
+                <span class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{ Math.round(score) }}/120</span>
+              </div>
+              <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-3 overflow-hidden">
+                <div
+                  class="bg-gradient-to-r from-blue-500 to-indigo-500 h-full rounded-full transition-all duration-1000 ease-out"
+                  :style="{ width: `${(score / 120) * 100}%` }"
+                ></div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Display Facet Scores -->
-        <div
-          v-for="(facets, trait) in calculatedScores.facetScores"
-          :key="trait"
-          class="mt-6"
-        >
-          <h4 class="text-xl text-slate-200">
-            <strong>{{ trait }} Facets:</strong>
-          </h4>
-          <div v-for="(facetScore, facet) in facets" :key="facet" class="mt-2">
-            <p class="text-sm text-slate-300">
-              <strong>{{ facet }}:</strong> {{ Math.round(facetScore) }} из 20
-            </p>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div
+            v-for="(facets, trait) in calculatedScores.facetScores"
+            :key="trait"
+            class="bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-slate-800 shadow-lg p-6"
+          >
+            <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
+              <i class="fas fa-chart-pie text-blue-500"></i>
+              <span class="capitalize">{{ trait }}</span> - Детализация
+            </h4>
+            <div class="space-y-4">
+              <div v-for="(facetScore, facet) in facets" :key="facet">
+                <div class="flex justify-between text-sm mb-1">
+                  <span class="text-slate-600 dark:text-slate-400 capitalize">{{ facet }}</span>
+                  <span class="font-medium text-slate-900 dark:text-white">{{ Math.round(facetScore) }}/20</span>
+                </div>
+                <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-1.5">
+                  <div
+                    class="bg-blue-500 dark:bg-blue-400 h-full rounded-full"
+                    :style="{ width: `${(facetScore / 20) * 100}%` }"
+                  ></div>
+                </div>
+              </div>
+            </div>
           </div>
+        </div>
+        
+        <div class="flex justify-center mt-8">
+           <NuxtLink
+            to="/lab/experiments/big-5-model"
+            class="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-slate-700 dark:text-slate-200 transition-all duration-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-blue-300 dark:hover:border-blue-700 shadow-sm hover:shadow-md"
+          >
+            <i class="fas fa-arrow-left mr-2"></i>
+            Вернуться на главную
+          </NuxtLink>
         </div>
       </div>
     </div>
