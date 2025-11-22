@@ -174,7 +174,7 @@
 
   <!-- Desktop Sidebar -->
   <aside
-    class="lab-control-panel hidden lg:flex flex-col bg-white dark:bg-gradient-to-b dark:from-slate-900 dark:via-slate-900 dark:to-slate-950 border-r border-slate-200 dark:border-cyan-500/10 h-screen sticky top-0 overflow-y-auto transition-colors duration-500"
+    class="lab-control-panel hidden lg:flex flex-col bg-white dark:bg-gradient-to-b dark:from-slate-900 dark:via-slate-900 dark:to-slate-950 border-r border-slate-200 dark:border-cyan-500/10 min-h-screen sticky top-0 overflow-y-auto transition-colors duration-500"
   >
     <!-- Panel Header -->
     <div class="panel-header border-b border-slate-200 dark:border-cyan-500/20 p-6">
