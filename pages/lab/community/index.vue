@@ -2,7 +2,8 @@
 <template>
   <div class="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500 relative">
     <!-- Loading State -->
-    <div v-if="isLoading" class="fixed inset-0 z-50 bg-slate-50 dark:bg-slate-950 flex items-center justify-center">
+    <!-- Loading State -->
+    <div v-if="isLoading" class="min-h-[60vh] flex items-center justify-center">
       <div class="loading-container">
         <div class="loading-spinner-wrapper">
           <div class="spinner-ring spinner-ring-1"></div>

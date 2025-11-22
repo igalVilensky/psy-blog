@@ -92,7 +92,7 @@
                 <span>Обсерватория роста</span>
               </NuxtLink>
               <NuxtLink
-                to="/community"
+                to="/lab/community"
                 class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors duration-150"
                 exact-active-class="bg-slate-700/50 text-white"
                 @click="closeDropdown"
@@ -453,7 +453,7 @@
                   <span>Обсерватория роста</span>
                 </NuxtLink>
                 <NuxtLink
-                  to="/community"
+                  to="/lab/community"
                   class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
                   exact-active-class="bg-slate-700/50 text-white"
                   @click="closeDropdown"
