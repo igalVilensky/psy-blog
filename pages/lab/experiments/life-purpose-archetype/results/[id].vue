@@ -254,7 +254,7 @@
             :iconClass="'fas fa-arrow-left'"
             :textColor="'#CBD5E1'"
             :customClass="'flex-1 p-4 bg-[#1A2038] hover:bg-[#252B45] border border-[#3A1CFF]/20 transition-all duration-300 rounded-xl'"
-            :to="'/awareness-tools/life-purpose-archetype'"
+            :to="'/lab/experiments/life-purpose-archetype'"
             :isLink="true"
           />
           <Button
@@ -262,7 +262,7 @@
             :iconClass="'fas fa-book'"
             :textColor="'#ffffff'"
             :customClass="'flex-1 p-4 bg-gradient-to-r from-[#3A1CFF] to-[#00E6FF] inline-flex border-none rounded-xl hover:shadow-lg hover:from-[#2A15CC] hover:to-[#00B8D4] transition-all duration-300'"
-            :to="'/awareness-tools/life-purpose-archetype/explanation'"
+            :to="'/lab/experiments/life-purpose-archetype/explanation'"
             :isLink="true"
           />
         </div>

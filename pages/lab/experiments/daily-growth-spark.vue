@@ -3,6 +3,7 @@
     class="min-h-screen bg-gradient-to-b from-[#0f172a] to-[#1e293b] text-gray-100"
   >
     <div class="max-w-6xl mx-auto py-12 px-6 xl:px-0">
+      <Breadcrumbs />
       <!-- Header Section with Improved Typography and Animation -->
       <div class="text-center mb-12">
         <div class="flex justify-center mb-4">
@@ -317,28 +318,6 @@
                 </div>
               </div>
             </div>
-
-            <!-- <div class="text-center pt-4">
-              <button
-                @click="openDailySparkModal"
-                class="px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-lg font-medium rounded-xl hover:from-indigo-500 hover:to-purple-500 transition-all shadow-md hover:shadow-lg hover:shadow-indigo-500/20 flex items-center gap-2 mx-auto transform hover:-translate-y-1"
-              >
-                <svg
-                  class="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                  />
-                </svg>
-                Продолжить рост
-              </button>
-            </div> -->
           </div>
         </div>
       </section>
@@ -555,6 +534,11 @@ import {
   getDailyGrowthSparkStats,
   getSharedInsights,
 } from "~/api/firebase/dailyGrowthSpark";
+import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
+
+definePageMeta({
+  layout: "laboratory",
+});
 
 const auth = getAuth();
 const db = getFirestore();

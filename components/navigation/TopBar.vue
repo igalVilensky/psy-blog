@@ -162,75 +162,6 @@
           </div>
         </div>
 
-        <!-- Инструменты Dropdown (Logged-in only) -->
-        <ClientOnly>
-          <div v-if="auth.user" class="relative group">
-            <button
-            class="flex items-center space-x-2 px-3.5 py-2 rounded-lg text-[15px] font-medium text-slate-300 hover:text-white hover:bg-slate-800/50 transition-all duration-200"
-            :class="{ 'bg-slate-800/50 text-white': isToolsRouteActive }"
-          >
-            <i class="fas fa-tools text-purple-400"></i>
-            <span>Инструменты</span>
-            <i
-              class="fas fa-chevron-down text-xs text-slate-400 group-hover:text-slate-300 transition-transform duration-200 group-hover:rotate-180"
-            ></i>
-          </button>
-          <div
-            class="absolute top-full left-0 mt-1 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200"
-          >
-            <div
-              class="bg-slate-800/95 backdrop-blur-sm rounded-lg shadow-xl border border-slate-700/50 min-w-[240px] py-1.5"
-            >
-              <NuxtLink
-                to="/awareness-tools/emotional-compass"
-                class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors duration-150"
-                exact-active-class="bg-slate-700/50 text-white"
-                @click="closeDropdown"
-              >
-                <i class="fas fa-compass text-purple-400 w-4"></i>
-                <span>Эмоциональный компас</span>
-              </NuxtLink>
-              <NuxtLink
-                to="/awareness-tools/wheel-of-life"
-                class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors duration-150"
-                exact-active-class="bg-slate-700/50 text-white"
-                @click="closeDropdown"
-              >
-                <i class="fas fa-yin-yang text-purple-400 w-4"></i>
-                <span>Колесо баланса</span>
-              </NuxtLink>
-              <NuxtLink
-                to="/awareness-tools/life-purpose-archetype"
-                class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors duration-150"
-                exact-active-class="bg-slate-700/50 text-white"
-                @click="closeDropdown"
-              >
-                <i class="fas fa-star text-purple-400 w-4"></i>
-                <span>12 Архетипов</span>
-              </NuxtLink>
-              <NuxtLink
-                to="/awareness-tools/big-5-model"
-                class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors duration-150"
-                exact-active-class="bg-slate-700/50 text-white"
-                @click="closeDropdown"
-              >
-                <i class="fas fa-chart-bar text-purple-400 w-4"></i>
-                <span>Большая пятёрка</span>
-              </NuxtLink>
-              <NuxtLink
-                to="/awareness-tools/daily-growth-spark"
-                class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors duration-150"
-                exact-active-class="bg-slate-700/50 text-white"
-                @click="closeDropdown"
-              >
-                <i class="fas fa-bolt text-purple-400 w-4"></i>
-                <span>Ежедневная искра роста</span>
-              </NuxtLink>
-            </div>
-          </div>
-          </div>
-        </ClientOnly>
-
         <!-- Сообщество Dropdown -->
         <div class="relative group">
           <button
@@ -605,86 +536,6 @@
             </div>
           </div>
 
-          <!-- Инструменты (Logged-in only) -->
-          <ClientOnly>
-            <div v-if="auth.user">
-              <button
-              @click="toggleMobileSubmenu('tools')"
-              class="w-full flex items-center justify-between p-3 rounded-lg bg-slate-800/50 hover:bg-slate-800/70 transition-all duration-200 border border-slate-700/50"
-              :class="{ 'bg-slate-800/70': isToolsRouteActive }"
-            >
-              <div class="flex items-center space-x-4">
-                <i class="fas fa-tools text-purple-400"></i>
-                <span class="font-medium text-slate-200">Инструменты</span>
-              </div>
-              <i
-                class="fas fa-chevron-down text-slate-400 text-sm transition-transform duration-200"
-                :class="[
-                  mobileSubmenuStates.tools || isToolsRouteActive
-                    ? 'rotate-180'
-                    : '',
-                ]"
-              ></i>
-            </button>
-            <div
-              class="mt-1.5 rounded-lg overflow-hidden transition-all duration-300 ease-in-out"
-              :class="[
-                mobileSubmenuStates.tools || isToolsRouteActive
-                  ? 'max-h-[400px]'
-                  : 'max-h-0',
-              ]"
-            >
-              <div class="bg-slate-800/30 p-2 space-y-1">
-                <NuxtLink
-                  to="/awareness-tools/emotional-compass"
-                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
-                  exact-active-class="bg-slate-700/50 text-white"
-                  @click="closeDropdown"
-                >
-                  <i class="fas fa-compass text-purple-400 text-xs w-4"></i>
-                  <span>Эмоциональный компас</span>
-                </NuxtLink>
-                <NuxtLink
-                  to="/awareness-tools/wheel-of-life"
-                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
-                  exact-active-class="bg-slate-700/50 text-white"
-                  @click="closeDropdown"
-                >
-                  <i class="fas fa-yin-yang text-purple-400 text-xs w-4"></i>
-                  <span>Колесо баланса</span>
-                </NuxtLink>
-                <NuxtLink
-                  to="/awareness-tools/life-purpose-archetype"
-                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
-                  exact-active-class="bg-slate-700/50 text-white"
-                  @click="closeDropdown"
-                >
-                  <i class="fas fa-star text-purple-400 text-xs w-4"></i>
-                  <span>12 Архетипов</span>
-                </NuxtLink>
-                <NuxtLink
-                  to="/awareness-tools/big-5-model"
-                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
-                  exact-active-class="bg-slate-700/50 text-white"
-                  @click="closeDropdown"
-                >
-                  <i class="fas fa-chart-bar text-purple-400 text-xs w-4"></i>
-                  <span>Большая пятёрка</span>
-                </NuxtLink>
-                <NuxtLink
-                  to="/awareness-tools/daily-growth-spark"
-                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
-                  exact-active-class="bg-slate-700/50 text-white"
-                  @click="closeDropdown"
-                >
-                  <i class="fas fa-bolt text-purple-400 text-xs w-4"></i>
-                  <span>Ежедневная искра роста</span>
-                </NuxtLink>
-              </div>
-              </div>
-            </div>
-          </ClientOnly>
-
           <!-- Сообщество -->
           <div>
             <button
@@ -905,11 +756,11 @@ const isGrowthRouteActive = computed(() => {
 
 const isToolsRouteActive = computed(() => {
   const toolsRoutes = [
-    "/awareness-tools/emotional-compass",
-    "/awareness-tools/wheel-of-life",
-    "/awareness-tools/life-purpose-archetype",
-    "/awareness-tools/big-5-model",
-    "/awareness-tools/daily-growth-spark",
+    "/lab/experiments/emotional-compass",
+    "/lab/experiments/wheel-of-life",
+    "/lab/experiments/life-purpose-archetype",
+    "/lab/experiments/big-5-model",
+    "/lab/experiments/daily-growth-spark",
   ];
   return toolsRoutes.includes(route.path);
 });

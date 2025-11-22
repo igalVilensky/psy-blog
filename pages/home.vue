@@ -463,7 +463,7 @@ const fetchUserStats = async (userId) => {
         .map(([name, score]) => ({ name, score }));
       stats.value.tests = {
         completedTest: { name: "Archetype Test", topArchetypes },
-        ctas: [{ name: "Big 5 Test", link: "/awareness-tools/big-5-model" }],
+        ctas: [{ name: "Big 5 Test", link: "/lab/experiments/big-5-model" }],
       };
     } else {
       stats.value.tests = {
@@ -499,14 +499,14 @@ const fetchUserStats = async (userId) => {
         emotionStats: {
           totalEntries: emotionStatsResponse.data.entries.length,
         },
-        reminder: { link: "/awareness-tools/emotional-compass" },
+        reminder: { link: "/lab/experiments/emotional-compass" },
         cta: null,
       };
     } else {
       stats.value.tools = {
         emotionStats: null,
         reminder: null,
-        cta: { link: "/awareness-tools/emotional-compass" },
+        cta: { link: "/lab/experiments/emotional-compass" },
       };
     }
   } catch (error) {
@@ -535,7 +535,7 @@ const fetchNotifications = async (userId) => {
       localNotifications.value.push({
         id: 1,
         message: "Не забудьте записать свои эмоции сегодня!",
-        routePath: "/awareness-tools/emotional-compass",
+        routePath: "/lab/experiments/emotional-compass",
         ctaText: "Записать сейчас",
       });
     }
@@ -642,7 +642,7 @@ onMounted(async () => {
       tools: {
         emotionStats: null,
         reminder: null,
-        cta: { link: "/awareness-tools/emotional-compass" },
+        cta: { link: "/lab/experiments/emotional-compass" },
       },
     };
     successStories.value = await fetchSuccessStories();

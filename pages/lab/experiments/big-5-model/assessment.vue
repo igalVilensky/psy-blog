@@ -1,6 +1,7 @@
 <template>
   <div class="relative min-h-screen">
     <div class="container mx-auto max-w-3xl px-4 xl:px-0 py-8 sm:py-12">
+      <Breadcrumbs />
       <!-- Question Card -->
       <div
         v-if="currentQuestion && !showAgeInput && !showResults"
@@ -163,6 +164,11 @@
 <script setup>
 import { ref, computed } from "vue";
 import { questions } from "@/data/big-5-model/questions.js";
+import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
+
+definePageMeta({
+  layout: "laboratory",
+});
 
 // State
 const currentQuestionIndex = ref(0);

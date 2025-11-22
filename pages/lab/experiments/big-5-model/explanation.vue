@@ -1,10 +1,11 @@
 <template>
   <div class="relative min-h-screen">
     <div class="container mx-auto max-w-4xl relative z-10 py-12 px-4 xl:px-0">
+      <Breadcrumbs />
       <!-- Back Navigation -->
       <div>
         <NuxtLink
-          to="/awareness-tools/big-5-model"
+          to="/lab/experiments/big-5-model"
           class="inline-flex items-center text-blue-500 hover:text-green-500 transition-colors mb-8 group"
         >
           <i
@@ -132,6 +133,11 @@
 
 <script setup>
 import ScrollGlowSection from "~/components/ui/ScrollGlowSection.vue";
+import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
+
+definePageMeta({
+  layout: "laboratory",
+});
 
 const big5Traits = ref([
   {

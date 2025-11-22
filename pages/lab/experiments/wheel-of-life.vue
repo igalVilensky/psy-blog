@@ -1,6 +1,7 @@
 <template>
   <div class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-200 transition-colors duration-500">
     <div class="container mx-auto px-4 py-8 max-w-7xl">
+      <Breadcrumbs />
       <!-- Header Section -->
       <div class="text-center mb-12 animate-fade-in-up">
         <h1 class="text-4xl md:text-5xl font-bold mb-4">
@@ -224,6 +225,7 @@ import { useAuthStore } from "~/stores/auth";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 import Notification from "~/components/base/Notification.vue";
 import { useNotification } from "~/composables/useNotification";
+import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
 
 definePageMeta({
   layout: "laboratory",

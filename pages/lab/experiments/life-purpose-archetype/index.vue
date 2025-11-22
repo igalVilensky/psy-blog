@@ -1,6 +1,7 @@
 <template>
   <div class="relative min-h-screen">
     <div class="container mx-auto max-w-6xl px-4 xl:px-0 py-8 sm:py-12">
+      <Breadcrumbs />
       <!-- Hero Section -->
       <section class="mb-12 sm:mb-16">
         <div class="max-w-3xl mx-auto text-center">
@@ -13,7 +14,7 @@
           </p>
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
-              to="/awareness-tools/life-purpose-archetype/assessment"
+              to="/lab/experiments/life-purpose-archetype/assessment"
               text="Пройти тест"
               iconClass="fas fa-play"
               gradientStart="#EC4899"
@@ -23,7 +24,7 @@
               :translateClass="'-translate-x-[101%]'"
             />
             <Button
-              to="/awareness-tools/life-purpose-archetype/explanation"
+              to="/lab/experiments/life-purpose-archetype/explanation"
               text="Подробнее"
               iconClass="fas fa-info-circle"
               gradientStart="#FFFFFF10"
@@ -146,4 +147,9 @@
 </template>
 <script setup>
 import Button from "~/components/base/Button.vue";
+import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
+
+definePageMeta({
+  layout: "laboratory",
+});
 </script>

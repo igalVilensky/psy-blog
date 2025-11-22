@@ -164,7 +164,7 @@
           class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto"
         >
           <NuxtLink
-            to="/awareness-tools/emotional-compass/analysis"
+            to="/lab/experiments/emotional-compass/analysis"
             :class="[
               'group relative overflow-hidden rounded-2xl p-8 border transition-all duration-300',
               hasStatsData 
@@ -183,7 +183,7 @@
           </NuxtLink>
 
           <NuxtLink
-            to="/awareness-tools/emotional-compass/journal-history"
+            to="/lab/experiments/emotional-compass/journal-history"
             :class="[
               'group relative overflow-hidden rounded-2xl p-8 border transition-all duration-300',
               hasStatsData 

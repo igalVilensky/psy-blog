@@ -4,7 +4,7 @@
       <!-- Back Navigation -->
       <div>
         <NuxtLink
-          to="/awareness-tools/life-purpose-archetype"
+          to="/lab/experiments/life-purpose-archetype"
           class="inline-flex items-center text-pink-500 hover:text-purple-500 transition-colors mb-8 group"
         >
           <i

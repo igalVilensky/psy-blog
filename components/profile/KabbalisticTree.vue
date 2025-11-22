@@ -125,7 +125,7 @@
           :loading="loadingEmotionBarometer"
           :data="emotionData"
           button-text="Эмоциональный компас"
-          button-to="/awareness-tools/emotional-compass"
+          button-to="/lab/experiments/emotional-compass"
           button-icon="fas fa-compass"
           :progress="Math.min(emotionData.totalEntries * 10, 100)"
           progress-label="Эмоциональная глубина"
@@ -154,7 +154,7 @@
             <i class="fas fa-wind text-[#EC4899] text-2xl opacity-50"></i>
             <p class="text-center text-slate-400">Нет данных об эмоциях</p>
             <NuxtLink
-              to="/awareness-tools/emotional-compass"
+              to="/lab/experiments/emotional-compass"
               class="text-[#EC4899] hover:underline text-sm"
             >
               Начать исследование
@@ -176,7 +176,7 @@
           :loading="loading"
           :data="growthData"
           button-text="Добавить инсайт"
-          button-to="/awareness-tools/daily-growth-spark"
+          button-to="/lab/experiments/daily-growth-spark"
           button-icon="fas fa-plus"
           :progress="Math.min(growthData.entries.length * 20, 100)"
           progress-label="Прогресс роста"
@@ -205,7 +205,7 @@
             <i class="fas fa-lightbulb text-[#10B981] text-2xl opacity-50"></i>
             <p class="text-center text-slate-400">Нет данных о росте</p>
             <NuxtLink
-              to="/awareness-tools/daily-growth-spark"
+              to="/lab/experiments/daily-growth-spark"
               class="text-[#10B981] hover:underline text-sm"
             >
               Начать путь роста

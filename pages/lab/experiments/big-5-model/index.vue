@@ -1,6 +1,7 @@
 <template>
   <div class="relative min-h-screen">
     <div class="container mx-auto max-w-6xl px-4 xl:px-0 py-8 sm:py-12">
+      <Breadcrumbs />
       <!-- Hero Section -->
       <section class="mb-12 sm:mb-16">
         <div class="max-w-3xl mx-auto text-center">
@@ -13,7 +14,7 @@
           </p>
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
-              to="/awareness-tools/big-5-model/assessment"
+              to="/lab/experiments/big-5-model/assessment"
               text="Пройти тест"
               iconClass="fas fa-play"
               gradientStart="#3B82F6"
@@ -23,7 +24,7 @@
               :translateClass="'-translate-x-[101%]'"
             />
             <Button
-              to="/awareness-tools/big-5-model/explanation"
+              to="/lab/experiments/big-5-model/explanation"
               text="Подробнее"
               iconClass="fas fa-info-circle"
               gradientStart="#FFFFFF10"
@@ -155,4 +156,9 @@
 
 <script setup>
 import Button from "~/components/base/Button.vue";
+import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
+
+definePageMeta({
+  layout: "laboratory",
+});
 </script>

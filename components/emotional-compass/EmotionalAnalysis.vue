@@ -4,7 +4,7 @@
   >
     <!-- Back Navigation with Enhanced Accessibility -->
     <nuxt-link
-      to="/awareness-tools/emotional-compass"
+      to="/lab/experiments/emotional-compass"
       class="pl-4 sm:pl-0 inline-flex items-center text-[#0EA5E9] hover:text-[#22D3EE] transition-all mb-4 sm:mb-8 group"
       aria-label="Вернуться назад"
     >

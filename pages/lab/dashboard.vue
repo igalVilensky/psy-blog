@@ -227,7 +227,7 @@
               <div class="text-xs font-medium text-emerald-600 dark:text-emerald-400">Завершено</div>
             </div>
             <NuxtLink
-              to="/awareness-tools/emotional-compass"
+              to="/lab/experiments/emotional-compass"
               class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-700/50 hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-white transition-all"
             >
               <i class="fas fa-chevron-right text-xs"></i>
@@ -322,7 +322,7 @@
       </h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <NuxtLink
-          to="/awareness-tools/emotional-compass"
+          to="/lab/experiments/emotional-compass"
           class="p-5 rounded-xl bg-white dark:bg-slate-800/30 border border-slate-200 dark:border-slate-700/50 hover:border-emerald-500/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all duration-300 group text-left relative overflow-hidden shadow-sm dark:shadow-none"
         >
           <div

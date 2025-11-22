@@ -93,21 +93,21 @@ import big5Image from "@/assets/images/awarenessTools/big5.jpg";
 const tools = ref([
   {
     name: "12 Архетипов",
-    path: "/awareness-tools/life-purpose-archetype",
+    path: "/lab/experiments/life-purpose-archetype",
     description:
       "Погрузитесь в глубокое исследование архетипов вашей личности и раскройте истинную цель вашей жизни через трансформационный процесс самопознания.",
     image: LifeArchetypeImage,
   },
   {
     name: "Большая пятёрка",
-    path: "/awareness-tools/big-5-model",
+    path: "/lab/experiments/big-5-model",
     description:
       "Узнайте себя лучше через проверенную модель 'Большой Пятёрки' и откройте новые перспективы для личного и профессионального роста.",
     image: big5Image,
   },
   {
     name: "Эмоциональный компас",
-    path: "/awareness-tools/emotional-compass",
+    path: "/lab/experiments/emotional-compass",
     description:
       "Измерьте и отслеживайте ваши эмоции в реальном времени. Научитесь лучше понимать свои чувства и управлять ими.",
     image: EmotionalBarometerImage,

@@ -258,7 +258,7 @@ const calculateArchetypeScores = (answers) => {
 
 //     if (result.success && result.assessmentId) {
 //       router.push(
-//         `/awareness-tools/life-purpose-archetype/results/${result.assessmentId}`
+//         `/lab/experiments/life-purpose-archetype/results/${result.assessmentId}`
 //       );
 //     } else {
 //       throw new Error(result.message || "Не удалось сохранить результаты");
@@ -296,7 +296,7 @@ const submitAssessmentHandler = async () => {
 
     if (result.success && result.assessmentId) {
       router.push(
-        `/awareness-tools/life-purpose-archetype/results/${result.assessmentId}`
+        `/lab/experiments/life-purpose-archetype/results/${result.assessmentId}`
       );
     } else {
       throw new Error(result.message || "Не удалось сохранить результаты");
