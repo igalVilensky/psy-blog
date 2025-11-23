@@ -1,33 +1,43 @@
 <template>
-  <div class="relative min-h-screen">
-    <div class="container mx-auto max-w-6xl relative z-10 pb-12 pt-12">
-      <!-- Hero Section -->
-      <section class="text-center mb-12">
-        <h1
-          class="text-3xl sm:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] tracking-tight mb-6">
+  <div class="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+      <!-- Header Section -->
+      <div class="mb-12 text-center relative mt-8">
+        <div
+          class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-3xl -z-10">
+        </div>
+
+        <span
+          class="inline-block px-4 py-1.5 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 text-sm font-medium mb-6 border border-purple-200 dark:border-purple-700/50">
+          Юридическая информация
+        </span>
+
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-6 tracking-tight">
           Политика конфиденциальности
         </h1>
-        <p class="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed px-8">
-          Мы ценим вашу конфиденциальность и стремимся защищать ваши
-          персональные данные.
+
+        <p class="text-lg sm:text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
+          Мы ценим вашу конфиденциальность и стремимся защищать ваши персональные данные
         </p>
-      </section>
+      </div>
 
       <!-- Privacy Policy Content -->
       <div
-        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-[#0EA5E9]/20 p-6 sm:p-8 mb-12">
+        class="bg-white dark:bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-purple-500/20 p-6 sm:p-8 mb-12 shadow-sm dark:shadow-none">
         <!-- Last Updated Date -->
-        <div class="text-sm text-slate-300/80 mb-8">
+        <div class="text-sm text-slate-500 dark:text-slate-400 mb-8">
           Последнее обновление: {{ formattedDate }}
         </div>
 
         <!-- Table of Contents -->
-        <nav class="mb-12 p-6 bg-[#0EA5E9]/10 rounded-xl">
-          <h2 class="text-lg font-semibold text-white/90 mb-4">Содержание</h2>
+        <nav
+          class="mb-12 p-6 bg-slate-50 dark:bg-purple-500/5 rounded-xl border border-slate-200 dark:border-purple-500/10">
+          <h2 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">Содержание</h2>
           <ul class="space-y-2">
             <li v-for="(section, index) in sections" :key="index">
               <a :href="`#section-${index + 1}`"
-                class="text-[#0EA5E9] hover:text-[#22D3EE] transition-colors duration-200">
+                class="text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors duration-200">
                 {{ section.title }}
               </a>
             </li>
@@ -38,28 +48,29 @@
         <div class="space-y-16">
           <section v-for="(section, index) in sections" :key="index" :id="`section-${index + 1}`"
             class="scroll-mt-24 pt-8 first:pt-0">
-            <h2
-              class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] mb-6">
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6">
               {{ index + 1 }}. {{ section.title }}
             </h2>
-            <div class="text-slate-300/80 leading-relaxed whitespace-pre-line">
+            <div class="text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-line">
               {{ section.content }}
             </div>
           </section>
         </div>
 
         <!-- Contact Section -->
-        <div class="mt-16 p-6 bg-[#0EA5E9]/10 rounded-xl">
-          <h2 class="text-xl font-semibold text-white/90 mb-4">
+        <div
+          class="mt-16 p-6 bg-gradient-to-r from-purple-500/5 to-pink-500/5 dark:from-purple-500/10 dark:to-pink-500/10 rounded-xl border border-purple-200 dark:border-purple-500/20">
+          <h2 class="text-xl font-semibold text-slate-900 dark:text-white mb-4">
             Свяжитесь с нами
           </h2>
-          <p class="text-slate-300/80">
+          <p class="text-slate-600 dark:text-slate-300 mb-4">
             Если у вас возникли вопросы относительно нашей политики
             конфиденциальности, пожалуйста, свяжитесь с нами:
           </p>
-          <a href="mailto:anastasiagelmut@gmail.com"
-            class="inline-block mt-4 text-[#0EA5E9] hover:text-[#22D3EE] transition-colors duration-200">
-            anastasiagelmut@gmail.com
+          <a href="mailto:vilenskyigal@gmail.com"
+            class="inline-flex items-center gap-2 text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors duration-200 font-medium">
+            <i class="fas fa-envelope"></i>
+            vilenskyigal@gmail.com
           </a>
         </div>
       </div>
@@ -68,6 +79,11 @@
 </template>
 
 <script setup>
+
+definePageMeta({
+  layout: "laboratory",
+});
+
 const formattedDate = new Date().toLocaleDateString("ru-RU", {
   year: "numeric",
   month: "long",
@@ -174,7 +190,7 @@ const sections = [
     title: "Контактная информация",
     content: `Если у вас возникли вопросы или предложения относительно этой Политики конфиденциальности, вы можете связаться с нами по следующему адресу:
   
-  Электронная почта: anastasiagelmut@gmail.com`,
+  Электронная почта: vilenskyigal@gmail.com`,
   },
 ];
 </script>
