@@ -11,14 +11,9 @@
       <!-- Avatar Section -->
       <div class="avatar-section">
         <div class="avatar-wrapper">
-          <UserAvatar
-            :avatarUrl="avatarUrl"
-            :loading="loading"
-            :userInitial="userInitial"
-            @update:avatarUrl="$emit('update:avatarUrl', $event)"
-            @notify="$emit('notify', $event)"
-            class="avatar-component"
-          />
+          <UserAvatar :avatarUrl="avatarUrl" :loading="loading" :userInitial="userInitial"
+            @update:avatarUrl="$emit('update:avatarUrl', $event)" @notify="$emit('notify', $event)"
+            class="avatar-component" />
         </div>
       </div>
 
@@ -48,14 +43,15 @@
         <!-- Action Buttons -->
         <div class="action-buttons">
           <!-- Personal Cabinet - Primary Button -->
-          <button class="action-btn btn-primary">
+          <NuxtLink to="/personal-cabinet" class="action-btn btn-primary">
             <span class="btn-gradient"></span>
             <span class="btn-content">
               <i class="fas fa-user-cog mr-2"></i>
               <span class="hidden sm:inline">Личный кабинет</span>
               <span class="sm:hidden">Кабинет</span>
             </span>
-          </button>
+          </NuxtLink>
+
 
           <!-- Settings Button -->
           <NuxtLink to="/profile/settings" class="action-btn btn-secondary">
@@ -126,9 +122,7 @@ const joinedDate = computed(() => {
 
 <style scoped>
 .profile-header-container {
-  @apply relative min-h-[280px] sm:min-h-[300px] rounded-2xl 
-         bg-slate-900/50 border border-cyan-500/20 backdrop-blur-sm 
-         overflow-hidden mb-8 hover:border-cyan-500/30 transition-all duration-300;
+  @apply relative min-h-[280px] sm:min-h-[300px] rounded-2xl bg-slate-900/50 border border-cyan-500/20 backdrop-blur-sm overflow-hidden mb-8 hover:border-cyan-500/30 transition-all duration-300;
 }
 
 .header-background {
@@ -148,26 +142,32 @@ const joinedDate = computed(() => {
 }
 
 @keyframes float {
+
   0%,
   100% {
     transform: translate(0, 0);
   }
+
   33% {
     transform: translate(20px, -20px);
   }
+
   66% {
     transform: translate(-10px, 10px);
   }
 }
 
 @keyframes float-delayed {
+
   0%,
   100% {
     transform: translate(0, 0);
   }
+
   33% {
     transform: translate(-15px, 15px);
   }
+
   66% {
     transform: translate(10px, -10px);
   }
@@ -202,9 +202,7 @@ const joinedDate = computed(() => {
 }
 
 .avatar-component {
-  @apply w-40 h-40 sm:w-48 sm:h-48 rounded-full
-         transition-all duration-500 hover:scale-105
-         hover:shadow-2xl hover:shadow-cyan-500/20;
+  @apply w-40 h-40 sm:w-48 sm:h-48 rounded-full transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/20;
 }
 
 .info-section {
@@ -216,20 +214,15 @@ const joinedDate = computed(() => {
 }
 
 .user-badge {
-  @apply inline-flex items-center px-4 py-2 rounded-xl 
-         bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 
-         text-sm font-medium mb-4;
+  @apply inline-flex items-center px-4 py-2 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-sm font-medium mb-4;
 }
 
 .user-name {
-  @apply text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6 pb-1 
-         bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 
-         bg-clip-text text-transparent;
+  @apply text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6 pb-1 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent;
 }
 
 .user-meta {
-  @apply flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-6 
-         text-slate-400 text-sm;
+  @apply flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-6 text-slate-400 text-sm;
 }
 
 .meta-item {
@@ -241,9 +234,7 @@ const joinedDate = computed(() => {
 }
 
 .action-btn {
-  @apply relative px-6 py-3 rounded-xl font-medium overflow-hidden 
-         transition-all duration-300 hover:scale-105 
-         flex items-center justify-center;
+  @apply relative px-6 py-3 rounded-xl font-medium overflow-hidden transition-all duration-300 hover:scale-105 flex items-center justify-center;
 }
 
 .btn-gradient,
@@ -269,8 +260,7 @@ const joinedDate = computed(() => {
 }
 
 .btn-secondary {
-  @apply border border-slate-700 text-slate-300 hover:text-white 
-         hover:border-cyan-500/50;
+  @apply border border-slate-700 text-slate-300 hover:text-white hover:border-cyan-500/50;
 }
 
 .btn-secondary .btn-bg {
@@ -278,8 +268,7 @@ const joinedDate = computed(() => {
 }
 
 .btn-danger {
-  @apply border border-red-500/30 text-red-400 hover:text-white 
-         hover:border-red-500/50;
+  @apply border border-red-500/30 text-red-400 hover:text-white hover:border-red-500/50;
 }
 
 .btn-danger .btn-bg {

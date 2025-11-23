@@ -345,7 +345,7 @@ const courses = [
     image:
       "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=800&h=600&fit=crop",
     discount: 20,
-    link: "/courses/healing-childhood-traumas",
+    link: "/lab/psychology/healing-childhood-traumas",
   },
   {
     id: 2,
