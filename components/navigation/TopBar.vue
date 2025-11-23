@@ -73,47 +73,12 @@
         </div>
 
 
-        <!-- Сообщество Dropdown -->
-        <div class="relative group">
-          <button
-            class="flex items-center space-x-2 px-3.5 py-2 rounded-lg text-[15px] font-medium text-slate-300 hover:text-white hover:bg-slate-800/50 transition-all duration-200"
-            :class="{ 'bg-slate-800/50 text-white': isCommunityRouteActive }">
-            <i class="fas fa-users text-blue-400"></i>
-            <span>Сообщество</span>
-            <i
-              class="fas fa-chevron-down text-xs text-slate-400 group-hover:text-slate-300 transition-transform duration-200 group-hover:rotate-180"></i>
-          </button>
-          <div
-            class="absolute top-full left-0 mt-1 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-            <div
-              class="bg-slate-800/95 backdrop-blur-sm rounded-lg shadow-xl border border-slate-700/50 min-w-[200px] py-1.5">
-              <NuxtLink to="/blog"
-                class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors duration-150"
-                exact-active-class="bg-slate-700/50 text-white" @click="closeDropdown">
-                <i class="fas fa-book-open text-blue-400 w-4"></i>
-                <span>Блог</span>
-              </NuxtLink>
-              <NuxtLink to="/awareness-tools/inspiration-wall"
-                class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors duration-150"
-                exact-active-class="bg-slate-700/50 text-white" @click="closeDropdown">
-                <i class="fas fa-lightbulb text-blue-400 w-4"></i>
-                <span>Инсайты других</span>
-              </NuxtLink>
-              <NuxtLink to="/faq"
-                class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors duration-150"
-                exact-active-class="bg-slate-700/50 text-white" @click="closeDropdown">
-                <i class="fas fa-question-circle text-blue-400 w-4"></i>
-                <span>FAQ</span>
-              </NuxtLink>
-              <NuxtLink to="/contact"
-                class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors duration-150"
-                exact-active-class="bg-slate-700/50 text-white" @click="closeDropdown">
-                <i class="fas fa-envelope text-blue-400 w-4"></i>
-                <span>Связь</span>
-              </NuxtLink>
-            </div>
-          </div>
-        </div>
+        <!-- Blog Link -->
+        <NuxtLink to="/blog"
+          class="px-3.5 py-2 rounded-lg text-[15px] font-medium text-slate-300 hover:text-white hover:bg-slate-800/50 transition-all duration-200"
+          exact-active-class="text-white bg-slate-800/50" @click="closeDropdown">
+          Блог
+        </NuxtLink>
 
         <!-- О проекте Link -->
         <NuxtLink to="/about"
@@ -303,54 +268,13 @@
 
 
 
-          <!-- Сообщество -->
-          <div>
-            <button @click="toggleMobileSubmenu('community')"
-              class="w-full flex items-center justify-between p-3 rounded-lg bg-slate-800/50 hover:bg-slate-800/70 transition-all duration-200 border border-slate-700/50"
-              :class="{ 'bg-slate-800/70': isCommunityRouteActive }">
-              <div class="flex items-center space-x-4">
-                <i class="fas fa-users text-blue-400"></i>
-                <span class="font-medium text-slate-200">Сообщество</span>
-              </div>
-              <i class="fas fa-chevron-down text-slate-400 text-sm transition-transform duration-200" :class="[
-                mobileSubmenuStates.community || isCommunityRouteActive
-                  ? 'rotate-180'
-                  : '',
-              ]"></i>
-            </button>
-            <div class="mt-1.5 rounded-lg overflow-hidden transition-all duration-300 ease-in-out" :class="[
-              mobileSubmenuStates.community || isCommunityRouteActive
-                ? 'max-h-[300px]'
-                : 'max-h-0',
-            ]">
-              <div class="bg-slate-800/30 p-2 space-y-1">
-                <NuxtLink to="/blog"
-                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
-                  exact-active-class="bg-slate-700/50 text-white" @click="closeDropdown">
-                  <i class="fas fa-book-open text-blue-400 text-xs w-4"></i>
-                  <span>Блог</span>
-                </NuxtLink>
-                <NuxtLink to="/awareness-tools/inspiration-wall"
-                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
-                  exact-active-class="bg-slate-700/50 text-white" @click="closeDropdown">
-                  <i class="fas fa-lightbulb text-blue-400 text-xs w-4"></i>
-                  <span>Инсайты других</span>
-                </NuxtLink>
-                <NuxtLink to="/faq"
-                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
-                  exact-active-class="bg-slate-700/50 text-white" @click="closeDropdown">
-                  <i class="fas fa-question-circle text-blue-400 text-xs w-4"></i>
-                  <span>FAQ</span>
-                </NuxtLink>
-                <NuxtLink to="/contact"
-                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
-                  exact-active-class="bg-slate-700/50 text-white" @click="closeDropdown">
-                  <i class="fas fa-envelope text-blue-400 text-xs w-4"></i>
-                  <span>Связь</span>
-                </NuxtLink>
-              </div>
-            </div>
-          </div>
+          <!-- Blog -->
+          <NuxtLink to="/blog"
+            class="flex items-center space-x-4 p-3 rounded-lg bg-slate-800/50 hover:bg-slate-800/70 transition-all duration-200 border border-slate-700/50"
+            exact-active-class="bg-slate-800/70 text-white" @click="closeDropdown">
+            <i class="fas fa-book-open text-blue-400"></i>
+            <span class="font-medium text-slate-200">Блог</span>
+          </NuxtLink>
 
           <!-- О проекте -->
           <NuxtLink to="/about"
@@ -454,7 +378,6 @@ const isDropdownOpen = ref(false);
 const mobileSubmenuStates = ref({
   lab: false,
   tools: false,
-  community: false,
 });
 
 // Computed properties for active route highlighting - Added lab routes
@@ -480,15 +403,7 @@ const isToolsRouteActive = computed(() => {
   return toolsRoutes.includes(route.path);
 });
 
-const isCommunityRouteActive = computed(() => {
-  const communityRoutes = [
-    "/blog",
-    "/awareness-tools/inspiration-wall",
-    "/faq",
-    "/contact",
-  ];
-  return communityRoutes.includes(route.path);
-});
+
 
 // Get user initials for avatar
 const getUserInitials = computed(() => {
@@ -520,9 +435,7 @@ const toggleDropdown = () => {
   if (!isDropdownOpen.value) {
     mobileSubmenuStates.value = {
       lab: false,
-
       tools: false,
-      community: false,
     };
   }
 };
@@ -538,9 +451,7 @@ const closeDropdown = () => {
   isDropdownOpen.value = false;
   mobileSubmenuStates.value = {
     lab: false,
-
     tools: false,
-    community: false,
   };
 };
 
