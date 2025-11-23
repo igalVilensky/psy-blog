@@ -64,9 +64,7 @@ export const saveDailyGrowthSparkEntry = async (
   }
 
   const userRef = doc(firestore, "daily_growth_spark", userId);
-  const progressRef = doc(firestore, `users/${userId}/progress/sefirot`);
   const currentDate = new Date().toISOString().split("T")[0];
-  const dailyRef = doc(firestore, `users/${userId}/daily/${currentDate}`);
 
   const newEntry = {
     date: new Date().toISOString(),
@@ -77,50 +75,6 @@ export const saveDailyGrowthSparkEntry = async (
   };
 
   try {
-    // Check if daily actions document exists and initialize if not
-    const dailySnap = await getDoc(dailyRef);
-    if (!dailySnap.exists()) {
-      const initialDailyData = {
-        keter: { actions: 0 },
-        chokhmah: { actions: 0 },
-        binah: { actions: 0 },
-        chesed: { actions: 0 },
-        gevurah: { actions: 0 },
-        tiferet: { actions: 0 },
-        netzach: { actions: 0 },
-        hod: { actions: 0 },
-        yesod: { actions: 0 },
-        malkhut: { actions: 0 },
-      };
-      await setDoc(dailyRef, initialDailyData);
-    } else {
-      const dailyData = dailySnap.data();
-      // Check Netzach actions limit
-      if (dailyData.netzach?.actions >= 3) {
-        showNotification(
-          "Достигнуто максимальное количество действий для Нецаха сегодня.",
-          "warning"
-        );
-        return {
-          success: false,
-          message: "Max daily actions for Netzach reached",
-        };
-      }
-      // Check Chesed actions limit if insight is shared
-      if (entryData.insight && entryData.insight.text.trim() !== "") {
-        if (dailyData.chesed?.actions >= 3) {
-          showNotification(
-            "Достигнуто максимальное количество действий для Хеседа сегодня.",
-            "warning"
-          );
-          return {
-            success: false,
-            message: "Max daily actions for Chesed reached",
-          };
-        }
-      }
-    }
-
     // Save the Daily Growth Spark entry
     const docSnap = await getDoc(userRef);
     let updatedStreak = 1;
@@ -160,7 +114,7 @@ export const saveDailyGrowthSparkEntry = async (
       });
     }
 
-    // Save shared insight and update Chesed progress if applicable
+    // Save shared insight if applicable
     let sharedInsight = false;
     if (entryData.insight && entryData.insight.text.trim() !== "") {
       sharedInsight = true;
@@ -178,30 +132,10 @@ export const saveDailyGrowthSparkEntry = async (
       await addDoc(collection(firestore, "shared_insights"), insightData);
     }
 
-    // Update Sefirot progress
-    const progressUpdates = {
-      "netzach.points": increment(10),
-      "netzach.lastActive": new Date(),
-    };
-    if (sharedInsight) {
-      progressUpdates["chesed.points"] = increment(10);
-      progressUpdates["chesed.lastActive"] = new Date();
-    }
-    await updateDoc(progressRef, progressUpdates);
-
-    // Update daily actions
-    const dailyUpdates = {
-      "netzach.actions": increment(1),
-    };
-    if (sharedInsight) {
-      dailyUpdates["chesed.actions"] = increment(1);
-    }
-    await updateDoc(dailyRef, dailyUpdates);
-
     showNotification(
       sharedInsight
-        ? "Запись и инсайт сохранены! Прогресс для Нецаха и Хеседа обновлен!"
-        : "Запись сохранена! Прогресс для Нецаха обновлен!",
+        ? "Запись и инсайт сохранены успешно!"
+        : "Запись сохранена успешно!",
       "success"
     );
     return {
@@ -212,16 +146,16 @@ export const saveDailyGrowthSparkEntry = async (
     };
   } catch (error) {
     console.error(
-      "Error saving daily growth spark entry or updating progress:",
+      "Error saving daily growth spark entry:",
       error
     );
     showNotification(
-      "Ошибка сохранения записи или обновления прогресса. Пожалуйста, попробуйте еще раз.",
+      "Ошибка сохранения записи. Пожалуйста, попробуйте еще раз.",
       "error"
     );
     return {
       success: false,
-      message: "Failed to save entry or update progress",
+      message: "Failed to save entry",
     };
   }
 };

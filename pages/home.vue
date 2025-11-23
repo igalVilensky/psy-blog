@@ -5,9 +5,7 @@
       <div class="max-w-6xl mx-auto px-4 sm:px-0 py-12">
         <!-- Welcome Header -->
         <div class="mb-10">
-          <h1
-            class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4 tracking-tight gradient-text"
-          >
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4 tracking-tight gradient-text">
             {{
               isLoggedIn ? `Добро пожаловать, ${userName}` : "ЛАБОРАТОРИЯ РОСТА"
             }}
@@ -22,16 +20,11 @@
         </div>
 
         <!-- Stats Dashboard for Logged In Users -->
-        <div
-          v-if="isLoggedIn"
-          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12"
-        >
+        <div v-if="isLoggedIn" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           <!-- Tests Card -->
           <div class="stat-dashboard-card">
             <div class="flex items-center gap-3 mb-4">
-              <div
-                class="stat-icon-wrapper bg-gradient-to-br from-cyan-500 to-blue-600"
-              >
+              <div class="stat-icon-wrapper bg-gradient-to-br from-cyan-500 to-blue-600">
                 <i class="fas fa-brain text-white text-xl"></i>
               </div>
               <div>
@@ -46,36 +39,20 @@
                   {{ stats.tests.completedTest.name }}
                 </div>
               </div>
-              <div
-                v-if="stats.tests.completedTest.topArchetypes"
-                class="space-y-2"
-              >
+              <div v-if="stats.tests.completedTest.topArchetypes" class="space-y-2">
                 <div class="text-xs text-slate-400 mb-2">Топ архетипы:</div>
-                <div
-                  v-for="arch in stats.tests.completedTest.topArchetypes"
-                  :key="arch.name"
-                  class="flex items-center justify-between text-sm"
-                >
+                <div v-for="arch in stats.tests.completedTest.topArchetypes" :key="arch.name"
+                  class="flex items-center justify-between text-sm">
                   <span class="text-white">{{ arch.name }}</span>
-                  <span class="text-cyan-400 font-medium"
-                    >{{ arch.score }}%</span
-                  >
+                  <span class="text-cyan-400 font-medium">{{ arch.score }}%</span>
                 </div>
               </div>
             </div>
             <div v-else class="text-slate-400 text-sm mb-4">
               Начните с прохождения теста
             </div>
-            <div
-              v-if="stats.tests?.ctas?.length"
-              class="flex flex-wrap gap-2 mt-4"
-            >
-              <NuxtLink
-                v-for="cta in stats.tests.ctas"
-                :key="cta.name"
-                :to="cta.link"
-                class="cta-button-small"
-              >
+            <div v-if="stats.tests?.ctas?.length" class="flex flex-wrap gap-2 mt-4">
+              <NuxtLink v-for="cta in stats.tests.ctas" :key="cta.name" :to="cta.link" class="cta-button-small">
                 {{ cta.name }}
               </NuxtLink>
             </div>
@@ -84,9 +61,7 @@
           <!-- Courses Card -->
           <div class="stat-dashboard-card">
             <div class="flex items-center gap-3 mb-4">
-              <div
-                class="stat-icon-wrapper bg-gradient-to-br from-purple-500 to-pink-600"
-              >
+              <div class="stat-icon-wrapper bg-gradient-to-br from-purple-500 to-pink-600">
                 <i class="fas fa-graduation-cap text-white text-xl"></i>
               </div>
               <div>
@@ -94,15 +69,8 @@
                 <p class="text-xs text-slate-400">Обучение и развитие</p>
               </div>
             </div>
-            <div
-              v-if="stats.courses?.purchasedCourses?.length"
-              class="space-y-3"
-            >
-              <div
-                v-for="course in stats.courses.purchasedCourses"
-                :key="course.name"
-                class="course-progress-item"
-              >
+            <div v-if="stats.courses?.purchasedCourses?.length" class="space-y-3">
+              <div v-for="course in stats.courses.purchasedCourses" :key="course.name" class="course-progress-item">
                 <div class="flex items-center justify-between mb-2">
                   <span class="text-sm text-white">{{ course.name }}</span>
                   <span class="text-xs text-cyan-400 font-medium">
@@ -110,21 +78,15 @@
                   </span>
                 </div>
                 <div class="w-full bg-slate-700 rounded-full h-2">
-                  <div
-                    class="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full transition-all duration-500"
-                    :style="{ width: `${course.progressPercentage}%` }"
-                  ></div>
+                  <div class="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full transition-all duration-500"
+                    :style="{ width: `${course.progressPercentage}%` }"></div>
                 </div>
               </div>
             </div>
             <div v-else class="text-slate-400 text-sm mb-4">
               Исследуйте доступные курсы
             </div>
-            <NuxtLink
-              v-if="stats.courses?.cta"
-              :to="stats.courses.cta.link"
-              class="cta-button-small"
-            >
+            <NuxtLink v-if="stats.courses?.cta" :to="stats.courses.cta.link" class="cta-button-small">
               Все курсы
             </NuxtLink>
           </div>
@@ -132,9 +94,7 @@
           <!-- Tools Card -->
           <div class="stat-dashboard-card">
             <div class="flex items-center gap-3 mb-4">
-              <div
-                class="stat-icon-wrapper bg-gradient-to-br from-emerald-500 to-teal-600"
-              >
+              <div class="stat-icon-wrapper bg-gradient-to-br from-emerald-500 to-teal-600">
                 <i class="fas fa-compass text-white text-xl"></i>
               </div>
               <div>
@@ -153,19 +113,12 @@
             <div v-else class="text-slate-400 text-sm mb-4">
               Начните отслеживать эмоции
             </div>
-            <NuxtLink
-              v-if="stats.tools?.reminder"
-              :to="stats.tools.reminder.link"
-              class="cta-button-small bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/20"
-            >
+            <NuxtLink v-if="stats.tools?.reminder" :to="stats.tools.reminder.link"
+              class="cta-button-small bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/20">
               <i class="fas fa-bell mr-2"></i>
               Записать эмоции
             </NuxtLink>
-            <NuxtLink
-              v-else-if="stats.tools?.cta"
-              :to="stats.tools.cta.link"
-              class="cta-button-small"
-            >
+            <NuxtLink v-else-if="stats.tools?.cta" :to="stats.tools.cta.link" class="cta-button-small">
               Эмоциональный компас
             </NuxtLink>
           </div>
@@ -176,8 +129,7 @@
           <div class="cta-hero-card">
             <div class="flex items-center gap-3 mb-4">
               <div
-                class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-purple-500 flex items-center justify-center"
-              >
+                class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-purple-500 flex items-center justify-center">
                 <i class="fas fa-rocket text-white text-2xl"></i>
               </div>
               <h3 class="text-2xl font-bold text-white">Начните сейчас</h3>
@@ -194,8 +146,7 @@
           <div class="cta-hero-card">
             <div class="flex items-center gap-3 mb-4">
               <div
-                class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center"
-              >
+                class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
                 <i class="fas fa-chart-line text-white text-2xl"></i>
               </div>
               <h3 class="text-2xl font-bold text-white">Ваш рост</h3>
@@ -214,25 +165,17 @@
     </section>
 
     <!-- Notifications Section -->
-    <section
-      v-if="isLoggedIn && localNotifications.length > 0"
-      class="max-w-6xl mx-auto px-4 sm:px-0 mb-12"
-    >
+    <section v-if="isLoggedIn && localNotifications.length > 0" class="max-w-6xl mx-auto px-4 sm:px-0 mb-12">
       <div class="notifications-container">
         <div class="flex items-center gap-3 mb-6">
           <div
-            class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center"
-          >
+            class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center">
             <i class="fas fa-bell text-white"></i>
           </div>
           <h2 class="text-2xl font-bold text-white">Напоминания</h2>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div
-            v-for="notification in localNotifications"
-            :key="notification.id"
-            class="notification-card"
-          >
+          <div v-for="notification in localNotifications" :key="notification.id" class="notification-card">
             <div class="flex items-start gap-4">
               <div class="notification-icon">
                 <i class="fas fa-exclamation-circle text-orange-400"></i>
@@ -255,25 +198,17 @@
       <div class="flex items-center justify-between mb-8">
         <div class="flex items-center gap-3">
           <div
-            class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center"
-          >
+            class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
             <i class="fas fa-newspaper text-white"></i>
           </div>
           <h2 class="text-2xl font-bold text-white">Последние статьи</h2>
         </div>
-        <NuxtLink
-          to="/blog"
-          class="text-cyan-400 hover:text-cyan-300 text-sm font-medium"
-        >
+        <NuxtLink to="/blog" class="text-cyan-400 hover:text-cyan-300 text-sm font-medium">
           Все статьи <i class="fas fa-arrow-right ml-1"></i>
         </NuxtLink>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <article
-          v-for="post in latestBlogPosts"
-          :key="post._id"
-          class="blog-card"
-        >
+        <article v-for="post in latestBlogPosts" :key="post._id" class="blog-card">
           <div v-if="post.mainImage" class="blog-image-wrapper">
             <img :src="post.mainImage" :alt="post.title" class="blog-image" />
           </div>
@@ -292,17 +227,11 @@
               {{ post.excerpt }}
             </p>
             <div class="flex items-center justify-between">
-              <NuxtLink
-                :to="`/blog/${post.slug?.current || post._id}`"
-                class="blog-read-more"
-              >
+              <NuxtLink :to="`/blog/${post.slug?.current || post._id}`" class="blog-read-more">
                 Читать далее
                 <i class="fas fa-arrow-right ml-2"></i>
               </NuxtLink>
-              <div
-                v-if="post.views"
-                class="flex items-center gap-1 text-xs text-slate-500"
-              >
+              <div v-if="post.views" class="flex items-center gap-1 text-xs text-slate-500">
                 <i class="fas fa-eye"></i>
                 <span>{{ post.views }}</span>
               </div>
@@ -323,11 +252,7 @@
         </p>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div
-          v-for="reason in profilingReasons"
-          :key="reason.id"
-          class="reason-card"
-        >
+        <div v-for="reason in profilingReasons" :key="reason.id" class="reason-card">
           <div class="reason-icon-wrapper">
             <i :class="`fas fa-${reason.icon} text-3xl`"></i>
           </div>
@@ -342,21 +267,14 @@
     </section>
 
     <!-- Success Stories -->
-    <section
-      v-if="!isLoggedIn && successStories.length > 0"
-      class="max-w-6xl mx-auto px-4 sm:px-0 mb-12"
-    >
+    <section v-if="!isLoggedIn && successStories.length > 0" class="max-w-6xl mx-auto px-4 sm:px-0 mb-12">
       <div class="text-center mb-10">
         <h2 class="text-3xl font-bold text-white mb-4 gradient-text">
           Истории успеха
         </h2>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div
-          v-for="story in successStories"
-          :key="story.id"
-          class="success-story-card"
-        >
+        <div v-for="story in successStories" :key="story.id" class="success-story-card">
           <div class="mb-4">
             <i class="fas fa-quote-left text-3xl text-cyan-400/30"></i>
           </div>
@@ -364,9 +282,7 @@
             "{{ story.quote }}"
           </p>
           <div class="flex items-center gap-3">
-            <div
-              class="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-purple-500"
-            ></div>
+            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-purple-500"></div>
             <div>
               <div class="text-sm font-medium text-cyan-400">
                 {{ story.author }}
@@ -376,9 +292,6 @@
         </div>
       </div>
     </section>
-
-    <!-- Daily Growth Spark (Floating Component) -->
-    <DailyGrowthSpark v-if="isLoggedIn" class="fixed bottom-6 right-6 z-50" />
   </div>
 </template>
 
@@ -391,8 +304,6 @@ import { getPostViewCount } from "~/api/firebase/views";
 import { getLatestUserAssessment } from "~/api/firebase/assessments";
 import { getPurchasedCourses } from "~/api/firebase/coursesApi";
 import { getEmotionBarometerData } from "~/api/firebase/emotionBarometer";
-import { getDailyGrowthSparkData } from "~/api/firebase/dailyGrowthSpark";
-import DailyGrowthSpark from "~/components/growth-spark/DailyGrowthSpark.vue";
 
 const authStore = useAuthStore();
 const isLoggedIn = computed(() => !!authStore.user);
@@ -526,9 +437,6 @@ const fetchNotifications = async (userId) => {
     const hasEmotionalEntry = fs
       ? await checkEmotionalCompassEntry(userId, today)
       : false;
-    const hasDailySpark = fs
-      ? await checkDailySparkCompletion(userId, today)
-      : false;
 
     localNotifications.value = [];
     if (!hasEmotionalEntry) {
@@ -537,14 +445,6 @@ const fetchNotifications = async (userId) => {
         message: "Не забудьте записать свои эмоции сегодня!",
         routePath: "/lab/experiments/emotional-compass",
         ctaText: "Записать сейчас",
-      });
-    }
-    if (!hasDailySpark) {
-      localNotifications.value.push({
-        id: 2,
-        message: "Выполните задание Daily Spark для получения бонуса!",
-        routePath: "/home",
-        ctaText: "Начать сейчас",
       });
     }
   } catch (error) {
@@ -568,20 +468,6 @@ const checkEmotionalCompassEntry = async (userId, date) => {
   }
 };
 
-const checkDailySparkCompletion = async (userId, date) => {
-  const fs = getFirestore();
-  if (!fs) return false;
-  try {
-    const response = await getDailyGrowthSparkData(fs, userId);
-    if (response.success) {
-      const { lastUpdated } = response.data;
-      return lastUpdated && lastUpdated.split("T")[0] === date;
-    }
-    return false;
-  } catch {
-    return false;
-  }
-};
 
 const fetchSuccessStories = async () => [
   {
@@ -663,8 +549,7 @@ onMounted(async () => {
 }
 
 .stat-dashboard-card {
-  @apply p-6 rounded-2xl bg-slate-900/50 border border-cyan-500/20 
-         backdrop-blur-sm hover:border-cyan-500/40 transition-all duration-300;
+  @apply p-6 rounded-2xl bg-slate-900/50 border border-cyan-500/20 backdrop-blur-sm hover:border-cyan-500/40 transition-all duration-300;
 }
 
 .stat-icon-wrapper {
@@ -672,9 +557,7 @@ onMounted(async () => {
 }
 
 .cta-button-small {
-  @apply px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300
-         bg-cyan-500/10 text-cyan-400 border border-cyan-500/30
-         hover:bg-cyan-500/20 hover:border-cyan-500/50;
+  @apply px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500/20 hover:border-cyan-500/50;
 }
 
 .course-progress-item {
@@ -682,22 +565,15 @@ onMounted(async () => {
 }
 
 .cta-hero-card {
-  @apply p-8 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-800/80 
-         border border-cyan-500/20 backdrop-blur-sm hover:border-cyan-500/40 
-         transition-all duration-300;
+  @apply p-8 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-800/80 border border-cyan-500/20 backdrop-blur-sm hover:border-cyan-500/40 transition-all duration-300;
 }
 
 .btn-primary {
-  @apply px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-500 
-         text-white font-medium hover:from-cyan-600 hover:to-purple-600 
-         transition-all duration-300 transform hover:scale-105 
-         shadow-lg shadow-cyan-500/25 inline-flex items-center;
+  @apply px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-500 text-white font-medium hover:from-cyan-600 hover:to-purple-600 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-cyan-500/25 inline-flex items-center;
 }
 
 .btn-secondary {
-  @apply px-6 py-3 rounded-xl bg-slate-800/80 border border-cyan-500/30
-         text-cyan-400 font-medium hover:bg-slate-800 hover:border-cyan-500/50
-         transition-all duration-300 inline-flex items-center;
+  @apply px-6 py-3 rounded-xl bg-slate-800/80 border border-cyan-500/30 text-cyan-400 font-medium hover:bg-slate-800 hover:border-cyan-500/50 transition-all duration-300 inline-flex items-center;
 }
 
 .notifications-container {
@@ -705,8 +581,7 @@ onMounted(async () => {
 }
 
 .notification-card {
-  @apply p-4 rounded-xl bg-slate-800/50 border border-orange-500/20 
-         hover:border-orange-500/40 transition-all duration-300;
+  @apply p-4 rounded-xl bg-slate-800/50 border border-orange-500/20 hover:border-orange-500/40 transition-all duration-300;
 }
 
 .notification-icon {
@@ -714,14 +589,11 @@ onMounted(async () => {
 }
 
 .notification-cta {
-  @apply text-sm font-medium text-orange-400 hover:text-orange-300 
-         transition-colors duration-300 inline-flex items-center;
+  @apply text-sm font-medium text-orange-400 hover:text-orange-300 transition-colors duration-300 inline-flex items-center;
 }
 
 .blog-card {
-  @apply rounded-2xl bg-slate-900/50 border border-cyan-500/10 
-         hover:border-cyan-500/30 transition-all duration-300 overflow-hidden
-         hover:transform hover:-translate-y-1;
+  @apply rounded-2xl bg-slate-900/50 border border-cyan-500/10 hover:border-cyan-500/30 transition-all duration-300 overflow-hidden hover:transform hover:-translate-y-1;
 }
 
 .blog-image-wrapper {
@@ -729,34 +601,27 @@ onMounted(async () => {
 }
 
 .blog-image {
-  @apply w-full h-full object-cover transition-transform duration-500
-         hover:scale-110;
+  @apply w-full h-full object-cover transition-transform duration-500 hover:scale-110;
 }
 
 .blog-category {
-  @apply px-2 py-1 rounded-lg text-xs font-medium bg-cyan-500/10 
-         text-cyan-400 border border-cyan-500/20;
+  @apply px-2 py-1 rounded-lg text-xs font-medium bg-cyan-500/10 text-cyan-400 border border-cyan-500/20;
 }
 
 .blog-read-more {
-  @apply text-sm font-medium text-cyan-400 hover:text-cyan-300 
-         transition-colors duration-300 inline-flex items-center;
+  @apply text-sm font-medium text-cyan-400 hover:text-cyan-300 transition-colors duration-300 inline-flex items-center;
 }
 
 .reason-card {
-  @apply p-6 rounded-2xl bg-slate-900/50 border border-cyan-500/10 
-         hover:border-cyan-500/30 transition-all duration-300 text-center
-         hover:transform hover:-translate-y-1;
+  @apply p-6 rounded-2xl bg-slate-900/50 border border-cyan-500/10 hover:border-cyan-500/30 transition-all duration-300 text-center hover:transform hover:-translate-y-1;
 }
 
 .reason-icon-wrapper {
-  @apply w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20
-         flex items-center justify-center text-cyan-400;
+  @apply w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 flex items-center justify-center text-cyan-400;
 }
 
 .success-story-card {
-  @apply p-8 rounded-2xl bg-slate-900/50 border border-cyan-500/10 
-         backdrop-blur-sm hover:border-cyan-500/30 transition-all duration-300;
+  @apply p-8 rounded-2xl bg-slate-900/50 border border-cyan-500/10 backdrop-blur-sm hover:border-cyan-500/30 transition-all duration-300;
 }
 
 .line-clamp-2 {

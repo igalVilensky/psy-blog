@@ -1,44 +1,35 @@
 <template>
   <Teleport to="body">
-    <div
-      v-if="isVisible"
-      class="fixed inset-0 bg-black/80 flex justify-center items-start md:items-center z-[999] backdrop-blur-sm overflow-y-auto"
-      @click="handleOverlayClick"
-    >
+    <div v-if="isVisible"
+      class="fixed inset-0 bg-slate-950/80 flex justify-center items-start md:items-center z-[999] backdrop-blur-sm overflow-y-auto"
+      @click="handleOverlayClick">
       <div
-        class="bg-gray-900 rounded-2xl w-[95%] max-w-[500px] flex flex-col shadow-2xl overflow-hidden animate-fade-in-up my-4 border border-gray-700 text-gray-100"
-        @click.stop
-      >
+        class="bg-white dark:bg-slate-900 rounded-2xl w-[95%] max-w-[500px] flex flex-col shadow-2xl overflow-hidden animate-fade-in-up my-4 border border-cyan-500/30 text-slate-900 dark:text-slate-100"
+        @click.stop>
         <!-- Modal header with progress indicator -->
-        <div class="p-4 border-b border-gray-800 relative">
-          <h2 class="text-xl font-semibold text-gray-100">
-            Ежедневная искра роста
+        <div class="p-4 border-b border-cyan-500/20 relative">
+          <h2 class="text-xl font-mono font-bold text-cyan-600 dark:text-cyan-300">
+            ЕЖЕДНЕВНАЯ ИСКРА РОСТА
           </h2>
           <div class="mt-3">
             <div class="flex justify-between mb-2">
-              <div
-                v-for="(step, index) in [
-                  'Эмоциональная проницательность',
-                  'Проверка энергии',
-                  'Поделитесь открытием',
-                ]"
-                :key="index"
-                :class="[
-                  'flex flex-col items-center flex-1',
-                  getStageIndex(currentStage) === index ? 'text-blue-400' : '',
-                  getStageIndex(currentStage) > index ? 'text-green-400' : '',
-                ]"
-              >
-                <div
-                  :class="[
-                    'w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold mb-1 transition-all',
-                    getStageIndex(currentStage) === index
-                      ? 'bg-blue-500 text-gray-900'
-                      : getStageIndex(currentStage) > index
-                      ? 'bg-green-500 text-gray-900'
-                      : 'bg-gray-700 text-gray-300',
-                  ]"
-                >
+              <div v-for="(step, index) in [
+                'Эмоциональная проницательность',
+                'Проверка энергии',
+                'Поделитесь открытием',
+              ]" :key="index" :class="[
+                'flex flex-col items-center flex-1',
+                getStageIndex(currentStage) === index ? 'text-cyan-600 dark:text-cyan-400' : '',
+                getStageIndex(currentStage) > index ? 'text-purple-600 dark:text-purple-400' : '',
+              ]">
+                <div :class="[
+                  'w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold mb-1 transition-all',
+                  getStageIndex(currentStage) === index
+                    ? 'bg-cyan-500 text-white'
+                    : getStageIndex(currentStage) > index
+                      ? 'bg-purple-500 text-white'
+                      : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300',
+                ]">
                   {{ index + 1 }}
                 </div>
                 <div class="text-xs hidden sm:block">{{ step }}</div>
@@ -49,24 +40,19 @@
                 </div>
               </div>
             </div>
-            <div class="h-1.5 bg-gray-700 rounded-full relative">
+            <div class="h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full relative">
               <div
-                class="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-full transition-all"
-                :style="`width: ${progressPercentage}%`"
-              ></div>
+                class="absolute top-0 left-0 h-full bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full transition-all"
+                :style="`width: ${progressPercentage}%`"></div>
             </div>
           </div>
-          <div
-            class="absolute top-4 right-12 text-sm text-gray-300 flex items-center"
-          >
-            <i class="fas fa-star text-yellow-400 mr-1"></i>
+          <div class="absolute top-4 right-12 text-sm text-slate-600 dark:text-slate-300 flex items-center">
+            <i class="fas fa-star text-cyan-400 mr-1"></i>
             <span>{{ points }}</span>
           </div>
           <button
-            class="absolute right-4 top-4 text-gray-400 hover:text-gray-200 hover:bg-gray-700 w-8 h-8 flex items-center justify-center rounded-full transition-all"
-            @click="confirmClose"
-            aria-label="Закрыть"
-          >
+            class="absolute right-4 top-4 text-slate-400 dark:text-slate-500 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-slate-100 dark:hover:bg-slate-800 w-8 h-8 flex items-center justify-center rounded-full transition-all"
+            @click="confirmClose" aria-label="Закрыть">
             <i class="fas fa-times"></i>
           </button>
         </div>
@@ -75,289 +61,186 @@
           <!-- Stage 1: Emotion Insight Game -->
           <div v-if="currentStage === 'emotion'" class="space-y-4">
             <div class="flex justify-between items-center">
-              <h3 class="text-base font-medium text-gray-100">
+              <h3 class="text-base font-medium text-slate-900 dark:text-slate-100">
                 Эмоциональная проницательность
               </h3>
               <div class="flex gap-1">
-                <div
-                  v-for="i in 3"
-                  :key="i"
-                  class="text-lg transition-all"
-                  :class="{
-                    'opacity-30': winCount < i,
-                    'scale-110': winCount >= i,
-                  }"
-                >
+                <div v-for="i in 3" :key="i" class="text-lg transition-all" :class="{
+                  'opacity-30': winCount < i,
+                  'scale-110': winCount >= i,
+                }">
                   <i class="fas fa-star text-yellow-400"></i>
                 </div>
               </div>
             </div>
-            <div class="bg-gray-800 p-3 rounded-xl border border-gray-700">
-              <p class="text-gray-300 italic text-sm mb-2">
+            <div class="bg-slate-100 dark:bg-slate-800 p-3 rounded-xl border border-cyan-500/30">
+              <p class="text-slate-700 dark:text-slate-300 italic text-sm mb-2">
                 {{ currentScenario.prompt }}
               </p>
-              <div class="text-xs text-blue-400 font-medium">
-                Связано с {{ currentScenario.sefira }}:
-                {{ currentScenario.sefiraDescription }}
-              </div>
             </div>
             <div class="flex justify-center gap-3 flex-wrap">
-              <div
-                v-for="(emotion, index) in currentScenario.emotions"
-                :key="index"
-                @click="handleEmotionClick(index)"
+              <div v-for="(emotion, index) in currentScenario.emotions" :key="index" @click="handleEmotionClick(index)"
                 :class="[
                   'w-20 h-16 flex flex-col items-center justify-center rounded-xl cursor-pointer transition-all border-2 p-1',
                   selectedIndex === index
-                    ? 'border-blue-500 bg-blue-900/50'
-                    : 'border-transparent bg-gray-800',
+                    ? 'border-cyan-500 bg-cyan-500/10'
+                    : 'border-transparent bg-slate-100 dark:bg-slate-800',
                   isCorrect && selectedIndex === index
-                    ? 'bg-green-900/40 border-green-500 scale-105'
+                    ? 'bg-green-500/20 border-green-500 scale-105'
                     : '',
                   isWrong && selectedIndex === index
-                    ? 'bg-red-900/40 border-red-500 animate-shake'
+                    ? 'bg-red-500/20 border-red-500 animate-shake'
                     : '',
-                  'hover:-translate-y-1 hover:shadow-md hover:shadow-blue-900/30',
-                ]"
-              >
+                  'hover:-translate-y-1 hover:shadow-md dark:hover:shadow-cyan-500/20',
+                ]">
                 <span class="text-xl">{{ emotion.emoji }}</span>
-                <span
-                  :class="[
-                    'text-xs mt-1 text-center',
-                    selectedIndex === index
-                      ? 'text-gray-200 font-medium'
-                      : 'text-gray-400',
-                  ]"
-                >
+                <span :class="[
+                  'text-xs mt-1 text-center',
+                  selectedIndex === index
+                    ? 'text-slate-900 dark:text-slate-200 font-medium'
+                    : 'text-slate-600 dark:text-slate-400',
+                ]">
                   {{ emotion.label }}
                 </span>
               </div>
             </div>
-            <div
-              v-if="feedback"
-              :class="[
-                'p-2 rounded-lg text-center font-medium text-sm',
-                isCorrect
-                  ? 'bg-green-900/30 text-green-400 border border-green-700'
-                  : 'bg-red-900/30 text-red-400 border border-red-700',
-              ]"
-            >
+            <div v-if="feedback" :class="[
+              'p-2 rounded-lg text-center font-medium text-sm',
+              isCorrect
+                ? 'bg-green-500/20 text-green-700 dark:text-green-400 border border-green-500/50'
+                : 'bg-red-500/20 text-red-700 dark:text-red-400 border border-red-500/50',
+            ]">
               {{ feedback }}
             </div>
-            <button
-              v-if="gameComplete"
-              @click="nextRound"
-              class="bg-blue-600 text-gray-100 px-4 py-2 rounded-lg font-medium hover:bg-blue-500 transition-all hover:-translate-y-1 mx-auto block text-sm"
-            >
-              {{ winCount >= 3 ? "Продолжить" : "Следующий вопрос" }}
+            <button v-if="gameComplete" @click="nextRound"
+              class="bg-cyan-600 hover:bg-cyan-500 text-white px-4 py-2 rounded-lg font-mono font-bold transition-all hover:-translate-y-1 mx-auto block text-sm shadow-[0_0_20px_rgba(6,182,212,0.3)]">
+              {{ winCount >= 3 ? "ПРОДОЛЖИТЬ" : "СЛЕДУЮЩИЙ ВОПРОС" }}
             </button>
           </div>
 
           <!-- Stage 2: Energy Tracker -->
           <div v-if="currentStage === 'energy'" class="text-center space-y-4">
-            <h3 class="text-base font-medium text-gray-100">
-              Как ваша энергия сегодня?
+            <h3 class="text-base font-mono font-bold text-cyan-600 dark:text-cyan-300">
+              КАК ВАША ЭНЕРГИЯ СЕГОДНЯ?
             </h3>
             <div>
               <div class="text-4xl mb-2 transition-all">{{ energyEmoji }}</div>
-              <div class="text-base font-medium text-gray-300">
+              <div class="text-base font-medium text-slate-700 dark:text-slate-300">
                 {{ energyLevel }} - {{ energyFeedback }}
               </div>
             </div>
             <div class="flex items-center px-2">
-              <span class="text-xs text-gray-400 w-8 text-right">Низкая</span>
-              <input
-                type="range"
-                v-model="energyLevel"
-                min="0"
-                max="10"
-                step="1"
-                class="flex-1 h-2 mx-2 rounded-full appearance-none bg-gradient-to-r from-red-500 via-yellow-500 to-green-500"
-              />
-              <span class="text-xs text-gray-400 w-8 text-left">Высокая</span>
+              <span class="text-xs text-slate-500 dark:text-slate-400 w-8 text-right">Низкая</span>
+              <input type="range" v-model="energyLevel" min="0" max="10" step="1"
+                class="flex-1 h-2 mx-2 rounded-full appearance-none bg-gradient-to-r from-red-500 via-yellow-500 to-green-500" />
+              <span class="text-xs text-slate-500 dark:text-slate-400 w-8 text-left">Высокая</span>
             </div>
-            <div class="bg-gray-800 p-3 rounded-xl border border-gray-700">
-              <h4 class="text-sm font-medium mb-2 text-gray-200">
+            <div class="bg-slate-100 dark:bg-slate-800 p-3 rounded-xl border border-cyan-500/30">
+              <h4 class="text-sm font-medium mb-2 text-slate-700 dark:text-slate-200">
                 Топливо для роста
               </h4>
               <div class="flex flex-wrap justify-center gap-2">
-                <div
-                  v-for="(item, index) in growthFuelItems"
-                  :key="index"
-                  :class="[
-                    'flex flex-col items-center p-2 w-16 rounded-lg cursor-pointer transition-all border',
-                    item.selected
-                      ? 'bg-blue-600 text-gray-100 border-blue-400'
-                      : 'bg-gray-700 text-gray-300 border-gray-600 hover:bg-gray-600',
-                  ]"
-                  @click="toggleFuelItem(index)"
-                >
+                <div v-for="(item, index) in growthFuelItems" :key="index" :class="[
+                  'flex flex-col items-center p-2 w-16 rounded-lg cursor-pointer transition-all border',
+                  item.selected
+                    ? 'bg-cyan-600 text-white border-cyan-400'
+                    : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-600 hover:bg-slate-300 dark:hover:bg-slate-600',
+                ]" @click="toggleFuelItem(index)">
                   <i :class="['fas', item.icon, 'text-lg mb-1']"></i>
                   <span class="text-xs text-center">{{ item.label }}</span>
                 </div>
               </div>
             </div>
-            <button
-              @click="submitEnergy"
-              class="bg-blue-600 text-gray-100 px-4 py-2 rounded-lg font-medium hover:bg-blue-500 transition-all hover:-translate-y-1 text-sm"
-            >
-              Продолжить
+            <button @click="submitEnergy"
+              class="bg-cyan-600 hover:bg-cyan-500 text-white px-4 py-2 rounded-lg font-mono font-bold transition-all hover:-translate-y-1 text-sm shadow-[0_0_20px_rgba(6,182,212,0.3)]">
+              ПРОДОЛЖИТЬ
             </button>
           </div>
 
           <!-- Stage 3: Tip Input -->
           <div v-if="currentStage === 'tip'" class="text-center space-y-4">
-            <h3 class="text-base font-medium text-gray-100">
-              Поделитесь своим открытием
+            <h3 class="text-base font-mono font-bold text-cyan-600 dark:text-cyan-300">
+              ПОДЕЛИТЕСЬ СВОИМ ОТКРЫТИЕМ
             </h3>
-            <p class="text-gray-400 text-sm">
+            <p class="text-slate-600 dark:text-slate-400 text-sm">
               Что помогло вам вырасти? Поделитесь, чтобы вдохновить других.
             </p>
             <div class="flex flex-wrap justify-center gap-2">
-              <span
-                v-for="(category, index) in tipCategories"
-                :key="index"
-                :class="[
-                  'px-3 py-1.5 rounded-full text-xs cursor-pointer transition-all',
-                  selectedCategory === category
-                    ? 'bg-blue-600 text-gray-100 border border-blue-400'
-                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border border-gray-600',
-                ]"
-                @click="selectedCategory = category"
-              >
+              <span v-for="(category, index) in tipCategories" :key="index" :class="[
+                'px-3 py-1.5 rounded-full text-xs cursor-pointer transition-all',
+                selectedCategory === category
+                  ? 'bg-cyan-600 text-white border border-cyan-400'
+                  : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600 border border-slate-300 dark:border-slate-600',
+              ]" @click="selectedCategory = category">
                 {{ category }}
               </span>
             </div>
             <div class="relative">
-              <textarea
-                v-model="tip"
-                placeholder="Введите совет, открытие или напоминание..."
-                rows="3"
-                maxlength="280"
-                class="w-full p-3 border border-gray-700 rounded-lg resize-none focus:border-blue-500 focus:ring-2 focus:ring-blue-700 transition-all text-sm bg-gray-800 text-gray-200 placeholder-gray-500"
-              ></textarea>
-              <div class="absolute bottom-2 right-3 text-xs text-gray-500">
+              <textarea v-model="tip" placeholder="Введите совет, открытие или напоминание..." rows="3" maxlength="280"
+                class="w-full p-3 border border-cyan-500/30 rounded-lg resize-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500"></textarea>
+              <div class="absolute bottom-2 right-3 text-xs text-slate-500 dark:text-slate-400">
                 {{ tip.length }}/280
               </div>
             </div>
-            <div
-              class="flex items-center justify-center gap-2 text-xs text-gray-400"
-            >
+            <div class="flex items-center justify-center gap-2 text-xs text-slate-600 dark:text-slate-400">
               <label class="relative inline-block w-10 h-5">
-                <input
-                  type="checkbox"
-                  v-model="isAnonymous"
-                  class="opacity-0 w-0 h-0"
-                />
+                <input type="checkbox" v-model="isAnonymous" class="opacity-0 w-0 h-0" />
                 <span
-                  class="absolute inset-0 cursor-pointer bg-gray-700 rounded-full transition-all before:absolute before:h-4 before:w-4 before:left-0.5 before:bottom-0.5 before:bg-gray-300 before:rounded-full before:transition-all"
-                  :class="{ 'bg-blue-600 before:translate-x-5': isAnonymous }"
-                ></span>
+                  class="absolute inset-0 cursor-pointer bg-slate-300 dark:bg-slate-700 rounded-full transition-all before:absolute before:h-4 before:w-4 before:left-0.5 before:bottom-0.5 before:bg-white before:rounded-full before:transition-all"
+                  :class="{ 'bg-cyan-600 before:translate-x-5': isAnonymous }"></span>
               </label>
               <span>Поделиться анонимно</span>
             </div>
             <div class="flex justify-center gap-3">
-              <button
-                @click="skipTip"
-                class="bg-gray-700 text-gray-300 px-4 py-2 rounded-lg font-medium hover:bg-gray-600 transition-all text-sm"
-              >
+              <button @click="skipTip"
+                class="bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-lg font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-all text-sm">
                 Пропустить
               </button>
-              <button
-                @click="submitTip"
-                class="bg-blue-600 text-gray-100 px-4 py-2 rounded-lg font-medium transition-all hover:bg-blue-500 hover:-translate-y-1 text-sm"
+              <button @click="submitTip"
+                class="bg-cyan-600 text-white px-4 py-2 rounded-lg font-mono font-bold transition-all hover:bg-cyan-500 hover:-translate-y-1 text-sm shadow-[0_0_20px_rgba(6,182,212,0.3)]"
                 :class="{
-                  'bg-gray-600 cursor-not-allowed hover:bg-gray-600 hover:translate-y-0':
+                  'bg-slate-400 dark:bg-slate-600 cursor-not-allowed hover:bg-slate-400 dark:hover:bg-slate-600 hover:translate-y-0 shadow-none':
                     tip.trim() === '',
-                }"
-                :disabled="tip.trim() === ''"
-              >
-                Отправить
+                }" :disabled="tip.trim() === ''">
+                ОТПРАВИТЬ
               </button>
             </div>
           </div>
 
           <!-- Final Stage: Success -->
-          <div
-            v-if="currentStage === 'success'"
-            class="text-center space-y-4 py-3"
-          >
+          <div v-if="currentStage === 'success'" class="text-center space-y-4 py-3">
             <div class="text-4xl animate-bounce-in">
               <i class="fas fa-check-circle text-green-500"></i>
             </div>
-            <h3 class="text-base font-medium text-gray-100">
-              Отличная работа!
+            <h3 class="text-base font-mono font-bold text-cyan-600 dark:text-cyan-300">
+              ОТЛИЧНАЯ РАБОТА!
             </h3>
-            <p class="text-sm text-gray-300">
+            <p class="text-sm text-slate-600 dark:text-slate-300">
               Вы завершили сегодняшнюю искру роста. Возвращайтесь завтра за
               новым вызовом!
             </p>
-            <div class="bg-gray-800 p-3 rounded-xl border border-gray-700">
-              <p class="text-gray-300 text-sm">
+            <div class="bg-slate-100 dark:bg-slate-800 p-3 rounded-xl border border-cyan-500/30">
+              <p class="text-slate-700 dark:text-slate-300 text-sm">
                 Сегодня вы: {{ successSummary }}
               </p>
             </div>
             <div
-              class="flex items-center justify-center gap-2 bg-orange-900/30 p-2 rounded-lg w-fit mx-auto border border-orange-700"
-            >
-              <i class="fas fa-fire text-orange-500"></i>
-              <span class="text-sm text-orange-300"
-                >Серия: {{ streakDays }} дней</span
-              >
+              class="flex items-center justify-center gap-2 bg-purple-500/20 p-2 rounded-lg w-fit mx-auto border border-purple-500/30">
+              <i class="fas fa-fire text-purple-500"></i>
+              <span class="text-sm text-purple-600 dark:text-purple-300">Серия: {{ streakDays }} дней</span>
             </div>
-            <!-- Netzach Progress Indicator -->
             <div
-              class="bg-gray-800 p-3 rounded-xl text-gray-300 text-sm border border-gray-700"
-            >
-              <p>
-                Прогресс Нецаха: {{ sefirotProgress.netzach.displayProgress }}%
-                ({{ sefirotProgress.netzach.dailyActions }}/{{
-                  sefirotProgress.netzach.maxActions
-                }}
-                действий)
+              class="bg-slate-100 dark:bg-slate-800 p-3 rounded-xl text-slate-700 dark:text-slate-300 text-sm border border-cyan-500/30">
+              <p class="font-medium mb-2">
+                Ваш прогресс:
               </p>
-              <div class="w-48 mx-auto bg-gray-700 rounded-full h-1.5 mt-2">
-                <div
-                  class="h-1.5 rounded-full bg-gradient-to-r from-yellow-600 to-yellow-400"
-                  :style="{
-                    width: `${sefirotProgress.netzach.displayProgress}%`,
-                  }"
-                ></div>
-              </div>
-              <p class="mt-2">
-                Очки: {{ sefirotProgress.netzach.points }} | Уровень:
-                {{ sefirotProgress.netzach.level }}
+              <p>
+                Всего очков: {{ points }}
               </p>
             </div>
-            <!-- Chesed Progress Indicator -->
-            <div
-              class="bg-gray-800 p-3 rounded-xl text-gray-300 text-sm border border-gray-700"
-            >
-              <p>
-                Прогресс Хеседа: {{ sefirotProgress.chesed.displayProgress }}%
-                ({{ sefirotProgress.chesed.dailyActions }}/{{
-                  sefirotProgress.chesed.maxActions
-                }}
-                действий)
-              </p>
-              <div class="w-48 mx-auto bg-gray-700 rounded-full h-1.5 mt-2">
-                <div
-                  class="h-1.5 rounded-full bg-gradient-to-r from-purple-600 to-purple-400"
-                  :style="{
-                    width: `${sefirotProgress.chesed.displayProgress}%`,
-                  }"
-                ></div>
-              </div>
-              <p class="mt-2">
-                Очки: {{ sefirotProgress.chesed.points }} | Уровень:
-                {{ sefirotProgress.chesed.level }}
-              </p>
-            </div>
-            <button
-              @click="closeModal"
-              class="bg-blue-600 text-gray-100 px-4 py-2 rounded-lg font-medium hover:bg-blue-500 transition-all hover:-translate-y-1 text-sm"
-            >
-              Завершить
+            <button @click="closeModal"
+              class="bg-cyan-600 hover:bg-cyan-500 text-white px-4 py-2 rounded-lg font-mono font-bold transition-all hover:-translate-y-1 text-sm shadow-[0_0_20px_rgba(6,182,212,0.3)]">
+              ЗАВЕРШИТЬ
             </button>
           </div>
         </div>
@@ -365,48 +248,34 @@
     </div>
 
     <!-- Confirmation Dialog -->
-    <div
-      v-if="showConfirmation"
-      class="fixed inset-0 bg-black/80 flex justify-center items-center z-[1000]"
-      @click="cancelClose"
-    >
-      <div
-        class="bg-gray-900 p-5 rounded-xl w-[90%] max-w-[300px] text-center border border-gray-700"
-        @click.stop
-      >
-        <h3 class="text-base font-medium text-gray-100">Вы уверены?</h3>
-        <p class="mt-2 text-sm text-gray-300">
+    <div v-if="showConfirmation" class="fixed inset-0 bg-slate-950/80 flex justify-center items-center z-[1000]"
+      @click="cancelClose">
+      <div class="bg-white dark:bg-slate-900 p-5 rounded-xl w-[90%] max-w-[300px] text-center border border-cyan-500/30"
+        @click.stop>
+        <h3 class="text-base font-mono font-bold text-cyan-600 dark:text-cyan-300">ВЫ УВЕРЕНЫ?</h3>
+        <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
           Ваш прогресс будет потерян, если вы выйдете сейчас.
         </p>
         <div class="flex justify-center gap-3 mt-4">
-          <button
-            @click="cancelClose"
-            class="bg-gray-700 text-gray-300 px-4 py-2 rounded-lg font-medium hover:bg-gray-600 transition-all text-sm"
-          >
+          <button @click="cancelClose"
+            class="bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-lg font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-all text-sm">
             Отмена
           </button>
-          <button
-            @click="closeModal"
-            class="bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-500 transition-all text-sm"
-          >
+          <button @click="closeModal"
+            class="bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-500 transition-all text-sm">
             Выйти
           </button>
         </div>
       </div>
     </div>
 
-    <Notification
-      v-if="notificationMessage"
-      :message="notificationMessage"
-      :type="notificationType"
-      @close="hideNotification"
-      class="z-50"
-    />
+    <Notification v-if="notificationMessage" :message="notificationMessage" :type="notificationType"
+      @close="hideNotification" class="z-50" />
   </Teleport>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getFirestore, doc, getDoc, onSnapshot } from "firebase/firestore";
 import {
@@ -415,6 +284,16 @@ import {
 } from "~/api/firebase/dailyGrowthSpark";
 import { useNotification } from "@/composables/useNotification";
 import Notification from "~/components/base/Notification.vue";
+
+// Props and emits
+const props = defineProps({
+  modelValue: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const emit = defineEmits(['update:modelValue', 'close']);
 
 // Authentication and Firestore
 const auth = getAuth();
@@ -429,8 +308,8 @@ const {
   hideNotification,
 } = useNotification();
 
-// Modal visibility
-const isVisible = ref(false);
+// Modal visibility - controlled by parent via props
+const isVisible = computed(() => props.modelValue);
 const showConfirmation = ref(false);
 
 // Stage control
@@ -585,16 +464,10 @@ onMounted(async () => {
       if (response.success) {
         streakDays.value = response.data.streakDays;
         points.value = response.data.points;
-        const lastUpdated = response.data.lastUpdated;
-        const today = new Date().toISOString().split("T")[0];
-        if (lastUpdated !== today) {
-          isVisible.value = true;
-        }
       }
       await fetchSefirotProgress(currentUser.uid);
     } else {
       user.value = null;
-      isVisible.value = false;
       sefirotProgress.value = {
         netzach: {
           dailyActions: 0,
@@ -689,7 +562,7 @@ const handleEmotionClick = (index) => {
 
   if (index === correctIndex.value) {
     isCorrect.value = true;
-    feedback.value = `Правильно! Это развивает ${currentScenario.value.sefira}. ${currentScenario.value.tip}`;
+    feedback.value = `Правильно! ${currentScenario.value.tip}`;
     winCount.value += 1;
     points.value += 10;
 
@@ -906,8 +779,19 @@ const cancelClose = () => {
 };
 
 const closeModal = () => {
-  isVisible.value = false;
+  emit('update:modelValue', false);
+  emit('close');
   showConfirmation.value = false;
+  // Reset the modal state for next time
+  currentStage.value = "emotion";
+  selectedIndex.value = null;
+  isCorrect.value = false;
+  isWrong.value = false;
+  feedback.value = "";
+  gameComplete.value = false;
+  winCount.value = 0;
+  tip.value = "";
+  isAnonymous.value = false;
 };
 </script>
 
@@ -932,6 +816,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -943,10 +828,12 @@ input[type="range"]::-webkit-slider-thumb:hover {
     transform: scale(0.3);
     opacity: 0;
   }
+
   50% {
     transform: scale(1.1);
     opacity: 1;
   }
+
   100% {
     transform: scale(1);
     opacity: 1;
@@ -957,18 +844,23 @@ input[type="range"]::-webkit-slider-thumb:hover {
   0% {
     transform: translateX(0);
   }
+
   20% {
     transform: translateX(-8px) rotate(-5deg);
   }
+
   40% {
     transform: translateX(8px) rotate(5deg);
   }
+
   60% {
     transform: translateX(-4px) rotate(-3deg);
   }
+
   80% {
     transform: translateX(4px) rotate(3deg);
   }
+
   100% {
     transform: translateX(0);
   }
