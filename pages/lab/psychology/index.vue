@@ -115,6 +115,34 @@ definePageMeta({
   layout: "laboratory",
 });
 
+useHead({
+  title: "Психологическая Лаборатория",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Исследуйте глубины разума через интерактивные эксперименты, психологические тесты и образовательные материалы.",
+    },
+    {
+      property: "og:title",
+      content: "Психологическая Лаборатория | MindQ Lab",
+    },
+    {
+      property: "og:description",
+      content:
+        "Исследуйте глубины разума через интерактивные эксперименты, психологические тесты и образовательные материалы.",
+    },
+    {
+      property: "og:image",
+      content: "/images/psychology-og.jpg", // Placeholder
+    },
+    {
+      name: "twitter:card",
+      content: "summary_large_image",
+    },
+  ],
+});
+
 const labSections = [
   {
     id: "ego-states",
@@ -215,28 +243,28 @@ const quickTools = [
     title: "Настроение",
     icon: "fas fa-smile",
     color: "text-yellow-600 dark:text-yellow-400",
-    path: "/lab/psychology/mood-tracker"
+    path: "/lab/psychology"
   },
   {
     id: "stress-test",
     title: "Стресс-тест",
     icon: "fas fa-heartbeat",
     color: "text-red-600 dark:text-red-400",
-    path: "/lab/psychology/stress-test"
+    path: "/lab/psychology"
   },
   {
     id: "focus-timer",
     title: "Фокус",
     icon: "fas fa-hourglass-half",
     color: "text-blue-600 dark:text-blue-400",
-    path: "/lab/psychology/focus-timer"
+    path: "/lab/psychology"
   },
   {
     id: "breathing",
     title: "Дыхание",
     icon: "fas fa-wind",
     color: "text-green-600 dark:text-green-400",
-    path: "/lab/psychology/breathing"
+    path: "/lab/psychology"
   },
 ];
 
