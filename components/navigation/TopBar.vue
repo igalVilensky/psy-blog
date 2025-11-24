@@ -56,6 +56,24 @@
                 <i class="fas fa-infinity text-green-400 w-4"></i>
                 <span>Медитация</span>
               </NuxtLink>
+              <NuxtLink to="/lab/brain-map"
+                class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors duration-150"
+                exact-active-class="bg-slate-700/50 text-white" @click="closeDropdown">
+                <i class="fas fa-map text-orange-400 w-4"></i>
+                <span>Карта Мозга</span>
+              </NuxtLink>
+              <NuxtLink to="/lab/dashboard"
+                class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors duration-150"
+                exact-active-class="bg-slate-700/50 text-white" @click="closeDropdown">
+                <i class="fas fa-microchip text-cyan-400 w-4"></i>
+                <span>Нейро Анализ</span>
+              </NuxtLink>
+              <NuxtLink to="/lab/experiments"
+                class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors duration-150"
+                exact-active-class="bg-slate-700/50 text-white" @click="closeDropdown">
+                <i class="fas fa-atom text-purple-400 w-4"></i>
+                <span>Эксперименты</span>
+              </NuxtLink>
               <NuxtLink to="/lab/analysis"
                 class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors duration-150"
                 exact-active-class="bg-slate-700/50 text-white" @click="closeDropdown">
@@ -249,6 +267,24 @@
                   exact-active-class="bg-slate-700/50 text-white" @click="closeDropdown">
                   <i class="fas fa-infinity text-green-400 text-xs w-4"></i>
                   <span>Медитация</span>
+                </NuxtLink>
+                <NuxtLink to="/lab/brain-map"
+                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
+                  exact-active-class="bg-slate-700/50 text-white" @click="closeDropdown">
+                  <i class="fas fa-map text-orange-400 text-xs w-4"></i>
+                  <span>Карта Мозга</span>
+                </NuxtLink>
+                <NuxtLink to="/lab/dashboard"
+                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
+                  exact-active-class="bg-slate-700/50 text-white" @click="closeDropdown">
+                  <i class="fas fa-microchip text-cyan-400 text-xs w-4"></i>
+                  <span>Нейро Анализ</span>
+                </NuxtLink>
+                <NuxtLink to="/lab/experiments"
+                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
+                  exact-active-class="bg-slate-700/50 text-white" @click="closeDropdown">
+                  <i class="fas fa-atom text-purple-400 text-xs w-4"></i>
+                  <span>Эксперименты</span>
                 </NuxtLink>
                 <NuxtLink to="/lab/analysis"
                   class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
