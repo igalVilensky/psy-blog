@@ -19,11 +19,29 @@
         <div
           class="relative z-10 bg-white/80 dark:bg-slate-900/50 backdrop-blur-xl p-8 sm:p-10 rounded-2xl border border-cyan-500/30 shadow-lg dark:shadow-[0_0_50px_-12px_rgba(6,182,212,0.25)]">
           <!-- Loading State -->
-          <div v-if="loadingStats" class="flex flex-col items-center gap-4 py-12">
-            <div class="w-12 h-12 border-4 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin"></div>
-            <p class="text-cyan-400 font-mono animate-pulse">
-              ЗАГРУЗКА МОДУЛЕЙ...
-            </p>
+          <!-- Loading State -->
+          <div v-if="loadingStats" class="flex flex-col items-center justify-center py-12 gap-8">
+            <ClientOnly>
+              <div class="loading-spinner-wrapper relative w-32 h-32">
+                <div class="spinner-ring spinner-ring-1"></div>
+                <div class="spinner-ring spinner-ring-2"></div>
+                <div class="spinner-ring spinner-ring-3"></div>
+                <div class="spinner-core">
+                  <i class="fas fa-bolt text-3xl text-cyan-400"></i>
+                </div>
+              </div>
+              <div class="loading-text text-center">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">
+                  Загрузка статистики
+                </h3>
+                <p class="text-slate-500 dark:text-slate-400 text-sm">
+                  Синхронизация с нейросетью...
+                </p>
+              </div>
+              <div class="loading-progress">
+                <div class="progress-bar"></div>
+              </div>
+            </ClientOnly>
           </div>
 
           <!-- No Data State -->
@@ -87,8 +105,9 @@
 
               <!-- Points Card -->
               <div
-                class="bg-white dark:bg-slate-800/30 rounded-xl p-4 border border-cyan-500/20 shadow-sm dark:shadow-none">
-                <div class="text-2xl font-bold text-slate-900 dark:text-white mb-1 font-mono">
+                class="bg-white dark:bg-slate-800/30 rounded-xl p-4 border border-cyan-500/20 shadow-sm dark:shadow-none overflow-hidden">
+                <div class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-1 font-mono truncate"
+                  :title="stats.totalPoints">
                   {{ stats.totalPoints }}
                 </div>
                 <div class="text-slate-500 dark:text-slate-400 text-xs">ОЧКИ</div>
@@ -97,7 +116,8 @@
               <!-- Energy Card -->
               <div
                 class="bg-white dark:bg-slate-800/30 rounded-xl p-4 border border-purple-500/20 shadow-sm dark:shadow-none">
-                <div class="text-2xl font-bold text-slate-900 dark:text-white mb-1 font-mono flex items-center gap-2">
+                <div
+                  class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-1 font-mono flex items-center gap-2">
                   <span>{{ getEnergyEmoji(stats.averageEnergyLevel) }}</span>
                   <span>{{ stats.averageEnergyLevel.toFixed(1) }}</span>
                 </div>
@@ -132,11 +152,28 @@
         </div>
 
         <!-- Loading State -->
-        <div v-if="loadingInsights" class="flex flex-col items-center justify-center py-16">
-          <div class="w-12 h-12 border-4 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin mb-6"></div>
-          <p class="text-cyan-400 font-mono">
-            ЗАГРУЗКА ВДОХНОВЕНИЯ...
-          </p>
+        <div v-if="loadingInsights" class="flex flex-col items-center justify-center py-16 gap-8">
+          <ClientOnly>
+            <div class="loading-spinner-wrapper relative w-32 h-32">
+              <div class="spinner-ring spinner-ring-1"></div>
+              <div class="spinner-ring spinner-ring-2"></div>
+              <div class="spinner-ring spinner-ring-3"></div>
+              <div class="spinner-core">
+                <i class="fas fa-lightbulb text-3xl text-purple-400"></i>
+              </div>
+            </div>
+            <div class="loading-text text-center">
+              <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">
+                Загрузка вдохновения
+              </h3>
+              <p class="text-slate-500 dark:text-slate-400 text-sm">
+                Поиск мудрости сообщества...
+              </p>
+            </div>
+            <div class="loading-progress">
+              <div class="progress-bar"></div>
+            </div>
+          </ClientOnly>
         </div>
 
         <!-- Insights Grid -->
@@ -439,5 +476,82 @@ onMounted(() => {
 .daily-spark {
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
     0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+/* Loading State Styles */
+.spinner-ring {
+  @apply absolute inset-0 rounded-full border-4 border-transparent;
+  animation: spin 3s linear infinite;
+}
+
+.spinner-ring-1 {
+  @apply border-t-cyan-500;
+  animation-duration: 2s;
+}
+
+.spinner-ring-2 {
+  @apply border-r-purple-500;
+  animation-duration: 3s;
+  animation-direction: reverse;
+}
+
+.spinner-ring-3 {
+  @apply border-b-pink-500;
+  animation-duration: 4s;
+}
+
+.spinner-core {
+  @apply absolute inset-0 flex items-center justify-center;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: scale(0.95);
+  }
+}
+
+.loading-progress {
+  @apply w-64 h-1 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden;
+}
+
+.progress-bar {
+  @apply h-full bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 rounded-full;
+  animation: progress 2s ease-in-out infinite;
+}
+
+@keyframes progress {
+  0% {
+    width: 0%;
+    margin-left: 0%;
+  }
+
+  50% {
+    width: 75%;
+    margin-left: 0%;
+  }
+
+  100% {
+    width: 0%;
+    margin-left: 100%;
+  }
 }
 </style>

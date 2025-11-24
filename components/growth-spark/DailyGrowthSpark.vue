@@ -7,11 +7,25 @@
         class="bg-white dark:bg-slate-900 rounded-2xl w-[95%] max-w-[500px] flex flex-col shadow-2xl overflow-hidden animate-fade-in-up my-4 border border-cyan-500/30 text-slate-900 dark:text-slate-100"
         @click.stop>
         <!-- Modal header with progress indicator -->
-        <div class="p-4 border-b border-cyan-500/20 relative">
-          <h2 class="text-xl font-mono font-bold text-cyan-600 dark:text-cyan-300">
-            ЕЖЕДНЕВНАЯ ИСКРА РОСТА
-          </h2>
-          <div class="mt-3">
+        <div class="p-4 border-b border-cyan-500/20">
+          <div class="flex justify-between items-start mb-3">
+            <h2 class="text-lg sm:text-xl font-mono font-bold text-cyan-600 dark:text-cyan-300 mr-2">
+              ЕЖЕДНЕВНАЯ ИСКРА РОСТА
+            </h2>
+            <div class="flex items-center gap-3 shrink-0">
+              <div
+                class="text-sm text-slate-600 dark:text-slate-300 flex items-center bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-lg">
+                <i class="fas fa-star text-cyan-400 mr-1"></i>
+                <span class="font-mono font-bold">{{ points }}</span>
+              </div>
+              <button
+                class="text-slate-400 dark:text-slate-500 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-slate-100 dark:hover:bg-slate-800 w-8 h-8 flex items-center justify-center rounded-full transition-all"
+                @click="confirmClose" aria-label="Закрыть">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <div>
             <div class="flex justify-between mb-2">
               <div v-for="(step, index) in [
                 'Эмоциональная проницательность',
@@ -46,15 +60,6 @@
                 :style="`width: ${progressPercentage}%`"></div>
             </div>
           </div>
-          <div class="absolute top-4 right-12 text-sm text-slate-600 dark:text-slate-300 flex items-center">
-            <i class="fas fa-star text-cyan-400 mr-1"></i>
-            <span>{{ points }}</span>
-          </div>
-          <button
-            class="absolute right-4 top-4 text-slate-400 dark:text-slate-500 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-slate-100 dark:hover:bg-slate-800 w-8 h-8 flex items-center justify-center rounded-full transition-all"
-            @click="confirmClose" aria-label="Закрыть">
-            <i class="fas fa-times"></i>
-          </button>
         </div>
 
         <div class="p-4 overflow-y-auto max-h-[70vh]">
@@ -81,7 +86,7 @@
             <div class="flex justify-center gap-3 flex-wrap">
               <div v-for="(emotion, index) in currentScenario.emotions" :key="index" @click="handleEmotionClick(index)"
                 :class="[
-                  'w-20 h-16 flex flex-col items-center justify-center rounded-xl cursor-pointer transition-all border-2 p-1',
+                  'w-auto min-w-[5rem] h-auto min-h-[4rem] flex flex-col items-center justify-center rounded-xl cursor-pointer transition-all border-2 p-2',
                   selectedIndex === index
                     ? 'border-cyan-500 bg-cyan-500/10'
                     : 'border-transparent bg-slate-100 dark:bg-slate-800',
@@ -93,9 +98,9 @@
                     : '',
                   'hover:-translate-y-1 hover:shadow-md dark:hover:shadow-cyan-500/20',
                 ]">
-                <span class="text-xl">{{ emotion.emoji }}</span>
+                <span class="text-xl mb-1">{{ emotion.emoji }}</span>
                 <span :class="[
-                  'text-xs mt-1 text-center',
+                  'text-xs text-center leading-tight',
                   selectedIndex === index
                     ? 'text-slate-900 dark:text-slate-200 font-medium'
                     : 'text-slate-600 dark:text-slate-400',
@@ -141,13 +146,13 @@
               </h4>
               <div class="flex flex-wrap justify-center gap-2">
                 <div v-for="(item, index) in growthFuelItems" :key="index" :class="[
-                  'flex flex-col items-center p-2 w-16 rounded-lg cursor-pointer transition-all border',
+                  'flex flex-col items-center p-2 w-auto min-w-[4rem] rounded-lg cursor-pointer transition-all border',
                   item.selected
                     ? 'bg-cyan-600 text-white border-cyan-400'
                     : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-600 hover:bg-slate-300 dark:hover:bg-slate-600',
                 ]" @click="toggleFuelItem(index)">
                   <i :class="['fas', item.icon, 'text-lg mb-1']"></i>
-                  <span class="text-xs text-center">{{ item.label }}</span>
+                  <span class="text-xs text-center leading-tight">{{ item.label }}</span>
                 </div>
               </div>
             </div>
@@ -182,22 +187,23 @@
                 {{ tip.length }}/280
               </div>
             </div>
-            <div class="flex items-center justify-center gap-2 text-xs text-slate-600 dark:text-slate-400">
-              <label class="relative inline-block w-10 h-5">
-                <input type="checkbox" v-model="isAnonymous" class="opacity-0 w-0 h-0" />
-                <span
-                  class="absolute inset-0 cursor-pointer bg-slate-300 dark:bg-slate-700 rounded-full transition-all before:absolute before:h-4 before:w-4 before:left-0.5 before:bottom-0.5 before:bg-white before:rounded-full before:transition-all"
-                  :class="{ 'bg-cyan-600 before:translate-x-5': isAnonymous }"></span>
+            <div
+              class="flex flex-col sm:flex-row items-center justify-center gap-3 text-xs text-slate-600 dark:text-slate-400 w-full">
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" v-model="isAnonymous" class="sr-only peer" />
+                <div
+                  class="w-9 h-5 bg-slate-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-cyan-300 dark:peer-focus:ring-cyan-800 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-cyan-600">
+                </div>
+                <span class="ml-2 font-medium">Анонимно</span>
               </label>
-              <span>Поделиться анонимно</span>
             </div>
-            <div class="flex justify-center gap-3">
+            <div class="flex flex-col sm:flex-row justify-center gap-3 w-full sm:w-auto">
               <button @click="skipTip"
-                class="bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-lg font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-all text-sm">
+                class="w-full sm:w-auto bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 px-4 py-3 sm:py-2 rounded-lg font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-all text-sm">
                 Пропустить
               </button>
               <button @click="submitTip"
-                class="bg-cyan-600 text-white px-4 py-2 rounded-lg font-mono font-bold transition-all hover:bg-cyan-500 hover:-translate-y-1 text-sm shadow-[0_0_20px_rgba(6,182,212,0.3)]"
+                class="w-full sm:w-auto bg-cyan-600 text-white px-4 py-3 sm:py-2 rounded-lg font-mono font-bold transition-all hover:bg-cyan-500 hover:-translate-y-1 text-sm shadow-[0_0_20px_rgba(6,182,212,0.3)]"
                 :class="{
                   'bg-slate-400 dark:bg-slate-600 cursor-not-allowed hover:bg-slate-400 dark:hover:bg-slate-600 hover:translate-y-0 shadow-none':
                     tip.trim() === '',
