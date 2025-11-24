@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-500">
+    class="sticky top-0 left-0 right-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-500 w-full">
     <!-- Subtle accent line -->
     <div
       class="absolute -bottom-px left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent">

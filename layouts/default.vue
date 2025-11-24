@@ -11,13 +11,11 @@
       @close="notification = null"
     /> -->
 
-    <!-- TopBar (Fixed) -->
-    <div class="bg-slate-950">
-      <TopBar />
-    </div>
+    <!-- TopBar (Sticky) -->
+    <TopBar />
 
     <!-- Page Content (Main Content) -->
-    <main class="flex-1 relative z-10 bg-background pt-[4rem]">
+    <main class="flex-1 relative z-10 bg-background">
       <div class="bg-background w-full h-full z-0"></div>
       <!-- Content -->
       <NuxtPage />

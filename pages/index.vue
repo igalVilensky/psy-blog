@@ -3,7 +3,7 @@
     class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white overflow-hidden transition-colors duration-500">
     <!-- Main Content -->
     <main class="container mx-auto max-w-6xl px-4 sm:px-0 py-12 lg:py-16 relative">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center mb-16 md:mb-24">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start mb-16 md:mb-24">
         <!-- Left: Hero / Intro -->
         <section class="relative order-2 lg:order-1 animate-fade-in-left">
           <div class="hero-content text-center lg:text-left">
@@ -51,7 +51,7 @@
             <h1
               class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white text-center lg:text-left mb-6 leading-tight">
               MindQ Lab —
-              <span class="block mt-2 text-slate-900 dark:text-white">
+              <span class="block mt-2 text-indigo-600 dark:text-indigo-400">
                 Твоя лаборатория осознанного роста
               </span>
             </h1>
@@ -68,20 +68,20 @@
             <div
               class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-stretch sm:items-center mb-6">
               <NuxtLink to="/lab/tests"
-                class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 rounded-2xl font-semibold text-base sm:text-lg shadow-2xl hover:shadow-cyan-500/50 hover:scale-105 transition-all duration-300">
+                class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-semibold text-base sm:text-lg shadow-lg hover:shadow-indigo-500/30 hover:-translate-y-0.5 transition-all duration-300">
                 <i class="fas fa-vial group-hover:rotate-12 transition-transform duration-300"></i>
                 <span>Пройти тест бесплатно</span>
                 <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform duration-300"></i>
               </NuxtLink>
 
               <NuxtLink v-if="!isLoggedIn" to="/register"
-                class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-white/50 dark:bg-slate-800/60 border-2 border-cyan-500/40 rounded-2xl text-slate-700 dark:text-slate-200 font-semibold text-base sm:text-lg hover:bg-cyan-500/20 hover:border-cyan-500/60 hover:scale-105 transition-all duration-300">
+                class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-2xl font-semibold text-base sm:text-lg hover:border-indigo-500/50 hover:text-indigo-600 dark:hover:text-indigo-400 hover:-translate-y-0.5 transition-all duration-300">
                 <i class="fas fa-user-plus group-hover:scale-110 transition-transform duration-300"></i>
                 <span>Создать профиль</span>
               </NuxtLink>
 
               <NuxtLink v-else to="/home"
-                class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-white/50 dark:bg-slate-800/60 border-2 border-purple-500/40 rounded-2xl text-slate-700 dark:text-slate-200 font-semibold text-base sm:text-lg hover:bg-purple-500/20 hover:border-purple-500/60 hover:scale-105 transition-all duration-300">
+                class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-2xl font-semibold text-base sm:text-lg hover:border-indigo-500/50 hover:text-indigo-600 dark:hover:text-indigo-400 hover:-translate-y-0.5 transition-all duration-300">
                 <i class="fas fa-home group-hover:scale-110 transition-transform duration-300"></i>
                 <span>Перейти в кабинет</span>
               </NuxtLink>
@@ -113,9 +113,9 @@
             <div class="flex items-center mb-6">
               <div
                 class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mr-4 flex-shrink-0">
-                <i class="fas fa-brain text-slate-900 dark:text-white text-2xl sm:text-3xl"></i>
+                <i class="fas fa-brain text-slate-700 dark:text-white text-2xl sm:text-3xl"></i>
               </div>
-              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-700 dark:text-white">
                 Исследовательские станции
               </h2>
             </div>
