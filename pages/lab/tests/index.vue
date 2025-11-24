@@ -1,24 +1,16 @@
 <!-- pages/lab/tests/index.vue -->
 <template>
-  <div
-    class="cognitive-tests-station min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500"
-  >
+  <div class="cognitive-tests-station min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       <Breadcrumbs />
       <!-- Header Section -->
       <div class="mb-8">
-        <div
-          class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6"
-        >
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
           <div>
-            <h1
-              class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight"
-            >
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight">
               КОГНИТИВНЫЕ ТЕСТЫ
             </h1>
-            <p
-              class="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed max-w-2xl"
-            >
+            <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed max-w-2xl">
               Комплексная оценка когнитивных функций: память, внимание, логика и
               скорость реакции
             </p>
@@ -47,8 +39,7 @@
         <div class="flex items-center justify-between mb-6">
           <h2 class="text-xl font-semibold text-slate-900 dark:text-white">ОСНОВНЫЕ ТЕСТЫ</h2>
           <button
-            class="text-sm text-cyan-600 dark:text-cyan-400 hover:text-cyan-500 dark:hover:text-cyan-300 transition-colors"
-          >
+            class="text-sm text-cyan-600 dark:text-cyan-400 hover:text-cyan-500 dark:hover:text-cyan-300 transition-colors">
             Посмотреть все →
           </button>
         </div>
@@ -58,9 +49,7 @@
           <NuxtLink to="/lab/tests/digit-span" class="test-category-card group">
             <!-- Icon Header -->
             <div class="flex items-start justify-between mb-4">
-              <div
-                class="icon-wrapper bg-gradient-to-br from-cyan-500 to-purple-600"
-              >
+              <div class="icon-wrapper bg-gradient-to-br from-cyan-500 to-purple-600">
                 <i class="fas fa-brain text-white text-xl"></i>
               </div>
               <span class="difficulty-badge difficulty-medium"> Средняя </span>
@@ -68,8 +57,7 @@
 
             <!-- Content -->
             <h3
-              class="text-lg font-semibold text-slate-900 dark:text-white mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors"
-            >
+              class="text-lg font-semibold text-slate-900 dark:text-white mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
               Digit Span Test
             </h3>
             <p class="text-sm text-slate-500 dark:text-slate-400 mb-1">Объем рабочей памяти</p>
@@ -79,9 +67,7 @@
             </p>
 
             <!-- Footer -->
-            <div
-              class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-700/50"
-            >
+            <div class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-700/50">
               <div class="flex items-center gap-2 text-cyan-600 dark:text-cyan-400">
                 <i class="fas fa-clock text-xs"></i>
                 <span class="text-xs font-medium">5-8 мин</span>
@@ -100,9 +86,7 @@
           <NuxtLink to="/lab/tests/nback" class="test-category-card group">
             <!-- Icon Header -->
             <div class="flex items-start justify-between mb-4">
-              <div
-                class="icon-wrapper bg-gradient-to-br from-purple-500 to-pink-600"
-              >
+              <div class="icon-wrapper bg-gradient-to-br from-purple-500 to-pink-600">
                 <i class="fas fa-layer-group text-white text-xl"></i>
               </div>
               <span class="difficulty-badge difficulty-hard">Сложная</span>
@@ -110,8 +94,7 @@
 
             <!-- Content -->
             <h3
-              class="text-lg font-semibold text-slate-900 dark:text-white mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors"
-            >
+              class="text-lg font-semibold text-slate-900 dark:text-white mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
               N-Back Test
             </h3>
             <p class="text-sm text-slate-500 dark:text-slate-400 mb-1">Рабочая память и внимание</p>
@@ -121,9 +104,7 @@
             </p>
 
             <!-- Footer -->
-            <div
-              class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-700/50"
-            >
+            <div class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-700/50">
               <div class="flex items-center gap-2 text-purple-600 dark:text-purple-400">
                 <i class="fas fa-clock text-xs"></i>
                 <span class="text-xs font-medium">5-8 мин</span>
@@ -139,15 +120,10 @@
           </NuxtLink>
 
           <!-- Trail Making Test -->
-          <NuxtLink
-            to="/lab/tests/trail-making"
-            class="test-category-card group"
-          >
+          <NuxtLink to="/lab/tests/trail-making" class="test-category-card group">
             <!-- Icon Header -->
             <div class="flex items-start justify-between mb-4">
-              <div
-                class="icon-wrapper bg-gradient-to-br from-emerald-500 to-cyan-600"
-              >
+              <div class="icon-wrapper bg-gradient-to-br from-emerald-500 to-cyan-600">
                 <i class="fas fa-route text-white text-xl"></i>
               </div>
               <span class="difficulty-badge difficulty-easy">Легкая</span>
@@ -155,8 +131,7 @@
 
             <!-- Content -->
             <h3
-              class="text-lg font-semibold text-slate-900 dark:text-white mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors"
-            >
+              class="text-lg font-semibold text-slate-900 dark:text-white mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
               Trail Making Test
             </h3>
             <p class="text-sm text-slate-500 dark:text-slate-400 mb-1">Скорость обработки</p>
@@ -166,9 +141,7 @@
             </p>
 
             <!-- Footer -->
-            <div
-              class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-700/50"
-            >
+            <div class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-700/50">
               <div class="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
                 <i class="fas fa-clock text-xs"></i>
                 <span class="text-xs font-medium">3-5 мин</span>
@@ -184,29 +157,21 @@
           </NuxtLink>
 
           <!-- Existing Test Cards -->
-          <div
-            v-for="test in testCategories"
-            :key="test.id"
-            class="test-category-card group"
-            @click="navigateToTest(test)"
-          >
+          <div v-for="test in testCategories" :key="test.id" class="test-category-card group"
+            @click="navigateToTest(test)">
             <!-- Icon Header -->
             <div class="flex items-start justify-between mb-4">
               <div class="icon-wrapper" :class="test.iconBg">
                 <i :class="test.icon" class="text-white text-xl"></i>
               </div>
-              <span
-                class="difficulty-badge"
-                :class="getDifficultyClass(test.difficulty)"
-              >
+              <span class="difficulty-badge" :class="getDifficultyClass(test.difficulty)">
                 {{ test.difficulty }}
               </span>
             </div>
 
             <!-- Content -->
             <h3
-              class="text-lg font-semibold text-slate-900 dark:text-white mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors"
-            >
+              class="text-lg font-semibold text-slate-900 dark:text-white mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
               {{ test.title }}
             </h3>
             <p class="text-sm text-slate-500 dark:text-slate-400 mb-1">{{ test.subtitle }}</p>
@@ -215,18 +180,14 @@
             </p>
 
             <!-- Footer -->
-            <div
-              class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-700/50"
-            >
+            <div class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-700/50">
               <div class="flex items-center gap-2 text-cyan-600 dark:text-cyan-400">
                 <i class="fas fa-clock text-xs"></i>
                 <span class="text-xs font-medium">{{ test.duration }}</span>
               </div>
               <div class="flex items-center gap-2 text-purple-600 dark:text-purple-400">
                 <i class="fas fa-tasks text-xs"></i>
-                <span class="text-xs font-medium"
-                  >{{ test.tasksCount }} заданий</span
-                >
+                <span class="text-xs font-medium">{{ test.tasksCount }} заданий</span>
               </div>
             </div>
 
@@ -246,12 +207,9 @@
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
           <!-- Digit Span Quick Link -->
           <NuxtLink to="/lab/tests/digit-span" class="quick-test-card">
-            <div
-              class="quick-icon-wrapper"
-              style="
+            <div class="quick-icon-wrapper" style="
                 background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
-              "
-            >
+              ">
               <i class="fas fa-brain text-white text-lg"></i>
             </div>
             <h4 class="text-slate-800 dark:text-white text-sm font-medium mt-3 mb-1">Digit Span</h4>
@@ -259,16 +217,9 @@
           </NuxtLink>
 
           <!-- Existing Quick Tests -->
-          <div
-            v-for="quickTest in quickTests"
-            :key="quickTest.id"
-            class="quick-test-card"
-            @click="startQuickTest(quickTest)"
-          >
-            <div
-              class="quick-icon-wrapper"
-              :style="{ background: quickTest.gradient }"
-            >
+          <div v-for="quickTest in quickTests" :key="quickTest.id" class="quick-test-card"
+            @click="startQuickTest(quickTest)">
+            <div class="quick-icon-wrapper" :style="{ background: quickTest.gradient }">
               <i :class="quickTest.icon" class="text-white text-lg"></i>
             </div>
             <h4 class="text-slate-800 dark:text-white text-sm font-medium mt-3 mb-1">
@@ -288,23 +239,16 @@
               Последние результаты
             </h3>
             <button
-              class="text-xs text-cyan-600 dark:text-cyan-400 hover:text-cyan-500 dark:hover:text-cyan-300 transition-colors"
-            >
+              class="text-xs text-cyan-600 dark:text-cyan-400 hover:text-cyan-500 dark:hover:text-cyan-300 transition-colors">
               История
             </button>
           </div>
           <div class="space-y-3">
-            <div
-              v-for="result in recentResults"
-              :key="result.id"
-              class="result-item"
-            >
+            <div v-for="result in recentResults" :key="result.id" class="result-item">
               <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                  <div
-                    class="w-10 h-10 rounded-lg flex items-center justify-center"
-                    :style="{ background: result.color }"
-                  >
+                  <div class="w-10 h-10 rounded-lg flex items-center justify-center"
+                    :style="{ background: result.color }">
                     <i :class="result.icon" class="text-white text-sm"></i>
                   </div>
                   <div>
@@ -315,10 +259,7 @@
                   </div>
                 </div>
                 <div class="text-right">
-                  <div
-                    class="text-lg font-bold"
-                    :class="getScoreClass(result.score)"
-                  >
+                  <div class="text-lg font-bold" :class="getScoreClass(result.score)">
                     {{ result.score }}%
                   </div>
                   <div class="text-xs text-slate-500 dark:text-slate-400">
@@ -333,23 +274,15 @@
         <!-- Recommendations -->
         <div class="info-card">
           <div class="flex items-center gap-2 mb-4">
-            <div
-              class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center"
-            >
+            <div class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center">
               <i class="fas fa-lightbulb text-purple-600 dark:text-purple-400"></i>
             </div>
             <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Рекомендации</h3>
           </div>
           <div class="space-y-3">
-            <div
-              v-for="recommendation in recommendations"
-              :key="recommendation.id"
-              class="recommendation-item"
-            >
+            <div v-for="recommendation in recommendations" :key="recommendation.id" class="recommendation-item">
               <div class="flex items-start gap-3">
-                <div
-                  class="w-6 h-6 rounded-full bg-cyan-500/20 flex items-center justify-center flex-shrink-0 mt-0.5"
-                >
+                <div class="w-6 h-6 rounded-full bg-cyan-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <i class="fas fa-check text-cyan-600 dark:text-cyan-400 text-xs"></i>
                 </div>
                 <div>
@@ -367,15 +300,9 @@
       </div>
 
       <!-- Info Banner -->
-      <div
-        class="mt-8 p-6 rounded-2xl bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-500/20"
-      >
-        <div
-          class="flex flex-col sm:flex-row items-start sm:items-center gap-4"
-        >
-          <div
-            class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center flex-shrink-0"
-          >
+      <div class="mt-8 p-6 rounded-2xl bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-500/20">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center flex-shrink-0">
             <i class="fas fa-info-circle text-cyan-600 dark:text-cyan-400 text-xl"></i>
           </div>
           <div class="flex-1">
@@ -398,6 +325,34 @@ import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
 
 definePageMeta({
   layout: "laboratory",
+});
+
+useHead({
+  title: "Когнитивные Тесты",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Оцените свои когнитивные способности с помощью профессиональных психологических тестов и методик.",
+    },
+    {
+      property: "og:title",
+      content: "Когнитивные Тесты | MindQ Lab",
+    },
+    {
+      property: "og:description",
+      content:
+        "Оцените свои когнитивные способности с помощью профессиональных психологических тестов и методик.",
+    },
+    {
+      property: "og:image",
+      content: "/images/tests-og.jpg", // Placeholder
+    },
+    {
+      name: "twitter:card",
+      content: "summary_large_image",
+    },
+  ],
 });
 
 const testCategories = [
@@ -597,15 +552,12 @@ const startQuickTest = (test) => {
 </script>
 
 <style scoped>
-
-
 .stat-card {
   @apply text-center px-4 py-3 rounded-xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/10 shadow-sm dark:shadow-none;
 }
 
 .test-category-card {
-  @apply relative p-6 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/10 
-         hover:border-cyan-500/30 transition-all duration-300 cursor-pointer overflow-hidden shadow-sm dark:shadow-none;
+  @apply relative p-6 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/10 hover:border-cyan-500/30 transition-all duration-300 cursor-pointer overflow-hidden shadow-sm dark:shadow-none;
 }
 
 .test-category-card:hover {
@@ -613,8 +565,7 @@ const startQuickTest = (test) => {
 }
 
 .card-shine {
-  @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent 
-         translate-x-[-100%] transition-transform duration-1000;
+  @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent translate-x-[-100%] transition-transform duration-1000;
 }
 
 .test-category-card:hover .card-shine {
@@ -642,9 +593,7 @@ const startQuickTest = (test) => {
 }
 
 .quick-test-card {
-  @apply p-4 rounded-xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-purple-500/10 
-         hover:border-purple-500/30 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-all 
-         duration-300 cursor-pointer text-center shadow-sm dark:shadow-none;
+  @apply p-4 rounded-xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-purple-500/10 hover:border-purple-500/30 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-all duration-300 cursor-pointer text-center shadow-sm dark:shadow-none;
 }
 
 .quick-test-card:hover {
@@ -660,8 +609,7 @@ const startQuickTest = (test) => {
 }
 
 .result-item {
-  @apply p-4 rounded-lg bg-slate-50 dark:bg-slate-800/30 border border-slate-200 dark:border-slate-700/50 
-         hover:border-cyan-500/30 transition-all duration-300;
+  @apply p-4 rounded-lg bg-slate-50 dark:bg-slate-800/30 border border-slate-200 dark:border-slate-700/50 hover:border-cyan-500/30 transition-all duration-300;
 }
 
 .recommendation-item {

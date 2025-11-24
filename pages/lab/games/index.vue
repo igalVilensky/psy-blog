@@ -1,24 +1,16 @@
 <!-- pages/lab/games.vue -->
 <template>
-  <div
-    class="games-station min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500"
-  >
+  <div class="games-station min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       <Breadcrumbs />
       <!-- Header Section -->
       <div class="mb-8">
-        <div
-          class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6"
-        >
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
           <div>
-            <h1
-              class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight"
-            >
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight">
               РАЗВИВАЮЩИЕ ИГРЫ
             </h1>
-            <p
-              class="text-slate-600 dark:text-cyan-300/70 text-sm sm:text-base leading-relaxed max-w-2xl"
-            >
+            <p class="text-slate-600 dark:text-cyan-300/70 text-sm sm:text-base leading-relaxed max-w-2xl">
               Тренируйте логику, память и внимание через увлекательные игровые
               задачи
             </p>
@@ -49,13 +41,8 @@
       <!-- Filter Tabs -->
       <div class="mb-8">
         <div class="flex flex-wrap gap-2">
-          <button
-            v-for="category in categories"
-            :key="category.id"
-            @click="activeCategory = category.id"
-            class="filter-tab"
-            :class="activeCategory === category.id ? 'filter-tab-active' : ''"
-          >
+          <button v-for="category in categories" :key="category.id" @click="activeCategory = category.id"
+            class="filter-tab" :class="activeCategory === category.id ? 'filter-tab-active' : ''">
             <i :class="category.icon" class="mr-2"></i>
             {{ category.label }}
           </button>
@@ -65,13 +52,11 @@
       <!-- Featured Game -->
       <div class="featured-game mb-12">
         <div
-          class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-cyan-500/10 via-purple-500/10 to-pink-500/10 border border-cyan-500/20 p-8"
-        >
+          class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-cyan-500/10 via-purple-500/10 to-pink-500/10 border border-cyan-500/20 p-8">
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div>
               <div
-                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/20 border border-cyan-500/40 mb-4"
-              >
+                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/20 border border-cyan-500/40 mb-4">
                 <i class="fas fa-star text-cyan-600 dark:text-cyan-400 text-sm"></i>
                 <span class="text-xs font-medium text-cyan-700 dark:text-cyan-300">ИГРА ДНЯ</span>
               </div>
@@ -95,10 +80,7 @@
                   <span class="text-sm">~{{ featuredGame.duration }}</span>
                 </div>
               </div>
-              <button
-                @click="$router.push('/lab/games/reaction')"
-                class="btn-primary"
-              >
+              <button @click="$router.push('/lab/games/reaction')" class="btn-primary">
                 <i class="fas fa-play mr-2"></i>
                 Начать игру
               </button>
@@ -122,10 +104,8 @@
           </h2>
           <div class="flex items-center gap-3">
             <span class="text-sm text-slate-500 dark:text-slate-400">Сортировка:</span>
-            <select
-              v-model="sortBy"
-              class="bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-cyan-500/20 rounded-lg px-3 py-2 text-sm text-slate-700 dark:text-white focus:outline-none focus:border-cyan-500/40 cursor-pointer"
-            >
+            <select v-model="sortBy"
+              class="bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-cyan-500/20 rounded-lg px-3 py-2 text-sm text-slate-700 dark:text-white focus:outline-none focus:border-cyan-500/40 cursor-pointer">
               <option value="popular">Популярные</option>
               <option value="new">Новые</option>
               <option value="rating">Рейтинг</option>
@@ -135,17 +115,9 @@
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div
-            v-for="game in filteredGames"
-            :key="game.id"
-            class="game-card"
-            @click="playGame(game)"
-          >
+          <div v-for="game in filteredGames" :key="game.id" class="game-card" @click="playGame(game)">
             <!-- Game Icon -->
-            <div
-              class="game-icon-wrapper"
-              :style="{ background: game.gradient }"
-            >
+            <div class="game-icon-wrapper" :style="{ background: game.gradient }">
               <i :class="game.icon" class="text-white text-3xl"></i>
             </div>
 
@@ -155,10 +127,7 @@
                 <h3 class="text-lg font-semibold text-slate-900 dark:text-white">
                   {{ game.title }}
                 </h3>
-                <span
-                  class="difficulty-badge"
-                  :class="getDifficultyClass(game.difficulty)"
-                >
+                <span class="difficulty-badge" :class="getDifficultyClass(game.difficulty)">
                   {{ game.difficulty }}
                 </span>
               </div>
@@ -187,15 +156,12 @@
               <div v-if="game.progress > 0" class="mt-4">
                 <div class="flex items-center justify-between text-xs mb-1">
                   <span class="text-slate-500 dark:text-slate-400">Прогресс</span>
-                  <span class="text-cyan-600 dark:text-cyan-400 font-medium"
-                    >{{ game.progress }}%</span
-                  >
+                  <span class="text-cyan-600 dark:text-cyan-400 font-medium">{{ game.progress }}%</span>
                 </div>
                 <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5">
                   <div
                     class="bg-gradient-to-r from-cyan-500 to-purple-500 h-1.5 rounded-full transition-all duration-500"
-                    :style="{ width: `${game.progress}%` }"
-                  ></div>
+                    :style="{ width: `${game.progress}%` }"></div>
                 </div>
               </div>
             </div>
@@ -212,8 +178,7 @@
         <div class="info-card">
           <div class="flex items-center gap-3 mb-4">
             <div
-              class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center"
-            >
+              class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center">
               <i class="fas fa-calendar-day text-white"></i>
             </div>
             <div>
@@ -224,17 +189,10 @@
             </div>
           </div>
           <div class="space-y-3">
-            <div
-              v-for="challenge in dailyChallenges"
-              :key="challenge.id"
-              class="challenge-item"
-            >
+            <div v-for="challenge in dailyChallenges" :key="challenge.id" class="challenge-item">
               <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                  <div
-                    class="w-10 h-10 rounded-lg"
-                    :style="{ background: challenge.gradient }"
-                  >
+                  <div class="w-10 h-10 rounded-lg" :style="{ background: challenge.gradient }">
                     <div class="w-full h-full flex items-center justify-center">
                       <i :class="challenge.icon" class="text-white text-sm"></i>
                     </div>
@@ -249,13 +207,9 @@
                   </div>
                 </div>
                 <div class="flex items-center gap-2">
-                  <i
-                    v-if="challenge.completed"
-                    class="fas fa-check-circle text-emerald-500 dark:text-emerald-400"
-                  ></i>
-                  <span v-else class="text-cyan-600 dark:text-cyan-400 text-xs font-medium"
-                    >+{{ challenge.reward }} XP</span
-                  >
+                  <i v-if="challenge.completed" class="fas fa-check-circle text-emerald-500 dark:text-emerald-400"></i>
+                  <span v-else class="text-cyan-600 dark:text-cyan-400 text-xs font-medium">+{{ challenge.reward }}
+                    XP</span>
                 </div>
               </div>
             </div>
@@ -266,8 +220,7 @@
         <div class="info-card">
           <div class="flex items-center gap-3 mb-4">
             <div
-              class="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-500 to-orange-600 flex items-center justify-center"
-            >
+              class="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-500 to-orange-600 flex items-center justify-center">
               <i class="fas fa-trophy text-white"></i>
             </div>
             <div>
@@ -279,26 +232,15 @@
             </div>
           </div>
           <div class="grid grid-cols-3 gap-3">
-            <div
-              v-for="achievement in achievements"
-              :key="achievement.id"
-              class="achievement-item"
-              :class="
-                achievement.unlocked
-                  ? 'achievement-unlocked'
-                  : 'achievement-locked'
-              "
-            >
-              <div
-                class="achievement-icon"
-                :class="achievement.unlocked ? '' : 'opacity-30'"
-              >
+            <div v-for="achievement in achievements" :key="achievement.id" class="achievement-item" :class="achievement.unlocked
+              ? 'achievement-unlocked'
+              : 'achievement-locked'
+              ">
+              <div class="achievement-icon" :class="achievement.unlocked ? '' : 'opacity-30'">
                 <i :class="achievement.icon" class="text-2xl"></i>
               </div>
-              <div
-                class="text-xs text-center mt-2 font-medium"
-                :class="achievement.unlocked ? 'text-slate-800 dark:text-white' : 'text-slate-400 dark:text-slate-500'"
-              >
+              <div class="text-xs text-center mt-2 font-medium"
+                :class="achievement.unlocked ? 'text-slate-800 dark:text-white' : 'text-slate-400 dark:text-slate-500'">
                 {{ achievement.title }}
               </div>
             </div>
@@ -308,14 +250,9 @@
 
       <!-- Tips Section -->
       <div
-        class="tips-section p-6 rounded-2xl bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20"
-      >
-        <div
-          class="flex flex-col sm:flex-row items-start sm:items-center gap-4"
-        >
-          <div
-            class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center flex-shrink-0"
-          >
+        class="tips-section p-6 rounded-2xl bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center flex-shrink-0">
             <i class="fas fa-lightbulb text-purple-600 dark:text-purple-400 text-xl"></i>
           </div>
           <div class="flex-1">
@@ -325,10 +262,8 @@
             <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-300">
               <li class="flex items-start gap-2">
                 <span class="text-purple-600 dark:text-purple-400 mt-0.5">•</span>
-                <span
-                  >Занимайтесь регулярно - даже 10 минут в день приносят
-                  результат</span
-                >
+                <span>Занимайтесь регулярно - даже 10 минут в день приносят
+                  результат</span>
               </li>
               <li class="flex items-start gap-2">
                 <span class="text-purple-600 dark:text-purple-400 mt-0.5">•</span>
@@ -336,10 +271,8 @@
               </li>
               <li class="flex items-start gap-2">
                 <span class="text-purple-600 dark:text-purple-400 mt-0.5">•</span>
-                <span
-                  >Постепенно увеличивайте сложность для лучших
-                  результатов</span
-                >
+                <span>Постепенно увеличивайте сложность для лучших
+                  результатов</span>
               </li>
             </ul>
           </div>
@@ -355,6 +288,34 @@ import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
 
 definePageMeta({
   layout: "laboratory",
+});
+
+useHead({
+  title: "Развивающие Игры",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Тренируйте память, внимание и реакцию с помощью научно обоснованных когнитивных игр и упражнений.",
+    },
+    {
+      property: "og:title",
+      content: "Развивающие Игры | MindQ Lab",
+    },
+    {
+      property: "og:description",
+      content:
+        "Тренируйте память, внимание и реакцию с помощью научно обоснованных когнитивных игр и упражнений.",
+    },
+    {
+      property: "og:image",
+      content: "/images/games-og.jpg", // Placeholder
+    },
+    {
+      name: "twitter:card",
+      content: "summary_large_image",
+    },
+  ],
 });
 
 const activeCategory = ref("all");
@@ -591,16 +552,12 @@ const playGame = (game) => {
 </script>
 
 <style scoped>
-
-
 .stat-card {
   @apply text-center px-4 py-3 rounded-xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/10 shadow-sm dark:shadow-none;
 }
 
 .filter-tab {
-  @apply px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300
-         bg-white dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 border border-slate-200 dark:border-slate-700/50
-         hover:border-cyan-500/30;
+  @apply px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 bg-white dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 border border-slate-200 dark:border-slate-700/50 hover:border-cyan-500/30;
 }
 
 .filter-tab-active {
@@ -608,26 +565,19 @@ const playGame = (game) => {
 }
 
 .btn-primary {
-  @apply px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-500 
-         text-white font-medium hover:from-cyan-600 hover:to-purple-600 
-         transition-all duration-300 transform hover:scale-105 
-         shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40;
+  @apply px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-500 text-white font-medium hover:from-cyan-600 hover:to-purple-600 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40;
 }
 
 .game-preview-card {
-  @apply w-full h-64 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/20 
-         flex items-center justify-center backdrop-blur-sm shadow-sm dark:shadow-none;
+  @apply w-full h-64 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/20 flex items-center justify-center backdrop-blur-sm shadow-sm dark:shadow-none;
 }
 
 .preview-icon-wrapper {
-  @apply w-32 h-32 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 
-         flex items-center justify-center;
+  @apply w-32 h-32 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 flex items-center justify-center;
 }
 
 .game-card {
-  @apply relative p-6 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/10 
-         hover:border-cyan-500/30 transition-all duration-300 cursor-pointer 
-         overflow-hidden flex flex-col shadow-sm dark:shadow-none;
+  @apply relative p-6 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/10 hover:border-cyan-500/30 transition-all duration-300 cursor-pointer overflow-hidden flex flex-col shadow-sm dark:shadow-none;
 }
 
 .game-card:hover {
@@ -635,8 +585,7 @@ const playGame = (game) => {
 }
 
 .card-glow {
-  @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent 
-         translate-x-[-100%] transition-transform duration-1000 pointer-events-none;
+  @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent translate-x-[-100%] transition-transform duration-1000 pointer-events-none;
 }
 
 .game-card:hover .card-glow {
@@ -668,13 +617,11 @@ const playGame = (game) => {
 }
 
 .challenge-item {
-  @apply p-4 rounded-lg bg-slate-50 dark:bg-slate-800/30 border border-slate-200 dark:border-slate-700/50 
-         hover:border-cyan-500/30 transition-all duration-300;
+  @apply p-4 rounded-lg bg-slate-50 dark:bg-slate-800/30 border border-slate-200 dark:border-slate-700/50 hover:border-cyan-500/30 transition-all duration-300;
 }
 
 .achievement-item {
-  @apply p-3 rounded-xl bg-slate-50 dark:bg-slate-800/30 border border-slate-200 dark:border-slate-700/50 
-         transition-all duration-300 cursor-pointer;
+  @apply p-3 rounded-xl bg-slate-50 dark:bg-slate-800/30 border border-slate-200 dark:border-slate-700/50 transition-all duration-300 cursor-pointer;
 }
 
 .achievement-unlocked {
@@ -686,8 +633,7 @@ const playGame = (game) => {
 }
 
 .achievement-icon {
-  @apply w-12 h-12 mx-auto rounded-lg bg-gradient-to-br from-yellow-500/20 to-orange-500/20 
-         flex items-center justify-center text-yellow-500 dark:text-yellow-400;
+  @apply w-12 h-12 mx-auto rounded-lg bg-gradient-to-br from-yellow-500/20 to-orange-500/20 flex items-center justify-center text-yellow-500 dark:text-yellow-400;
 }
 
 .line-clamp-2 {
