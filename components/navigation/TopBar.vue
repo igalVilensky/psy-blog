@@ -22,7 +22,7 @@
         <!-- Лаборатория Dropdown -->
         <div class="relative group">
           <NuxtLink to="/lab"
-            class="flex items-center space-x-2 px-3.5 py-2 rounded-lg text-[15px] font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800/50 transition-all duration-200"
+            class="flex items-center space-x-2 px-3.5 py-2 rounded-lg text-[15px] font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-slate-800/50 transition-all duration-200"
             :class="{ 'bg-slate-200 dark:bg-slate-800/50 text-slate-900 dark:text-white': isLabRouteActive }"
             @click="closeDropdown">
             <i class="fas fa-flask text-cyan-400"></i>
@@ -104,21 +104,21 @@
 
         <!-- Blog Link -->
         <NuxtLink to="/blog"
-          class="px-3.5 py-2 rounded-lg text-[15px] font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-all duration-200"
+          class="px-3.5 py-2 rounded-lg text-[15px] font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-slate-800/50 transition-all duration-200"
           exact-active-class="text-slate-900 dark:text-white bg-slate-100 dark:bg-slate-800/50" @click="closeDropdown">
           Блог
         </NuxtLink>
 
         <!-- О проекте Link -->
         <NuxtLink to="/about"
-          class="px-3.5 py-2 rounded-lg text-[15px] font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-all duration-200"
+          class="px-3.5 py-2 rounded-lg text-[15px] font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-slate-800/50 transition-all duration-200"
           exact-active-class="text-slate-900 dark:text-white bg-slate-100 dark:bg-slate-800/50" @click="closeDropdown">
           О проекте
         </NuxtLink>
 
         <!-- Theme Toggle (Desktop) -->
         <button @click="themeStore.toggleTheme()"
-          class="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-yellow-500 dark:hover:text-yellow-400 hover:bg-slate-200 dark:hover:bg-slate-800/50 transition-all duration-200"
+          class="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-yellow-500 dark:hover:text-yellow-400 hover:bg-black/5 dark:hover:bg-slate-800/50 transition-all duration-200"
           :title="themeStore.theme === 'dark' ? 'Включить светлую тему' : 'Включить темную тему'">
           <i class="fas transition-transform duration-300"
             :class="themeStore.theme === 'dark' ? 'fa-moon' : 'fa-sun'"></i>
@@ -151,7 +151,7 @@
           <!-- Logged-in State -->
           <div v-else-if="auth.user" class="relative group ml-2">
             <button
-              class="flex items-center space-x-2 px-3.5 py-2 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800/50 transition-all duration-200 border border-slate-200 dark:border-slate-700/50">
+              class="flex items-center space-x-2 px-3.5 py-2 rounded-lg hover:bg-black/5 dark:hover:bg-slate-800/50 transition-all duration-200 border border-slate-200 dark:border-slate-700/50">
               <div
                 class="w-7 h-7 rounded-full bg-gradient-to-r from-cyan-500 to-purple-500 flex items-center justify-center text-white font-semibold text-xs">
                 {{ getUserInitials }}
@@ -195,7 +195,7 @@
           <!-- Logged-out State -->
           <div v-else class="flex items-center space-x-2 ml-2">
             <NuxtLink to="/login"
-              class="px-3.5 py-2 rounded-lg border border-slate-300 dark:border-slate-700 text-[15px] font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800/50 hover:border-cyan-500/30 transition-all duration-200"
+              class="px-3.5 py-2 rounded-lg border border-slate-300 dark:border-slate-700 text-[15px] font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-slate-800/50 hover:border-cyan-500/30 transition-all duration-200"
               exact-active-class="bg-slate-200 dark:bg-slate-800/50 text-slate-900 dark:text-white border-cyan-500/50">
               Войти
             </NuxtLink>
@@ -210,20 +210,20 @@
 
       <!-- Mobile Hamburger Menu -->
       <button @click="toggleDropdown"
-        class="lg:hidden flex items-center justify-center w-9 h-9 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800/50 transition-colors duration-200"
+        class="lg:hidden flex items-center justify-center w-9 h-9 rounded-lg hover:bg-black/5 dark:hover:bg-slate-800/50 transition-colors duration-200"
         aria-label="Toggle Menu">
         <div class="relative w-5 h-4">
           <!-- Remove bg-red-200 from here -->
           <span
-            class="absolute w-5 h-0.5 bg-cyan-400 rounded transition-all duration-200 ease-in-out left-1/2 -translate-x-1/2"
+            class="absolute w-5 h-0.5 bg-slate-900 dark:bg-white rounded transition-all duration-200 ease-in-out left-1/2 -translate-x-1/2"
             :class="[
               isDropdownOpen ? 'rotate-45 top-1/2 -translate-y-1/2' : 'top-0',
             ]"></span>
           <span
-            class="absolute w-5 h-0.5 bg-cyan-400 rounded top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 transition-all duration-200 ease-in-out"
+            class="absolute w-5 h-0.5 bg-slate-900 dark:bg-white rounded top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 transition-all duration-200 ease-in-out"
             :class="[isDropdownOpen ? 'opacity-0' : 'opacity-100']"></span>
           <span
-            class="absolute w-5 h-0.5 bg-cyan-400 rounded transition-all duration-200 ease-in-out left-1/2 -translate-x-1/2"
+            class="absolute w-5 h-0.5 bg-slate-900 dark:bg-white rounded transition-all duration-200 ease-in-out left-1/2 -translate-x-1/2"
             :class="[
               isDropdownOpen
                 ? '-rotate-45 top-1/2 -translate-y-1/2'
@@ -242,7 +242,7 @@
         <div class="p-4 space-y-2">
           <!-- Theme Toggle (Mobile) -->
           <button @click="themeStore.toggleTheme()"
-            class="w-full flex items-center space-x-4 p-3 rounded-lg bg-slate-100 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-800/70 transition-all duration-200 border border-slate-200 dark:border-slate-700/50 mb-2">
+            class="w-full flex items-center space-x-4 p-3 rounded-lg bg-slate-100 dark:bg-slate-800/50 hover:bg-black/5 dark:hover:bg-slate-800/70 transition-all duration-200 border border-slate-200 dark:border-slate-700/50 mb-2">
             <i class="fas text-yellow-500 dark:text-yellow-400"
               :class="themeStore.theme === 'dark' ? 'fa-moon' : 'fa-sun'"></i>
             <span class="font-medium text-slate-700 dark:text-slate-200">
@@ -256,13 +256,13 @@
               class="w-full flex items-center justify-between p-1 rounded-lg bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50"
               :class="{ 'bg-slate-200 dark:bg-slate-800/70': isLabRouteActive }">
               <NuxtLink to="/lab"
-                class="flex-1 flex items-center space-x-4 p-2 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700/50 transition-all duration-200"
+                class="flex-1 flex items-center space-x-4 p-2 rounded-lg hover:bg-black/5 dark:hover:bg-slate-700/50 transition-all duration-200"
                 @click="closeDropdown">
                 <i class="fas fa-flask text-cyan-500 dark:text-cyan-400"></i>
                 <span class="font-medium text-slate-700 dark:text-slate-200">Лаборатория</span>
               </NuxtLink>
               <button @click="toggleMobileSubmenu('lab')"
-                class="p-2 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700/50 transition-colors duration-200">
+                class="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-slate-700/50 transition-colors duration-200">
                 <i class="fas fa-chevron-down text-slate-500 dark:text-slate-400 text-sm transition-transform duration-200"
                   :class="[
                     mobileSubmenuStates.lab || isLabRouteActive
@@ -278,63 +278,63 @@
             ]">
               <div class="bg-slate-50 dark:bg-slate-800/30 p-2 space-y-1">
                 <NuxtLink to="/lab/tests"
-                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
+                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
                   exact-active-class="bg-slate-200 dark:bg-slate-700/50 text-slate-900 dark:text-white"
                   @click="closeDropdown">
                   <i class="fas fa-vial text-cyan-400 text-xs w-4"></i>
                   <span>Когнитивные тесты</span>
                 </NuxtLink>
                 <NuxtLink to="/lab/games"
-                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
+                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
                   exact-active-class="bg-slate-200 dark:bg-slate-700/50 text-slate-900 dark:text-white"
                   @click="closeDropdown">
                   <i class="fas fa-gamepad text-purple-400 text-xs w-4"></i>
                   <span>Развивающие игры</span>
                 </NuxtLink>
                 <NuxtLink to="/lab/psychology"
-                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
+                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
                   exact-active-class="bg-slate-200 dark:bg-slate-700/50 text-slate-900 dark:text-white"
                   @click="closeDropdown">
                   <i class="fas fa-brain text-blue-400 text-xs w-4"></i>
                   <span>Психология</span>
                 </NuxtLink>
                 <NuxtLink to="/lab/mindfulness"
-                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
+                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
                   exact-active-class="bg-slate-200 dark:bg-slate-700/50 text-slate-900 dark:text-white"
                   @click="closeDropdown">
                   <i class="fas fa-infinity text-green-400 text-xs w-4"></i>
                   <span>Медитация</span>
                 </NuxtLink>
                 <NuxtLink to="/lab/brain-map"
-                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
+                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
                   exact-active-class="bg-slate-200 dark:bg-slate-700/50 text-slate-900 dark:text-white"
                   @click="closeDropdown">
                   <i class="fas fa-map text-orange-400 text-xs w-4"></i>
                   <span>Карта Мозга</span>
                 </NuxtLink>
                 <NuxtLink to="/lab/dashboard"
-                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
+                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
                   exact-active-class="bg-slate-200 dark:bg-slate-700/50 text-slate-900 dark:text-white"
                   @click="closeDropdown">
                   <i class="fas fa-microchip text-cyan-400 text-xs w-4"></i>
                   <span>Нейро Анализ</span>
                 </NuxtLink>
                 <NuxtLink to="/lab/experiments"
-                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
+                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
                   exact-active-class="bg-slate-200 dark:bg-slate-700/50 text-slate-900 dark:text-white"
                   @click="closeDropdown">
                   <i class="fas fa-atom text-purple-400 text-xs w-4"></i>
                   <span>Эксперименты</span>
                 </NuxtLink>
                 <NuxtLink to="/lab/analysis"
-                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
+                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
                   exact-active-class="bg-slate-200 dark:bg-slate-700/50 text-slate-900 dark:text-white"
                   @click="closeDropdown">
                   <i class="fas fa-chart-line text-pink-400 text-xs w-4"></i>
                   <span>Обсерватория роста</span>
                 </NuxtLink>
                 <NuxtLink to="/lab/community"
-                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
+                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
                   exact-active-class="bg-slate-200 dark:bg-slate-700/50 text-slate-900 dark:text-white"
                   @click="closeDropdown">
                   <i class="fas fa-users text-yellow-400 text-xs w-4"></i>
@@ -348,7 +348,7 @@
 
           <!-- Blog -->
           <NuxtLink to="/blog"
-            class="flex items-center space-x-4 p-3 rounded-lg bg-slate-100 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-800/70 transition-all duration-200 border border-slate-200 dark:border-slate-700/50"
+            class="flex items-center space-x-4 p-3 rounded-lg bg-slate-100 dark:bg-slate-800/50 hover:bg-black/5 dark:hover:bg-slate-800/70 transition-all duration-200 border border-slate-200 dark:border-slate-700/50"
             exact-active-class="bg-slate-200 dark:bg-slate-800/70 text-slate-900 dark:text-white"
             @click="closeDropdown">
             <i class="fas fa-book-open text-blue-500 dark:text-blue-400"></i>
@@ -357,7 +357,7 @@
 
           <!-- О проекте -->
           <NuxtLink to="/about"
-            class="flex items-center space-x-4 p-3 rounded-lg bg-slate-100 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-800/70 transition-all duration-200 border border-slate-200 dark:border-slate-700/50"
+            class="flex items-center space-x-4 p-3 rounded-lg bg-slate-100 dark:bg-slate-800/50 hover:bg-black/5 dark:hover:bg-slate-800/70 transition-all duration-200 border border-slate-200 dark:border-slate-700/50"
             exact-active-class="bg-slate-200 dark:bg-slate-800/70 text-slate-900 dark:text-white"
             @click="closeDropdown">
             <i class="fas fa-info-circle text-slate-500 dark:text-slate-400"></i>
@@ -402,16 +402,18 @@
                 </div>
                 <div class="space-y-1.5">
                   <NuxtLink to="/profile"
-                    class="flex items-center space-x-4 p-3 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 transition-all duration-200 border border-cyan-500/20"
-                    exact-active-class="bg-cyan-500/20 text-white" @click="closeDropdown">
-                    <i class="fas fa-user text-cyan-400"></i>
-                    <span class="font-medium text-cyan-300">Мой Профиль</span>
+                    class="flex items-center space-x-4 p-3 rounded-lg bg-slate-100 dark:bg-slate-800/50 hover:bg-black/5 dark:hover:bg-slate-700/50 transition-all duration-200 border border-slate-200 dark:border-slate-700/50"
+                    exact-active-class="bg-slate-200 dark:bg-slate-700/50 text-slate-900 dark:text-white"
+                    @click="closeDropdown">
+                    <i class="fas fa-user text-slate-500 dark:text-slate-400"></i>
+                    <span class="font-medium text-slate-700 dark:text-slate-200">Мой Профиль</span>
                   </NuxtLink>
                   <NuxtLink to="/personal-cabinet"
-                    class="flex items-center space-x-4 p-3 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 transition-all duration-200 border border-cyan-500/20"
-                    exact-active-class="bg-cyan-500/20 text-white" @click="closeDropdown">
-                    <i class="fas fa-tachometer-alt text-cyan-400"></i>
-                    <span class="font-medium text-cyan-300">Личный кабинет</span>
+                    class="flex items-center space-x-4 p-3 rounded-lg bg-slate-100 dark:bg-slate-800/50 hover:bg-black/5 dark:hover:bg-slate-700/50 transition-all duration-200 border border-slate-200 dark:border-slate-700/50"
+                    exact-active-class="bg-slate-200 dark:bg-slate-700/50 text-slate-900 dark:text-white"
+                    @click="closeDropdown">
+                    <i class="fas fa-tachometer-alt text-slate-500 dark:text-slate-400"></i>
+                    <span class="font-medium text-slate-700 dark:text-slate-200">Личный кабинет</span>
                   </NuxtLink>
                   <button @click="logoutUser"
                     class="w-full flex items-center space-x-4 p-3 rounded-lg bg-red-500/10 hover:bg-red-500/20 transition-all duration-200 border border-red-500/20">
@@ -425,7 +427,7 @@
               <template v-else>
                 <div class="space-y-2">
                   <NuxtLink to="/login"
-                    class="flex items-center justify-center space-x-2 p-3 rounded-lg border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-medium hover:bg-slate-200 dark:hover:bg-slate-800/50 hover:border-cyan-500/30 transition-all duration-200"
+                    class="flex items-center justify-center space-x-2 p-3 rounded-lg border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-medium hover:bg-black/5 dark:hover:bg-slate-800/50 hover:border-cyan-500/30 transition-all duration-200"
                     exact-active-class="bg-slate-200 dark:bg-slate-800/50 text-slate-900 dark:text-white border-cyan-500/50"
                     @click="closeDropdown">
                     <i class="fas fa-sign-in-alt text-cyan-500 dark:text-cyan-400"></i>

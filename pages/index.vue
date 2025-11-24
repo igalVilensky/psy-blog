@@ -51,8 +51,7 @@
             <h1
               class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white text-center lg:text-left mb-6 leading-tight">
               MindQ Lab —
-              <span
-                class="block mt-2 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-400 to-fuchsia-400 animate-gradient">
+              <span class="block mt-2 text-slate-900 dark:text-white">
                 Твоя лаборатория осознанного роста
               </span>
             </h1>
@@ -113,37 +112,34 @@
             class="bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800/60 shadow-xl dark:shadow-2xl hover:border-cyan-500/30 transition-all duration-500">
             <div class="flex items-center mb-6">
               <div
-                class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 flex items-center justify-center mr-4 flex-shrink-0">
-                <i class="fas fa-brain text-cyan-400 text-2xl sm:text-3xl"></i>
+                class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mr-4 flex-shrink-0">
+                <i class="fas fa-brain text-slate-900 dark:text-white text-2xl sm:text-3xl"></i>
               </div>
-              <h2
-                class="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400">
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
                 Исследовательские станции
               </h2>
             </div>
 
-            <ul class="space-y-3">
-              <li v-for="(station, index) in stations" :key="station.name" class="station-item"
-                :style="{ animationDelay: `${index * 0.1}s` }">
-                <NuxtLink :to="station.link"
-                  class="group flex items-center justify-between p-4 rounded-xl bg-slate-50 dark:bg-slate-800/40 hover:bg-slate-100 dark:hover:bg-slate-800/70 border border-slate-200 dark:border-slate-700/40 transition-all duration-300 hover:translate-x-2 hover:shadow-lg"
-                  :class="[station.hoverBorder, station.hoverShadow]">
-                  <div class="flex items-center space-x-4 flex-1 min-w-0">
-                    <div
-                      class="w-10 h-10 rounded-xl bg-gradient-to-br flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300"
-                      :class="station.bg">
-                      <i :class="[station.icon, station.color, 'text-lg']" />
-                    </div>
-                    <span
-                      class="text-base font-medium truncate transition-colors duration-300 group-hover:text-slate-900 dark:group-hover:text-white">
-                      {{ station.name }}
-                    </span>
+            <div class="grid grid-cols-2 gap-3">
+              <NuxtLink v-for="(station, index) in stations" :key="station.name" :to="station.link"
+                class="group flex flex-col items-center p-4 rounded-xl bg-slate-50 dark:bg-slate-800/40 hover:bg-slate-100 dark:hover:bg-slate-800/70 border border-slate-200 dark:border-slate-700/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg text-center"
+                :class="station.hoverBorder" :style="{ animationDelay: `${index * 0.1}s` }">
+                <div
+                  class="w-12 h-12 rounded-xl flex items-center justify-center mb-3 transition-transform duration-300 group-hover:scale-110"
+                  :class="`bg-gradient-to-br from-${station.gradientFrom} to-${station.gradientTo}`">
+                  <i :class="[station.icon, 'text-white text-lg']" />
+                </div>
+                <div class="w-full">
+                  <div
+                    class="text-sm font-bold text-slate-900 dark:text-white mb-1 truncate group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors">
+                    {{ station.name }}
                   </div>
-                  <i class="fas fa-arrow-right text-sm text-slate-500 group-hover:translate-x-1 transition-all duration-300 ml-2 flex-shrink-0"
-                    :class="station.color"></i>
-                </NuxtLink>
-              </li>
-            </ul>
+                  <div class="text-xs text-slate-500 dark:text-slate-400 truncate">
+                    {{ station.subtitle }}
+                  </div>
+                </div>
+              </NuxtLink>
+            </div>
 
             <!-- Enhanced Stats Summary -->
             <div class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800/60">
@@ -191,9 +187,10 @@
 
       <!-- Enhanced Additional Features Section -->
       <section class="mb-16 md:mb-24">
-        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-12 md:mb-16 animate-fade-in-up">
+        <h2
+          class="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-12 md:mb-16 animate-fade-in-up text-slate-900 dark:text-white">
           Почему
-          <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400">MindQ Lab</span>?
+          <span class="text-slate-900 dark:text-white">MindQ Lab</span>?
         </h2>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
@@ -234,84 +231,84 @@ const labActive = ref(false);
 const stations = [
   {
     name: "Когнитивные тесты",
+    subtitle: "Оценка функций",
     link: "/lab/tests",
     icon: "fas fa-brain",
-    color: "text-blue-500",
-    bg: "from-blue-500/20 to-indigo-600/20",
+    gradientFrom: "blue-500",
+    gradientTo: "indigo-600",
     hoverBorder: "hover:border-blue-500/60",
-    hoverShadow: "hover:shadow-blue-500/20",
   },
   {
     name: "Развивающие игры",
+    subtitle: "Логика и память",
     link: "/lab/games",
     icon: "fas fa-chess",
-    color: "text-green-500",
-    bg: "from-green-500/20 to-emerald-600/20",
+    gradientFrom: "green-500",
+    gradientTo: "emerald-600",
     hoverBorder: "hover:border-green-500/60",
-    hoverShadow: "hover:shadow-green-500/20",
   },
   {
     name: "Психология",
+    subtitle: "Теории и техники",
     link: "/lab/psychology",
     icon: "fas fa-book-open",
-    color: "text-purple-500",
-    bg: "from-purple-500/20 to-pink-600/20",
+    gradientFrom: "purple-500",
+    gradientTo: "pink-600",
     hoverBorder: "hover:border-purple-500/60",
-    hoverShadow: "hover:shadow-purple-500/20",
   },
   {
     name: "Медитация",
+    subtitle: "Аудио и видео",
     link: "/lab/mindfulness",
     icon: "fas fa-spa",
-    color: "text-teal-500",
-    bg: "from-teal-500/20 to-cyan-600/20",
+    gradientFrom: "teal-500",
+    gradientTo: "cyan-600",
     hoverBorder: "hover:border-teal-500/60",
-    hoverShadow: "hover:shadow-teal-500/20",
   },
   {
     name: "Карта Мозга",
+    subtitle: "Интерактивная",
     link: "/lab/brain-map",
     icon: "fas fa-map",
-    color: "text-orange-500",
-    bg: "from-orange-500/20 to-red-600/20",
+    gradientFrom: "orange-500",
+    gradientTo: "red-600",
     hoverBorder: "hover:border-orange-500/60",
-    hoverShadow: "hover:shadow-orange-500/20",
   },
   {
     name: "Нейро Анализ",
+    subtitle: "Картирование мозга",
     link: "/lab/dashboard",
     icon: "fas fa-microchip",
-    color: "text-cyan-500",
-    bg: "from-cyan-500/20 to-blue-600/20",
+    gradientFrom: "cyan-500",
+    gradientTo: "blue-600",
     hoverBorder: "hover:border-cyan-500/60",
-    hoverShadow: "hover:shadow-cyan-500/20",
   },
   {
     name: "Эксперименты",
+    subtitle: "Инструменты и тесты",
     link: "/lab/experiments",
     icon: "fas fa-atom",
-    color: "text-purple-500",
-    bg: "from-purple-500/20 to-pink-600/20",
+    gradientFrom: "purple-500",
+    gradientTo: "pink-600",
     hoverBorder: "hover:border-purple-500/60",
-    hoverShadow: "hover:shadow-purple-500/20",
   },
   {
     name: "Обсерватория роста",
+    subtitle: "Прогресс и аналитика",
     link: "/lab/analysis",
     icon: "fas fa-chart-line",
-    color: "text-emerald-500",
-    bg: "from-emerald-500/20 to-green-600/20",
+    gradientFrom: "emerald-500",
+    gradientTo: "green-600",
     hoverBorder: "hover:border-emerald-500/60",
-    hoverShadow: "hover:shadow-emerald-500/20",
   },
   {
     name: "Сообщество",
+    subtitle: "Исследователи онлайн",
     link: "/lab/community",
     icon: "fas fa-users",
-    color: "text-orange-500",
-    bg: "from-orange-500/20 to-amber-600/20",
+    gradientFrom: "orange-500",
+    gradientTo: "amber-600",
     hoverBorder: "hover:border-orange-500/60",
-    hoverShadow: "hover:shadow-orange-500/20",
   },
 ];
 

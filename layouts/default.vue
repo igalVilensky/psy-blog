@@ -17,7 +17,7 @@
     </div>
 
     <!-- Page Content (Main Content) -->
-    <main class="flex-1 relative z-10 bg-background pt-[3.8rem]">
+    <main class="flex-1 relative z-10 bg-background pt-[4rem]">
       <div class="bg-background w-full h-full z-0"></div>
       <!-- Content -->
       <NuxtPage />
