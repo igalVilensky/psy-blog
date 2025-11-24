@@ -1,31 +1,18 @@
 <template>
   <div class="min-h-[100dvh] bg-gray-50">
     <!-- Fixed Top Navbar -->
-    <nav
-      class="fixed top-0 left-0 right-0 bg-gradient-to-r from-[#1A1F35] to-[#1E293B] z-50"
-    >
+    <nav class="fixed top-0 left-0 right-0 bg-gradient-to-r from-[#1A1F35] to-[#1E293B] z-50">
       <div class="mx-auto max-w-6xl px-4">
         <div class="flex justify-between items-center h-16">
           <!-- Left side - Logo/User -->
           <div class="flex items-center space-x-3">
-            <NuxtLink
-              to="/profile"
-              class="flex items-center hover:opacity-80 transition-opacity"
-            >
-              <UserAvatar
-                :avatarUrl="userAvatar"
-                :loading="loadingAvatar"
-                :userInitial="userName.charAt(0).toUpperCase()"
-                :size="32"
-                :noUpload="true"
-              />
+            <NuxtLink to="/profile" class="flex items-center hover:opacity-80 transition-opacity">
+              <UserAvatar :avatarUrl="userAvatar" :loading="loadingAvatar"
+                :userInitial="userName.charAt(0).toUpperCase()" :size="32" :noUpload="true" />
             </NuxtLink>
             <div class="text-white hidden md:block">
               <p class="font-semibold text-sm">{{ userName }}</p>
-              <NuxtLink
-                to="/profile"
-                class="text-xs text-blue-400 hover:text-white transition-colors"
-              >
+              <NuxtLink to="/profile" class="text-xs text-blue-400 hover:text-white transition-colors">
                 Редактировать профиль
               </NuxtLink>
             </div>
@@ -33,16 +20,11 @@
 
           <!-- Desktop Navigation -->
           <div class="hidden md:flex items-center space-x-1">
-            <NuxtLink
-              v-for="item in navigationItems"
-              :key="item.name"
-              :to="item.route"
-              class="px-4 py-2 rounded-lg text-white text-sm transition-colors relative group"
-              :class="{
+            <NuxtLink v-for="item in navigationItems" :key="item.name" :to="item.route"
+              class="px-4 py-2 rounded-lg text-white text-sm transition-colors relative group" :class="{
                 'bg-white/10': isRouteActive(item.route),
                 'hover:bg-white/5': !isRouteActive(item.route),
-              }"
-            >
+              }">
               <div class="flex items-center gap-2">
                 <i :class="['fas', item.icon]"></i>
                 <span>{{ item.name }}</span>
@@ -50,60 +32,38 @@
               <!-- Hover/Active indicator -->
               <div
                 class="absolute bottom-0 left-0 w-full h-0.5 bg-blue-400 transform scale-x-0 group-hover:scale-x-100 transition-transform"
-                :class="{ 'scale-x-100': isRouteActive(item.route) }"
-              ></div>
+                :class="{ 'scale-x-100': isRouteActive(item.route) }"></div>
             </NuxtLink>
           </div>
 
           <!-- Mobile Menu Button -->
-          <button
-            @click="toggleMobileMenu"
-            class="md:hidden p-2 flex justify-center items-center rounded-lg hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
-          >
-            <i
-              :class="[
-                'fas',
-                isMobileMenuOpen ? 'fa-times' : 'fa-bars',
-                'text-xl text-white',
-              ]"
-            ></i>
+          <button @click="toggleMobileMenu"
+            class="md:hidden p-2 flex justify-center items-center rounded-lg hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
+            <i :class="[
+              'fas',
+              isMobileMenuOpen ? 'fa-times' : 'fa-bars',
+              'text-xl text-white',
+            ]"></i>
           </button>
         </div>
       </div>
     </nav>
 
     <!-- Mobile Navigation Menu -->
-    <div
-      v-if="isMobileMenuOpen"
-      class="relative inset-0 bg-black bg-opacity-50 z-40"
-      @click="closeMobileMenu"
-    >
-      <div
-        class="absolute right-0 top-16 w-64 overflow-y-auto bg-gradient-to-b from-[#1A1F35] to-[#1E293B] shadow-xl"
-        @click.stop
-      >
+    <div v-if="isMobileMenuOpen" class="relative inset-0 bg-black bg-opacity-50 z-40" @click="closeMobileMenu">
+      <div class="absolute right-0 top-16 w-64 overflow-y-auto bg-gradient-to-b from-[#1A1F35] to-[#1E293B] shadow-xl"
+        @click.stop>
         <!-- Mobile User Profile -->
         <div class="p-4 border-b border-white/10">
           <div class="flex items-center space-x-3">
-            <NuxtLink
-              to="/profile"
-              class="flex items-center hover:opacity-80 transition-opacity"
-            >
-              <UserAvatar
-                :avatarUrl="userAvatar"
-                :loading="loadingAvatar"
-                :userInitial="userName.charAt(0).toUpperCase()"
-                :size="32"
-                :noUpload="true"
-              />
+            <NuxtLink to="/profile" class="flex items-center hover:opacity-80 transition-opacity">
+              <UserAvatar :avatarUrl="userAvatar" :loading="loadingAvatar"
+                :userInitial="userName.charAt(0).toUpperCase()" :size="32" :noUpload="true" />
             </NuxtLink>
             <div class="text-white">
               <p class="font-semibold text-sm">{{ userName }}</p>
-              <NuxtLink
-                to="/profile"
-                class="text-xs text-blue-400 hover:text-white transition-colors"
-                @click="closeMobileMenu"
-              >
+              <NuxtLink to="/profile" class="text-xs text-blue-400 hover:text-white transition-colors"
+                @click="closeMobileMenu">
                 Редактировать профиль
               </NuxtLink>
             </div>
@@ -112,24 +72,15 @@
 
         <!-- Mobile Navigation Links -->
         <div class="py-2">
-          <NuxtLink
-            v-for="item in navigationItems"
-            :key="item.name"
-            :to="item.route"
-            class="flex items-center space-x-3 px-4 py-3 text-white transition-colors relative"
-            :class="{
+          <NuxtLink v-for="item in navigationItems" :key="item.name" :to="item.route"
+            class="flex items-center space-x-3 px-4 py-3 text-white transition-colors relative" :class="{
               'bg-white/10': isRouteActive(item.route),
               'hover:bg-white/5': !isRouteActive(item.route),
-            }"
-            @click="closeMobileMenu"
-          >
+            }" @click="closeMobileMenu">
             <i :class="['fas', item.icon, 'w-5']"></i>
             <span>{{ item.name }}</span>
             <!-- Active indicator -->
-            <div
-              v-if="isRouteActive(item.route)"
-              class="absolute left-0 top-0 bottom-0 w-1 bg-blue-400"
-            ></div>
+            <div v-if="isRouteActive(item.route)" class="absolute left-0 top-0 bottom-0 w-1 bg-blue-400"></div>
           </NuxtLink>
         </div>
       </div>
@@ -141,10 +92,7 @@
         <nav class="py-3 overflow-hidden">
           <ol class="flex flex-wrap items-center gap-2 text-sm">
             <li>
-              <NuxtLink
-                to="/"
-                class="text-gray-600 hover:text-gray-900 transition-colors inline-flex items-center"
-              >
+              <NuxtLink to="/" class="text-gray-600 hover:text-gray-900 transition-colors inline-flex items-center">
                 <i class="fas fa-home text-gray-400 hover:text-gray-600"></i>
                 <span class="ml-2 hidden sm:inline">Главная</span>
               </NuxtLink>
@@ -154,19 +102,13 @@
                 <i class="fas fa-chevron-right mx-2 text-gray-400 text-xs"></i>
               </li>
               <li class="min-w-0">
-                <NuxtLink
-                  v-if="crumb.link"
-                  :to="crumb.link"
+                <NuxtLink v-if="crumb.link" :to="crumb.link"
                   class="text-gray-600 hover:text-gray-900 transition-colors block truncate max-w-[120px] sm:max-w-[200px] md:max-w-xs"
-                  :title="crumb.text"
-                >
+                  :title="crumb.text">
                   {{ formatBreadcrumbText(crumb.text) }}
                 </NuxtLink>
-                <span
-                  v-else
-                  class="text-gray-900 font-medium block truncate max-w-[120px] sm:max-w-[200px] md:max-w-xs"
-                  :title="crumb.text"
-                >
+                <span v-else class="text-gray-900 font-medium block truncate max-w-[120px] sm:max-w-[200px] md:max-w-xs"
+                  :title="crumb.text">
                   {{ formatBreadcrumbText(crumb.text) }}
                 </span>
               </li>
@@ -215,7 +157,7 @@ const navigationItems = [
     route: "/personal-cabinet/courses",
     icon: "fa-graduation-cap",
   },
-  { name: "Гайды", route: "/courses/guides", icon: "fa-book-open" },
+  { name: "Гайды", route: "/lab/psychology/guides", icon: "fa-book-open" },
   { name: "Инструменты", route: "/awareness-tools", icon: "fa-tools" },
   {
     name: "Прогресс",

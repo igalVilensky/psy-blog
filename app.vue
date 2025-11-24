@@ -64,4 +64,19 @@ useHead({
     lang: "ru",
   },
 });
+
+useHead({
+  script: [
+    {
+      type: "application/ld+json",
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        url: "https://www.mindqlab.com",
+        logo: "https://www.mindqlab.com/mindqlab-logo.png",
+        name: "MindQLab",
+      }),
+    },
+  ],
+});
 </script>

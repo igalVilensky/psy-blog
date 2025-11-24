@@ -91,10 +91,85 @@ export default defineNuxtConfig({
           { url: "/faq", changefreq: "monthly", priority: 0.6 },
           { url: "/about", changefreq: "monthly", priority: 0.7 },
           { url: "/courses", changefreq: "weekly", priority: 0.8 },
-          { url: "/tests", changefreq: "monthly", priority: 0.8 },
+          { url: "/lab/tests", changefreq: "monthly", priority: 0.8 },
           { url: "/awareness-tools", changefreq: "monthly", priority: 0.8 },
           { url: "/lab", changefreq: "weekly", priority: 0.8 },
           { url: "/lab/games", changefreq: "weekly", priority: 0.7 },
+          { url: "/lab/psychology", changefreq: "weekly", priority: 0.7 },
+          { url: "/lab/mindfulness", changefreq: "weekly", priority: 0.7 },
+          // Lab Experiments
+          { url: "/lab/experiments", changefreq: "weekly", priority: 0.7 },
+          {
+            url: "/lab/experiments/big-5-model",
+            changefreq: "monthly",
+            priority: 0.7,
+          },
+          {
+            url: "/lab/experiments/daily-growth-spark",
+            changefreq: "weekly",
+            priority: 0.7,
+          },
+          {
+            url: "/lab/experiments/emotional-compass",
+            changefreq: "weekly",
+            priority: 0.7,
+          },
+          {
+            url: "/lab/experiments/life-purpose-archetype",
+            changefreq: "monthly",
+            priority: 0.7,
+          },
+          {
+            url: "/lab/experiments/wheel-of-life",
+            changefreq: "monthly",
+            priority: 0.7,
+          },
+          // Lab Games
+          { url: "/lab/games/reaction", changefreq: "monthly", priority: 0.6 },
+          { url: "/lab/games/stroop", changefreq: "monthly", priority: 0.6 },
+          { url: "/lab/games/memory", changefreq: "monthly", priority: 0.6 },
+          // Lab Psychology
+          {
+            url: "/lab/psychology/ego-states",
+            changefreq: "monthly",
+            priority: 0.7,
+          },
+          {
+            url: "/lab/psychology/guides",
+            changefreq: "weekly",
+            priority: 0.7,
+          },
+          {
+            url: "/lab/psychology/healing-childhood-traumas",
+            changefreq: "monthly",
+            priority: 0.7,
+          },
+          {
+            url: "/lab/psychology/podcasts",
+            changefreq: "weekly",
+            priority: 0.7,
+          },
+          {
+            url: "/lab/psychology/self-assessment-guide",
+            changefreq: "monthly",
+            priority: 0.7,
+          },
+          // Lab Tests
+          {
+            url: "/lab/tests/digit-span",
+            changefreq: "monthly",
+            priority: 0.6,
+          },
+          {
+            url: "/lab/tests/trail-making",
+            changefreq: "monthly",
+            priority: 0.6,
+          },
+          { url: "/lab/tests/nback", changefreq: "monthly", priority: 0.6 },
+          // Other Lab Pages
+          { url: "/lab/analysis", changefreq: "weekly", priority: 0.6 },
+          { url: "/lab/brain-map", changefreq: "monthly", priority: 0.7 },
+          { url: "/lab/community", changefreq: "daily", priority: 0.8 },
         ];
 
         return [...staticRoutes, ...blogRoutes];

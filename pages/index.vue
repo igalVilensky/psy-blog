@@ -98,7 +98,7 @@
                   Войти в лабораторию
                 </NuxtLink>
                 <span class="text-slate-600">•</span>
-                <NuxtLink to="/courses/courses"
+                <NuxtLink to="/courses"
                   class="text-purple-400 hover:text-purple-300 font-medium text-sm hover:underline transition-colors">
                   Курсы и гайды
                 </NuxtLink>
