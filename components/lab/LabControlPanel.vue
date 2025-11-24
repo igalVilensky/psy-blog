@@ -81,49 +81,51 @@
 
         <!-- User Section Mobile -->
         <div class="user-section-mobile pt-4 border-t border-slate-200 dark:border-cyan-500/10">
-          <div v-if="user" class="space-y-2">
-            <div class="flex items-center space-x-3 p-3 rounded-lg bg-slate-100 dark:bg-slate-800/30">
-              <div
-                class="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-white text-xs font-bold">
-                {{ getUserInitials(user) }}
-              </div>
-              <div class="flex-1 min-w-0">
-                <div class="text-slate-800 dark:text-white font-medium text-sm truncate">
-                  {{ user.displayName || user.email }}
+          <ClientOnly>
+            <div v-if="user" class="space-y-2">
+              <div class="flex items-center space-x-3 p-3 rounded-lg bg-slate-100 dark:bg-slate-800/30">
+                <div
+                  class="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-white text-xs font-bold">
+                  {{ getUserInitials(user) }}
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-slate-800 dark:text-white font-medium text-sm truncate">
+                    {{ user.displayName || user.email }}
+                  </div>
                 </div>
               </div>
+              <div class="grid grid-cols-2 gap-2">
+                <NuxtLink to="/profile"
+                  class="text-center py-2 px-3 bg-slate-200/50 dark:bg-slate-700/50 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg text-slate-600 dark:text-slate-300 text-xs font-medium transition-all border border-slate-300/50 dark:border-slate-600/50"
+                  @click.native="closeMobileMenu">
+                  Профиль
+                </NuxtLink>
+                <button @click="logout"
+                  class="text-center py-2 px-3 bg-red-500/10 hover:bg-red-500/20 rounded-lg text-red-500 dark:text-red-400 text-xs font-medium transition-all border border-red-500/20">
+                  Выход
+                </button>
+              </div>
             </div>
-            <div class="grid grid-cols-2 gap-2">
-              <NuxtLink to="/profile"
-                class="text-center py-2 px-3 bg-slate-200/50 dark:bg-slate-700/50 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg text-slate-600 dark:text-slate-300 text-xs font-medium transition-all border border-slate-300/50 dark:border-slate-600/50"
+            <div v-else class="space-y-2">
+              <NuxtLink to="/login"
+                class="block w-full text-center py-2.5 px-3 bg-slate-200/50 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg text-slate-600 dark:text-slate-300 text-sm font-medium transition-all border border-slate-300/50 dark:border-slate-700/50"
                 @click.native="closeMobileMenu">
-                Профиль
+                Вход
               </NuxtLink>
-              <button @click="logout"
-                class="text-center py-2 px-3 bg-red-500/10 hover:bg-red-500/20 rounded-lg text-red-500 dark:text-red-400 text-xs font-medium transition-all border border-red-500/20">
-                Выход
-              </button>
+              <NuxtLink to="/register"
+                class="block w-full text-center py-2.5 px-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 rounded-lg text-white text-sm font-medium transition-all"
+                @click.native="closeMobileMenu">
+                Регистрация
+              </NuxtLink>
             </div>
-          </div>
-          <div v-else class="space-y-2">
-            <NuxtLink to="/login"
-              class="block w-full text-center py-2.5 px-3 bg-slate-200/50 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg text-slate-600 dark:text-slate-300 text-sm font-medium transition-all border border-slate-300/50 dark:border-slate-700/50"
-              @click.native="closeMobileMenu">
-              Вход
-            </NuxtLink>
-            <NuxtLink to="/register"
-              class="block w-full text-center py-2.5 px-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 rounded-lg text-white text-sm font-medium transition-all"
-              @click.native="closeMobileMenu">
-              Регистрация
-            </NuxtLink>
-          </div>
+          </ClientOnly>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Desktop Sidebar -->
-  <aside
+  <aside v-bind="$attrs"
     class="lab-control-panel hidden lg:flex flex-col bg-white dark:bg-gradient-to-b dark:from-slate-900 dark:via-slate-900 dark:to-slate-950 border-r border-slate-200 dark:border-cyan-500/10 min-h-screen sticky top-0 overflow-y-auto transition-colors duration-500">
     <!-- Panel Header -->
     <div class="panel-header border-b border-slate-200 dark:border-cyan-500/20 p-6">
@@ -217,43 +219,45 @@
 
     <!-- User Section -->
     <div class="user-section border-t border-slate-200 dark:border-cyan-500/10 p-4 mt-auto">
-      <div v-if="user"
-        class="user-info p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-cyan-500/10">
-        <div class="flex items-center space-x-3 mb-3">
-          <div
-            class="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-white font-bold">
-            {{ getUserInitials(user) }}
+      <ClientOnly>
+        <div v-if="user"
+          class="user-info p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-cyan-500/10">
+          <div class="flex items-center space-x-3 mb-3">
+            <div
+              class="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-white font-bold">
+              {{ getUserInitials(user) }}
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="text-xs font-mono text-cyan-700 dark:text-cyan-400/70 mb-0.5">
+                ИССЛЕДОВАТЕЛЬ
+              </div>
+              <div class="text-slate-900 dark:text-white font-medium text-sm truncate">
+                {{ user.displayName || user.email }}
+              </div>
+            </div>
           </div>
-          <div class="flex-1 min-w-0">
-            <div class="text-xs font-mono text-cyan-700 dark:text-cyan-400/70 mb-0.5">
-              ИССЛЕДОВАТЕЛЬ
-            </div>
-            <div class="text-slate-900 dark:text-white font-medium text-sm truncate">
-              {{ user.displayName || user.email }}
-            </div>
+          <div class="flex space-x-2">
+            <NuxtLink to="/profile"
+              class="flex-1 text-center py-2.5 px-3 bg-white dark:bg-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg text-slate-700 dark:text-slate-300 text-xs font-medium transition-all border border-slate-200 dark:border-slate-600/50">
+              Профиль
+            </NuxtLink>
+            <button @click="logout"
+              class="flex-1 text-center py-2.5 px-3 bg-red-50 hover:bg-red-100 dark:bg-red-500/10 dark:hover:bg-red-500/20 rounded-lg text-red-600 dark:text-red-400 text-xs font-medium transition-all border border-red-200 dark:border-red-500/20">
+              Выход
+            </button>
           </div>
         </div>
-        <div class="flex space-x-2">
-          <NuxtLink to="/profile"
-            class="flex-1 text-center py-2.5 px-3 bg-white dark:bg-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg text-slate-700 dark:text-slate-300 text-xs font-medium transition-all border border-slate-200 dark:border-slate-600/50">
-            Профиль
+        <div v-else class="auth-buttons space-y-2">
+          <NuxtLink to="/login"
+            class="block w-full text-center py-3 px-4 bg-slate-100 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-xl text-slate-700 dark:text-slate-300 text-sm font-medium transition-all border border-slate-200 dark:border-slate-700/50">
+            Вход для исследователей
           </NuxtLink>
-          <button @click="logout"
-            class="flex-1 text-center py-2.5 px-3 bg-red-50 hover:bg-red-100 dark:bg-red-500/10 dark:hover:bg-red-500/20 rounded-lg text-red-600 dark:text-red-400 text-xs font-medium transition-all border border-red-200 dark:border-red-500/20">
-            Выход
-          </button>
+          <NuxtLink to="/register"
+            class="block w-full text-center py-3 px-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 rounded-xl text-white text-sm font-medium transition-all shadow-lg shadow-cyan-500/20">
+            Присоединиться
+          </NuxtLink>
         </div>
-      </div>
-      <div v-else class="auth-buttons space-y-2">
-        <NuxtLink to="/login"
-          class="block w-full text-center py-3 px-4 bg-slate-100 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-xl text-slate-700 dark:text-slate-300 text-sm font-medium transition-all border border-slate-200 dark:border-slate-700/50">
-          Вход для исследователей
-        </NuxtLink>
-        <NuxtLink to="/register"
-          class="block w-full text-center py-3 px-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 rounded-xl text-white text-sm font-medium transition-all shadow-lg shadow-cyan-500/20">
-          Присоединиться
-        </NuxtLink>
-      </div>
+      </ClientOnly>
     </div>
 
     <!-- System Status -->
@@ -298,6 +302,12 @@
     </div>
   </aside>
 </template>
+
+<script>
+export default {
+  inheritAttrs: false,
+};
+</script>
 
 <script setup>
 import { ref, computed, watch } from "vue";
