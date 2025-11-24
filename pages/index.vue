@@ -1,12 +1,9 @@
 <template>
-  <div class="min-h-screen bg-slate-950 text-white overflow-hidden">
+  <div
+    class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white overflow-hidden transition-colors duration-500">
     <!-- Main Content -->
-    <main
-      class="container mx-auto max-w-6xl px-4 sm:px-0 py-12 lg:py-16 relative"
-    >
-      <div
-        class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center mb-16 md:mb-24"
-      >
+    <main class="container mx-auto max-w-6xl px-4 sm:px-0 py-12 lg:py-16 relative">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center mb-16 md:mb-24">
         <!-- Left: Hero / Intro -->
         <section class="relative order-2 lg:order-1 animate-fade-in-left">
           <div class="hero-content text-center lg:text-left">
@@ -14,75 +11,55 @@
             <div class="relative inline-block mb-8 mx-auto lg:mx-0">
               <div
                 class="petri-dish w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 rounded-full bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 flex items-center justify-center relative overflow-hidden mx-auto group cursor-pointer shadow-2xl hover:shadow-cyan-500/50 transition-all duration-500"
-                @mouseenter="labActive = true"
-                @mouseleave="labActive = false"
-              >
+                @mouseenter="labActive = true" @mouseleave="labActive = false">
                 <!-- Glow effect -->
                 <div
-                  class="absolute inset-0 bg-gradient-to-br from-cyan-400/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                ></div>
+                  class="absolute inset-0 bg-gradient-to-br from-cyan-400/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                </div>
 
                 <!-- Rotating ring -->
-                <div
-                  class="absolute inset-2 border-2 border-cyan-400/30 rounded-full animate-spin-slow"
-                ></div>
+                <div class="absolute inset-2 border-2 border-cyan-400/30 rounded-full animate-spin-slow"></div>
 
                 <!-- Flask icon -->
                 <i
-                  class="fas fa-flask text-white text-5xl sm:text-6xl md:text-7xl relative z-10 transition-all duration-500 group-hover:scale-110 group-hover:rotate-12"
-                ></i>
+                  class="fas fa-flask text-white text-5xl sm:text-6xl md:text-7xl relative z-10 transition-all duration-500 group-hover:scale-110 group-hover:rotate-12"></i>
 
                 <!-- Pulse ring on hover -->
-                <div
-                  v-if="labActive"
-                  class="absolute inset-0 border-4 border-cyan-400/60 rounded-full animate-ping"
-                ></div>
+                <div v-if="labActive" class="absolute inset-0 border-4 border-cyan-400/60 rounded-full animate-ping">
+                </div>
 
                 <!-- Enhanced floating particles -->
-                <div
-                  class="absolute inset-0 overflow-hidden pointer-events-none"
-                >
-                  <div
-                    v-for="i in 6"
-                    :key="i"
-                    class="particle"
-                    :style="`top: ${Math.random() * 100}%; left: ${
-                      Math.random() * 100
-                    }%; animation-delay: ${i * 0.5}s;`"
-                  ></div>
+                <div class="absolute inset-0 overflow-hidden pointer-events-none">
+                  <div v-for="i in 6" :key="i" class="particle" :style="`top: ${Math.random() * 100}%; left: ${Math.random() * 100
+                    }%; animation-delay: ${i * 0.5}s;`"></div>
                 </div>
               </div>
 
               <!-- Floating badges -->
               <div
-                class="absolute -top-3 -right-3 sm:-top-4 sm:-right-4 bg-gradient-to-br from-green-500 to-emerald-600 text-white text-xs sm:text-sm font-bold px-3 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-lg animate-bounce-slow"
-              >
+                class="absolute -top-3 -right-3 sm:-top-4 sm:-right-4 bg-gradient-to-br from-green-500 to-emerald-600 text-white text-xs sm:text-sm font-bold px-3 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-lg animate-bounce-slow">
                 🎯 Научно
               </div>
               <div
                 class="absolute -bottom-3 -left-3 sm:-bottom-4 sm:-left-4 bg-gradient-to-br from-pink-500 to-rose-600 text-white text-xs sm:text-sm font-bold px-3 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-lg animate-bounce-slow"
-                style="animation-delay: 0.5s"
-              >
+                style="animation-delay: 0.5s">
                 ✨ Эффективно
               </div>
             </div>
 
             <!-- Enhanced Title -->
             <h1
-              class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center lg:text-left mb-6 leading-tight"
-            >
+              class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white text-center lg:text-left mb-6 leading-tight">
               MindQ Lab —
               <span
-                class="block mt-2 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-400 to-fuchsia-400 animate-gradient"
-              >
+                class="block mt-2 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-400 to-fuchsia-400 animate-gradient">
                 Твоя лаборатория осознанного роста
               </span>
             </h1>
 
             <!-- Enhanced Description -->
             <p
-              class="text-slate-300 text-center lg:text-left text-base sm:text-lg md:text-xl max-w-2xl mx-auto lg:mx-0 mb-8 leading-relaxed"
-            >
+              class="text-slate-600 dark:text-slate-300 text-center lg:text-left text-base sm:text-lg md:text-xl max-w-2xl mx-auto lg:mx-0 mb-8 leading-relaxed">
               Исследуй себя с помощью тестов и интерактивных инструментов,
               получай персональные рекомендации и обучающие программы — всё в
               одном месте.
@@ -90,40 +67,23 @@
 
             <!-- Enhanced CTA Buttons -->
             <div
-              class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-stretch sm:items-center mb-6"
-            >
-              <NuxtLink
-                to="/lab/tests"
-                class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 rounded-2xl font-semibold text-base sm:text-lg shadow-2xl hover:shadow-cyan-500/50 hover:scale-105 transition-all duration-300"
-              >
-                <i
-                  class="fas fa-vial group-hover:rotate-12 transition-transform duration-300"
-                ></i>
+              class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-stretch sm:items-center mb-6">
+              <NuxtLink to="/lab/tests"
+                class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 rounded-2xl font-semibold text-base sm:text-lg shadow-2xl hover:shadow-cyan-500/50 hover:scale-105 transition-all duration-300">
+                <i class="fas fa-vial group-hover:rotate-12 transition-transform duration-300"></i>
                 <span>Пройти тест бесплатно</span>
-                <i
-                  class="fas fa-arrow-right group-hover:translate-x-1 transition-transform duration-300"
-                ></i>
+                <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform duration-300"></i>
               </NuxtLink>
 
-              <NuxtLink
-                v-if="!isLoggedIn"
-                to="/register"
-                class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-slate-800/60 border-2 border-cyan-500/40 rounded-2xl text-slate-200 font-semibold text-base sm:text-lg hover:bg-cyan-500/20 hover:border-cyan-500/60 hover:scale-105 transition-all duration-300"
-              >
-                <i
-                  class="fas fa-user-plus group-hover:scale-110 transition-transform duration-300"
-                ></i>
+              <NuxtLink v-if="!isLoggedIn" to="/register"
+                class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-white/50 dark:bg-slate-800/60 border-2 border-cyan-500/40 rounded-2xl text-slate-700 dark:text-slate-200 font-semibold text-base sm:text-lg hover:bg-cyan-500/20 hover:border-cyan-500/60 hover:scale-105 transition-all duration-300">
+                <i class="fas fa-user-plus group-hover:scale-110 transition-transform duration-300"></i>
                 <span>Создать профиль</span>
               </NuxtLink>
 
-              <NuxtLink
-                v-else
-                to="/home"
-                class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-slate-800/60 border-2 border-purple-500/40 rounded-2xl text-slate-200 font-semibold text-base sm:text-lg hover:bg-purple-500/20 hover:border-purple-500/60 hover:scale-105 transition-all duration-300"
-              >
-                <i
-                  class="fas fa-home group-hover:scale-110 transition-transform duration-300"
-                ></i>
+              <NuxtLink v-else to="/home"
+                class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-white/50 dark:bg-slate-800/60 border-2 border-purple-500/40 rounded-2xl text-slate-700 dark:text-slate-200 font-semibold text-base sm:text-lg hover:bg-purple-500/20 hover:border-purple-500/60 hover:scale-105 transition-all duration-300">
+                <i class="fas fa-home group-hover:scale-110 transition-transform duration-300"></i>
                 <span>Перейти в кабинет</span>
               </NuxtLink>
             </div>
@@ -131,20 +91,15 @@
             <!-- Enhanced Quick Links -->
             <div class="text-center lg:text-left">
               <div
-                class="inline-flex items-center gap-3 px-6 py-3 bg-slate-900/40 backdrop-blur-sm border border-slate-800/40 rounded-xl"
-              >
-                <span class="text-slate-400 text-sm">Или сразу:</span>
-                <NuxtLink
-                  to="/lab"
-                  class="text-cyan-400 hover:text-cyan-300 font-medium text-sm hover:underline transition-colors"
-                >
+                class="inline-flex items-center gap-3 px-6 py-3 bg-white/60 dark:bg-slate-900/40 backdrop-blur-sm border border-slate-200 dark:border-slate-800/40 rounded-xl shadow-sm dark:shadow-none">
+                <span class="text-slate-500 dark:text-slate-400 text-sm">Или сразу:</span>
+                <NuxtLink to="/lab"
+                  class="text-cyan-400 hover:text-cyan-300 font-medium text-sm hover:underline transition-colors">
                   Войти в лабораторию
                 </NuxtLink>
                 <span class="text-slate-600">•</span>
-                <NuxtLink
-                  to="/courses/courses"
-                  class="text-purple-400 hover:text-purple-300 font-medium text-sm hover:underline transition-colors"
-                >
+                <NuxtLink to="/courses/courses"
+                  class="text-purple-400 hover:text-purple-300 font-medium text-sm hover:underline transition-colors">
                   Курсы и гайды
                 </NuxtLink>
               </div>
@@ -155,95 +110,76 @@
         <!-- Right: Enhanced Features / Quick Access -->
         <aside class="order-1 lg:order-2 animate-fade-in-right hidden lg:block">
           <div
-            class="bg-gradient-to-br from-slate-900/60 via-slate-900/40 to-slate-900/60 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-slate-800/60 shadow-2xl hover:border-cyan-500/30 transition-all duration-500"
-          >
+            class="bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800/60 shadow-xl dark:shadow-2xl hover:border-cyan-500/30 transition-all duration-500">
             <div class="flex items-center mb-6">
               <div
-                class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 flex items-center justify-center mr-4 flex-shrink-0"
-              >
+                class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 flex items-center justify-center mr-4 flex-shrink-0">
                 <i class="fas fa-brain text-cyan-400 text-2xl sm:text-3xl"></i>
               </div>
               <h2
-                class="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400"
-              >
+                class="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400">
                 Исследовательские станции
               </h2>
             </div>
 
             <ul class="space-y-3">
-              <li
-                v-for="(station, index) in stations"
-                :key="station.name"
-                class="station-item"
-                :style="{ animationDelay: `${index * 0.1}s` }"
-              >
-                <NuxtLink
-                  :to="station.link"
-                  class="group flex items-center justify-between p-4 rounded-xl bg-slate-800/40 hover:bg-slate-800/70 border border-slate-700/40 hover:border-cyan-500/60 transition-all duration-300 hover:translate-x-2 hover:shadow-lg hover:shadow-cyan-500/20"
-                >
+              <li v-for="(station, index) in stations" :key="station.name" class="station-item"
+                :style="{ animationDelay: `${index * 0.1}s` }">
+                <NuxtLink :to="station.link"
+                  class="group flex items-center justify-between p-4 rounded-xl bg-slate-50 dark:bg-slate-800/40 hover:bg-slate-100 dark:hover:bg-slate-800/70 border border-slate-200 dark:border-slate-700/40 transition-all duration-300 hover:translate-x-2 hover:shadow-lg"
+                  :class="[station.hoverBorder, station.hoverShadow]">
                   <div class="flex items-center space-x-4 flex-1 min-w-0">
                     <div
-                      class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300"
-                    >
-                      <i :class="station.icon + ' text-cyan-400 text-lg'" />
+                      class="w-10 h-10 rounded-xl bg-gradient-to-br flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300"
+                      :class="station.bg">
+                      <i :class="[station.icon, station.color, 'text-lg']" />
                     </div>
                     <span
-                      class="text-base font-medium truncate group-hover:text-cyan-400 transition-colors duration-300"
-                    >
+                      class="text-base font-medium truncate transition-colors duration-300 group-hover:text-slate-900 dark:group-hover:text-white">
                       {{ station.name }}
                     </span>
                   </div>
-                  <i
-                    class="fas fa-arrow-right text-sm text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-1 transition-all duration-300 ml-2 flex-shrink-0"
-                  ></i>
+                  <i class="fas fa-arrow-right text-sm text-slate-500 group-hover:translate-x-1 transition-all duration-300 ml-2 flex-shrink-0"
+                    :class="station.color"></i>
                 </NuxtLink>
               </li>
             </ul>
 
             <!-- Enhanced Stats Summary -->
-            <div class="mt-8 pt-6 border-t border-slate-800/60">
+            <div class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800/60">
               <div class="grid grid-cols-3 gap-4">
                 <div
-                  class="stats-card group text-center p-4 bg-slate-800/40 rounded-xl border border-slate-700/40 hover:border-cyan-500/60 hover:bg-slate-800/60 transition-all duration-300 hover:scale-105 cursor-pointer"
-                >
+                  class="stats-card group text-center p-4 bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-700/40 hover:border-cyan-500/60 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-all duration-300 hover:scale-105 cursor-pointer">
                   <div
-                    class="text-2xl sm:text-3xl font-bold text-cyan-400 group-hover:scale-110 transition-transform duration-300"
-                  >
+                    class="text-2xl sm:text-3xl font-bold text-cyan-400 group-hover:scale-110 transition-transform duration-300">
                     12+
                   </div>
                   <div
-                    class="text-xs sm:text-sm text-slate-400 group-hover:text-slate-300 transition-colors duration-300 uppercase tracking-wide"
-                  >
+                    class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300 transition-colors duration-300 uppercase tracking-wide">
                     Тестов
                   </div>
                 </div>
                 <div
-                  class="stats-card group text-center p-4 bg-slate-800/40 rounded-xl border border-slate-700/40 hover:border-purple-500/60 hover:bg-slate-800/60 transition-all duration-300 hover:scale-105 cursor-pointer"
-                  style="animation-delay: 0.1s"
-                >
+                  class="stats-card group text-center p-4 bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-700/40 hover:border-purple-500/60 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-all duration-300 hover:scale-105 cursor-pointer"
+                  style="animation-delay: 0.1s">
                   <div
-                    class="text-2xl sm:text-3xl font-bold text-purple-400 group-hover:scale-110 transition-transform duration-300"
-                  >
+                    class="text-2xl sm:text-3xl font-bold text-purple-400 group-hover:scale-110 transition-transform duration-300">
                     8+
                   </div>
                   <div
-                    class="text-xs sm:text-sm text-slate-400 group-hover:text-slate-300 transition-colors duration-300 uppercase tracking-wide"
-                  >
+                    class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300 transition-colors duration-300 uppercase tracking-wide">
                     Игр
                   </div>
                 </div>
                 <div
-                  class="stats-card group text-center p-4 bg-slate-800/40 rounded-xl border border-slate-700/40 hover:border-pink-500/60 hover:bg-slate-800/60 transition-all duration-300 hover:scale-105 cursor-pointer"
-                  style="animation-delay: 0.2s"
-                >
+                  class="stats-card group text-center p-4 bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-700/40 hover:border-pink-500/60 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-all duration-300 hover:scale-105 cursor-pointer"
+                  style="animation-delay: 0.2s">
                   <div
-                    class="text-2xl sm:text-3xl font-bold text-pink-400 group-hover:scale-110 transition-transform duration-300"
-                  >
+                    class="text-2xl sm:text-3xl font-bold text-pink-400 group-hover:scale-110 transition-transform duration-300">
                     25+
                   </div>
                   <div
-                    class="text-xs sm:text-sm text-slate-400 group-hover:text-slate-300 transition-colors duration-300 uppercase tracking-wide"
-                  >
+                    class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300 transition-colors duration-300 uppercase tracking-wide">
                     Курсов
                   </div>
                 </div>
@@ -255,40 +191,24 @@
 
       <!-- Enhanced Additional Features Section -->
       <section class="mb-16 md:mb-24">
-        <h2
-          class="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-12 md:mb-16 animate-fade-in-up"
-        >
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-12 md:mb-16 animate-fade-in-up">
           Почему
-          <span
-            class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400"
-            >MindQ Lab</span
-          >?
+          <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400">MindQ Lab</span>?
         </h2>
 
-        <div
-          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
-        >
-          <div
-            v-for="(feature, index) in features"
-            :key="feature.title"
-            class="feature-card group bg-gradient-to-br from-slate-900/60 via-slate-900/40 to-slate-900/60 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-slate-800/60 hover:border-cyan-500/60 hover:shadow-2xl hover:shadow-cyan-500/20 transition-all duration-500 hover:scale-105 hover:-translate-y-2 cursor-pointer"
-            :style="{ animationDelay: `${index * 0.1}s` }"
-          >
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          <div v-for="(feature, index) in features" :key="feature.title"
+            class="feature-card group bg-white dark:bg-slate-900/60 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-slate-200 dark:border-slate-800/60 hover:border-cyan-500/60 hover:shadow-2xl hover:shadow-cyan-500/20 transition-all duration-500 hover:scale-105 hover:-translate-y-2 cursor-pointer"
+            :style="{ animationDelay: `${index * 0.1}s` }">
             <div
-              class="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300"
-            >
-              <i
-                :class="feature.icon + ' text-2xl md:text-3xl text-cyan-400'"
-              ></i>
+              class="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+              <i :class="feature.icon + ' text-2xl md:text-3xl text-cyan-400'"></i>
             </div>
-            <h3
-              class="text-xl md:text-2xl font-bold mb-3 group-hover:text-cyan-400 transition-colors duration-300"
-            >
+            <h3 class="text-xl md:text-2xl font-bold mb-3 group-hover:text-cyan-400 transition-colors duration-300">
               {{ feature.title }}
             </h3>
             <p
-              class="text-sm md:text-base text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors duration-300"
-            >
+              class="text-sm md:text-base text-slate-600 dark:text-slate-400 leading-relaxed group-hover:text-slate-800 dark:group-hover:text-slate-300 transition-colors duration-300">
               {{ feature.description }}
             </p>
           </div>
@@ -312,16 +232,87 @@ const labActive = ref(false);
 
 // --- STATIONS (quick links) ---
 const stations = [
-  { name: "Когнитивные тесты", link: "/lab/tests", icon: "fas fa-vial" },
-  { name: "Развивающие игры", link: "/lab/games", icon: "fas fa-gamepad" },
-  { name: "Психология", link: "/lab/psychology", icon: "fas fa-brain" },
-  { name: "Медитация", link: "/lab/mindfulness", icon: "fas fa-infinity" },
+  {
+    name: "Когнитивные тесты",
+    link: "/lab/tests",
+    icon: "fas fa-brain",
+    color: "text-blue-500",
+    bg: "from-blue-500/20 to-indigo-600/20",
+    hoverBorder: "hover:border-blue-500/60",
+    hoverShadow: "hover:shadow-blue-500/20",
+  },
+  {
+    name: "Развивающие игры",
+    link: "/lab/games",
+    icon: "fas fa-chess",
+    color: "text-green-500",
+    bg: "from-green-500/20 to-emerald-600/20",
+    hoverBorder: "hover:border-green-500/60",
+    hoverShadow: "hover:shadow-green-500/20",
+  },
+  {
+    name: "Психология",
+    link: "/lab/psychology",
+    icon: "fas fa-book-open",
+    color: "text-purple-500",
+    bg: "from-purple-500/20 to-pink-600/20",
+    hoverBorder: "hover:border-purple-500/60",
+    hoverShadow: "hover:shadow-purple-500/20",
+  },
+  {
+    name: "Медитация",
+    link: "/lab/mindfulness",
+    icon: "fas fa-spa",
+    color: "text-teal-500",
+    bg: "from-teal-500/20 to-cyan-600/20",
+    hoverBorder: "hover:border-teal-500/60",
+    hoverShadow: "hover:shadow-teal-500/20",
+  },
+  {
+    name: "Карта Мозга",
+    link: "/lab/brain-map",
+    icon: "fas fa-map",
+    color: "text-orange-500",
+    bg: "from-orange-500/20 to-red-600/20",
+    hoverBorder: "hover:border-orange-500/60",
+    hoverShadow: "hover:shadow-orange-500/20",
+  },
+  {
+    name: "Нейро Анализ",
+    link: "/lab/dashboard",
+    icon: "fas fa-microchip",
+    color: "text-cyan-500",
+    bg: "from-cyan-500/20 to-blue-600/20",
+    hoverBorder: "hover:border-cyan-500/60",
+    hoverShadow: "hover:shadow-cyan-500/20",
+  },
+  {
+    name: "Эксперименты",
+    link: "/lab/experiments",
+    icon: "fas fa-atom",
+    color: "text-purple-500",
+    bg: "from-purple-500/20 to-pink-600/20",
+    hoverBorder: "hover:border-purple-500/60",
+    hoverShadow: "hover:shadow-purple-500/20",
+  },
   {
     name: "Обсерватория роста",
     link: "/lab/analysis",
     icon: "fas fa-chart-line",
+    color: "text-emerald-500",
+    bg: "from-emerald-500/20 to-green-600/20",
+    hoverBorder: "hover:border-emerald-500/60",
+    hoverShadow: "hover:shadow-emerald-500/20",
   },
-  { name: "Сообщество", link: "/community", icon: "fas fa-users" },
+  {
+    name: "Сообщество",
+    link: "/lab/community",
+    icon: "fas fa-users",
+    color: "text-orange-500",
+    bg: "from-orange-500/20 to-amber-600/20",
+    hoverBorder: "hover:border-orange-500/60",
+    hoverShadow: "hover:shadow-orange-500/20",
+  },
 ];
 
 // --- FEATURES ---
@@ -394,6 +385,7 @@ useSeoMeta({
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -405,6 +397,7 @@ useSeoMeta({
     opacity: 0;
     transform: translateY(40px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -416,6 +409,7 @@ useSeoMeta({
     opacity: 0;
     transform: translateX(-40px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -427,6 +421,7 @@ useSeoMeta({
     opacity: 0;
     transform: translateX(40px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -438,6 +433,7 @@ useSeoMeta({
     opacity: 0;
     transform: translateX(-30px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -445,10 +441,12 @@ useSeoMeta({
 }
 
 @keyframes gradient {
+
   0%,
   100% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
@@ -458,27 +456,32 @@ useSeoMeta({
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
 
 @keyframes bounce-slow {
+
   0%,
   100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-10px);
   }
 }
 
 @keyframes float {
+
   0%,
   100% {
     transform: translate(0, 0) scale(1);
     opacity: 0.4;
   }
+
   50% {
     transform: translate(var(--float-x, 10px), var(--float-y, -15px)) scale(1.3);
     opacity: 0.8;
@@ -551,6 +554,7 @@ button:focus-visible {
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {

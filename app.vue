@@ -7,8 +7,15 @@
 <script setup lang="ts">
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { useHead, useRoute } from "#imports";
+import { onMounted } from "vue";
+import { useThemeStore } from "~/stores/theme";
 
 const route = useRoute();
+const themeStore = useThemeStore();
+
+onMounted(() => {
+  themeStore.initTheme();
+});
 
 useHead({
   // Global title template

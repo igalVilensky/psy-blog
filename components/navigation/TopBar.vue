@@ -35,55 +35,55 @@
               <NuxtLink to="/lab/tests"
                 class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors duration-150"
                 exact-active-class="bg-slate-700/50 text-white" @click="closeDropdown">
-                <i class="fas fa-vial text-cyan-400 w-4"></i>
+                <i class="fas fa-brain text-blue-500 w-4"></i>
                 <span>Когнитивные тесты</span>
               </NuxtLink>
               <NuxtLink to="/lab/games"
                 class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors duration-150"
                 exact-active-class="bg-slate-700/50 text-white" @click="closeDropdown">
-                <i class="fas fa-gamepad text-purple-400 w-4"></i>
+                <i class="fas fa-chess text-green-500 w-4"></i>
                 <span>Развивающие игры</span>
               </NuxtLink>
               <NuxtLink to="/lab/psychology"
                 class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors duration-150"
                 exact-active-class="bg-slate-700/50 text-white" @click="closeDropdown">
-                <i class="fas fa-brain text-blue-400 w-4"></i>
+                <i class="fas fa-book-open text-purple-500 w-4"></i>
                 <span>Психология</span>
               </NuxtLink>
               <NuxtLink to="/lab/mindfulness"
                 class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors duration-150"
                 exact-active-class="bg-slate-700/50 text-white" @click="closeDropdown">
-                <i class="fas fa-infinity text-green-400 w-4"></i>
+                <i class="fas fa-spa text-teal-500 w-4"></i>
                 <span>Медитация</span>
               </NuxtLink>
               <NuxtLink to="/lab/brain-map"
                 class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors duration-150"
                 exact-active-class="bg-slate-700/50 text-white" @click="closeDropdown">
-                <i class="fas fa-map text-orange-400 w-4"></i>
+                <i class="fas fa-map text-orange-500 w-4"></i>
                 <span>Карта Мозга</span>
               </NuxtLink>
               <NuxtLink to="/lab/dashboard"
                 class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors duration-150"
                 exact-active-class="bg-slate-700/50 text-white" @click="closeDropdown">
-                <i class="fas fa-microchip text-cyan-400 w-4"></i>
+                <i class="fas fa-microchip text-cyan-500 w-4"></i>
                 <span>Нейро Анализ</span>
               </NuxtLink>
               <NuxtLink to="/lab/experiments"
                 class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors duration-150"
                 exact-active-class="bg-slate-700/50 text-white" @click="closeDropdown">
-                <i class="fas fa-atom text-purple-400 w-4"></i>
+                <i class="fas fa-atom text-purple-500 w-4"></i>
                 <span>Эксперименты</span>
               </NuxtLink>
               <NuxtLink to="/lab/analysis"
                 class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors duration-150"
                 exact-active-class="bg-slate-700/50 text-white" @click="closeDropdown">
-                <i class="fas fa-chart-line text-pink-400 w-4"></i>
+                <i class="fas fa-chart-line text-emerald-500 w-4"></i>
                 <span>Обсерватория роста</span>
               </NuxtLink>
               <NuxtLink to="/lab/community"
                 class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors duration-150"
                 exact-active-class="bg-slate-700/50 text-white" @click="closeDropdown">
-                <i class="fas fa-users text-yellow-400 w-4"></i>
+                <i class="fas fa-users text-orange-500 w-4"></i>
                 <span>Сообщество</span>
               </NuxtLink>
             </div>
@@ -104,6 +104,14 @@
           exact-active-class="text-white bg-slate-800/50" @click="closeDropdown">
           О проекте
         </NuxtLink>
+
+        <!-- Theme Toggle (Desktop) -->
+        <button @click="themeStore.toggleTheme()"
+          class="p-2 rounded-lg text-slate-300 hover:text-yellow-400 hover:bg-slate-800/50 transition-all duration-200"
+          :title="themeStore.theme === 'dark' ? 'Включить светлую тему' : 'Включить темную тему'">
+          <i class="fas transition-transform duration-300"
+            :class="themeStore.theme === 'dark' ? 'fa-moon' : 'fa-sun'"></i>
+        </button>
 
         <!-- Profile / Auth Section -->
         <ClientOnly>
@@ -218,6 +226,15 @@
           : '-translate-y-2 opacity-0 invisible max-h-0',
       ]">
         <div class="p-4 space-y-2">
+          <!-- Theme Toggle (Mobile) -->
+          <button @click="themeStore.toggleTheme()"
+            class="w-full flex items-center space-x-4 p-3 rounded-lg bg-slate-800/50 hover:bg-slate-800/70 transition-all duration-200 border border-slate-700/50 mb-2">
+            <i class="fas text-yellow-400" :class="themeStore.theme === 'dark' ? 'fa-moon' : 'fa-sun'"></i>
+            <span class="font-medium text-slate-200">
+              {{ themeStore.theme === 'dark' ? 'Темная тема' : 'Светлая тема' }}
+            </span>
+          </button>
+
           <!-- Лаборатория -->
           <div>
             <div
@@ -405,8 +422,10 @@
 import { ref, computed, onMounted, onUnmounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useAuthStore } from "~/stores/auth";
+import { useThemeStore } from "~/stores/theme";
 
 const auth = useAuthStore();
+const themeStore = useThemeStore();
 const route = useRoute();
 const router = useRouter();
 

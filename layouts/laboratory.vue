@@ -123,7 +123,6 @@ const updateTime = () => {
 let timeInterval;
 
 onMounted(() => {
-  themeStore.initTheme();
   updateTime();
   timeInterval = setInterval(updateTime, 1000);
 });
