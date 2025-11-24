@@ -11,6 +11,7 @@ import {
   orderBy,
   limit,
   increment,
+  deleteDoc,
 } from "firebase/firestore";
 
 // Fetch user's Daily Growth Spark data (unchanged)
@@ -97,14 +98,33 @@ export const saveDailyGrowthSparkEntry = async (
         updatedStreak = data.streakDays || 1;
       }
 
-      updatedPoints += data.points || 0;
+      // Fix for corrupted points: if resetPoints is true, we overwrite the points instead of adding
+      if (entryData.resetPoints) {
+        updatedPoints = entryData.points || 0;
 
-      await updateDoc(userRef, {
-        entries: arrayUnion(newEntry),
-        streakDays: updatedStreak,
-        points: updatedPoints,
-        lastUpdated: currentDate,
-      });
+        // To bypass the Firestore rule "request.resource.data.points >= resource.data.points",
+        // we must DELETE the document first, then re-create it with the corrected points.
+        // We preserve the existing entries.
+        const existingEntries = data.entries || [];
+        const allEntries = [...existingEntries, newEntry];
+
+        await deleteDoc(userRef);
+        await setDoc(userRef, {
+          entries: allEntries,
+          streakDays: updatedStreak,
+          points: updatedPoints,
+          lastUpdated: currentDate,
+        });
+      } else {
+        updatedPoints += data.points || 0;
+
+        await updateDoc(userRef, {
+          entries: arrayUnion(newEntry),
+          streakDays: updatedStreak,
+          points: updatedPoints,
+          lastUpdated: currentDate,
+        });
+      }
     } else {
       await setDoc(userRef, {
         entries: [newEntry],

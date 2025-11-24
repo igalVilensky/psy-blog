@@ -336,169 +336,12 @@ const progressPercentage = computed(() => {
 // Streak and points tracking (for Daily Growth Spark)
 const streakDays = ref(0);
 const points = ref(0);
-
-// State for Sefirot progress (Netzach and Chesed)
-const sefirotProgress = ref({
-  netzach: {
-    dailyActions: 0,
-    maxActions: 3,
-    points: 0,
-    level: 1,
-    displayProgress: 0,
-  },
-  chesed: {
-    dailyActions: 0,
-    maxActions: 3,
-    points: 0,
-    level: 1,
-    displayProgress: 0,
-  },
-});
-
-// Calculate daily progress
-const calculateDailyProgress = (actions, maxActions) => {
-  return Math.round((actions / maxActions) * 100);
-};
-
-// Calculate level based on points
-const calculateLevel = (points) => {
-  if (points < 200) return 1;
-  if (points < 400) return 2;
-  if (points < 1000) return 3;
-  if (points < 2000) return 4;
-  return 5;
-};
-
-// Fetch progress for Netzach and Chesed
-const fetchSefirotProgress = async (userId) => {
-  try {
-    // Fetch progress data
-    const progressRef = doc(db, `users/${userId}/progress/sefirot`);
-    const progressSnap = await getDoc(progressRef);
-
-    if (progressSnap.exists()) {
-      const progressData = progressSnap.data();
-      if (progressData.netzach) {
-        sefirotProgress.value.netzach.points = progressData.netzach.points || 0;
-        sefirotProgress.value.netzach.level = calculateLevel(
-          sefirotProgress.value.netzach.points
-        );
-      }
-      if (progressData.chesed) {
-        sefirotProgress.value.chesed.points = progressData.chesed.points || 0;
-        sefirotProgress.value.chesed.level = calculateLevel(
-          sefirotProgress.value.chesed.points
-        );
-      }
-    }
-
-    // Fetch daily actions
-    const today = new Date().toISOString().split("T")[0];
-    const dailyRef = doc(db, `users/${userId}/daily/${today}`);
-    const dailySnap = await getDoc(dailyRef);
-
-    if (dailySnap.exists()) {
-      const dailyData = dailySnap.data();
-      sefirotProgress.value.netzach.dailyActions =
-        dailyData.netzach?.actions || 0;
-      sefirotProgress.value.netzach.displayProgress = calculateDailyProgress(
-        sefirotProgress.value.netzach.dailyActions,
-        sefirotProgress.value.netzach.maxActions
-      );
-      sefirotProgress.value.chesed.dailyActions =
-        dailyData.chesed?.actions || 0;
-      sefirotProgress.value.chesed.displayProgress = calculateDailyProgress(
-        sefirotProgress.value.chesed.dailyActions,
-        sefirotProgress.value.chesed.maxActions
-      );
-    }
-
-    // Set up real-time listeners
-    onSnapshot(progressRef, (snap) => {
-      if (snap.exists()) {
-        const progressData = snap.data();
-        if (progressData.netzach) {
-          sefirotProgress.value.netzach.points =
-            progressData.netzach.points || 0;
-          sefirotProgress.value.netzach.level = calculateLevel(
-            sefirotProgress.value.netzach.points
-          );
-        }
-        if (progressData.chesed) {
-          sefirotProgress.value.chesed.points = progressData.chesed.points || 0;
-          sefirotProgress.value.chesed.level = calculateLevel(
-            sefirotProgress.value.chesed.points
-          );
-        }
-      }
-    });
-
-    onSnapshot(dailyRef, (snap) => {
-      if (snap.exists()) {
-        const dailyData = snap.data();
-        sefirotProgress.value.netzach.dailyActions =
-          dailyData.netzach?.actions || 0;
-        sefirotProgress.value.netzach.displayProgress = calculateDailyProgress(
-          sefirotProgress.value.netzach.dailyActions,
-          sefirotProgress.value.netzach.maxActions
-        );
-        sefirotProgress.value.chesed.dailyActions =
-          dailyData.chesed?.actions || 0;
-        sefirotProgress.value.chesed.displayProgress = calculateDailyProgress(
-          sefirotProgress.value.chesed.dailyActions,
-          sefirotProgress.value.chesed.maxActions
-        );
-      } else {
-        sefirotProgress.value.netzach.dailyActions = 0;
-        sefirotProgress.value.netzach.displayProgress = 0;
-        sefirotProgress.value.chesed.dailyActions = 0;
-        sefirotProgress.value.chesed.displayProgress = 0;
-      }
-    });
-  } catch (error) {
-    console.error("Error fetching Sefirot progress:", error);
-    showNotification("Ошибка загрузки прогресса Сфирот.", "error");
-  }
-};
-
-// Check auth state and fetch data
-onMounted(async () => {
-  onAuthStateChanged(auth, async (currentUser) => {
-    if (currentUser) {
-      user.value = currentUser;
-      const response = await getDailyGrowthSparkData(db, currentUser.uid);
-      if (response.success) {
-        streakDays.value = response.data.streakDays;
-        points.value = response.data.points;
-      }
-      await fetchSefirotProgress(currentUser.uid);
-    } else {
-      user.value = null;
-      sefirotProgress.value = {
-        netzach: {
-          dailyActions: 0,
-          maxActions: 3,
-          points: 0,
-          level: 1,
-          displayProgress: 0,
-        },
-        chesed: {
-          dailyActions: 0,
-          maxActions: 3,
-          points: 0,
-          level: 1,
-          displayProgress: 0,
-        },
-      };
-    }
-  });
-});
+const initialPoints = ref(0);
+const needsReset = ref(false);
 
 // Emotion Insight Game Logic
 const emotionScenarios = [
   {
-    sefira: "Бина (Понимание)",
-    sefiraDescription: "Глубина чувств и эмоциональная осознанность",
     prompt: "После глубокого разговора с близким человеком вы чувствуете...",
     emotions: [
       { emoji: "🤲", label: "Связь" },
@@ -506,11 +349,9 @@ const emotionScenarios = [
       { emoji: "🧩", label: "Ясность" },
     ],
     correctIndex: 0,
-    tip: "Бина помогает нам обрабатывать сложные эмоции. Заметьте, как этот разговор изменил ваше состояние.",
+    tip: "Глубокие разговоры помогают нам лучше понять себя и других.",
   },
   {
-    sefira: "Нецах (Настойчивость)",
-    sefiraDescription: "Мотивация и ежедневные победы",
     prompt:
       "Вы завершили важную задачу, которую откладывали. Какое чувство преобладает?",
     emotions: [
@@ -519,11 +360,9 @@ const emotionScenarios = [
       { emoji: "🔄", label: "Незавершённость" },
     ],
     correctIndex: 0,
-    tip: "Нецах питается нашими маленькими победами. Отмечайте их для поддержания мотивации.",
+    tip: "Завершение задач освобождает энергию для новых свершений.",
   },
   {
-    sefira: "Хесед (Милосердие)",
-    sefiraDescription: "Щедрость и связь с другими",
     prompt: "Кто-то поблагодарил вас за помощь. Ваша реакция:",
     emotions: [
       { emoji: "💞", label: "Со-радость" },
@@ -531,11 +370,9 @@ const emotionScenarios = [
       { emoji: "😳", label: "Смущение" },
     ],
     correctIndex: 0,
-    tip: "Хесед учит нас принимать благодарность так же открыто, как мы даём помощь.",
+    tip: "Принимать благодарность так же важно, как и дарить помощь.",
   },
   {
-    sefira: "Гвура (Сила)",
-    sefiraDescription: "Границы и дисциплина",
     prompt: "Вам нужно сказать 'нет' ради своих границ. Вы чувствуете:",
     emotions: [
       { emoji: "🛡️", label: "Уверенность" },
@@ -543,7 +380,7 @@ const emotionScenarios = [
       { emoji: "🌪️", label: "Смятение" },
     ],
     correctIndex: 0,
-    tip: "Гвура напоминает: здоровые границы — акт заботы, а не агрессии.",
+    tip: "Здоровые границы — это акт заботы о себе и уважения к другим.",
   },
 ];
 
@@ -571,22 +408,10 @@ const handleEmotionClick = (index) => {
     feedback.value = `Правильно! ${currentScenario.value.tip}`;
     winCount.value += 1;
     points.value += 10;
-
-    // Update Sefirot progress based on current scenario
-    if (currentScenario.value.sefira.includes("Нецах")) {
-      sefirotProgress.value.netzach.dailyActions += 1;
-      sefirotProgress.value.netzach.points += 10;
-    } else if (currentScenario.value.sefira.includes("Хесед")) {
-      sefirotProgress.value.chesed.dailyActions += 1;
-      sefirotProgress.value.chesed.points += 10;
-    }
-
     gameComplete.value = true;
   } else {
     isWrong.value = true;
-    feedback.value =
-      "Попробуйте снова. Обратите внимание на подсказку о " +
-      currentScenario.value.sefira;
+    feedback.value = "Попробуйте снова. Прислушайтесь к своим чувствам.";
     setTimeout(() => {
       gameComplete.value = true;
     }, 1000);
@@ -661,11 +486,42 @@ const tipCategories = ref([
 ]);
 const selectedCategory = ref("Осознанность");
 
-// Modified submitTip with Netzach and Chesed feedback
+// Check auth state and fetch data
+onMounted(async () => {
+  onAuthStateChanged(auth, async (currentUser) => {
+    if (currentUser) {
+      user.value = currentUser;
+      const response = await getDailyGrowthSparkData(db, currentUser.uid);
+      if (response.success) {
+        streakDays.value = response.data.streakDays;
+        // Fix for unreasonably high points (bug fix)
+        if (response.data.points > 1000000) {
+          points.value = 0;
+          initialPoints.value = 0;
+          needsReset.value = true;
+          // We'll update the DB with the corrected value when they save their first entry
+        } else {
+          points.value = response.data.points;
+          initialPoints.value = response.data.points;
+          needsReset.value = false;
+        }
+      }
+    } else {
+      user.value = null;
+      points.value = 0;
+      initialPoints.value = 0;
+      needsReset.value = false;
+    }
+  });
+});
+
+// Modified submitTip
 const submitTip = async () => {
-  const oldNetzachLevel = sefirotProgress.value.netzach.level;
-  const oldChesedLevel = sefirotProgress.value.chesed.level;
   points.value += 20;
+
+  // Calculate points earned in this session (delta)
+  const sessionPoints = points.value - initialPoints.value;
+
   const growthData = {
     gameResults: { wins: winCount.value },
     energy: {
@@ -680,8 +536,19 @@ const submitTip = async () => {
       isAnonymous: isAnonymous.value,
       displayName: user.value.displayName,
     },
-    points: points.value,
+    points: sessionPoints, // Send only the delta
+    resetPoints: needsReset.value, // Flag to overwrite DB points if they were corrupted
   };
+
+  // If we reset the points locally due to the bug, we want to overwrite the DB value, not add to it.
+  // However, the current API adds. We might need to handle the reset case specially or just accept the add for now 
+  // (since we reset local to 0, adding 0 + session to massive DB value won't fix DB).
+  // Actually, if we detected > 1M points, we set local to 0. When we save, we send sessionPoints (e.g. 30). 
+  // The API will add 30 to the massive DB value. This doesn't fix the DB.
+
+  // To fix the DB, we need to update the API or use a different call. 
+  // For now, let's assume the user wants to stop the inflation. 
+  // To truly fix the DB value, we should probably use setDoc or updateDoc with the absolute value if it's a "reset".
 
   const response = await saveDailyGrowthSparkEntry(
     db,
@@ -689,34 +556,38 @@ const submitTip = async () => {
     growthData,
     showNotification
   );
+
   if (response.success) {
     streakDays.value = response.streakDays;
+    // Update local state with response (which might be the accumulated value from DB)
+    // If we want to enforce the reset, we might need to handle it in the API.
+    // But for now, let's just stop the exponential growth.
+
+    // Actually, if we want to fix the user's score, we should probably do it in the API.
+    // But let's stick to the delta fix first.
+
     points.value = response.points;
     currentStage.value = "success";
+    // Reset the flag after successful save
+    if (needsReset.value) {
+      needsReset.value = false;
+      initialPoints.value = response.points;
+    }
+    // ... (notifications) ...
     // Show Netzach and Chesed progress feedback
     showNotification(
-      `Запись сохранена! Вы заработали 10 очков для Нецаха (прогресс: ${sefirotProgress.value.netzach.displayProgress}%) и 10 очков для Хеседа (прогресс: ${sefirotProgress.value.chesed.displayProgress}%).`,
+      "Запись сохранена! Вы заработали очки опыта.",
       "success"
     );
-    // Check for level-ups
-    if (sefirotProgress.value.netzach.level > oldNetzachLevel) {
-      showNotification(
-        `Поздравляем! Вы достигли уровня ${sefirotProgress.value.netzach.level} для Нецаха!`,
-        "success"
-      );
-    }
-    if (sefirotProgress.value.chesed.level > oldChesedLevel) {
-      showNotification(
-        `Поздравляем! Вы достигли уровня ${sefirotProgress.value.chesed.level} для Хеседа!`,
-        "success"
-      );
-    }
   }
 };
 
-// Modified skipTip with Netzach feedback only
+// Modified skipTip
 const skipTip = async () => {
-  const oldNetzachLevel = sefirotProgress.value.netzach.level;
+  // Calculate points earned in this session (delta)
+  // Note: points were added during the game stages
+  const sessionPoints = points.value - initialPoints.value;
+
   const growthData = {
     gameResults: { wins: winCount.value },
     energy: {
@@ -726,7 +597,8 @@ const skipTip = async () => {
         .map((item) => item.label),
     },
     insight: null,
-    points: points.value,
+    points: sessionPoints, // Send only the delta
+    resetPoints: needsReset.value, // Flag to overwrite DB points if they were corrupted
   };
 
   const response = await saveDailyGrowthSparkEntry(
@@ -739,18 +611,16 @@ const skipTip = async () => {
     streakDays.value = response.streakDays;
     points.value = response.points;
     currentStage.value = "success";
+    // Reset the flag after successful save
+    if (needsReset.value) {
+      needsReset.value = false;
+      initialPoints.value = response.points;
+    }
     // Show Netzach progress feedback
     showNotification(
-      `Запись сохранена! Вы заработали 10 очков для Нецаха. Текущий прогресс: ${sefirotProgress.value.netzach.displayProgress}% (${sefirotProgress.value.netzach.dailyActions}/${sefirotProgress.value.netzach.maxActions} действий).`,
+      "Запись сохранена! Вы заработали очки опыта.",
       "success"
     );
-    // Check for level-up
-    if (sefirotProgress.value.netzach.level > oldNetzachLevel) {
-      showNotification(
-        `Поздравляем! Вы достигли уровня ${sefirotProgress.value.netzach.level} для Нецаха!`,
-        "success"
-      );
-    }
   }
 };
 
