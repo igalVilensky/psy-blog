@@ -57,8 +57,8 @@
                     <button @click="toggleMusic"
                       class="text-xs text-teal-600 dark:text-teal-400 hover:scale-110 transition-transform">
                       <i :class="isMusicPlaying
-                          ? 'fas fa-volume-up'
-                          : 'fas fa-volume-off'
+                        ? 'fas fa-volume-up'
+                        : 'fas fa-volume-off'
                         "></i>
                     </button>
                   </div>
@@ -278,19 +278,19 @@
 
           <div class="grid grid-cols-2 gap-3">
             <div v-for="achievement in achievements" :key="achievement.id" class="achievement-card" :class="achievement.unlocked
-                ? 'achievement-unlocked'
-                : 'achievement-locked'
+              ? 'achievement-unlocked'
+              : 'achievement-locked'
               ">
               <div class="text-3xl mb-2">{{ achievement.icon }}</div>
               <div class="text-sm font-semibold mb-1" :class="achievement.unlocked
-                  ? 'text-slate-900 dark:text-white'
-                  : 'text-slate-500 dark:text-slate-600'
+                ? 'text-slate-900 dark:text-white'
+                : 'text-slate-500 dark:text-slate-600'
                 ">
                 {{ achievement.title }}
               </div>
               <div class="text-xs" :class="achievement.unlocked
-                  ? 'text-slate-500 dark:text-slate-400'
-                  : 'text-slate-400 dark:text-slate-700'
+                ? 'text-slate-500 dark:text-slate-400'
+                : 'text-slate-400 dark:text-slate-700'
                 ">
                 {{ achievement.description }}
               </div>
@@ -450,6 +450,34 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 definePageMeta({
   layout: "laboratory",
+});
+
+useHead({
+  title: "Медитация и Осознанность",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Практики осознанности, медитации и дыхательные упражнения для улучшения ментального здоровья и снижения стресса.",
+    },
+    {
+      property: "og:title",
+      content: "Медитация и Осознанность | MindQ Lab",
+    },
+    {
+      property: "og:description",
+      content:
+        "Практики осознанности, медитации и дыхательные упражнения для улучшения ментального здоровья и снижения стресса.",
+    },
+    {
+      property: "og:image",
+      content: "/images/mindfulness-og.jpg", // Assuming an image exists or will be added, using a placeholder for now
+    },
+    {
+      name: "twitter:card",
+      content: "summary_large_image",
+    },
+  ],
 });
 
 const { $firestore } = useNuxtApp();
