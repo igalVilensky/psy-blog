@@ -1,16 +1,14 @@
 <!-- pages/lab/psychology/mindfulness.vue -->
 <template>
   <div
-    class="min-h-screen bg-slate-50 dark:bg-slate-950 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-teal-500/5 via-slate-50 to-slate-50 dark:from-teal-500/10 dark:via-slate-950 dark:to-slate-950 pb-8 transition-colors duration-500"
-  >
+    class="min-h-screen bg-slate-50 dark:bg-slate-950 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-teal-500/5 via-slate-50 to-slate-50 dark:from-teal-500/10 dark:via-slate-950 dark:to-slate-950 pb-8 transition-colors duration-500">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       <Breadcrumbs />
       <!-- Header -->
-      <div class="mb-8">
+      <div v-if="!activeSession" class="mb-8">
         <div class="flex-1">
           <h1
-            class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white font-montserrat mb-3 tracking-tight"
-          >
+            class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white font-montserrat mb-3 tracking-tight">
             ОСОЗНАННОСТЬ И МЕДИТАЦИЯ
           </h1>
           <p class="text-slate-600 dark:text-slate-400 mt-2 text-sm md:text-base">
@@ -89,74 +87,111 @@
 
       <!-- Active Session Display -->
       <transition name="slide-fade">
-        <div
-          v-if="activeSession"
-          class="mb-12 bg-white/80 dark:bg-slate-800/50 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-teal-200/50 dark:border-teal-500/30 relative overflow-hidden shadow-lg dark:shadow-none ring-1 ring-teal-500/10"
-        >
+        <div v-if="activeSession"
+          class="mb-4 md:mb-12 bg-white/80 dark:bg-slate-800/50 backdrop-blur-xl rounded-2xl p-4 md:p-8 border border-teal-200/50 dark:border-teal-500/30 relative overflow-hidden shadow-lg dark:shadow-none ring-1 ring-teal-500/10">
           <!-- Visuals Background -->
           <div class="absolute inset-0 rounded-2xl overflow-hidden z-0">
             <MeditationVisuals :is-active="!isSessionPaused" :intensity="0.5" />
           </div>
-          
+
           <div class="relative z-10 text-center">
+            <!-- Top Controls (Music) -->
+            <div class="absolute top-0 right-0 z-50">
+              <div class="relative">
+                <button @click="toggleVolumeSlider"
+                  class="w-10 h-10 rounded-full bg-teal-500/10 hover:bg-teal-500/20 text-teal-600 dark:text-teal-400 flex items-center justify-center transition-all duration-300 backdrop-blur-sm">
+                  <i :class="isMusicPlaying ? 'fas fa-music' : 'fas fa-volume-mute'"></i>
+                </button>
+
+                <!-- Vertical Volume Slider -->
+                <transition name="fade">
+                  <div v-if="showVolumeSlider"
+                    class="absolute top-12 right-0 w-12 h-36 bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl rounded-full shadow-xl border border-teal-100 dark:border-teal-500/30 flex flex-col items-center justify-between py-4">
+                    <!-- Volume Bar (clickable) -->
+                    <div @click="handleVolumeBarClick"
+                      class="h-24 w-3 bg-slate-200 dark:bg-slate-700 rounded-full relative cursor-pointer hover:w-4 transition-all">
+                      <div class="absolute bottom-0 left-0 w-full bg-teal-500 rounded-full transition-all duration-100"
+                        :style="{ height: `${musicVolume}%` }"></div>
+                    </div>
+
+                    <!-- Volume Text -->
+                    <div class="text-[10px] font-mono text-teal-600 dark:text-teal-400 font-bold">
+                      {{ Math.round(musicVolume) }}
+                    </div>
+
+                    <!-- Toggle Button -->
+                    <button @click="toggleMusic"
+                      class="text-xs text-teal-600 dark:text-teal-400 hover:scale-110 transition-transform">
+                      <i :class="isMusicPlaying ? 'fas fa-volume-up' : 'fas fa-volume-off'"></i>
+                    </button>
+                  </div>
+                </transition>
+              </div>
+            </div>
+
             <!-- Session Type -->
-            <div class="mb-6">
+            <div class="mb-4 md:mb-6">
               <div
-                class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-500/20 border border-teal-500/30"
-              >
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-500/20 border border-teal-500/30">
                 <i :class="activeSession.icon" class="text-teal-600 dark:text-teal-400"></i>
                 <span class="text-teal-700 dark:text-teal-300 font-medium text-sm">{{
                   activeSession.title
-                }}</span>
+                  }}</span>
               </div>
             </div>
 
-            <!-- Timer Display -->
-            <div class="mb-8">
+            <!-- Timer & Guidance -->
+            <div class="mb-4 md:mb-8 relative z-10">
+              <!-- Fixed height container to prevent layout jumps -->
+              <div class="h-24 md:h-40 flex items-center justify-center mb-4 md:mb-8 px-4">
+                <transition name="blur-fade" mode="out-in">
+                  <div :key="currentInstruction ? currentInstruction.text : 'default'"
+                    class="max-w-3xl mx-auto text-center">
+                    <p v-if="currentInstruction"
+                      class="text-xl md:text-3xl font-serif font-medium leading-relaxed tracking-wide text-teal-900 dark:text-teal-50 drop-shadow-sm">
+                      {{ currentInstruction.text }}
+                    </p>
+                    <p v-else
+                      class="text-teal-700/60 dark:text-teal-200/60 text-sm font-medium tracking-widest uppercase">
+                      {{ sessionMessage }}
+                    </p>
+                  </div>
+                </transition>
+              </div>
+
               <div
-                class="text-7xl md:text-8xl font-bold text-slate-900 dark:text-white font-mono mb-4 tracking-wider"
-              >
+                class="text-4xl md:text-5xl font-bold text-teal-900/20 dark:text-teal-100/20 font-mono tracking-wider transition-all duration-500 hover:text-teal-900/40 dark:hover:text-teal-100/40">
                 {{ formatTime(sessionTimeRemaining) }}
               </div>
-              <div class="text-slate-600 dark:text-slate-400 text-sm">{{ sessionMessage }}</div>
             </div>
 
-            <!-- Progress Circle -->
-            <div class="flex justify-center mb-8">
-              <div class="relative w-48 h-48">
-                <svg class="transform -rotate-90 w-48 h-48">
-                  <circle
-                    cx="96"
-                    cy="96"
-                    r="88"
-                    stroke="currentColor"
-                    stroke-width="8"
-                    fill="none"
-                    class="text-slate-200 dark:text-slate-800"
-                  />
-                  <circle
-                    cx="96"
-                    cy="96"
-                    r="88"
-                    stroke="currentColor"
-                    stroke-width="8"
-                    fill="none"
-                    class="text-teal-500 dark:text-teal-400 transition-all duration-1000"
-                    :style="{
+            <!-- Breathing Pacer (Visual Anchor) -->
+            <div class="flex justify-center mb-8 md:mb-12 relative">
+              <!-- Outer Glow -->
+              <div
+                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-teal-500/20 blur-3xl transition-all duration-[4000ms] ease-in-out"
+                :class="{ 'scale-150 opacity-60': isBreathingIn, 'scale-100 opacity-30': !isBreathingIn }"></div>
+
+              <!-- Main Circle -->
+              <div class="relative w-48 h-48 flex items-center justify-center">
+                <!-- Progress Ring Background -->
+                <svg class="absolute inset-0 transform -rotate-90 w-48 h-48 drop-shadow-lg">
+                  <circle cx="96" cy="96" r="88" stroke="currentColor" stroke-width="4" fill="none"
+                    class="text-slate-200 dark:text-slate-800/50" />
+                  <!-- Progress Arc -->
+                  <circle cx="96" cy="96" r="88" stroke="currentColor" stroke-width="4" fill="none"
+                    class="text-teal-500 dark:text-teal-400 transition-all duration-1000" :style="{
                       strokeDasharray: `${2 * Math.PI * 88}`,
-                      strokeDashoffset: `${
-                        2 * Math.PI * 88 * (1 - sessionProgress)
-                      }`,
-                    }"
-                    stroke-linecap="round"
-                  />
+                      strokeDashoffset: `${2 * Math.PI * 88 * (1 - sessionProgress)}`,
+                    }" stroke-linecap="round" />
                 </svg>
-                <div class="absolute inset-0 flex items-center justify-center">
-                  <div class="text-center">
-                    <div class="text-3xl font-bold text-slate-900 dark:text-white">
-                      {{ Math.round(sessionProgress * 100) }}%
-                    </div>
-                    <div class="text-xs text-slate-500 dark:text-slate-400">завершено</div>
+
+                <!-- Breathing Center -->
+                <div
+                  class="w-32 h-32 rounded-full bg-gradient-to-br from-teal-400 to-cyan-500 shadow-lg dark:shadow-teal-500/50 flex items-center justify-center transition-all duration-[4000ms] ease-in-out z-10"
+                  :class="{ 'scale-110': isBreathingIn, 'scale-90': !isBreathingIn }">
+                  <div class="text-white font-medium text-lg opacity-90">
+                    {{ isBreathingIn ? 'Вдох' : 'Выдох' }}
                   </div>
                 </div>
               </div>
@@ -164,59 +199,21 @@
 
             <!-- Control Buttons -->
             <div class="flex flex-wrap justify-center gap-3">
-              <button
-                v-if="!isSessionPaused"
-                @click="pauseSession"
-                class="px-6 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-700 transition-all duration-300 flex items-center gap-2 shadow-sm dark:shadow-none"
-              >
+              <button v-if="!isSessionPaused" @click="pauseSession"
+                class="px-6 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-700 transition-all duration-300 flex items-center gap-2 shadow-sm dark:shadow-none">
                 <i class="fas fa-pause"></i>
                 <span>Пауза</span>
               </button>
-              <button
-                v-else
-                @click="resumeSession"
-                class="px-6 py-3 rounded-xl bg-teal-500 border border-teal-400 text-white hover:bg-teal-600 transition-all duration-300 flex items-center gap-2 shadow-sm dark:shadow-none"
-              >
+              <button v-else @click="resumeSession"
+                class="px-6 py-3 rounded-xl bg-teal-500 border border-teal-400 text-white hover:bg-teal-600 transition-all duration-300 flex items-center gap-2 shadow-sm dark:shadow-none">
                 <i class="fas fa-play"></i>
                 <span>Продолжить</span>
               </button>
-              <button
-                @click="endSession"
-                class="px-6 py-3 rounded-xl bg-red-50 dark:bg-red-500/10 border border-red-300 dark:border-red-500/20 text-red-700 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-500/20 transition-all duration-300 flex items-center gap-2 shadow-sm dark:shadow-none"
-              >
+              <button @click="endSession"
+                class="px-6 py-3 rounded-xl bg-red-50 dark:bg-red-500/10 border border-red-300 dark:border-red-500/20 text-red-700 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-500/20 transition-all duration-300 flex items-center gap-2 shadow-sm dark:shadow-none">
                 <i class="fas fa-stop"></i>
                 <span>Завершить</span>
               </button>
-            </div>
-
-            <!-- Music Controls -->
-            <div class="mt-6 pt-6 border-t border-teal-500/20">
-              <div class="flex items-center justify-center gap-4">
-                <button
-                  @click="toggleMusic"
-                  class="px-4 py-2 rounded-lg bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-600/50 text-slate-600 dark:text-slate-300 hover:text-teal-600 dark:hover:text-teal-400 hover:border-teal-500/50 transition-all duration-300 flex items-center gap-2 shadow-sm dark:shadow-none"
-                >
-                  <i
-                    :class="isMusicPlaying ? 'fas fa-volume-up' : 'fas fa-volume-mute'"
-                  ></i>
-                  <span>{{ isMusicPlaying ? "Музыка вкл" : "Музыка выкл" }}</span>
-                </button>
-                <div
-                  v-if="isMusicPlaying"
-                  class="flex items-center gap-2"
-                >
-                  <i class="fas fa-volume-down text-slate-500 text-sm"></i>
-                  <input
-                    type="range"
-                    min="0"
-                    max="100"
-                    v-model="musicVolume"
-                    @input="updateVolume"
-                    class="w-24 h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-teal-500"
-                  />
-                  <i class="fas fa-volume-up text-slate-500 text-sm"></i>
-                </div>
-              </div>
             </div>
 
           </div>
@@ -226,106 +223,66 @@
       <!-- Meditation Techniques Grid -->
       <div v-if="!activeSession" class="mb-12">
         <div class="flex items-center justify-between mb-6">
-          <h2
-            class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-3"
-          >
-            <span
-              class="w-1 h-8 bg-gradient-to-b from-teal-500 to-cyan-500 rounded-full"
-            ></span>
+          <h2 class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-3">
+            <span class="w-1 h-8 bg-gradient-to-b from-teal-500 to-cyan-500 rounded-full"></span>
             Медитативные практики
           </h2>
         </div>
 
-        <div
-          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
-        >
-          <MeditationCard
-            v-for="technique in meditationTechniques"
-            :key="technique.id"
-            :technique="technique"
-            @start="(tech, dur) => startMeditation(tech, dur)"
-          />
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          <MeditationCard v-for="technique in meditationTechniques" :key="technique.id" :technique="technique"
+            @start="(tech, dur) => startMeditation(tech, dur)" />
         </div>
       </div>
 
       <!-- Breathing Exercises -->
       <div v-if="!activeSession" class="mb-12">
         <div class="flex items-center justify-between mb-6">
-          <h2
-            class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-3"
-          >
-            <span
-              class="w-1 h-8 bg-gradient-to-b from-cyan-500 to-blue-500 rounded-full"
-            ></span>
+          <h2 class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-3">
+            <span class="w-1 h-8 bg-gradient-to-b from-cyan-500 to-blue-500 rounded-full"></span>
             Дыхательные упражнения
           </h2>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-          <BreathingCard
-            v-for="breathing in breathingExercises"
-            :key="breathing.id"
-            :exercise="breathing"
-            @start="(ex, dur) => startBreathing(ex, dur)"
-          />
+          <BreathingCard v-for="breathing in breathingExercises" :key="breathing.id" :exercise="breathing"
+            @start="(ex, dur) => startBreathing(ex, dur)" />
         </div>
       </div>
 
       <!-- Mindfulness Activities -->
       <div v-if="!activeSession" class="mb-12">
         <div class="flex items-center justify-between mb-6">
-          <h2
-            class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-3"
-          >
-            <span
-              class="w-1 h-8 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full"
-            ></span>
+          <h2 class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-3">
+            <span class="w-1 h-8 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full"></span>
             Практики осознанности
           </h2>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <MindfulnessActivityCard
-            v-for="activity in mindfulnessActivities"
-            :key="activity.id"
-            :activity="activity"
-            @start="startActivity(activity)"
-          />
+          <MindfulnessActivityCard v-for="activity in mindfulnessActivities" :key="activity.id" :activity="activity"
+            @start="startActivity(activity)" />
         </div>
       </div>
 
       <!-- Progress Tracking -->
-      <div
-        v-if="!activeSession"
-        class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12"
-      >
+      <div v-if="!activeSession" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
         <!-- Weekly Progress -->
-        <div class="bg-white/80 dark:bg-slate-800/50 backdrop-blur-xl rounded-2xl p-6 border border-slate-200/50 dark:border-slate-700/50 shadow-sm dark:shadow-none hover:border-teal-500/30 transition-colors duration-300">
+        <div
+          class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all duration-300">
           <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
             <i class="fas fa-chart-line text-teal-600 dark:text-teal-400"></i>
             Прогресс за неделю
           </h3>
 
           <div class="space-y-3 mb-6">
-            <div
-              v-for="day in weeklyProgress"
-              :key="day.day"
-              class="flex items-center gap-4"
-            >
+            <div v-for="day in weeklyProgress" :key="day.day" class="flex items-center gap-4">
               <div class="w-16 text-slate-500 dark:text-slate-400 text-sm">{{ day.day }}</div>
-              <div
-                class="flex-1 h-8 bg-slate-100 dark:bg-slate-900/50 rounded-lg overflow-hidden relative"
-              >
-                <div
-                  class="h-full bg-gradient-to-r from-teal-500 to-cyan-500 transition-all duration-500"
-                  :style="{ width: `${(day.minutes / 60) * 100}%` }"
-                ></div>
-                <div
-                  class="absolute inset-0 flex items-center justify-end px-3"
-                >
-                  <span class="text-xs font-mono text-slate-700 dark:text-white"
-                    >{{ day.minutes }} мин</span
-                  >
+              <div class="flex-1 h-8 bg-slate-100 dark:bg-slate-900/50 rounded-lg overflow-hidden relative">
+                <div class="h-full bg-gradient-to-r from-teal-500 to-cyan-500 transition-all duration-500"
+                  :style="{ width: `${(day.minutes / 60) * 100}%` }"></div>
+                <div class="absolute inset-0 flex items-center justify-end px-3">
+                  <span class="text-xs font-mono text-slate-700 dark:text-white">{{ day.minutes }} мин</span>
                 </div>
               </div>
             </div>
@@ -334,44 +291,31 @@
           <div class="bg-teal-500/10 rounded-xl p-4 border border-teal-500/20">
             <div class="flex items-center justify-between">
               <span class="text-slate-600 dark:text-slate-300 text-sm">Среднее время в день</span>
-              <span class="text-teal-600 dark:text-teal-400 font-bold"
-                >{{ averageDaily }} мин</span
-              >
+              <span class="text-teal-600 dark:text-teal-400 font-bold">{{ averageDaily }} мин</span>
             </div>
           </div>
         </div>
 
         <!-- Achievements -->
-        <div class="bg-white/80 dark:bg-slate-800/50 backdrop-blur-xl rounded-2xl p-6 border border-slate-200/50 dark:border-slate-700/50 shadow-sm dark:shadow-none hover:border-yellow-500/30 transition-colors duration-300">
+        <div
+          class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all duration-300">
           <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
             <i class="fas fa-trophy text-yellow-500 dark:text-yellow-400"></i>
             Достижения
           </h3>
 
           <div class="grid grid-cols-2 gap-3">
-            <div
-              v-for="achievement in achievements"
-              :key="achievement.id"
-              class="achievement-card"
-              :class="
-                achievement.unlocked
-                  ? 'achievement-unlocked'
-                  : 'achievement-locked'
-              "
-            >
+            <div v-for="achievement in achievements" :key="achievement.id" class="achievement-card" :class="achievement.unlocked
+              ? 'achievement-unlocked'
+              : 'achievement-locked'
+              ">
               <div class="text-3xl mb-2">{{ achievement.icon }}</div>
-              <div
-                class="text-sm font-semibold mb-1"
-                :class="achievement.unlocked ? 'text-slate-900 dark:text-white' : 'text-slate-500 dark:text-slate-600'"
-              >
+              <div class="text-sm font-semibold mb-1"
+                :class="achievement.unlocked ? 'text-slate-900 dark:text-white' : 'text-slate-500 dark:text-slate-600'">
                 {{ achievement.title }}
               </div>
-              <div
-                class="text-xs"
-                :class="
-                  achievement.unlocked ? 'text-slate-500 dark:text-slate-400' : 'text-slate-400 dark:text-slate-700'
-                "
-              >
+              <div class="text-xs" :class="achievement.unlocked ? 'text-slate-500 dark:text-slate-400' : 'text-slate-400 dark:text-slate-700'
+                ">
                 {{ achievement.description }}
               </div>
             </div>
@@ -380,16 +324,12 @@
       </div>
 
       <!-- Resources & Tips -->
-      <div
-        v-if="!activeSession"
-        class="bg-gradient-to-br from-purple-500/5 to-pink-500/5 dark:from-purple-500/10 dark:to-pink-500/10 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-purple-500/20 dark:border-purple-500/30"
-      >
+      <div v-if="!activeSession"
+        class="bg-white dark:bg-slate-900 rounded-2xl p-6 md:p-8 border border-slate-200 dark:border-slate-800 shadow-sm">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div>
             <div class="flex items-center gap-3 mb-6">
-              <div
-                class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center"
-              >
+              <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center">
                 <i class="fas fa-book-open text-purple-600 dark:text-purple-400 text-xl"></i>
               </div>
               <div>
@@ -400,8 +340,7 @@
 
             <div class="space-y-4">
               <div
-                class="bg-white/60 dark:bg-slate-900/40 backdrop-blur-sm rounded-lg p-4 border border-purple-500/10 hover:border-purple-500/30 transition-colors shadow-sm dark:shadow-none"
-              >
+                class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 border border-slate-100 dark:border-slate-700 hover:border-purple-200 dark:hover:border-purple-700/50 transition-colors">
                 <h4 class="text-slate-900 dark:text-white font-medium mb-2 flex items-center gap-2">
                   <i class="fas fa-lightbulb text-yellow-500 dark:text-yellow-400 text-sm"></i>
                   Создайте пространство
@@ -413,8 +352,7 @@
               </div>
 
               <div
-                class="bg-white dark:bg-slate-900/30 rounded-lg p-4 border border-purple-500/10 shadow-sm dark:shadow-none"
-              >
+                class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 border border-slate-100 dark:border-slate-700 hover:border-purple-200 dark:hover:border-purple-700/50 transition-colors">
                 <h4 class="text-slate-900 dark:text-white font-medium mb-2 flex items-center gap-2">
                   <i class="fas fa-clock text-cyan-600 dark:text-cyan-400 text-sm"></i>
                   Начните с малого
@@ -426,8 +364,7 @@
               </div>
 
               <div
-                class="bg-white dark:bg-slate-900/30 rounded-lg p-4 border border-purple-500/10 shadow-sm dark:shadow-none"
-              >
+                class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 border border-slate-100 dark:border-slate-700 hover:border-purple-200 dark:hover:border-purple-700/50 transition-colors">
                 <h4 class="text-slate-900 dark:text-white font-medium mb-2 flex items-center gap-2">
                   <i class="fas fa-smile text-emerald-600 dark:text-emerald-400 text-sm"></i>
                   Будьте терпеливы
@@ -442,9 +379,7 @@
 
           <div>
             <div class="flex items-center gap-3 mb-6">
-              <div
-                class="w-12 h-12 rounded-xl bg-teal-500/20 flex items-center justify-center"
-              >
+              <div class="w-12 h-12 rounded-xl bg-teal-500/20 flex items-center justify-center">
                 <i class="fas fa-heart text-teal-600 dark:text-teal-400 text-xl"></i>
               </div>
               <div>
@@ -455,8 +390,7 @@
 
             <div class="grid grid-cols-1 gap-3">
               <div
-                class="flex items-start gap-3 bg-white/60 dark:bg-slate-900/40 backdrop-blur-sm rounded-lg p-4 border border-teal-500/10 hover:border-teal-500/30 transition-colors shadow-sm dark:shadow-none"
-              >
+                class="flex items-start gap-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 border border-slate-100 dark:border-slate-700 hover:border-teal-200 dark:hover:border-teal-700/50 transition-colors">
                 <i class="fas fa-brain text-teal-600 dark:text-teal-400 mt-1"></i>
                 <div>
                   <h4 class="text-slate-900 dark:text-white font-medium text-sm mb-1">
@@ -469,8 +403,7 @@
               </div>
 
               <div
-                class="flex items-start gap-3 bg-white dark:bg-slate-900/30 rounded-lg p-4 border border-teal-500/10 shadow-sm dark:shadow-none"
-              >
+                class="flex items-start gap-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 border border-slate-100 dark:border-slate-700 hover:border-teal-200 dark:hover:border-teal-700/50 transition-colors">
                 <i class="fas fa-shield-alt text-cyan-600 dark:text-cyan-400 mt-1"></i>
                 <div>
                   <h4 class="text-slate-900 dark:text-white font-medium text-sm mb-1">
@@ -483,8 +416,7 @@
               </div>
 
               <div
-                class="flex items-start gap-3 bg-white dark:bg-slate-900/30 rounded-lg p-4 border border-teal-500/10 shadow-sm dark:shadow-none"
-              >
+                class="flex items-start gap-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 border border-slate-100 dark:border-slate-700 hover:border-teal-200 dark:hover:border-teal-700/50 transition-colors">
                 <i class="fas fa-bed text-purple-600 dark:text-purple-400 mt-1"></i>
                 <div>
                   <h4 class="text-slate-900 dark:text-white font-medium text-sm mb-1">
@@ -497,8 +429,7 @@
               </div>
 
               <div
-                class="flex items-start gap-3 bg-white dark:bg-slate-900/30 rounded-lg p-4 border border-teal-500/10 shadow-sm dark:shadow-none"
-              >
+                class="flex items-start gap-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 border border-slate-100 dark:border-slate-700 hover:border-teal-200 dark:hover:border-teal-700/50 transition-colors">
                 <i class="fas fa-smile-beam text-yellow-500 dark:text-yellow-400 mt-1"></i>
                 <div>
                   <h4 class="text-slate-900 dark:text-white font-medium text-sm mb-1">
@@ -514,7 +445,7 @@
         </div>
       </div>
     </div>
-    
+
     <!-- Hidden YouTube Player for Background Music -->
     <div id="youtube-player" style="display: none;"></div>
   </div>
@@ -544,6 +475,8 @@ const youtubePlayer = ref(null);
 const isMusicPlaying = ref(false);
 const musicVolume = ref(30); // Default volume at 30%
 const isYouTubeReady = ref(false);
+const showVolumeSlider = ref(false);
+let volumeHideTimer = null;
 
 // YouTube meditation music video ID (8-hour ambient music)
 const MEDITATION_MUSIC_VIDEO_ID = "lTRiuFIWV54"; // 8-hour peaceful relaxing music
@@ -575,6 +508,35 @@ const sessionProgress = computed(() => {
   return 1 - sessionTimeRemaining.value / sessionTotalTime.value;
 });
 
+const currentInstruction = computed(() => {
+  if (!activeSession.value?.guidance) return null;
+
+  const elapsedTime = sessionTotalTime.value - sessionTimeRemaining.value;
+  return activeSession.value.guidance.find(
+    (step) => elapsedTime >= step.start && elapsedTime < step.end
+  );
+});
+
+// Simple breathing pacer logic (4s in, 4s out)
+const isBreathingIn = ref(true);
+let breathingInterval = null;
+
+watch(isSessionPaused, (paused) => {
+  if (paused) {
+    clearInterval(breathingInterval);
+  } else if (activeSession.value) {
+    startBreathingPacer();
+  }
+});
+
+const startBreathingPacer = () => {
+  clearInterval(breathingInterval);
+  isBreathingIn.value = true;
+  breathingInterval = setInterval(() => {
+    isBreathingIn.value = !isBreathingIn.value;
+  }, 4000); // 4 second cycle
+};
+
 // Meditation techniques
 const meditationTechniques = [
   {
@@ -586,6 +548,17 @@ const meditationTechniques = [
     difficulty: "Начальный",
     color: "from-teal-500 to-cyan-500",
     benefits: ["Снижение стресса", "Улучшение концентрации"],
+    guidance: [
+      { start: 0, end: 10, text: "Устройтесь поудобнее. Спина прямая, плечи расслаблены." },
+      { start: 10, end: 20, text: "Мягко прикройте глаза. Сделайте глубокий вдох..." },
+      { start: 20, end: 30, text: "...и медленный, плавный выдох." },
+      { start: 30, end: 60, text: "Перенесите внимание на дыхание. Почувствуйте, как воздух входит и выходит." },
+      { start: 60, end: 120, text: "Не пытайтесь контролировать дыхание. Просто наблюдайте за ним." },
+      { start: 120, end: 180, text: "Если мысли отвлекают вас — это нормально. Мягко верните внимание к дыханию." },
+      { start: 180, end: 240, text: "Почувствуйте движение живота и грудной клетки при каждом вдохе." },
+      { start: 240, end: 300, text: "Вы здесь и сейчас. Только вы и ваше дыхание." },
+      { start: 300, end: 9999, text: "Продолжайте наблюдать за дыханием в тишине..." }
+    ]
   },
   {
     id: "body-scan",
@@ -788,16 +761,18 @@ const startMeditation = (technique, selectedDuration) => {
   console.log("🧘 Starting meditation:", technique);
   console.log("📊 Selected duration:", selectedDuration);
   console.log("📊 Duration array:", technique.duration);
-  
+
   activeSession.value = technique;
   // Use selectedDuration if provided, otherwise fallback to middle duration
   const duration = selectedDuration || technique.duration[1];
   console.log("⏱️ Final duration used:", duration, "minutes");
-  
+
   sessionTotalTime.value = duration * 60;
   sessionTimeRemaining.value = sessionTotalTime.value;
   isSessionPaused.value = false;
   sessionMessage.value = "Найдите удобное положение и закройте глаза...";
+
+  startBreathingPacer();
   startSessionTimer();
 };
 
@@ -886,7 +861,7 @@ const endSession = () => {
   sessionTimeRemaining.value = 0;
   sessionTotalTime.value = 0;
   isSessionPaused.value = false;
-  
+
   // Stop music when session ends
   stopMusic();
 };
@@ -911,55 +886,75 @@ const completeSession = () => {
 
 // YouTube Music control methods
 const toggleMusic = () => {
+  // Toggle mute/unmute
+  isMusicPlaying.value = !isMusicPlaying.value;
   if (isMusicPlaying.value) {
-    stopMusic();
-  } else {
-    playMusic();
-  }
-};
-
-const playMusic = () => {
-  if (!isYouTubeReady.value || !youtubePlayer.value) {
-    initYouTubePlayer();
-    return;
-  }
-  
-  try {
-    // Check if player is ready and play
-    const playerState = youtubePlayer.value.getPlayerState();
-    if (playerState === -1 || playerState === 5) {
-      // Unstarted or cued, seek to start position and play
-      youtubePlayer.value.seekTo(16, true);
+    if (youtubePlayer.value && youtubePlayer.value.playVideo) {
+      youtubePlayer.value.playVideo();
+    } else {
+      initYouTubePlayer();
     }
-    youtubePlayer.value.playVideo();
-    isMusicPlaying.value = true;
-  } catch (err) {
-    console.log("YouTube play error:", err);
-    // Try to reinitialize if there's an error
-    isYouTubeReady.value = false;
-    youtubePlayer.value = null;
-    initYouTubePlayer();
+  } else {
+    if (youtubePlayer.value && youtubePlayer.value.pauseVideo) {
+      youtubePlayer.value.pauseVideo();
+    }
   }
 };
 
 const stopMusic = () => {
-  if (!youtubePlayer.value) return;
-  
-  try {
+  if (youtubePlayer.value && youtubePlayer.value.pauseVideo) {
     youtubePlayer.value.pauseVideo();
-    isMusicPlaying.value = false;
-  } catch (err) {
-    console.log("YouTube stop error:", err);
   }
+  isMusicPlaying.value = false;
 };
 
 const updateVolume = () => {
-  if (!youtubePlayer.value) return;
-  try {
+  if (youtubePlayer.value && youtubePlayer.value.setVolume) {
     youtubePlayer.value.setVolume(musicVolume.value);
-  } catch (err) {
-    console.log("YouTube volume error:", err);
   }
+  resetVolumeHideTimer();
+};
+
+const toggleVolumeSlider = () => {
+  showVolumeSlider.value = !showVolumeSlider.value;
+  // Clear any existing timer when toggling
+  clearTimeout(volumeHideTimer);
+};
+
+const hideVolumeSlider = () => {
+  showVolumeSlider.value = false;
+  clearTimeout(volumeHideTimer);
+};
+
+const resetVolumeHideTimer = () => {
+  clearTimeout(volumeHideTimer);
+  volumeHideTimer = setTimeout(() => {
+    showVolumeSlider.value = false;
+  }, 2000); // Auto-hide 2 seconds after volume change
+};
+
+const handleVolumeBarClick = (event) => {
+  const bar = event.currentTarget;
+  const rect = bar.getBoundingClientRect();
+  const clickY = event.clientY - rect.top;
+  const barHeight = rect.height;
+
+  // Calculate volume (inverted because we want bottom = 100%, top = 0%)
+  const newVolume = Math.round(((barHeight - clickY) / barHeight) * 100);
+  musicVolume.value = Math.max(0, Math.min(100, newVolume));
+
+  // If music is not playing and user changes volume, start playing
+  if (!isMusicPlaying.value && musicVolume.value > 0) {
+    isMusicPlaying.value = true;
+    if (youtubePlayer.value && youtubePlayer.value.playVideo) {
+      youtubePlayer.value.playVideo();
+    } else {
+      initYouTubePlayer();
+    }
+  }
+
+  updateVolume();
+  resetVolumeHideTimer();
 };
 
 const initYouTubePlayer = () => {
@@ -970,7 +965,7 @@ const initYouTubePlayer = () => {
       tag.src = 'https://www.youtube.com/iframe_api';
       const firstScriptTag = document.getElementsByTagName('script')[0];
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-      
+
       window.onYouTubeIframeAPIReady = () => {
         createPlayer();
       };
@@ -1028,8 +1023,6 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-
-
 .stat-card {
   @apply bg-white dark:bg-slate-800/30 rounded-xl p-4 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none;
 }
@@ -1063,5 +1056,25 @@ onUnmounted(() => {
 .slide-fade-leave-to {
   transform: translateY(-20px);
   opacity: 0;
+}
+
+/* Blur Fade Transition for Guidance Text */
+.blur-fade-enter-active,
+.blur-fade-leave-active {
+  transition: all 1s ease;
+}
+
+.blur-fade-enter-from,
+.blur-fade-leave-to {
+  opacity: 0;
+  filter: blur(8px);
+  transform: scale(0.98);
+}
+
+.blur-fade-enter-to,
+.blur-fade-leave-from {
+  opacity: 1;
+  filter: blur(0);
+  transform: scale(1);
 }
 </style>
