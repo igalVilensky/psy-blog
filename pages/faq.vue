@@ -1,158 +1,94 @@
 <template>
-  <div
-    class="relative min-h-screen bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#111827] text-white"
-  >
-    <div class="absolute inset-0 opacity-20 pointer-events-none">
-      <div
-        class="absolute w-72 h-72 bg-[#0EA5E9]/20 rounded-full blur-3xl top-12 left-12 animate-pulse"
-      ></div>
-      <div
-        class="absolute w-96 h-96 bg-[#E879F9]/20 rounded-full blur-3xl bottom-12 right-12 animate-pulse delay-500"
-      ></div>
-    </div>
-
-    <div class="container mx-auto max-w-4xl px-4 py-16 relative z-10">
-      <header class="text-center mb-16">
+  <div class="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+      <!-- Header Section -->
+      <div class="text-center mb-12">
         <h1
-          class="text-4xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] mb-4"
-        >
+          class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-800 to-slate-600 dark:from-white dark:to-slate-300">
           Часто задаваемые вопросы
         </h1>
-        <p class="text-xl text-slate-300 max-w-2xl mx-auto">
-          Ваш путь к самопознанию начинается здесь. Найдите ответы на важные
-          вопросы о нашем проекте личностного роста.
+        <p class="text-slate-600 dark:text-cyan-300/70 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
+          Все о MindQ Lab — вашей лаборатории осознанного роста. Узнайте, как мы помогаем исследовать себя и достигать
+          новых высот.
         </p>
-      </header>
+      </div>
 
-      <div class="space-y-6">
-        <div
-          v-for="(faq, index) in faqs"
-          :key="index"
-          class="bg-[#1E293B]/60 border border-[#0EA5E9]/10 rounded-2xl overflow-hidden transition-all duration-300 hover:border-[#0EA5E9]/40 hover:shadow-xl"
-        >
-          <button
-            @click="toggleFAQ(index)"
-            class="w-full p-6 flex justify-between items-center text-left focus:outline-none group"
-          >
+      <!-- FAQ Accordion -->
+      <div class="space-y-4">
+        <div v-for="(faq, index) in faqs" :key="index"
+          class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/10 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-lg dark:hover:shadow-cyan-500/10 hover:border-cyan-500/30 dark:hover:border-cyan-500/30">
+          <button @click="toggleFAQ(index)"
+            class="w-full p-6 flex justify-between items-center text-left focus:outline-none group">
             <h2
-              class="text-lg md:text-xl font-semibold text-white/90 transition-colors group-hover:text-[#0EA5E9]"
-            >
+              class="text-lg font-semibold text-slate-800 dark:text-slate-100 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors pr-8">
               {{ faq.question }}
             </h2>
-            <div class="ml-4">
-              <i
-                :class="[
-                  'fas',
-                  'fa-chevron-down',
-                  'text-[#0EA5E9]',
-                  'text-xl',
-                  'transition-transform',
-                  'duration-300',
-                  { 'rotate-180': faq.isOpen },
-                ]"
-              ></i>
+            <div class="flex-shrink-0">
+              <i :class="[
+                'fas',
+                'fa-chevron-down',
+                'text-slate-400',
+                'dark:text-slate-500',
+                'group-hover:text-cyan-500',
+                'dark:group-hover:text-cyan-400',
+                'transition-transform',
+                'duration-300',
+                { 'rotate-180': faq.isOpen },
+              ]"></i>
             </div>
           </button>
 
-          <transition name="accordion">
-            <div
-              v-if="faq.isOpen"
-              class="px-6 pb-6 text-slate-300 text-base leading-relaxed"
-            >
-              {{ faq.answer }}
+          <div class="grid transition-[grid-template-rows] duration-300 ease-out"
+            :class="faq.isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'">
+            <div class="overflow-hidden">
+              <div class="px-6 pb-6 pt-0">
+                <div
+                  class="text-slate-600 dark:text-slate-300 text-base leading-relaxed border-t border-slate-100 dark:border-slate-800/50 pt-4">
+                  {{ faq.answer }}
+                </div>
+              </div>
             </div>
-          </transition>
+          </div>
         </div>
       </div>
 
       <!-- Contact CTA -->
       <div
-        class="mt-16 bg-[#1E293B]/60 border border-[#0EA5E9]/10 rounded-2xl p-8 text-center"
-      >
-        <h3
-          class="text-2xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-[#0EA5E9] to-[#E879F9]"
-        >
-          Остались вопросы?
+        class="mt-16 bg-gradient-to-br from-cyan-500/5 via-purple-500/5 to-pink-500/5 dark:from-cyan-500/10 dark:via-purple-500/10 dark:to-pink-500/10 border border-cyan-500/20 dark:border-cyan-500/20 rounded-2xl p-8 text-center backdrop-blur-sm">
+        <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">
+          Остались вопросы о Лаборатории?
         </h3>
-        <p class="text-slate-400 mb-6 max-w-xl mx-auto">
-          Наша команда готова помочь вам на пути личностного развития. Свяжитесь
-          с нами для индивидуальной поддержки.
+        <p class="text-slate-600 dark:text-slate-300 mb-8 max-w-xl mx-auto">
+          Наша команда исследователей готова помочь вам разобраться в функционале Lab и подобрать правильные
+          инструменты.
         </p>
-        <NuxtLink
-          to="/contact"
-          class="group relative inline-flex items-center justify-center px-10 py-3.5 overflow-hidden rounded-lg bg-gradient-to-r from-[#0EA5E9]/10 to-[#E879F9]/10 border border-[#0EA5E9]/20 hover:border-[#0EA5E9]/40 transition-all duration-300"
-        >
-          <span
-            class="absolute inset-0 bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          ></span>
-          <span
-            class="relative text-[#0EA5E9] group-hover:text-white flex items-center px-3 py-2"
-          >
-            <i class="fas fa-paper-plane mr-3"></i>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <NuxtLink to="/contact"
+            class="btn-primary inline-flex items-center justify-center px-8 py-3 rounded-xl text-white font-medium transition-all duration-300 transform hover:scale-105 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40">
+            <i class="fas fa-paper-plane mr-2"></i>
             Связаться с поддержкой
-          </span>
-        </NuxtLink>
+          </NuxtLink>
+        </div>
 
         <!-- Social Media Links -->
-        <div class="pt-8 flex justify-center space-x-4">
+        <div class="pt-8 mt-8 border-t border-slate-200 dark:border-slate-700/50 flex justify-center gap-4">
           <!-- Telegram -->
-          <a
-            href="https://web.telegram.org/a/#984171843"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="group relative inline-flex items-center justify-center p-3 bg-[#0EA5E9]/10 rounded-lg overflow-hidden transition-all duration-300"
-          >
-            <span
-              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] group-hover:translate-x-0 ease"
-            >
-              <i class="fab fa-telegram"></i>
-            </span>
-            <span
-              class="absolute flex items-center justify-center w-full h-full text-[#0EA5E9] transition-all duration-300 transform group-hover:translate-x-full ease"
-            >
-              <i class="fab fa-telegram"></i>
-            </span>
-            <span class="relative invisible">Telegram</span>
+          <a href="https://web.telegram.org/a/#984171843" target="_blank" rel="noopener noreferrer"
+            class="social-btn social-btn-cyan">
+            <i class="fab fa-telegram"></i>
           </a>
 
           <!-- Instagram -->
-          <a
-            href="https://www.instagram.com/galactik.anastasia/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="group relative inline-flex items-center justify-center p-3 bg-[#F59E0B]/10 rounded-lg overflow-hidden transition-all duration-300"
-          >
-            <span
-              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#F59E0B] to-[#F97316] group-hover:translate-x-0 ease"
-            >
-              <i class="fab fa-instagram"></i>
-            </span>
-            <span
-              class="absolute flex items-center justify-center w-full h-full text-[#F59E0B] transition-all duration-300 transform group-hover:translate-x-full ease"
-            >
-              <i class="fab fa-instagram"></i>
-            </span>
-            <span class="relative invisible">Instagram</span>
+          <a href="https://www.instagram.com/galactik.anastasia/" target="_blank" rel="noopener noreferrer"
+            class="social-btn social-btn-purple">
+            <i class="fab fa-instagram"></i>
           </a>
 
           <!-- WhatsApp -->
-          <a
-            href="https://wa.me/491636920612"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="group relative inline-flex items-center justify-center p-3 bg-[#E879F9]/10 rounded-lg overflow-hidden transition-all duration-300"
-          >
-            <span
-              class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-[#E879F9] to-[#C084FC] group-hover:translate-x-0 ease"
-            >
-              <i class="fab fa-whatsapp"></i>
-            </span>
-            <span
-              class="absolute flex items-center justify-center w-full h-full text-[#E879F9] transition-all duration-300 transform group-hover:translate-x-full ease"
-            >
-              <i class="fab fa-whatsapp"></i>
-            </span>
-            <span class="relative invisible">WhatsApp</span>
+          <a href="https://wa.me/491783099433" target="_blank" rel="noopener noreferrer"
+            class="social-btn social-btn-emerald">
+            <i class="fab fa-whatsapp"></i>
           </a>
         </div>
       </div>
@@ -166,85 +102,69 @@ import { useHead } from "@unhead/vue";
 
 // SEO metadata with useHead
 useHead({
-  title: "Часто задаваемые вопросы - Осознанное развитие с Анастасией",
+  title: "FAQ - MindQ Lab",
   meta: [
     {
       name: "description",
       content:
-        "Ответы на частые вопросы о курсах личностного роста, инструментах осознанности, тестах и сообществе. Начните свой путь к самопознанию с нами!",
+        "Ответы на вопросы о MindQ Lab — вашей персональной лаборатории осознанного роста. Узнайте о наших методах, инструментах и подходе к самопознанию.",
     },
     {
       name: "keywords",
       content:
-        "FAQ, личностный рост, самопознание, эмоциональный компас, курсы развития, психологический профиль, Анастасия",
+        "MindQ Lab, лаборатория роста, самопознание, психология, осознанность, инструменты развития, FAQ",
     },
-    { name: "robots", content: "index, follow" },
-    { charset: "utf-8" },
-    { name: "viewport", content: "width=device-width, initial-scale=1" },
   ],
-  htmlAttrs: { lang: "ru" },
 });
 
 // FAQ Data
 const faqs = ref([
   {
-    question: "Что такое этот проект?",
+    question: "Что такое MindQ Lab?",
     answer:
-      "Это пространство осознанного развития, созданное Анастасией, где вы найдете курсы, гайды, тесты и инструменты, такие как Эмоциональный компас, чтобы лучше понять себя и улучшить свою жизнь.",
+      "MindQ Lab — это ваша персональная цифровая лаборатория для исследования себя. Мы объединяем научные психологические методики с современными технологиями, чтобы помочь вам глубже понять свою личность, эмоции и потенциал.",
     isOpen: false,
   },
   {
-    question: "Для кого предназначены курсы?",
+    question: "Какие инструменты доступны в Лаборатории?",
     answer:
-      "Курсы подходят всем, кто стремится к личностному росту, развитию навыков и гармоничным отношениям. Они разработаны экспертами и адаптированы для разных уровней подготовки.",
+      "В Lab вы найдете широкий спектр инструментов: от глубоких психологических тестов (Big 5, Архетипы) до интерактивных трекеров (Эмоциональный компас, Дневник благодарности). Все инструменты интегрированы в единую экосистему для целостного анализа.",
     isOpen: false,
   },
   {
-    question: "Что такое Эмоциональный компас?",
+    question: "Нужно ли мне иметь знания в психологии?",
     answer:
-      "Эмоциональный компас — это инструмент, который помогает отслеживать и понимать свои эмоции, чтобы принимать осознанные решения в жизни.",
+      "Нет, MindQ Lab создан для всех. Мы переводим сложные научные концепции на понятный язык и даем конкретные, применимые рекомендации на основе ваших результатов.",
     isOpen: false,
   },
   {
-    question: "Как начать использовать тесты?",
+    question: "Как формируется мой психологический профиль?",
     answer:
-      "Создайте профиль на сайте, выберите интересующий тест (например, Большая пятёрка или Открытие Архетипа Жизни) и следуйте инструкциям. Результаты сохранятся в вашем психологическом профиле.",
+      "Ваш профиль в Lab — это живая система. Он наполняется данными по мере прохождения тестов и использования инструментов. Чем больше вы взаимодействуете с Лабораторией, тем точнее и полезнее становятся персональные рекомендации.",
     isOpen: false,
   },
   {
-    question: "Бесплатны ли материалы?",
+    question: "Это замена терапии?",
     answer:
-      "Да, у нас есть бесплатные материалы, такие как подкасты и некоторые гайды. Основные курсы и инструменты доступны по подписке или за отдельную плату.",
+      "MindQ Lab — это мощный инструмент самопознания и самопомощи, но он не заменяет клиническую терапию. Мы даем ключи к пониманию себя, которые могут отлично дополнить работу с психологом или стать основой для самостоятельного роста.",
     isOpen: false,
   },
   {
-    question: "Как создать психологический профиль?",
+    question: "Как начать работу в Lab?",
     answer:
-      "Пройдите тесты и используйте инструменты, такие как Эмоциональный компас. Ваши данные автоматически сохраняются в профиле, который вы можете редактировать в настройках.",
+      "Просто зарегистрируйтесь и перейдите в раздел 'Lab'. Мы рекомендуем начать с базовых тестов, чтобы заложить фундамент вашего профиля, а затем переходить к ежедневным практикам.",
     isOpen: false,
   },
   {
-    question: "Могу ли я делиться результатами тестов?",
+    question: "Могу ли я отслеживать свой прогресс?",
     answer:
-      "Да, вы можете экспортировать свои данные через раздел управления аккаунтом в настройках и делиться ими по своему усмотрению.",
+      "Да, это одна из ключевых функций Лаборатории. Визуализация данных поможет вам увидеть динамику изменений вашего эмоционального состояния и личностного роста во времени.",
     isOpen: false,
   },
   {
-    question: "Что делать, если у меня возникли проблемы с доступом?",
+    question: "Безопасны ли мои данные?",
     answer:
-      "Свяжитесь с нашей поддержкой через форму обратной связи в разделе 'Связь' или на странице настроек. Мы ответим в течение 24 часов.",
-    isOpen: false,
-  },
-  {
-    question: "Как присоединиться к сообществу?",
-    answer:
-      "Зарегистрируйтесь на сайте и начните участвовать в обсуждениях, доступных через раздел 'Поддерживающие сообщества'. Это отличный способ найти единомышленников!",
-    isOpen: false,
-  },
-  {
-    question: "Могу ли я предложить тему для гайда или курса?",
-    answer:
-      "Конечно! Напишите нам через форму обратной связи с вашим предложением, и мы рассмотрим его для будущих материалов.",
+      "Абсолютно. В MindQ Lab конфиденциальность — приоритет. Ваши результаты исследований и личные записи зашифрованы и доступны только вам.",
     isOpen: false,
   },
 ]);
@@ -259,19 +179,23 @@ const toggleFAQ = (index) => {
 </script>
 
 <style scoped>
-/* Accordion Transition */
-.accordion-enter-active,
-.accordion-leave-active {
-  transition: all 0.3s ease;
-  max-height: 1000px;
-  opacity: 1;
+.btn-primary {
+  @apply bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600;
 }
 
-.accordion-enter-from,
-.accordion-leave-to {
-  max-height: 0;
-  opacity: 0;
-  padding-top: 0;
-  padding-bottom: 0;
+.social-btn {
+  @apply w-12 h-12 rounded-lg flex items-center justify-center text-lg transition-all duration-300 transform hover:scale-110 hover:shadow-lg;
+}
+
+.social-btn-cyan {
+  @apply bg-cyan-500/10 dark:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 hover:bg-cyan-500 hover:text-white border border-cyan-500/20 hover:border-cyan-500;
+}
+
+.social-btn-purple {
+  @apply bg-purple-500/10 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 hover:bg-purple-500 hover:text-white border border-purple-500/20 hover:border-purple-500;
+}
+
+.social-btn-emerald {
+  @apply bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500 hover:text-white border border-emerald-500/20 hover:border-emerald-500;
 }
 </style>
