@@ -1,7 +1,6 @@
 <template>
   <div
-    class="trail-making-test min-h-screen bg-slate-50 dark:bg-slate-950 px-4 sm:px-6 lg:px-8 py-8 transition-colors duration-500"
-  >
+    class="trail-making-test min-h-screen bg-slate-50 dark:bg-slate-950 px-4 sm:px-6 lg:px-8 py-8 transition-colors duration-500">
     <div class="max-w-6xl mx-auto">
       <Breadcrumbs />
       <!-- Intro Screen -->
@@ -9,53 +8,41 @@
         <div class="mb-8">
           <div class="inline-block relative">
             <div
-              class="w-24 h-24 rounded-2xl bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 flex items-center justify-center mb-6 animate-pulse-slow"
-            >
+              class="w-24 h-24 rounded-2xl bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 flex items-center justify-center mb-6 animate-pulse-slow">
               <i class="fas fa-route text-white text-5xl"></i>
             </div>
             <div
-              class="absolute -top-2 -right-2 w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center animate-bounce-slow"
-            >
+              class="absolute -top-2 -right-2 w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center animate-bounce-slow">
               <i class="fas fa-pencil-alt text-white text-sm"></i>
             </div>
           </div>
         </div>
 
-        <h1
-          class="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-4 tracking-tight"
-        >
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-4 tracking-tight">
           TRAIL MAKING TEST
         </h1>
-        <p
-          class="text-slate-600 dark:text-emerald-300/80 text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto mb-8"
-        >
+        <p class="text-slate-600 dark:text-emerald-300/80 text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto mb-8">
           Классический нейропсихологический тест на скорость обработки
           информации и переключение внимания
         </p>
 
         <div class="grid md:grid-cols-3 gap-6 mb-12 max-w-3xl mx-auto">
           <div class="info-card-small">
-            <div
-              class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-3 mx-auto"
-            >
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-3 mx-auto">
               <i class="fas fa-stopwatch text-emerald-400 text-xl"></i>
             </div>
             <div class="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mb-1">3-5 мин</div>
             <div class="text-sm text-slate-500 dark:text-slate-400">Длительность</div>
           </div>
           <div class="info-card-small">
-            <div
-              class="w-12 h-12 rounded-xl bg-teal-500/20 flex items-center justify-center mb-3 mx-auto"
-            >
+            <div class="w-12 h-12 rounded-xl bg-teal-500/20 flex items-center justify-center mb-3 mx-auto">
               <i class="fas fa-exchange-alt text-teal-400 text-xl"></i>
             </div>
             <div class="text-2xl font-bold text-teal-600 dark:text-teal-400 mb-1">2 части</div>
             <div class="text-sm text-slate-500 dark:text-slate-400">A + B</div>
           </div>
           <div class="info-card-small">
-            <div
-              class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center mb-3 mx-auto"
-            >
+            <div class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center mb-3 mx-auto">
               <i class="fas fa-certificate text-cyan-400 text-xl"></i>
             </div>
             <div class="text-2xl font-bold text-cyan-600 dark:text-cyan-400 mb-1">Научно</div>
@@ -66,8 +53,7 @@
         <div class="info-card max-w-2xl mx-auto mb-8">
           <div class="flex items-start gap-4">
             <div
-              class="w-10 h-10 rounded-lg bg-emerald-100 dark:bg-emerald-500/20 flex items-center justify-center flex-shrink-0"
-            >
+              class="w-10 h-10 rounded-lg bg-emerald-100 dark:bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
               <i class="fas fa-info-circle text-emerald-600 dark:text-emerald-400"></i>
             </div>
             <div class="text-left">
@@ -76,9 +62,8 @@
               </h3>
               <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
                 Trail Making Test оценивает
-                <strong class="text-emerald-600 dark:text-emerald-400"
-                  >скорость обработки информации</strong
-                >, <strong class="text-teal-600 dark:text-teal-400">визуальное внимание</strong> и
+                <strong class="text-emerald-600 dark:text-emerald-400">скорость обработки информации</strong>, <strong
+                  class="text-teal-600 dark:text-teal-400">визуальное внимание</strong> и
                 <strong class="text-cyan-600 dark:text-cyan-400">исполнительные функции</strong>.
                 Часть B особенно чувствительна к когнитивной гибкости и
                 способности переключаться между задачами.
@@ -87,10 +72,7 @@
           </div>
         </div>
 
-        <button
-          @click="phase = 'instructions'"
-          class="btn-primary text-lg px-10 py-5"
-        >
+        <button @click="phase = 'instructions'" class="btn-primary text-lg px-10 py-5">
           <i class="fas fa-play mr-2"></i>
           Начать тест
           <i class="fas fa-arrow-right ml-2"></i>
@@ -110,8 +92,7 @@
           <div class="instruction-card">
             <div class="flex items-start gap-4">
               <div
-                class="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center flex-shrink-0"
-              >
+                class="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center flex-shrink-0">
                 <span class="text-white font-bold">A</span>
               </div>
               <div class="text-left flex-1">
@@ -120,29 +101,22 @@
                 </h3>
                 <p class="text-slate-700 dark:text-slate-300 text-sm leading-relaxed mb-3">
                   Соединяйте кружки с цифрами по порядку:
-                  <span class="text-emerald-600 dark:text-emerald-400 font-mono"
-                    >1 → 2 → 3 → 4...</span
-                  >
+                  <span class="text-emerald-600 dark:text-emerald-400 font-mono">1 → 2 → 3 → 4...</span>
                 </p>
-                <div
-                  class="flex items-center gap-2 p-3 bg-slate-100 dark:bg-slate-800/50 rounded-lg"
-                >
+                <div class="flex items-center gap-2 p-3 bg-slate-100 dark:bg-slate-800/50 rounded-lg">
                   <div class="flex items-center gap-2">
                     <div
-                      class="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white text-sm font-bold"
-                    >
+                      class="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white text-sm font-bold">
                       1
                     </div>
                     <i class="fas fa-arrow-right text-emerald-400"></i>
                     <div
-                      class="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white text-sm font-bold"
-                    >
+                      class="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white text-sm font-bold">
                       2
                     </div>
                     <i class="fas fa-arrow-right text-emerald-400"></i>
                     <div
-                      class="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white text-sm font-bold"
-                    >
+                      class="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white text-sm font-bold">
                       3
                     </div>
                   </div>
@@ -154,8 +128,7 @@
           <div class="instruction-card">
             <div class="flex items-start gap-4">
               <div
-                class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center flex-shrink-0"
-              >
+                class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center flex-shrink-0">
                 <span class="text-white font-bold">B</span>
               </div>
               <div class="text-left flex-1">
@@ -164,35 +137,27 @@
                 </h3>
                 <p class="text-slate-700 dark:text-slate-300 text-sm leading-relaxed mb-3">
                   Чередуйте цифры и буквы:
-                  <span class="text-cyan-600 dark:text-cyan-400 font-mono"
-                    >1 → A → 2 → B → 3 → C...</span
-                  >
+                  <span class="text-cyan-600 dark:text-cyan-400 font-mono">1 → A → 2 → B → 3 → C...</span>
                 </p>
-                <div
-                  class="flex items-center gap-2 p-3 bg-slate-100 dark:bg-slate-800/50 rounded-lg"
-                >
+                <div class="flex items-center gap-2 p-3 bg-slate-100 dark:bg-slate-800/50 rounded-lg">
                   <div class="flex items-center gap-2">
                     <div
-                      class="w-8 h-8 rounded-full bg-cyan-500 flex items-center justify-center text-white text-sm font-bold"
-                    >
+                      class="w-8 h-8 rounded-full bg-cyan-500 flex items-center justify-center text-white text-sm font-bold">
                       1
                     </div>
                     <i class="fas fa-arrow-right text-cyan-400"></i>
                     <div
-                      class="w-8 h-8 rounded-full bg-teal-500 flex items-center justify-center text-white text-sm font-bold"
-                    >
+                      class="w-8 h-8 rounded-full bg-teal-500 flex items-center justify-center text-white text-sm font-bold">
                       A
                     </div>
                     <i class="fas fa-arrow-right text-cyan-400"></i>
                     <div
-                      class="w-8 h-8 rounded-full bg-cyan-500 flex items-center justify-center text-white text-sm font-bold"
-                    >
+                      class="w-8 h-8 rounded-full bg-cyan-500 flex items-center justify-center text-white text-sm font-bold">
                       2
                     </div>
                     <i class="fas fa-arrow-right text-cyan-400"></i>
                     <div
-                      class="w-8 h-8 rounded-full bg-teal-500 flex items-center justify-center text-white text-sm font-bold"
-                    >
+                      class="w-8 h-8 rounded-full bg-teal-500 flex items-center justify-center text-white text-sm font-bold">
                       B
                     </div>
                   </div>
@@ -204,8 +169,7 @@
           <div class="instruction-card">
             <div class="flex items-start gap-4">
               <div
-                class="w-10 h-10 rounded-lg bg-gradient-to-br from-yellow-500 to-orange-600 flex items-center justify-center flex-shrink-0"
-              >
+                class="w-10 h-10 rounded-lg bg-gradient-to-br from-yellow-500 to-orange-600 flex items-center justify-center flex-shrink-0">
                 <i class="fas fa-lightbulb text-white"></i>
               </div>
               <div class="text-left flex-1">
@@ -234,8 +198,7 @@
         </div>
 
         <div
-          class="bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 border border-emerald-500/20 rounded-2xl p-6 mb-8"
-        >
+          class="bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 border border-emerald-500/20 rounded-2xl p-6 mb-8">
           <div class="flex items-start gap-3">
             <i class="fas fa-trophy text-yellow-500 dark:text-yellow-400 text-xl mt-1"></i>
             <div>
@@ -267,14 +230,10 @@
         <div class="mb-6">
           <div class="flex items-center justify-between mb-4">
             <div class="flex items-center gap-4">
-              <div
-                class="part-badge"
-                :class="
-                  currentPart === 'A'
-                    ? 'bg-gradient-to-r from-emerald-500 to-teal-500'
-                    : 'bg-gradient-to-r from-cyan-500 to-blue-500'
-                "
-              >
+              <div class="part-badge" :class="currentPart === 'A'
+                ? 'bg-gradient-to-r from-emerald-500 to-teal-500'
+                : 'bg-gradient-to-r from-cyan-500 to-blue-500'
+                ">
                 ЧАСТЬ {{ currentPart }}
               </div>
               <div class="text-slate-300 text-sm">
@@ -289,85 +248,42 @@
 
           <!-- Progress -->
           <div class="flex items-center gap-3 text-sm text-slate-400">
-            <span
-              >Соединено:
+            <span>Соединено:
               <strong class="text-white">{{ connectedNodes.length }}</strong> из
-              <strong class="text-white">{{ totalNodes }}</strong></span
-            >
-            <span v-if="errors > 0" class="text-orange-400"
-              >• Ошибок: {{ errors }}</span
-            >
+              <strong class="text-white">{{ totalNodes }}</strong></span>
+            <span v-if="errors > 0" class="text-orange-400">• Ошибок: {{ errors }}</span>
           </div>
         </div>
 
         <!-- Canvas Area -->
         <div class="canvas-container">
-          <svg
-            ref="svgCanvas"
-            class="trail-canvas"
-            :viewBox="`0 0 ${canvasWidth} ${canvasHeight}`"
-            @click="handleCanvasClick"
-          >
+          <svg ref="svgCanvas" class="trail-canvas" :viewBox="`0 0 ${canvasWidth} ${canvasHeight}`"
+            @click="handleCanvasClick">
             <!-- Grid background (optional) -->
             <defs>
-              <pattern
-                id="grid"
-                width="40"
-                height="40"
-                patternUnits="userSpaceOnUse"
-              >
-                <path
-                  d="M 40 0 L 0 0 0 40"
-                  fill="none"
-                  stroke="rgba(100,116,139,0.1)"
-                  stroke-width="1"
-                />
+              <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(100,116,139,0.1)" stroke-width="1" />
               </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#grid)" />
 
             <!-- Trails (lines) -->
-            <path
-              v-for="(trail, index) in trails"
-              :key="`trail-${index}`"
-              :d="trail.path"
-              :stroke="trail.color"
-              stroke-width="3"
-              fill="none"
-              stroke-linecap="round"
-              class="trail-line"
-            />
+            <path v-for="(trail, index) in trails" :key="`trail-${index}`" :d="trail.path" :stroke="trail.color"
+              stroke-width="3" fill="none" stroke-linecap="round" class="trail-line" />
 
             <!-- Nodes (circles) -->
             <g v-for="node in nodes" :key="node.id">
-              <circle
-                :cx="node.x"
-                :cy="node.y"
-                :r="node.radius"
-                :class="getNodeClass(node)"
-                class="node-circle"
-                @click.stop="handleNodeClick(node)"
-              />
-              <text
-                :x="node.x"
-                :y="node.y"
-                class="node-text"
-                :class="{ 'node-text-completed': node.completed }"
-                text-anchor="middle"
-                dominant-baseline="central"
-              >
+              <circle :cx="node.x" :cy="node.y" :r="node.radius" :class="getNodeClass(node)" class="node-circle"
+                @click.stop="handleNodeClick(node)" />
+              <text :x="node.x" :y="node.y" class="node-text" :class="{ 'node-text-completed': node.completed }"
+                text-anchor="middle" dominant-baseline="central">
                 {{ node.label }}
               </text>
             </g>
 
             <!-- Current target indicator -->
             <g v-if="nextNode">
-              <circle
-                :cx="nextNode.x"
-                :cy="nextNode.y"
-                :r="nextNode.radius + 8"
-                class="target-pulse"
-              />
+              <circle :cx="nextNode.x" :cy="nextNode.y" :r="nextNode.radius + 8" class="target-pulse" />
             </g>
           </svg>
         </div>
@@ -376,13 +292,8 @@
         <div class="mt-6 text-center">
           <div v-if="nextNode" class="text-lg text-slate-300">
             Нажмите на:
-            <span
-              class="text-2xl font-bold"
-              :class="
-                currentPart === 'A' ? 'text-emerald-400' : 'text-cyan-400'
-              "
-              >{{ nextNode.label }}</span
-            >
+            <span class="text-2xl font-bold" :class="currentPart === 'A' ? 'text-emerald-400' : 'text-cyan-400'
+              ">{{ nextNode.label }}</span>
           </div>
           <div v-if="showError" class="text-red-400 text-sm mt-2 animate-shake">
             ❌ Неправильно! Нажмите {{ nextNode?.label }}
@@ -394,19 +305,19 @@
       <div v-if="phase === 'between'" class="text-center max-w-2xl mx-auto">
         <div class="mb-8">
           <div class="text-6xl mb-4">🎉</div>
-          <h2 class="text-4xl font-bold text-white mb-4 gradient-text">
+          <h2 class="text-4xl font-bold text-slate-900 dark:text-white mb-4 gradient-text">
             Часть A завершена!
           </h2>
           <div class="text-3xl font-bold text-emerald-400 mb-2">
             {{ formatTime(partATime) }}
           </div>
-          <p class="text-slate-300 mb-6">
-            {{ getPartAFeedback() }}
+          <p class="text-slate-800 mb-4">
+            {{ getBARatioFeedback() }}
           </p>
         </div>
 
         <div class="info-card mb-8">
-          <p class="text-slate-300 text-sm">
+          <p class="text-slate-800 text-sm">
             Готовьтесь к части B. Теперь вам нужно будет чередовать цифры и
             буквы: <span class="text-cyan-400 font-mono">1→A→2→B→3→C</span>
           </p>
@@ -424,8 +335,7 @@
         <div class="text-center mb-12">
           <div class="inline-block mb-6">
             <div
-              class="w-24 h-24 rounded-2xl bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 flex items-center justify-center animate-bounce-slow"
-            >
+              class="w-24 h-24 rounded-2xl bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 flex items-center justify-center animate-bounce-slow">
               <i class="fas fa-trophy text-white text-5xl"></i>
             </div>
           </div>
@@ -442,8 +352,7 @@
           <div class="result-card">
             <div class="flex items-center gap-3 mb-4">
               <div
-                class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center"
-              >
+                class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
                 <span class="text-white text-xl font-bold">A</span>
               </div>
               <div class="text-left">
@@ -462,8 +371,7 @@
           <div class="result-card">
             <div class="flex items-center gap-3 mb-4">
               <div
-                class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center"
-              >
+                class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
                 <span class="text-white text-xl font-bold">B</span>
               </div>
               <div class="text-left">
@@ -487,8 +395,7 @@
               Коэффициент B/A
             </div>
             <div
-              class="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400 mb-2"
-            >
+              class="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400 mb-2">
               {{ baRatio }}
             </div>
             <div class="text-lg text-slate-300 mb-4">
@@ -504,23 +411,15 @@
         <div class="grid md:grid-cols-2 gap-4 mb-8">
           <div class="stat-comparison">
             <div class="text-xs text-slate-400 mb-2">Ошибки часть A</div>
-            <div
-              class="text-3xl font-bold"
-              :class="
-                partAErrors === 0 ? 'text-emerald-400' : 'text-orange-400'
-              "
-            >
+            <div class="text-3xl font-bold" :class="partAErrors === 0 ? 'text-emerald-400' : 'text-orange-400'
+              ">
               {{ partAErrors }}
             </div>
           </div>
           <div class="stat-comparison">
             <div class="text-xs text-slate-400 mb-2">Ошибки часть B</div>
-            <div
-              class="text-3xl font-bold"
-              :class="
-                partBErrors === 0 ? 'text-emerald-400' : 'text-orange-400'
-              "
-            >
+            <div class="text-3xl font-bold" :class="partBErrors === 0 ? 'text-emerald-400' : 'text-orange-400'
+              ">
               {{ partBErrors }}
             </div>
           </div>
@@ -529,9 +428,7 @@
         <!-- Interpretation -->
         <div class="info-card mb-8">
           <div class="flex items-start gap-4">
-            <div
-              class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center flex-shrink-0"
-            >
+            <div class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
               <i class="fas fa-brain text-emerald-400"></i>
             </div>
             <div class="text-left flex-1">
@@ -570,10 +467,8 @@
             <i class="fas fa-share mr-2"></i>
             Поделиться
           </button>
-          <NuxtLink
-            to="/lab/tests"
-            class="btn-secondary px-8 py-4 text-lg text-center inline-flex items-center justify-center"
-          >
+          <NuxtLink to="/lab/tests"
+            class="btn-secondary px-8 py-4 text-lg text-center inline-flex items-center justify-center">
             <i class="fas fa-arrow-left mr-2"></i>
             К тестам
           </NuxtLink>
@@ -661,7 +556,7 @@ const generateNodePositions = (labels) => {
         y =
           padding +
           (row * (canvasHeight - 2 * padding)) /
-            Math.ceil(labels.length / cols) +
+          Math.ceil(labels.length / cols) +
           Math.random() * 50;
         valid = true;
       }
@@ -840,8 +735,8 @@ const getNodeClass = (node) => {
     return currentPart.value === "A"
       ? "node-completed-a"
       : node.isNumber
-      ? "node-completed-b-number"
-      : "node-completed-b-letter";
+        ? "node-completed-b-number"
+        : "node-completed-b-letter";
   }
   if (node.id === nextNode.value?.id) {
     return "node-next";
@@ -849,8 +744,8 @@ const getNodeClass = (node) => {
   return currentPart.value === "A"
     ? "node-default-a"
     : node.isNumber
-    ? "node-default-b-number"
-    : "node-default-b-letter";
+      ? "node-default-b-number"
+      : "node-default-b-letter";
 };
 
 const restartTest = () => {
@@ -872,9 +767,8 @@ const restartTest = () => {
 const shareResults = () => {
   const text = `🔗 Я прошёл Trail Making Test в MindQ Lab!\n\n⏱️ Мои результаты:\n• Часть A: ${formatTime(
     partATime.value
-  )}\n• Часть B: ${formatTime(partBTime.value)}\n• Коэффициент B/A: ${
-    baRatio.value
-  }\n\nПопробуй и ты! mindqlab.com`;
+  )}\n• Часть B: ${formatTime(partBTime.value)}\n• Коэффициент B/A: ${baRatio.value
+    }\n\nПопробуй и ты! mindqlab.com`;
 
   if (navigator.share) {
     navigator
@@ -883,7 +777,7 @@ const shareResults = () => {
         text: text,
         url: window.location.href,
       })
-      .catch(() => {});
+      .catch(() => { });
   } else {
     navigator.clipboard.writeText(text);
     alert("Результаты скопированы в буфер обмена!");
@@ -896,17 +790,11 @@ onUnmounted(() => {
 </script>
 <style scoped>
 .btn-primary {
-  @apply inline-flex items-center justify-center px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 
-         text-white font-semibold hover:from-emerald-600 hover:via-teal-600 hover:to-cyan-600 
-         transition-all duration-300 transform hover:scale-105 
-         shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40
-         disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none;
+  @apply inline-flex items-center justify-center px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-white font-semibold hover:from-emerald-600 hover:via-teal-600 hover:to-cyan-600 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none;
 }
 
 .btn-secondary {
-  @apply inline-flex items-center justify-center px-6 py-3 rounded-xl bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-600/50 
-         text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-500 
-         transition-all duration-300 transform hover:scale-105 shadow-sm dark:shadow-none;
+  @apply inline-flex items-center justify-center px-6 py-3 rounded-xl bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-600/50 text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-500 transition-all duration-300 transform hover:scale-105 shadow-sm dark:shadow-none;
 }
 
 .info-card {
@@ -938,13 +826,11 @@ onUnmounted(() => {
 }
 
 .timer-display {
-  @apply px-6 py-3 rounded-xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-cyan-500/20 
-         text-2xl font-mono font-bold text-cyan-600 dark:text-cyan-400 shadow-sm dark:shadow-none;
+  @apply px-6 py-3 rounded-xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-cyan-500/20 text-2xl font-mono font-bold text-cyan-600 dark:text-cyan-400 shadow-sm dark:shadow-none;
 }
 
 .canvas-container {
-  @apply relative rounded-2xl overflow-hidden bg-white dark:bg-slate-900/50 border-2 border-slate-200 dark:border-emerald-500/20
-         shadow-xl shadow-slate-200/50 dark:shadow-emerald-500/10;
+  @apply relative rounded-2xl overflow-hidden bg-white dark:bg-slate-900/50 border-2 border-slate-200 dark:border-emerald-500/20 shadow-xl shadow-slate-200/50 dark:shadow-emerald-500/10;
 }
 
 .trail-canvas {
@@ -1030,11 +916,13 @@ onUnmounted(() => {
 }
 
 @keyframes pulse-glow {
+
   0%,
   100% {
     opacity: 1;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.7;
     transform: scale(1.05);
@@ -1046,6 +934,7 @@ onUnmounted(() => {
     opacity: 1;
     stroke-width: 3;
   }
+
   100% {
     opacity: 0;
     stroke-width: 0;
@@ -1058,6 +947,7 @@ onUnmounted(() => {
     stroke-dasharray: 1000;
     stroke-dashoffset: 1000;
   }
+
   to {
     stroke-dasharray: 1000;
     stroke-dashoffset: 0;
@@ -1065,33 +955,40 @@ onUnmounted(() => {
 }
 
 @keyframes bounce-slow {
+
   0%,
   100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-10px);
   }
 }
 
 @keyframes pulse-slow {
+
   0%,
   100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.5;
   }
 }
 
 @keyframes shake {
+
   0%,
   100% {
     transform: translateX(0);
   }
+
   25% {
     transform: translateX(-10px);
   }
+
   75% {
     transform: translateX(10px);
   }
