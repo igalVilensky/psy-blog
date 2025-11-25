@@ -1,12 +1,16 @@
 <template>
-  <div class="min-h-screen bg-slate-950 text-white overflow-hidden">
+  <div
+    class="min-h-screen bg-white dark:bg-slate-950 text-gray-900 dark:text-white overflow-hidden transition-colors duration-300">
     <!-- Animated Background -->
     <div class="fixed inset-0 pointer-events-none">
-      <div class="absolute top-20 left-10 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl animate-pulse"></div>
-      <div class="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse"
+      <div
+        class="absolute top-20 left-10 w-72 h-72 bg-cyan-500/10 dark:bg-cyan-500/10 rounded-full blur-3xl animate-pulse">
+      </div>
+      <div
+        class="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/10 dark:bg-purple-500/10 rounded-full blur-3xl animate-pulse"
         style="animation-delay: 1s"></div>
       <div
-        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-3xl animate-pulse"
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/5 dark:bg-blue-500/5 rounded-full blur-3xl animate-pulse"
         style="animation-delay: 2s"></div>
     </div>
 
@@ -58,16 +62,17 @@
           </div>
 
           <!-- Enhanced Title with Better Typography -->
-          <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center mb-6 leading-tight">
+          <h1
+            class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white text-center mb-6 leading-tight">
             О MindQ Lab —
             <span
-              class="block mt-2 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-400 to-fuchsia-400 animate-gradient">
+              class="block mt-2 bg-clip-text text-transparent bg-gradient-to-r from-cyan-600 dark:from-cyan-400 via-blue-600 dark:via-blue-400 to-fuchsia-600 dark:to-fuchsia-400 animate-gradient">
               Лаборатория осознанного роста
             </span>
           </h1>
 
           <!-- Enhanced Description -->
-          <p class="text-slate-300 text-base sm:text-lg md:text-xl max-w-4xl mx-auto mb-8 leading-relaxed px-4 animate-fade-in-up"
+          <p class="text-gray-700 dark:text-slate-300 text-base sm:text-lg md:text-xl max-w-4xl mx-auto mb-8 leading-relaxed px-4 animate-fade-in-up"
             style="animation-delay: 0.2s">
             MindQ Lab — это инновационная платформа для исследования сознания и
             личностного роста, объединяющая современную психологию, нейронауки и
@@ -77,15 +82,15 @@
           <!-- Key Benefits Pills -->
           <div class="flex flex-wrap justify-center gap-3 mb-8 px-4 animate-fade-in-up" style="animation-delay: 0.4s">
             <span
-              class="px-4 py-2 bg-cyan-500/10 border border-cyan-500/30 rounded-full text-cyan-300 text-sm font-medium hover:bg-cyan-500/20 transition-colors duration-300">
+              class="px-4 py-2 bg-cyan-100 dark:bg-cyan-500/10 border border-cyan-400 dark:border-cyan-500/30 rounded-full text-cyan-700 dark:text-cyan-300 text-sm font-medium hover:bg-cyan-200 dark:hover:bg-cyan-500/20 transition-colors duration-300">
               🧠 Нейронауки
             </span>
             <span
-              class="px-4 py-2 bg-purple-500/10 border border-purple-500/30 rounded-full text-purple-300 text-sm font-medium hover:bg-purple-500/20 transition-colors duration-300">
+              class="px-4 py-2 bg-purple-100 dark:bg-purple-500/10 border border-purple-400 dark:border-purple-500/30 rounded-full text-purple-700 dark:text-purple-300 text-sm font-medium hover:bg-purple-200 dark:hover:bg-purple-500/20 transition-colors duration-300">
               🎮 Геймификация
             </span>
             <span
-              class="px-4 py-2 bg-pink-500/10 border border-pink-500/30 rounded-full text-pink-300 text-sm font-medium hover:bg-pink-500/20 transition-colors duration-300">
+              class="px-4 py-2 bg-pink-100 dark:bg-pink-500/10 border border-pink-400 dark:border-pink-500/30 rounded-full text-pink-700 dark:text-pink-300 text-sm font-medium hover:bg-pink-200 dark:hover:bg-pink-500/20 transition-colors duration-300">
               📊 Персонализация
             </span>
           </div>
@@ -95,7 +100,7 @@
       <!-- Mission Section with Enhanced Design -->
       <section class="mb-16 md:mb-24 animate-fade-in-up" style="animation-delay: 0.6s">
         <div
-          class="bg-gradient-to-br from-slate-900/60 via-slate-900/40 to-slate-900/60 backdrop-blur-xl rounded-3xl p-6 sm:p-8 md:p-10 border border-slate-800/60 shadow-2xl hover:border-cyan-500/30 transition-all duration-500 hover:shadow-cyan-500/20">
+          class="bg-gradient-to-br from-gray-100 via-gray-50 to-gray-100 dark:from-slate-900/60 dark:via-slate-900/40 dark:to-slate-900/60 backdrop-blur-xl rounded-3xl p-6 sm:p-8 md:p-10 border border-gray-200 dark:border-slate-800/60 shadow-2xl hover:border-cyan-500/30 transition-all duration-500 hover:shadow-cyan-500/20">
           <div class="flex flex-col sm:flex-row items-start sm:items-center mb-6 gap-4">
             <div
               class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
@@ -106,7 +111,7 @@
               Наша миссия
             </h2>
           </div>
-          <p class="text-slate-300 text-lg sm:text-xl leading-relaxed">
+          <p class="text-gray-700 dark:text-slate-300 text-lg sm:text-xl leading-relaxed">
             Сделать инструменты самопознания и развития доступными для каждого.
             Мы создаем безопасное цифровое пространство, где вы можете
             исследовать свои мысли, эмоции и поведение через научно обоснованные
@@ -126,21 +131,21 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
           <!-- Features Card with Enhanced Interactions -->
           <div
-            class="bg-gradient-to-br from-slate-900/60 via-slate-900/40 to-slate-900/60 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-slate-800/60 shadow-2xl animate-fade-in-left">
+            class="bg-gradient-to-br from-gray-100 via-gray-50 to-gray-100 dark:from-slate-900/60 dark:via-slate-900/40 dark:to-slate-900/60 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-gray-200 dark:border-slate-800/60 shadow-2xl animate-fade-in-left">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
               <div v-for="(feature, index) in features" :key="index"
-                class="feature-card group bg-slate-800/40 rounded-2xl p-5 md:p-6 border border-slate-700/40 hover:border-cyan-500/60 hover:bg-slate-800/60 transition-all duration-300 hover:scale-105 hover:-translate-y-1 cursor-pointer"
+                class="feature-card group bg-gray-50 dark:bg-slate-800/40 rounded-2xl p-5 md:p-6 border border-gray-200 dark:border-slate-700/40 hover:border-cyan-500/60 hover:bg-gray-100 dark:hover:bg-slate-800/60 transition-all duration-300 hover:scale-105 hover:-translate-y-1 cursor-pointer"
                 :style="`animation-delay: ${index * 0.1}s;`">
                 <div
                   class="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
                   <i :class="feature.icon + ' text-cyan-400 text-xl md:text-2xl'"></i>
                 </div>
                 <h3
-                  class="text-lg md:text-xl font-semibold mb-3 text-white group-hover:text-cyan-400 transition-colors duration-300">
+                  class="text-lg md:text-xl font-semibold mb-3 text-gray-900 dark:text-white group-hover:text-cyan-400 transition-colors duration-300">
                   {{ feature.title }}
                 </h3>
                 <p
-                  class="text-sm md:text-base text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors duration-300">
+                  class="text-sm md:text-base text-gray-600 dark:text-slate-400 leading-relaxed group-hover:text-gray-700 dark:group-hover:text-slate-300 transition-colors duration-300">
                   {{ feature.description }}
                 </p>
               </div>
@@ -149,7 +154,7 @@
 
           <!-- Stats Card with Enhanced Animations -->
           <div
-            class="bg-gradient-to-br from-slate-900/60 via-slate-900/40 to-slate-900/60 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-slate-800/60 shadow-2xl animate-fade-in-right">
+            class="bg-gradient-to-br from-gray-100 via-gray-50 to-gray-100 dark:from-slate-900/60 dark:via-slate-900/40 dark:to-slate-900/60 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-gray-200 dark:border-slate-800/60 shadow-2xl animate-fade-in-right">
             <div class="flex items-center mb-6 md:mb-8">
               <div
                 class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center mr-4 flex-shrink-0">
@@ -163,14 +168,14 @@
 
             <div class="grid grid-cols-2 gap-4 md:gap-6">
               <div v-for="(stat, index) in stats" :key="index"
-                class="stat-card group text-center p-4 md:p-6 bg-slate-800/40 rounded-2xl border border-slate-700/40 hover:border-purple-500/60 hover:bg-slate-800/60 transition-all duration-300 hover:scale-105 cursor-pointer"
+                class="stat-card group text-center p-4 md:p-6 bg-gray-50 dark:bg-slate-800/40 rounded-2xl border border-gray-200 dark:border-slate-700/40 hover:border-purple-500/60 hover:bg-gray-100 dark:hover:bg-slate-800/60 transition-all duration-300 hover:scale-105 cursor-pointer"
                 :style="`animation-delay: ${index * 0.1}s;`">
                 <div
                   :class="`text-3xl md:text-4xl font-bold mb-2 ${stat.color} group-hover:scale-110 transition-transform duration-300`">
                   {{ stat.value }}
                 </div>
                 <div
-                  class="text-xs md:text-sm text-slate-400 group-hover:text-slate-300 transition-colors duration-300 uppercase tracking-wide">
+                  class="text-xs md:text-sm text-gray-600 dark:text-slate-400 group-hover:text-gray-700 dark:group-hover:text-slate-300 transition-colors duration-300 uppercase tracking-wide">
                   {{ stat.label }}
                 </div>
               </div>
@@ -189,14 +194,14 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           <!-- Team Member 1 -->
           <div
-            class="team-card group bg-gradient-to-br from-slate-900/60 via-slate-900/40 to-slate-900/60 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-slate-800/60 shadow-2xl hover:border-cyan-500/60 hover:shadow-cyan-500/20 transition-all duration-500 hover:scale-[1.02] animate-fade-in-left">
+            class="team-card group bg-gradient-to-br from-gray-100 via-gray-50 to-gray-100 dark:from-slate-900/60 dark:via-slate-900/40 dark:to-slate-900/60 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-gray-200 dark:border-slate-800/60 shadow-2xl hover:border-cyan-500/60 hover:shadow-cyan-500/20 transition-all duration-500 hover:scale-[1.02] animate-fade-in-left">
             <div class="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-6">
               <div class="flex-shrink-0 relative">
                 <div
                   class="absolute inset-0 bg-gradient-to-br from-cyan-500/30 to-blue-500/30 rounded-full blur-xl group-hover:blur-2xl transition-all duration-500">
                 </div>
                 <img src="/assets/images/profile.jpg" alt="Анастасия Гельмут"
-                  class="w-28 h-28 sm:w-32 sm:h-32 rounded-full border-4 border-slate-800 object-cover shadow-2xl relative z-10 group-hover:scale-110 group-hover:border-cyan-500/50 transition-all duration-500" />
+                  class="w-28 h-28 sm:w-32 sm:h-32 rounded-full border-4 border-gray-200 dark:border-slate-800 object-cover shadow-2xl relative z-10 group-hover:scale-110 group-hover:border-cyan-500/50 transition-all duration-500" />
                 <div
                   class="absolute -bottom-2 -right-2 bg-gradient-to-br from-cyan-500 to-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg z-20">
                   🧠 Психолог
@@ -211,7 +216,7 @@
                   Руководитель по психологии и контенту
                 </p>
                 <p
-                  class="text-slate-300 text-sm sm:text-base leading-relaxed group-hover:text-white transition-colors duration-300">
+                  class="text-gray-700 dark:text-slate-300 text-sm sm:text-base leading-relaxed group-hover:text-gray-900 dark:group-hover:text-white transition-colors duration-300">
                   Создает психологическую основу MindQ Lab, объединяя
                   современные методики и научные подходы в области когнитивной
                   психологии и личностного роста.
@@ -222,14 +227,14 @@
 
           <!-- Team Member 2 -->
           <div
-            class="team-card group bg-gradient-to-br from-slate-900/60 via-slate-900/40 to-slate-900/60 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-slate-800/60 shadow-2xl hover:border-purple-500/60 hover:shadow-purple-500/20 transition-all duration-500 hover:scale-[1.02] animate-fade-in-right">
+            class="team-card group bg-gradient-to-br from-gray-100 via-gray-50 to-gray-100 dark:from-slate-900/60 dark:via-slate-900/40 dark:to-slate-900/60 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-gray-200 dark:border-slate-800/60 shadow-2xl hover:border-purple-500/60 hover:shadow-purple-500/20 transition-all duration-500 hover:scale-[1.02] animate-fade-in-right">
             <div class="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-6">
               <div class="flex-shrink-0 relative">
                 <div
                   class="absolute inset-0 bg-gradient-to-br from-purple-500/30 to-pink-500/30 rounded-full blur-xl group-hover:blur-2xl transition-all duration-500">
                 </div>
                 <img src="/assets/images/igal.avif" alt="Игаль Виленский"
-                  class="w-28 h-28 sm:w-32 sm:h-32 rounded-full border-4 border-slate-800 object-cover shadow-2xl relative z-10 group-hover:scale-110 group-hover:border-purple-500/50 transition-all duration-500" />
+                  class="w-28 h-28 sm:w-32 sm:h-32 rounded-full border-4 border-gray-200 dark:border-slate-800 object-cover shadow-2xl relative z-10 group-hover:scale-110 group-hover:border-purple-500/50 transition-all duration-500" />
                 <div
                   class="absolute -bottom-2 -right-2 bg-gradient-to-br from-purple-500 to-pink-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg z-20">
                   💻 Tech Lead
@@ -244,7 +249,7 @@
                   Технический руководитель
                 </p>
                 <p
-                  class="text-slate-300 text-sm sm:text-base leading-relaxed group-hover:text-white transition-colors duration-300">
+                  class="text-gray-700 dark:text-slate-300 text-sm sm:text-base leading-relaxed group-hover:text-gray-900 dark:group-hover:text-white transition-colors duration-300">
                   Отвечает за техническую реализацию MindQ Lab, включая
                   интерактивные инструменты, тесты и игровые механики для
                   вовлечения пользователей.
@@ -258,7 +263,7 @@
       <!-- Enhanced CTA Section -->
       <section class="animate-fade-in-up" style="animation-delay: 0.8s">
         <div
-          class="relative bg-gradient-to-br from-slate-900/80 via-slate-900/60 to-slate-900/80 backdrop-blur-xl rounded-3xl p-8 sm:p-10 md:p-12 border border-cyan-500/30 shadow-2xl text-center overflow-hidden">
+          class="relative bg-gradient-to-br from-gray-100 via-gray-50 to-gray-100 dark:from-slate-900/80 dark:via-slate-900/60 dark:to-slate-900/80 backdrop-blur-xl rounded-3xl p-8 sm:p-10 md:p-12 border border-cyan-500/30 shadow-2xl text-center overflow-hidden">
           <!-- Decorative elements -->
           <div class="absolute top-0 right-0 w-40 h-40 bg-cyan-500/10 rounded-full blur-3xl"></div>
           <div class="absolute bottom-0 left-0 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl"></div>
@@ -268,7 +273,8 @@
               class="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400">
               Начните исследовать себя
             </h2>
-            <p class="text-slate-300 text-base sm:text-lg md:text-xl mb-8 max-w-3xl mx-auto leading-relaxed">
+            <p
+              class="text-gray-700 dark:text-slate-300 text-base sm:text-lg md:text-xl mb-8 max-w-3xl mx-auto leading-relaxed">
               Присоединяйтесь к MindQ Lab, чтобы открыть свой потенциал через
               научные тесты, развивающие игры и поддерживающее сообщество.
             </p>
@@ -280,7 +286,7 @@
                 <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform duration-300"></i>
               </NuxtLink>
               <NuxtLink to="/courses"
-                class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-slate-800/60 border-2 border-purple-500/40 rounded-2xl text-slate-200 font-semibold text-base sm:text-lg hover:bg-purple-500/20 hover:border-purple-500/60 hover:scale-105 transition-all duration-300 w-full sm:w-auto">
+                class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-gray-200 dark:bg-slate-800/60 border-2 border-purple-500/40 rounded-2xl text-gray-900 dark:text-slate-200 font-semibold text-base sm:text-lg hover:bg-purple-500/20 hover:border-purple-500/60 hover:scale-105 transition-all duration-300 w-full sm:w-auto">
                 <i class="fas fa-graduation-cap group-hover:-rotate-12 transition-transform duration-300"></i>
                 <span>Изучить курсы</span>
                 <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform duration-300"></i>

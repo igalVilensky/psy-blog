@@ -1,31 +1,18 @@
 <template>
-  <main class="relative min-h-screen bg-slate-950">
+  <main class="relative min-h-screen bg-white dark:bg-slate-950 transition-colors duration-300">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <!-- Back Navigation -->
-      <nuxt-link
-        to="/blog"
-        class="inline-flex items-center text-cyan-400 hover:text-cyan-300 transition-colors mb-8 group"
-      >
-        <i
-          class="fas fa-arrow-left mr-2 transform transition-transform group-hover:-translate-x-1"
-        ></i>
+      <nuxt-link to="/blog"
+        class="inline-flex items-center text-cyan-400 hover:text-cyan-300 transition-colors mb-8 group">
+        <i class="fas fa-arrow-left mr-2 transform transition-transform group-hover:-translate-x-1"></i>
         Вернуться к статьям
       </nuxt-link>
 
       <article v-if="post" class="blog-post-container">
         <!-- Featured Image Container -->
         <div class="featured-image-wrapper">
-          <nuxt-img
-            v-if="post.image"
-            :src="urlFor(post?.image)?.width(1200).height(675).url()"
-            :alt="post?.title"
-            class="featured-image"
-            width="1200"
-            height="675"
-            loading="lazy"
-            format="webp"
-            quality="80"
-          />
+          <nuxt-img v-if="post.image" :src="urlFor(post?.image)?.width(1200).height(675).url()" :alt="post?.title"
+            class="featured-image" width="1200" height="675" loading="lazy" format="webp" quality="80" />
           <div class="image-overlay"></div>
 
           <!-- Category Badge -->
@@ -77,18 +64,15 @@
             <div class="share-icon-wrapper">
               <i class="fas fa-share-alt text-cyan-400"></i>
             </div>
-            <h3 class="text-xl font-bold text-white">Поделиться статьей</h3>
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white">Поделиться статьей</h3>
           </div>
-          <p class="text-slate-400 text-sm">
+          <p class="text-gray-600 dark:text-slate-400 text-sm">
             Понравилась статья? Поделитесь с друзьями!
           </p>
         </div>
 
         <div class="share-buttons-grid">
-          <button
-            @click="shareOn('twitter')"
-            class="social-share-btn twitter-btn"
-          >
+          <button @click="shareOn('twitter')" class="social-share-btn twitter-btn">
             <div class="social-btn-bg"></div>
             <div class="social-btn-content">
               <i class="fab fa-twitter text-xl"></i>
@@ -96,10 +80,7 @@
             </div>
           </button>
 
-          <button
-            @click="shareOn('facebook')"
-            class="social-share-btn facebook-btn"
-          >
+          <button @click="shareOn('facebook')" class="social-share-btn facebook-btn">
             <div class="social-btn-bg"></div>
             <div class="social-btn-content">
               <i class="fab fa-facebook text-xl"></i>
@@ -107,10 +88,7 @@
             </div>
           </button>
 
-          <button
-            @click="shareOn('telegram')"
-            class="social-share-btn telegram-btn"
-          >
+          <button @click="shareOn('telegram')" class="social-share-btn telegram-btn">
             <div class="social-btn-bg"></div>
             <div class="social-btn-content">
               <i class="fab fa-telegram text-xl"></i>
@@ -135,9 +113,9 @@
             <div class="comments-icon-wrapper">
               <i class="fas fa-comments text-purple-400"></i>
             </div>
-            <h2 class="text-2xl font-bold text-white">Комментарии</h2>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Комментарии</h2>
           </div>
-          <p class="text-slate-400 text-sm mt-2">
+          <p class="text-gray-600 dark:text-slate-400 text-sm mt-2">
             {{ comments.length }} {{ getCommentsWord(comments.length) }}
           </p>
         </div>
@@ -145,34 +123,14 @@
         <!-- Comment Form -->
         <form @submit.prevent="addNewComment" class="comment-form">
           <div class="form-fields-grid">
-            <input
-              v-model="newComment.name"
-              type="text"
-              placeholder="Ваше имя"
-              class="form-input"
-              required
-            />
-            <input
-              v-model="newComment.email"
-              type="email"
-              placeholder="Email (не публикуется)"
-              class="form-input"
-              required
-            />
+            <input v-model="newComment.name" type="text" placeholder="Ваше имя" class="form-input" required />
+            <input v-model="newComment.email" type="email" placeholder="Email (не публикуется)" class="form-input"
+              required />
           </div>
-          <textarea
-            v-model="newComment.text"
-            placeholder="Ваш комментарий..."
-            class="form-textarea"
-            rows="4"
-            required
-          ></textarea>
+          <textarea v-model="newComment.text" placeholder="Ваш комментарий..." class="form-textarea" rows="4"
+            required></textarea>
           <div class="flex justify-end">
-            <button
-              type="submit"
-              :disabled="isSubmitting"
-              class="submit-button"
-            >
+            <button type="submit" :disabled="isSubmitting" class="submit-button">
               <i class="fas fa-paper-plane mr-2"></i>
               {{ isSubmitting ? "Отправка..." : "Отправить комментарий" }}
             </button>
@@ -181,11 +139,7 @@
 
         <!-- Comments List -->
         <div class="comments-list">
-          <div
-            v-for="comment in comments"
-            :key="comment.id"
-            class="comment-card"
-          >
+          <div v-for="comment in comments" :key="comment.id" class="comment-card">
             <div class="comment-header">
               <div class="comment-avatar">
                 <i class="fas fa-user"></i>
@@ -200,8 +154,8 @@
             <p class="comment-text">{{ comment.text }}</p>
           </div>
           <div v-if="comments.length === 0" class="no-comments">
-            <i class="fas fa-comment-slash text-4xl text-slate-600 mb-3"></i>
-            <p class="text-slate-400">Пока нет комментариев. Будьте первым!</p>
+            <i class="fas fa-comment-slash text-4xl text-gray-400 dark:text-slate-600 mb-3"></i>
+            <p class="text-gray-600 dark:text-slate-400">Пока нет комментариев. Будьте первым!</p>
           </div>
         </div>
       </div>
@@ -212,19 +166,14 @@
           <div class="newsletter-icon">
             <i class="fas fa-envelope text-3xl"></i>
           </div>
-          <h2 class="text-2xl font-bold text-white mb-2">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
             Понравилась статья?
           </h2>
-          <p class="text-slate-300 mb-6">
+          <p class="text-gray-700 dark:text-slate-300 mb-6">
             Подпишитесь на рассылку и получайте новые статьи первыми
           </p>
           <div class="newsletter-form">
-            <input
-              type="email"
-              v-model="email"
-              placeholder="Введите ваш email"
-              class="newsletter-input"
-            />
+            <input type="email" v-model="email" placeholder="Введите ваш email" class="newsletter-input" />
             <button @click="subscribeEmail" class="newsletter-button">
               <span class="button-gradient"></span>
               <span class="button-text">
@@ -237,44 +186,28 @@
       </div>
 
       <!-- Share Modal -->
-      <div
-        v-if="isShareOpen"
-        class="modal-overlay"
-        @click="isShareOpen = false"
-      >
+      <div v-if="isShareOpen" class="modal-overlay" @click="isShareOpen = false">
         <div class="modal-content" @click.stop>
           <div class="modal-header">
-            <h3 class="text-xl font-bold text-white">Поделиться статьей</h3>
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white">Поделиться статьей</h3>
             <button @click="isShareOpen = false" class="modal-close">
               <i class="fas fa-times"></i>
             </button>
           </div>
           <div class="modal-body">
-            <button
-              @click="shareOn('twitter')"
-              class="modal-share-btn bg-[#1DA1F2]"
-            >
+            <button @click="shareOn('twitter')" class="modal-share-btn bg-[#1DA1F2]">
               <i class="fab fa-twitter mr-3"></i>
               Twitter
             </button>
-            <button
-              @click="shareOn('facebook')"
-              class="modal-share-btn bg-[#4267B2]"
-            >
+            <button @click="shareOn('facebook')" class="modal-share-btn bg-[#4267B2]">
               <i class="fab fa-facebook mr-3"></i>
               Facebook
             </button>
-            <button
-              @click="shareOn('telegram')"
-              class="modal-share-btn bg-[#0088cc]"
-            >
+            <button @click="shareOn('telegram')" class="modal-share-btn bg-[#0088cc]">
               <i class="fab fa-telegram mr-3"></i>
               Telegram
             </button>
-            <button
-              @click="copyLink"
-              class="modal-share-btn bg-cyan-500/20 text-cyan-400 border border-cyan-500/30"
-            >
+            <button @click="copyLink" class="modal-share-btn bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
               <i class="fas fa-link mr-3"></i>
               Копировать ссылку
             </button>
@@ -524,8 +457,7 @@ const validateEmail = (email: string) =>
 
 <style scoped>
 .blog-post-container {
-  @apply rounded-2xl bg-slate-900/50 border border-cyan-500/20 overflow-hidden 
-         backdrop-blur-sm hover:border-cyan-500/30 transition-all duration-300 mb-12;
+  @apply rounded-2xl bg-gray-100 dark:bg-slate-900/50 border border-gray-300 dark:border-cyan-500/20 overflow-hidden backdrop-blur-sm hover:border-cyan-500/30 transition-all duration-300 mb-12;
 }
 
 .featured-image-wrapper {
@@ -537,12 +469,11 @@ const validateEmail = (email: string) =>
 }
 
 .image-overlay {
-  @apply absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent;
+  @apply absolute inset-0 bg-gradient-to-t from-white dark:from-slate-950 via-white/20 dark:via-slate-950/20 to-transparent;
 }
 
 .category-badge {
-  @apply absolute top-6 left-6 px-4 py-2 rounded-xl text-sm font-medium 
-         backdrop-blur-md border shadow-lg;
+  @apply absolute top-6 left-6 px-4 py-2 rounded-xl text-sm font-medium backdrop-blur-md border shadow-lg;
 }
 
 .category-growth {
@@ -566,14 +497,11 @@ const validateEmail = (email: string) =>
 }
 
 .article-title {
-  @apply text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 
-         leading-tight bg-gradient-to-r from-cyan-400 to-purple-400 
-         bg-clip-text text-transparent;
+  @apply text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 leading-tight bg-gradient-to-r from-cyan-600 dark:from-cyan-400 to-purple-600 dark:to-purple-400 bg-clip-text text-transparent;
 }
 
 .meta-info-container {
-  @apply flex flex-col sm:flex-row sm:items-center sm:justify-between 
-         pb-6 mb-8 border-b border-cyan-500/20 gap-4;
+  @apply flex flex-col sm:flex-row sm:items-center sm:justify-between pb-6 mb-8 border-b border-gray-300 dark:border-cyan-500/20 gap-4;
 }
 
 .meta-info-row {
@@ -581,22 +509,19 @@ const validateEmail = (email: string) =>
 }
 
 .meta-item {
-  @apply flex items-center gap-2 text-slate-400;
+  @apply flex items-center gap-2 text-gray-600 dark:text-slate-400;
 }
 
 .share-button {
-  @apply flex items-center gap-2 px-4 py-2 rounded-lg bg-cyan-500/10 
-         text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500/20 
-         hover:border-cyan-500/50 transition-all duration-300 text-sm font-medium;
+  @apply flex items-center gap-2 px-4 py-2 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500/20 hover:border-cyan-500/50 transition-all duration-300 text-sm font-medium;
 }
 
 .prose-container {
-  @apply text-slate-300 text-base sm:text-lg leading-relaxed;
+  @apply text-gray-700 dark:text-slate-300 text-base sm:text-lg leading-relaxed;
 }
 
 .share-section {
-  @apply p-6 sm:p-8 rounded-2xl bg-slate-900/50 border border-cyan-500/20 
-         backdrop-blur-sm mb-12;
+  @apply p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-cyan-500/20 backdrop-blur-sm mb-12;
 }
 
 .share-header {
@@ -604,8 +529,7 @@ const validateEmail = (email: string) =>
 }
 
 .share-icon-wrapper {
-  @apply w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 
-         flex items-center justify-center;
+  @apply w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 flex items-center justify-center;
 }
 
 .share-buttons-grid {
@@ -613,8 +537,7 @@ const validateEmail = (email: string) =>
 }
 
 .social-share-btn {
-  @apply relative p-4 rounded-xl border overflow-hidden 
-         transition-all duration-300 hover:transform hover:scale-105;
+  @apply relative p-4 rounded-xl border overflow-hidden transition-all duration-300 hover:transform hover:scale-105;
 }
 
 .social-btn-bg {
@@ -626,11 +549,11 @@ const validateEmail = (email: string) =>
 }
 
 .social-btn-content {
-  @apply relative z-10 flex items-center justify-center text-white font-medium;
+  @apply relative z-10 flex items-center justify-center text-gray-700 dark:text-white font-medium;
 }
 
 .twitter-btn {
-  @apply border-[#1DA1F2]/30 hover:border-[#1DA1F2];
+  @apply border-[#1DA1F2]/30 hover:border-[#1DA1F2] bg-blue-50 dark:bg-transparent;
 }
 
 .twitter-btn .social-btn-bg {
@@ -638,7 +561,7 @@ const validateEmail = (email: string) =>
 }
 
 .facebook-btn {
-  @apply border-[#4267B2]/30 hover:border-[#4267B2];
+  @apply border-[#4267B2]/30 hover:border-[#4267B2] bg-blue-50 dark:bg-transparent;
 }
 
 .facebook-btn .social-btn-bg {
@@ -646,7 +569,7 @@ const validateEmail = (email: string) =>
 }
 
 .telegram-btn {
-  @apply border-[#0088cc]/30 hover:border-[#0088cc];
+  @apply border-[#0088cc]/30 hover:border-[#0088cc] bg-blue-50 dark:bg-transparent;
 }
 
 .telegram-btn .social-btn-bg {
@@ -654,7 +577,7 @@ const validateEmail = (email: string) =>
 }
 
 .copy-btn {
-  @apply border-cyan-500/30 hover:border-cyan-500;
+  @apply border-cyan-500/30 hover:border-cyan-500 bg-cyan-50 dark:bg-transparent;
 }
 
 .copy-btn .social-btn-bg {
@@ -662,8 +585,7 @@ const validateEmail = (email: string) =>
 }
 
 .comments-section {
-  @apply p-6 sm:p-8 rounded-2xl bg-slate-900/50 border border-purple-500/20 
-         backdrop-blur-sm mb-12;
+  @apply p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-purple-500/20 backdrop-blur-sm mb-12;
 }
 
 .comments-header {
@@ -671,12 +593,11 @@ const validateEmail = (email: string) =>
 }
 
 .comments-icon-wrapper {
-  @apply w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 
-         flex items-center justify-center;
+  @apply w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center;
 }
 
 .comment-form {
-  @apply mb-8 p-6 rounded-xl bg-slate-800/30 border border-slate-700/50;
+  @apply mb-8 p-6 rounded-xl bg-gray-100 dark:bg-slate-800/30 border border-gray-300 dark:border-slate-700/50;
 }
 
 .form-fields-grid {
@@ -684,25 +605,15 @@ const validateEmail = (email: string) =>
 }
 
 .form-input {
-  @apply w-full px-4 py-3 rounded-lg bg-slate-900/50 border border-slate-700 
-         text-white placeholder-slate-400 focus:outline-none 
-         focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all;
+  @apply w-full px-4 py-3 rounded-lg bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-slate-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-slate-400 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all;
 }
 
 .form-textarea {
-  @apply w-full px-4 py-3 rounded-lg bg-slate-900/50 border border-slate-700 
-         text-white placeholder-slate-400 resize-y mb-4
-         focus:outline-none focus:border-cyan-500 focus:ring-1 
-         focus:ring-cyan-500 transition-all;
+  @apply w-full px-4 py-3 rounded-lg bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-slate-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-slate-400 resize-y mb-4 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all;
 }
 
 .submit-button {
-  @apply px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-500 
-         text-white font-medium hover:from-cyan-600 hover:to-purple-600 
-         transition-all duration-300 transform hover:scale-105 
-         shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40
-         disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
-         disabled:shadow-none inline-flex items-center justify-center;
+  @apply px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-500 text-white font-medium hover:from-cyan-600 hover:to-purple-600 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none inline-flex items-center justify-center;
 }
 
 .comments-list {
@@ -710,8 +621,7 @@ const validateEmail = (email: string) =>
 }
 
 .comment-card {
-  @apply p-4 rounded-xl bg-slate-800/30 border border-slate-700/50 
-         hover:border-purple-500/30 transition-all duration-300;
+  @apply p-4 rounded-xl bg-slate-800/30 border border-slate-700/50 hover:border-purple-500/30 transition-all duration-300;
 }
 
 .comment-header {
@@ -719,8 +629,7 @@ const validateEmail = (email: string) =>
 }
 
 .comment-avatar {
-  @apply w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-purple-500 
-         flex items-center justify-center text-white flex-shrink-0;
+  @apply w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-purple-500 flex items-center justify-center text-white flex-shrink-0;
 }
 
 .comment-author {
@@ -740,9 +649,7 @@ const validateEmail = (email: string) =>
 }
 
 .newsletter-section {
-  @apply p-8 sm:p-12 rounded-2xl bg-gradient-to-br from-purple-500/10 
-         via-pink-500/10 to-cyan-500/10 border border-purple-500/20 
-         backdrop-blur-sm;
+  @apply p-8 sm:p-12 rounded-2xl bg-gradient-to-br from-purple-50 dark:from-purple-500/10 via-pink-50 dark:via-pink-500/10 to-cyan-50 dark:to-cyan-500/10 border border-purple-300 dark:border-purple-500/20 backdrop-blur-sm;
 }
 
 .newsletter-content {
@@ -750,9 +657,7 @@ const validateEmail = (email: string) =>
 }
 
 .newsletter-icon {
-  @apply w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br 
-         from-purple-500/20 to-pink-500/20 flex items-center justify-center 
-         text-purple-400;
+  @apply w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-purple-200 dark:from-purple-500/20 to-pink-200 dark:to-pink-500/20 flex items-center justify-center text-purple-600 dark:text-purple-400;
 }
 
 .newsletter-form {
@@ -760,15 +665,11 @@ const validateEmail = (email: string) =>
 }
 
 .newsletter-input {
-  @apply flex-1 px-4 py-3 rounded-lg sm:rounded-r-none bg-slate-900/50 
-         border border-slate-700 text-white placeholder-slate-400 
-         focus:outline-none focus:border-purple-500 focus:ring-1 
-         focus:ring-purple-500 transition-all;
+  @apply flex-1 px-4 py-3 rounded-lg sm:rounded-r-none bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-slate-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-slate-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all;
 }
 
 .newsletter-button {
-  @apply relative px-8 py-3 rounded-lg sm:rounded-l-none overflow-hidden 
-         transition-all duration-300;
+  @apply relative px-8 py-3 rounded-lg sm:rounded-l-none overflow-hidden transition-all duration-300;
 }
 
 .newsletter-button:hover .button-gradient {
@@ -776,8 +677,7 @@ const validateEmail = (email: string) =>
 }
 
 .button-gradient {
-  @apply absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 
-         to-cyan-500 transition-transform duration-300;
+  @apply absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 transition-transform duration-300;
 }
 
 .button-text {
@@ -785,13 +685,11 @@ const validateEmail = (email: string) =>
 }
 
 .modal-overlay {
-  @apply fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center 
-         justify-center z-50 p-4;
+  @apply fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4;
 }
 
 .modal-content {
-  @apply bg-slate-900/95 backdrop-blur-xl rounded-2xl border border-cyan-500/20 
-         p-6 max-w-md w-full;
+  @apply bg-slate-900/95 backdrop-blur-xl rounded-2xl border border-cyan-500/20 p-6 max-w-md w-full;
 }
 
 .modal-header {
@@ -807,21 +705,20 @@ const validateEmail = (email: string) =>
 }
 
 .modal-share-btn {
-  @apply w-full p-4 rounded-xl text-white font-medium flex items-center 
-         justify-center hover:opacity-90 transition-all duration-300;
+  @apply w-full p-4 rounded-xl text-white font-medium flex items-center justify-center hover:opacity-90 transition-all duration-300;
 }
 
 /* Prose styles for article content */
 :deep(.prose-container h2) {
-  @apply text-2xl sm:text-3xl font-bold text-white mt-8 mb-4;
+  @apply text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mt-8 mb-4;
 }
 
 :deep(.prose-container h3) {
-  @apply text-xl sm:text-2xl font-semibold text-white mt-6 mb-3;
+  @apply text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white mt-6 mb-3;
 }
 
 :deep(.prose-container p) {
-  @apply text-slate-300 mb-4 leading-relaxed;
+  @apply text-gray-700 dark:text-slate-300 mb-4 leading-relaxed;
 }
 
 :deep(.prose-container ul),
@@ -830,7 +727,7 @@ const validateEmail = (email: string) =>
 }
 
 :deep(.prose-container li) {
-  @apply mb-2 text-slate-300;
+  @apply mb-2 text-gray-700 dark:text-slate-300;
 }
 
 :deep(.prose-container a) {
@@ -838,19 +735,18 @@ const validateEmail = (email: string) =>
 }
 
 :deep(.prose-container img) {
-  @apply rounded-xl my-6 border border-cyan-500/20;
+  @apply rounded-xl my-6 border border-gray-300 dark:border-cyan-500/20;
 }
 
 :deep(.prose-container blockquote) {
-  @apply border-l-4 border-cyan-500/50 pl-4 py-2 my-6 italic text-slate-300;
+  @apply border-l-4 border-cyan-500/50 pl-4 py-2 my-6 italic text-gray-700 dark:text-slate-300;
 }
 
 :deep(.prose-container code) {
-  @apply bg-cyan-500/10 text-cyan-300 px-2 py-1 rounded;
+  @apply bg-cyan-100 dark:bg-cyan-500/10 text-cyan-700 dark:text-cyan-300 px-2 py-1 rounded;
 }
 
 :deep(.prose-container pre) {
-  @apply bg-slate-800/50 border border-slate-700 text-slate-300 p-4 
-         rounded-xl my-6 overflow-x-auto;
+  @apply bg-gray-100 dark:bg-slate-800/50 border border-gray-300 dark:border-slate-700 text-gray-900 dark:text-slate-300 p-4 rounded-xl my-6 overflow-x-auto;
 }
 </style>
