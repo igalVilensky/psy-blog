@@ -98,12 +98,56 @@ definePageMeta({
     layout: "laboratory",
 });
 
+const { public: { siteUrl } } = useRuntimeConfig();
+
 useHead({
-    title: "Звукотерапия | MindQ Lab",
+    title: "Звукотерапия",
     meta: [
         {
             name: "description",
             content: "Исцеляющие звуковые ландшафты, бинауральные ритмы и музыка для глубокой релаксации.",
+        },
+        // Open Graph
+        {
+            property: "og:title",
+            content: "Звукотерапия | MindQ Lab",
+        },
+        {
+            property: "og:description",
+            content: "Исцеляющие звуковые ландшафты, бинауральные ритмы и музыка для глубокой релаксации.",
+        },
+        {
+            property: "og:image",
+            content: `${siteUrl}/mindqlab-logo.png`,
+        },
+        {
+            property: "og:url",
+            content: `${siteUrl}/lab/sound-therapy`,
+        },
+        {
+            property: "og:type",
+            content: "website",
+        },
+        {
+            property: "og:site_name",
+            content: "MindQ Lab",
+        },
+        // Twitter Card
+        {
+            name: "twitter:card",
+            content: "summary_large_image",
+        },
+        {
+            name: "twitter:title",
+            content: "Звукотерапия | MindQ Lab",
+        },
+        {
+            name: "twitter:description",
+            content: "Исцеляющие звуковые ландшафты, бинауральные ритмы и музыка для глубокой релаксации.",
+        },
+        {
+            name: "twitter:image",
+            content: `${siteUrl}/mindqlab-logo.png`,
         },
     ],
 });
