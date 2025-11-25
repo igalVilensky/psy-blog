@@ -10,7 +10,7 @@
 
         <div class="max-w-6xl mx-auto relative z-10 mt-4">
             <!-- Header -->
-            <header class="mb-12 text-center">
+            <header class="mb-4 sm:mb-12 text-center">
                 <h1
                     class="text-3xl sm:text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-500 to-purple-600 mb-4 font-montserrat">
                     Глубокий Разговор
@@ -182,10 +182,10 @@
                             </div>
 
                             <div class="flex justify-end">
-                                <button @click="saveReflection"
-                                    class="px-6 py-2 rounded-lg bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-medium hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300 transform hover:-translate-y-0.5">
-                                    <span v-if="saved" class="flex items-center">
-                                        <i class="fas fa-check mr-2"></i> Сохранено
+                                <button @click="saveReflection" :disabled="isSaving"
+                                    class="px-6 py-2 rounded-lg bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-medium hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300 transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed">
+                                    <span v-if="isSaving" class="flex items-center">
+                                        <i class="fas fa-spinner fa-spin mr-2"></i> Сохранение...
                                     </span>
                                     <span v-else>Сохранить мысль</span>
                                 </button>
@@ -196,6 +196,11 @@
             </div>
         </div>
     </div>
+
+    <!-- Notification -->
+    <Notification v-if="notificationVisible" :message="notificationMessage" :type="notificationType"
+        @close="hideNotification" class="z-50" />
+
     <!-- Login Modal -->
     <BaseModal :is-open="showLoginModal" @close="showLoginModal = false">
         <template #header>
@@ -231,14 +236,132 @@
             <div class="hidden"></div>
         </template>
     </BaseModal>
+    <!-- Insight Journal Section -->
+    <div class="max-w-6xl mx-auto relative z-10 mt-24 mb-12">
+        <div class="flex items-center justify-center gap-3 mb-12">
+            <div class="h-1 w-12 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full"></div>
+            <h2 class="text-3xl font-bold text-slate-800 dark:text-white text-center font-montserrat">
+                Ваш Журнал Инсайтов
+            </h2>
+            <div class="h-1 w-12 bg-gradient-to-r from-purple-500 to-cyan-500 rounded-full"></div>
+        </div>
+
+        <div v-if="!auth.user"
+            class="text-center py-12 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm rounded-2xl border border-slate-200 dark:border-slate-800">
+            <i class="fas fa-lock text-4xl text-slate-400 mb-4"></i>
+            <p class="text-lg text-slate-600 dark:text-slate-400 mb-6">Войдите, чтобы видеть историю своих инсайтов</p>
+            <button @click="redirectToLogin"
+                class="px-6 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition-colors">
+                Войти
+            </button>
+        </div>
+
+        <div v-else>
+            <!-- Analytics Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div
+                    class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl p-6 rounded-2xl border border-cyan-500/20 shadow-lg relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i class="fas fa-book-open text-6xl text-cyan-500"></i>
+                    </div>
+                    <div class="relative z-10">
+                        <p class="text-sm text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider mb-1">
+                            Всего записей</p>
+                        <h3 class="text-4xl font-bold text-slate-900 dark:text-white">{{ totalReflections }}</h3>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl p-6 rounded-2xl border border-purple-500/20 shadow-lg relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i class="fas fa-calendar-alt text-6xl text-purple-500"></i>
+                    </div>
+                    <div class="relative z-10">
+                        <p class="text-sm text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider mb-1">
+                            Последняя запись</p>
+                        <h3 class="text-2xl font-bold text-slate-900 dark:text-white mt-2">{{ lastReflectionDate }}</h3>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl p-6 rounded-2xl border border-pink-500/20 shadow-lg relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i class="fas fa-heart text-6xl text-pink-500"></i>
+                    </div>
+                    <div class="relative z-10">
+                        <p class="text-sm text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider mb-1">
+                            Любимая тема</p>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mt-2 truncate">{{ topTheme }}</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History List -->
+            <div class="space-y-6">
+                <div v-if="loadingReflections" class="text-center py-12">
+                    <i class="fas fa-spinner fa-spin text-3xl text-cyan-500"></i>
+                    <p class="mt-4 text-slate-500">Загрузка истории...</p>
+                </div>
+
+                <div v-else-if="reflections.length === 0"
+                    class="text-center py-12 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm rounded-2xl border border-slate-200 dark:border-slate-800">
+                    <i class="fas fa-pen-alt text-4xl text-slate-300 mb-4"></i>
+                    <p class="text-lg text-slate-600 dark:text-slate-400">У вас пока нет сохраненных инсайтов. Начните с
+                        первой карты!</p>
+                </div>
+
+                <div v-else class="grid grid-cols-1 gap-6">
+                    <div v-for="entry in reflections" :key="entry.id"
+                        class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-cyan-500 to-purple-500">
+                        </div>
+
+                        <div class="flex flex-col md:flex-row md:items-start gap-6">
+                            <div class="flex-shrink-0">
+                                <div
+                                    class="w-16 h-16 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-2xl">
+                                    🔮
+                                </div>
+                            </div>
+
+                            <div class="flex-grow">
+                                <div class="flex flex-wrap items-center gap-3 mb-2">
+                                    <span
+                                        class="text-xs font-bold uppercase tracking-wider text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-900/20 px-2 py-1 rounded-md">
+                                        {{ entry.cardTitle }}
+                                    </span>
+                                    <span class="text-xs text-slate-400">
+                                        {{ new Date(entry.timestamp).toLocaleDateString() }}
+                                    </span>
+                                </div>
+
+                                <h4 class="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-3">
+                                    {{ entry.question }}
+                                </h4>
+
+                                <div class="prose dark:prose-invert max-w-none">
+                                    <p class="text-slate-600 dark:text-slate-400 whitespace-pre-wrap">{{
+                                        entry.reflection }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+
+import { ref, onMounted, watch, computed } from 'vue';
 import { useAuthStore } from "~/stores/auth";
 import { getFirestore } from "firebase/firestore";
-import { saveReflectionEntry } from "~/api/firebase/deepConversation";
+import { saveReflectionEntry, getUserReflections } from "~/api/firebase/deepConversation";
+import { useNotification } from "~/composables/useNotification";
 import BaseModal from "~/components/base/BaseModal.vue";
+import Notification from "~/components/base/Notification.vue";
 
 definePageMeta({
     layout: 'laboratory'
@@ -246,6 +369,9 @@ definePageMeta({
 
 const auth = useAuthStore();
 const db = getFirestore();
+
+// Notification
+const { notificationMessage, notificationType, notificationVisible, showNotification, hideNotification } = useNotification();
 
 // Card Data
 const allCards = ref([
@@ -346,9 +472,31 @@ const isFlipped = ref(false);
 const activeCard = ref(null);
 const visibleCards = ref([]);
 const reflectionText = ref('');
-const saved = ref(false);
 const isSaving = ref(false);
 const showLoginModal = ref(false);
+const reflections = ref([]);
+const loadingReflections = ref(false);
+
+// Computed Analytics
+const totalReflections = computed(() => reflections.value.length);
+
+const lastReflectionDate = computed(() => {
+    if (reflections.value.length === 0) return 'Нет записей';
+    const last = reflections.value[reflections.value.length - 1]; // Assuming appended order, or we sort
+    // Better to sort by timestamp desc to be sure
+    const sorted = [...reflections.value].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    return new Date(sorted[0].timestamp).toLocaleDateString();
+});
+
+const topTheme = computed(() => {
+    if (reflections.value.length === 0) return 'Нет данных';
+    const counts = {};
+    reflections.value.forEach(r => {
+        counts[r.cardTitle] = (counts[r.cardTitle] || 0) + 1;
+    });
+    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+    return sorted[0][0];
+});
 
 // Methods
 const updateVisibleCards = () => {
@@ -361,7 +509,6 @@ const handleCardClick = (cardId) => {
         if (isFlipped.value) {
             // Reset reflection when opening new card
             reflectionText.value = '';
-            saved.value = false;
         }
     }
 };
@@ -382,8 +529,23 @@ const shuffleCards = () => {
         updateVisibleCards();
         activeCard.value = visibleCards.value[0];
         reflectionText.value = '';
-        saved.value = false;
     }, 300);
+};
+
+const fetchReflections = async () => {
+    if (!auth.user) return;
+    loadingReflections.value = true;
+    try {
+        const result = await getUserReflections(db, auth.user.uid);
+        if (result.success) {
+            // Sort by timestamp desc
+            reflections.value = result.data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        }
+    } catch (error) {
+        console.error("Failed to fetch reflections:", error);
+    } finally {
+        loadingReflections.value = false;
+    }
 };
 
 const saveReflection = async () => {
@@ -399,18 +561,23 @@ const saveReflection = async () => {
         const result = await saveReflectionEntry(db, auth.user.uid, {
             cardId: activeCard.value.id,
             cardTitle: activeCard.value.title,
-            question: activeCard.value.questions[0], // Assuming first question for now, or we could let user select
+            question: activeCard.value.questions[0],
             reflection: reflectionText.value
         });
 
         if (result.success) {
-            saved.value = true;
-            setTimeout(() => {
-                saved.value = false;
-            }, 3000);
+            // Add new entry to local state immediately
+            reflections.value.unshift(result.entry);
+            // Reset the input
+            reflectionText.value = '';
+            // Show success notification
+            showNotification('Инсайт успешно сохранен!', 'success');
+        } else {
+            showNotification('Не удалось сохранить инсайт', 'error');
         }
     } catch (error) {
         console.error("Failed to save:", error);
+        showNotification('Произошла ошибка при сохранении', 'error');
     } finally {
         isSaving.value = false;
     }
@@ -424,6 +591,17 @@ const redirectToLogin = () => {
 onMounted(() => {
     updateVisibleCards();
     activeCard.value = visibleCards.value[0];
+    if (auth.user) {
+        fetchReflections();
+    }
+});
+
+watch(() => auth.user, (newUser) => {
+    if (newUser) {
+        fetchReflections();
+    } else {
+        reflections.value = [];
+    }
 });
 
 watch(visibleCards, (newCards) => {
