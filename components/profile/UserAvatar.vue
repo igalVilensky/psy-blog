@@ -20,7 +20,7 @@
     <!-- Loading State -->
     <div v-else-if="loading" class="avatar-placeholder">
       <i
-        class="fas fa-spinner fa-spin text-cyan-400"
+        class="fas fa-spinner fa-spin text-cyan-600 dark:text-cyan-400"
         :style="{ fontSize: Math.max(size * 0.3) + 'px' }"
       ></i>
     </div>
@@ -28,7 +28,7 @@
     <!-- Initial State -->
     <div v-else class="avatar-placeholder">
       <span
-        class="font-bold text-cyan-400"
+        class="font-bold text-cyan-600 dark:text-cyan-400"
         :style="{ fontSize: Math.max(size * 0.4) + 'px' }"
       >
         {{ userInitial }}
@@ -132,7 +132,7 @@ const uploadAvatar = async (file) => {
 
 .avatar-placeholder {
   @apply w-full h-full rounded-full 
-         bg-gradient-to-br from-cyan-500/10 via-purple-500/10 to-pink-500/10
+         bg-gradient-to-br from-cyan-500/10 via-cyan-500/10 to-pink-500/10
          flex items-center justify-center 
          ring-4 ring-cyan-500/30 ring-offset-4 ring-offset-slate-950
          border border-cyan-500/20
@@ -145,7 +145,7 @@ const uploadAvatar = async (file) => {
 }
 
 .upload-overlay-content {
-  @apply absolute inset-0 bg-gradient-to-br from-cyan-500/90 via-purple-500/90 to-pink-500/90
+  @apply absolute inset-0 bg-gradient-to-br from-cyan-500/90 via-cyan-500/90 to-pink-500/90
          rounded-full opacity-0 group-hover:opacity-100 
          transition-all duration-300 flex items-center justify-center 
          backdrop-blur-md

@@ -8,7 +8,7 @@
           <div class="spinner-ring spinner-ring-2"></div>
           <div class="spinner-ring spinner-ring-3"></div>
           <div class="spinner-core">
-            <i class="fas fa-cog text-3xl text-cyan-400"></i>
+            <i class="fas fa-cog text-3xl text-cyan-600 dark:text-cyan-400"></i>
           </div>
         </div>
         <div class="loading-text">
@@ -27,7 +27,7 @@
       <div class="mb-8">
         <NuxtLink
           to="/profile"
-          class="inline-flex items-center text-cyan-400 hover:text-cyan-300 transition-colors mb-4 group"
+          class="inline-flex items-center text-cyan-600 dark:text-cyan-400 hover:text-cyan-300 transition-colors mb-4 group"
         >
           <i
             class="fas fa-arrow-left mr-2 transform transition-transform group-hover:-translate-x-1"
@@ -53,7 +53,7 @@
             <div class="settings-header">
               <div class="flex items-center gap-3">
                 <div class="settings-icon-wrapper">
-                  <i class="fas fa-user-edit text-cyan-400"></i>
+                  <i class="fas fa-user-edit text-cyan-600 dark:text-cyan-400"></i>
                 </div>
                 <h2 class="text-xl font-bold text-white">Настройки профиля</h2>
               </div>
@@ -66,7 +66,7 @@
                 <!-- Display Name -->
                 <div class="form-group">
                   <label class="form-label">
-                    <i class="fas fa-user text-cyan-400 mr-2"></i>
+                    <i class="fas fa-user text-cyan-600 dark:text-cyan-400 mr-2"></i>
                     Отображаемое имя *
                   </label>
                   <input
@@ -81,7 +81,7 @@
                 <!-- Profession -->
                 <div class="form-group">
                   <label class="form-label">
-                    <i class="fas fa-briefcase text-purple-400 mr-2"></i>
+                    <i class="fas fa-briefcase text-cyan-600 dark:text-cyan-400 mr-2"></i>
                     Профессия
                   </label>
                   <input
@@ -125,7 +125,7 @@
               <!-- About Section -->
               <div class="form-group">
                 <label class="form-label">
-                  <i class="fas fa-quote-right text-cyan-400 mr-2"></i>
+                  <i class="fas fa-quote-right text-cyan-600 dark:text-cyan-400 mr-2"></i>
                   О себе
                 </label>
                 <textarea
@@ -141,7 +141,7 @@
               <!-- Social Media Links -->
               <div class="form-group">
                 <label class="form-label">
-                  <i class="fas fa-share-alt text-purple-400 mr-2"></i>
+                  <i class="fas fa-share-alt text-cyan-600 dark:text-cyan-400 mr-2"></i>
                   Социальные сети
                 </label>
                 <div class="space-y-3">
@@ -197,7 +197,7 @@
             <div class="settings-header">
               <div class="flex items-center gap-3">
                 <div class="settings-icon-wrapper">
-                  <i class="fas fa-comment-dots text-purple-400"></i>
+                  <i class="fas fa-comment-dots text-cyan-600 dark:text-cyan-400"></i>
                 </div>
                 <h2 class="text-xl font-bold text-white">Обратная связь</h2>
               </div>
@@ -207,7 +207,7 @@
               <!-- Name -->
               <div class="form-group">
                 <label class="form-label">
-                  <i class="fas fa-user text-cyan-400 mr-2"></i>
+                  <i class="fas fa-user text-cyan-600 dark:text-cyan-400 mr-2"></i>
                   Имя
                 </label>
                 <input
@@ -221,7 +221,7 @@
               <!-- Email -->
               <div class="form-group">
                 <label class="form-label">
-                  <i class="fas fa-envelope text-purple-400 mr-2"></i>
+                  <i class="fas fa-envelope text-cyan-600 dark:text-cyan-400 mr-2"></i>
                   Email
                 </label>
                 <input
@@ -279,12 +279,12 @@
 
             <div class="space-y-3">
               <button @click="changePassword" class="sidebar-btn">
-                <i class="fas fa-key text-cyan-400 mr-3"></i>
+                <i class="fas fa-key text-cyan-600 dark:text-cyan-400 mr-3"></i>
                 <span>Сменить пароль</span>
                 <i class="fas fa-chevron-right text-slate-600 ml-auto"></i>
               </button>
               <button @click="exportData" class="sidebar-btn">
-                <i class="fas fa-download text-purple-400 mr-3"></i>
+                <i class="fas fa-download text-cyan-600 dark:text-cyan-400 mr-3"></i>
                 <span>Экспорт данных</span>
                 <i class="fas fa-chevron-right text-slate-600 ml-auto"></i>
               </button>
@@ -309,12 +309,12 @@
 
             <div class="space-y-3">
               <NuxtLink to="/faq" class="sidebar-btn">
-                <i class="fas fa-question-circle text-cyan-400 mr-3"></i>
+                <i class="fas fa-question-circle text-cyan-600 dark:text-cyan-400 mr-3"></i>
                 <span>FAQ</span>
                 <i class="fas fa-chevron-right text-slate-600 ml-auto"></i>
               </NuxtLink>
               <button @click="contactSupport" class="sidebar-btn">
-                <i class="fas fa-headset text-purple-400 mr-3"></i>
+                <i class="fas fa-headset text-cyan-600 dark:text-cyan-400 mr-3"></i>
                 <span>Связаться с поддержкой</span>
                 <i class="fas fa-chevron-right text-slate-600 ml-auto"></i>
               </button>
@@ -565,7 +565,7 @@ const exportData = () => {
 }
 
 .settings-icon-wrapper {
-  @apply w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500/20 to-purple-500/20 
+  @apply w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500/20 to-cyan-500/20 
          flex items-center justify-center;
 }
 
@@ -622,7 +622,7 @@ const exportData = () => {
 }
 
 .add-social-btn {
-  @apply text-cyan-400 hover:text-cyan-300 text-sm font-medium 
+  @apply text-cyan-600 dark:text-cyan-400 hover:text-cyan-300 text-sm font-medium 
          flex items-center transition-colors mt-3;
 }
 
@@ -637,7 +637,7 @@ const exportData = () => {
 }
 
 .btn-gradient {
-  @apply absolute inset-0 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500;
+  @apply absolute inset-0 bg-gradient-to-r from-cyan-500 via-cyan-500 to-pink-500;
 }
 
 .submit-btn:hover .btn-gradient {
@@ -693,7 +693,7 @@ const exportData = () => {
 }
 
 .spinner-ring-2 {
-  @apply border-r-purple-500;
+  @apply border-r-cyan-500;
   animation-duration: 3s;
   animation-direction: reverse;
 }
@@ -738,7 +738,7 @@ const exportData = () => {
 }
 
 .progress-bar {
-  @apply h-full bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 rounded-full;
+  @apply h-full bg-gradient-to-r from-cyan-500 via-cyan-500 to-pink-500 rounded-full;
   animation: progress 2s ease-in-out infinite;
 }
 

@@ -605,7 +605,7 @@ watch(
 .bg-green-500 {
   background-color: rgb(34, 197, 94);
 }
-.bg-purple-500 {
+.bg-cyan-500 {
   background-color: rgb(168, 85, 247);
 }
 .bg-yellow-500 {

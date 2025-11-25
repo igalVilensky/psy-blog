@@ -4,7 +4,7 @@
     <div class="section-header">
       <div class="header-title">
         <div class="title-icon-wrapper">
-          <i class="fas fa-user-edit text-cyan-400"></i>
+          <i class="fas fa-user-edit text-cyan-600 dark:text-cyan-400"></i>
         </div>
         <h2 class="title-text">О себе</h2>
       </div>
@@ -13,14 +13,9 @@
         <span class="progress-label">Заполнено:</span>
         <div class="progress-bar-container">
           <div class="progress-bar-bg">
-            <div
-              class="progress-bar-fill"
-              :style="{ width: bioCompletionPercentage + '%' }"
-            ></div>
+            <div class="progress-bar-fill" :style="{ width: bioCompletionPercentage + '%' }"></div>
           </div>
-          <span class="progress-percentage"
-            >{{ bioCompletionPercentage }}%</span
-          >
+          <span class="progress-percentage">{{ bioCompletionPercentage }}%</span>
         </div>
       </div>
     </div>
@@ -28,8 +23,8 @@
     <!-- Loading State -->
     <div v-if="loading" class="loading-state">
       <div class="loading-content">
-        <i class="fas fa-spinner fa-spin text-4xl text-cyan-400 mb-4"></i>
-        <p class="text-slate-300">Загрузка данных...</p>
+        <i class="fas fa-spinner fa-spin text-4xl text-cyan-600 dark:text-cyan-400 mb-4"></i>
+        <p class="text-gray-700 dark:text-slate-300">Загрузка данных...</p>
       </div>
     </div>
 
@@ -37,34 +32,17 @@
     <div v-else class="bio-content">
       <!-- Info Cards Grid -->
       <div class="info-cards-grid">
-        <BioInfoCard
-          title="Профессия"
-          :value="profession"
-          iconClass="fas fa-briefcase"
-        />
-        <BioInfoCard
-          title="Социальные сети"
-          :value="socialMedia"
-          iconClass="fas fa-share-alt"
-          :isSocialMedia="true"
-        />
-        <BioInfoCard
-          title="Возраст"
-          :value="age"
-          iconClass="fas fa-birthday-cake"
-        />
-        <BioInfoCard
-          title="Пол"
-          :value="gender"
-          iconClass="fas fa-venus-mars"
-        />
+        <BioInfoCard title="Профессия" :value="profession" iconClass="fas fa-briefcase" />
+        <BioInfoCard title="Социальные сети" :value="socialMedia" iconClass="fas fa-share-alt" :isSocialMedia="true" />
+        <BioInfoCard title="Возраст" :value="age" iconClass="fas fa-birthday-cake" />
+        <BioInfoCard title="Пол" :value="gender" iconClass="fas fa-venus-mars" />
       </div>
 
       <!-- About Text Card -->
       <div class="about-card">
         <div class="about-header">
           <div class="about-icon-wrapper">
-            <i class="fas fa-quote-right text-cyan-400"></i>
+            <i class="fas fa-quote-right text-cyan-600 dark:text-cyan-400"></i>
           </div>
           <p class="about-label">О себе</p>
         </div>
@@ -148,13 +126,11 @@ const bioCompletionPercentage = computed(() => {
 
 <style scoped>
 .bio-section-container {
-  @apply p-6 sm:p-8 rounded-2xl bg-slate-900/50 border border-cyan-500/20 
-         backdrop-blur-sm mb-8 hover:border-cyan-500/30 transition-all duration-300;
+  @apply p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-cyan-500/20 backdrop-blur-sm mb-8 hover:border-cyan-500/30 transition-all duration-300;
 }
 
 .section-header {
-  @apply flex flex-col sm:flex-row items-start sm:items-center 
-         justify-between gap-4 mb-8 pb-6 border-b border-cyan-500/10;
+  @apply flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-cyan-500/10;
 }
 
 .header-title {
@@ -162,12 +138,11 @@ const bioCompletionPercentage = computed(() => {
 }
 
 .title-icon-wrapper {
-  @apply w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 
-         flex items-center justify-center text-xl;
+  @apply w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center text-xl;
 }
 
 .title-text {
-  @apply text-2xl font-bold text-white;
+  @apply text-2xl font-bold text-gray-900 dark:text-white;
 }
 
 .progress-wrapper {
@@ -175,7 +150,7 @@ const bioCompletionPercentage = computed(() => {
 }
 
 .progress-label {
-  @apply text-slate-400 text-sm whitespace-nowrap;
+  @apply text-gray-600 dark:text-slate-400 text-sm whitespace-nowrap;
 }
 
 .progress-bar-container {
@@ -183,18 +158,15 @@ const bioCompletionPercentage = computed(() => {
 }
 
 .progress-bar-bg {
-  @apply w-24 sm:w-32 bg-slate-800/50 rounded-full h-2.5 border border-slate-700/50 
-         overflow-hidden;
+  @apply w-24 sm:w-32 bg-slate-800/50 rounded-full h-2.5 border border-slate-700/50 overflow-hidden;
 }
 
 .progress-bar-fill {
-  @apply h-full rounded-full transition-all duration-500 ease-out
-         bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500
-         shadow-lg shadow-cyan-500/50;
+  @apply h-full rounded-full transition-all duration-500 ease-out bg-gradient-to-r from-cyan-500 via-cyan-500 to-pink-500 shadow-lg shadow-cyan-500/50;
 }
 
 .progress-percentage {
-  @apply text-cyan-400 text-sm font-bold whitespace-nowrap;
+  @apply text-cyan-600 dark:text-cyan-400 text-sm font-bold whitespace-nowrap;
 }
 
 .loading-state {
@@ -214,8 +186,7 @@ const bioCompletionPercentage = computed(() => {
 }
 
 .about-card {
-  @apply p-6 sm:p-8 rounded-xl bg-slate-800/30 border border-slate-700/50 
-         hover:border-cyan-500/30 transition-all duration-300;
+  @apply p-6 sm:p-8 rounded-xl bg-gray-100 dark:bg-slate-800/30 border border-gray-300 dark:border-slate-700/50 hover:border-cyan-500/30 transition-all duration-300;
 }
 
 .about-header {
@@ -223,20 +194,19 @@ const bioCompletionPercentage = computed(() => {
 }
 
 .about-icon-wrapper {
-  @apply w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500/20 to-purple-500/20 
-         flex items-center justify-center;
+  @apply w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500/20 to-cyan-500/20 flex items-center justify-center;
 }
 
 .about-label {
-  @apply text-slate-400 font-medium;
+  @apply text-gray-600 dark:text-slate-400 font-medium;
 }
 
 .about-text {
-  @apply text-white text-base leading-relaxed whitespace-pre-line;
+  @apply text-gray-900 dark:text-white text-base leading-relaxed whitespace-pre-line;
 }
 
 .about-placeholder {
-  @apply text-slate-500 text-sm italic flex items-center;
+  @apply text-gray-400 dark:text-slate-500 text-sm italic flex items-center;
 }
 
 .cta-container {
@@ -244,14 +214,11 @@ const bioCompletionPercentage = computed(() => {
 }
 
 .cta-button {
-  @apply relative inline-flex items-center justify-center 
-         px-8 py-3 rounded-xl overflow-hidden 
-         transition-all duration-300 hover:scale-105 
-         hover:shadow-lg hover:shadow-cyan-500/25;
+  @apply relative inline-flex items-center justify-center px-8 py-3 rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-cyan-500/25;
 }
 
 .cta-gradient {
-  @apply absolute inset-0 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500;
+  @apply absolute inset-0 bg-gradient-to-r from-cyan-500 via-cyan-500 to-pink-500;
 }
 
 .cta-button:hover .cta-gradient {

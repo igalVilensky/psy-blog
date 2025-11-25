@@ -7,12 +7,12 @@
         <div class="spinner-ring spinner-ring-2"></div>
         <div class="spinner-ring spinner-ring-3"></div>
         <div class="spinner-core">
-          <i class="fas fa-user text-3xl text-cyan-400"></i>
+          <i class="fas fa-user text-3xl text-cyan-600 dark:text-cyan-400"></i>
         </div>
       </div>
       <div class="loading-text">
-        <h3 class="text-xl font-bold text-white mb-2">Загрузка профиля</h3>
-        <p class="text-slate-400 text-sm">Подготовка данных...</p>
+        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Загрузка профиля</h3>
+        <p class="text-slate-600 dark:text-slate-400 text-sm">Подготовка данных...</p>
       </div>
       <div class="loading-progress">
         <div class="progress-bar"></div>
@@ -21,65 +21,34 @@
   </div>
 
   <!-- Main Content -->
-  <div v-else class="relative min-h-screen bg-slate-950">
+  <div v-else class="relative min-h-screen bg-white dark:bg-slate-950 transition-colors duration-300">
     <div class="max-w-6xl mx-auto px-4 sm:px-0 pb-12 pt-8 sm:pt-12">
-      <!-- Back Button -->
-      <NuxtLink
-        to="/"
-        class="inline-flex items-center text-cyan-400 hover:text-cyan-300 transition-colors mb-6 group"
-      >
-        <i
-          class="fas fa-arrow-left mr-2 transform transition-transform group-hover:-translate-x-1"
-        ></i>
-        Назад на главную
-      </NuxtLink>
 
       <!-- Profile Header -->
-      <ProfileHeader
-        :avatarUrl="avatarUrl"
-        :loading="loading"
-        :displayName="authStore.user?.displayName || 'User'"
+      <ProfileHeader :avatarUrl="avatarUrl" :loading="loading" :displayName="authStore.user?.displayName || 'User'"
         :email="authStore.user?.email || 'Email not provided'"
-        :userInitial="authStore.user?.displayName?.charAt(0).toUpperCase()"
-        @update:avatarUrl="avatarUrl = $event"
-        @logout="logoutUser"
-        @notify="handleNotification($event)"
-      />
+        :userInitial="authStore.user?.displayName?.charAt(0).toUpperCase()" @update:avatarUrl="avatarUrl = $event"
+        @logout="logoutUser" @notify="handleNotification($event)" />
 
       <!-- Bio Section -->
-      <BioSection
-        :loading="loadingBio"
-        :profession="profession"
-        :socialMedia="socialMedia"
-        :age="age"
-        :gender="gender"
-        :aboutYourself="aboutYourself"
-      />
+      <BioSection :loading="loadingBio" :profession="profession" :socialMedia="socialMedia" :age="age" :gender="gender"
+        :aboutYourself="aboutYourself" />
 
       <!-- Navigation Tabs -->
       <div class="mb-8">
         <div class="flex gap-2 overflow-x-auto pb-2">
-          <button
-            @click="activeTab = 'overview'"
-            class="filter-tab"
-            :class="activeTab === 'overview' ? 'filter-tab-active' : ''"
-          >
+          <button @click="activeTab = 'overview'" class="filter-tab"
+            :class="activeTab === 'overview' ? 'filter-tab-active' : ''">
             <i class="fas fa-th mr-2"></i>
             Обзор
           </button>
-          <button
-            @click="activeTab = 'emotions'"
-            class="filter-tab"
-            :class="activeTab === 'emotions' ? 'filter-tab-active' : ''"
-          >
+          <button @click="activeTab = 'emotions'" class="filter-tab"
+            :class="activeTab === 'emotions' ? 'filter-tab-active' : ''">
             <i class="fas fa-heart mr-2"></i>
             Эмоции
           </button>
-          <button
-            @click="activeTab = 'archetypes'"
-            class="filter-tab"
-            :class="activeTab === 'archetypes' ? 'filter-tab-active' : ''"
-          >
+          <button @click="activeTab = 'archetypes'" class="filter-tab"
+            :class="activeTab === 'archetypes' ? 'filter-tab-active' : ''">
             <i class="fas fa-users mr-2"></i>
             Архетипы
           </button>
@@ -87,45 +56,42 @@
       </div>
 
       <!-- Overview Tab -->
-      <div
-        v-if="activeTab === 'overview'"
-        class="grid grid-cols-1 lg:grid-cols-2 gap-6"
-      >
+      <div v-if="activeTab === 'overview'" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Quick Stats -->
         <div class="settings-card">
           <div class="flex items-center gap-3 mb-6">
             <div class="settings-icon-wrapper">
-              <i class="fas fa-chart-line text-cyan-400"></i>
+              <i class="fas fa-chart-line text-cyan-600 dark:text-cyan-400"></i>
             </div>
-            <h2 class="text-xl font-bold text-white">Быстрая статистика</h2>
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white">Быстрая статистика</h2>
           </div>
           <div class="space-y-4">
             <div class="stat-item">
               <div class="flex items-center gap-3">
-                <i class="fas fa-clipboard-list text-cyan-400"></i>
-                <span class="text-slate-300">Всего записей</span>
+                <i class="fas fa-clipboard-list text-cyan-600 dark:text-cyan-400"></i>
+                <span class="text-gray-700 dark:text-slate-300">Всего записей</span>
               </div>
-              <span class="text-2xl font-bold text-white">{{
+              <span class="text-2xl font-bold text-gray-900 dark:text-white">{{
                 emotionBarometerStats.totalEntries
-              }}</span>
+                }}</span>
             </div>
             <div class="stat-item">
               <div class="flex items-center gap-3">
-                <i class="fas fa-smile text-purple-400"></i>
-                <span class="text-slate-300">Частая эмоция</span>
+                <i class="fas fa-smile text-cyan-600 dark:text-cyan-400"></i>
+                <span class="text-gray-700 dark:text-slate-300">Частая эмоция</span>
               </div>
-              <span class="text-lg font-semibold text-purple-400">{{
+              <span class="text-lg font-semibold text-cyan-600 dark:text-cyan-400">{{
                 emotionBarometerStats.mostCommonEmotion
-              }}</span>
+                }}</span>
             </div>
             <div class="stat-item">
               <div class="flex items-center gap-3">
                 <i class="fas fa-tachometer-alt text-emerald-400"></i>
-                <span class="text-slate-300">Средняя интенсивность</span>
+                <span class="text-gray-700 dark:text-slate-300">Средняя интенсивность</span>
               </div>
               <span class="text-lg font-semibold text-emerald-400">{{
                 emotionBarometerStats.averageIntensity.toFixed(1)
-              }}</span>
+                }}</span>
             </div>
           </div>
         </div>
@@ -133,30 +99,28 @@
         <!-- Recent Activity -->
         <div class="settings-card">
           <div class="flex items-center gap-3 mb-6">
-            <div
-              class="settings-icon-wrapper bg-gradient-to-br from-purple-500/20 to-pink-500/20"
-            >
-              <i class="fas fa-history text-purple-400"></i>
+            <div class="settings-icon-wrapper bg-gradient-to-br from-cyan-500/20 to-pink-500/20">
+              <i class="fas fa-history text-cyan-600 dark:text-cyan-400"></i>
             </div>
-            <h2 class="text-xl font-bold text-white">Последняя активность</h2>
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white">Последняя активность</h2>
           </div>
           <div class="space-y-3">
             <div class="activity-item">
               <div class="activity-icon bg-cyan-500/20">
-                <i class="fas fa-heart text-cyan-400 text-sm"></i>
+                <i class="fas fa-heart text-cyan-600 dark:text-cyan-400 text-sm"></i>
               </div>
               <div class="flex-1">
-                <p class="text-slate-300 text-sm">Новая запись эмоций</p>
-                <p class="text-slate-500 text-xs mt-1">2 часа назад</p>
+                <p class="text-gray-700 dark:text-slate-300 text-sm">Новая запись эмоций</p>
+                <p class="text-gray-500 dark:text-slate-500 text-xs mt-1">2 часа назад</p>
               </div>
             </div>
             <div class="activity-item">
-              <div class="activity-icon bg-purple-500/20">
-                <i class="fas fa-brain text-purple-400 text-sm"></i>
+              <div class="activity-icon bg-cyan-500/20">
+                <i class="fas fa-brain text-cyan-600 dark:text-cyan-400 text-sm"></i>
               </div>
               <div class="flex-1">
-                <p class="text-slate-300 text-sm">Пройден тест на архетипы</p>
-                <p class="text-slate-500 text-xs mt-1">1 день назад</p>
+                <p class="text-gray-700 dark:text-slate-300 text-sm">Пройден тест на архетипы</p>
+                <p class="text-gray-500 dark:text-slate-500 text-xs mt-1">1 день назад</p>
               </div>
             </div>
             <div class="activity-item">
@@ -164,8 +128,8 @@
                 <i class="fas fa-trophy text-emerald-400 text-sm"></i>
               </div>
               <div class="flex-1">
-                <p class="text-slate-300 text-sm">Достижение разблокировано</p>
-                <p class="text-slate-500 text-xs mt-1">3 дня назад</p>
+                <p class="text-gray-700 dark:text-slate-300 text-sm">Достижение разблокировано</p>
+                <p class="text-gray-500 dark:text-slate-500 text-xs mt-1">3 дня назад</p>
               </div>
             </div>
           </div>
@@ -177,13 +141,13 @@
         <div class="section-header">
           <div class="flex items-center gap-3">
             <div class="section-icon-wrapper">
-              <i class="fas fa-chart-line text-cyan-400"></i>
+              <i class="fas fa-chart-line text-cyan-600 dark:text-cyan-400"></i>
             </div>
             <div>
-              <h2 class="text-2xl font-bold text-white">
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
                 Эмоциональный компас
               </h2>
-              <p class="text-sm text-slate-400 mt-1">
+              <p class="text-sm text-gray-600 dark:text-slate-400 mt-1">
                 Отслеживайте свое эмоциональное состояние
               </p>
             </div>
@@ -192,45 +156,32 @@
 
         <!-- CTA Button -->
         <div v-if="emotionBarometerStats.totalEntries > 0" class="mb-6">
-          <Button
-            to="/lab/experiments/emotional-compass"
-            text="Перейти к барометру"
-            iconClass="fas fa-arrow-right"
-            gradientStart="#0EA5E9"
-            gradientEnd="#E879F9"
-            textColor="#0EA5E9"
-            customClass="cta-button-custom"
-          />
+          <Button to="/lab/experiments/emotional-compass" text="Перейти к барометру" iconClass="fas fa-arrow-right"
+            gradientStart="#0EA5E9" gradientEnd="#E879F9" textColor="#0EA5E9" customClass="cta-button-custom" />
         </div>
 
         <!-- Loading State -->
         <div v-if="loadingEmotionBarometer" class="loading-state">
           <div class="loading-content">
-            <i class="fas fa-spinner fa-spin text-4xl text-cyan-400 mb-4"></i>
-            <p class="text-slate-300">Загрузка данных...</p>
+            <i class="fas fa-spinner fa-spin text-4xl text-cyan-600 dark:text-cyan-400 mb-4"></i>
+            <p class="text-gray-700 dark:text-slate-300">Загрузка данных...</p>
           </div>
         </div>
 
         <!-- No Data State -->
-        <div
-          v-else-if="emotionBarometerStats.totalEntries === 0"
-          class="empty-state"
-        >
+        <div v-else-if="emotionBarometerStats.totalEntries === 0" class="empty-state">
           <div class="empty-content">
             <div class="empty-icon">
-              <i class="fas fa-chart-pie text-5xl text-cyan-400"></i>
+              <i class="fas fa-chart-pie text-5xl text-cyan-600 dark:text-cyan-400"></i>
             </div>
-            <h3 class="text-xl font-semibold text-white mb-2">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
               Нет данных для отображения
             </h3>
-            <p class="text-slate-400 mb-6">
+            <p class="text-gray-600 dark:text-slate-400 mb-6">
               Начните использовать Эмоциональный компас, чтобы отслеживать свои
               эмоции
             </p>
-            <NuxtLink
-              to="/lab/experiments/emotional-compass"
-              class="start-button"
-            >
+            <NuxtLink to="/lab/experiments/emotional-compass" class="start-button">
               <span class="button-gradient"></span>
               <span class="button-content">
                 <i class="fas fa-play-circle mr-2"></i>
@@ -245,10 +196,8 @@
           <div class="stats-grid">
             <!-- Total Entries -->
             <div class="stat-card">
-              <div
-                class="stat-icon-wrapper bg-gradient-to-br from-cyan-500/20 to-blue-500/20"
-              >
-                <i class="fas fa-calculator text-cyan-400 text-xl"></i>
+              <div class="stat-icon-wrapper bg-gradient-to-br from-cyan-500/20 to-blue-500/20">
+                <i class="fas fa-calculator text-cyan-600 dark:text-cyan-400 text-xl"></i>
               </div>
               <div class="stat-content">
                 <p class="stat-label">Всего записей</p>
@@ -260,10 +209,8 @@
 
             <!-- Most Common Emotion -->
             <div class="stat-card">
-              <div
-                class="stat-icon-wrapper bg-gradient-to-br from-purple-500/20 to-pink-500/20"
-              >
-                <i class="fas fa-heart text-purple-400 text-xl"></i>
+              <div class="stat-icon-wrapper bg-gradient-to-br from-cyan-500/20 to-pink-500/20">
+                <i class="fas fa-heart text-cyan-600 dark:text-cyan-400 text-xl"></i>
               </div>
               <div class="stat-content">
                 <p class="stat-label">Частая эмоция</p>
@@ -275,9 +222,7 @@
 
             <!-- Average Intensity -->
             <div class="stat-card">
-              <div
-                class="stat-icon-wrapper bg-gradient-to-br from-emerald-500/20 to-teal-500/20"
-              >
+              <div class="stat-icon-wrapper bg-gradient-to-br from-emerald-500/20 to-teal-500/20">
                 <i class="fas fa-tachometer-alt text-emerald-400 text-xl"></i>
               </div>
               <div class="stat-content">
@@ -290,9 +235,7 @@
 
             <!-- Most Common Tag -->
             <div class="stat-card">
-              <div
-                class="stat-icon-wrapper bg-gradient-to-br from-orange-500/20 to-red-500/20"
-              >
+              <div class="stat-icon-wrapper bg-gradient-to-br from-cyan-500/20 to-red-500/20">
                 <i class="fas fa-tags text-orange-400 text-xl"></i>
               </div>
               <div class="stat-content">
@@ -307,7 +250,7 @@
           <!-- Emotion Distribution Chart -->
           <div class="chart-container">
             <h3 class="chart-title">
-              <i class="fas fa-chart-pie text-cyan-400 mr-2"></i>
+              <i class="fas fa-chart-pie text-cyan-600 dark:text-cyan-400 mr-2"></i>
               Распределение эмоций
             </h3>
             <div class="chart-wrapper">
@@ -323,9 +266,9 @@
         <div class="settings-card">
           <div class="flex items-center gap-3 mb-6">
             <div class="settings-icon-wrapper">
-              <i class="fas fa-brain text-cyan-400"></i>
+              <i class="fas fa-brain text-cyan-600 dark:text-cyan-400"></i>
             </div>
-            <h2 class="text-xl font-bold text-white">
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white">
               Психологический профиль
             </h2>
           </div>
@@ -333,31 +276,25 @@
           <!-- Loading State -->
           <div v-if="loadingAssessments" class="loading-state">
             <div class="loading-content">
-              <i class="fas fa-spinner fa-spin text-4xl text-cyan-400 mb-4"></i>
-              <p class="text-slate-300">Загрузка профиля...</p>
+              <i class="fas fa-spinner fa-spin text-4xl text-cyan-600 dark:text-cyan-400 mb-4"></i>
+              <p class="text-gray-700 dark:text-slate-300">Загрузка профиля...</p>
             </div>
           </div>
 
           <!-- No Data State -->
-          <div
-            v-else-if="!archetypeScores || archetypeScores.length === 0"
-            class="empty-state"
-          >
+          <div v-else-if="!archetypeScores || archetypeScores.length === 0" class="empty-state">
             <div class="empty-content">
               <div class="empty-icon">
-                <i class="fas fa-users text-5xl text-cyan-400"></i>
+                <i class="fas fa-users text-5xl text-cyan-600 dark:text-cyan-400"></i>
               </div>
-              <h3 class="text-xl font-semibold text-white mb-2">
+              <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                 Нет данных архетипов
               </h3>
-              <p class="text-slate-400 mb-6">
+              <p class="text-gray-600 dark:text-slate-400 mb-6">
                 Пройдите тест на архетипы, чтобы увидеть ваш психологический
                 профиль
               </p>
-              <NuxtLink
-                to="/lab/experiments/life-purpose-archetype"
-                class="start-button"
-              >
+              <NuxtLink to="/lab/experiments/life-purpose-archetype" class="start-button">
                 <span class="button-gradient"></span>
                 <span class="button-content">
                   <i class="fas fa-play-circle mr-2"></i>
@@ -370,29 +307,22 @@
           <!-- Archetypes Grid -->
           <div v-else class="space-y-6">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div
-                v-for="(archetype, index) in archetypeScores"
-                :key="archetype.name"
-                class="archetype-card"
-                :style="{ animationDelay: `${index * 100}ms` }"
-              >
+              <div v-for="(archetype, index) in archetypeScores" :key="archetype.name" class="archetype-card"
+                :style="{ animationDelay: `${index * 100}ms` }">
                 <div class="flex items-center gap-4 mb-4">
                   <div
-                    class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center"
-                  >
-                    <i
-                      :class="[
-                        'fas',
-                        archetype.icon || 'fa-question',
-                        'text-cyan-400 text-xl',
-                      ]"
-                    ></i>
+                    class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center">
+                    <i :class="[
+                      'fas',
+                      archetype.icon || 'fa-question',
+                      'text-cyan-600 dark:text-cyan-400 text-xl',
+                    ]"></i>
                   </div>
                   <div class="flex-1">
-                    <h3 class="font-semibold text-white capitalize">
+                    <h3 class="font-semibold text-gray-900 dark:text-white capitalize">
                       {{ archetype.name }}
                     </h3>
-                    <p class="text-slate-400 text-sm">
+                    <p class="text-gray-600 dark:text-slate-400 text-sm">
                       Уровень: {{ archetype.level }}
                     </p>
                   </div>
@@ -401,31 +331,26 @@
                 <!-- Progress Bar -->
                 <div class="mb-4">
                   <div class="flex justify-between text-sm mb-1">
-                    <span class="text-slate-400">Прогресс</span>
-                    <span class="text-cyan-400"
-                      >{{
-                        calculateArchetypePercentage(archetype.level)
-                      }}%</span
-                    >
+                    <span class="text-gray-600 dark:text-slate-400">Прогресс</span>
+                    <span class="text-cyan-600 dark:text-cyan-400">{{
+                      calculateArchetypePercentage(archetype.level)
+                    }}%</span>
                   </div>
                   <div class="h-2 bg-slate-700/50 rounded-full overflow-hidden">
                     <div
-                      class="h-2 rounded-full bg-gradient-to-r from-cyan-500 to-purple-500 transition-all duration-1000"
+                      class="h-2 rounded-full bg-gradient-to-r from-cyan-500 to-cyan-500 transition-all duration-1000"
                       :style="{
                         width: `${calculateArchetypePercentage(
                           archetype.level
                         )}%`,
-                      }"
-                    ></div>
+                      }"></div>
                   </div>
                 </div>
 
                 <!-- Download Button -->
-                <button
-                  v-if="archetype.guideUrl && archetype.guideUrl !== '#'"
+                <button v-if="archetype.guideUrl && archetype.guideUrl !== '#'"
                   @click="handleDownload(archetype.guideUrl)"
-                  class="w-full py-2 px-4 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 rounded-lg border border-cyan-500/20 hover:border-cyan-500/40 transition-all duration-300 flex items-center justify-center gap-2"
-                >
+                  class="w-full py-2 px-4 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 rounded-lg border border-cyan-500/20 hover:border-cyan-500/40 transition-all duration-300 flex items-center justify-center gap-2">
                   <i class="fas fa-download text-sm"></i>
                   <span class="text-sm">Скачать гайд</span>
                 </button>
@@ -436,48 +361,30 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
               <!-- Big Five Summary -->
               <div
-                class="bg-slate-800/30 rounded-xl p-6 border border-slate-700/50"
-              >
-                <h3
-                  class="text-lg font-semibold text-white mb-4 flex items-center gap-2"
-                >
-                  <i class="fas fa-star text-purple-400"></i>
+                class="bg-gray-100 dark:bg-slate-800/30 rounded-xl p-6 border border-gray-300 dark:border-slate-700/50">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                  <i class="fas fa-star text-cyan-600 dark:text-cyan-400"></i>
                   Big Five Traits
                 </h3>
                 <div class="space-y-3">
-                  <div
-                    v-for="trait in bigFiveTraits"
-                    :key="trait.name"
-                    class="flex items-center justify-between"
-                  >
-                    <span class="text-slate-300 text-sm">{{ trait.name }}</span>
-                    <span class="text-cyan-400 font-semibold"
-                      >{{ trait.value }}%</span
-                    >
+                  <div v-for="trait in bigFiveTraits" :key="trait.name" class="flex items-center justify-between">
+                    <span class="text-gray-700 dark:text-slate-300 text-sm">{{ trait.name }}</span>
+                    <span class="text-cyan-600 dark:text-cyan-400 font-semibold">{{ trait.value }}%</span>
                   </div>
                 </div>
               </div>
 
               <!-- Cognitive Styles Summary -->
               <div
-                class="bg-slate-800/30 rounded-xl p-6 border border-slate-700/50"
-              >
-                <h3
-                  class="text-lg font-semibold text-white mb-4 flex items-center gap-2"
-                >
+                class="bg-gray-100 dark:bg-slate-800/30 rounded-xl p-6 border border-gray-300 dark:border-slate-700/50">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                   <i class="fas fa-brain text-emerald-400"></i>
                   Когнитивные стили
                 </h3>
                 <div class="space-y-3">
-                  <div
-                    v-for="style in cognitiveStyles"
-                    :key="style.name"
-                    class="flex items-center justify-between"
-                  >
-                    <span class="text-slate-300 text-sm">{{ style.name }}</span>
-                    <span class="text-emerald-400 font-semibold"
-                      >{{ style.level }}/10</span
-                    >
+                  <div v-for="style in cognitiveStyles" :key="style.name" class="flex items-center justify-between">
+                    <span class="text-gray-700 dark:text-slate-300 text-sm">{{ style.name }}</span>
+                    <span class="text-emerald-400 font-semibold">{{ style.level }}/10</span>
                   </div>
                 </div>
               </div>
@@ -488,13 +395,8 @@
     </div>
 
     <!-- Notification Component -->
-    <Notification
-      v-if="notificationMessage"
-      :message="notificationMessage"
-      :type="notificationType"
-      @close="hideNotification"
-      class="z-50"
-    />
+    <Notification v-if="notificationMessage" :message="notificationMessage" :type="notificationType"
+      @close="hideNotification" class="z-50" />
   </div>
 </template>
 
@@ -872,7 +774,7 @@ const handleNotification = ({ message, type }) => {
 
 <style scoped>
 .loading-overlay {
-  @apply fixed inset-0 bg-slate-950 z-50 flex items-center justify-center;
+  @apply fixed inset-0 bg-white dark:bg-slate-950 z-50 flex items-center justify-center;
 }
 
 .loading-container {
@@ -894,7 +796,7 @@ const handleNotification = ({ message, type }) => {
 }
 
 .spinner-ring-2 {
-  @apply border-r-purple-500;
+  @apply border-r-cyan-500;
   animation-duration: 3s;
   animation-direction: reverse;
 }
@@ -913,17 +815,20 @@ const handleNotification = ({ message, type }) => {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
 
 @keyframes pulse {
+
   0%,
   100% {
     opacity: 1;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.5;
     transform: scale(0.95);
@@ -935,11 +840,11 @@ const handleNotification = ({ message, type }) => {
 }
 
 .loading-progress {
-  @apply w-64 h-1 bg-slate-800 rounded-full overflow-hidden;
+  @apply w-64 h-1 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden;
 }
 
 .progress-bar {
-  @apply h-full bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 rounded-full;
+  @apply h-full bg-gradient-to-r from-cyan-500 via-cyan-500 to-pink-500 rounded-full;
   animation: progress 2s ease-in-out infinite;
 }
 
@@ -948,10 +853,12 @@ const handleNotification = ({ message, type }) => {
     width: 0%;
     margin-left: 0%;
   }
+
   50% {
     width: 75%;
     margin-left: 0%;
   }
+
   100% {
     width: 0%;
     margin-left: 100%;
@@ -959,32 +866,27 @@ const handleNotification = ({ message, type }) => {
 }
 
 .filter-tab {
-  @apply px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300
-         bg-slate-800/50 text-slate-400 hover:text-slate-200 border border-slate-700/50
-         hover:border-cyan-500/30 whitespace-nowrap;
+  @apply px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 bg-gray-100 dark:bg-slate-800/50 text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200 border border-gray-300 dark:border-slate-700/50 hover:border-cyan-500/30 whitespace-nowrap;
 }
 
 .filter-tab-active {
-  @apply bg-cyan-500/20 text-cyan-300 border-cyan-500/40;
+  @apply bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 border-cyan-500/40;
 }
 
 .settings-card {
-  @apply p-6 sm:p-8 rounded-2xl bg-slate-900/50 border border-cyan-500/20 
-         backdrop-blur-sm hover:border-cyan-500/30 transition-all duration-300;
+  @apply p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-cyan-500/20 backdrop-blur-sm hover:border-cyan-500/30 transition-all duration-300;
 }
 
 .settings-icon-wrapper {
-  @apply w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 
-         flex items-center justify-center;
+  @apply w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center;
 }
 
 .stat-item {
-  @apply flex items-center justify-between p-4 rounded-lg bg-slate-800/30;
+  @apply flex items-center justify-between p-4 rounded-lg bg-gray-100 dark:bg-slate-800/30;
 }
 
 .activity-item {
-  @apply flex items-start gap-3 p-4 rounded-lg bg-slate-800/30 
-         hover:bg-slate-800/50 transition-all duration-300;
+  @apply flex items-start gap-3 p-4 rounded-lg bg-gray-100 dark:bg-slate-800/30 hover:bg-gray-200 dark:hover:bg-slate-800/50 transition-all duration-300;
 }
 
 .activity-icon {
@@ -992,8 +894,7 @@ const handleNotification = ({ message, type }) => {
 }
 
 .emotion-barometer-section {
-  @apply p-6 sm:p-8 rounded-2xl bg-slate-900/50 border border-cyan-500/20 
-         backdrop-blur-sm hover:border-cyan-500/30 transition-all duration-300;
+  @apply p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-cyan-500/20 backdrop-blur-sm hover:border-cyan-500/30 transition-all duration-300;
 }
 
 .section-header {
@@ -1001,15 +902,11 @@ const handleNotification = ({ message, type }) => {
 }
 
 .section-icon-wrapper {
-  @apply w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 
-         flex items-center justify-center;
+  @apply w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center;
 }
 
 .cta-button-custom {
-  @apply inline-flex items-center gap-2 px-6 py-3 rounded-xl 
-         bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 
-         hover:bg-cyan-500/20 hover:border-cyan-500/50 
-         transition-all duration-300 font-medium;
+  @apply inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-600 dark:text-cyan-400 hover:bg-cyan-500/20 hover:border-cyan-500/50 transition-all duration-300 font-medium;
 }
 
 .loading-state {
@@ -1029,18 +926,15 @@ const handleNotification = ({ message, type }) => {
 }
 
 .empty-icon {
-  @apply w-24 h-24 rounded-2xl bg-gradient-to-br from-cyan-500/10 to-purple-500/10 
-         flex items-center justify-center mb-6 animate-pulse;
+  @apply w-24 h-24 rounded-2xl bg-gradient-to-br from-cyan-500/10 to-cyan-500/10 flex items-center justify-center mb-6 animate-pulse;
 }
 
 .start-button {
-  @apply relative inline-flex items-center justify-center px-8 py-3 
-         rounded-xl overflow-hidden transition-all duration-300 
-         hover:scale-105 hover:shadow-lg hover:shadow-cyan-500/25;
+  @apply relative inline-flex items-center justify-center px-8 py-3 rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-cyan-500/25;
 }
 
 .button-gradient {
-  @apply absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-500;
+  @apply absolute inset-0 bg-gradient-to-r from-cyan-500 to-cyan-500;
 }
 
 .start-button:hover .button-gradient {
@@ -1056,9 +950,7 @@ const handleNotification = ({ message, type }) => {
 }
 
 .stat-card {
-  @apply p-6 rounded-xl bg-slate-800/30 border border-slate-700/50 
-         hover:border-cyan-500/30 transition-all duration-300 
-         flex items-center gap-4;
+  @apply p-6 rounded-xl bg-gray-100 dark:bg-slate-800/30 border border-gray-300 dark:border-slate-700/50 hover:border-cyan-500/30 transition-all duration-300 flex items-center gap-4;
 }
 
 .stat-icon-wrapper {
@@ -1070,19 +962,19 @@ const handleNotification = ({ message, type }) => {
 }
 
 .stat-label {
-  @apply text-slate-400 text-sm mb-1;
+  @apply text-gray-600 dark:text-slate-400 text-sm mb-1;
 }
 
 .stat-value {
-  @apply text-white text-2xl font-bold;
+  @apply text-gray-900 dark:text-white text-2xl font-bold;
 }
 
 .chart-container {
-  @apply mt-8 p-6 rounded-xl bg-slate-800/30 border border-slate-700/50;
+  @apply mt-8 p-6 rounded-xl bg-gray-100 dark:bg-slate-800/30 border border-gray-300 dark:border-slate-700/50;
 }
 
 .chart-title {
-  @apply text-lg font-semibold text-white mb-6 flex items-center;
+  @apply text-lg font-semibold text-gray-900 dark:text-white mb-6 flex items-center;
 }
 
 .chart-wrapper {
@@ -1093,18 +985,23 @@ const handleNotification = ({ message, type }) => {
   .emotion-barometer-section {
     @apply p-4;
   }
+
   .stats-grid {
     @apply gap-3;
   }
+
   .stat-card {
     @apply p-4;
   }
+
   .chart-container {
     @apply p-4;
   }
+
   .settings-card {
     @apply p-4;
   }
+
   .filter-tab {
     @apply px-4 py-2 text-xs;
   }

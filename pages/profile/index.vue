@@ -1,5 +1,5 @@
 <template>
-  <div class="relative min-h-screen bg-slate-950 px-4 xl:px-0">
+  <div class="relative min-h-screen bg-white dark:bg-slate-950 px-4 xl:px-0 transition-colors duration-300">
     <!-- Loading State -->
     <div class="loading-overlay">
       <div class="loading-container">
@@ -8,7 +8,7 @@
           <div class="spinner-ring spinner-ring-2"></div>
           <div class="spinner-ring spinner-ring-3"></div>
           <div class="spinner-core">
-            <i class="fas fa-cog text-3xl text-cyan-400"></i>
+            <i class="fas fa-cog text-3xl text-cyan-600 dark:text-cyan-400"></i>
           </div>
         </div>
         <div class="loading-text">
@@ -67,7 +67,7 @@ onMounted(async () => {
 <style scoped>
 /* Loading State Styles */
 .loading-overlay {
-  @apply fixed inset-0 bg-slate-950 z-50 flex items-center justify-center;
+  @apply fixed inset-0 bg-white dark:bg-slate-950 z-50 flex items-center justify-center;
 }
 
 .loading-container {
@@ -89,7 +89,7 @@ onMounted(async () => {
 }
 
 .spinner-ring-2 {
-  @apply border-r-purple-500;
+  @apply border-r-cyan-500;
   animation-duration: 3s;
   animation-direction: reverse;
 }
@@ -108,17 +108,20 @@ onMounted(async () => {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
 
 @keyframes pulse {
+
   0%,
   100% {
     opacity: 1;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.5;
     transform: scale(0.95);
@@ -134,7 +137,7 @@ onMounted(async () => {
 }
 
 .progress-bar {
-  @apply h-full bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 rounded-full;
+  @apply h-full bg-gradient-to-r from-cyan-500 via-cyan-500 to-pink-500 rounded-full;
   animation: progress 2s ease-in-out infinite;
 }
 
@@ -143,10 +146,12 @@ onMounted(async () => {
     width: 0%;
     margin-left: 0%;
   }
+
   50% {
     width: 75%;
     margin-left: 0%;
   }
+
   100% {
     width: 0%;
     margin-left: 100%;

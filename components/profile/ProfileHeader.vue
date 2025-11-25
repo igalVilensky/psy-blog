@@ -22,7 +22,7 @@
         <!-- User Details -->
         <div class="user-details">
           <div class="user-badge">
-            <i class="fas fa-user-astronaut text-cyan-400 mr-2"></i>
+            <i class="fas fa-user-astronaut text-cyan-600 dark:text-cyan-400 mr-2"></i>
             <span>Исследователь</span>
           </div>
           <h1 class="user-name">
@@ -30,11 +30,11 @@
           </h1>
           <div class="user-meta">
             <div class="meta-item">
-              <i class="fas fa-envelope text-cyan-400"></i>
+              <i class="fas fa-envelope text-cyan-600 dark:text-cyan-400"></i>
               <span>{{ email }}</span>
             </div>
             <div class="meta-item">
-              <i class="fas fa-calendar text-purple-400"></i>
+              <i class="fas fa-calendar text-cyan-600 dark:text-cyan-400"></i>
               <span>{{ joinedDate }}</span>
             </div>
           </div>
@@ -122,7 +122,7 @@ const joinedDate = computed(() => {
 
 <style scoped>
 .profile-header-container {
-  @apply relative min-h-[280px] sm:min-h-[300px] rounded-2xl bg-slate-900/50 border border-cyan-500/20 backdrop-blur-sm overflow-hidden mb-8 hover:border-cyan-500/30 transition-all duration-300;
+  @apply relative min-h-[280px] sm:min-h-[300px] rounded-2xl bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-cyan-500/20 backdrop-blur-sm overflow-hidden mb-8 hover:border-cyan-500/30 transition-all duration-300;
 }
 
 .header-background {
@@ -138,7 +138,7 @@ const joinedDate = computed(() => {
 }
 
 .gradient-orb-2 {
-  @apply w-96 h-96 bg-purple-500/20 bottom-0 -right-48 animate-float-delayed;
+  @apply w-96 h-96 bg-cyan-500/20 bottom-0 -right-48 animate-float-delayed;
 }
 
 @keyframes float {
@@ -214,15 +214,15 @@ const joinedDate = computed(() => {
 }
 
 .user-badge {
-  @apply inline-flex items-center px-4 py-2 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-sm font-medium mb-4;
+  @apply inline-flex items-center px-4 py-2 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-600 dark:text-cyan-400 text-sm font-medium mb-4;
 }
 
 .user-name {
-  @apply text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6 pb-1 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent;
+  @apply text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6 pb-1 bg-gradient-to-r from-cyan-600 dark:from-cyan-400 via-cyan-600 dark:via-purple-400 to-pink-600 dark:to-pink-400 bg-clip-text text-transparent;
 }
 
 .user-meta {
-  @apply flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-6 text-slate-400 text-sm;
+  @apply flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-6 text-gray-600 dark:text-slate-400 text-sm;
 }
 
 .meta-item {
@@ -256,15 +256,15 @@ const joinedDate = computed(() => {
 }
 
 .btn-primary .btn-gradient {
-  @apply bg-gradient-to-r from-cyan-500 to-purple-500;
+  @apply bg-gradient-to-r from-cyan-500 to-cyan-500;
 }
 
 .btn-secondary {
-  @apply border border-slate-700 text-slate-300 hover:text-white hover:border-cyan-500/50;
+  @apply border border-gray-300 dark:border-slate-700 text-gray-700 dark:text-slate-300 hover:text-gray-900 dark:hover:text-white hover:border-cyan-500/50;
 }
 
 .btn-secondary .btn-bg {
-  @apply bg-slate-800/50 hover:bg-slate-800;
+  @apply bg-gray-100 dark:bg-slate-800/50 hover:bg-gray-200 dark:hover:bg-slate-800;
 }
 
 .btn-danger {
