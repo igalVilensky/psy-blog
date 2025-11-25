@@ -1,6 +1,6 @@
 <template>
   <div
-    class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white grid grid-cols-1 lg:grid-cols-[280px_1fr] relative overflow-hidden transition-colors duration-500">
+    class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white flex flex-col lg:grid lg:grid-cols-[280px_1fr] relative overflow-hidden transition-colors duration-500">
     <!-- Animated Background -->
     <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
       <!-- Gradient Orbs -->
@@ -31,24 +31,25 @@
     </div>
 
     <!-- Laboratory Control Panel -->
-    <LabControlPanel :user="auth.user" class="relative z-10" />
+    <LabControlPanel :user="auth.user" class="relative z-10 lg:sticky lg:top-0 lg:h-screen" />
 
     <!-- Main Lab Workspace -->
-    <main class="lab-workspace relative z-10">
+    <main class="lab-workspace relative z-10 flex-1">
       <div class="workspace-container min-h-screen">
         <!-- Lab Header -->
         <div
           class="lab-header border-b border-cyan-500/10 dark:border-cyan-500/20 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-20 transition-colors duration-500">
-          <div class="container mx-auto px-6 py-4">
+          <div class="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
             <div class="flex justify-between items-center">
-              <div class="neural-activity flex items-center space-x-4">
+              <div class="neural-activity flex items-center space-x-2 sm:space-x-4">
                 <div class="flex items-center space-x-2">
-                  <div class="pulse-dot w-3 h-3 bg-emerald-500 dark:bg-emerald-400 rounded-full animate-pulse relative">
+                  <div
+                    class="pulse-dot w-2 h-2 sm:w-3 sm:h-3 bg-emerald-500 dark:bg-emerald-400 rounded-full animate-pulse relative">
                     <div
-                      class="absolute inset-0 w-3 h-3 bg-emerald-500/30 dark:bg-emerald-400/30 rounded-full animate-ping">
+                      class="absolute inset-0 w-2 h-2 sm:w-3 sm:h-3 bg-emerald-500/30 dark:bg-emerald-400/30 rounded-full animate-ping">
                     </div>
                   </div>
-                  <span class="status-text text-sm font-mono text-emerald-600 dark:text-emerald-300">СИСТЕМА:
+                  <span class="status-text text-xs sm:text-sm font-mono text-emerald-600 dark:text-emerald-300">СИСТЕМА:
                     АКТИВНА</span>
                 </div>
                 <div class="hidden md:flex items-center space-x-2">
@@ -60,7 +61,7 @@
               </div>
               <div class="user-station flex items-center space-x-3">
                 <span
-                  class="station-id text-xs font-mono text-cyan-600 dark:text-cyan-400 bg-cyan-500/10 px-3 py-1.5 rounded-lg border border-cyan-500/20">
+                  class="station-id text-[10px] sm:text-xs font-mono text-cyan-600 dark:text-cyan-400 bg-cyan-500/10 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg border border-cyan-500/20">
                   {{ currentStation }}
                 </span>
               </div>

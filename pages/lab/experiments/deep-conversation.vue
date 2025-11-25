@@ -237,7 +237,7 @@
         </template>
     </BaseModal>
     <!-- Insight Journal Section -->
-    <div class="max-w-6xl mx-auto relative z-10 mt-24 mb-12">
+    <div class="max-w-6xl mx-auto relative z-10 my-12 sm:my-0 px-4 sm:mb-12">
         <div class="flex items-center justify-center gap-3 mb-12">
             <div class="h-1 w-12 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full"></div>
             <h2 class="text-3xl font-bold text-slate-800 dark:text-white text-center font-montserrat">
