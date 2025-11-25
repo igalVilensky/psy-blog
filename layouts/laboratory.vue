@@ -107,6 +107,7 @@ const currentStation = computed(() => {
     "/lab/games/stroop": "Цветовой Струп",
     "/lab/psychology": "ПСИХОЛОГИЯ",
     "/lab/mindfulness": "МЕДИТАЦИЯ",
+    "/lab/sound-therapy": "ЗВУКОТЕРАПИЯ",
     "/lab/brain-map": "КАРТА_МОЗГА",
     "/lab/experiments/wheel-of-life": "КОЛЕСО_БАЛАНСА",
   };
