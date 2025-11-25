@@ -210,7 +210,7 @@
               <div class="flex-1 text-center sm:text-left">
                 <h3
                   class="text-2xl sm:text-3xl font-bold text-cyan-400 mb-2 group-hover:text-cyan-300 transition-colors duration-300">
-                  Анастасия Гельмут
+                  Анастасия Виленская
                 </h3>
                 <p class="text-sm sm:text-base text-purple-400 font-semibold mb-4">
                   Руководитель по психологии и контенту
