@@ -115,7 +115,9 @@
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div v-for="game in filteredGames" :key="game.id" class="game-card" @click="playGame(game)">
+          <div v-for="game in filteredGames" :key="game.id" class="game-card"
+            :class="[game.disabled ? 'opacity-75 cursor-not-allowed' : 'cursor-pointer']"
+            @click="!game.disabled && playGame(game)">
             <!-- Game Icon -->
             <div class="game-icon-wrapper" :style="{ background: game.gradient }">
               <i :class="game.icon" class="text-white text-3xl"></i>
@@ -149,7 +151,7 @@
                 </div>
                 <span class="text-cyan-600 dark:text-cyan-400 font-medium">{{
                   game.duration
-                }}</span>
+                  }}</span>
               </div>
 
               <!-- Progress Bar (if user played) -->
@@ -167,7 +169,17 @@
             </div>
 
             <!-- Hover Effect -->
-            <div class="card-glow"></div>
+            <div v-if="!game.disabled" class="card-glow"></div>
+
+            <!-- Coming Soon Overlay -->
+            <div v-if="game.disabled"
+              class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] flex items-center justify-center z-20 rounded-2xl">
+              <div
+                class="px-4 py-2 rounded-xl bg-slate-900/80 border border-slate-700/50 text-slate-300 text-sm font-medium shadow-xl backdrop-blur-md">
+                <i class="fas fa-clock mr-2 text-cyan-500"></i>
+                Скоро
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -359,6 +371,7 @@ const games = [
     rating: "4.6",
     duration: "3-5 мин",
     progress: 65,
+    disabled: true,
   },
   {
     id: 2,
@@ -372,6 +385,7 @@ const games = [
     rating: "4.9",
     duration: "10-15 мин",
     progress: 0,
+    disabled: true,
   },
   {
     id: 3,
@@ -386,6 +400,7 @@ const games = [
     rating: "4.5",
     duration: "5-7 мин",
     progress: 45,
+    disabled: true,
   },
   {
     id: 4,
@@ -399,6 +414,7 @@ const games = [
     rating: "4.4",
     duration: "3-5 мин",
     progress: 80,
+    disabled: true,
   },
   {
     id: "memory",
@@ -425,6 +441,7 @@ const games = [
     rating: "4.8",
     duration: "10-20 мин",
     progress: 0,
+    disabled: true,
   },
   {
     id: "stroop",
@@ -451,6 +468,7 @@ const games = [
     rating: "4.6",
     duration: "2-3 мин",
     progress: 90,
+    disabled: true,
   },
   {
     id: 9,
@@ -465,6 +483,7 @@ const games = [
     rating: "4.9",
     duration: "15-25 мин",
     progress: 20,
+    disabled: true,
   },
 ];
 
@@ -520,7 +539,13 @@ const filteredGames = computed(() => {
     filtered = games.filter((game) => game.category === activeCategory.value);
   }
 
-  // Sorting logic can be added here
+  // Sort enabled games first (disabled false or undefined)
+  filtered = filtered.slice().sort((a, b) => {
+    const aDisabled = a.disabled === true ? 1 : 0;
+    const bDisabled = b.disabled === true ? 1 : 0;
+    return aDisabled - bDisabled;
+  });
+
   return filtered;
 });
 

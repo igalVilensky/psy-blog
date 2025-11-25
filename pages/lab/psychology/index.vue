@@ -97,7 +97,7 @@
         <div class="flex items-center justify-between mt-4">
           <span class="text-cyan-600 dark:text-cyan-400 text-sm font-mono">{{
             dailyFact.category
-          }}</span>
+            }}</span>
           <button class="text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
             <i class="fas fa-sync-alt text-sm"></i>
           </button>
@@ -243,28 +243,32 @@ const quickTools = [
     title: "Настроение",
     icon: "fas fa-smile",
     color: "text-yellow-600 dark:text-yellow-400",
-    path: "/lab/psychology"
+    path: "/lab/psychology",
+    disabled: true,
   },
   {
     id: "stress-test",
     title: "Стресс-тест",
     icon: "fas fa-heartbeat",
     color: "text-red-600 dark:text-red-400",
-    path: "/lab/psychology"
+    path: "/lab/psychology",
+    disabled: true,
   },
   {
     id: "focus-timer",
     title: "Фокус",
     icon: "fas fa-hourglass-half",
     color: "text-blue-600 dark:text-blue-400",
-    path: "/lab/psychology"
+    path: "/lab/psychology",
+    disabled: true,
   },
   {
     id: "breathing",
     title: "Дыхание",
     icon: "fas fa-wind",
     color: "text-green-600 dark:text-green-400",
-    path: "/lab/psychology"
+    path: "/lab/psychology",
+    disabled: true,
   },
 ];
 

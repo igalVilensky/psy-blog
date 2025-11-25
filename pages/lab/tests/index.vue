@@ -158,7 +158,8 @@
 
           <!-- Existing Test Cards -->
           <div v-for="test in testCategories" :key="test.id" class="test-category-card group"
-            @click="navigateToTest(test)">
+            :class="[test.disabled ? 'opacity-75 cursor-not-allowed' : 'cursor-pointer']"
+            @click="!test.disabled && navigateToTest(test)">
             <!-- Icon Header -->
             <div class="flex items-start justify-between mb-4">
               <div class="icon-wrapper" :class="test.iconBg">
@@ -170,8 +171,8 @@
             </div>
 
             <!-- Content -->
-            <h3
-              class="text-lg font-semibold text-slate-900 dark:text-white mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
+            <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-2 transition-colors"
+              :class="!test.disabled && 'group-hover:text-cyan-600 dark:group-hover:text-cyan-400'">
               {{ test.title }}
             </h3>
             <p class="text-sm text-slate-500 dark:text-slate-400 mb-1">{{ test.subtitle }}</p>
@@ -192,7 +193,17 @@
             </div>
 
             <!-- Hover Effect -->
-            <div class="card-shine"></div>
+            <div v-if="!test.disabled" class="card-shine"></div>
+
+            <!-- Coming Soon Overlay -->
+            <div v-if="test.disabled"
+              class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] flex items-center justify-center z-20 rounded-2xl">
+              <div
+                class="px-4 py-2 rounded-xl bg-slate-900/80 border border-slate-700/50 text-slate-300 text-sm font-medium shadow-xl backdrop-blur-md">
+                <i class="fas fa-clock mr-2 text-cyan-500"></i>
+                Скоро
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -217,8 +228,9 @@
           </NuxtLink>
 
           <!-- Existing Quick Tests -->
-          <div v-for="quickTest in quickTests" :key="quickTest.id" class="quick-test-card"
-            @click="startQuickTest(quickTest)">
+          <div v-for="quickTest in quickTests" :key="quickTest.id" class="quick-test-card relative overflow-hidden"
+            :class="[quickTest.disabled ? 'opacity-75 cursor-not-allowed' : 'cursor-pointer']"
+            @click="!quickTest.disabled && startQuickTest(quickTest)">
             <div class="quick-icon-wrapper" :style="{ background: quickTest.gradient }">
               <i :class="quickTest.icon" class="text-white text-lg"></i>
             </div>
@@ -226,6 +238,15 @@
               {{ quickTest.title }}
             </h4>
             <p class="text-slate-500 dark:text-slate-400 text-xs">{{ quickTest.time }}</p>
+
+            <!-- Coming Soon Overlay -->
+            <div v-if="quickTest.disabled"
+              class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] flex items-center justify-center z-20 rounded-xl">
+              <div
+                class="p-2 rounded-lg bg-slate-900/80 border border-slate-700/50 text-slate-300 shadow-xl backdrop-blur-md">
+                <i class="fas fa-clock text-cyan-500 text-xs"></i>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -367,6 +388,7 @@ const testCategories = [
     duration: "15-20 мин",
     difficulty: "Средняя",
     tasksCount: 12,
+    disabled: true,
   },
   {
     id: "attention",
@@ -379,6 +401,7 @@ const testCategories = [
     duration: "10-15 мин",
     difficulty: "Легкая",
     tasksCount: 8,
+    disabled: true,
   },
   {
     id: "logic",
@@ -391,6 +414,7 @@ const testCategories = [
     duration: "20-25 мин",
     difficulty: "Сложная",
     tasksCount: 15,
+    disabled: true,
   },
   {
     id: "reaction",
@@ -403,6 +427,7 @@ const testCategories = [
     duration: "5-8 мин",
     difficulty: "Легкая",
     tasksCount: 20,
+    disabled: true,
   },
   {
     id: "verbal",
@@ -415,6 +440,7 @@ const testCategories = [
     duration: "12-18 мин",
     difficulty: "Средняя",
     tasksCount: 10,
+    disabled: true,
   },
   {
     id: "spatial",
@@ -427,6 +453,7 @@ const testCategories = [
     duration: "15-20 мин",
     difficulty: "Сложная",
     tasksCount: 14,
+    disabled: true,
   },
 ];
 
@@ -437,6 +464,7 @@ const quickTests = [
     icon: "fas fa-bolt",
     time: "2 мин",
     gradient: "linear-gradient(135deg, #f59e0b 0%, #ef4444 100%)",
+    disabled: true,
   },
   {
     id: 2,
@@ -444,6 +472,7 @@ const quickTests = [
     icon: "fas fa-brain",
     time: "3 мин",
     gradient: "linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)",
+    disabled: true,
   },
   {
     id: 3,
@@ -451,6 +480,7 @@ const quickTests = [
     icon: "fas fa-eye",
     time: "2 мин",
     gradient: "linear-gradient(135deg, #10b981 0%, #14b8a6 100%)",
+    disabled: true,
   },
   {
     id: 4,
@@ -458,6 +488,7 @@ const quickTests = [
     icon: "fas fa-puzzle-piece",
     time: "4 мин",
     gradient: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
+    disabled: true,
   },
   {
     id: 5,
@@ -465,6 +496,7 @@ const quickTests = [
     icon: "fas fa-calculator",
     time: "3 мин",
     gradient: "linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%)",
+    disabled: true,
   },
   {
     id: 6,
@@ -472,6 +504,7 @@ const quickTests = [
     icon: "fas fa-shapes",
     time: "3 мин",
     gradient: "linear-gradient(135deg, #ec4899 0%, #f43f5e 100%)",
+    disabled: true,
   },
 ];
 
