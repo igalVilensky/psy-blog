@@ -1,5 +1,5 @@
 <template>
-  <div class="relative min-h-screen bg-slate-950 px-4 xl:px-0">
+  <div class="relative min-h-screen bg-white dark:bg-slate-950 px-4 xl:px-0 transition-colors duration-300">
     <!-- Loading State -->
     <div v-if="isLoading" class="loading-overlay">
       <div class="loading-container">
@@ -12,8 +12,8 @@
           </div>
         </div>
         <div class="loading-text">
-          <h3 class="text-xl font-bold text-white mb-2">Загрузка настроек</h3>
-          <p class="text-slate-400 text-sm">Подготовка профиля...</p>
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Загрузка настроек</h3>
+          <p class="text-slate-600 dark:text-slate-400 text-sm">Подготовка профиля...</p>
         </div>
         <div class="loading-progress">
           <div class="progress-bar"></div>
@@ -25,21 +25,15 @@
     <div v-else class="max-w-7xl mx-auto py-8 sm:py-12">
       <!-- Page Header -->
       <div class="mb-8">
-        <NuxtLink
-          to="/profile"
-          class="inline-flex items-center text-cyan-600 dark:text-cyan-400 hover:text-cyan-300 transition-colors mb-4 group"
-        >
-          <i
-            class="fas fa-arrow-left mr-2 transform transition-transform group-hover:-translate-x-1"
-          ></i>
+        <NuxtLink to="/profile"
+          class="inline-flex items-center text-cyan-600 dark:text-cyan-400 hover:text-cyan-300 transition-colors mb-4 group">
+          <i class="fas fa-arrow-left mr-2 transform transition-transform group-hover:-translate-x-1"></i>
           Назад в профиль
         </NuxtLink>
-        <h1
-          class="text-3xl sm:text-4xl font-bold text-white mb-2 gradient-text"
-        >
+        <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-2 gradient-text">
           Настройки профиля
         </h1>
-        <p class="text-slate-400">
+        <p class="text-slate-600 dark:text-slate-400">
           Управляйте своим профилем и настройками аккаунта
         </p>
       </div>
@@ -55,9 +49,9 @@
                 <div class="settings-icon-wrapper">
                   <i class="fas fa-user-edit text-cyan-600 dark:text-cyan-400"></i>
                 </div>
-                <h2 class="text-xl font-bold text-white">Настройки профиля</h2>
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white">Настройки профиля</h2>
               </div>
-              <span class="text-sm text-slate-400">* Обязательные поля</span>
+              <span class="text-sm text-slate-600 dark:text-slate-400">* Обязательные поля</span>
             </div>
 
             <!-- Profile Form -->
@@ -69,13 +63,7 @@
                     <i class="fas fa-user text-cyan-600 dark:text-cyan-400 mr-2"></i>
                     Отображаемое имя *
                   </label>
-                  <input
-                    v-model="displayName"
-                    type="text"
-                    required
-                    placeholder="Введите ваше имя"
-                    class="form-input"
-                  />
+                  <input v-model="displayName" type="text" required placeholder="Введите ваше имя" class="form-input" />
                 </div>
 
                 <!-- Profession -->
@@ -84,12 +72,7 @@
                     <i class="fas fa-briefcase text-cyan-600 dark:text-cyan-400 mr-2"></i>
                     Профессия
                   </label>
-                  <input
-                    v-model="profession"
-                    type="text"
-                    placeholder="Введите вашу профессию"
-                    class="form-input"
-                  />
+                  <input v-model="profession" type="text" placeholder="Введите вашу профессию" class="form-input" />
                 </div>
 
                 <!-- Age -->
@@ -98,14 +81,8 @@
                     <i class="fas fa-birthday-cake text-pink-400 mr-2"></i>
                     Возраст
                   </label>
-                  <input
-                    v-model="age"
-                    type="number"
-                    min="13"
-                    max="120"
-                    placeholder="Введите ваш возраст"
-                    class="form-input"
-                  />
+                  <input v-model="age" type="number" min="13" max="120" placeholder="Введите ваш возраст"
+                    class="form-input" />
                 </div>
 
                 <!-- Gender -->
@@ -128,13 +105,8 @@
                   <i class="fas fa-quote-right text-cyan-600 dark:text-cyan-400 mr-2"></i>
                   О себе
                 </label>
-                <textarea
-                  v-model="aboutYourself"
-                  class="form-textarea"
-                  rows="4"
-                  maxlength="300"
-                  placeholder="Расскажите немного о себе..."
-                ></textarea>
+                <textarea v-model="aboutYourself" class="form-textarea" rows="4" maxlength="300"
+                  placeholder="Расскажите немного о себе..."></textarea>
                 <div class="char-counter">{{ aboutYourself.length }}/300</div>
               </div>
 
@@ -145,37 +117,21 @@
                   Социальные сети
                 </label>
                 <div class="space-y-3">
-                  <div
-                    v-for="(platform, index) in socialMedia"
-                    :key="index"
-                    class="social-media-row"
-                  >
+                  <div v-for="(platform, index) in socialMedia" :key="index" class="social-media-row">
                     <select v-model="platform.type" class="social-select">
                       <option value="telegram">Telegram</option>
                       <option value="vk">VK</option>
                       <option value="instagram">Instagram</option>
                       <option value="facebook">Facebook</option>
                     </select>
-                    <input
-                      v-model="platform.url"
-                      type="text"
-                      :placeholder="'Ссылка на ' + platform.type"
-                      class="social-input"
-                    />
-                    <button
-                      type="button"
-                      @click="removeSocialPlatform(index)"
-                      class="remove-btn"
-                    >
+                    <input v-model="platform.url" type="text" :placeholder="'Ссылка на ' + platform.type"
+                      class="social-input" />
+                    <button type="button" @click="removeSocialPlatform(index)" class="remove-btn">
                       <i class="fas fa-trash"></i>
                     </button>
                   </div>
                 </div>
-                <button
-                  type="button"
-                  @click="addSocialPlatform"
-                  class="add-social-btn"
-                >
+                <button type="button" @click="addSocialPlatform" class="add-social-btn">
                   <i class="fas fa-plus mr-2"></i>
                   Добавить соц. сеть
                 </button>
@@ -199,7 +155,7 @@
                 <div class="settings-icon-wrapper">
                   <i class="fas fa-comment-dots text-cyan-600 dark:text-cyan-400"></i>
                 </div>
-                <h2 class="text-xl font-bold text-white">Обратная связь</h2>
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white">Обратная связь</h2>
               </div>
             </div>
 
@@ -210,12 +166,7 @@
                   <i class="fas fa-user text-cyan-600 dark:text-cyan-400 mr-2"></i>
                   Имя
                 </label>
-                <input
-                  v-model="feedbackForm.name"
-                  type="text"
-                  placeholder="Введите ваше имя"
-                  class="form-input"
-                />
+                <input v-model="feedbackForm.name" type="text" placeholder="Введите ваше имя" class="form-input" />
               </div>
 
               <!-- Email -->
@@ -224,12 +175,7 @@
                   <i class="fas fa-envelope text-cyan-600 dark:text-cyan-400 mr-2"></i>
                   Email
                 </label>
-                <input
-                  v-model="feedbackForm.email"
-                  type="email"
-                  placeholder="Введите ваш email"
-                  class="form-input"
-                />
+                <input v-model="feedbackForm.email" type="email" placeholder="Введите ваш email" class="form-input" />
               </div>
 
               <!-- Message -->
@@ -238,20 +184,12 @@
                   <i class="fas fa-message text-pink-400 mr-2"></i>
                   Сообщение
                 </label>
-                <textarea
-                  v-model="feedbackForm.message"
-                  class="form-textarea"
-                  rows="4"
-                  placeholder="Напишите ваш отзыв..."
-                ></textarea>
+                <textarea v-model="feedbackForm.message" class="form-textarea" rows="4"
+                  placeholder="Напишите ваш отзыв..."></textarea>
               </div>
 
               <!-- Submit Button -->
-              <button
-                type="submit"
-                :disabled="isSubmittingFeedback"
-                class="submit-btn"
-              >
+              <button type="submit" :disabled="isSubmittingFeedback" class="submit-btn">
                 <span class="btn-gradient"></span>
                 <span class="btn-content">
                   <i class="fas fa-paper-plane mr-2"></i>
@@ -271,7 +209,7 @@
                 <div class="settings-icon-wrapper">
                   <i class="fas fa-cog text-emerald-400"></i>
                 </div>
-                <h2 class="text-lg font-bold text-white">
+                <h2 class="text-lg font-bold text-gray-900 dark:text-white">
                   Управление аккаунтом
                 </h2>
               </div>
@@ -303,7 +241,7 @@
                 <div class="settings-icon-wrapper">
                   <i class="fas fa-life-ring text-orange-400"></i>
                 </div>
-                <h2 class="text-lg font-bold text-white">Поддержка</h2>
+                <h2 class="text-lg font-bold text-gray-900 dark:text-white">Поддержка</h2>
               </div>
             </div>
 
@@ -325,13 +263,8 @@
     </div>
 
     <!-- Notification Component -->
-    <Notification
-      v-if="notificationVisible"
-      :message="notificationMessage"
-      :type="notificationType"
-      @close="hideNotification"
-      class="z-50"
-    />
+    <Notification v-if="notificationVisible" :message="notificationMessage" :type="notificationType"
+      @close="hideNotification" class="z-50" />
   </div>
 </template>
 
@@ -550,23 +483,19 @@ const exportData = () => {
 
 <style scoped>
 .gradient-text {
-  @apply bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 
-         bg-clip-text text-transparent;
+  @apply bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent;
 }
 
 .settings-card {
-  @apply p-6 sm:p-8 rounded-2xl bg-slate-900/50 border border-cyan-500/20 
-         backdrop-blur-sm hover:border-cyan-500/30 transition-all duration-300;
+  @apply p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-cyan-500/20 backdrop-blur-sm hover:border-cyan-500/30 transition-all duration-300;
 }
 
 .settings-header {
-  @apply flex flex-col sm:flex-row sm:items-center sm:justify-between 
-         gap-4 mb-6 pb-6 border-b border-cyan-500/10;
+  @apply flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 pb-6 border-b border-cyan-500/10;
 }
 
 .settings-icon-wrapper {
-  @apply w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500/20 to-cyan-500/20 
-         flex items-center justify-center;
+  @apply w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500/20 to-cyan-500/20 flex items-center justify-center;
 }
 
 .settings-form {
@@ -578,24 +507,21 @@ const exportData = () => {
 }
 
 .form-label {
-  @apply block text-sm font-medium text-slate-300 flex items-center;
+  @apply block text-sm font-medium text-gray-700 dark:text-slate-300 flex items-center;
 }
 
 .form-input,
 .form-textarea {
-  @apply w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 
-         text-white placeholder-slate-500 
-         focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 
-         transition-all duration-300;
+  @apply w-full px-4 py-3 rounded-lg bg-gray-100 dark:bg-slate-800/50 border border-gray-300 dark:border-slate-700 text-gray-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all duration-300;
 }
 
 .form-input:focus,
 .form-textarea:focus {
-  @apply bg-slate-800/70;
+  @apply bg-gray-200 dark:bg-slate-800/70;
 }
 
 .char-counter {
-  @apply text-right text-sm text-slate-400;
+  @apply text-right text-sm text-slate-600 dark:text-slate-400;
 }
 
 .social-media-row {
@@ -603,33 +529,23 @@ const exportData = () => {
 }
 
 .social-select {
-  @apply w-32 sm:w-36 px-3 py-2 sm:py-3 rounded-lg bg-slate-800/50 
-         border border-slate-700 text-white text-sm
-         focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 
-         transition-all;
+  @apply w-32 sm:w-36 px-3 py-2 sm:py-3 rounded-lg bg-gray-100 dark:bg-slate-800/50 border border-gray-300 dark:border-slate-700 text-gray-900 dark:text-white text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all;
 }
 
 .social-input {
-  @apply flex-1 px-3 py-2 sm:py-3 rounded-lg bg-slate-800/50 border border-slate-700 
-         text-white placeholder-slate-500 text-sm
-         focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 
-         transition-all;
+  @apply flex-1 px-3 py-2 sm:py-3 rounded-lg bg-gray-100 dark:bg-slate-800/50 border border-gray-300 dark:border-slate-700 text-gray-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all;
 }
 
 .remove-btn {
-  @apply p-2 sm:p-3 text-red-400 hover:text-red-300 hover:bg-red-500/10 
-         rounded-lg transition-all;
+  @apply p-2 sm:p-3 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-all;
 }
 
 .add-social-btn {
-  @apply text-cyan-600 dark:text-cyan-400 hover:text-cyan-300 text-sm font-medium 
-         flex items-center transition-colors mt-3;
+  @apply text-cyan-600 dark:text-cyan-400 hover:text-cyan-300 text-sm font-medium flex items-center transition-colors mt-3;
 }
 
 .submit-btn {
-  @apply relative w-full px-8 py-3 rounded-xl overflow-hidden 
-         transition-all duration-300 hover:scale-105 
-         hover:shadow-lg hover:shadow-cyan-500/25;
+  @apply relative w-full px-8 py-3 rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-cyan-500/25;
 }
 
 .submit-btn:disabled {
@@ -649,10 +565,7 @@ const exportData = () => {
 }
 
 .sidebar-btn {
-  @apply w-full flex items-center px-4 py-3 rounded-lg 
-         bg-slate-800/30 border border-slate-700/50 text-white
-         hover:border-cyan-500/30 hover:bg-slate-800/50
-         transition-all duration-300 text-left;
+  @apply w-full flex items-center px-4 py-3 rounded-lg bg-gray-100 dark:bg-slate-800/30 border border-gray-300 dark:border-slate-700/50 text-gray-900 dark:text-white hover:border-cyan-500/30 hover:bg-gray-200 dark:hover:bg-slate-800/50 transition-all duration-300 text-left;
 }
 
 .sidebar-btn.danger {
@@ -671,7 +584,7 @@ const exportData = () => {
 
 /* Loading State Styles */
 .loading-overlay {
-  @apply fixed inset-0 bg-slate-950 z-50 flex items-center justify-center;
+  @apply fixed inset-0 bg-white dark:bg-slate-950 z-50 flex items-center justify-center;
 }
 
 .loading-container {
@@ -712,17 +625,20 @@ const exportData = () => {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
 
 @keyframes pulse {
+
   0%,
   100% {
     opacity: 1;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.5;
     transform: scale(0.95);
@@ -734,7 +650,7 @@ const exportData = () => {
 }
 
 .loading-progress {
-  @apply w-64 h-1 bg-slate-800 rounded-full overflow-hidden;
+  @apply w-64 h-1 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden;
 }
 
 .progress-bar {
@@ -747,10 +663,12 @@ const exportData = () => {
     width: 0%;
     margin-left: 0%;
   }
+
   50% {
     width: 75%;
     margin-left: 0%;
   }
+
   100% {
     width: 0%;
     margin-left: 100%;
