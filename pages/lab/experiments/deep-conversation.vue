@@ -131,7 +131,7 @@
                                                                     {{ qIndex + 1 }}
                                                                 </span>
                                                                 <span class="text-sm leading-relaxed">{{ question
-                                                                }}</span>
+                                                                    }}</span>
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -169,7 +169,7 @@
                                 class="p-4 rounded-xl bg-cyan-50 dark:bg-cyan-900/10 border border-cyan-100 dark:border-cyan-800/30">
                                 <p class="text-sm text-cyan-800 dark:text-cyan-200 font-medium mb-2">Текущий вопрос:</p>
                                 <p class="text-lg text-slate-800 dark:text-slate-200 italic">"{{ activeCard.questions[0]
-                                }}"</p>
+                                    }}"</p>
                             </div>
 
                             <div>
@@ -196,14 +196,56 @@
             </div>
         </div>
     </div>
+    <!-- Login Modal -->
+    <BaseModal :is-open="showLoginModal" @close="showLoginModal = false">
+        <template #header>
+            <div class="text-center">
+                <h3 class="text-xl font-bold text-slate-900 mb-2">Требуется авторизация</h3>
+            </div>
+        </template>
+        <template #content>
+            <div class="text-center">
+                <div class="mb-6 flex justify-center">
+                    <div class="w-16 h-16 bg-cyan-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-user-lock text-2xl text-cyan-600"></i>
+                    </div>
+                </div>
+                <p class="text-slate-600 mb-6">
+                    Чтобы сохранить свои инсайты и отслеживать прогресс, необходимо войти в аккаунт или
+                    зарегистрироваться.
+                </p>
+                <div class="flex flex-col space-y-3">
+                    <button @click="redirectToLogin"
+                        class="w-full py-3 bg-gradient-to-r from-cyan-600 to-blue-600 text-white rounded-lg font-medium hover:shadow-lg transition-all">
+                        Войти / Регистрация
+                    </button>
+                    <button @click="showLoginModal = false"
+                        class="w-full py-3 text-slate-500 hover:text-slate-700 font-medium transition-colors">
+                        Продолжить без сохранения
+                    </button>
+                </div>
+            </div>
+        </template>
+        <template #footer>
+            <!-- Custom footer implemented in content for better layout -->
+            <div class="hidden"></div>
+        </template>
+    </BaseModal>
 </template>
 
 <script setup>
 import { ref, onMounted, watch } from 'vue';
+import { useAuthStore } from "~/stores/auth";
+import { getFirestore } from "firebase/firestore";
+import { saveReflectionEntry } from "~/api/firebase/deepConversation";
+import BaseModal from "~/components/base/BaseModal.vue";
 
 definePageMeta({
     layout: 'laboratory'
 });
+
+const auth = useAuthStore();
+const db = getFirestore();
 
 // Card Data
 const allCards = ref([
@@ -305,6 +347,8 @@ const activeCard = ref(null);
 const visibleCards = ref([]);
 const reflectionText = ref('');
 const saved = ref(false);
+const isSaving = ref(false);
+const showLoginModal = ref(false);
 
 // Methods
 const updateVisibleCards = () => {
@@ -342,15 +386,38 @@ const shuffleCards = () => {
     }, 300);
 };
 
-const saveReflection = () => {
+const saveReflection = async () => {
     if (!reflectionText.value.trim()) return;
 
-    // In a real app, this would save to backend/store
-    // For now, we simulate a save
-    saved.value = true;
-    setTimeout(() => {
-        saved.value = false;
-    }, 2000);
+    if (!auth.user) {
+        showLoginModal.value = true;
+        return;
+    }
+
+    isSaving.value = true;
+    try {
+        const result = await saveReflectionEntry(db, auth.user.uid, {
+            cardId: activeCard.value.id,
+            cardTitle: activeCard.value.title,
+            question: activeCard.value.questions[0], // Assuming first question for now, or we could let user select
+            reflection: reflectionText.value
+        });
+
+        if (result.success) {
+            saved.value = true;
+            setTimeout(() => {
+                saved.value = false;
+            }, 3000);
+        }
+    } catch (error) {
+        console.error("Failed to save:", error);
+    } finally {
+        isSaving.value = false;
+    }
+};
+
+const redirectToLogin = () => {
+    navigateTo('/login');
 };
 
 // Lifecycle
