@@ -2,11 +2,10 @@
   <main class="relative min-h-screen bg-white dark:bg-slate-950 transition-colors duration-300">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <!-- Back Navigation -->
-      <nuxt-link to="/blog"
-        class="inline-flex items-center text-cyan-400 hover:text-cyan-300 transition-colors mb-8 group">
-        <i class="fas fa-arrow-left mr-2 transform transition-transform group-hover:-translate-x-1"></i>
-        Вернуться к статьям
-      </nuxt-link>
+      <Breadcrumbs :items="[
+        { label: 'Блог', to: '/blog' },
+        { label: post?.title || 'Статья', to: '' }
+      ]" />
 
       <article v-if="post" class="blog-post-container">
         <!-- Featured Image Container -->
@@ -148,7 +147,7 @@
                 <span class="comment-author">{{ comment.name }}</span>
                 <span class="comment-date">{{
                   formatDate(comment.createdAt)
-                }}</span>
+                  }}</span>
               </div>
             </div>
             <p class="comment-text">{{ comment.text }}</p>
@@ -229,6 +228,7 @@ import { subscribeUser } from "@/api/firebase/contact";
 import { getPostViewCount } from "@/api/firebase/views";
 import { addPostComment, getPostComments } from "@/api/firebase/comments";
 import { createError } from "h3";
+import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
 
 const route = useRoute();
 const { params } = route;

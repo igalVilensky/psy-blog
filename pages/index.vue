@@ -266,6 +266,15 @@ const stations = [
     hoverBorder: "hover:border-teal-500/60",
   },
   {
+    name: "Звукотерапия",
+    subtitle: "Бинауральные ритмы",
+    link: "/lab/sound-therapy",
+    icon: "fas fa-music",
+    gradientFrom: "indigo-500",
+    gradientTo: "purple-600",
+    hoverBorder: "hover:border-indigo-500/60",
+  },
+  {
     name: "Карта Мозга",
     subtitle: "Интерактивная",
     link: "/lab/brain-map",

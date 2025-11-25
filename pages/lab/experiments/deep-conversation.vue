@@ -10,6 +10,7 @@
 
         <div class="max-w-6xl mx-auto relative z-10 mt-4">
             <!-- Header -->
+            <Breadcrumbs />
             <header class="mb-4 sm:mb-12 text-center">
                 <h1
                     class="text-3xl sm:text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-500 to-purple-600 mb-4 font-montserrat">
@@ -131,7 +132,7 @@
                                                                     {{ qIndex + 1 }}
                                                                 </span>
                                                                 <span class="text-sm leading-relaxed">{{ question
-                                                                    }}</span>
+                                                                }}</span>
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -169,7 +170,7 @@
                                 class="p-4 rounded-xl bg-cyan-50 dark:bg-cyan-900/10 border border-cyan-100 dark:border-cyan-800/30">
                                 <p class="text-sm text-cyan-800 dark:text-cyan-200 font-medium mb-2">Текущий вопрос:</p>
                                 <p class="text-lg text-slate-800 dark:text-slate-200 italic">"{{ activeCard.questions[0]
-                                    }}"</p>
+                                }}"</p>
                             </div>
 
                             <div>
@@ -362,6 +363,7 @@ import { saveReflectionEntry, getUserReflections } from "~/api/firebase/deepConv
 import { useNotification } from "~/composables/useNotification";
 import BaseModal from "~/components/base/BaseModal.vue";
 import Notification from "~/components/base/Notification.vue";
+import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
 
 definePageMeta({
     layout: 'laboratory'
