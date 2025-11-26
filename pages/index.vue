@@ -1,8 +1,17 @@
 <template>
   <div
-    class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white overflow-hidden transition-colors duration-500">
+    class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white overflow-hidden transition-colors duration-500 relative">
+
+    <!-- Background Visualizer -->
+    <div class="fixed inset-0 z-0 pointer-events-none opacity-100">
+      <NeuralRewireVisualizer />
+      <div
+        class="absolute inset-0 bg-gradient-to-b from-slate-50/80 via-slate-50/20 to-slate-50/80 dark:from-slate-950/80 dark:via-slate-950/20 dark:to-slate-950/80">
+      </div>
+    </div>
+
     <!-- Main Content -->
-    <main class="container mx-auto max-w-6xl px-4 sm:px-0 py-12 lg:py-16 relative">
+    <main class="container mx-auto max-w-6xl px-4 sm:px-0 py-12 lg:py-16 relative z-10">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start mb-16 md:mb-24">
         <!-- Left: Hero / Intro -->
         <section class="relative order-2 lg:order-1 animate-fade-in-left">
@@ -219,6 +228,7 @@
 import { ref, computed } from "vue";
 import { useAuthStore } from "~/stores/auth";
 import { useRuntimeConfig, useSeoMeta } from "#app";
+import NeuralRewireVisualizer from "~/components/lab/habit-override/NeuralRewireVisualizer.vue";
 
 // --- AUTH STATE ---
 const authStore = useAuthStore();
