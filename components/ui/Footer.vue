@@ -1,6 +1,6 @@
 <template>
   <footer
-    class="relative bg-white dark:bg-slate-950 overflow-hidden text-slate-900 dark:text-white border-t border-slate-200 dark:border-slate-800/60 transition-colors duration-500">
+    class="relative z-20 bg-white dark:bg-slate-950 overflow-hidden text-slate-900 dark:text-white border-t border-slate-200 dark:border-slate-800/60 transition-colors duration-500">
     <!-- Subtle top glow -->
     <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent">
     </div>

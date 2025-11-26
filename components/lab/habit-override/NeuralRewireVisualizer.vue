@@ -19,7 +19,7 @@ const props = defineProps({
 });
 
 class Particle {
-    constructor(w, h) {
+    constructor(w, h, colors) {
         this.x = Math.random() * w;
         this.y = Math.random() * h;
         this.vx = (Math.random() - 0.5) * 0.5;
@@ -27,6 +27,7 @@ class Particle {
         this.size = Math.random() * 2 + 1;
         this.life = Math.random() * 100 + 100;
         this.maxLife = this.life;
+        this.color = colors[Math.floor(Math.random() * colors.length)];
     }
 
     update(w, h) {
@@ -41,14 +42,21 @@ class Particle {
 
     draw(ctx) {
         const opacity = this.life / this.maxLife;
-        // Darker color for light mode visibility if needed, but cyan is usually okay. 
-        // Let's make it slightly more opaque.
-        ctx.fillStyle = `rgba(6, 182, 212, ${opacity * 0.8})`;
+        ctx.fillStyle = this.color.replace(')', `, ${opacity * 0.8})`).replace('rgb', 'rgba');
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
     }
 }
+
+const colors = [
+    'rgb(6, 182, 212)',   // Cyan-500
+    'rgb(59, 130, 246)',  // Blue-500
+    'rgb(168, 85, 247)',  // Purple-500
+    'rgb(236, 72, 153)',  // Pink-500
+    'rgb(16, 185, 129)',  // Emerald-500
+    'rgb(249, 115, 22)'   // Orange-500
+];
 
 const init = () => {
     if (!canvas.value) return;
@@ -56,8 +64,9 @@ const init = () => {
     const h = canvas.value.height;
 
     particles = [];
-    for (let i = 0; i < 80; i++) { // Increased particle count
-        particles.push(new Particle(w, h));
+    const particleCount = w < 768 ? 35 : 80; // Reduce particles on mobile
+    for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle(w, h, colors));
     }
 };
 
@@ -72,7 +81,7 @@ const animate = () => {
     particles.forEach((p, index) => {
         p.update(w, h);
         if (p.life <= 0) {
-            particles[index] = new Particle(w, h);
+            particles[index] = new Particle(w, h, colors);
         }
         p.draw(ctx);
     });
@@ -84,23 +93,24 @@ const animate = () => {
             const dy = particles[i].y - particles[j].y;
             const dist = Math.sqrt(dx * dx + dy * dy);
 
-            if (dist < 120) { // Increased connection distance
-                const opacity = (1 - dist / 120) * 0.4; // Increased opacity
-                ctx.strokeStyle = `rgba(6, 182, 212, ${opacity})`;
-                ctx.lineWidth = 1.5; // Thicker lines
+            if (dist < 120) {
+                const opacity = (1 - dist / 120) * 0.4;
+                // Use the color of the first particle for the connection
+                ctx.strokeStyle = particles[i].color.replace(')', `, ${opacity})`).replace('rgb', 'rgba');
+                ctx.lineWidth = 1.5;
                 ctx.beginPath();
                 ctx.moveTo(particles[i].x, particles[i].y);
                 ctx.lineTo(particles[j].x, particles[j].y);
                 ctx.stroke();
 
                 // Random "spark" traveling along the connection
-                if (Math.random() < 0.01) { // More sparks
-                    ctx.fillStyle = '#0ea5e9'; // Sky blue for sparks, visible on white
+                if (Math.random() < 0.01) {
+                    ctx.fillStyle = '#ffffff'; // White sparks for better contrast
                     ctx.beginPath();
                     const t = Math.random();
                     const sx = particles[i].x + (particles[j].x - particles[i].x) * t;
                     const sy = particles[i].y + (particles[j].y - particles[i].y) * t;
-                    ctx.arc(sx, sy, 3, 0, Math.PI * 2);
+                    ctx.arc(sx, sy, 2, 0, Math.PI * 2);
                     ctx.fill();
                 }
             }

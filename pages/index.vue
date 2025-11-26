@@ -3,7 +3,7 @@
     class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white overflow-hidden transition-colors duration-500 relative">
 
     <!-- Background Visualizer -->
-    <div class="fixed inset-0 z-0 pointer-events-none opacity-100">
+    <div class="fixed inset-0 z-0 pointer-events-none opacity-40 md:opacity-100">
       <NeuralRewireVisualizer />
       <div
         class="absolute inset-0 bg-gradient-to-b from-slate-50/80 via-slate-50/20 to-slate-50/80 dark:from-slate-950/80 dark:via-slate-950/20 dark:to-slate-950/80">
