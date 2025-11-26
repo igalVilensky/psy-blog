@@ -73,6 +73,7 @@ const crumbs = computed(() => {
       'reaction': 'Реакция',
       'sound-therapy': 'Звукотерапия',
       'deep-conversation': 'Глубокий разговор',
+      'habit-override': 'Перепрошивка Привычек',
       'blog': 'Блог',
     };
 

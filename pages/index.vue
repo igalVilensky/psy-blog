@@ -275,6 +275,15 @@ const stations = [
     hoverBorder: "hover:border-indigo-500/60",
   },
   {
+    name: "Перепрошивка",
+    subtitle: "Работа с привычками",
+    link: "/lab/psychology/habit-override",
+    icon: "fas fa-sync-alt",
+    gradientFrom: "cyan-500",
+    gradientTo: "blue-600",
+    hoverBorder: "hover:border-cyan-500/60",
+  },
+  {
     name: "Карта Мозга",
     subtitle: "Интерактивная",
     link: "/lab/brain-map",

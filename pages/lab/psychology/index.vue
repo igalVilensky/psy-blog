@@ -183,7 +183,16 @@ const labSections = [
     description: "Практики присутствия и медитативные упражнения",
     icon: "fas fa-spa",
     gradient: "from-teal-500 to-cyan-500",
+    gradient: "from-teal-500 to-cyan-500",
     path: "/lab/mindfulness",
+  },
+  {
+    id: "habit-override",
+    title: "Перепрошивка Привычек",
+    description: "Лаборатория анализа и изменения автоматических реакций",
+    icon: "fas fa-sync-alt",
+    gradient: "from-cyan-500 to-blue-600",
+    path: "/lab/psychology/habit-override",
   },
   {
     id: "cognitive-illusions",
@@ -237,6 +246,13 @@ const quickTools = [
     icon: "fas fa-chart-pie",
     color: "text-cyan-600 dark:text-cyan-400",
     path: "/lab/experiments/wheel-of-life"
+  },
+  {
+    id: "trigger-scan",
+    title: "Скан Триггеров",
+    icon: "fas fa-search",
+    color: "text-cyan-600 dark:text-cyan-400",
+    path: "/lab/psychology/habit-override#scan"
   },
   {
     id: "mood-tracker",

@@ -31,7 +31,7 @@
     </div>
 
     <!-- Laboratory Control Panel -->
-    <LabControlPanel :user="auth.user" class="relative z-10 lg:sticky lg:top-0 lg:h-screen" />
+    <LabControlPanel :user="auth.user" class="relative z-10" />
 
     <!-- Main Lab Workspace -->
     <main class="lab-workspace relative z-10 flex-1">

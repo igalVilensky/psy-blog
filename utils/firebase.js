@@ -26,3 +26,26 @@ export const getUserProfile = async (userId) => {
     return null;
   }
 };
+
+export const updateUserProfile = async (userId, data) => {
+  const nuxtApp = useNuxtApp();
+  const firestore = nuxtApp.$firestore;
+
+  if (!firestore) {
+    console.error("Firestore is not initialized");
+    return false;
+  }
+
+  try {
+    const userDocRef = doc(firestore, "users", userId);
+    // Use setDoc with merge: true to update or create if not exists, 
+    // but here we assume the user exists so updateDoc or setDoc with merge is fine.
+    // We'll import setDoc to be safe if we want to create fields.
+    const { setDoc } = await import("firebase/firestore");
+    await setDoc(userDocRef, data, { merge: true });
+    return true;
+  } catch (error) {
+    console.error("Error updating user profile:", error);
+    return false;
+  }
+};

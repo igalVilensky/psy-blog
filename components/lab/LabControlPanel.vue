@@ -126,103 +126,109 @@
 
   <!-- Desktop Sidebar -->
   <aside v-bind="$attrs"
-    class="lab-control-panel hidden lg:flex flex-col bg-white dark:bg-gradient-to-b dark:from-slate-900 dark:via-slate-900 dark:to-slate-950 border-r border-slate-200 dark:border-cyan-500/10 min-h-screen sticky top-0 overflow-y-auto transition-colors duration-500">
-    <!-- Panel Header -->
-    <div class="panel-header border-b border-slate-200 dark:border-cyan-500/20 p-6">
-      <NuxtLink to="/" class="flex items-center space-x-3 mb-4 group">
-        <div class="relative">
-          <div
-            class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-950 flex items-center justify-center overflow-hidden border border-purple-400/30">
-            <img src="/mindqlab-logo.png" alt="MindQLab Logo"
-              class="relative w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
-          </div>
-          <div
-            class="absolute -inset-1 bg-purple-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          </div>
-        </div>
-        <div>
-          <div
-            class="text-xs font-mono text-slate-600 dark:text-cyan-400 tracking-widest group-hover:text-slate-800 dark:group-hover:text-cyan-300 transition-colors font-semibold">
-            ГЛАВНАЯ
-          </div>
-          <div class="text-xs text-slate-500 dark:text-slate-400">mindqlab.com</div>
-        </div>
-      </NuxtLink>
+    class="lab-control-panel hidden lg:flex flex-col bg-white dark:bg-gradient-to-b dark:from-slate-900 dark:via-slate-900 dark:to-slate-950 border-r border-slate-200 dark:border-cyan-500/10 min-h-screen h-full transition-colors duration-500">
 
-      <!-- Lab Logo -->
-      <NuxtLink to="/lab" class="lab-logo group block">
-        <div
-          class="flex items-center space-x-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-cyan-500/10 hover:border-cyan-500/30 hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-all duration-300">
-          <div
-            class="petri-dish w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 flex items-center justify-center relative overflow-hidden"
-            @mouseenter="startBrainPulse" @mouseleave="stopBrainPulse">
-            <div class="absolute inset-0 bg-gradient-to-br from-cyan-400/20 to-purple-500/20"></div>
-            <i class="fas fa-brain text-white text-xl relative z-10 transition-transform duration-300"
-              :class="{ 'scale-110': brainPulsing }"></i>
-            <div v-if="brainPulsing" class="absolute inset-0 border-2 border-cyan-400/50 rounded-full animate-ping">
+    <!-- Sticky Top Section (Header + Stations) -->
+    <div
+      class="sticky top-0 z-20 bg-white dark:bg-slate-900/95 backdrop-blur-sm border-b border-transparent dark:border-cyan-500/5">
+      <!-- Panel Header -->
+      <div class="panel-header border-b border-slate-200 dark:border-cyan-500/20 p-6">
+        <NuxtLink to="/" class="flex items-center space-x-3 mb-4 group">
+          <div class="relative">
+            <div
+              class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-950 flex items-center justify-center overflow-hidden border border-purple-400/30">
+              <img src="/mindqlab-logo.png" alt="MindQLab Logo"
+                class="relative w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
+            </div>
+            <div
+              class="absolute -inset-1 bg-purple-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             </div>
           </div>
           <div>
-            <div class="text-slate-900 dark:text-white font-bold text-lg font-montserrat">
-              MIND Q LAB
+            <div
+              class="text-xs font-mono text-slate-600 dark:text-cyan-400 tracking-widest group-hover:text-slate-800 dark:group-hover:text-cyan-300 transition-colors font-semibold">
+              ГЛАВНАЯ
             </div>
-            <div class="text-cyan-700 dark:text-cyan-400/70 text-xs font-mono">
-              v2.0 ЭКСПЕРИМЕНТАЛЬНАЯ
+            <div class="text-xs text-slate-500 dark:text-slate-400">mindqlab.com</div>
+          </div>
+        </NuxtLink>
+
+        <!-- Lab Logo -->
+        <NuxtLink to="/lab" class="lab-logo group block">
+          <div
+            class="flex items-center space-x-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-cyan-500/10 hover:border-cyan-500/30 hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-all duration-300">
+            <div
+              class="petri-dish w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 flex items-center justify-center relative overflow-hidden"
+              @mouseenter="startBrainPulse" @mouseleave="stopBrainPulse">
+              <div class="absolute inset-0 bg-gradient-to-br from-cyan-400/20 to-purple-500/20"></div>
+              <i class="fas fa-brain text-white text-xl relative z-10 transition-transform duration-300"
+                :class="{ 'scale-110': brainPulsing }"></i>
+              <div v-if="brainPulsing" class="absolute inset-0 border-2 border-cyan-400/50 rounded-full animate-ping">
+              </div>
+            </div>
+            <div>
+              <div class="text-slate-900 dark:text-white font-bold text-lg font-montserrat">
+                MIND Q LAB
+              </div>
+              <div class="text-cyan-700 dark:text-cyan-400/70 text-xs font-mono">
+                v2.0 ЭКСПЕРИМЕНТАЛЬНАЯ
+              </div>
             </div>
           </div>
-        </div>
-      </NuxtLink>
-    </div>
-
-    <!-- Research Stations -->
-    <div class="research-stations p-4 space-y-2 flex-1">
-      <div class="text-xs font-mono text-slate-500 dark:text-slate-500 mb-3 px-2 font-semibold">
-        ИССЛЕДОВАТЕЛЬСКИЕ СТАНЦИИ
+        </NuxtLink>
       </div>
 
-      <!-- Interactive Tests Station -->
-      <StationLink to="/lab/tests" icon="fa-brain" title="Когнитивные Тесты" subtitle="Оценка функций"
-        :active="route.path === '/lab/tests'" gradient-from="blue-500" gradient-to="indigo-600" />
+      <!-- Research Stations -->
+      <div class="research-stations p-4 space-y-2">
+        <div class="text-xs font-mono text-slate-500 dark:text-slate-500 mb-3 px-2 font-semibold">
+          ИССЛЕДОВАТЕЛЬСКИЕ СТАНЦИИ
+        </div>
 
-      <!-- Brain Games Station -->
-      <StationLink to="/lab/games" icon="fa-chess" title="Развивающие Игры" subtitle="Логика и память"
-        :active="route.path === '/lab/games'" gradient-from="green-500" gradient-to="emerald-600" />
+        <!-- Interactive Tests Station -->
+        <StationLink to="/lab/tests" icon="fa-brain" title="Когнитивные Тесты" subtitle="Оценка функций"
+          :active="route.path === '/lab/tests'" gradient-from="blue-500" gradient-to="indigo-600" />
 
-      <!-- Psychology Station -->
-      <StationLink to="/lab/psychology" icon="fa-book-open" title="Психология" subtitle="Теории и техники"
-        :active="route.path === '/lab/psychology'" gradient-from="purple-500" gradient-to="pink-600" />
+        <!-- Brain Games Station -->
+        <StationLink to="/lab/games" icon="fa-chess" title="Развивающие Игры" subtitle="Логика и память"
+          :active="route.path === '/lab/games'" gradient-from="green-500" gradient-to="emerald-600" />
 
-      <!-- Meditation Station -->
-      <StationLink to="/lab/mindfulness" icon="fa-spa" title="Медитация" subtitle="Аудио и видео"
-        :active="route.path === '/lab/mindfulness'" gradient-from="teal-500" gradient-to="cyan-600" />
+        <!-- Psychology Station -->
+        <StationLink to="/lab/psychology" icon="fa-book-open" title="Психология" subtitle="Теории и техники"
+          :active="route.path === '/lab/psychology'" gradient-from="purple-500" gradient-to="pink-600" />
 
-      <!-- Sound Therapy Station -->
-      <StationLink to="/lab/sound-therapy" icon="fa-music" title="Звукотерапия" subtitle="Бинауральные ритмы"
-        :active="route.path === '/lab/sound-therapy'" gradient-from="indigo-500" gradient-to="purple-600" />
+        <!-- Meditation Station -->
+        <StationLink to="/lab/mindfulness" icon="fa-spa" title="Медитация" subtitle="Аудио и видео"
+          :active="route.path === '/lab/mindfulness'" gradient-from="teal-500" gradient-to="cyan-600" />
 
-      <!-- Brain Map Station -->
-      <StationLink to="/lab/brain-map" icon="fa-map" title="Карта Мозга" subtitle="Интерактивная"
-        :active="route.path === '/lab/brain-map'" gradient-from="orange-500" gradient-to="red-600" />
+        <!-- Sound Therapy Station -->
+        <StationLink to="/lab/sound-therapy" icon="fa-music" title="Звукотерапия" subtitle="Бинауральные ритмы"
+          :active="route.path === '/lab/sound-therapy'" gradient-from="indigo-500" gradient-to="purple-600" />
 
-      <!-- Neuro Analysis Station -->
-      <StationLink to="/lab/dashboard" icon="fa-microchip" title="Нейро Анализ" subtitle="Картирование мозга"
-        :active="route.path === '/lab/dashboard'" gradient-from="cyan-500" gradient-to="blue-600" />
+        <!-- Brain Map Station -->
+        <StationLink to="/lab/brain-map" icon="fa-map" title="Карта Мозга" subtitle="Интерактивная"
+          :active="route.path === '/lab/brain-map'" gradient-from="orange-500" gradient-to="red-600" />
 
-      <!-- Experiments Station -->
-      <StationLink to="/lab/experiments" icon="fa-atom" title="Эксперименты" subtitle="Инструменты и тесты"
-        :active="route.path === '/lab/experiments'" gradient-from="purple-500" gradient-to="pink-600" />
+        <!-- Neuro Analysis Station -->
+        <StationLink to="/lab/dashboard" icon="fa-microchip" title="Нейро Анализ" subtitle="Картирование мозга"
+          :active="route.path === '/lab/dashboard'" gradient-from="cyan-500" gradient-to="blue-600" />
 
-      <!-- Growth Observatory -->
-      <StationLink to="/lab/analysis" icon="fa-chart-line" title="Обсерватория Роста" subtitle="Прогресс и аналитика"
-        :active="route.path === '/lab/analysis'" gradient-from="emerald-500" gradient-to="green-600" />
+        <!-- Experiments Station -->
+        <StationLink to="/lab/experiments" icon="fa-atom" title="Эксперименты" subtitle="Инструменты и тесты"
+          :active="route.path === '/lab/experiments'" gradient-from="purple-500" gradient-to="pink-600" />
 
-      <!-- Community Hub -->
-      <StationLink to="/lab/community" icon="fa-users" title="Сообщество" subtitle="Исследователи онлайн"
-        :active="route.path === '/lab/community'" gradient-from="orange-500" gradient-to="amber-600" />
+        <!-- Growth Observatory -->
+        <StationLink to="/lab/analysis" icon="fa-chart-line" title="Обсерватория Роста" subtitle="Прогресс и аналитика"
+          :active="route.path === '/lab/analysis'" gradient-from="emerald-500" gradient-to="green-600" />
+
+        <!-- Community Hub -->
+        <StationLink to="/lab/community" icon="fa-users" title="Сообщество" subtitle="Исследователи онлайн"
+          :active="route.path === '/lab/community'" gradient-from="orange-500" gradient-to="amber-600" />
+      </div>
     </div>
 
-    <!-- User Section -->
-    <div class="user-section border-t border-slate-200 dark:border-cyan-500/10 p-4 mt-auto">
+    <!-- User Section (Pushed to bottom) -->
+    <div
+      class="user-section border-t border-slate-200 dark:border-cyan-500/10 p-4 mt-auto bg-white dark:bg-slate-900 z-10">
       <ClientOnly>
         <div v-if="user"
           class="user-info p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-cyan-500/10">
@@ -265,7 +271,7 @@
     </div>
 
     <!-- System Status -->
-    <div class="system-status border-t border-slate-200 dark:border-cyan-500/10 p-4">
+    <div class="system-status border-t border-slate-200 dark:border-cyan-500/10 p-4 bg-white dark:bg-slate-900 z-10">
       <div class="text-xs font-mono text-slate-500 dark:text-slate-500 mb-3 px-1 font-semibold">
         СТАТУС СИСТЕМЫ
       </div>
