@@ -1,8 +1,17 @@
 <template>
   <div
-    class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white overflow-hidden transition-colors duration-500">
+    class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white overflow-hidden transition-colors duration-500 relative">
+
+    <!-- Background Visualizer -->
+    <div class="absolute inset-0 z-0 pointer-events-none opacity-40 md:opacity-100">
+      <NeuralRewireVisualizer />
+      <div
+        class="absolute inset-0 bg-gradient-to-b from-slate-50/80 via-slate-50/20 to-slate-50/80 dark:from-slate-950/80 dark:via-slate-950/20 dark:to-slate-950/80">
+      </div>
+    </div>
+
     <!-- Main Content -->
-    <main class="container mx-auto max-w-6xl px-4 sm:px-0 py-12 lg:py-16 relative">
+    <main class="container mx-auto max-w-6xl px-4 sm:px-0 py-12 lg:py-16 relative z-10">
       <div class="max-w-3xl mx-auto">
         <!-- Enhanced Petri Dish -->
         <div class="text-center w-full mb-8">
@@ -74,10 +83,11 @@
             <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform duration-300"></i>
           </NuxtLink>
 
-          <NuxtLink to="/"
-            class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-white/60 dark:bg-slate-800/60 border-2 border-cyan-500/40 rounded-2xl text-slate-700 dark:text-slate-200 font-semibold text-base sm:text-lg hover:bg-cyan-500/10 dark:hover:bg-cyan-500/20 hover:border-cyan-500/60 hover:scale-105 transition-all duration-300">
-            <i class="fas fa-home group-hover:scale-110 transition-transform duration-300"></i>
-            <span>Главная страница</span>
+          <NuxtLink to="/lab/builder"
+            class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-white/60 dark:bg-slate-800/60 border-2 border-purple-500/40 rounded-2xl text-slate-700 dark:text-slate-200 font-semibold text-base sm:text-lg hover:bg-purple-500/10 dark:hover:bg-purple-500/20 hover:border-purple-500/60 hover:scale-105 transition-all duration-300">
+            <i
+              class="fas fa-puzzle-piece group-hover:rotate-12 transition-transform duration-300 text-purple-600 dark:text-purple-400"></i>
+            <span>Конструктор Лаборатории</span>
           </NuxtLink>
         </div>
 
@@ -97,40 +107,15 @@
             </NuxtLink>
           </div>
         </div>
-
-        <!-- Stats Bar -->
-        <div class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800">
-          <div class="grid grid-cols-3 gap-6">
-            <div class="text-center">
-              <div class="text-2xl md:text-3xl font-bold text-cyan-600 dark:text-cyan-400 mb-1 font-mono">
-                {{ animatedStats.researchers }}
-              </div>
-              <div class="text-slate-600 dark:text-slate-500 text-xs md:text-sm">
-                Исследователей
-              </div>
-            </div>
-            <div class="text-center">
-              <div class="text-2xl md:text-3xl font-bold text-purple-600 dark:text-purple-400 mb-1 font-mono">
-                {{ animatedStats.experiments }}
-              </div>
-              <div class="text-slate-600 dark:text-slate-500 text-xs md:text-sm">Экспериментов</div>
-            </div>
-            <div class="text-center">
-              <div class="text-2xl md:text-3xl font-bold text-emerald-600 dark:text-emerald-400 mb-1 font-mono">
-                {{ animatedStats.insights }}
-              </div>
-              <div class="text-slate-600 dark:text-slate-500 text-xs md:text-sm">Инсайтов</div>
-            </div>
-          </div>
-        </div>
       </div>
     </main>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
+import { ref } from "vue";
 import { useAuthStore } from "~/stores/auth";
+import NeuralRewireVisualizer from "~/components/lab/habit-override/NeuralRewireVisualizer.vue";
 
 definePageMeta({
   layout: "laboratory",
@@ -138,39 +123,6 @@ definePageMeta({
 
 const labActive = ref(false);
 const auth = useAuthStore();
-
-// Stats animation (keep your existing code)
-const animatedStats = reactive({
-  researchers: 0,
-  experiments: 0,
-  insights: 0,
-});
-const targetStats = { researchers: 247, experiments: 42, insights: 1893 };
-const animateStats = () => {
-  const duration = 2000;
-  const steps = 60;
-  const interval = duration / steps;
-  let currentStep = 0;
-  const timer = setInterval(() => {
-    currentStep++;
-    const progress = currentStep / steps;
-    animatedStats.researchers = Math.floor(targetStats.researchers * progress);
-    animatedStats.experiments = Math.floor(targetStats.experiments * progress);
-    animatedStats.insights = Math.floor(targetStats.insights * progress);
-    if (currentStep >= steps) {
-      animatedStats.researchers = targetStats.researchers;
-      animatedStats.experiments = targetStats.experiments;
-      animatedStats.insights = targetStats.insights;
-      clearInterval(timer);
-    }
-  }, interval);
-};
-
-onMounted(() => {
-  setTimeout(animateStats, 500);
-});
-
-
 </script>
 
 <style scoped>
