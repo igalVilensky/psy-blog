@@ -301,8 +301,76 @@
 
 <script setup>
 import { ref } from "vue";
+import { useHead } from "@unhead/vue";
 
 const labActive = ref(false);
+
+// SEO metadata
+useHead({
+  title: "О нас",
+  meta: [
+    {
+      name: "description",
+      content:
+        "MindQ Lab — инновационная платформа для исследования сознания и личностного роста, объединяющая современную психологию, нейронауки и интерактивные технологии. Узнайте о нашей миссии и команде.",
+    },
+    {
+      name: "keywords",
+      content:
+        "MindQ Lab, о нас, лаборатория роста, психология, нейронауки, самопознание, личностный рост, команда, миссия, Игаль Виленский, Анастасия Виленская, Igal Vilensky, Anastasia Vilensky",
+    },
+    {
+      name: "author",
+      content: "Игаль Виленский, Анастасия Виленская",
+    },
+    // Open Graph tags
+    {
+      property: "og:title",
+      content: "О MindQ Lab — Лаборатория осознанного роста",
+    },
+    {
+      property: "og:description",
+      content:
+        "Инновационная платформа для исследования сознания и личностного роста. Современная психология, нейронауки и интерактивные технологии в одном месте.",
+    },
+    {
+      property: "og:type",
+      content: "website",
+    },
+    {
+      property: "og:url",
+      content: "https://www.mindqlab.com/about",
+    },
+    {
+      property: "og:image",
+      content: "https://www.mindqlab.com/mindqlab-logo.png",
+    },
+    // Twitter Card tags
+    {
+      name: "twitter:card",
+      content: "summary_large_image",
+    },
+    {
+      name: "twitter:title",
+      content: "О MindQ Lab — Лаборатория осознанного роста",
+    },
+    {
+      name: "twitter:description",
+      content:
+        "Инновационная платформа для исследования сознания и личностного роста. Современная психология, нейронауки и интерактивные технологии.",
+    },
+    {
+      name: "twitter:image",
+      content: "https://www.mindqlab.com/mindqlab-logo.png",
+    },
+  ],
+  link: [
+    {
+      rel: "canonical",
+      href: "https://www.mindqlab.com/about",
+    },
+  ],
+});
 
 const features = [
   {

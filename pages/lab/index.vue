@@ -115,6 +115,7 @@
 <script setup>
 import { ref } from "vue";
 import { useAuthStore } from "~/stores/auth";
+import { useHead } from "@unhead/vue";
 import NeuralRewireVisualizer from "~/components/lab/habit-override/NeuralRewireVisualizer.vue";
 
 definePageMeta({
@@ -123,6 +124,69 @@ definePageMeta({
 
 const labActive = ref(false);
 const auth = useAuthStore();
+
+// SEO metadata
+useHead({
+  title: "Лаборатория",
+  meta: [
+    {
+      name: "description",
+      content:
+        "MindQ Lab — твоя лаборатория осознанного роста. Исследуй себя с помощью тестов и интерактивных инструментов, получай персональные рекомендации и обучающие программы — всё в одном месте.",
+    },
+    {
+      name: "keywords",
+      content:
+        "MindQ Lab, лаборатория, психологические тесты, когнитивные тесты, самопознание, личностный рост, нейронауки, развитие, медитация, осознанность",
+    },
+    // Open Graph tags
+    {
+      property: "og:title",
+      content: "MindQ Lab — Лаборатория осознанного роста",
+    },
+    {
+      property: "og:description",
+      content:
+        "Исследуй себя с помощью тестов и интерактивных инструментов, получай персональные рекомендации и обучающие программы. Твоя цифровая лаборатория для самопознания и роста.",
+    },
+    {
+      property: "og:type",
+      content: "website",
+    },
+    {
+      property: "og:url",
+      content: "https://www.mindqlab.com/lab",
+    },
+    {
+      property: "og:image",
+      content: "https://www.mindqlab.com/mindqlab-logo.png",
+    },
+    // Twitter Card tags
+    {
+      name: "twitter:card",
+      content: "summary_large_image",
+    },
+    {
+      name: "twitter:title",
+      content: "MindQ Lab — Лаборатория осознанного роста",
+    },
+    {
+      name: "twitter:description",
+      content:
+        "Исследуй себя с помощью тестов и интерактивных инструментов, получай персональные рекомендации и обучающие программы.",
+    },
+    {
+      name: "twitter:image",
+      content: "https://www.mindqlab.com/mindqlab-logo.png",
+    },
+  ],
+  link: [
+    {
+      rel: "canonical",
+      href: "https://www.mindqlab.com/lab",
+    },
+  ],
+});
 </script>
 
 <style scoped>
