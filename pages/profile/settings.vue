@@ -276,6 +276,7 @@ import {
   onAuthStateChanged,
   reauthenticateWithCredential,
   EmailAuthProvider,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { submitContactForm } from "@/api/firebase/contact";
@@ -472,8 +473,26 @@ const submitFeedbackForm = async () => {
   isSubmittingFeedback.value = false;
 };
 
-const changePassword = () => {
-  showNotification("Функция смены пароля в разработке", "info");
+const changePassword = async () => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  if (!user || !user.email) {
+    showNotification("Не удалось определить email пользователя", "error");
+    return;
+  }
+
+  const confirmation = confirm(`Отправить письмо для сброса пароля на ${user.email}?`);
+
+  if (confirmation) {
+    try {
+      await sendPasswordResetEmail(auth, user.email);
+      showNotification("Письмо для сброса пароля отправлено! Проверьте почту.", "success");
+    } catch (error) {
+      console.error("Error sending password reset email:", error);
+      showNotification("Ошибка при отправке письма: " + error.message, "error");
+    }
+  }
 };
 
 const exportData = () => {
