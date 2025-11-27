@@ -595,10 +595,14 @@ const deleteFlow = async (flowId: string) => {
 }
 
 const useTemplate = (template: Partial<LabFlow>) => {
-  labFlow.value = template.modules?.map((module: any) => ({
-    ...module,
-    instanceId: `${module.id}-${Date.now()}-${Math.random()}`
-  })) || []
+  labFlow.value = template.modules?.map((templateModule: any) => {
+    const originalModule = availableModules.find(m => m.id === templateModule.id)
+    return {
+      ...originalModule,
+      ...templateModule,
+      instanceId: `${templateModule.id}-${Date.now()}-${Math.random()}`
+    }
+  }) || []
 
   flowName.value = template.name || 'Новый Поток'
   flowDescription.value = template.description || ''
