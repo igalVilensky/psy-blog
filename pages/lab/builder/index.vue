@@ -222,7 +222,11 @@ const removeItem = (index: number) => {
 
 const saveFlow = async () => {
   if (!auth.user) {
-    showNotification('Пожалуйста, войдите в систему, чтобы сохранить поток', 'error')
+    showNotification(
+      'Войдите или зарегистрируйтесь, чтобы сохранить свои лаборатории и получить доступ ко всем функциям',
+      'warning',
+      0 // Don't auto-dismiss
+    )
     return
   }
 
@@ -488,7 +492,7 @@ onMounted(() => {
     </aside>
 
     <!-- Main Canvas: Flow Builder -->
-    <main class="flex-1 overflow-hidden bg-slate-100 p-4 md:p-8 dark:bg-slate-950">
+    <main class="flex-1 overflow-hidden bg-slate-100 px-4 md:px-8 dark:bg-slate-950 pt-8 sm:pt-4 pb-8">
       <div class="mx-auto flex h-full max-w-4xl flex-col">
         <header class="mb-4 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
           <div class="flex-1">

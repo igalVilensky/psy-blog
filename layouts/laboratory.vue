@@ -3,16 +3,7 @@
     class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white flex flex-col lg:grid lg:grid-cols-[280px_1fr] relative overflow-hidden transition-colors duration-500">
     <!-- Animated Background -->
     <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
-      <!-- Gradient Orbs -->
-      <div
-        class="absolute top-20 left-20 w-96 h-96 bg-cyan-500/10 dark:bg-cyan-500/5 rounded-full blur-3xl animate-float">
-      </div>
-      <div
-        class="absolute bottom-20 right-20 w-96 h-96 bg-purple-500/10 dark:bg-purple-500/5 rounded-full blur-3xl animate-float-delayed">
-      </div>
-      <div
-        class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-500/5 dark:bg-blue-500/3 rounded-full blur-3xl animate-pulse-slow">
-      </div>
+
 
       <!-- Neural Network Grid -->
       <svg class="absolute inset-0 w-full h-full opacity-[0.03] dark:opacity-[0.015]"
