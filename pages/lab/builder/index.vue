@@ -594,6 +594,38 @@ const deleteFlow = async (flowId: string) => {
   }
 }
 
+const toggleShare = async (flow: LabFlow) => {
+  if (!auth.user || !flow.id) return
+
+  try {
+    const { $firestore } = useNuxtApp()
+    const { doc, updateDoc } = await import('firebase/firestore')
+    const flowRef = doc($firestore, 'labFlows', flow.id)
+
+    // Toggle public status
+    const newIsPublic = !flow.isPublic
+    await updateDoc(flowRef, { isPublic: newIsPublic })
+
+    // Update local state
+    const index = savedFlows.value.findIndex(f => f.id === flow.id)
+    if (index !== -1) {
+      savedFlows.value[index].isPublic = newIsPublic
+    }
+
+    if (newIsPublic) {
+      // Generate and copy link
+      const shareLink = `${window.location.origin}/lab/flow/${flow.id}`
+      await navigator.clipboard.writeText(shareLink)
+      showNotification('Поток опубликован! Ссылка скопирована в буфер обмена.', 'success')
+    } else {
+      showNotification('Поток теперь приватный.', 'info')
+    }
+  } catch (error) {
+    console.error('Error sharing flow:', error)
+    showNotification('Ошибка при изменении настроек доступа', 'error')
+  }
+}
+
 const useTemplate = (template: Partial<LabFlow>) => {
   labFlow.value = template.modules?.map((templateModule: any) => {
     const originalModule = availableModules.find(m => m.id === templateModule.id)
@@ -1161,7 +1193,7 @@ onMounted(() => {
           <div v-else class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             <FlowCard v-for="flow in savedFlows" :key="flow.id" :flow="flow" :flow-types="flowTypes"
               :flow-categories="flowCategories" @start="startFlow" @edit="editFlow" @duplicate="duplicateFlow"
-              @delete="deleteFlow" />
+              @delete="deleteFlow" @share="toggleShare" />
           </div>
         </div>
 

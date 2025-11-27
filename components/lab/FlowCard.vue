@@ -60,6 +60,14 @@
                 <i class="fas fa-play mr-1"></i>
                 Запустить
             </button>
+            <button @click="$emit('share', flow)"
+                class="rounded-lg border px-3 py-2 text-sm font-medium transition-colors"
+                :class="flow.isPublic
+                    ? 'border-green-200 bg-green-50 text-green-600 hover:bg-green-100 dark:border-green-500/20 dark:bg-green-500/10 dark:text-green-400 dark:hover:bg-green-500/20'
+                    : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600'"
+                :title="flow.isPublic ? 'Поделиться (Публичный)' : 'Поделиться'">
+                <i class="fas" :class="flow.isPublic ? 'fa-share-alt' : 'fa-share'"></i>
+            </button>
             <button @click="$emit('edit', flow)"
                 class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
                 title="Редактировать">
@@ -88,6 +96,7 @@ defineProps<{
 
 defineEmits<{
     start: [flow: any]
+    share: [flow: any]
     edit: [flow: any]
     duplicate: [flow: any]
     delete: [flowId: string]

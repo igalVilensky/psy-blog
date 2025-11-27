@@ -21,7 +21,7 @@
   </div>
 
   <!-- Main Content -->
-  <div v-else class="relative min-h-screen bg-white dark:bg-slate-950 transition-colors duration-300">
+  <div class="relative min-h-screen bg-white dark:bg-slate-950 transition-colors duration-300">
     <div class="max-w-6xl mx-auto px-4 sm:px-0 pb-12 pt-8 sm:pt-12">
 
       <!-- Profile Header -->
@@ -52,6 +52,11 @@
             <i class="fas fa-users mr-2"></i>
             Архетипы
           </button>
+          <button @click="activeTab = 'flows'" class="filter-tab"
+            :class="activeTab === 'flows' ? 'filter-tab-active' : ''">
+            <i class="fas fa-stream mr-2"></i>
+            Потоки
+          </button>
         </div>
       </div>
 
@@ -73,7 +78,7 @@
               </div>
               <span class="text-2xl font-bold text-gray-900 dark:text-white">{{
                 emotionBarometerStats.totalEntries
-                }}</span>
+              }}</span>
             </div>
             <div class="stat-item">
               <div class="flex items-center gap-3">
@@ -82,7 +87,7 @@
               </div>
               <span class="text-lg font-semibold text-cyan-600 dark:text-cyan-400">{{
                 emotionBarometerStats.mostCommonEmotion
-                }}</span>
+              }}</span>
             </div>
             <div class="stat-item">
               <div class="flex items-center gap-3">
@@ -91,7 +96,7 @@
               </div>
               <span class="text-lg font-semibold text-emerald-400">{{
                 emotionBarometerStats.averageIntensity.toFixed(1)
-                }}</span>
+              }}</span>
             </div>
           </div>
         </div>
@@ -334,7 +339,7 @@
                     <span class="text-gray-600 dark:text-slate-400">Прогресс</span>
                     <span class="text-cyan-600 dark:text-cyan-400">{{
                       calculateArchetypePercentage(archetype.level)
-                    }}%</span>
+                      }}%</span>
                   </div>
                   <div class="h-2 bg-slate-700/50 rounded-full overflow-hidden">
                     <div
@@ -392,6 +397,94 @@
           </div>
         </div>
       </div>
+
+      <!-- Lab Flows Tab -->
+      <div v-if="activeTab === 'flows'" class="flows-section">
+        <div class="settings-card">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="settings-icon-wrapper">
+              <i class="fas fa-stream text-cyan-600 dark:text-cyan-400"></i>
+            </div>
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white">
+              Публичные потоки
+            </h2>
+          </div>
+
+          <!-- Loading State -->
+          <div v-if="loadingFlows" class="loading-state">
+            <div class="loading-content">
+              <i class="fas fa-spinner fa-spin text-4xl text-cyan-600 dark:text-cyan-400 mb-4"></i>
+              <p class="text-gray-700 dark:text-slate-300">Загрузка потоков...</p>
+            </div>
+          </div>
+
+          <!-- Empty State -->
+          <div v-else-if="publicFlows.length === 0" class="empty-state">
+            <div class="empty-content">
+              <div class="empty-icon">
+                <i class="fas fa-stream text-5xl text-cyan-600 dark:text-cyan-400"></i>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                Нет публичных потоков
+              </h3>
+              <p class="text-gray-600 dark:text-slate-400 mb-6">
+                Этот пользователь еще не опубликовал потоки.
+              </p>
+              <NuxtLink to="/lab/builder" class="start-button">
+                <span class="button-gradient"></span>
+                <span class="button-content">
+                  <i class="fas fa-plus-circle mr-2"></i>
+                  Создать поток
+                </span>
+              </NuxtLink>
+            </div>
+          </div>
+
+          <!-- Flows Grid -->
+          <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div v-for="flow in publicFlows" :key="flow.id" @click="navigateToFlow(flow.id)"
+              class="flow-card-mini group relative overflow-hidden rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-all hover:shadow-md cursor-pointer dark:border-slate-700 dark:bg-slate-800">
+              <!-- Header -->
+              <div class="mb-3">
+                <h3 class="truncate text-lg font-bold text-slate-900 dark:text-white">
+                  {{ flow.name }}
+                </h3>
+                <p v-if="flow.description" class="mt-1 line-clamp-2 text-sm text-slate-600 dark:text-slate-400">
+                  {{ flow.description }}
+                </p>
+              </div>
+
+              <!-- Badges -->
+              <div class="mb-3 flex flex-wrap gap-2">
+                <span
+                  class="inline-flex items-center rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 px-2.5 py-0.5 text-xs font-medium text-white">
+                  {{ flowTypes[flow.type] || 'Поток' }}
+                </span>
+                <span
+                  class="inline-flex items-center rounded-full border border-slate-300 bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-700 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300">
+                  {{ flowCategories[flow.category] || 'Общее' }}
+                </span>
+              </div>
+
+              <!-- Stats -->
+              <div class="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
+                <div class="flex items-center gap-1">
+                  <i class="fas fa-puzzle-piece"></i>
+                  <span>{{ flow.modules?.length || 0 }} модулей</span>
+                </div>
+                <div v-if="flow.estimatedDuration" class="flex items-center gap-1">
+                  <i class="fas fa-clock"></i>
+                  <span>~{{ flow.estimatedDuration }} мин</span>
+                </div>
+                <div v-if="flow.timesUsed > 0" class="flex items-center gap-1">
+                  <i class="fas fa-play-circle"></i>
+                  <span>{{ flow.timesUsed }}x</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Notification Component -->
@@ -405,7 +498,7 @@ import { ref, onMounted, nextTick, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useNotification } from "@/composables/useNotification";
 import { useAuthStore } from "~/stores/auth";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs, orderBy } from "firebase/firestore";
 import { Chart, registerables } from "chart.js";
 import ProfileHeader from "~/components/profile/ProfileHeader.vue";
 import BioSection from "~/components/profile/BioSection.vue";
@@ -468,6 +561,27 @@ const emotionChart = ref(null);
 const activeTab = ref("overview");
 const chartInstance = ref(null);
 
+// Lab Flows Data
+const publicFlows = ref([]);
+const loadingFlows = ref(false);
+
+const flowTypes = {
+  routine: 'Рутина',
+  protocol: 'Протокол',
+  session: 'Сессия',
+  custom: 'Свободный'
+};
+
+const flowCategories = {
+  morning: 'Утро',
+  evening: 'Вечер',
+  stress: 'Стресс',
+  focus: 'Фокус',
+  sleep: 'Сон',
+  growth: 'Рост',
+  custom: 'Другое'
+};
+
 // Bio Data
 const profession = ref("");
 const socialMedia = ref("");
@@ -519,10 +633,17 @@ watch(activeTab, async (newTab) => {
     await nextTick();
     initializeChart();
   }
+
+  // Load flows when flows tab is selected (only if user is authenticated)
+  if (newTab === "flows" && publicFlows.value.length === 0 && authStore.user) {
+    await fetchPublicFlows(authStore.user.uid);
+  }
 });
 
 // Auth protection at the start of onMounted
 onMounted(async () => {
+  isLoading.value = true; // Ensure loading is true from the start
+
   await authStore.initAuth();
 
   if (!authStore.user) {
@@ -770,11 +891,45 @@ const logoutUser = async () => {
 const handleNotification = ({ message, type }) => {
   showNotification(message, type);
 };
+
+// Fetch public flows for the user
+const fetchPublicFlows = async (userId) => {
+  loadingFlows.value = true;
+  try {
+    const db = getFirestore();
+    const labFlowsRef = collection(db, 'labFlows');
+    const q = query(
+      labFlowsRef,
+      where('userId', '==', userId),
+      where('isPublic', '==', true),
+      orderBy('createdAt', 'desc')
+    );
+
+    const querySnapshot = await getDocs(q);
+    publicFlows.value = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+    console.log('📚 Public flows loaded:', publicFlows.value.length);
+  } catch (error) {
+    console.error('Error fetching public flows:', error);
+    showNotification('Ошибка при загрузке потоков', 'error');
+  } finally {
+    loadingFlows.value = false;
+  }
+};
+
+// Navigate to flow page
+const navigateToFlow = (flowId) => {
+  router.push(`/lab/flow/${flowId}`);
+};
 </script>
 
 <style scoped>
 .loading-overlay {
-  @apply fixed inset-0 bg-white dark:bg-slate-950 z-50 flex items-center justify-center;
+  @apply fixed inset-0 bg-white dark:bg-slate-950 flex items-center justify-center;
+  z-index: 9999 !important;
 }
 
 .loading-container {
