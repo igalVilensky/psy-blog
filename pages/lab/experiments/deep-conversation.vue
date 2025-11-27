@@ -1,13 +1,5 @@
 <template>
     <div class="min-h-screen relative overflow-hidden p-4 sm:p-8">
-        <!-- Background Elements -->
-        <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-            <div class="absolute top-10 left-10 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl animate-pulse"></div>
-            <div
-                class="absolute bottom-10 right-10 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000">
-            </div>
-        </div>
-
         <div class="max-w-6xl mx-auto relative z-10 mt-4">
             <!-- Header -->
             <Breadcrumbs />
