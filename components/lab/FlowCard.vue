@@ -55,10 +55,15 @@
 
         <!-- Actions -->
         <div class="flex gap-2">
+            <button @click="$emit('start', flow)"
+                class="flex-1 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 px-3 py-2 text-sm font-medium text-white shadow-lg shadow-cyan-500/20 transition-all hover:from-cyan-600 hover:to-blue-700 hover:shadow-cyan-500/30">
+                <i class="fas fa-play mr-1"></i>
+                Запустить
+            </button>
             <button @click="$emit('edit', flow)"
-                class="flex-1 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600">
-                <i class="fas fa-edit mr-1"></i>
-                Редактировать
+                class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
+                title="Редактировать">
+                <i class="fas fa-edit"></i>
             </button>
             <button @click="$emit('duplicate', flow)"
                 class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
@@ -82,6 +87,7 @@ defineProps<{
 }>()
 
 defineEmits<{
+    start: [flow: any]
     edit: [flow: any]
     duplicate: [flow: any]
     delete: [flowId: string]

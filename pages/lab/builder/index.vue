@@ -5,6 +5,7 @@ import { useThemeStore } from '~/stores/theme'
 import { useNotification } from '~/composables/useNotification'
 import Notification from '~/components/base/Notification.vue'
 import FlowCard from '~/components/lab/FlowCard.vue'
+import FlowExecutor from '~/components/lab/FlowExecutor.vue'
 
 definePageMeta({
   layout: 'laboratory',
@@ -194,6 +195,139 @@ const flowCategories = {
   custom: 'Другое'
 }
 
+const prebuiltTemplates: Partial<LabFlow>[] = [
+  {
+    name: 'Утренняя Активация',
+    description: 'Зарядитесь энергией и настройтесь на продуктивный день.',
+    type: 'routine',
+    category: 'morning',
+    tags: ['энергия', 'утро', 'продуктивность'],
+    modules: [
+      {
+        id: 'tool-mindfulness',
+        type: 'tool',
+        category: 'tools',
+        name: 'Медитация',
+        icon: '🧘',
+        description: 'Короткая практика осознанности'
+      },
+      {
+        id: 'exp-growth',
+        type: 'experiment',
+        category: 'experiments',
+        name: 'Искра Роста',
+        icon: '✨',
+        description: 'Постановка намерения на день'
+      }
+    ],
+    estimatedDuration: 15
+  },
+  {
+    name: 'Глубокий Фокус',
+    description: 'Протокол для входа в состояние потока и концентрации.',
+    type: 'protocol',
+    category: 'focus',
+    tags: ['работа', 'поток', 'концентрация'],
+    modules: [
+      {
+        id: 'tool-sound',
+        type: 'tool',
+        category: 'tools',
+        name: 'Звукотерапия',
+        icon: '🔊',
+        description: 'Бинауральные ритмы для фокуса'
+      },
+      {
+        id: 'game-stroop',
+        type: 'game',
+        category: 'games',
+        name: 'Эффект Струпа',
+        icon: '🎨',
+        description: 'Разминка для мозга'
+      }
+    ],
+    estimatedDuration: 45
+  },
+  {
+    name: 'Вечернее Расслабление',
+    description: 'Подготовка ко сну и снятие дневного напряжения.',
+    type: 'routine',
+    category: 'evening',
+    tags: ['сон', 'релакс', 'вечер'],
+    modules: [
+      {
+        id: 'exp-wheel',
+        type: 'experiment',
+        category: 'experiments',
+        name: 'Колесо Баланса',
+        icon: '🎡',
+        description: 'Рефлексия дня'
+      },
+      {
+        id: 'tool-mindfulness',
+        type: 'tool',
+        category: 'tools',
+        name: 'Медитация',
+        icon: '🧘',
+        description: 'Сканирование тела'
+      }
+    ],
+    estimatedDuration: 20
+  },
+  {
+    name: 'SOS: Анти-Стресс',
+    description: 'Быстрая помощь при высоком уровне стресса и тревоги.',
+    type: 'session',
+    category: 'stress',
+    tags: ['спокойствие', 'тревога', 'дыхание'],
+    modules: [
+      {
+        id: 'tool-mindfulness',
+        type: 'tool',
+        category: 'tools',
+        name: 'Медитация',
+        icon: '🧘',
+        description: 'Дыхательные практики'
+      },
+      {
+        id: 'tool-sound',
+        type: 'tool',
+        category: 'tools',
+        name: 'Звукотерапия',
+        icon: '🔊',
+        description: 'Успокаивающие звуки природы'
+      }
+    ],
+    estimatedDuration: 10
+  },
+  {
+    name: 'Творческий Прорыв',
+    description: 'Активация креативного мышления и поиск новых идей.',
+    type: 'session',
+    category: 'growth',
+    tags: ['креативность', 'идеи', 'мозг'],
+    modules: [
+      {
+        id: 'game-reaction',
+        type: 'game',
+        category: 'games',
+        name: 'Тест Реакции',
+        icon: '⚡',
+        description: 'Активация нервной системы'
+      },
+      {
+        id: 'psy-podcasts',
+        type: 'tool',
+        category: 'psychology',
+        name: 'Психо-Подкасты',
+        icon: '🎧',
+        description: 'Вдохновение от экспертов'
+      }
+    ],
+    estimatedDuration: 30
+  }
+]
+
 const labFlow = ref<FlowItem[]>([])
 const isDragging = ref(false)
 const draggedItem = ref<Module | null>(null)
@@ -209,11 +343,16 @@ const flowTags = ref<string[]>([])
 const tagInput = ref('')
 
 // UI state
-const currentView = ref<'builder' | 'myflows' | 'templates'>('builder')
+const currentView = ref<'builder' | 'myflows' | 'templates' | 'history'>('builder')
 const isSaving = ref(false)
 const isLoading = ref(false)
 const savedFlows = ref<LabFlow[]>([])
+const flowSessions = ref<any[]>([])
 const editingFlowId = ref<string | null>(null)
+
+// Execution state
+const isExecutingFlow = ref(false)
+const currentFlowSession = ref<LabFlow | null>(null)
 
 // Stores
 const auth = useAuthStore()
@@ -455,6 +594,78 @@ const deleteFlow = async (flowId: string) => {
   }
 }
 
+const useTemplate = (template: Partial<LabFlow>) => {
+  labFlow.value = template.modules?.map((module: any) => ({
+    ...module,
+    instanceId: `${module.id}-${Date.now()}-${Math.random()}`
+  })) || []
+
+  flowName.value = template.name || 'Новый Поток'
+  flowDescription.value = template.description || ''
+  flowType.value = template.type || 'custom'
+  flowCategory.value = template.category || 'custom'
+  flowTags.value = [...(template.tags || [])]
+  editingFlowId.value = null
+
+  currentView.value = 'builder'
+  showNotification('Шаблон применен. Вы можете отредактировать его и сохранить.', 'success')
+}
+
+const startFlow = (flow: LabFlow) => {
+  if (flow.modules.length === 0) {
+    showNotification('В этом потоке нет модулей', 'warning')
+    return
+  }
+
+  currentFlowSession.value = flow
+  isExecutingFlow.value = true
+}
+
+const handleFlowComplete = async (sessionData: any) => {
+  if (!currentFlowSession.value || !auth.user) return
+
+  try {
+    const { collection, addDoc, updateDoc, doc, serverTimestamp, increment } = await import('firebase/firestore')
+
+    // 1. Create session record
+    await addDoc(collection($firestore, 'flowSessions'), {
+      flowId: currentFlowSession.value.id,
+      flowName: currentFlowSession.value.name,
+      userId: auth.user.uid,
+      userEmail: auth.user.email,
+      startedAt: serverTimestamp(), // Ideally this should be passed from executor start time
+      completedAt: serverTimestamp(),
+      duration: sessionData.duration,
+      status: 'completed',
+      modulesCount: currentFlowSession.value.modules.length
+    })
+
+    // 2. Update flow stats
+    if (currentFlowSession.value.id) {
+      const flowRef = doc($firestore, 'labFlows', currentFlowSession.value.id)
+      await updateDoc(flowRef, {
+        timesUsed: increment(1),
+        lastUsedAt: serverTimestamp()
+      })
+
+      // Update local state
+      const index = savedFlows.value.findIndex(f => f.id === currentFlowSession.value?.id)
+      if (index !== -1) {
+        savedFlows.value[index].timesUsed = (savedFlows.value[index].timesUsed || 0) + 1
+        savedFlows.value[index].lastUsedAt = new Date()
+      }
+    }
+
+    showNotification('Поток успешно завершен! Отличная работа!', 'success')
+  } catch (error) {
+    console.error('Error saving session:', error)
+    showNotification('Ошибка при сохранении результата', 'error')
+  } finally {
+    isExecutingFlow.value = false
+    currentFlowSession.value = null
+  }
+}
+
 // Load user's saved flows
 const loadUserFlows = async () => {
   if (!auth.user) return
@@ -488,10 +699,44 @@ const loadUserFlows = async () => {
   }
 }
 
+const loadFlowSessions = async () => {
+  if (!auth.user) return
+
+  try {
+    const { collection, query, where, orderBy, getDocs } = await import('firebase/firestore')
+
+    const sessionsRef = collection($firestore, 'flowSessions')
+    const q = query(
+      sessionsRef,
+      where('userId', '==', auth.user.uid),
+      orderBy('completedAt', 'desc')
+    )
+
+    const querySnapshot = await getDocs(q)
+    flowSessions.value = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+      completedAt: doc.data().completedAt?.toDate()
+    }))
+  } catch (error) {
+    console.error('Error loading sessions:', error)
+  }
+}
+
+// Watch for view changes
+watch(currentView, (newView) => {
+  if (newView === 'history' && auth.user) {
+    loadFlowSessions()
+  } else if (newView === 'myflows' && auth.user) {
+    loadUserFlows()
+  }
+})
+
 // Load flows on mount
 onMounted(() => {
   if (auth.user) {
     loadUserFlows()
+    loadFlowSessions()
   }
 })
 </script>
@@ -500,6 +745,10 @@ onMounted(() => {
   <!-- Notification Component -->
   <Notification v-if="notificationVisible" :message="notificationMessage" :type="notificationType"
     @close="hideNotification" />
+
+  <!-- Flow Executor -->
+  <FlowExecutor v-if="isExecutingFlow && currentFlowSession" :flow="currentFlowSession" @close="isExecutingFlow = false"
+    @complete="handleFlowComplete" />
 
   <div class="flex min-h-screen">
     <!-- Sidebar: Module Library -->
@@ -645,14 +894,14 @@ onMounted(() => {
     </aside>
 
     <!-- Main Canvas: Flow Builder -->
-    <main class="flex-1 overflow-hidden bg-slate-100 px-4 md:px-8 dark:bg-slate-950 pt-8 sm:pt-4 pb-8 md:ml-[280px]">
+    <main class="flex-1 overflow-hidden bg-slate-100 px-4 md:px-8 dark:bg-slate-950 pt-8 sm:pt-4 pb-8">
       <div class="mx-auto flex h-full max-w-6xl flex-col">
         <!-- View Switcher -->
-        <div class="mb-6 flex items-center justify-between">
+        <div class="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div
-            class="flex gap-2 rounded-lg border border-slate-200 bg-white p-1 dark:border-slate-700 dark:bg-slate-800">
+            class="flex w-full overflow-x-auto gap-2 rounded-lg border border-slate-200 bg-white p-1 md:w-auto dark:border-slate-700 dark:bg-slate-800 scrollbar-hide">
             <button @click="currentView = 'builder'" :class="[
-              'rounded-md px-4 py-2 text-sm font-medium transition-colors',
+              'whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium transition-colors',
               currentView === 'builder'
                 ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-sm'
                 : 'text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-700'
@@ -661,7 +910,7 @@ onMounted(() => {
               Конструктор
             </button>
             <button @click="currentView = 'myflows'" :class="[
-              'rounded-md px-4 py-2 text-sm font-medium transition-colors',
+              'whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium transition-colors',
               currentView === 'myflows'
                 ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-sm'
                 : 'text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-700'
@@ -673,7 +922,7 @@ onMounted(() => {
               </span>
             </button>
             <button @click="currentView = 'templates'" :class="[
-              'rounded-md px-4 py-2 text-sm font-medium transition-colors',
+              'whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium transition-colors',
               currentView === 'templates'
                 ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-sm'
                 : 'text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-700'
@@ -681,10 +930,19 @@ onMounted(() => {
               <i class="fas fa-star mr-2"></i>
               Шаблоны
             </button>
+            <button @click="currentView = 'history'" :class="[
+              'whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium transition-colors',
+              currentView === 'history'
+                ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-sm'
+                : 'text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-700'
+            ]">
+              <i class="fas fa-history mr-2"></i>
+              История
+            </button>
           </div>
 
           <button v-if="currentView !== 'builder'" @click="createNewFlow"
-            class="rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 px-4 py-2 text-sm font-medium text-white shadow-lg shadow-cyan-500/20 transition-all hover:from-cyan-600 hover:to-blue-700">
+            class="w-full rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 px-4 py-2 text-sm font-medium text-white shadow-lg shadow-cyan-500/20 transition-all hover:from-cyan-600 hover:to-blue-700 md:w-auto">
             <i class="fas fa-plus mr-2"></i>
             Новый Поток
           </button>
@@ -898,27 +1156,108 @@ onMounted(() => {
           <!-- Flows Grid -->
           <div v-else class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             <FlowCard v-for="flow in savedFlows" :key="flow.id" :flow="flow" :flow-types="flowTypes"
-              :flow-categories="flowCategories" @edit="editFlow" @duplicate="duplicateFlow" @delete="deleteFlow" />
+              :flow-categories="flowCategories" @start="startFlow" @edit="editFlow" @duplicate="duplicateFlow"
+              @delete="deleteFlow" />
+          </div>
+        </div>
+
+        <!-- History View -->
+        <div v-else-if="currentView === 'history'" class="flex-1 overflow-y-auto">
+          <div v-if="flowSessions.length === 0"
+            class="flex h-64 flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 text-center dark:border-slate-700 dark:bg-slate-800/50">
+            <div class="mb-4 rounded-full bg-slate-100 p-4 dark:bg-slate-800">
+              <i class="fas fa-history text-3xl text-slate-400"></i>
+            </div>
+            <h3 class="text-lg font-medium text-slate-900 dark:text-white">История пуста</h3>
+            <p class="mt-1 max-w-sm text-sm text-slate-500 dark:text-slate-400">
+              Здесь будут отображаться результаты ваших завершенных сессий.
+            </p>
+          </div>
+
+          <div v-else class="space-y-4">
+            <div v-for="session in flowSessions" :key="session.id"
+              class="flex items-center justify-between rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-all hover:shadow-md dark:border-slate-700 dark:bg-slate-800">
+              <div class="flex items-center gap-4">
+                <div
+                  class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400">
+                  <i class="fas fa-check"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold text-slate-900 dark:text-white">{{ session.flowName }}</h3>
+                  <div class="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400">
+                    <span>
+                      <i class="fas fa-calendar-alt mr-1"></i>
+                      {{ session.completedAt ? new Date(session.completedAt).toLocaleDateString() : 'Неизвестно' }}
+                    </span>
+                    <span>
+                      <i class="fas fa-clock mr-1"></i>
+                      {{ Math.floor(session.duration / 60) }}:{{ (session.duration % 60).toString().padStart(2, '0') }}
+                    </span>
+                    <span>
+                      <i class="fas fa-layer-group mr-1"></i>
+                      {{ session.modulesCount }} модулей
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-right">
+                <span
+                  class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                  Завершено
+                </span>
+              </div>
+            </div>
           </div>
         </div>
 
         <!-- Templates View -->
         <div v-else-if="currentView === 'templates'" class="flex-1 overflow-y-auto">
-          <div class="flex flex-col items-center justify-center py-20 text-center">
-            <div class="mb-6 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 p-6">
-              <i class="fas fa-star text-4xl text-white"></i>
+          <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div v-for="(template, index) in prebuiltTemplates" :key="index"
+              class="group relative flex flex-col justify-between overflow-hidden rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-all hover:shadow-md dark:border-slate-700 dark:bg-slate-800">
+
+              <div>
+                <div class="mb-3 flex items-start justify-between">
+                  <div class="flex-1 min-w-0">
+                    <h3 class="truncate text-lg font-bold text-slate-900 dark:text-white">
+                      {{ template.name }}
+                    </h3>
+                    <p class="mt-1 line-clamp-2 text-sm text-slate-600 dark:text-slate-400">
+                      {{ template.description }}
+                    </p>
+                  </div>
+                </div>
+
+                <div class="mb-3 flex flex-wrap gap-2">
+                  <span
+                    class="inline-flex items-center rounded-full bg-gradient-to-r from-purple-500 to-pink-600 px-2.5 py-0.5 text-xs font-medium text-white">
+                    {{ flowTypes[template.type || 'custom'] }}
+                  </span>
+                  <span
+                    class="inline-flex items-center rounded-full border border-slate-300 bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-700 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300">
+                    {{ flowCategories[template.category || 'custom'] }}
+                  </span>
+                </div>
+
+                <div class="mb-4 flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
+                  <div class="flex items-center gap-1">
+                    <i class="fas fa-puzzle-piece"></i>
+                    <span>{{ template.modules?.length || 0 }} модулей</span>
+                  </div>
+                  <div class="flex items-center gap-1">
+                    <i class="fas fa-clock"></i>
+                    <span>~{{ template.estimatedDuration }} мин</span>
+                  </div>
+                </div>
+              </div>
+
+              <button @click="useTemplate(template)"
+                class="w-full rounded-lg bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600">
+                <i class="fas fa-magic mr-2"></i>
+                Использовать шаблон
+              </button>
             </div>
-            <h3 class="mb-2 text-xl font-bold text-slate-900 dark:text-white">Шаблоны скоро появятся</h3>
-            <p class="mb-6 max-w-md text-sm text-slate-600 dark:text-slate-400">
-              Мы работаем над коллекцией готовых потоков от экспертов. Пока вы можете создавать свои собственные потоки
-              в
-              конструкторе.
-            </p>
-            <button @click="createNewFlow"
-              class="rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-3 text-sm font-medium text-white shadow-lg shadow-cyan-500/20 hover:from-cyan-600 hover:to-blue-700">
-              <i class="fas fa-tools mr-2"></i>
-              Открыть Конструктор
-            </button>
           </div>
         </div>
       </div>
