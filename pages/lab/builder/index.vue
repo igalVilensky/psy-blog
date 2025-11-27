@@ -2,6 +2,8 @@
 import { ref, computed, onMounted } from 'vue'
 import { useAuthStore } from '~/stores/auth'
 import { useThemeStore } from '~/stores/theme'
+import { useNotification } from '~/composables/useNotification'
+import Notification from '~/components/base/Notification.vue'
 
 definePageMeta({
   layout: 'laboratory',
@@ -162,6 +164,7 @@ const savedFlows = ref<any[]>([])
 const auth = useAuthStore()
 const themeStore = useThemeStore()
 const { $firestore } = useNuxtApp()
+const { notificationMessage, notificationType, notificationVisible, showNotification, hideNotification } = useNotification()
 
 // Helper functions
 const getUserInitials = (user: any) => {
@@ -219,17 +222,17 @@ const removeItem = (index: number) => {
 
 const saveFlow = async () => {
   if (!auth.user) {
-    alert('Пожалуйста, войдите в систему, чтобы сохранить поток')
+    showNotification('Пожалуйста, войдите в систему, чтобы сохранить поток', 'error')
     return
   }
 
   if (labFlow.value.length === 0) {
-    alert('Добавьте хотя бы один модуль в поток')
+    showNotification('Добавьте хотя бы один модуль в поток', 'warning')
     return
   }
 
   if (!flowName.value.trim()) {
-    alert('Пожалуйста, введите название потока')
+    showNotification('Пожалуйста, введите название потока', 'warning')
     return
   }
 
@@ -258,10 +261,10 @@ const saveFlow = async () => {
     const labFlowsRef = collection($firestore, 'labFlows')
     await addDoc(labFlowsRef, flowData)
 
-    alert(`✅ Поток "${flowName.value}" успешно сохранен!`)
+    showNotification(`Поток "${flowName.value}" успешно сохранен!`, 'success')
   } catch (error) {
     console.error('Error saving flow:', error)
-    alert('❌ Ошибка при сохранении потока. Попробуйте еще раз.')
+    showNotification('Ошибка при сохранении потока. Попробуйте еще раз.', 'error')
   } finally {
     isSaving.value = false
   }
@@ -337,6 +340,10 @@ onMounted(() => {
 </script>
 
 <template>
+  <!-- Notification Component -->
+  <Notification v-if="notificationVisible" :message="notificationMessage" :type="notificationType"
+    @close="hideNotification" />
+
   <div class="flex min-h-screen">
     <!-- Sidebar: Module Library -->
     <aside
