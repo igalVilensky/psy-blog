@@ -4,6 +4,7 @@ import { useAuthStore } from '~/stores/auth'
 import { useThemeStore } from '~/stores/theme'
 import { useNotification } from '~/composables/useNotification'
 import Notification from '~/components/base/Notification.vue'
+import FlowCard from '~/components/lab/FlowCard.vue'
 
 definePageMeta({
   layout: 'laboratory',
@@ -22,6 +23,32 @@ interface Module {
 
 interface FlowItem extends Module {
   instanceId: string
+}
+
+interface LabFlow {
+  id?: string
+  name: string
+  description: string
+  type: 'routine' | 'protocol' | 'session' | 'custom'
+  category: 'morning' | 'evening' | 'stress' | 'focus' | 'sleep' | 'growth' | 'custom'
+  tags: string[]
+  modules: any[]
+
+  // Metadata
+  userId: string
+  userEmail: string
+  createdAt: any
+  updatedAt: any
+
+  // Sharing & Visibility
+  isPublic: boolean
+  isTemplate: boolean
+  shareCode?: string
+
+  // Usage & Analytics
+  timesUsed: number
+  lastUsedAt?: any
+  estimatedDuration?: number
 }
 
 // Real Data from Codebase
@@ -150,15 +177,43 @@ const categories = {
   tools: 'Инструменты'
 }
 
+const flowTypes = {
+  routine: 'Рутина',
+  protocol: 'Протокол',
+  session: 'Сессия',
+  custom: 'Свободный'
+}
+
+const flowCategories = {
+  morning: 'Утро',
+  evening: 'Вечер',
+  stress: 'Стресс',
+  focus: 'Фокус',
+  sleep: 'Сон',
+  growth: 'Рост',
+  custom: 'Другое'
+}
+
 const labFlow = ref<FlowItem[]>([])
 const isDragging = ref(false)
 const draggedItem = ref<Module | null>(null)
 const expandedCategories = ref<Set<string>>(new Set(['games'])) // Default first category open
 const mobileSidebarOpen = ref(false)
+
+// Flow metadata
 const flowName = ref('Моя Лаборатория')
+const flowDescription = ref('')
+const flowType = ref<'routine' | 'protocol' | 'session' | 'custom'>('custom')
+const flowCategory = ref<'morning' | 'evening' | 'stress' | 'focus' | 'sleep' | 'growth' | 'custom'>('custom')
+const flowTags = ref<string[]>([])
+const tagInput = ref('')
+
+// UI state
+const currentView = ref<'builder' | 'myflows' | 'templates'>('builder')
 const isSaving = ref(false)
 const isLoading = ref(false)
-const savedFlows = ref<any[]>([])
+const savedFlows = ref<LabFlow[]>([])
+const editingFlowId = ref<string | null>(null)
 
 // Stores
 const auth = useAuthStore()
@@ -243,10 +298,14 @@ const saveFlow = async () => {
   isSaving.value = true
 
   try {
-    const { collection, addDoc, serverTimestamp } = await import('firebase/firestore')
+    const { collection, addDoc, updateDoc, doc, serverTimestamp } = await import('firebase/firestore')
 
-    const flowData = {
+    const flowData: any = {
       name: flowName.value.trim(),
+      description: flowDescription.value.trim(),
+      type: flowType.value,
+      category: flowCategory.value,
+      tags: flowTags.value,
       modules: labFlow.value.map(item => ({
         id: item.id,
         type: item.type,
@@ -258,14 +317,43 @@ const saveFlow = async () => {
       })),
       userId: auth.user.uid,
       userEmail: auth.user.email,
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp()
+      updatedAt: serverTimestamp(),
+
+      // Sharing & visibility
+      isPublic: false,
+      isTemplate: false,
+
+      // Usage analytics
+      timesUsed: 0,
+      estimatedDuration: labFlow.value.length * 5 // Rough estimate: 5 min per module
     }
 
     const labFlowsRef = collection($firestore, 'labFlows')
-    await addDoc(labFlowsRef, flowData)
 
-    showNotification(`Поток "${flowName.value}" успешно сохранен!`, 'success')
+    if (editingFlowId.value) {
+      // Update existing flow
+      const flowDocRef = doc($firestore, 'labFlows', editingFlowId.value)
+      await updateDoc(flowDocRef, flowData)
+      showNotification(`Поток "${flowName.value}" успешно обновлен!`, 'success')
+
+      // Update in local array
+      const index = savedFlows.value.findIndex(f => f.id === editingFlowId.value)
+      if (index !== -1) {
+        savedFlows.value[index] = { ...savedFlows.value[index], ...flowData }
+      }
+    } else {
+      // Create new flow
+      flowData.createdAt = serverTimestamp()
+      const docRef = await addDoc(labFlowsRef, flowData)
+      showNotification(`Поток "${flowName.value}" успешно сохранен!`, 'success')
+
+      // Add to local array
+      savedFlows.value.unshift({ id: docRef.id, ...flowData })
+    }
+
+    // Reset form
+    editingFlowId.value = null
+    currentView.value = 'myflows'
   } catch (error) {
     console.error('Error saving flow:', error)
     showNotification('Ошибка при сохранении потока. Попробуйте еще раз.', 'error')
@@ -297,6 +385,76 @@ const isCategoryExpanded = (categoryKey: string) => {
   return expandedCategories.value.has(categoryKey)
 }
 
+// Tag management
+const addTag = () => {
+  const tag = tagInput.value.trim()
+  if (tag && !flowTags.value.includes(tag)) {
+    flowTags.value.push(tag)
+    tagInput.value = ''
+  }
+}
+
+const removeTag = (index: number) => {
+  flowTags.value.splice(index, 1)
+}
+
+// Flow management functions
+const createNewFlow = () => {
+  labFlow.value = []
+  flowName.value = 'Новый Поток'
+  flowDescription.value = ''
+  flowType.value = 'custom'
+  flowCategory.value = 'custom'
+  flowTags.value = []
+  editingFlowId.value = null
+  currentView.value = 'builder'
+}
+
+const editFlow = (flow: LabFlow) => {
+  labFlow.value = flow.modules.map((module: any) => ({
+    ...module,
+    instanceId: `${module.id}-${Date.now()}-${Math.random()}`
+  }))
+  flowName.value = flow.name
+  flowDescription.value = flow.description || ''
+  flowType.value = flow.type
+  flowCategory.value = flow.category
+  flowTags.value = [...flow.tags]
+  editingFlowId.value = flow.id || null
+  currentView.value = 'builder'
+}
+
+const duplicateFlow = async (flow: LabFlow) => {
+  labFlow.value = flow.modules.map((module: any) => ({
+    ...module,
+    instanceId: `${module.id}-${Date.now()}-${Math.random()}`
+  }))
+  flowName.value = `${flow.name} (Копия)`
+  flowDescription.value = flow.description || ''
+  flowType.value = flow.type
+  flowCategory.value = flow.category
+  flowTags.value = [...flow.tags]
+  editingFlowId.value = null
+  currentView.value = 'builder'
+  showNotification('Поток скопирован. Отредактируйте и сохраните.', 'success')
+}
+
+const deleteFlow = async (flowId: string) => {
+  if (!confirm('Вы уверены, что хотите удалить этот поток?')) return
+
+  try {
+    const { doc, deleteDoc } = await import('firebase/firestore')
+    const flowDocRef = doc($firestore, 'labFlows', flowId)
+    await deleteDoc(flowDocRef)
+
+    savedFlows.value = savedFlows.value.filter(f => f.id !== flowId)
+    showNotification('Поток успешно удален', 'success')
+  } catch (error) {
+    console.error('Error deleting flow:', error)
+    showNotification('Ошибка при удалении потока', 'error')
+  }
+}
+
 // Load user's saved flows
 const loadUserFlows = async () => {
   if (!auth.user) return
@@ -317,16 +475,11 @@ const loadUserFlows = async () => {
     savedFlows.value = querySnapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data()
-    }))
+    })) as LabFlow[]
 
-    // Load the most recent flow if available
-    if (savedFlows.value.length > 0) {
-      const latestFlow = savedFlows.value[0]
-      flowName.value = latestFlow.name
-      labFlow.value = latestFlow.modules.map((module: any) => ({
-        ...module,
-        instanceId: `${module.id}-${Date.now()}-${Math.random()}`
-      }))
+    // Switch to myflows view if user has saved flows
+    if (savedFlows.value.length > 0 && currentView.value === 'builder' && labFlow.value.length === 0) {
+      currentView.value = 'myflows'
     }
   } catch (error) {
     console.error('Error loading flows:', error)
@@ -492,64 +645,164 @@ onMounted(() => {
     </aside>
 
     <!-- Main Canvas: Flow Builder -->
-    <main class="flex-1 overflow-hidden bg-slate-100 px-4 md:px-8 dark:bg-slate-950 pt-8 sm:pt-4 pb-8">
-      <div class="mx-auto flex h-full max-w-4xl flex-col">
-        <header class="mb-4 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-          <div class="flex-1">
-            <input v-model="flowName" type="text" placeholder="Название лаборатории..."
-              class="w-full text-xl font-bold text-slate-900 bg-transparent border-b-2 border-transparent hover:border-slate-300 focus:border-blue-500 focus:outline-none transition-colors md:text-2xl dark:text-white dark:hover:border-slate-600 dark:focus:border-blue-400" />
-            <p class="text-sm text-slate-500 dark:text-slate-400">Спроектируйте свой поток</p>
-          </div>
-          <div class="flex gap-2">
-            <button
-              class="rounded-lg px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-200 md:text-sm dark:text-slate-300 dark:hover:bg-slate-800">
-              Предпросмотр
+    <main class="flex-1 overflow-hidden bg-slate-100 px-4 md:px-8 dark:bg-slate-950 pt-8 sm:pt-4 pb-8 md:ml-[280px]">
+      <div class="mx-auto flex h-full max-w-6xl flex-col">
+        <!-- View Switcher -->
+        <div class="mb-6 flex items-center justify-between">
+          <div
+            class="flex gap-2 rounded-lg border border-slate-200 bg-white p-1 dark:border-slate-700 dark:bg-slate-800">
+            <button @click="currentView = 'builder'" :class="[
+              'rounded-md px-4 py-2 text-sm font-medium transition-colors',
+              currentView === 'builder'
+                ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-sm'
+                : 'text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-700'
+            ]">
+              <i class="fas fa-tools mr-2"></i>
+              Конструктор
             </button>
-            <button @click="saveFlow" :disabled="isSaving"
-              class="rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 md:text-sm disabled:opacity-50 disabled:cursor-not-allowed">
-              {{ isSaving ? 'Сохранение...' : 'Сохранить' }}
+            <button @click="currentView = 'myflows'" :class="[
+              'rounded-md px-4 py-2 text-sm font-medium transition-colors',
+              currentView === 'myflows'
+                ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-sm'
+                : 'text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-700'
+            ]">
+              <i class="fas fa-folder-open mr-2"></i>
+              Мои Потоки
+              <span v-if="savedFlows.length > 0" class="ml-1.5 rounded-full bg-white/20 px-2 py-0.5 text-xs">
+                {{ savedFlows.length }}
+              </span>
+            </button>
+            <button @click="currentView = 'templates'" :class="[
+              'rounded-md px-4 py-2 text-sm font-medium transition-colors',
+              currentView === 'templates'
+                ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-sm'
+                : 'text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-700'
+            ]">
+              <i class="fas fa-star mr-2"></i>
+              Шаблоны
             </button>
           </div>
-        </header>
 
-        <!-- Mobile Sidebar (Collapsible) -->
-        <div class="mb-4 md:hidden">
-          <button @click="mobileSidebarOpen = !mobileSidebarOpen"
-            class="w-full flex items-center justify-between px-4 py-3 bg-white rounded-lg border border-slate-200 dark:bg-slate-800 dark:border-slate-700">
-            <span class="text-sm font-semibold text-slate-800 dark:text-white">Библиотека модулей</span>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-              stroke="currentColor" class="size-5 text-slate-400 transition-transform"
-              :class="{ 'rotate-180': mobileSidebarOpen }">
-              <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-            </svg>
+          <button v-if="currentView !== 'builder'" @click="createNewFlow"
+            class="rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 px-4 py-2 text-sm font-medium text-white shadow-lg shadow-cyan-500/20 transition-all hover:from-cyan-600 hover:to-blue-700">
+            <i class="fas fa-plus mr-2"></i>
+            Новый Поток
           </button>
+        </div>
 
-          <div class="mt-2 overflow-hidden transition-all duration-300"
-            :class="mobileSidebarOpen ? 'max-h-[60vh] opacity-100' : 'max-h-0 opacity-0'">
-            <div
-              class="bg-white rounded-lg border border-slate-200 p-2 max-h-[60vh] overflow-y-auto dark:bg-slate-800 dark:border-slate-700">
-              <div v-for="(label, key) in categories" :key="key" class="mb-2">
-                <button @click="toggleCategory(key)"
-                  class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-left transition-colors hover:bg-slate-100 dark:hover:bg-slate-700/50">
-                  <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300">
-                    {{ label }}
-                  </h3>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                    stroke="currentColor" class="size-4 text-slate-400 transition-transform"
-                    :class="{ 'rotate-180': isCategoryExpanded(key) }">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                  </svg>
+        <!-- Builder View -->
+        <div v-if="currentView === 'builder'" class="flex flex-1 flex-col">
+          <header class="mb-4 flex flex-col gap-4">
+            <!-- Flow Name -->
+            <div>
+              <input v-model="flowName" type="text" placeholder="Название потока..."
+                class="w-full text-xl font-bold text-slate-900 bg-transparent border-b-2 border-transparent hover:border-slate-300 focus:border-blue-500 focus:outline-none transition-colors md:text-2xl dark:text-white dark:hover:border-slate-600 dark:focus:border-blue-400" />
+            </div>
+
+            <!-- Flow Description -->
+            <div>
+              <textarea v-model="flowDescription" placeholder="Описание потока (опционально)..." rows="2"
+                class="w-full text-sm text-slate-700 bg-white border border-slate-200 rounded-lg px-3 py-2 hover:border-slate-300 focus:border-blue-500 focus:outline-none transition-colors resize-none dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700 dark:hover:border-slate-600 dark:focus:border-blue-400"></textarea>
+            </div>
+
+            <!-- Flow Metadata -->
+            <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <!-- Type -->
+              <div>
+                <label class="mb-1.5 block text-xs font-medium text-slate-600 dark:text-slate-400">Тип потока</label>
+                <select v-model="flowType"
+                  class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                  <option v-for="(label, key) in flowTypes" :key="key" :value="key">{{ label }}</option>
+                </select>
+              </div>
+
+              <!-- Category -->
+              <div>
+                <label class="mb-1.5 block text-xs font-medium text-slate-600 dark:text-slate-400">Категория</label>
+                <select v-model="flowCategory"
+                  class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                  <option v-for="(label, key) in flowCategories" :key="key" :value="key">{{ label }}</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Tags -->
+            <div>
+              <label class="mb-1.5 block text-xs font-medium text-slate-600 dark:text-slate-400">Теги</label>
+              <div class="flex flex-wrap gap-2 mb-2">
+                <span v-for="(tag, index) in flowTags" :key="index"
+                  class="inline-flex items-center gap-1.5 rounded-md bg-slate-200 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-slate-700 dark:text-slate-300">
+                  #{{ tag }}
+                  <button @click="removeTag(index)" class="hover:text-red-600 dark:hover:text-red-400">
+                    <i class="fas fa-times text-xs"></i>
+                  </button>
+                </span>
+              </div>
+              <div class="flex gap-2">
+                <input v-model="tagInput" @keyup.enter="addTag" type="text" placeholder="Добавить тег..."
+                  class="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300" />
+                <button @click="addTag"
+                  class="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600">
+                  <i class="fas fa-plus"></i>
                 </button>
+              </div>
+            </div>
 
-                <div class="space-y-2 mt-2 overflow-hidden transition-all duration-300"
-                  :class="isCategoryExpanded(key) ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'">
-                  <div v-for="module in modulesByCategory[key]" :key="module.id" @click="addItemToFlow(module)"
-                    class="cursor-pointer rounded-lg border border-slate-100 bg-slate-50 p-2 transition-all hover:border-blue-400 hover:shadow-sm dark:border-slate-700 dark:bg-slate-700/50 dark:hover:border-blue-500">
-                    <div class="flex items-center gap-3">
-                      <span class="text-xl shrink-0">{{ module.icon }}</span>
-                      <div class="min-w-0 flex-1">
-                        <h3 class="truncate text-sm font-medium text-slate-900 dark:text-white">{{ module.name }}</h3>
-                        <p class="truncate text-[10px] text-slate-500 dark:text-slate-400">{{ module.description }}</p>
+            <!-- Action Buttons -->
+            <div class="flex gap-2">
+              <button @click="saveFlow" :disabled="isSaving"
+                class="flex-1 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-cyan-500/20 hover:from-cyan-600 hover:to-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                <i class="fas fa-save mr-2"></i>
+                {{ isSaving ? 'Сохранение...' : editingFlowId ? 'Обновить Поток' : 'Сохранить Поток' }}
+              </button>
+              <button v-if="editingFlowId" @click="createNewFlow"
+                class="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600">
+                <i class="fas fa-times mr-2"></i>
+                Отменить
+              </button>
+            </div>
+          </header>
+
+          <!-- Mobile Sidebar (Collapsible) -->
+          <div class="mb-4 md:hidden">
+            <button @click="mobileSidebarOpen = !mobileSidebarOpen"
+              class="w-full flex items-center justify-between px-4 py-3 bg-white rounded-lg border border-slate-200 dark:bg-slate-800 dark:border-slate-700">
+              <span class="text-sm font-semibold text-slate-800 dark:text-white">Библиотека модулей</span>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                stroke="currentColor" class="size-5 text-slate-400 transition-transform"
+                :class="{ 'rotate-180': mobileSidebarOpen }">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+              </svg>
+            </button>
+
+            <div class="mt-2 overflow-hidden transition-all duration-300"
+              :class="mobileSidebarOpen ? 'max-h-[60vh] opacity-100' : 'max-h-0 opacity-0'">
+              <div
+                class="bg-white rounded-lg border border-slate-200 p-2 max-h-[60vh] overflow-y-auto dark:bg-slate-800 dark:border-slate-700">
+                <div v-for="(label, key) in categories" :key="key" class="mb-2">
+                  <button @click="toggleCategory(key)"
+                    class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-left transition-colors hover:bg-slate-100 dark:hover:bg-slate-700/50">
+                    <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                      {{ label }}
+                    </h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                      stroke="currentColor" class="size-4 text-slate-400 transition-transform"
+                      :class="{ 'rotate-180': isCategoryExpanded(key) }">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                    </svg>
+                  </button>
+
+                  <div class="space-y-2 mt-2 overflow-hidden transition-all duration-300"
+                    :class="isCategoryExpanded(key) ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'">
+                    <div v-for="module in modulesByCategory[key]" :key="module.id" @click="addItemToFlow(module)"
+                      class="cursor-pointer rounded-lg border border-slate-100 bg-slate-50 p-2 transition-all hover:border-blue-400 hover:shadow-sm dark:border-slate-700 dark:bg-slate-700/50 dark:hover:border-blue-500">
+                      <div class="flex items-center gap-3">
+                        <span class="text-xl shrink-0">{{ module.icon }}</span>
+                        <div class="min-w-0 flex-1">
+                          <h3 class="truncate text-sm font-medium text-slate-900 dark:text-white">{{ module.name }}</h3>
+                          <p class="truncate text-[10px] text-slate-500 dark:text-slate-400">{{ module.description }}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -557,59 +810,115 @@ onMounted(() => {
               </div>
             </div>
           </div>
+
+          <!-- Drop Zone -->
+          <div @dragover.prevent @drop="onDrop"
+            class="relative flex flex-1 flex-col overflow-y-auto rounded-xl border-2 border-dashed transition-all min-h-[400px]"
+            :class="[
+              isDragging
+                ? 'border-blue-500 bg-blue-50/50 dark:border-blue-400 dark:bg-blue-900/20'
+                : 'border-slate-300 bg-white dark:border-slate-700 dark:bg-slate-900'
+            ]">
+            <!-- Empty State -->
+            <div v-if="labFlow.length === 0"
+              class="absolute inset-0 flex flex-col items-center justify-center p-4 text-center text-slate-400">
+              <div class="mb-4 rounded-full bg-slate-100 p-4 md:p-6 dark:bg-slate-800">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                  stroke="currentColor" class="size-8 md:size-10">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+              </div>
+              <p class="text-base font-medium md:text-lg">Начните создание</p>
+              <p class="text-xs md:text-sm">Перетащите модули из меню или нажмите на них</p>
+            </div>
+
+            <!-- Flow Items -->
+            <div v-else class="space-y-3 p-4 md:space-y-4 md:p-6">
+              <div v-for="(item, index) in labFlow" :key="item.instanceId"
+                class="group relative flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 shadow-sm transition-all hover:shadow-md md:gap-4 md:p-4 dark:border-slate-700 dark:bg-slate-800">
+                <!-- Order Number -->
+                <div
+                  class="flex size-6 shrink-0 items-center justify-center rounded-full bg-slate-100 text-xs font-bold text-slate-600 md:size-8 md:text-sm dark:bg-slate-700 dark:text-slate-300">
+                  {{ index + 1 }}
+                </div>
+
+                <!-- Icon -->
+                <div class="text-2xl md:text-3xl">{{ item.icon }}</div>
+
+                <!-- Content -->
+                <div class="flex-1 min-w-0">
+                  <h3 class="truncate text-sm font-bold text-slate-900 md:text-base dark:text-white">{{ item.name }}
+                  </h3>
+                  <p class="truncate text-xs text-slate-500 md:text-sm dark:text-slate-400">{{ item.description }}</p>
+                </div>
+
+                <!-- Actions -->
+                <button @click="removeItem(index)"
+                  class="shrink-0 rounded-lg p-1.5 text-slate-500 transition-colors hover:bg-red-100 hover:text-red-600 md:p-2 dark:text-slate-400 dark:hover:bg-red-900/30 dark:hover:text-red-400"
+                  title="Удалить модуль">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-4 md:size-5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <!-- Drop Zone -->
-        <div @dragover.prevent @drop="onDrop"
-          class="relative flex flex-1 flex-col overflow-y-auto rounded-xl border-2 border-dashed transition-all min-h-[400px]"
-          :class="[
-            isDragging
-              ? 'border-blue-500 bg-blue-50/50 dark:border-blue-400 dark:bg-blue-900/20'
-              : 'border-slate-300 bg-white dark:border-slate-700 dark:bg-slate-900'
-          ]">
-          <!-- Empty State -->
-          <div v-if="labFlow.length === 0"
-            class="absolute inset-0 flex flex-col items-center justify-center p-4 text-center text-slate-400">
-            <div class="mb-4 rounded-full bg-slate-100 p-4 md:p-6 dark:bg-slate-800">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="size-8 md:size-10">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-              </svg>
+        <!-- My Flows View -->
+        <div v-else-if="currentView === 'myflows'" class="flex-1 overflow-y-auto">
+          <!-- Loading State -->
+          <div v-if="isLoading" class="flex items-center justify-center py-20">
+            <div class="text-center">
+              <div
+                class="mb-4 inline-block h-12 w-12 animate-spin rounded-full border-4 border-slate-200 border-t-cyan-500">
+              </div>
+              <p class="text-sm text-slate-600 dark:text-slate-400">Загрузка потоков...</p>
             </div>
-            <p class="text-base font-medium md:text-lg">Начните создание</p>
-            <p class="text-xs md:text-sm">Перетащите модули из меню или нажмите на них</p>
           </div>
 
-          <!-- Flow Items -->
-          <div v-else class="space-y-3 p-4 md:space-y-4 md:p-6">
-            <div v-for="(item, index) in labFlow" :key="item.instanceId"
-              class="group relative flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 shadow-sm transition-all hover:shadow-md md:gap-4 md:p-4 dark:border-slate-700 dark:bg-slate-800">
-              <!-- Order Number -->
-              <div
-                class="flex size-6 shrink-0 items-center justify-center rounded-full bg-slate-100 text-xs font-bold text-slate-600 md:size-8 md:text-sm dark:bg-slate-700 dark:text-slate-300">
-                {{ index + 1 }}
-              </div>
-
-              <!-- Icon -->
-              <div class="text-2xl md:text-3xl">{{ item.icon }}</div>
-
-              <!-- Content -->
-              <div class="flex-1 min-w-0">
-                <h3 class="truncate text-sm font-bold text-slate-900 md:text-base dark:text-white">{{ item.name }}</h3>
-                <p class="truncate text-xs text-slate-500 md:text-sm dark:text-slate-400">{{ item.description }}</p>
-              </div>
-
-              <!-- Actions -->
-              <button @click="removeItem(index)"
-                class="shrink-0 rounded-lg p-1.5 text-slate-500 transition-colors hover:bg-red-100 hover:text-red-600 md:p-2 dark:text-slate-400 dark:hover:bg-red-900/30 dark:hover:text-red-400"
-                title="Удалить модуль">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                  stroke="currentColor" class="size-4 md:size-5">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                </svg>
-              </button>
+          <!-- Empty State -->
+          <div v-else-if="savedFlows.length === 0" class="flex flex-col items-center justify-center py-20 text-center">
+            <div class="mb-6 rounded-full bg-slate-100 p-6 dark:bg-slate-800">
+              <i class="fas fa-folder-open text-4xl text-slate-400"></i>
             </div>
+            <h3 class="mb-2 text-xl font-bold text-slate-900 dark:text-white">Нет сохраненных потоков</h3>
+            <p class="mb-6 text-sm text-slate-600 dark:text-slate-400">
+              Создайте свой первый поток в конструкторе
+            </p>
+            <button @click="createNewFlow"
+              class="rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-3 text-sm font-medium text-white shadow-lg shadow-cyan-500/20 hover:from-cyan-600 hover:to-blue-700">
+              <i class="fas fa-plus mr-2"></i>
+              Создать Поток
+            </button>
+          </div>
+
+          <!-- Flows Grid -->
+          <div v-else class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <FlowCard v-for="flow in savedFlows" :key="flow.id" :flow="flow" :flow-types="flowTypes"
+              :flow-categories="flowCategories" @edit="editFlow" @duplicate="duplicateFlow" @delete="deleteFlow" />
+          </div>
+        </div>
+
+        <!-- Templates View -->
+        <div v-else-if="currentView === 'templates'" class="flex-1 overflow-y-auto">
+          <div class="flex flex-col items-center justify-center py-20 text-center">
+            <div class="mb-6 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 p-6">
+              <i class="fas fa-star text-4xl text-white"></i>
+            </div>
+            <h3 class="mb-2 text-xl font-bold text-slate-900 dark:text-white">Шаблоны скоро появятся</h3>
+            <p class="mb-6 max-w-md text-sm text-slate-600 dark:text-slate-400">
+              Мы работаем над коллекцией готовых потоков от экспертов. Пока вы можете создавать свои собственные потоки
+              в
+              конструкторе.
+            </p>
+            <button @click="createNewFlow"
+              class="rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-3 text-sm font-medium text-white shadow-lg shadow-cyan-500/20 hover:from-cyan-600 hover:to-blue-700">
+              <i class="fas fa-tools mr-2"></i>
+              Открыть Конструктор
+            </button>
           </div>
         </div>
       </div>
