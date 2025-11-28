@@ -1,6 +1,6 @@
 <template>
   <div
-    class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white overflow-hidden transition-colors duration-500 relative">
+    class="min-h-screen px-4 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white overflow-hidden transition-colors duration-500 relative">
 
     <!-- Background Visualizer -->
     <div class="absolute inset-0 z-0 pointer-events-none opacity-40 md:opacity-100">
@@ -11,7 +11,7 @@
     </div>
 
     <!-- Main Content -->
-    <main class="container mx-auto max-w-6xl px-4 sm:px-0 py-12 lg:py-16 relative z-10">
+    <main class="container mx-auto max-w-6xl px-4 py-12 lg:py-16 relative z-10">
       <div class="max-w-3xl mx-auto">
         <!-- Enhanced Petri Dish -->
         <div class="text-center w-full mb-8">

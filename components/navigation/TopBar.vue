@@ -7,7 +7,7 @@
     </div>
 
     <!-- Container -->
-    <div class="container max-w-6xl px-4 sm:px-0 mx-auto flex justify-between items-center py-3 relative z-10">
+    <div class="container max-w-6xl px-4 mx-auto flex justify-between items-center py-3 relative z-10">
       <!-- Logo -->
       <NuxtLink to="/home" class="group relative block" @click="closeDropdown">
         <div
