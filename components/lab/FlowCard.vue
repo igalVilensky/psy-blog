@@ -53,46 +53,74 @@
             </div>
         </div>
 
+        <!-- Schedule Indicator -->
+        <div v-if="flow.schedule?.enabled" class="mb-3 flex items-center gap-2 text-xs text-cyan-400">
+            <i class="fas fa-clock"></i>
+            <span>{{ scheduleText }}</span>
+        </div>
+
         <!-- Actions -->
-        <div class="flex gap-2">
+        <!-- Actions -->
+        <div class="flex flex-wrap gap-2">
             <button @click="$emit('start', flow)"
-                class="flex-1 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 px-3 py-2 text-sm font-medium text-white shadow-lg shadow-cyan-500/20 transition-all hover:from-cyan-600 hover:to-blue-700 hover:shadow-cyan-500/30">
+                class="w-full sm:w-auto flex-1 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 px-3 py-2 text-sm font-medium text-white shadow-lg shadow-cyan-500/20 transition-all hover:from-cyan-600 hover:to-blue-700 hover:shadow-cyan-500/30">
                 <i class="fas fa-play mr-1"></i>
                 Запустить
             </button>
-            <button @click="$emit('share', flow)"
-                class="rounded-lg border px-3 py-2 text-sm font-medium transition-colors"
-                :class="flow.isPublic
-                    ? 'border-green-200 bg-green-50 text-green-600 hover:bg-green-100 dark:border-green-500/20 dark:bg-green-500/10 dark:text-green-400 dark:hover:bg-green-500/20'
-                    : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600'"
-                :title="flow.isPublic ? 'Поделиться (Публичный)' : 'Поделиться'">
-                <i class="fas" :class="flow.isPublic ? 'fa-share-alt' : 'fa-share'"></i>
-            </button>
-            <button @click="$emit('edit', flow)"
-                class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
-                title="Редактировать">
-                <i class="fas fa-edit"></i>
-            </button>
-            <button @click="$emit('duplicate', flow)"
-                class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
-                title="Дублировать">
-                <i class="fas fa-copy"></i>
-            </button>
-            <button @click="$emit('delete', flow.id)"
-                class="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-100 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20"
-                title="Удалить">
-                <i class="fas fa-trash"></i>
-            </button>
+            <div class="flex flex-1 gap-2 sm:flex-none">
+                <button @click="$emit('share', flow)"
+                    class="flex-1 sm:flex-none rounded-lg border px-3 py-2 text-sm font-medium transition-colors"
+                    :class="flow.isPublic
+                        ? 'border-green-200 bg-green-50 text-green-600 hover:bg-green-100 dark:border-green-500/20 dark:bg-green-500/10 dark:text-green-400 dark:hover:bg-green-500/20'
+                        : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600'"
+                    :title="flow.isPublic ? 'Поделиться (Публичный)' : 'Поделиться'">
+                    <i class="fas" :class="flow.isPublic ? 'fa-share-alt' : 'fa-share'"></i>
+                </button>
+                <button @click="$emit('edit', flow)"
+                    class="flex-1 sm:flex-none rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
+                    title="Редактировать">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button @click="$emit('duplicate', flow)"
+                    class="flex-1 sm:flex-none rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
+                    title="Дублировать">
+                    <i class="fas fa-copy"></i>
+                </button>
+                <button @click="$emit('schedule', flow)"
+                    :class="flow.schedule?.enabled
+                        ? 'border-cyan-200 bg-cyan-50 text-cyan-600 hover:bg-cyan-100 dark:border-cyan-500/20 dark:bg-cyan-500/10 dark:text-cyan-400 dark:hover:bg-cyan-500/20'
+                        : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600'"
+                    class="flex-1 sm:flex-none rounded-lg border px-3 py-2 text-sm font-medium transition-colors"
+                    :title="flow.schedule?.enabled ? 'Изменить расписание' : 'Настроить расписание'">
+                    <i class="fas fa-clock"></i>
+                </button>
+                <button @click="$emit('delete', flow.id)"
+                    class="flex-1 sm:flex-none rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-100 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20"
+                    title="Удалить">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-defineProps<{
+import { computed } from 'vue'
+import { useScheduler } from '~/composables/useScheduler'
+
+const props = defineProps<{
     flow: any
     flowTypes: Record<string, string>
     flowCategories: Record<string, string>
 }>()
+
+const { formatNextTrigger } = useScheduler()
+
+const scheduleText = computed(() => {
+    if (!props.flow.schedule) return ''
+    const formatted = formatNextTrigger(props.flow.schedule)
+    return formatted || 'Расписание настроено'
+})
 
 defineEmits<{
     start: [flow: any]
@@ -100,6 +128,7 @@ defineEmits<{
     edit: [flow: any]
     duplicate: [flow: any]
     delete: [flowId: string]
+    schedule: [flow: any]
 }>()
 </script>
 

@@ -86,9 +86,13 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  flowId: {
+    type: String,
+    default: null,
+  },
 });
 
-const emit = defineEmits(["close"]);
+const emit = defineEmits(["close", "execute-flow"]);
 const visible = ref(true);
 const router = useRouter();
 let autoCloseTimer = null;
@@ -145,10 +149,28 @@ const closeNotification = () => {
 
 // Navigate to route (for reminder type)
 const goToRoute = () => {
-  if (props.routePath) {
-    router.push(props.routePath);
+
+  // If there's a flowId, emit execute-flow event instead of navigating
+  if (props.flowId) {
+    emit('execute-flow', props.flowId);
     visible.value = false;
     emit("close");
+    return;
+  }
+
+  // Otherwise navigate to the route
+  if (props.routePath) {
+    // Force navigation even if already on the route
+    router.push(props.routePath).catch(() => {
+      // If already on route, force a reload by going away and back
+      router.push('/lab').then(() => {
+        router.push(props.routePath);
+      });
+    });
+    visible.value = false;
+    emit("close");
+  } else {
+    console.warn('No routePath or flowId provided');
   }
 };
 

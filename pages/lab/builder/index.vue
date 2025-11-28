@@ -6,6 +6,7 @@ import { useNotification } from '~/composables/useNotification'
 import Notification from '~/components/base/Notification.vue'
 import FlowCard from '~/components/lab/FlowCard.vue'
 import FlowExecutor from '~/components/lab/FlowExecutor.vue'
+import ScheduleConfig, { type FlowSchedule } from '~/components/lab/ScheduleConfig.vue'
 
 definePageMeta({
   layout: 'laboratory',
@@ -50,6 +51,9 @@ interface LabFlow {
   timesUsed: number
   lastUsedAt?: any
   estimatedDuration?: number
+
+  // Scheduling
+  schedule?: FlowSchedule
 }
 
 // Real Data from Codebase
@@ -351,8 +355,12 @@ const flowSessions = ref<any[]>([])
 const editingFlowId = ref<string | null>(null)
 
 // Execution state
-const isExecutingFlow = ref(false)
-const currentFlowSession = ref<LabFlow | null>(null)
+const showFlowExecutor = ref(false)
+const selectedFlowForExecution = ref<LabFlow | null>(null)
+
+// Scheduling State
+const showScheduleModal = ref(false)
+const selectedFlowForSchedule = ref<LabFlow | null>(null)
 
 // Stores
 const auth = useAuthStore()
@@ -626,6 +634,36 @@ const toggleShare = async (flow: LabFlow) => {
   }
 }
 
+const openScheduleModal = (flow: LabFlow) => {
+  selectedFlowForSchedule.value = flow
+  showScheduleModal.value = true
+}
+
+const saveSchedule = async (schedule: FlowSchedule) => {
+  if (!selectedFlowForSchedule.value?.id) return
+
+  try {
+    const { $firestore } = useNuxtApp()
+    const { doc, updateDoc } = await import('firebase/firestore')
+    const flowRef = doc($firestore, 'labFlows', selectedFlowForSchedule.value.id)
+
+    await updateDoc(flowRef, { schedule })
+
+    // Update local state
+    const index = savedFlows.value.findIndex(f => f.id === selectedFlowForSchedule.value?.id)
+    if (index !== -1) {
+      savedFlows.value[index].schedule = schedule
+    }
+
+    showScheduleModal.value = false
+    selectedFlowForSchedule.value = null
+    showNotification('Расписание сохранено', 'success')
+  } catch (error) {
+    console.error('Error saving schedule:', error)
+    showNotification('Ошибка при сохранении расписания', 'error')
+  }
+}
+
 const useTemplate = (template: Partial<LabFlow>) => {
   labFlow.value = template.modules?.map((templateModule: any) => {
     const originalModule = availableModules.find(m => m.id === templateModule.id)
@@ -653,39 +691,39 @@ const startFlow = (flow: LabFlow) => {
     return
   }
 
-  currentFlowSession.value = flow
-  isExecutingFlow.value = true
+  selectedFlowForExecution.value = flow
+  showFlowExecutor.value = true
 }
 
 const handleFlowComplete = async (sessionData: any) => {
-  if (!currentFlowSession.value || !auth.user) return
+  if (!selectedFlowForExecution.value || !auth.user) return
 
   try {
     const { collection, addDoc, updateDoc, doc, serverTimestamp, increment } = await import('firebase/firestore')
 
     // 1. Create session record
     await addDoc(collection($firestore, 'flowSessions'), {
-      flowId: currentFlowSession.value.id,
-      flowName: currentFlowSession.value.name,
+      flowId: selectedFlowForExecution.value.id,
+      flowName: selectedFlowForExecution.value.name,
       userId: auth.user.uid,
       userEmail: auth.user.email,
       startedAt: serverTimestamp(), // Ideally this should be passed from executor start time
       completedAt: serverTimestamp(),
       duration: sessionData.duration,
       status: 'completed',
-      modulesCount: currentFlowSession.value.modules.length
+      modulesCount: selectedFlowForExecution.value.modules.length
     })
 
     // 2. Update flow stats
-    if (currentFlowSession.value.id) {
-      const flowRef = doc($firestore, 'labFlows', currentFlowSession.value.id)
+    if (selectedFlowForExecution.value.id) {
+      const flowRef = doc($firestore, 'labFlows', selectedFlowForExecution.value.id)
       await updateDoc(flowRef, {
         timesUsed: increment(1),
         lastUsedAt: serverTimestamp()
       })
 
       // Update local state
-      const index = savedFlows.value.findIndex(f => f.id === currentFlowSession.value?.id)
+      const index = savedFlows.value.findIndex(f => f.id === selectedFlowForExecution.value?.id)
       if (index !== -1) {
         savedFlows.value[index].timesUsed = (savedFlows.value[index].timesUsed || 0) + 1
         savedFlows.value[index].lastUsedAt = new Date()
@@ -697,8 +735,8 @@ const handleFlowComplete = async (sessionData: any) => {
     console.error('Error saving session:', error)
     showNotification('Ошибка при сохранении результата', 'error')
   } finally {
-    isExecutingFlow.value = false
-    currentFlowSession.value = null
+    showFlowExecutor.value = false
+    selectedFlowForExecution.value = null
   }
 }
 
@@ -774,17 +812,27 @@ onMounted(() => {
     loadUserFlows()
     loadFlowSessions()
   }
+
+  // Listen for scheduled flow execution events from notifications
+  window.addEventListener('execute-scheduled-flow', (event) => {
+    const { flowId } = event.detail
+
+    // Find the flow and start it
+    const flow = savedFlows.value.find(f => f.id === flowId)
+    if (flow) {
+      startFlow(flow)
+    } else {
+      console.warn('Flow not found:', flowId)
+    }
+  })
 })
+
 </script>
 
 <template>
   <!-- Notification Component -->
   <Notification v-if="notificationVisible" :message="notificationMessage" :type="notificationType"
     @close="hideNotification" />
-
-  <!-- Flow Executor -->
-  <FlowExecutor v-if="isExecutingFlow && currentFlowSession" :flow="currentFlowSession" @close="isExecutingFlow = false"
-    @complete="handleFlowComplete" />
 
   <div class="flex min-h-screen">
     <!-- Sidebar: Module Library -->
@@ -1193,7 +1241,7 @@ onMounted(() => {
           <div v-else class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             <FlowCard v-for="flow in savedFlows" :key="flow.id" :flow="flow" :flow-types="flowTypes"
               :flow-categories="flowCategories" @start="startFlow" @edit="editFlow" @duplicate="duplicateFlow"
-              @delete="deleteFlow" @share="toggleShare" />
+              @delete="deleteFlow" @share="toggleShare" @schedule="openScheduleModal" />
           </div>
         </div>
 
@@ -1298,6 +1346,14 @@ onMounted(() => {
         </div>
       </div>
     </main>
+
+    <!-- Modals -->
+    <FlowExecutor v-if="showFlowExecutor && selectedFlowForExecution" :is-open="showFlowExecutor"
+      :flow="selectedFlowForExecution" @close="showFlowExecutor = false" @complete="handleFlowComplete" />
+
+    <ScheduleConfig v-if="showScheduleModal && selectedFlowForSchedule" :is-open="showScheduleModal"
+      :flow-name="selectedFlowForSchedule.name" :schedule="selectedFlowForSchedule.schedule"
+      @close="showScheduleModal = false" @save="saveSchedule" />
   </div>
 </template>
 

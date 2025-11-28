@@ -60,6 +60,10 @@
           </div>
         </div>
 
+        <Notification v-if="notificationVisible" :message="notificationMessage" :type="notificationType"
+          :route-path="notificationRoute" :cta-text="notificationCta" :duration="notificationDuration"
+          :flow-id="notificationFlowId" :show-close-button="true" @close="hideNotification"
+          @execute-flow="handleExecuteFlow" />
         <!-- Experiment Area -->
         <div class="experiment-area">
           <NuxtPage />
@@ -73,9 +77,14 @@
 import { ref, computed, onMounted, onUnmounted } from "vue";
 import { useAuthStore } from "~/stores/auth";
 import { useThemeStore } from "~/stores/theme";
+import { useScheduler } from "~/composables/useScheduler";
+import { useNotification } from "~/composables/useNotification";
+import Notification from "~/components/base/Notification.vue";
 
 const auth = useAuthStore();
 const themeStore = useThemeStore();
+const { notificationMessage, notificationType, notificationVisible, notificationRoute, notificationCta, notificationDuration, notificationFlowId, showNotification, hideNotification } = useNotification();
+const { checkSchedules } = useScheduler(showNotification);
 
 const route = useRoute();
 
@@ -114,15 +123,55 @@ const updateTime = () => {
 };
 
 let timeInterval;
+let scheduleInterval;
 
-onMounted(() => {
+const fetchAndCheckSchedules = async () => {
+  if (!auth.user) return;
+
+  try {
+    const { $firestore } = useNuxtApp();
+    const { collection, query, where, getDocs } = await import("firebase/firestore");
+
+    const flowsRef = collection($firestore, "labFlows");
+    const q = query(flowsRef, where("userId", "==", auth.user.uid));
+    const snapshot = await getDocs(q);
+
+    const flows = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+    await checkSchedules(flows);
+  } catch (error) {
+    console.error("Error checking schedules:", error);
+  }
+};
+
+const handleExecuteFlow = (flowId) => {
+  // Emit a custom event that the builder page can listen to
+  if (flowId) {
+    window.dispatchEvent(new CustomEvent('execute-scheduled-flow', { detail: { flowId } }));
+  }
+};
+
+onMounted(async () => {
   updateTime();
   timeInterval = setInterval(updateTime, 1000);
+
+  // Initialize scheduler
+  if (auth.user) {
+    await fetchAndCheckSchedules();
+    // Check schedules every minute
+    scheduleInterval = setInterval(fetchAndCheckSchedules, 60000);
+  }
 });
 
 onUnmounted(() => {
   if (timeInterval) {
     clearInterval(timeInterval);
+  }
+  if (scheduleInterval) {
+    clearInterval(scheduleInterval);
   }
 });
 </script>
