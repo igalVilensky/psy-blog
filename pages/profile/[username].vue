@@ -170,6 +170,76 @@
             </div>
           </div>
         </div>
+
+        <!-- AI Summary Section -->
+        <div v-if="authStore.user?.onboardingCompleted && aiSummary" class="col-span-1 lg:col-span-2">
+          <div class="settings-card">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="settings-icon-wrapper bg-gradient-to-br from-purple-500/20 to-pink-500/20">
+                <i class="fas fa-brain text-purple-600 dark:text-purple-400"></i>
+              </div>
+              <h2 class="text-xl font-bold text-gray-900 dark:text-white">Ваш психологический профиль</h2>
+            </div>
+
+            <!-- Loading State -->
+            <div v-if="loadingAiSummary" class="flex items-center justify-center py-8">
+              <i class="fas fa-spinner fa-spin text-3xl text-purple-600 dark:text-purple-400"></i>
+            </div>
+
+            <!-- Summary Content -->
+            <div v-else class="space-y-6">
+              <!-- Main Summary -->
+              <div class="p-4 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-lg border border-purple-200 dark:border-purple-800">
+                <p class="text-gray-800 dark:text-slate-200 leading-relaxed">{{ aiSummary.summary }}</p>
+              </div>
+
+              <!-- Strengths -->
+              <div v-if="aiSummary.strengths && aiSummary.strengths.length > 0">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                  <i class="fas fa-star text-yellow-500"></i>
+                  Ваши сильные стороны
+                </h3>
+                <ul class="space-y-2">
+                  <li v-for="(strength, index) in aiSummary.strengths" :key="index" 
+                      class="flex items-start gap-2 text-gray-700 dark:text-slate-300">
+                    <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                    <span>{{ strength }}</span>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Risks -->
+              <div v-if="aiSummary.risks && aiSummary.risks.length > 0">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                  <i class="fas fa-exclamation-triangle text-orange-500"></i>
+                  На что обратить внимание
+                </h3>
+                <ul class="space-y-2">
+                  <li v-for="(risk, index) in aiSummary.risks" :key="index" 
+                      class="flex items-start gap-2 text-gray-700 dark:text-slate-300">
+                    <i class="fas fa-info-circle text-orange-500 mt-1"></i>
+                    <span>{{ risk }}</span>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Recommendations -->
+              <div v-if="aiSummary.recommendations && aiSummary.recommendations.length > 0">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                  <i class="fas fa-lightbulb text-cyan-500"></i>
+                  Рекомендации
+                </h3>
+                <ul class="space-y-2">
+                  <li v-for="(rec, index) in aiSummary.recommendations" :key="index" 
+                      class="flex items-start gap-2 text-gray-700 dark:text-slate-300">
+                    <i class="fas fa-arrow-right text-cyan-500 mt-1"></i>
+                    <span>{{ rec }}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Emotions Tab -->
@@ -634,6 +704,10 @@ const latestAssessment = ref(null);
 const assessmentError = ref(null);
 const archetypeScores = ref([]);
 
+// AI Summary Data
+const aiSummary = ref(null);
+const loadingAiSummary = ref(false);
+
 // Sample data for other sections
 const bigFiveTraits = [
   { name: "Открытость", value: 78 },
@@ -697,12 +771,13 @@ onMounted(async () => {
 const loadUserData = async () => {
   try {
     // Start all data loading operations in parallel
-    const [avatarData, bioData, emotionData, assessmentData] =
+    const [avatarData, bioData, emotionData, assessmentData, aiSummaryData] =
       await Promise.allSettled([
         fetchUserAvatarUrl(authStore.user.uid),
         fetchBioData(authStore.user.uid),
         fetchEmotionBarometerData(authStore.user.uid),
         fetchLatestAssessment(authStore.user.uid),
+        fetchAiSummary(authStore.user.uid),
       ]);
 
     // Handle results
@@ -722,6 +797,11 @@ const loadUserData = async () => {
         "❌ Assessment data loading failed:",
         assessmentData.reason
       );
+    }
+
+    if (aiSummaryData.status === "fulfilled") {
+    } else if (aiSummaryData.status === "rejected") {
+      console.error("❌ AI summary loading failed:", aiSummaryData.reason);
     }
   } catch (error) {
     console.error("Error loading user data:", error);
@@ -867,6 +947,27 @@ const fetchLatestAssessment = async (userId) => {
     assessmentError.value = "Произошла ошибка при загрузке результатов.";
   } finally {
     loadingAssessments.value = false;
+  }
+};
+
+// Fetch AI Summary
+const fetchAiSummary = async (userId) => {
+  loadingAiSummary.value = true;
+  try {
+    const db = getFirestore();
+    const aiSummaryRef = doc(db, "users", userId, "aiSummary", "latest");
+    const aiSummarySnap = await getDoc(aiSummaryRef);
+    
+    if (aiSummarySnap.exists()) {
+      aiSummary.value = aiSummarySnap.data();
+      console.log("🤖 AI Summary loaded:", aiSummary.value);
+    } else {
+      console.log("ℹ️ No AI summary found");
+    }
+  } catch (error) {
+    console.error("Error fetching AI summary:", error);
+  } finally {
+    loadingAiSummary.value = false;
   }
 };
 
