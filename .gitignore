@@ -28,3 +28,6 @@ logs
 
 # Firebase Rules
 firestore.rules
+
+# Netlify CLI / Edge Functions lock
+demo.lock

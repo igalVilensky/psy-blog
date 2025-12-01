@@ -23,17 +23,37 @@ const saveGuestData = (data) => {
 
 export const emotionBarometerService = {
     async saveEntry(db, user, entryData, showNotification) {
-        const newEntry = {
-            emotion: entryData.emotion,
-            subEmotion: entryData.subEmotion,
-            intensity: entryData.intensity,
-            entry: entryData.entry,
-            perception: entryData.perception,
-            coping: entryData.coping,
-            action: entryData.action,
-            tags: [...entryData.tags],
+        // Handle both new V2 structure and legacy structure
+        // If it's V2, we need to polyfill the legacy fields for backward compatibility
+
+        let newEntry = {
             timestamp: new Date().toISOString(),
+            toolVersion: "2.0",
+            ...entryData
         };
+
+        // Polyfill for V2 data to match V1 schema (for charts/history)
+        if (entryData.affect && entryData.labeling) {
+            newEntry = {
+                ...newEntry,
+                // Legacy fields
+                emotion: entryData.labeling.primary,
+                subEmotion: entryData.labeling.secondary || entryData.labeling.primary,
+                intensity: entryData.affect.intensity || 5,
+                entry: entryData.cognition?.narrative || entryData.context?.notes || "",
+                tags: [
+                    ...(entryData.context?.triggers || []),
+                    ...(entryData.somatic?.locations || [])
+                ],
+                // New fields are already spread from entryData
+            };
+        } else {
+            // It's already V1 format or hybrid
+            newEntry = {
+                ...newEntry,
+                tags: [...(entryData.tags || [])]
+            };
+        }
 
         if (user) {
             // Firebase Logic
@@ -113,10 +133,15 @@ export const emotionBarometerService = {
         let totalIntensity = 0;
 
         entries.forEach((entry) => {
-            const intensity = parseFloat(entry.intensity) || 0;
+            // Handle both V1 and V2 structures
+            const emotion = entry.labeling?.primary || entry.emotion || "Unknown";
+            const intensity = parseFloat(entry.affect?.intensity || entry.intensity) || 0;
+            const tags = entry.context?.triggers || entry.tags || [];
+
             totalIntensity += intensity;
-            emotionCounts[entry.emotion] = (emotionCounts[entry.emotion] || 0) + 1;
-            (entry.tags || []).forEach((tag) => {
+            emotionCounts[emotion] = (emotionCounts[emotion] || 0) + 1;
+
+            tags.forEach((tag) => {
                 tagCounts[tag] = (tagCounts[tag] || 0) + 1;
             });
         });
@@ -169,4 +194,36 @@ export const emotionBarometerService = {
             };
         }
     },
+
+    /**
+     * Get AI-powered recommendations for an entry
+     * @param {Object} entryData - The full entry object
+     * @returns {Promise<Object>} - The recommendation payload
+     */
+    async getRecommendations(entryData) {
+        try {
+            // Determine API URL based on environment
+            // In development (npm run dev), we might need a proxy or full URL if functions are on a different port
+            // But usually relative path works if using 'netlify dev'
+            const apiUrl = '/.netlify/functions/analyzeEmotion';
+
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(entryData),
+            });
+
+            if (!response.ok) {
+                throw new Error(`API Error: ${response.status}`);
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error("Failed to get recommendations:", error);
+            // Fallback or rethrow
+            return null;
+        }
+    }
 };
