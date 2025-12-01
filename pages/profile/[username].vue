@@ -62,6 +62,37 @@
 
       <!-- Overview Tab -->
       <div v-if="activeTab === 'overview'" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- Onboarding CTA -->
+        <div class="col-span-1 lg:col-span-2" v-if="!authStore.user?.onboardingCompleted">
+          <div class="bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl p-6 text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg shadow-cyan-500/20">
+            <div>
+              <h3 class="text-xl font-bold mb-2">Персональная настройка</h3>
+              <p class="text-cyan-100">Пройдите короткий опрос, чтобы получить персональные рекомендации.</p>
+            </div>
+            <Button 
+              to="/onboarding" 
+              text="Начать" 
+              iconClass="fas fa-arrow-right"
+              customClass="bg-white text-cyan-600 hover:bg-cyan-50 border-none whitespace-nowrap"
+            />
+          </div>
+        </div>
+
+        <div class="col-span-1 lg:col-span-2" v-else>
+           <div class="bg-white dark:bg-slate-800 rounded-xl p-6 border border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+              <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-1">Ваш профиль настроен</h3>
+              <p class="text-slate-600 dark:text-slate-400 text-sm">Вы можете обновить свои цели и предпочтения в любое время.</p>
+            </div>
+            <Button 
+              to="/onboarding" 
+              text="Обновить оценку" 
+              iconClass="fas fa-sync-alt"
+              customClass="bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 border-none whitespace-nowrap"
+            />
+          </div>
+        </div>
         <!-- Quick Stats -->
         <div class="settings-card">
           <div class="flex items-center gap-3 mb-6">

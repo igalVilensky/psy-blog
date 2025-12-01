@@ -1,4 +1,3 @@
-// stores/auth.js
 import { defineStore } from "pinia";
 import {
   getAuth,
@@ -28,7 +27,8 @@ export const useAuthStore = defineStore("auth", {
                 const userProfile = await getUserProfile(currentUser.uid);
                 this.user = {
                   ...userProfile,
-                  uid: currentUser.uid, // Add the uid to the user object
+                  uid: currentUser.uid,
+                  onboardingCompleted: userProfile.onboardingCompleted || false,
                 };
               } catch (err) {
                 this.error = "Failed to load user profile";
@@ -38,13 +38,13 @@ export const useAuthStore = defineStore("auth", {
               this.user = null;
             }
             this.loading = false;
-            resolve(); // Resolve the promise after the auth state is set
+            resolve();
           },
           (error) => {
             this.error = "Error initializing authentication";
             this.loading = false;
             console.error(error);
-            resolve(); // Ensure the promise resolves even if there's an error
+            resolve();
           }
         );
       });
@@ -79,7 +79,7 @@ export const useAuthStore = defineStore("auth", {
         const userProfile = await this.fetchUserProfile(
           userCredential.user.uid
         );
-        this.user.profile = userProfile; // Attach profile after login
+        this.user.profile = userProfile;
       } catch (error) {
         console.error("Login failed:", error);
         throw error;
