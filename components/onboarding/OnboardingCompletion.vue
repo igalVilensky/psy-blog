@@ -9,20 +9,19 @@
         Настройка завершена!
       </h2>
       <p class="text-slate-600 dark:text-slate-400 max-w-md mx-auto">
-        Мы создали ваш персональный профиль. Вот краткое резюме вашего пути:
+        Мы создали ваш персональный профиль. Ниже — краткое резюме и практические рекомендации.
       </p>
     </div>
 
     <!-- AI Summary Card -->
     <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-xl border border-slate-100 dark:border-slate-700 text-left relative overflow-hidden">
-      <!-- Decorative background elements -->
       <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/5 rounded-full blur-3xl -mr-16 -mt-16"></div>
       <div class="absolute bottom-0 left-0 w-32 h-32 bg-blue-500/5 rounded-full blur-3xl -ml-16 -mb-16"></div>
 
       <div v-if="loading" class="flex flex-col items-center justify-center py-12 space-y-4">
         <i class="fas fa-circle-notch fa-spin text-3xl text-cyan-500"></i>
         <p class="text-slate-500 dark:text-slate-400 animate-pulse">
-          Анализируем ваши ответы...
+          Загружаем персональное резюме...
         </p>
       </div>
 
@@ -32,7 +31,7 @@
             <i class="fas fa-robot mr-2"></i>Ваш профиль
           </h3>
           <p class="text-slate-700 dark:text-slate-300 leading-relaxed">
-            {{ summary?.summary || 'Не удалось загрузить резюме.' }}
+            {{ summary?.summary || defaultText }}
           </p>
         </div>
 
@@ -49,6 +48,22 @@
               <i class="fas fa-star text-yellow-400 mt-1 shrink-0"></i>
               <span>{{ rec }}</span>
             </li>
+          </ul>
+        </div>
+
+        <div v-if="summary?.strengths?.length" class="space-y-2">
+          <h4 class="font-semibold text-slate-900 dark:text-white">Сильные стороны</h4>
+          <div class="flex gap-2 flex-wrap">
+            <span v-for="(s, i) in summary.strengths" :key="i" class="px-3 py-1 bg-slate-100 dark:bg-slate-700 rounded-full text-sm text-slate-700 dark:text-slate-200">
+              {{ s }}
+            </span>
+          </div>
+        </div>
+
+        <div v-if="summary?.risks?.length" class="space-y-2">
+          <h4 class="font-semibold text-red-600">На что обратить внимание</h4>
+          <ul class="text-sm text-slate-600 dark:text-slate-400">
+            <li v-for="(r,i) in summary.risks" :key="i">• {{ r }}</li>
           </ul>
         </div>
       </div>
@@ -77,43 +92,49 @@ const db = getFirestore();
 
 const loading = ref(true);
 const summary = ref(null);
+const defaultText = 'Спасибо за ваши ответы! Мы подготовили персональные рекомендации, которые помогут вам начать работу с вашими целями.';
 
 onMounted(async () => {
-  if (!authStore.user) return;
+  if (!authStore.user) {
+    loading.value = false;
+    return;
+  }
 
-  // Poll for AI summary or fetch it directly if already ready
-  // For now, we'll try to fetch it from Firestore where the server should have saved it
-  // Or we can just wait a bit if it's being generated async
-  
   try {
-    // Wait a moment for the server to process (simulated)
-    // In a real app, we might listen to a document change or just fetch
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    const summaryRef = doc(db, 'users', authStore.user.uid, 'aiSummary', 'latest');
+    const uid = authStore.user.uid;
+    const summaryRef = doc(db, 'users', uid, 'aiSummary', 'latest');
     const snap = await getDoc(summaryRef);
-    
+
     if (snap.exists()) {
       summary.value = snap.data();
     } else {
-      // Fallback if not ready yet or failed
+      // If summary does not exist yet (edge-case), show fallback message
       summary.value = {
-        summary: 'Спасибо за ваши ответы! Мы подготовили для вас персональные рекомендации, которые помогут вам достичь ваших целей.',
+        summary: defaultText,
         recommendations: [
           'Попробуйте утренние медитации для настройки на день',
-          'Используйте дневник эмоций для отслеживания прогресса',
-          'Начните с коротких практик по 5 минут'
+          'Ведите краткий дневник эмоций: 1–2 минуты',
+          'Начните с коротких практик по 3–5 минут'
         ]
       };
     }
   } catch (e) {
-    console.error(e);
+    console.error('Error fetching AI summary:', e);
+    summary.value = {
+      summary: defaultText,
+      recommendations: [
+        'Попробуйте утренние медитации для настройки на день',
+        'Ведите краткий дневник эмоций: 1–2 минуты',
+        'Начните с коротких практик по 3–5 минут'
+      ]
+    };
   } finally {
     loading.value = false;
   }
 });
 
 const finish = () => {
+  // Navigate to profile - prefer username route if available
   if (authStore.user?.displayName) {
     const username = authStore.user.displayName.replace(/\s/g, '-');
     router.push(`/profile/${username}`);

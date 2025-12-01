@@ -2,48 +2,52 @@ import { defineEventHandler, readBody, createError } from 'h3';
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event);
-    const { uid, onboarding } = body;
+    const { uid, onboarding } = body || {};
 
     if (!uid || !onboarding) {
         throw createError({
             statusCode: 400,
-            statusMessage: 'Missing uid or onboarding data',
+            statusMessage: 'Missing uid or onboarding data'
         });
     }
 
-    // Check for API Key
+    // Use env var for API key (GROQ_API_KEY)
     const apiKey = process.env.GROQ_API_KEY;
+
+    // If no API key, return mock for dev safety
     if (!apiKey) {
         console.warn('GROQ_API_KEY is not set. Returning mock data.');
-        // Fallback to mock data if no key (for dev safety)
         return getMockSummary(onboarding);
     }
 
-    try {
-        const prompt = constructPrompt(onboarding);
+    // Construct optimized prompt
+    const prompt = constructPrompt(onboarding);
 
-        const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-            method: "POST",
+    try {
+        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${apiKey}`,
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${apiKey}`
             },
             body: JSON.stringify({
-                model: "llama-3.3-70b-versatile",
+                model: 'llama-3.3-70b-versatile',
                 messages: [
                     {
-                        role: "system",
-                        content: "Ты — опытный психолог-консультант. Твоя задача — проанализировать ответы пользователя и составить краткий психологический портрет и рекомендации. Отвечай ТОЛЬКО в формате JSON."
+                        role: 'system',
+                        content:
+                            'Вы — опытный психолог-консультант. Отвечайте строгим JSON-объектом, без пояснений, без markdown, без кода. Нельзя добавлять ничего кроме JSON.'
                     },
                     {
-                        role: "user",
+                        role: 'user',
                         content: prompt
                     }
                 ],
-                temperature: 0.7,
-                max_tokens: 1500,
-                response_format: { type: "json_object" }
-            }),
+                temperature: 0.3,
+                max_tokens: 900,
+                // Some Groq endpoints support response_format but keep safe parsing server-side too
+                // response_format: { type: "json_object" }
+            })
         });
 
         if (!response.ok) {
@@ -53,75 +57,142 @@ export default defineEventHandler(async (event) => {
         }
 
         const data = await response.json();
-        const content = data.choices[0].message.content;
 
-        let parsedContent;
-        try {
-            parsedContent = JSON.parse(content);
-        } catch (e) {
-            console.error('Failed to parse AI response:', content);
+        // Defensive extraction of assistant content
+        let content = '';
+        if (Array.isArray(data.choices) && data.choices.length > 0) {
+            // Different providers embed content differently
+            const first = data.choices[0];
+            content =
+                (first.message && first.message.content) ||
+                first.text ||
+                (typeof first === 'string' ? first : '');
+        } else if (data.output && Array.isArray(data.output) && data.output[0]) {
+            content = data.output[0].content || JSON.stringify(data.output[0]);
+        } else {
+            console.warn('Unexpected Groq response shape', data);
+            content = JSON.stringify(data);
+        }
+
+        // Remove possible code fences or markdown wrappers (very common)
+        content = content.trim().replace(/^```json\s*/, '').replace(/```$/, '').trim();
+
+        // Some providers add extraneous text after JSON — attempt to extract first JSON block
+        let jsonText = extractFirstJson(content);
+
+        if (!jsonText) {
+            console.error('No JSON block found in AI response:', content);
             return getMockSummary(onboarding);
         }
 
-        return {
-            summary: parsedContent.summary || "Не удалось сгенерировать резюме.",
-            recommendations: parsedContent.recommendations || [],
-            strengths: parsedContent.strengths || [],
-            risks: parsedContent.risks || [],
-            createdAt: new Date().toISOString()
+        let parsed;
+        try {
+            parsed = JSON.parse(jsonText);
+        } catch (e) {
+            console.error('Failed to parse JSON from AI response. Raw content:', content, e);
+            return getMockSummary(onboarding);
+        }
+
+        // Normalize output fields
+        const result = {
+            summary: parsed.summary || 'Не удалось сгенерировать резюме.',
+            recommendations: parsed.recommendations || parsed.recs || [],
+            strengths: parsed.strengths || [],
+            risks: parsed.risks || [],
+            meta: {
+                model: data.model || 'unknown',
+                generatedAt: new Date().toISOString()
+            }
         };
 
-    } catch (error) {
-        console.error('Error in user-summary API:', error);
-        // Fallback on error
+        return result;
+    } catch (err) {
+        console.error('Error in user-summary API:', err);
         return getMockSummary(onboarding);
     }
 });
 
+/**
+ * Build a concise, well-structured prompt for the LLM
+ */
 function constructPrompt(data) {
-    return `
-    Проанализируй профиль пользователя на основе его ответов:
+    const goals = (data.goals || []).join(', ') || 'Не указано';
+    const modalities = (data.modalities || []).join(', ') || 'Не указано';
+    const stress = data.emotionalBaseline?.stress ?? 'Не указано';
+    const energy = data.emotionalBaseline?.energy ?? 'Не указано';
+    const stability = data.emotionalBaseline?.stability ?? 'Не указано';
+    const domains = (data.domains || []).join(', ') || 'Не указано';
+    const persona = data.persona || {};
+    const values = (data.values || []).join(', ') || 'Не указано';
+    const guidance = data.guidanceLevel || 'Не указано';
 
-    1. Цели: ${data.goals?.join(', ') || 'Не указаны'}
-    2. Предпочитаемые форматы: ${data.modalities?.join(', ') || 'Не указаны'}
-    3. Эмоциональное состояние (0-10):
-       - Стресс: ${data.emotionalBaseline?.stress}
-       - Энергия: ${data.emotionalBaseline?.energy}
-       - Стабильность: ${data.emotionalBaseline?.stability}
-    4. Сферы жизни для проработки: ${data.domains?.join(', ') || 'Не указаны'}
-    5. Поведенческий портрет:
-       - Мышление: ${data.persona?.thinking}
-       - Обработка эмоций: ${data.persona?.processing}
-       - Структура: ${data.persona?.structure}
-       - Тон: ${data.persona?.tone}
-    6. Ценности: ${data.values?.join(', ') || 'Не указаны'}
-    7. Желаемый формат работы: ${data.guidanceLevel}
+    // concise user prompt requesting JSON only
+    return `Проанализируй данные пользователя и верни строго валидный JSON-объект (ни слова лишнего). 
+ДАННЫЕ:
+- Цели: ${goals}
+- Предпочитаемые форматы: ${modalities}
+- Эмоциональное состояние (0-10): стресс=${stress}, энергия=${energy}, стабильность=${stability}
+- Сферы: ${domains}
+- Поведенческий профиль: мышление=${persona.thinking || 'Не указано'}, обработка эмоций=${persona.processing || 'Не указано'}, структура=${persona.structure || 'Не указано'}, тон=${persona.tone || 'Не указано'}
+- Ценности: ${values}
+- Уровень поддержки: ${guidance}
 
-    Верни JSON объект со следующими полями:
-    {
-      "summary": "Краткое описание психологического профиля пользователя (3-4 предложения). Обращайся к пользователю на 'вы'. Учти его уровень стресса и энергии.",
-      "strengths": ["Сильная сторона 1", "Сильная сторона 2", "Сильная сторона 3"],
-      "risks": ["Риск 1 (на что обратить внимание)", "Риск 2"],
-      "recommendations": ["Конкретная рекомендация 1", "Конкретная рекомендация 2", "Конкретная рекомендация 3"]
-    }
-    
-    Рекомендации должны быть конкретными и опираться на выбранные пользователем форматы (modalities).
-  `;
+ОТВЕТ (строго JSON):
+{
+  "summary": "Краткое 3-4 предложения, обращайтесь на вы, учтите уровень стресса и энергию.",
+  "strengths": ["...","..."],
+  "risks": ["...","..."],
+  "recommendations": ["...","...","..."]
+}
+Конец.`;
 }
 
+/**
+ * Simple helper to find first JSON object in text
+ */
+function extractFirstJson(text) {
+    // try to find first { ... } block — naive but effective for most LLM outputs
+    const start = text.indexOf('{');
+    if (start === -1) return null;
+
+    // attempt to find matching closing brace by tracking braces
+    let depth = 0;
+    for (let i = start; i < text.length; i++) {
+        const ch = text[i];
+        if (ch === '{') depth++;
+        else if (ch === '}') depth--;
+
+        if (depth === 0) {
+            return text.slice(start, i + 1);
+        }
+    }
+
+    // fallback: maybe the entire text is JSON or invalid
+    // try to parse the whole thing
+    try {
+        JSON.parse(text);
+        return text;
+    } catch (e) {
+        return null;
+    }
+}
+
+/**
+ * Dev-friendly mock summary
+ */
 function getMockSummary(onboarding) {
-    const goals = onboarding.goals || [];
-    const modalities = onboarding.modalities || [];
+    const goals = (onboarding.goals || []).slice(0, 3);
+    const modalities = (onboarding.modalities || []).slice(0, 3);
 
     return {
-        summary: `(MOCK) На основе ваших целей (${goals.join(', ')}) мы составили этот профиль. Мы учли ваш интерес к ${modalities.join(', ')}.`,
+        summary: `(MOCK) На основе ваших ответов (${goals.join(', ') || 'цели не указаны'}) мы рекомендуем начать с простых практик: ${modalities.join(', ') || 'дыхание'}.`,
         recommendations: [
             `Попробуйте практику: ${modalities[0] || 'Дыхание'}`,
-            `Фокус на цели: ${goals[0] || 'Спокойствие'}`,
-            'Регулярно отмечайте свое состояние'
+            `Сфокусируйтесь на: ${goals[0] || 'снижение стресса'}`,
+            'Отслеживайте свое состояние ежедневно'
         ],
-        strengths: ['Осознанность', 'Мотивация'],
-        risks: ['Высокая нагрузка'],
-        createdAt: new Date().toISOString()
+        strengths: ['Осознанность', 'Готовность к изменению'],
+        risks: ['Возможная перегрузка при высоком стрессе'],
+        meta: { mock: true, generatedAt: new Date().toISOString() }
     };
 }

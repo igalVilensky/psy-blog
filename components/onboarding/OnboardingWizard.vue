@@ -30,20 +30,34 @@
             v-model="answers"
             @next="nextStep"
             @back="prevStep"
+            :key="currentStep"
           />
         </Transition>
       </div>
     </main>
+    <!-- Blocking Overlay -->
+<div 
+  v-if="showBlockingOverlay" 
+  class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[9999]"
+>
+  <div class="bg-white dark:bg-slate-900 rounded-2xl p-8 shadow-xl text-center w-80">
+    <i class="fas fa-circle-notch fa-spin text-3xl text-cyan-500 mb-4"></i>
+    <p class="text-slate-700 dark:text-slate-300 font-medium">
+      {{ processingMessage }}
+    </p>
+  </div>
+</div>
+
   </div>
 </template>
 
 <script setup>
-import { ref, computed, shallowRef } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '~/stores/auth';
-import { getFirestore, doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 
-// Import Steps
+// Steps (import your step components)
 import StepGoals from './StepGoals.vue';
 import StepModality from './StepModality.vue';
 import StepEmotionalBaseline from './StepEmotionalBaseline.vue';
@@ -88,19 +102,56 @@ const answers = ref({
   guidanceLevel: ''
 });
 
+const isProcessing = ref(false); // prevents double clicks
+const processingMessage = ref('');
+const showBlockingOverlay = ref(false);
+
+
 const currentStep = computed(() => currentStepIndex.value + 1);
 const totalSteps = steps.length;
 const currentStepComponent = computed(() => steps[currentStepIndex.value]);
 
 const nextStep = async () => {
-  if (currentStepIndex.value < steps.length - 1) {
-    // If moving to the completion step (last step), save data first
-    if (currentStepIndex.value === steps.length - 2) {
-      await saveOnboardingData();
-    }
+  if (isProcessing.value) return; // ❌ prevents multi-click
+
+  // Normal steps → proceed immediately
+  if (currentStepIndex.value < steps.length - 2) {
     currentStepIndex.value++;
+    return;
+  }
+
+  // Last actionable step → run async sequence
+  isProcessing.value = true;
+  showBlockingOverlay.value = true;
+  processingMessage.value = 'Сохраняем данные...';
+
+  try {
+    const saved = await saveOnboardingData();
+    if (!saved) {
+      throw new Error('failed to save');
+    }
+
+    processingMessage.value = 'Готовим персональное AI-резюме...';
+
+    await generateAiSummaryAndSaveToFirestore();
+
+    processingMessage.value = 'Завершаем...';
+
+    // Safe advance to final screen
+    currentStepIndex.value++;
+
+  } catch (err) {
+    console.error('Error during onboarding final step:', err);
+    // Optional: show error message
+  } finally {
+    // Small delay for UX smoothness
+    setTimeout(() => {
+      showBlockingOverlay.value = false;
+      isProcessing.value = false;
+    }, 500);
   }
 };
+
 
 const prevStep = () => {
   if (currentStepIndex.value > 0) {
@@ -108,41 +159,54 @@ const prevStep = () => {
   }
 };
 
-const saveOnboardingData = async () => {
-  if (!authStore.user) return;
+async function saveOnboardingData() {
+  if (!authStore.user) {
+    console.warn('No authenticated user; cannot save onboarding.');
+    return false;
+  }
 
   try {
     const userId = authStore.user.uid;
     const userRef = doc(db, 'users', userId);
     const onboardingRef = doc(db, 'users', userId, 'onboarding', 'main');
 
-    // Save onboarding data
-    await setDoc(onboardingRef, {
+    // Check if onboarding already exists to preserve createdAt
+    const existingSnap = await getDoc(onboardingRef);
+    const isNew = !existingSnap.exists();
+
+    // Merge write: update fields, but preserve createdAt if exists
+    const dataToSave = {
       ...answers.value,
-      createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
-    });
+    };
 
-    // Mark onboarding as completed
-    await setDoc(userRef, {
-      onboardingCompleted: true
-    }, { merge: true });
+    if (isNew) {
+      dataToSave.createdAt = serverTimestamp();
+    }
 
-    // Update local store
-    authStore.user.onboardingCompleted = true;
+    await setDoc(onboardingRef, dataToSave, { merge: true });
 
-    // Call AI Summary API
-    await generateAiSummary(userId);
+    // Mark onboarding as completed on user doc
+    await setDoc(userRef, { onboardingCompleted: true }, { merge: true });
 
-  } catch (error) {
-    console.error('Error saving onboarding data:', error);
-    // Handle error (show toast, etc.)
+    // Update local store (if your store expects this)
+    authStore.user = { ...(authStore.user || {}), onboardingCompleted: true };
+
+    return true;
+  } catch (err) {
+    console.error('Error saving onboarding data:', err);
+    return false;
   }
-};
+}
 
-const generateAiSummary = async (userId) => {
+async function generateAiSummaryAndSaveToFirestore() {
+  if (!authStore.user) return;
+
   try {
-    const { data } = await useFetch('/api/ai/user-summary', {
+    const userId = authStore.user.uid;
+
+    // Call server endpoint to generate summary
+    const { data, error } = await useFetch('/api/ai/user-summary', {
       method: 'POST',
       body: {
         uid: userId,
@@ -150,15 +214,33 @@ const generateAiSummary = async (userId) => {
       }
     });
 
-    if (data.value) {
-      // Save the generated summary to Firestore
-      const summaryRef = doc(db, 'users', userId, 'aiSummary', 'latest');
-      await setDoc(summaryRef, data.value);
+    if (error.value) {
+      console.error('AI summary API error:', error.value);
+      return;
     }
-  } catch (error) {
-    console.error('Error generating AI summary:', error);
+
+    const result = data.value;
+
+    if (!result) {
+      console.warn('AI returned no data');
+      return;
+    }
+
+    // Persist AI summary to Firestore (two locations for convenience)
+    const summaryRef = doc(db, 'users', userId, 'aiSummary', 'latest');
+    await setDoc(summaryRef, {
+      ...result,
+      generatedAt: serverTimestamp()
+    });
+
+    // Also snapshot to onboarding doc for easier queries
+    const onboardingMainRef = doc(db, 'users', userId, 'onboarding', 'main');
+    await setDoc(onboardingMainRef, { aiSummary: result, updatedAt: serverTimestamp() }, { merge: true });
+
+  } catch (err) {
+    console.error('Error generating or saving AI summary:', err);
   }
-};
+}
 </script>
 
 <style scoped>
