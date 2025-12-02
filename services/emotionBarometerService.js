@@ -200,19 +200,24 @@ export const emotionBarometerService = {
      * @param {Object} entryData - The full entry object
      * @returns {Promise<Object>} - The recommendation payload
      */
-    async getRecommendations(entryData) {
+    async getRecommendations(entryData, onboardingData = null) {
         try {
             // Determine API URL based on environment
             // In development (npm run dev), we might need a proxy or full URL if functions are on a different port
             // But usually relative path works if using 'netlify dev'
             const apiUrl = '/.netlify/functions/analyzeEmotion';
 
+            const payload = {
+                ...entryData,
+                onboarding: onboardingData
+            };
+
             const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(entryData),
+                body: JSON.stringify(payload),
             });
 
             if (!response.ok) {

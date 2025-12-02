@@ -5,7 +5,7 @@ import { storeToRefs } from 'pinia';
 import { useNotification } from '~/composables/useNotification';
 import { emotionBarometerService } from '~/services/emotionBarometerService';
 import { emotionalQuadrants } from '~/data/emotionalBarometer/emotions';
-import { getFirestore } from 'firebase/firestore';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
 
 // Components
 import AffectGrid from '~/components/emotional-compass/v2/AffectGrid.vue';
@@ -34,6 +34,7 @@ const showRecommendations = ref(false);
 const recommendationLoading = ref(false);
 const recommendationError = ref(null);
 const recommendationData = ref(null);
+const onboardingData = ref(null);
 
 // Data Model
 const sessionData = reactive({
@@ -153,7 +154,7 @@ const saveEntry = async () => {
     recommendationError.value = null;
     
     // Fetch Recommendations
-    const recommendations = await emotionBarometerService.getRecommendations(payload);
+    const recommendations = await emotionBarometerService.getRecommendations(payload, onboardingData.value);
     
     recommendationLoading.value = false;
     
@@ -169,6 +170,20 @@ const closeRecommendations = () => {
   showRecommendations.value = false;
   sessionStarted.value = false; // Reset to home
 };
+
+onMounted(async () => {
+  if (user.value) {
+    try {
+      const onboardingRef = doc(db, 'users', user.value.uid, 'onboarding', 'main');
+      const snap = await getDoc(onboardingRef);
+      if (snap.exists()) {
+        onboardingData.value = snap.data();
+      }
+    } catch (e) {
+      console.error("Failed to fetch onboarding data:", e);
+    }
+  }
+});
 </script>
 
 <template>

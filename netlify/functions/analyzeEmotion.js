@@ -75,7 +75,7 @@ export async function handler(event, context) {
         }
 
         const body = JSON.parse(event.body);
-        const { affect, labeling, somatic, context, triggers, intensity, cognition } = body;
+        const { affect, labeling, somatic, context, triggers, intensity, cognition, onboarding } = body;
 
         // 1. Analyze State
         const valence = affect?.valence || 0;
@@ -116,10 +116,19 @@ export async function handler(event, context) {
     - Мысли (Нарратив): "${state.narrative}"
     - Факты: "${state.facts}"
 
+    ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ (Учитывай это при рекомендации):
+    - Цели: ${(onboarding?.goals || []).join(", ") || "Не указаны"}
+    - Ценности: ${(onboarding?.values || []).join(", ") || "Не указаны"}
+    - Базовый уровень стресса: ${onboarding?.emotionalBaseline?.stress || "?"}/10
+    - Стиль общения (Persona): ${onboarding?.persona?.tone || "Эмпатичный, профессиональный"}
+
     Мы подобрали инструмент: "${primaryTool.title}" (${primaryTool.description}).
 
     Твоя задача:
-    1. Написать "reasoning" (почему это подходит) - 2 предложения, обращайся к пользователю на "вы". Начни с фразы "Мы рекомендуем этот инструмент, потому что..." или похожей. Не пиши "Вы выбрали".
+    1. Написать "reasoning" (почему это подходит) - 2-3 предложения, обращайся к пользователю на "вы".
+       - Начни с фразы "Мы рекомендуем этот инструмент, потому что..." или похожей.
+       - ОБЯЗАТЕЛЬНО свяжи рекомендацию с целями или ценностями пользователя, если они указаны.
+       - Используй стиль общения: ${onboarding?.persona?.tone || "Поддерживающий"}.
     2. Написать "routine" (мини-рутина из 3 шагов) для этого момента.
 
     Верни ответ ТОЛЬКО в формате JSON:
