@@ -7,6 +7,9 @@
           <i class="fas fa-user-edit text-cyan-600 dark:text-cyan-400"></i>
         </div>
         <h2 class="title-text">О себе</h2>
+        <NuxtLink to="/profile/settings" class="ml-3 text-slate-400 hover:text-cyan-500 transition-colors" title="Редактировать">
+          <i class="fas fa-pen"></i>
+        </NuxtLink>
       </div>
 
       <div class="progress-wrapper">
@@ -32,10 +35,25 @@
     <div v-else class="bio-content">
       <!-- Info Cards Grid -->
       <div class="info-cards-grid">
-        <BioInfoCard title="Профессия" :value="profession" iconClass="fas fa-briefcase" />
-        <BioInfoCard title="Социальные сети" :value="socialMedia" iconClass="fas fa-share-alt" :isSocialMedia="true" />
-        <BioInfoCard title="Возраст" :value="age" iconClass="fas fa-birthday-cake" />
-        <BioInfoCard title="Пол" :value="gender" iconClass="fas fa-venus-mars" />
+        <!-- Profession -->
+        <BioInfoCard title="Профессия" :value="profession" iconClass="fas fa-briefcase"
+          iconColorClass="text-emerald-600 dark:text-emerald-400"
+          iconBgClass="bg-emerald-500/10 group-hover:bg-emerald-500/20" />
+
+        <!-- Social Media -->
+        <BioInfoCard title="Соц. сети" :value="socialMedia" iconClass="fas fa-share-alt" :isSocialMedia="true"
+          iconColorClass="text-cyan-600 dark:text-cyan-400"
+          iconBgClass="bg-cyan-500/10 group-hover:bg-cyan-500/20" />
+
+        <!-- Age -->
+        <BioInfoCard title="Возраст" :value="age ? age + ' лет' : ''" iconClass="fas fa-birthday-cake"
+          iconColorClass="text-pink-600 dark:text-pink-400"
+          iconBgClass="bg-pink-500/10 group-hover:bg-pink-500/20" />
+
+        <!-- Gender -->
+        <BioInfoCard title="Пол" :value="gender === 'male' ? 'Мужской' : gender === 'female' ? 'Женский' : ''"
+          iconClass="fas fa-venus-mars" iconColorClass="text-purple-600 dark:text-purple-400"
+          iconBgClass="bg-purple-500/10 group-hover:bg-purple-500/20" />
       </div>
 
       <!-- About Text Card -->
@@ -126,7 +144,7 @@ const bioCompletionPercentage = computed(() => {
 
 <style scoped>
 .bio-section-container {
-  @apply p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-cyan-500/20 backdrop-blur-sm mb-8 hover:border-cyan-500/30 transition-all duration-300;
+  @apply p-6 sm:p-8 rounded-xl bg-gradient-to-br from-white to-slate-50 dark:from-slate-800/50 dark:to-slate-800/30 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none mb-8 transition-all duration-300;
 }
 
 .section-header {

@@ -21,7 +21,7 @@
   </div>
 
   <!-- Main Content -->
-  <div class="relative min-h-screen bg-white dark:bg-slate-950 transition-colors duration-300">
+  <div class="relative min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
     <div class="max-w-6xl mx-auto px-4 sm:px-0 pb-12 pt-8 sm:pt-12">
 
       <!-- Profile Header -->
@@ -1294,3 +1294,6 @@ const navigateToFlow = (flowId) => {
   }
 }
 </style>
+.settings-card {
+  @apply p-6 rounded-xl bg-gradient-to-br from-white to-slate-50 dark:from-slate-800/50 dark:to-slate-800/30 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none transition-all duration-300 hover:border-cyan-500/30;
+}

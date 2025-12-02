@@ -1,5 +1,5 @@
 <template>
-  <div class="relative min-h-screen bg-white dark:bg-slate-950 px-4 xl:px-0 transition-colors duration-300">
+  <div class="relative min-h-screen bg-slate-50 dark:bg-slate-950 px-4 xl:px-0 transition-colors duration-300">
     <!-- Loading State -->
     <div v-if="isLoading" class="loading-overlay">
       <div class="loading-container">
@@ -506,7 +506,7 @@ const exportData = () => {
 }
 
 .settings-card {
-  @apply p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-cyan-500/20 backdrop-blur-sm hover:border-cyan-500/30 transition-all duration-300;
+  @apply p-6 sm:p-8 rounded-xl bg-gradient-to-br from-white to-slate-50 dark:from-slate-800/50 dark:to-slate-800/30 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none backdrop-blur-sm hover:border-cyan-500/30 transition-all duration-300;
 }
 
 .settings-header {
@@ -544,11 +544,11 @@ const exportData = () => {
 }
 
 .social-media-row {
-  @apply flex gap-2 sm:gap-3 items-center;
+  @apply flex flex-wrap sm:flex-nowrap gap-2 sm:gap-3 items-center;
 }
 
 .social-select {
-  @apply w-32 sm:w-36 px-3 py-2 sm:py-3 rounded-lg bg-gray-100 dark:bg-slate-800/50 border border-gray-300 dark:border-slate-700 text-gray-900 dark:text-white text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all;
+  @apply w-full sm:w-36 px-3 py-2 sm:py-3 rounded-lg bg-gray-100 dark:bg-slate-800/50 border border-gray-300 dark:border-slate-700 text-gray-900 dark:text-white text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all;
 }
 
 .social-input {

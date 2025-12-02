@@ -21,21 +21,24 @@
       <div class="info-section">
         <!-- User Details -->
         <div class="user-details">
-          <div class="user-badge">
-            <i class="fas fa-user-astronaut text-cyan-600 dark:text-cyan-400 mr-2"></i>
-            <span>Исследователь</span>
+          <!-- User Badge -->
+          <div class="mb-4 inline-flex items-center px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 backdrop-blur-sm">
+            <i class="fas fa-star text-xs text-purple-600 dark:text-purple-400 mr-2"></i>
+            <span class="text-xs font-medium text-purple-600 dark:text-purple-400 uppercase tracking-wider">Explorer</span>
           </div>
-          <h1 class="user-name">
+
+          <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight">
             {{ displayName }}
           </h1>
-          <div class="user-meta">
-            <div class="meta-item">
+
+          <div class="flex flex-col sm:flex-row items-center gap-3 sm:gap-6 text-sm text-slate-600 dark:text-slate-400 mb-6">
+            <div class="flex items-center gap-2">
               <i class="fas fa-envelope text-cyan-600 dark:text-cyan-400"></i>
               <span>{{ email }}</span>
             </div>
-            <div class="meta-item">
-              <i class="fas fa-calendar text-cyan-600 dark:text-cyan-400"></i>
-              <span>{{ joinedDate }}</span>
+            <div class="flex items-center gap-2">
+              <i class="fas fa-calendar-alt text-amber-600 dark:text-amber-400"></i>
+              <span>На проекте с {{ joinedDate }}</span>
             </div>
           </div>
         </div>
@@ -51,7 +54,6 @@
               <span class="sm:hidden">Кабинет</span>
             </span>
           </NuxtLink>
-
 
           <!-- Settings Button -->
           <NuxtLink to="/profile/settings" class="action-btn btn-secondary">
@@ -122,7 +124,7 @@ const joinedDate = computed(() => {
 
 <style scoped>
 .profile-header-container {
-  @apply relative min-h-[280px] sm:min-h-[300px] rounded-2xl bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-cyan-500/20 backdrop-blur-sm overflow-hidden mb-8 hover:border-cyan-500/30 transition-all duration-300;
+  @apply relative min-h-[280px] sm:min-h-[300px] rounded-xl bg-gradient-to-br from-white to-slate-50 dark:from-slate-800/50 dark:to-slate-800/30 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none overflow-hidden mb-8 transition-all duration-300;
 }
 
 .header-background {
