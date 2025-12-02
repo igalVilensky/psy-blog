@@ -1,6 +1,9 @@
 <template>
   <div class="context-selector">
     <div class="space-y-6">
+      <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">
+        Выберите факторы, которые могли повлиять на ваше состояние. Это поможет ИИ найти закономерности и дать более точные рекомендации.
+      </p>
       <div v-for="category in categories" :key="category.id">
         <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 ml-1">
           {{ category.label }}

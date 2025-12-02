@@ -1,5 +1,13 @@
 <template>
   <div class="affect-grid-container select-none">
+    <!-- Step Title -->
+    <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
+      Ваше состояние
+    </h2>
+    <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+      Отметьте точку, которая лучше всего описывает ваше самочувствие прямо сейчас.
+    </p>
+
     <!-- Main Grid Area -->
     <div 
       ref="gridRef"
@@ -12,7 +20,7 @@
       @touchend="stopDrag"
       @mouseleave="stopDrag"
     >
-      <!-- Background Gradients (Quadrants) -->
+      <!-- Background Quadrants -->
       <div class="absolute inset-0 opacity-30">
         <div class="absolute top-0 left-0 w-1/2 h-1/2 bg-red-500/20"></div> <!-- High Energy / Unpleasant -->
         <div class="absolute top-0 right-0 w-1/2 h-1/2 bg-yellow-500/20"></div> <!-- High Energy / Pleasant -->
@@ -25,22 +33,21 @@
         <!-- Center Axes -->
         <div class="absolute top-0 bottom-0 left-1/2 w-px bg-slate-300 dark:bg-slate-600"></div>
         <div class="absolute left-0 right-0 top-1/2 h-px bg-slate-300 dark:bg-slate-600"></div>
-        
         <!-- Grid Pattern -->
         <div class="w-full h-full opacity-10" 
              style="background-image: radial-gradient(circle, currentColor 1px, transparent 1px); background-size: 20px 20px;">
         </div>
       </div>
 
-      <!-- Labels -->
-      <div class="absolute inset-0 pointer-events-none text-xs font-mono text-slate-400 font-bold">
-        <span class="absolute top-2 left-1/2 -translate-x-1/2">ВЫСОКАЯ ЭНЕРГИЯ</span>
-        <span class="absolute bottom-2 left-1/2 -translate-x-1/2">НИЗКАЯ ЭНЕРГИЯ</span>
-        <span class="absolute left-2 top-1/2 -translate-y-1/2 -rotate-90">НЕПРИЯТНО</span>
-        <span class="absolute right-2 top-1/2 -translate-y-1/2 rotate-90">ПРИЯТНО</span>
+      <!-- Axis Labels -->
+      <div class="absolute inset-0 pointer-events-none text-xs font-medium text-slate-500 dark:text-slate-400">
+        <span class="absolute top-2 left-1/2 -translate-x-1/2">Много энергии</span>
+        <span class="absolute bottom-2 left-1/2 -translate-x-1/2">Мало энергии</span>
+        <span class="absolute left-2 top-1/2 -translate-y-1/2 -rotate-90">Неприятно</span>
+        <span class="absolute right-2 top-1/2 -translate-y-1/2 rotate-90">Приятно</span>
       </div>
 
-      <!-- The Puck -->
+      <!-- Draggable Puck -->
       <div 
         class="absolute w-6 h-6 -ml-3 -mt-3 bg-white dark:bg-slate-900 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.2)] border-2 border-cyan-500 z-10 transition-transform duration-75 ease-out flex items-center justify-center"
         :style="{ left: `${puckX}%`, top: `${puckY}%` }"
@@ -49,16 +56,17 @@
       </div>
     </div>
 
-    <!-- Values Display (Debug/Info) -->
-    <div class="flex justify-between mt-4 text-xs font-mono text-slate-500">
-      <div>ВАЛЕНТНОСТЬ: {{ valence.toFixed(2) }}</div>
-      <div>ЭНЕРГИЯ: {{ arousal.toFixed(2) }}</div>
-    </div>
+    <!-- Live Values Display -->
+  <div class="flex justify-between mt-4 text-sm text-slate-700 dark:text-slate-300 font-medium">
+  <div>Приятность: {{ pleasantnessPercent.toUpperCase() }}%</div>
+  <div>Активность: {{ activityPercent.toUpperCase() }}%</div>
+</div>
+
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue';
+import { ref, computed, watch } from 'vue';
 
 const props = defineProps({
   modelValue: {
@@ -66,47 +74,51 @@ const props = defineProps({
     default: () => ({ valence: 0, arousal: 0 })
   }
 });
-
 const emit = defineEmits(['update:modelValue', 'change']);
 
 const gridRef = ref(null);
 const isDragging = ref(false);
 
-// Internal state for smooth updates
 const valence = ref(props.modelValue.valence || 0);
 const arousal = ref(props.modelValue.arousal || 0);
 
-// Convert valence/arousal (-1 to 1) to CSS percentages (0 to 100)
-// Valence: -1 (0%) -> 1 (100%)
-// Arousal: 1 (0%) -> -1 (100%)  <-- Note Y axis is inverted in CSS (0 is top)
 const puckX = computed(() => ((valence.value + 1) / 2) * 100);
 const puckY = computed(() => ((1 - arousal.value) / 2) * 100);
 
+const pleasantnessPercent = computed(() => {
+  const v = Number(valence.value);
+  return isNaN(v) ? 50 : ((v + 1) / 2 * 100).toFixed(0);
+});
+
+const activityPercent = computed(() => {
+  const a = Number(arousal.value);
+  return isNaN(a) ? 50 : ((a + 1) / 2 * 100).toFixed(0);
+});
+
+
 const updateCoordinates = (clientX, clientY) => {
   if (!gridRef.value) return;
-
   const rect = gridRef.value.getBoundingClientRect();
   const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
   const y = Math.max(0, Math.min(clientY - rect.top, rect.height));
 
-  // Calculate normalized values
-  // X: 0 -> -1, Width -> 1
-  const rawValence = (x / rect.width) * 2 - 1;
-  
-  // Y: 0 -> 1, Height -> -1 (Inverted because CSS top=0 is high arousal in our UI?) 
-  // Wait, UI label says Top = High Energy.
-  // So Top (y=0) should be Arousal = 1.
-  // Bottom (y=Height) should be Arousal = -1.
-  // Formula: 1 - (y / height) * 2
-  // y=0 => 1 - 0 = 1.
-  // y=h => 1 - 2 = -1.
-  const rawArousal = 1 - (y / rect.height) * 2;
+  valence.value = Math.max(-1, Math.min(1, (x / rect.width) * 2 - 1));
+  arousal.value = Math.max(-1, Math.min(1, 1 - (y / rect.height) * 2));
 
-  valence.value = Math.max(-1, Math.min(1, rawValence));
-  arousal.value = Math.max(-1, Math.min(1, rawArousal));
+  // Calculate intensity (Vector Magnitude from center), scaled 0-10
+  // Max distance is sqrt(1^2 + 1^2) = sqrt(2) ≈ 1.414
+  const magnitude = Math.sqrt(Math.pow(valence.value, 2) + Math.pow(arousal.value, 2));
+  // Normalize to 0-1 (divide by sqrt(2)) then scale to 0-10
+  const intensity = Math.min(10, Math.round((magnitude / 1.414) * 10));
 
-  emit('update:modelValue', { valence: valence.value, arousal: arousal.value });
-  emit('change', { valence: valence.value, arousal: arousal.value });
+  emit('update:modelValue', { valence: valence.value, arousal: arousal.value, intensity });
+  emit('change', { valence: valence.value, arousal: arousal.value, intensity });
+};
+
+// Calculate initial intensity on mount/update
+const calculateIntensity = () => {
+  const magnitude = Math.sqrt(Math.pow(valence.value, 2) + Math.pow(arousal.value, 2));
+  return Math.min(10, Math.round((magnitude / 1.414) * 10));
 };
 
 const startDrag = (e) => {
@@ -123,15 +135,17 @@ const onDrag = (e) => {
   updateCoordinates(clientX, clientY);
 };
 
-const stopDrag = () => {
-  isDragging.value = false;
-};
+const stopDrag = () => { isDragging.value = false; };
 
-// Sync with external changes
 watch(() => props.modelValue, (newVal) => {
   if (!isDragging.value) {
     valence.value = newVal.valence || 0;
     arousal.value = newVal.arousal || 0;
+    // Ensure intensity is up to date if passed, otherwise calculate
+    if (newVal.intensity === undefined) {
+       const intensity = calculateIntensity();
+       emit('update:modelValue', { ...newVal, intensity });
+    }
   }
-}, { deep: true });
+}, { deep: true, immediate: true });
 </script>

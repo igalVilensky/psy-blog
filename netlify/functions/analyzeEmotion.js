@@ -75,7 +75,7 @@ export async function handler(event, context) {
         }
 
         const body = JSON.parse(event.body);
-        const { affect, labeling, somatic, context, triggers, intensity } = body;
+        const { affect, labeling, somatic, context, triggers, intensity, cognition } = body;
 
         // 1. Analyze State
         const valence = affect?.valence || 0;
@@ -85,11 +85,13 @@ export async function handler(event, context) {
         const state = {
             valence,
             arousal,
-            intensity: intensity || 5,
+            intensity: intensity || affect?.intensity || 5,
             emotion: labeling?.primary || "Unknown",
             nuance: labeling?.secondary || "",
             somatic: somatic || { locations: [] },
-            tags: [...(triggers || []), ...(context?.tags || [])]
+            tags: [...(triggers || []), ...(context?.tags || [])],
+            narrative: cognition?.narrative || "",
+            facts: cognition?.facts || ""
         };
 
         // 2. Score Tools
@@ -111,11 +113,13 @@ export async function handler(event, context) {
     - Интенсивность: ${state.intensity}/10
     - Ощущения в теле: ${state.somatic.locations.join(", ") || "нет"}
     - Контекст: ${state.tags.join(", ")}
+    - Мысли (Нарратив): "${state.narrative}"
+    - Факты: "${state.facts}"
 
-    Мы выбрали инструмент: "${primaryTool.title}" (${primaryTool.description}).
+    Мы подобрали инструмент: "${primaryTool.title}" (${primaryTool.description}).
 
     Твоя задача:
-    1. Написать "reasoning" (почему это подходит) - 2 предложения, обращайся к пользователю на "вы".
+    1. Написать "reasoning" (почему это подходит) - 2 предложения, обращайся к пользователю на "вы". Начни с фразы "Мы рекомендуем этот инструмент, потому что..." или похожей. Не пиши "Вы выбрали".
     2. Написать "routine" (мини-рутина из 3 шагов) для этого момента.
 
     Верни ответ ТОЛЬКО в формате JSON:

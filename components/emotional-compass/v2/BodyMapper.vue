@@ -74,7 +74,7 @@
           :key="part"
           class="px-2 py-1 text-xs rounded-full bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800"
         >
-          {{ part.toUpperCase() }}
+          {{ getBodyPartName(part).toUpperCase() }}
         </span>
         <span v-if="modelValue.length === 0" class="text-xs text-slate-400 italic">
           Нажмите на области, где чувствуете ощущения
@@ -107,6 +107,18 @@ const togglePart = (part) => {
   }
   
   emit('update:modelValue', newValue);
+};
+
+const getBodyPartName = (part) => {
+  const names = {
+    head: 'Голова',
+    throat: 'Горло',
+    chest: 'Грудь',
+    stomach: 'Живот',
+    arms: 'Руки',
+    legs: 'Ноги'
+  };
+  return names[part] || part;
 };
 </script>
 

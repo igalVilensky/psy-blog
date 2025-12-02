@@ -119,7 +119,10 @@ const handleNext = () => {
 };
 
 const onAffectChange = (val) => {
-  // Optional: Auto-advance if quick mode? No, let user confirm.
+  // Update intensity from the grid component
+  if (val.intensity !== undefined) {
+    sessionData.affect.intensity = val.intensity;
+  }
 };
 
 const saveEntry = async () => {
@@ -273,18 +276,18 @@ const closeRecommendations = () => {
             <!-- Step 5: Deep Reflection (Only for Deep Mode) -->
             <div v-if="step === 5" class="w-full animate-fadeIn space-y-6">
               <div>
-                <label class="block text-sm font-bold text-slate-500 mb-2">ИСТОРИЯ (НАРРАТИВ)</label>
+                <label class="block text-sm font-bold text-slate-500 mb-2">МЫСЛИ И ИНТЕРПРЕТАЦИИ</label>
                 <textarea 
                   v-model="sessionData.cognition.narrative"
-                  placeholder="Какую историю вы рассказываете себе об этом чувстве?"
+                  placeholder="О чем вы думаете? Чего вы боитесь или что предвкушаете? Как вы объясняете себе это чувство?"
                   class="w-full h-32 p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-purple-500 focus:outline-none resize-none"
                 ></textarea>
               </div>
               <div>
-                <label class="block text-sm font-bold text-slate-500 mb-2">ФАКТЫ</label>
+                <label class="block text-sm font-bold text-slate-500 mb-2">ФАКТЫ И РЕАЛЬНОСТЬ</label>
                 <textarea 
                   v-model="sessionData.cognition.facts"
-                  placeholder="Каковы объективные факты?"
+                  placeholder="Что произошло на самом деле? Какие факты неоспоримы (без ваших домыслов)?"
                   class="w-full h-32 p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-cyan-500 focus:outline-none resize-none"
                 ></textarea>
               </div>
