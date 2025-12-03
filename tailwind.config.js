@@ -18,20 +18,6 @@ export default {
         "open-sans": ["Open Sans", "sans-serif"],
       },
       colors: {
-        // MindQlab Core Colors
-        "mindqlab-indigo": "#5C6BC0",
-        "mindqlab-teal": "#4DB6AC",
-        "mindqlab-gold": "#FFD54F",
-
-        // MindQlab Text & Backgrounds (for Light Mode)
-        "mindqlab-text": "#212121",
-        "mindqlab-bg-soft": "#F8F8F8",
-        "mindqlab-neutral-light": "#E0E0E0",
-
-        // MindQlab Dark Mode Specific Colors
-        "mindqlab-dark-bg": "#1A1A1A",
-        "mindqlab-dark-surface": "#2C2C2C",
-        "mindqlab-dark-text": "#E0E0E0", // Use this for dark mode text
 
         // Existing background color
         background: "#161C2E",

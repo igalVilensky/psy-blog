@@ -15,6 +15,10 @@ export default defineNuxtConfig({
 
   compatibilityDate: "2024-12-14",
 
+  site: {
+    url: "https://www.mindqlab.com",
+  },
+
   router: {
     options: {
       strict: false, // allows both /about and /about/
@@ -44,146 +48,25 @@ export default defineNuxtConfig({
 
   sitemap: {
     // @ts-ignore
-    siteUrl: "https://www.mindqlab.com",
     cacheTtl: 3600, // cache sitemap for 1 hour
     autoLastmod: true,
+    sources: ["/api/sitemap"],
+    exclude: [
+      "/profile/**",
+      "/login",
+      "/register",
+      "/verify-email",
+      "/auth/**",
+      "/personal-cabinet/**",
+      "/onboarding/**",
+      "/admin/**",
+    ],
     defaults: {
       changefreq: "weekly",
       priority: 0.8,
     },
     // @ts-ignore
     gzip: true,
-    routes: async () => {
-      // Import Sanity client
-      const { createClient } = await import("@sanity/client");
-
-      // Create Sanity client
-      const client = createClient({
-        projectId: "wlg2lkvy",
-        dataset: "production",
-        apiVersion: "2024-01-01",
-        useCdn: true,
-      });
-
-      try {
-        // Fetch all published blog posts from Sanity
-        const posts = await client.fetch(`
-          *[_type == "post" && defined(slug.current) && !(_id in path("drafts.**"))] {
-            "slug": slug.current,
-            _updatedAt,
-            publishedAt
-          }
-        `);
-
-        // Map posts to sitemap URLs
-        const blogRoutes = posts.map((post: any) => ({
-          url: `/blog/${post.slug}`,
-          lastmod: post._updatedAt || post.publishedAt,
-          changefreq: "weekly",
-          priority: 0.7,
-        }));
-
-        // Add static routes
-        const staticRoutes = [
-          { url: "/", changefreq: "daily", priority: 1.0 },
-          { url: "/blog", changefreq: "daily", priority: 0.9 },
-          { url: "/contact", changefreq: "monthly", priority: 0.6 },
-          { url: "/faq", changefreq: "monthly", priority: 0.6 },
-          { url: "/about", changefreq: "monthly", priority: 0.7 },
-          { url: "/courses", changefreq: "weekly", priority: 0.8 },
-          { url: "/lab/tests", changefreq: "monthly", priority: 0.8 },
-          { url: "/awareness-tools", changefreq: "monthly", priority: 0.8 },
-          { url: "/lab", changefreq: "weekly", priority: 0.8 },
-          { url: "/lab/games", changefreq: "weekly", priority: 0.7 },
-          { url: "/lab/psychology", changefreq: "weekly", priority: 0.7 },
-          { url: "/lab/mindfulness", changefreq: "weekly", priority: 0.7 },
-          // Lab Experiments
-          { url: "/lab/experiments", changefreq: "weekly", priority: 0.7 },
-          {
-            url: "/lab/experiments/big-5-model",
-            changefreq: "monthly",
-            priority: 0.7,
-          },
-          {
-            url: "/lab/experiments/daily-growth-spark",
-            changefreq: "weekly",
-            priority: 0.7,
-          },
-          {
-            url: "/lab/experiments/emotional-compass",
-            changefreq: "weekly",
-            priority: 0.7,
-          },
-          {
-            url: "/lab/experiments/life-purpose-archetype",
-            changefreq: "monthly",
-            priority: 0.7,
-          },
-          {
-            url: "/lab/experiments/wheel-of-life",
-            changefreq: "monthly",
-            priority: 0.7,
-          },
-          // Lab Games
-          { url: "/lab/games/reaction", changefreq: "monthly", priority: 0.6 },
-          { url: "/lab/games/stroop", changefreq: "monthly", priority: 0.6 },
-          { url: "/lab/games/memory", changefreq: "monthly", priority: 0.6 },
-          // Lab Psychology
-          {
-            url: "/lab/psychology/ego-states",
-            changefreq: "monthly",
-            priority: 0.7,
-          },
-          {
-            url: "/lab/psychology/guides",
-            changefreq: "weekly",
-            priority: 0.7,
-          },
-          {
-            url: "/lab/psychology/healing-childhood-traumas",
-            changefreq: "monthly",
-            priority: 0.7,
-          },
-          {
-            url: "/lab/psychology/podcasts",
-            changefreq: "weekly",
-            priority: 0.7,
-          },
-          {
-            url: "/lab/psychology/self-assessment-guide",
-            changefreq: "monthly",
-            priority: 0.7,
-          },
-          // Lab Tests
-          {
-            url: "/lab/tests/digit-span",
-            changefreq: "monthly",
-            priority: 0.6,
-          },
-          {
-            url: "/lab/tests/trail-making",
-            changefreq: "monthly",
-            priority: 0.6,
-          },
-          { url: "/lab/tests/nback", changefreq: "monthly", priority: 0.6 },
-          // Other Lab Pages
-          { url: "/lab/analysis", changefreq: "weekly", priority: 0.6 },
-          { url: "/lab/brain-map", changefreq: "monthly", priority: 0.7 },
-          { url: "/lab/community", changefreq: "daily", priority: 0.8 },
-        ];
-
-        return [...staticRoutes, ...blogRoutes];
-      } catch (error) {
-        console.error("Error fetching blog posts for sitemap:", error);
-        // Return static routes only if Sanity fetch fails
-        return [
-          { url: "/", changefreq: "daily", priority: 1.0 },
-          { url: "/blog", changefreq: "daily", priority: 0.9 },
-          { url: "/contact", changefreq: "monthly", priority: 0.6 },
-          { url: "/faq", changefreq: "monthly", priority: 0.6 },
-        ];
-      }
-    },
   },
 
   plugins: [
@@ -210,7 +93,7 @@ export default defineNuxtConfig({
       firebaseMessagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
       firebaseAppId: process.env.FIREBASE_APP_ID,
       firebaseMeasurementId: process.env.FIREBASE_MEASUREMENT_ID,
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || "https://mindqlab.com",
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || "https://www.mindqlab.com",
       paypalClientId: process.env.NUXT_PUBLIC_PAYPAL_CLIENT_ID,
     },
   },
