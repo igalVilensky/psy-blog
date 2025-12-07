@@ -8,6 +8,7 @@ export interface Exercise {
     format: string;
     metric: string;
     uiExample: string;
+    relatedModels?: string;
 }
 
 export const exercises: Exercise[] = [
@@ -19,7 +20,8 @@ export const exercises: Exercise[] = [
         instruction: "Показать последовательность символов, пользователь нажимает, если символ повторяется через N шагов",
         format: "Веб/мобильный, таймер, подсветка кнопок",
         metric: "% правильных ответов, время реакции",
-        uiExample: "3x3 сетка с буквами"
+        uiExample: "3x3 сетка с буквами",
+        relatedModels: "Working Memory"
     },
     {
         id: 2,
@@ -29,7 +31,8 @@ export const exercises: Exercise[] = [
         instruction: "Показать последовательность чисел, затем воспроизвести",
         format: "Ввод чисел",
         metric: "Кол-во правильных чисел",
-        uiExample: "Линейная последовательность"
+        uiExample: "Линейная последовательность",
+        relatedModels: "Working Memory, Cognitive Load"
     },
     {
         id: 3,
@@ -39,7 +42,8 @@ export const exercises: Exercise[] = [
         instruction: "На сетке загораются клетки, нужно воспроизвести",
         format: "Клик/тап",
         metric: "% правильных клеток",
-        uiExample: "5x5 сетка"
+        uiExample: "5x5 сетка",
+        relatedModels: "Chunking"
     },
     {
         id: 4,
@@ -49,7 +53,8 @@ export const exercises: Exercise[] = [
         instruction: "Пользователь запоминает пары слов, затем находит совпадения",
         format: "Drag&Drop",
         metric: "% совпадений",
-        uiExample: "Список слов в колонках"
+        uiExample: "Список слов в колонках",
+        relatedModels: "Spaced Repetition, Retrieval Practice"
     },
     {
         id: 5,
@@ -59,7 +64,8 @@ export const exercises: Exercise[] = [
         instruction: "Показываются объекты 3-5 сек → нужно воспроизвести",
         format: "Drag&Drop или ввод",
         metric: "% правильно",
-        uiExample: "Сетка картинок"
+        uiExample: "Сетка картинок",
+        relatedModels: "Chunking"
     },
     {
         id: 6,
@@ -69,7 +75,8 @@ export const exercises: Exercise[] = [
         instruction: "Выбирайте цвет текста, игнорируя слово",
         format: "Кнопки с цветами",
         metric: "% правильных ответов, время",
-        uiExample: "4 кнопки"
+        uiExample: "4 кнопки",
+        relatedModels: "Emotion Regulation, System 1 / System 2"
     },
     {
         id: 7,
@@ -79,7 +86,8 @@ export const exercises: Exercise[] = [
         instruction: "Найти объект, который отличается",
         format: "Визуально",
         metric: "% правильных",
-        uiExample: "Сетка из картинок"
+        uiExample: "Сетка из картинок",
+        relatedModels: "Attention Spotlight"
     },
     {
         id: 8,
@@ -89,7 +97,8 @@ export const exercises: Exercise[] = [
         instruction: "Нажимать только на символ X среди шума",
         format: "Кнопки/тап",
         metric: "Кол-во правильных, промахи",
-        uiExample: "Случайный поток символов"
+        uiExample: "Случайный поток символов",
+        relatedModels: "Attention Spotlight"
     },
     {
         id: 9,
@@ -99,7 +108,8 @@ export const exercises: Exercise[] = [
         instruction: "Следить за движущимся объектом, нажать при достижении цели",
         format: "Drag/Touch",
         metric: "Кол-во попаданий",
-        uiExample: "Мяч движется по экрану"
+        uiExample: "Мяч движется по экрану",
+        relatedModels: "Attention Spotlight"
     },
     {
         id: 10,
@@ -109,7 +119,8 @@ export const exercises: Exercise[] = [
         instruction: "Выбрать все красные объекты среди прочих",
         format: "Клик/тап",
         metric: "% правильных",
-        uiExample: "Многоцветная сетка"
+        uiExample: "Многоцветная сетка",
+        relatedModels: "Attention Spotlight"
     },
     {
         id: 11,
@@ -119,7 +130,8 @@ export const exercises: Exercise[] = [
         instruction: "Решать 10 примеров за время",
         format: "Ввод чисел",
         metric: "% верно, среднее время",
-        uiExample: "Поле ввода"
+        uiExample: "Поле ввода",
+        relatedModels: "OODA Loop"
     },
     {
         id: 12,
@@ -129,7 +141,8 @@ export const exercises: Exercise[] = [
         instruction: "Найти соответствие между символами",
         format: "Drag/Drop",
         metric: "% верно",
-        uiExample: "2 колонки символов"
+        uiExample: "2 колонки символов",
+        relatedModels: "System 1 / System 2"
     },
     {
         id: 13,
@@ -139,7 +152,8 @@ export const exercises: Exercise[] = [
         instruction: "Нажать кнопку как только появится сигнал",
         format: "Кнопка",
         metric: "Время реакции",
-        uiExample: "Кнопка в центре"
+        uiExample: "Кнопка в центре",
+        relatedModels: "OODA Loop"
     },
     {
         id: 14,
@@ -149,7 +163,8 @@ export const exercises: Exercise[] = [
         instruction: "Выбрать правильный вариант в ограниченное время",
         format: "2-4 варианта",
         metric: "% правильных",
-        uiExample: "Таймер сверху"
+        uiExample: "Таймер сверху",
+        relatedModels: "System 1 / System 2, Pareto Principle"
     },
     {
         id: 15,
@@ -159,7 +174,8 @@ export const exercises: Exercise[] = [
         instruction: "Найти закономерность в последовательности",
         format: "Drag/Click",
         metric: "% правильных",
-        uiExample: "Последовательность фигур"
+        uiExample: "Последовательность фигур",
+        relatedModels: "Mental Models"
     },
     {
         id: 16,
@@ -169,7 +185,8 @@ export const exercises: Exercise[] = [
         instruction: "Завершить аналогию A:B :: C:?",
         format: "Ввод/выбор",
         metric: "% правильных",
-        uiExample: "2 пары слов"
+        uiExample: "2 пары слов",
+        relatedModels: "Feynman Technique, First Principles"
     },
     {
         id: 17,
@@ -179,7 +196,8 @@ export const exercises: Exercise[] = [
         instruction: "Решить мини-логическую задачу",
         format: "Выбор/клик",
         metric: "% правильно",
-        uiExample: "Сетка условий"
+        uiExample: "Сетка условий",
+        relatedModels: "Bayesian Thinking, Mental Models"
     },
     {
         id: 18,
@@ -189,7 +207,8 @@ export const exercises: Exercise[] = [
         instruction: "Соединить причины с последствиями",
         format: "Drag&Drop",
         metric: "% правильно",
-        uiExample: "2 колонки событий"
+        uiExample: "2 колонки событий",
+        relatedModels: "Mental Models"
     },
     {
         id: 19,
@@ -199,7 +218,8 @@ export const exercises: Exercise[] = [
         instruction: "Составить слова из букв",
         format: "Ввод",
         metric: "% правильных",
-        uiExample: "7 букв в рандом порядке"
+        uiExample: "7 букв в рандом порядке",
+        relatedModels: "Chunking"
     },
     {
         id: 20,
@@ -209,7 +229,8 @@ export const exercises: Exercise[] = [
         instruction: "Назвать слова из категории за 30 секунд",
         format: "Ввод",
         metric: "Кол-во слов",
-        uiExample: "Список категории сверху"
+        uiExample: "Список категории сверху",
+        relatedModels: "Chunking, Mental Models"
     },
     {
         id: 21,
@@ -219,7 +240,8 @@ export const exercises: Exercise[] = [
         instruction: "Найти синоним/антоним",
         format: "Ввод/выбор",
         metric: "% правильно",
-        uiExample: "Одно слово, поле ввода"
+        uiExample: "Одно слово, поле ввода",
+        relatedModels: "Divergent/Convergent"
     },
     {
         id: 22,
@@ -229,7 +251,8 @@ export const exercises: Exercise[] = [
         instruction: "Менять режим действий каждые N секунд",
         format: "Кнопки/тап",
         metric: "% правильно, скорость",
-        uiExample: "Два режима на экране"
+        uiExample: "Два режима на экране",
+        relatedModels: "Pareto Principle"
     },
     {
         id: 23,
@@ -239,7 +262,8 @@ export const exercises: Exercise[] = [
         instruction: "Делать задачу «от обратного»",
         format: "Ввод",
         metric: "% верно",
-        uiExample: "Пример: 5 → 25, ищем правило"
+        uiExample: "Пример: 5 → 25, ищем правило",
+        relatedModels: "SCAMPER"
     },
     {
         id: 24,
@@ -249,7 +273,8 @@ export const exercises: Exercise[] = [
         instruction: "Найти альтернативное объяснение картинки",
         format: "Выбор",
         metric: "% правильно",
-        uiExample: "Картинка + варианты"
+        uiExample: "Картинка + варианты",
+        relatedModels: "SCAMPER"
     },
     {
         id: 25,
@@ -259,7 +284,8 @@ export const exercises: Exercise[] = [
         instruction: "1 минута на запоминание чисел",
         format: "Ввод",
         metric: "% верно",
-        uiExample: "Числа сверху"
+        uiExample: "Числа сверху",
+        relatedModels: "Working Memory"
     },
     {
         id: 26,
@@ -269,7 +295,8 @@ export const exercises: Exercise[] = [
         instruction: "1 минута на отслеживание объектов",
         format: "Touch",
         metric: "Кол-во объектов",
-        uiExample: "Движущиеся объекты"
+        uiExample: "Движущиеся объекты",
+        relatedModels: "Attention Spotlight"
     },
     {
         id: 27,
@@ -279,7 +306,8 @@ export const exercises: Exercise[] = [
         instruction: "Быстрая логическая задача",
         format: "Выбор",
         metric: "% верно",
-        uiExample: "Мини задача на 1 мин"
+        uiExample: "Мини задача на 1 мин",
+        relatedModels: "System 1 / System 2"
     },
     {
         id: 28,
@@ -289,7 +317,8 @@ export const exercises: Exercise[] = [
         instruction: "Найти как можно больше слов из букв",
         format: "Ввод",
         metric: "Кол-во слов",
-        uiExample: "6-7 букв"
+        uiExample: "6-7 букв",
+        relatedModels: "Divergent/Convergent"
     },
     {
         id: 29,
@@ -299,7 +328,8 @@ export const exercises: Exercise[] = [
         instruction: "Нажимать как только появится сигнал",
         format: "Кнопка",
         metric: "Время реакции",
-        uiExample: "Большая кнопка"
+        uiExample: "Большая кнопка",
+        relatedModels: "OODA Loop"
     },
     {
         id: 30,
@@ -309,7 +339,8 @@ export const exercises: Exercise[] = [
         instruction: "Найти путь в лабиринте",
         format: "Drag/Touch",
         metric: "Время + ошибки",
-        uiExample: "Лабиринт"
+        uiExample: "Лабиринт",
+        relatedModels: "Attention Spotlight, System 1 / System 2"
     },
     {
         id: 31,
@@ -319,7 +350,8 @@ export const exercises: Exercise[] = [
         instruction: "Сложная последовательность объектов",
         format: "Ввод/клик",
         metric: "% верно",
-        uiExample: "Пирамида из объектов"
+        uiExample: "Пирамида из объектов",
+        relatedModels: "Chunking"
     },
     {
         id: 32,
@@ -329,7 +361,8 @@ export const exercises: Exercise[] = [
         instruction: "Нажимать на определённый цвет",
         format: "Кнопка",
         metric: "% попаданий",
-        uiExample: "Цветные кнопки"
+        uiExample: "Цветные кнопки",
+        relatedModels: "System 1 / System 2"
     },
     {
         id: 33,
@@ -339,7 +372,8 @@ export const exercises: Exercise[] = [
         instruction: "Быстро решать задачи на сложность",
         format: "Ввод",
         metric: "% верно, время",
-        uiExample: "Примеры сверху"
+        uiExample: "Примеры сверху",
+        relatedModels: "OODA Loop"
     },
     {
         id: 34,
@@ -349,7 +383,8 @@ export const exercises: Exercise[] = [
         instruction: "Найти объект среди визуального шума",
         format: "Touch",
         metric: "% верно",
-        uiExample: "Сетка объектов"
+        uiExample: "Сетка объектов",
+        relatedModels: "Attention Spotlight"
     },
     {
         id: 35,
@@ -359,7 +394,8 @@ export const exercises: Exercise[] = [
         instruction: "Сохранять последовательность чисел",
         format: "Ввод",
         metric: "% верно",
-        uiExample: "Лестница чисел"
+        uiExample: "Лестница чисел",
+        relatedModels: "Working Memory"
     },
     {
         id: 36,
@@ -369,7 +405,8 @@ export const exercises: Exercise[] = [
         instruction: "Создать цепочку слов по смыслу",
         format: "Ввод",
         metric: "Кол-во слов",
-        uiExample: "Текстовое поле"
+        uiExample: "Текстовое поле",
+        relatedModels: "Feynman Technique, Divergent/Convergent"
     },
     {
         id: 37,
@@ -379,7 +416,8 @@ export const exercises: Exercise[] = [
         instruction: "Соединить правильные пары",
         format: "Drag/Drop",
         metric: "% верно",
-        uiExample: "2 колонки объектов"
+        uiExample: "2 колонки объектов",
+        relatedModels: "Mental Models"
     },
     {
         id: 38,
@@ -389,7 +427,8 @@ export const exercises: Exercise[] = [
         instruction: "Быстро набрать слова",
         format: "Ввод",
         metric: "Кол-во слов",
-        uiExample: "Поле ввода"
+        uiExample: "Поле ввода",
+        relatedModels: "Deliberate Practice"
     },
     {
         id: 39,
@@ -399,7 +438,8 @@ export const exercises: Exercise[] = [
         instruction: "Нажимать противоположный символ",
         format: "Кнопка",
         metric: "% правильно",
-        uiExample: "Два символа"
+        uiExample: "Два символа",
+        relatedModels: "Emotion Regulation"
     },
     {
         id: 40,
@@ -409,7 +449,8 @@ export const exercises: Exercise[] = [
         instruction: "Поменять элементы, чтобы соответствовало образцу",
         format: "Drag/Drop",
         metric: "% верно",
-        uiExample: "Сетка схем"
+        uiExample: "Сетка схем",
+        relatedModels: "Divergent/Convergent"
     },
     {
         id: 41,
@@ -419,7 +460,8 @@ export const exercises: Exercise[] = [
         instruction: "Найти одинаковые карточки",
         format: "Drag/Click",
         metric: "% верно",
-        uiExample: "Карточки 4x4"
+        uiExample: "Карточки 4x4",
+        relatedModels: "Working Memory"
     },
     {
         id: 42,
@@ -429,7 +471,8 @@ export const exercises: Exercise[] = [
         instruction: "Серия примеров за 30 секунд",
         format: "Ввод",
         metric: "% верно",
-        uiExample: "Примеры сверху"
+        uiExample: "Примеры сверху",
+        relatedModels: "OODA Loop"
     },
     {
         id: 43,
@@ -439,7 +482,8 @@ export const exercises: Exercise[] = [
         instruction: "Клик на меняющийся объект",
         format: "Touch",
         metric: "Время реакции",
-        uiExample: "Сетка объектов"
+        uiExample: "Сетка объектов",
+        relatedModels: "OODA Loop"
     },
     {
         id: 44,
@@ -449,7 +493,8 @@ export const exercises: Exercise[] = [
         instruction: "Переставить буквы в слово",
         format: "Drag/Drop",
         metric: "% верно",
-        uiExample: "Буквы рандомно"
+        uiExample: "Буквы рандомно",
+        relatedModels: "Divergent/Convergent"
     },
     {
         id: 45,
@@ -459,7 +504,8 @@ export const exercises: Exercise[] = [
         instruction: "Построить логический путь",
         format: "Drag/Drop",
         metric: "% верно",
-        uiExample: "Схема шагов"
+        uiExample: "Схема шагов",
+        relatedModels: "Feynman Technique, Mental Models, Chunked Thinking"
     },
     {
         id: 46,
@@ -469,7 +515,8 @@ export const exercises: Exercise[] = [
         instruction: "Найти путь среди отвлекающих объектов",
         format: "Touch",
         metric: "% верно, время",
-        uiExample: "Лабиринт"
+        uiExample: "Лабиринт",
+        relatedModels: "Attention Spotlight"
     },
     {
         id: 47,
@@ -479,7 +526,8 @@ export const exercises: Exercise[] = [
         instruction: "Запомнить объекты в круге",
         format: "Touch/Drag",
         metric: "% верно",
-        uiExample: "Круг объектов"
+        uiExample: "Круг объектов",
+        relatedModels: "Working Memory"
     },
     {
         id: 48,
@@ -489,7 +537,8 @@ export const exercises: Exercise[] = [
         instruction: "Придумать слово по подсказке",
         format: "Ввод",
         metric: "Кол-во слов",
-        uiExample: "Текстовое поле"
+        uiExample: "Текстовое поле",
+        relatedModels: "Divergent/Convergent"
     },
     {
         id: 49,
@@ -499,7 +548,8 @@ export const exercises: Exercise[] = [
         instruction: "Найти число, которое даёт результат",
         format: "Ввод",
         metric: "% верно",
-        uiExample: "Пример 5 → ? = 25"
+        uiExample: "Пример 5 → ? = 25",
+        relatedModels: "SCAMPER"
     },
     {
         id: 50,
@@ -509,6 +559,7 @@ export const exercises: Exercise[] = [
         instruction: "Менять подход к задаче",
         format: "Drag/Click",
         metric: "% верно",
-        uiExample: "Две последовательности"
+        uiExample: "Две последовательности",
+        relatedModels: "Pareto Principle"
     }
 ];

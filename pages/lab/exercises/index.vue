@@ -84,7 +84,7 @@
     >
       <div 
         v-if="selectedExercise" 
-        class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden p-4 bg-slate-900/20 dark:bg-slate-900/80 backdrop-blur-sm"
+        class="fixed inset-0 z-[100] flex items-start md:items-center justify-center overflow-y-auto overflow-x-hidden p-4 pt-24 md:p-4 bg-slate-900/20 dark:bg-slate-900/80 backdrop-blur-sm"
         @click.self="closeModal"
       >
         <div class="relative w-full max-w-2xl transform rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-[#1e293b] p-8 shadow-2xl transition-all">
@@ -146,6 +146,18 @@
                     </h4>
                     <p class="text-slate-700 dark:text-slate-300 text-sm">
                         {{ selectedExercise.uiExample }}
+                    </p>
+                </div>
+
+                <!-- Related Models -->
+                <div v-if="selectedExercise.relatedModels" class="rounded-xl bg-slate-50 dark:bg-slate-900/50 p-5 border border-slate-200 dark:border-white/5 md:col-span-2">
+                    <h4 class="mb-3 flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400">
+                        <i class="fas fa-project-diagram"></i> Связанные ментальные модели
+                    </h4>
+                    <p class="text-slate-700 dark:text-slate-300 text-sm">
+                        <NuxtLink to="/lab/models" class="hover:underline text-purple-600 dark:text-purple-300 font-medium">
+                            {{ selectedExercise.relatedModels }}
+                        </NuxtLink>
                     </p>
                 </div>
             </div>

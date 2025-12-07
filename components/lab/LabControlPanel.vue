@@ -224,6 +224,10 @@
         <StationLink to="/lab/exercises" icon="fa-dumbbell" title="Библиотека Упражнений" subtitle="50+ практик"
           :active="route.path === '/lab/exercises'" gradient-from="rose-500" gradient-to="pink-600" />
 
+        <!-- Models Library Station -->
+        <StationLink to="/lab/models" icon="fa-project-diagram" title="Менталитека" subtitle="Когнитивные модели"
+          :active="route.path === '/lab/models'" gradient-from="purple-600" gradient-to="indigo-600" />		
+
         <!-- Community Hub -->
         <StationLink to="/lab/community" icon="fa-users" title="Сообщество" subtitle="Исследователи онлайн"
           :active="route.path === '/lab/community'" gradient-from="orange-500" gradient-to="amber-600" />
@@ -417,6 +421,14 @@ const mobileStations = computed(() => [
     subtitle: "Библиотека",
     gradientFrom: "rose-500",
     gradientTo: "pink-600",
+  },
+  {
+    to: "/lab/models",
+    icon: "fa-project-diagram",
+    title: "Менталитека",
+    subtitle: "Модели",
+    gradientFrom: "purple-600",
+    gradientTo: "indigo-600",
   },
   {
     to: "/lab/analysis",
