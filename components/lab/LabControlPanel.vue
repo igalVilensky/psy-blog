@@ -220,6 +220,10 @@
         <StationLink to="/lab/analysis" icon="fa-chart-line" title="Обсерватория Роста" subtitle="Прогресс и аналитика"
           :active="route.path === '/lab/analysis'" gradient-from="emerald-500" gradient-to="green-600" />
 
+        <!-- Exercises Library Station -->
+        <StationLink to="/lab/exercises" icon="fa-dumbbell" title="Библиотека Упражнений" subtitle="50+ практик"
+          :active="route.path === '/lab/exercises'" gradient-from="rose-500" gradient-to="pink-600" />
+
         <!-- Community Hub -->
         <StationLink to="/lab/community" icon="fa-users" title="Сообщество" subtitle="Исследователи онлайн"
           :active="route.path === '/lab/community'" gradient-from="orange-500" gradient-to="amber-600" />
@@ -404,6 +408,14 @@ const mobileStations = computed(() => [
     title: "Эксперименты",
     subtitle: "Инструменты",
     gradientFrom: "purple-500",
+    gradientTo: "pink-600",
+  },
+  {
+    to: "/lab/exercises",
+    icon: "fa-dumbbell",
+    title: "Упражнения",
+    subtitle: "Библиотека",
+    gradientFrom: "rose-500",
     gradientTo: "pink-600",
   },
   {
