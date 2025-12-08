@@ -390,6 +390,102 @@
       </div>
     </div>
 
+    <!-- Training Performance Section -->
+    <div class="bg-white dark:bg-slate-800/30 rounded-xl p-6 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none mb-8">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white font-montserrat">
+          Эффективность тренировок
+        </h2>
+        <div class="flex items-center space-x-2">
+           <span class="text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-lg">
+             {{ trainingSummary.totalExercises }} упражнений
+           </span>
+        </div>
+      </div>
+
+      <!-- Summary Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div class="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 flex items-center justify-between">
+           <div>
+             <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">Средняя точность</div>
+             <div class="text-2xl font-bold text-slate-900 dark:text-white font-mono">{{ trainingSummary.avgAccuracy }}%</div>
+           </div>
+           <div class="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
+             <i class="fas fa-bullseye text-emerald-500"></i>
+           </div>
+        </div>
+        <div class="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 flex items-center justify-between">
+           <div>
+             <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">Всего сессий</div>
+             <div class="text-2xl font-bold text-slate-900 dark:text-white font-mono">{{ trainingSummary.totalSessions }}</div>
+           </div>
+           <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center">
+             <i class="fas fa-layer-group text-blue-500"></i>
+           </div>
+        </div>
+        <div class="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 flex items-center justify-between">
+           <div>
+             <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">Лучший результат</div>
+             <div class="text-2xl font-bold text-slate-900 dark:text-white font-mono">{{ trainingSummary.bestScore }}%</div>
+           </div>
+           <div class="w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center">
+             <i class="fas fa-trophy text-amber-500"></i>
+           </div>
+        </div>
+      </div>
+
+      <!-- Compact Exercise List -->
+      <div class="overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700/50">
+        <table class="w-full text-left text-sm text-slate-500 dark:text-slate-400">
+          <thead class="bg-slate-50 dark:bg-slate-800/80 text-xs uppercase font-medium text-slate-500 dark:text-slate-400">
+            <tr>
+              <th scope="col" class="px-4 py-3">Упражнение</th>
+              <th scope="col" class="px-4 py-3 hidden sm:table-cell">Категория</th>
+              <th scope="col" class="px-4 py-3 text-center">Ср. Оценка</th>
+              <th scope="col" class="px-4 py-3 text-right hidden sm:table-cell">Последняя игра</th>
+              <th scope="col" class="px-4 py-3 text-right"></th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200 dark:divide-slate-700/50 bg-white dark:bg-slate-900/20">
+            <tr 
+              v-for="exercise in exercisesList" 
+              :key="exercise.id"
+              class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors cursor-pointer"
+              @click="openExerciseDetails(exercise)"
+            >
+              <td class="px-4 py-3 font-medium text-slate-900 dark:text-white">
+                <div class="flex items-center space-x-3">
+                  <div class="w-8 h-8 rounded-lg flex items-center justify-center" :class="exercise.bgClass">
+                    <i :class="exercise.icon"></i>
+                  </div>
+                  <span>{{ exercise.title }}</span>
+                </div>
+              </td>
+              <td class="px-4 py-3 hidden sm:table-cell">
+                <span class="px-2 py-1 text-xs rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                  {{ exercise.category }}
+                </span>
+              </td>
+              <td class="px-4 py-3 text-center font-mono">
+                <span :class="getScoreColor(exercise.avgScore)">{{ exercise.avgScore }}%</span>
+              </td>
+              <td class="px-4 py-3 text-right hidden sm:table-cell font-mono text-xs">
+                {{ exercise.lastPlayed }}
+              </td>
+              <td class="px-4 py-3 text-right">
+                <i class="fas fa-chevron-right text-xs"></i>
+              </td>
+            </tr>
+            <tr v-if="exercisesList.length === 0">
+              <td colspan="5" class="px-4 py-8 text-center text-slate-500">
+                 Нет данных о тренировках
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     <!-- Activity Heatmap -->
     <div class="bg-white dark:bg-slate-800/30 rounded-xl p-6 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none">
       <div class="flex items-center justify-between mb-6">
@@ -430,7 +526,73 @@
       </div>
     </div>
     </div>
-  </div>
+    <!-- Exercise Details Modal -->
+    <div 
+      v-if="showExerciseDetails && selectedExercise"
+      class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm"
+      @click.self="closeExerciseDetails"
+    >
+      <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl w-full max-w-2xl max-h-[80vh] overflow-hidden flex flex-col">
+         <!-- Header -->
+         <div class="p-6 border-b border-slate-200 dark:border-slate-700/50 flex items-center justify-between bg-slate-50 dark:bg-slate-800/80">
+            <div class="flex items-center space-x-4">
+               <div class="w-12 h-12 rounded-xl flex items-center justify-center" :class="selectedExercise.bgClass">
+                  <i :class="selectedExercise.icon" class="text-xl"></i>
+               </div>
+               <div>
+                  <h3 class="text-xl font-bold text-slate-900 dark:text-white">{{ selectedExercise.title }}</h3>
+                  <div class="text-sm text-slate-500 dark:text-slate-400 capitalize">{{ selectedExercise.category }}</div>
+               </div>
+            </div>
+            <button @click="closeExerciseDetails" class="text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors">
+               <i class="fas fa-times text-xl"></i>
+            </button>
+         </div>
+
+         <!-- Scrollable Body -->
+         <div class="p-6 overflow-y-auto flex-1">
+             <div class="grid grid-cols-3 gap-4 mb-8">
+                <div class="bg-slate-50 dark:bg-slate-700/30 p-3 rounded-lg text-center">
+                   <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">Ср. Оценка</div>
+                   <div class="text-xl font-bold text-slate-900 dark:text-white font-mono">{{ selectedExercise.avgScore }}%</div>
+                </div>
+                <div class="bg-slate-50 dark:bg-slate-700/30 p-3 rounded-lg text-center">
+                   <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">Сессий</div>
+                   <div class="text-xl font-bold text-slate-900 dark:text-white font-mono">{{ selectedExercise.totalSessions }}</div>
+                </div>
+                <div class="bg-slate-50 dark:bg-slate-700/30 p-3 rounded-lg text-center">
+                   <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">Рекорд</div>
+                   <div class="text-xl font-bold text-slate-900 dark:text-white font-mono">{{ selectedExercise.bestScore }}%</div>
+                </div>
+             </div>
+
+             <h4 class="font-bold text-slate-900 dark:text-white mb-4">История активностей</h4>
+             <div class="space-y-3">
+                 <div 
+                   v-for="(session, idx) in selectedExercise.history" 
+                   :key="idx"
+                   class="flex items-center justify-between p-3 rounded-lg border border-slate-100 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"
+                 >
+                    <div class="flex items-center space-x-3">
+                       <span class="text-xs font-mono text-slate-400">{{ idx + 1 }}</span>
+                       <span class="text-sm text-slate-600 dark:text-slate-300">
+                          {{ new Date(session.timestamp.seconds * 1000).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }) }}
+                       </span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                       <div class="text-xs text-slate-500">
+                          {{ (session.avgReactionTime || 0).toFixed(0) }} мс
+                       </div>
+                       <div class="font-bold font-mono" :class="getScoreColor((session.score / 10) * 100)">
+                          {{ (session.score / 10) * 100 }}%
+                       </div>
+                    </div>
+                 </div>
+             </div>
+         </div>
+      </div>
+    </div>
+  </div> 
 </template>
 
 <script setup>
@@ -455,6 +617,100 @@ const hoveredTrait = ref(null);
 const patternResults = ref([]);
 const heatmapData = ref({});
 const isLoading = ref(true);
+
+// Exercise Stats State
+const selectedExercise = ref(null);
+const showExerciseDetails = ref(false);
+
+const mockExercises = [
+    {
+        id: "nback-lite",
+        title: "N-Back Lite",
+        category: "Память",
+        avgScore: 0,
+        bestScore: 0,
+        lastPlayed: "-",
+        totalSessions: 0,
+        icon: "fas fa-layer-group text-blue-600 dark:text-blue-400",
+        bgClass: "bg-blue-500/10"
+    },
+    {
+        id: "stroop-test",
+        title: "Тест Струпа",
+        category: "Внимание",
+        avgScore: 0,
+        bestScore: 0,
+        lastPlayed: "-",
+        totalSessions: 0,
+        icon: "fas fa-font text-purple-600 dark:text-purple-400",
+        bgClass: "bg-purple-500/10"
+    },
+     {
+        id: "schulte-table",
+        title: "Таблицы Шульте",
+        category: "Внимание",
+        avgScore: 0,
+        bestScore: 0,
+        lastPlayed: "-",
+        totalSessions: 0,
+        icon: "fas fa-table-cells text-emerald-600 dark:text-emerald-400",
+        bgClass: "bg-emerald-500/10"
+    }
+];
+
+// Computed Exercise List (Real + Mock)
+const exercisesList = computed(() => {
+    // Process Pattern Detection Results
+    let patternEntry = {
+        id: "pattern-detection-mini",
+        title: "Pattern Detection Mini",
+        category: "Логика",
+        avgScore: 0,
+        bestScore: 0,
+        lastPlayed: "-",
+        totalSessions: 0,
+        icon: "fas fa-shapes text-amber-600 dark:text-amber-400",
+        bgClass: "bg-amber-500/10",
+        history: patternResults.value // Pass full history for details view
+    };
+
+    if (patternResults.value.length > 0) {
+        const scores = patternResults.value.map(r => (r.score / 10) * 100);
+        const avg = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
+        const best = Math.max(...scores);
+        const last = new Date(patternResults.value[0].timestamp.seconds * 1000).toLocaleDateString("ru-RU");
+
+        patternEntry = { ...patternEntry, avgScore: avg, bestScore: best, lastPlayed: last, totalSessions: scores.length };
+    }
+
+    // Combine with mocks (sorted by last played naturally if we had dates, here just unshift active one)
+    const list = [patternEntry, ...mockExercises];
+    
+    // Sort: active exercises first
+    return list.sort((a, b) => b.totalSessions - a.totalSessions); 
+});
+
+// Training Summary
+const trainingSummary = computed(() => {
+    const list = exercisesList.value;
+    const active = list.filter(e => e.totalSessions > 0);
+    
+    const totalSessions = active.reduce((sum, e) => sum + e.totalSessions, 0);
+    const avgAccuracy = active.length > 0 
+        ? Math.round(active.reduce((sum, e) => sum + e.avgScore, 0) / active.length) 
+        : 0;
+    const bestScore = active.length > 0 
+        ? Math.max(...active.map(e => e.bestScore)) 
+        : 0;
+
+    return {
+        totalExercises: active.length,
+        totalSessions,
+        avgAccuracy,
+        bestScore
+    };
+});
+
 
 // Metrics (Mixed real + mock for now)
 const metrics = computed(() => {
@@ -577,6 +833,26 @@ const achievements = [
 ];
 
 // Methods
+const openExerciseDetails = (exercise) => {
+    // Only open if there is history or specific details implementation
+    if (exercise.history && exercise.history.length > 0) {
+        selectedExercise.value = exercise;
+        showExerciseDetails.value = true;
+    }
+};
+
+const closeExerciseDetails = () => {
+    showExerciseDetails.value = false;
+    selectedExercise.value = null;
+};
+
+const getScoreColor = (score) => {
+    if (score >= 90) return 'text-emerald-600 dark:text-emerald-400 font-bold';
+    if (score >= 75) return 'text-cyan-600 dark:text-cyan-400';
+    if (score >= 60) return 'text-amber-600 dark:text-amber-400';
+    return 'text-slate-500 dark:text-slate-400';
+};
+
 const getTraitLabelPosition = (index) => {
   const angle = (360 / personalityTraits.length) * index - 90; // -90 to start from top
   const radius = 160; // Distance from center
