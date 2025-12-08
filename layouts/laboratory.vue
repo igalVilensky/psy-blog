@@ -110,6 +110,7 @@ const currentStation = computed(() => {
     "/lab/sound-therapy": "ЗВУКОТЕРАПИЯ",
     "/lab/brain-map": "КАРТА_МОЗГА",
     "/lab/experiments/wheel-of-life": "КОЛЕСО_БАЛАНСА",
+    "/lab/exercises/mental-shift": "КОГНИТИВНАЯ_ГИБКОСТЬ",
   };
   return stationMap[route.path] || "ИССЛЕДОВАТЕЛЬСКАЯ_СТАНЦИЯ";
 });

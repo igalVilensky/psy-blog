@@ -583,43 +583,124 @@
 
          <!-- Scrollable Body -->
          <div class="p-6 overflow-y-auto flex-1">
-             <div class="grid grid-cols-3 gap-4 mb-8">
-                <div class="bg-slate-50 dark:bg-slate-700/30 p-3 rounded-lg text-center">
-                   <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">Ср. Оценка</div>
-                   <div class="text-xl font-bold text-slate-900 dark:text-white font-mono">{{ selectedExercise.avgScore }}%</div>
-                </div>
-                <div class="bg-slate-50 dark:bg-slate-700/30 p-3 rounded-lg text-center">
-                   <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">Сессий</div>
-                   <div class="text-xl font-bold text-slate-900 dark:text-white font-mono">{{ selectedExercise.totalSessions }}</div>
-                </div>
-                <div class="bg-slate-50 dark:bg-slate-700/30 p-3 rounded-lg text-center">
-                   <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">Рекорд</div>
-                   <div class="text-xl font-bold text-slate-900 dark:text-white font-mono">{{ selectedExercise.bestScore }}%</div>
+             <!-- Performance Overview -->
+             <div class="mb-6">
+                <h4 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4">Общая производительность</h4>
+                <div class="grid grid-cols-3 gap-4">
+                   <div class="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 p-4 rounded-xl border border-purple-200 dark:border-purple-800/30">
+                      <div class="flex items-center justify-between mb-2">
+                         <span class="text-xs font-medium text-purple-700 dark:text-purple-300">Средний балл</span>
+                         <i class="fas fa-chart-line text-purple-500"></i>
+                      </div>
+                      <div class="text-3xl font-bold text-purple-900 dark:text-purple-100 font-mono mb-1">{{ selectedExercise.avgScore }}%</div>
+                      <div class="text-xs text-purple-600 dark:text-purple-400">Точность ответов</div>
+                   </div>
+                   
+                   <div class="bg-gradient-to-br from-cyan-50 to-cyan-100 dark:from-cyan-900/20 dark:to-cyan-800/20 p-4 rounded-xl border border-cyan-200 dark:border-cyan-800/30">
+                      <div class="flex items-center justify-between mb-2">
+                         <span class="text-xs font-medium text-cyan-700 dark:text-cyan-300">Лучший результат</span>
+                         <i class="fas fa-trophy text-cyan-500"></i>
+                      </div>
+                      <div class="text-3xl font-bold text-cyan-900 dark:text-cyan-100 font-mono mb-1">{{ selectedExercise.bestScore }}%</div>
+                      <div class="text-xs text-cyan-600 dark:text-cyan-400">Максимальная точность</div>
+                   </div>
+                   
+                   <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-800/20 p-4 rounded-xl border border-emerald-200 dark:border-emerald-800/30">
+                      <div class="flex items-center justify-between mb-2">
+                         <span class="text-xs font-medium text-emerald-700 dark:text-emerald-300">Всего сессий</span>
+                         <i class="fas fa-layer-group text-emerald-500"></i>
+                      </div>
+                      <div class="text-3xl font-bold text-emerald-900 dark:text-emerald-100 font-mono mb-1">{{ selectedExercise.totalSessions }}</div>
+                      <div class="text-xs text-emerald-600 dark:text-emerald-400">Завершённых попыток</div>
+                   </div>
                 </div>
              </div>
 
-             <h4 class="font-bold text-slate-900 dark:text-white mb-4">История активностей</h4>
-             <div class="space-y-3">
-                 <div 
-                   v-for="(session, idx) in selectedExercise.history" 
-                   :key="idx"
-                   class="flex items-center justify-between p-3 rounded-lg border border-slate-100 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"
-                 >
-                    <div class="flex items-center space-x-3">
-                       <span class="text-xs font-mono text-slate-400">{{ idx + 1 }}</span>
-                       <span class="text-sm text-slate-600 dark:text-slate-300">
-                          {{ new Date(session.timestamp.seconds * 1000).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }) }}
-                       </span>
-                    </div>
-                    <div class="flex items-center space-x-4">
-                       <div class="text-xs text-slate-500">
-                          {{ (session.avgReactionTime || 0).toFixed(0) }} мс
-                       </div>
-                       <div class="font-bold font-mono" :class="getScoreColor((session.score / 10) * 100)">
-                          {{ (session.score / 10) * 100 }}%
-                       </div>
-                    </div>
-                 </div>
+             <!-- Performance Insight -->
+             <div v-if="selectedExercise.avgScore > 0" class="mb-6 p-4 rounded-xl" :class="selectedExercise.avgScore >= 75 ? 'bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800' : selectedExercise.avgScore >= 50 ? 'bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800' : 'bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800'">
+                <div class="flex items-start gap-3">
+                   <div class="w-10 h-10 rounded-full flex items-center justify-center" :class="selectedExercise.avgScore >= 75 ? 'bg-green-500/20' : selectedExercise.avgScore >= 50 ? 'bg-yellow-500/20' : 'bg-orange-500/20'">
+                      <i class="fas" :class="selectedExercise.avgScore >= 75 ? 'fa-check-circle text-green-600 dark:text-green-400' : selectedExercise.avgScore >= 50 ? 'fa-info-circle text-yellow-600 dark:text-yellow-400' : 'fa-exclamation-circle text-orange-600 dark:text-orange-400'"></i>
+                   </div>
+                   <div class="flex-1">
+                      <div class="font-semibold mb-1" :class="selectedExercise.avgScore >= 75 ? 'text-green-900 dark:text-green-100' : selectedExercise.avgScore >= 50 ? 'text-yellow-900 dark:text-yellow-100' : 'text-orange-900 dark:text-orange-100'">
+                         {{ selectedExercise.avgScore >= 75 ? 'Отличная работа!' : selectedExercise.avgScore >= 50 ? 'Хороший прогресс' : 'Есть куда расти' }}
+                      </div>
+                      <div class="text-sm" :class="selectedExercise.avgScore >= 75 ? 'text-green-700 dark:text-green-300' : selectedExercise.avgScore >= 50 ? 'text-yellow-700 dark:text-yellow-300' : 'text-orange-700 dark:text-orange-300'">
+                         {{ selectedExercise.avgScore >= 75 ? 'Ваша точность выше 75% — продолжайте в том же духе!' : selectedExercise.avgScore >= 50 ? 'Средняя точность 50-75% — регулярная практика улучшит результаты.' : 'Точность ниже 50% — попробуйте начать с более лёгкого уровня.' }}
+                      </div>
+                   </div>
+                </div>
+             </div>
+
+             <!-- Session History -->
+             <div>
+                <div class="flex items-center justify-between mb-4">
+                   <h4 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">История тренировок</h4>
+                   <span class="text-xs text-slate-400">{{ selectedExercise.totalSessions }} {{ selectedExercise.totalSessions === 1 ? 'сессия' : selectedExercise.totalSessions < 5 ? 'сессии' : 'сессий' }}</span>
+                </div>
+                
+                <div v-if="selectedExercise.history && selectedExercise.history.length > 0" class="space-y-2">
+                   <div 
+                     v-for="(session, idx) in selectedExercise.history" 
+                     :key="idx"
+                     class="group relative p-4 rounded-xl border transition-all hover:shadow-md"
+                     :class="session.score > 10 ? (session.score >= 75 ? 'bg-green-50 dark:bg-green-900/10 border-green-200 dark:border-green-800/30 hover:border-green-300' : session.score >= 50 ? 'bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700/50 hover:border-slate-300' : 'bg-orange-50 dark:bg-orange-900/10 border-orange-200 dark:border-orange-800/30 hover:border-orange-300') : ((session.score / 10) * 100 >= 75 ? 'bg-green-50 dark:bg-green-900/10 border-green-200 dark:border-green-800/30 hover:border-green-300' : (session.score / 10) * 100 >= 50 ? 'bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700/50 hover:border-slate-300' : 'bg-orange-50 dark:bg-orange-900/10 border-orange-200 dark:border-orange-800/30 hover:border-orange-300')"
+                   >
+                      <!-- Session Number Badge -->
+                      <div class="absolute -left-2 -top-2 w-6 h-6 rounded-full bg-purple-500 text-white text-xs font-bold flex items-center justify-center shadow-lg">
+                         {{ idx + 1 }}
+                      </div>
+                      
+                      <div class="flex items-center justify-between">
+                         <!-- Date & Time -->
+                         <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-2">
+                               <i class="fas fa-calendar-alt text-slate-400 text-xs"></i>
+                               <span class="text-sm font-medium text-slate-700 dark:text-slate-300">
+                                  {{ new Date((session.timestamp?.seconds || session.createdAt?.seconds) * 1000).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' }) }}
+                               </span>
+                               <span class="text-xs text-slate-500">
+                                  {{ new Date((session.timestamp?.seconds || session.createdAt?.seconds) * 1000).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }) }}
+                               </span>
+                            </div>
+                            
+                            <!-- Metrics Row -->
+                            <div class="flex items-center gap-4">
+                               <!-- Score -->
+                               <div class="flex items-center gap-2">
+                                  <i class="fas fa-bullseye text-xs" :class="session.score > 10 ? (session.score >= 75 ? 'text-green-500' : session.score >= 50 ? 'text-slate-500' : 'text-orange-500') : ((session.score / 10) * 100 >= 75 ? 'text-green-500' : (session.score / 10) * 100 >= 50 ? 'text-slate-500' : 'text-orange-500')"></i>
+                                  <span class="text-xs text-slate-500 dark:text-slate-400">Точность:</span>
+                                  <span class="font-bold font-mono text-sm" :class="getScoreColor(session.score > 10 ? session.score : (session.score / 10) * 100)">
+                                     {{ session.score > 10 ? session.score : (session.score / 10) * 100 }}%
+                                  </span>
+                               </div>
+                               
+                               <!-- Reaction Time -->
+                               <div class="flex items-center gap-2">
+                                  <i class="fas fa-clock text-xs text-cyan-500"></i>
+                                  <span class="text-xs text-slate-500 dark:text-slate-400">Скорость:</span>
+                                  <span class="font-mono text-sm text-slate-700 dark:text-slate-300">
+                                     {{ (session.avgReactionTime || session.avgRT || 0).toFixed(0) }} мс
+                                  </span>
+                               </div>
+                            </div>
+                         </div>
+                         
+                         <!-- Performance Badge -->
+                         <div class="ml-4">
+                            <div class="px-3 py-1 rounded-full text-xs font-semibold" :class="session.score > 10 ? (session.score >= 75 ? 'bg-green-500 text-white' : session.score >= 50 ? 'bg-slate-300 dark:bg-slate-600 text-slate-700 dark:text-slate-200' : 'bg-orange-500 text-white') : ((session.score / 10) * 100 >= 75 ? 'bg-green-500 text-white' : (session.score / 10) * 100 >= 50 ? 'bg-slate-300 dark:bg-slate-600 text-slate-700 dark:text-slate-200' : 'bg-orange-500 text-white')">
+                               {{ session.score > 10 ? (session.score >= 75 ? 'Отлично' : session.score >= 50 ? 'Хорошо' : 'Нужна практика') : ((session.score / 10) * 100 >= 75 ? 'Отлично' : (session.score / 10) * 100 >= 50 ? 'Хорошо' : 'Нужна практика') }}
+                            </div>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+                
+                <div v-else class="text-center py-8 text-slate-500">
+                   <i class="fas fa-inbox text-3xl mb-2 opacity-50"></i>
+                   <p>Нет данных о тренировках</p>
+                </div>
              </div>
          </div>
       </div>
@@ -647,6 +728,7 @@ const hoveredTrait = ref(null);
 
 // Real Data State
 const patternResults = ref([]);
+const mentalShiftResults = ref([]);
 const big5Result = ref(null);
 const heatmapData = ref({});
 const isLoading = ref(true);
@@ -704,7 +786,7 @@ const exercisesList = computed(() => {
         totalSessions: 0,
         icon: "fas fa-shapes text-amber-600 dark:text-amber-400",
         bgClass: "bg-amber-500/10",
-        history: patternResults.value // Pass full history for details view
+        history: patternResults.value
     };
 
     if (patternResults.value.length > 0) {
@@ -716,8 +798,31 @@ const exercisesList = computed(() => {
         patternEntry = { ...patternEntry, avgScore: avg, bestScore: best, lastPlayed: last, totalSessions: scores.length };
     }
 
-    // Combine with mocks (sorted by last played naturally if we had dates, here just unshift active one)
-    const list = [patternEntry, ...mockExercises];
+    // Process Mental Shift Results
+    let mentalShiftEntry = {
+        id: "mental-shift",
+        title: "Mental Shift",
+        category: "Ментальная гибкость",
+        avgScore: 0,
+        bestScore: 0,
+        lastPlayed: "-",
+        totalSessions: 0,
+        icon: "fas fa-brain text-pink-600 dark:text-pink-400",
+        bgClass: "bg-pink-500/10",
+        history: mentalShiftResults.value
+    };
+
+    if (mentalShiftResults.value.length > 0) {
+        const scores = mentalShiftResults.value.map(r => r.score || 0);
+        const avg = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
+        const best = Math.max(...scores);
+        const last = new Date(mentalShiftResults.value[0].createdAt.seconds * 1000).toLocaleDateString("ru-RU");
+
+        mentalShiftEntry = { ...mentalShiftEntry, avgScore: avg, bestScore: best, lastPlayed: last, totalSessions: scores.length };
+    }
+
+    // Combine with mocks
+    const list = [patternEntry, mentalShiftEntry, ...mockExercises];
     
     // Sort: active exercises first
     return list.sort((a, b) => b.totalSessions - a.totalSessions); 
@@ -1003,24 +1108,29 @@ function calculateCognitiveScore() {
 }
 
 function calculateStreak() {
+    // Combine all exercise results
+    const allResults = [...patternResults.value, ...mentalShiftResults.value];
+    
     // Determine unique days with activity
-    const days = new Set(patternResults.value.map(r => {
-        if (!r.timestamp) return null;
-        return new Date(r.timestamp.seconds * 1000).toDateString();
-    }));
-    return days.size; // Simplified "streak" as "active days count" for MVP
+    const days = new Set(allResults.map(r => {
+        if (!r.timestamp && !r.createdAt) return null;
+        const timestamp = r.timestamp || r.createdAt;
+        return new Date(timestamp.seconds * 1000).toDateString();
+    }).filter(Boolean));
+    
+    return days.size;
 }
 
-function processHeatmapData(results) {
-    // Fill the grid based on results
-    // We Map results to the 52x7 grid.
-    // Week 52 = Current Week
+function processHeatmapData(allResults) {
+    // Fill the grid based on ALL exercise results
     const map = {};
     const now = new Date();
     
-    results.forEach(res => {
-        if (!res.timestamp) return;
-        const date = new Date(res.timestamp.seconds * 1000);
+    allResults.forEach(res => {
+        const timestamp = res.timestamp || res.createdAt;
+        if (!timestamp) return;
+        
+        const date = new Date(timestamp.seconds * 1000);
         
         // Calculate weeks diff
         const diffTime = Math.abs(now - date);
@@ -1028,11 +1138,19 @@ function processHeatmapData(results) {
         const weeksAgo = Math.floor(diffDays / 7);
         
         if (weeksAgo < 52) {
-             const weekIdx = 52 - weeksAgo; // 52 is rightmost
-             const dayIdx = date.getDay() === 0 ? 7 : date.getDay(); // 1-7 (Mon-Sun)
+             const weekIdx = 52 - weeksAgo;
+             const dayIdx = date.getDay() === 0 ? 7 : date.getDay();
              
-             // Setup intensity color
-             const intensity = res.score > 8 ? 5 : res.score > 5 ? 3 : 1;
+             // Setup intensity color based on score
+             let intensity = 1;
+             if (res.score > 10) {
+                 // Mental Shift uses 0-100 scale
+                 intensity = res.score > 80 ? 5 : res.score > 60 ? 4 : res.score > 40 ? 3 : res.score > 20 ? 2 : 1;
+             } else if (res.score !== undefined) {
+                 // Pattern Detection uses 0-10 scale
+                 intensity = res.score > 8 ? 5 : res.score > 6 ? 4 : res.score > 4 ? 3 : res.score > 2 ? 2 : 1;
+             }
+             
              const colors = [
                 "bg-emerald-500/20",
                 "bg-emerald-500/40",
@@ -1040,7 +1158,15 @@ function processHeatmapData(results) {
                 "bg-emerald-500/80",
                 "bg-emerald-500"
              ];
-             map[`${weekIdx}-${dayIdx}`] = colors[intensity - 1] || "bg-emerald-500/20";
+             
+             // If cell already has data, use the higher intensity
+             const cellKey = `${weekIdx}-${dayIdx}`;
+             if (map[cellKey]) {
+                 const currentIntensity = colors.indexOf(map[cellKey]) + 1;
+                 intensity = Math.max(intensity, currentIntensity);
+             }
+             
+             map[cellKey] = colors[intensity - 1] || "bg-emerald-500/20";
         }
     });
     heatmapData.value = map;
@@ -1059,10 +1185,22 @@ async function fetchStats() {
         );
         
         const snapshotPatterns = await getDocs(qPatterns);
-        const results = snapshotPatterns.docs.map(doc => doc.data());
+        const patternsData = snapshotPatterns.docs.map(doc => doc.data());
+        patternResults.value = patternsData;
+
+        // Fetch Mental Shift Results
+        const qMentalShift = query(
+            collection($firestore, `users/${authStore.user.uid}/mentalShiftResults`),
+            orderBy("createdAt", "desc")
+        );
         
-        patternResults.value = results;
-        processHeatmapData(results);
+        const snapshotMentalShift = await getDocs(qMentalShift);
+        const mentalShiftData = snapshotMentalShift.docs.map(doc => doc.data());
+        mentalShiftResults.value = mentalShiftData;
+
+        // Process heatmap with ALL exercise data
+        const allResults = [...patternsData, ...mentalShiftData];
+        processHeatmapData(allResults);
 
         // Fetch Big 5 Results
         const qBig5 = query(
@@ -1091,7 +1229,12 @@ onMounted(() => {
 /* Loading Overlay Styles */
 .loading-overlay {
   @apply fixed top-0 left-0 right-0 bottom-0 z-40 flex items-center justify-center bg-slate-50/95 dark:bg-slate-950/95 backdrop-blur-sm;
-  margin-left: 280px; /* Offset for lab sidebar */
+}
+
+@media (min-width: 1024px) {
+  .loading-overlay {
+    margin-left: 280px; /* Offset for lab sidebar on desktop */
+  }
 }
 
 .loading-container {
