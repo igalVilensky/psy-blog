@@ -200,10 +200,15 @@
 import { ref, computed } from "vue";
 import { questions } from "@/data/big-5-model/questions.js";
 import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
+import { useAuthStore } from "~/stores/auth";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 definePageMeta({
   layout: "laboratory",
 });
+
+const { $firestore } = useNuxtApp();
+const authStore = useAuthStore();
 
 // State
 const currentQuestionIndex = ref(0);
@@ -214,6 +219,7 @@ const calculatedScores = ref({});
 const showAgeInput = ref(false);
 const userAge = ref(null);
 const showResults = ref(false);
+const isSaving = ref(false);
 
 // Questions data
 const questionsRef = ref(questions);
@@ -298,11 +304,45 @@ const submitAge = () => {
   calculateTraitScores();
 };
 
+const saveResults = async (traitScores, facetScores) => {
+  if (!authStore.user) return;
+  
+  isSaving.value = true;
+  try {
+    await addDoc(collection($firestore, `users/${authStore.user.uid}/big5Results`), {
+        traitScores,
+        facetScores,
+        age: userAge.value,
+        timestamp: serverTimestamp(),
+        questionsCount: totalQuestions.value
+    });
+    console.log("Results saved to Firestore");
+  } catch (e) {
+    console.error("Error saving results:", e);
+  } finally {
+    isSaving.value = false;
+  }
+};
+
 const calculateTraitScores = () => {
   console.log("🔹 Starting score calculation...");
 
   // Initialize trait and facet scores
   let traitScores = {
+    neyrotizm: 0,
+    extraversion: 0,
+    openness: 0,
+    agreeableness: 0,
+    conscientiousness: 0,
+  };
+  
+  // Mapping for Russian keys if needed, but let's stick to what was there or map to English keys for DB?
+  // The original code used Russian keys: 'нейротизм', etc. 
+  // Let's keep using the russian keys for internal calculation to match data references, 
+  // but maybe save them as English keys if preferred? 
+  // For consistency with existing code, I will use the RUSSIAN keys locally first.
+  
+  let localTraitScores = {
     нейротизм: 0,
     экстраверсия: 0,
     открытость_опыту: 0,
@@ -364,10 +404,6 @@ const calculateTraitScores = () => {
     const reversed = question.keyed;
     const score = reversed ? 6 - answer : answer;
 
-    console.log(
-      `🟢 Q${question.id} | Trait: ${question.trait}, Facet: ${question.facet} | Answer: ${answer}, Reversed: ${reversed}, Final Score: ${score}`
-    );
-
     // Update facet scores
     if (
       facetScores[question.trait] &&
@@ -375,16 +411,6 @@ const calculateTraitScores = () => {
     ) {
       facetScores[question.trait][question.facet].raw += score;
       facetScores[question.trait][question.facet].count += 1;
-
-      console.log(
-        `✅ Updated ${question.trait} - ${question.facet}: Raw ${
-          facetScores[question.trait][question.facet].raw
-        }, Count ${facetScores[question.trait][question.facet].count}`
-      );
-    } else {
-      console.warn(
-        `⚠️ Facet "${question.facet}" not found in trait "${question.trait}"`
-      );
     }
   });
 
@@ -397,8 +423,8 @@ const calculateTraitScores = () => {
   });
 
   // Calculate trait scores (sum of facet scores)
-  Object.keys(traitScores).forEach((trait) => {
-    traitScores[trait] = Object.values(facetScores[trait]).reduce(
+  Object.keys(localTraitScores).forEach((trait) => {
+    localTraitScores[trait] = Object.values(facetScores[trait]).reduce(
       (sum, facetScore) => sum + facetScore,
       0
     );
@@ -416,14 +442,17 @@ const calculateTraitScores = () => {
     return Math.min(Math.max(score + ageAdjustment[trait], 0), 120);
   };
 
-  Object.keys(traitScores).forEach((trait) => {
-    traitScores[trait] = adjustScoresBasedOnAge(trait, traitScores[trait]);
+  Object.keys(localTraitScores).forEach((trait) => {
+    localTraitScores[trait] = adjustScoresBasedOnAge(trait, localTraitScores[trait]);
   });
 
-  console.log("🔹 Final Scores:", { traitScores, facetScores });
+  console.log("🔹 Final Scores:", { traitScores: localTraitScores, facetScores });
 
   // Store the final calculated scores
-  calculatedScores.value = { traitScores, facetScores };
+  calculatedScores.value = { traitScores: localTraitScores, facetScores };
   showResults.value = true;
+  
+  // Save to Firestore
+  saveResults(localTraitScores, facetScores);
 };
 </script>
