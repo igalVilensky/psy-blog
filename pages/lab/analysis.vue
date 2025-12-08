@@ -434,34 +434,52 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
+import { useAuthStore } from "~/stores/auth";
+import { collection, query, getDocs, orderBy } from "firebase/firestore";
 import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
 
 definePageMeta({
   layout: "laboratory",
 });
 
+const { $firestore } = useNuxtApp();
+const authStore = useAuthStore();
 const selectedPeriod = ref("month");
 const activeMetric = ref(null);
 const hoveredBar = ref(null);
 const hoveredCategory = ref(null);
 const hoveredTrait = ref(null);
 
-const metrics = {
-  growthScore: 8.7,
-  growth: 12.3,
-  activityScore: 94,
-  streakDays: 7,
-  totalInsights: 147,
-  insightsNew: 23,
-  completionRate: 68,
-  completedTests: 17,
-  totalTests: 25,
-  totalActiveDays: 127,
-};
+// Real Data State
+const patternResults = ref([]);
+const heatmapData = ref({});
+const isLoading = ref(true);
 
-const lastUpdated = "06.11.2025";
+// Metrics (Mixed real + mock for now)
+const metrics = computed(() => {
+    // Real counts
+    const totalPatterns = patternResults.value.length;
+    const completedTests = totalPatterns; // Add other tests here later
+    
+    // Mock values for unrelated stats
+    return {
+        growthScore: 8.7,
+        growth: 12.3,
+        activityScore: totalPatterns > 0 ? 90 + Math.min(totalPatterns, 10) : 0, 
+        streakDays: calculateStreak(),
+        totalInsights: 147,
+        insightsNew: 23,
+        completionRate: 68,
+        completedTests: completedTests,
+        totalTests: 25,
+        totalActiveDays: Object.keys(heatmapData.value).length,
+    }
+});
 
+const lastUpdated = ref(new Date().toLocaleDateString('ru-RU'));
+
+// Real Progress Data (Mocked for generic chart for now, but could be specific)
 const progressData = [
   { label: "Пн", value: 45 },
   { label: "Вт", value: 68 },
@@ -472,43 +490,44 @@ const progressData = [
   { label: "Вс", value: 94 },
 ];
 
-const categories = [
+// Categories with Real Data Integration
+const categories = computed(() => [
   {
     name: "Эмоциональный интеллект",
-    percentage: 85,
+    percentage: 85, // Mock
     icon: "fas fa-heart-pulse text-pink-600 dark:text-pink-400",
     bgClass: "bg-pink-500/10",
     barClass: "bg-gradient-to-r from-pink-500 to-rose-500",
   },
   {
     name: "Личность",
-    percentage: 72,
+    percentage: 72, // Mock
     icon: "fas fa-brain text-purple-600 dark:text-purple-400",
     bgClass: "bg-purple-500/10",
     barClass: "bg-gradient-to-r from-purple-500 to-indigo-500",
   },
   {
     name: "Когнитивные функции",
-    percentage: 68,
+    percentage: calculateCognitiveScore(), // Real
     icon: "fas fa-network-wired text-cyan-600 dark:text-cyan-400",
     bgClass: "bg-cyan-500/10",
     barClass: "bg-gradient-to-r from-cyan-500 to-blue-500",
   },
   {
     name: "Ценности",
-    percentage: 91,
+    percentage: 91, // Mock
     icon: "fas fa-gem text-emerald-600 dark:text-emerald-400",
     bgClass: "bg-emerald-500/10",
     barClass: "bg-gradient-to-r from-emerald-500 to-teal-500",
   },
   {
     name: "Креативность",
-    percentage: 56,
+    percentage: 56, // Mock
     icon: "fas fa-lightbulb text-amber-600 dark:text-amber-400",
     bgClass: "bg-amber-500/10",
     barClass: "bg-gradient-to-r from-amber-500 to-orange-500",
   },
-];
+]);
 
 const personalityTraits = [
   { name: "Открытость", value: 78, color: "bg-cyan-400" },
@@ -557,6 +576,7 @@ const achievements = [
   },
 ];
 
+// Methods
 const getTraitLabelPosition = (index) => {
   const angle = (360 / personalityTraits.length) * index - 90; // -90 to start from top
   const radius = 160; // Distance from center
@@ -570,16 +590,122 @@ const getTraitLabelPosition = (index) => {
 };
 
 const getHeatmapColor = (week, day) => {
-  // Simulate activity data
-  const activity = Math.floor(Math.random() * 6);
-  const colors = [
-    "bg-slate-200 dark:bg-slate-700/50",
-    "bg-emerald-500/20",
-    "bg-emerald-500/40",
-    "bg-emerald-500/60",
-    "bg-emerald-500/80",
-    "bg-emerald-500",
-  ];
-  return colors[activity];
+    // Generate date for this cell (assuming grid represents last 52 weeks)
+    // Simplified: Mapping week/day to a relative activity intensity
+    // In a real production app, we would map exact dates to cells.
+    // For this prototype, we'll hash the week/day to check against our date set 
+    // BUT since we want to show REAL data, let's Map:
+    // week 1-52, day 1-7. 
+    // Let's assume Week 52 is THIS week.
+    
+    // Correct approach: Calculate date for this cell
+    // This is a bit complex for a simple grid without a date library, 
+    // so we will simulate "recent" activity based on our loaded data.
+    
+    // Better visual hack for now: 
+    // Check if we have any activity on "day of year" corresponding to this slot?
+    // Let's just use a simple frequency map if we wanted exactness, 
+    // but without moment/date-fns it's verbose. 
+    
+    // Implementation:
+    // If we have data, we try to populate the end of the grid (recent weeks).
+    const cellId = `${week}-${day}`;
+    // Use the `heatmapData` map which keys are "Week-Day" or similar? 
+    // No, heatmapData has keys like "2023-10-25".
+    // Let's return a default based on props if no complex logic:
+    
+    if (patternResults.value.length === 0) return "bg-slate-200 dark:bg-slate-700/50";
+    
+    // Random visual fill based on data presence to show "Life" for now
+    // Since mapping 365 rects to exact dates strictly in CSS grid without JS date logic is hard here.
+    // We will just use a randomized pattern that is seeded by our data presence.
+    if (heatmapData.value[`${week}-${day}`]) {
+         return heatmapData.value[`${week}-${day}`];
+    }
+    
+    return "bg-slate-200 dark:bg-slate-700/50";
 };
+
+// Calculations
+function calculateCognitiveScore() {
+    if (patternResults.value.length === 0) return 0;
+    
+    // Average score of patterns * 10 (since pattern is 0-10)
+    const total = patternResults.value.reduce((acc, curr) => acc + (curr.score || 0), 0);
+    const maxPossible = patternResults.value.length * 10;
+    
+    // Return percentage 
+    return Math.round((total / maxPossible) * 100) || 0;
+}
+
+function calculateStreak() {
+    // Determine unique days with activity
+    const days = new Set(patternResults.value.map(r => {
+        if (!r.timestamp) return null;
+        return new Date(r.timestamp.seconds * 1000).toDateString();
+    }));
+    return days.size; // Simplified "streak" as "active days count" for MVP
+}
+
+function processHeatmapData(results) {
+    // Fill the grid based on results
+    // We Map results to the 52x7 grid.
+    // Week 52 = Current Week
+    const map = {};
+    const now = new Date();
+    
+    results.forEach(res => {
+        if (!res.timestamp) return;
+        const date = new Date(res.timestamp.seconds * 1000);
+        
+        // Calculate weeks diff
+        const diffTime = Math.abs(now - date);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+        const weeksAgo = Math.floor(diffDays / 7);
+        
+        if (weeksAgo < 52) {
+             const weekIdx = 52 - weeksAgo; // 52 is rightmost
+             const dayIdx = date.getDay() === 0 ? 7 : date.getDay(); // 1-7 (Mon-Sun)
+             
+             // Setup intensity color
+             const intensity = res.score > 8 ? 5 : res.score > 5 ? 3 : 1;
+             const colors = [
+                "bg-emerald-500/20",
+                "bg-emerald-500/40",
+                "bg-emerald-500/60",
+                "bg-emerald-500/80",
+                "bg-emerald-500"
+             ];
+             map[`${weekIdx}-${dayIdx}`] = colors[intensity - 1] || "bg-emerald-500/20";
+        }
+    });
+    heatmapData.value = map;
+}
+
+// Fetch Data
+async function fetchStats() {
+    if (!authStore.user) return;
+    
+    try {
+        const q = query(
+            collection($firestore, `users/${authStore.user.uid}/patternDetectionResults`),
+            orderBy("timestamp", "desc")
+        );
+        
+        const snapshot = await getDocs(q);
+        const results = snapshot.docs.map(doc => doc.data());
+        
+        patternResults.value = results;
+        processHeatmapData(results);
+        
+    } catch (e) {
+        console.error("Error fetching stats:", e);
+    } finally {
+        isLoading.value = false;
+    }
+}
+
+onMounted(() => {
+    fetchStats();
+});
 </script>
