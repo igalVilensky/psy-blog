@@ -3,6 +3,27 @@
   <div
     class="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500"
   >
+    <!-- Loading State -->
+    <div v-if="isLoading" class="loading-overlay">
+      <div class="loading-container">
+        <div class="loading-spinner-wrapper">
+          <div class="spinner-ring spinner-ring-1"></div>
+          <div class="spinner-ring spinner-ring-2"></div>
+          <div class="spinner-ring spinner-ring-3"></div>
+          <div class="spinner-core">
+            <i class="fas fa-chart-line text-3xl text-cyan-600 dark:text-cyan-400"></i>
+          </div>
+        </div>
+        <div class="loading-text">
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Загрузка анализа</h3>
+          <p class="text-slate-600 dark:text-slate-400 text-sm">Подготовка данных...</p>
+        </div>
+        <div class="loading-progress">
+          <div class="progress-bar"></div>
+        </div>
+      </div>
+    </div>
+
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
     <Breadcrumbs />
     <!-- Page Header -->
@@ -257,79 +278,101 @@
         class="lg:col-span-2 bg-white dark:bg-slate-800/30 rounded-xl p-6 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none"
       >
         <div class="flex items-center justify-between mb-6">
-          <h2 class="text-xl font-bold text-slate-900 dark:text-white font-montserrat">
-            Профиль личности
-          </h2>
-          <div class="text-xs text-slate-500 dark:text-slate-400 font-mono">
-            ОБНОВЛЕНО: {{ lastUpdated }}
+          <div>
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white font-montserrat">
+              Профиль личности (Big Five)
+            </h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              Основано на результатах теста Big 5
+            </p>
+          </div>
+          <div class="flex items-center gap-3">
+            <NuxtLink
+              to="/lab/experiments/big-5-model"
+              class="text-xs px-3 py-1.5 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 hover:bg-purple-500/20 transition-colors border border-purple-500/20"
+            >
+              <i class="fas fa-brain mr-1"></i>
+              Пройти тест
+            </NuxtLink>
+            <div class="text-xs text-slate-500 dark:text-slate-400 font-mono">
+              ОБНОВЛЕНО: {{ lastUpdated }}
+            </div>
           </div>
         </div>
         <div class="relative h-80 flex items-center justify-center">
-          <!-- Radar Chart Simulation -->
-          <div class="relative w-72 h-72">
+          <!-- Radar Chart SVG -->
+          <svg viewBox="0 0 500 500" class="w-full h-full max-w-md">
             <!-- Background circles -->
-            <div
+            <circle
               v-for="i in 5"
-              :key="i"
-              class="absolute inset-0 border border-slate-200 dark:border-slate-700/30 rounded-full"
-              :style="{
-                width: `${i * 20}%`,
-                height: `${i * 20}%`,
-                top: `${50 - i * 10}%`,
-                left: `${50 - i * 10}%`,
-              }"
-            ></div>
+              :key="`circle-${i}`"
+              cx="250"
+              cy="250"
+              :r="i * 40"
+              fill="none"
+              stroke="currentColor"
+              class="stroke-slate-200 dark:stroke-slate-700/30"
+              stroke-width="1.5"
+            />
 
             <!-- Radar axes -->
-            <div
+            <line
               v-for="(trait, index) in personalityTraits"
-              :key="trait.name"
-              class="absolute top-1/2 left-1/2 origin-left"
-              :style="{
-                transform: `rotate(${
-                  (360 / personalityTraits.length) * index
-                }deg)`,
-                width: '50%',
-              }"
-            >
-              <div class="w-full h-px bg-slate-200 dark:bg-slate-700/50"></div>
-            </div>
+              :key="`axis-${trait.name}`"
+              x1="250"
+              y1="250"
+              :x2="getAxisEndpoint(index).x"
+              :y2="getAxisEndpoint(index).y"
+              stroke="currentColor"
+              class="stroke-slate-200 dark:stroke-slate-700/50"
+              stroke-width="1.5"
+            />
 
-            <!-- Trait labels and values -->
-            <div
+            <!-- Data polygon -->
+            <polygon
+              :points="radarPolygonPoints"
+              class="fill-cyan-500/20 dark:fill-cyan-400/10 stroke-cyan-500 dark:stroke-cyan-400"
+              stroke-width="3"
+            />
+
+            <!-- Data points -->
+            <circle
+              v-for="(point, index) in radarDataPoints"
+              :key="`point-${index}`"
+              :cx="point.x"
+              :cy="point.y"
+              :r="hoveredTrait === personalityTraits[index].name ? 8 : 6"
+              :fill="getTraitColor(personalityTraits[index].color)"
+              class="transition-all duration-300 cursor-pointer"
+              @mouseenter="hoveredTrait = personalityTraits[index].name"
+              @mouseleave="hoveredTrait = null"
+            />
+
+            <!-- Trait labels -->
+            <g
               v-for="(trait, index) in personalityTraits"
               :key="`label-${trait.name}`"
-              class="absolute"
-              :style="getTraitLabelPosition(index)"
             >
-              <div
-                class="transform -translate-x-1/2 -translate-y-1/2 text-center group cursor-pointer"
+              <text
+                :x="getLabelPosition(index).x"
+                :y="getLabelPosition(index).y"
+                text-anchor="middle"
+                class="text-sm font-semibold fill-slate-700 dark:fill-slate-300 cursor-pointer select-none"
                 @mouseenter="hoveredTrait = trait.name"
                 @mouseleave="hoveredTrait = null"
               >
-                <div
-                  class="w-3 h-3 rounded-full mb-2 mx-auto transition-all duration-300"
-                  :class="[
-                    trait.color,
-                    hoveredTrait === trait.name ? 'scale-150' : '',
-                  ]"
-                ></div>
-                <div
-                  class="text-xs font-medium transition-colors duration-300"
-                  :class="
-                    hoveredTrait === trait.name
-                      ? 'text-slate-900 dark:text-white'
-                      : 'text-slate-500 dark:text-slate-400'
-                  "
-                >
-                  {{ trait.name }}
-                </div>
-                <div class="text-xs font-mono text-cyan-600 dark:text-cyan-400">
-                  {{ trait.value }}%
-                </div>
-              </div>
-            </div>
-          </div>
+                {{ trait.name }}
+              </text>
+              <text
+                :x="getLabelPosition(index).x"
+                :y="getLabelPosition(index).y + 18"
+                text-anchor="middle"
+                class="text-base font-bold fill-cyan-600 dark:fill-cyan-400 select-none"
+              >
+                {{ trait.value }}%
+              </text>
+            </g>
+          </svg>
         </div>
       </div>
 
@@ -461,17 +504,6 @@
                   <span>{{ exercise.title }}</span>
                 </div>
               </td>
-              <td class="px-4 py-3 hidden sm:table-cell">
-                <span class="px-2 py-1 text-xs rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
-                  {{ exercise.category }}
-                </span>
-              </td>
-              <td class="px-4 py-3 text-center font-mono">
-                <span :class="getScoreColor(exercise.avgScore)">{{ exercise.avgScore }}%</span>
-              </td>
-              <td class="px-4 py-3 text-right hidden sm:table-cell font-mono text-xs">
-                {{ exercise.lastPlayed }}
-              </td>
               <td class="px-4 py-3 text-right">
                 <i class="fas fa-chevron-right text-xs"></i>
               </td>
@@ -598,7 +630,7 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { useAuthStore } from "~/stores/auth";
-import { collection, query, getDocs, orderBy } from "firebase/firestore";
+import { collection, query, getDocs, orderBy, limit } from "firebase/firestore";
 import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
 
 definePageMeta({
@@ -615,6 +647,7 @@ const hoveredTrait = ref(null);
 
 // Real Data State
 const patternResults = ref([]);
+const big5Result = ref(null);
 const heatmapData = ref({});
 const isLoading = ref(true);
 
@@ -757,7 +790,8 @@ const categories = computed(() => [
   },
   {
     name: "Личность",
-    percentage: 72, // Mock
+    percentage: 72, // Mock 
+    // Ideally this would be an aggregate of the Big 5 traits or similar, for now kept as Mock or avg of Big 5?
     icon: "fas fa-brain text-purple-600 dark:text-purple-400",
     bgClass: "bg-purple-500/10",
     barClass: "bg-gradient-to-r from-purple-500 to-indigo-500",
@@ -785,13 +819,29 @@ const categories = computed(() => [
   },
 ]);
 
-const personalityTraits = [
-  { name: "Открытость", value: 78, color: "bg-cyan-400" },
-  { name: "Добросовестность", value: 85, color: "bg-purple-400" },
-  { name: "Экстраверсия", value: 62, color: "bg-pink-400" },
-  { name: "Доброжелательность", value: 91, color: "bg-emerald-400" },
-  { name: "Нейротизм", value: 43, color: "bg-amber-400" },
-];
+const personalityTraits = computed(() => {
+    if (!big5Result.value || !big5Result.value.traitScores) {
+        // Return zeros if no data to show empty state
+        return [
+           { name: "Открытость", value: 0, color: "bg-cyan-400" },
+           { name: "Добросовестность", value: 0, color: "bg-purple-400" },
+           { name: "Экстраверсия", value: 0, color: "bg-pink-400" },
+           { name: "Доброжелательность", value: 0, color: "bg-emerald-400" },
+           { name: "Нейротизм", value: 0, color: "bg-amber-400" },
+        ];
+    }
+
+    const { traitScores } = big5Result.value;
+    const normalize = (val) => Math.round((val / 120) * 100);
+
+    return [
+       { name: "Открытость", value: normalize(traitScores.открытость_опыту), color: "bg-cyan-400" },
+       { name: "Добросовестность", value: normalize(traitScores.добросовестность), color: "bg-purple-400" },
+       { name: "Экстраверсия", value: normalize(traitScores.экстраверсия), color: "bg-pink-400" },
+       { name: "Доброжелательность", value: normalize(traitScores.доброжелательность), color: "bg-emerald-400" },
+       { name: "Нейротизм", value: normalize(traitScores.нейротизм), color: "bg-amber-400" }, 
+    ];
+});
 
 const achievements = [
   {
@@ -853,17 +903,55 @@ const getScoreColor = (score) => {
     return 'text-slate-500 dark:text-slate-400';
 };
 
-const getTraitLabelPosition = (index) => {
-  const angle = (360 / personalityTraits.length) * index - 90; // -90 to start from top
-  const radius = 42; // Distance from center in percentage (must be < 50)
-  const x = 50 + radius * Math.cos((angle * Math.PI) / 180);
-  const y = 50 + radius * Math.sin((angle * Math.PI) / 180);
-
-  return {
-    left: `${x}%`,
-    top: `${y}%`,
+// Convert Tailwind color class to actual color for SVG
+const getTraitColor = (colorClass) => {
+  const colorMap = {
+    'bg-cyan-400': '#22d3ee',
+    'bg-purple-400': '#c084fc',
+    'bg-pink-400': '#f472b6',
+    'bg-emerald-400': '#34d399',
+    'bg-amber-400': '#fbbf24',
   };
+  return colorMap[colorClass] || '#22d3ee';
 };
+
+// Radar chart calculations
+const getAxisEndpoint = (index) => {
+  const angle = (360 / personalityTraits.value.length) * index - 90;
+  const radius = 200; // Max radius in SVG units
+  const x = 250 + radius * Math.cos((angle * Math.PI) / 180);
+  const y = 250 + radius * Math.sin((angle * Math.PI) / 180);
+  return { x, y };
+};
+
+const getDataPoint = (index, value) => {
+  const angle = (360 / personalityTraits.value.length) * index - 90;
+  const maxRadius = 200;
+  const radius = (value / 100) * maxRadius; // Scale based on percentage
+  const x = 250 + radius * Math.cos((angle * Math.PI) / 180);
+  const y = 250 + radius * Math.sin((angle * Math.PI) / 180);
+  return { x, y };
+};
+
+const getLabelPosition = (index) => {
+  const angle = (360 / personalityTraits.value.length) * index - 90;
+  const radius = 220; // Position labels just outside the chart
+  const x = 250 + radius * Math.cos((angle * Math.PI) / 180);
+  const y = 250 + radius * Math.sin((angle * Math.PI) / 180);
+  return { x, y };
+};
+
+const radarDataPoints = computed(() => {
+  return personalityTraits.value.map((trait, index) => 
+    getDataPoint(index, trait.value)
+  );
+});
+
+const radarPolygonPoints = computed(() => {
+  return radarDataPoints.value
+    .map(point => `${point.x},${point.y}`)
+    .join(' ');
+});
 
 const getHeatmapColor = (week, day) => {
     // Generate date for this cell (assuming grid represents last 52 weeks)
@@ -961,18 +1049,31 @@ function processHeatmapData(results) {
 // Fetch Data
 async function fetchStats() {
     if (!authStore.user) return;
+    isLoading.value = true;
     
     try {
-        const q = query(
+        // Fetch Pattern Results
+        const qPatterns = query(
             collection($firestore, `users/${authStore.user.uid}/patternDetectionResults`),
             orderBy("timestamp", "desc")
         );
         
-        const snapshot = await getDocs(q);
-        const results = snapshot.docs.map(doc => doc.data());
+        const snapshotPatterns = await getDocs(qPatterns);
+        const results = snapshotPatterns.docs.map(doc => doc.data());
         
         patternResults.value = results;
         processHeatmapData(results);
+
+        // Fetch Big 5 Results
+        const qBig5 = query(
+            collection($firestore, `users/${authStore.user.uid}/big5Results`),
+            orderBy("timestamp", "desc"),
+            limit(1)
+        );
+        const snapshotBig5 = await getDocs(qBig5);
+        if (!snapshotBig5.empty) {
+            big5Result.value = snapshotBig5.docs[0].data();
+        }
         
     } catch (e) {
         console.error("Error fetching stats:", e);
@@ -985,3 +1086,93 @@ onMounted(() => {
     fetchStats();
 });
 </script>
+
+<style scoped>
+/* Loading Overlay Styles */
+.loading-overlay {
+  @apply fixed top-0 left-0 right-0 bottom-0 z-40 flex items-center justify-center bg-slate-50/95 dark:bg-slate-950/95 backdrop-blur-sm;
+  margin-left: 280px; /* Offset for lab sidebar */
+}
+
+.loading-container {
+  @apply flex flex-col items-center gap-8;
+}
+
+.loading-spinner-wrapper {
+  @apply relative w-24 h-24;
+}
+
+.spinner-ring {
+  @apply absolute inset-0 border-4 border-transparent rounded-full;
+  animation: spin 3s linear infinite;
+}
+
+.spinner-ring-1 {
+  @apply border-t-cyan-500;
+  animation-duration: 2s;
+}
+
+.spinner-ring-2 {
+  @apply border-r-cyan-400;
+  animation-duration: 2.5s;
+  animation-direction: reverse;
+}
+
+.spinner-ring-3 {
+  @apply border-b-cyan-300;
+  animation-duration: 3s;
+}
+
+.spinner-core {
+  @apply absolute inset-0 flex items-center justify-center;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.95);
+  }
+}
+
+.loading-text {
+  @apply text-center;
+}
+
+.loading-progress {
+  @apply w-64 h-1 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden;
+}
+
+.progress-bar {
+  @apply h-full bg-gradient-to-r from-cyan-500 via-cyan-500 to-pink-500 rounded-full;
+  animation: progress 2s ease-in-out infinite;
+}
+
+@keyframes progress {
+  0% {
+    width: 0%;
+    margin-left: 0%;
+  }
+  50% {
+    width: 75%;
+    margin-left: 0%;
+  }
+  100% {
+    width: 0%;
+    margin-left: 100%;
+  }
+}
+</style>
