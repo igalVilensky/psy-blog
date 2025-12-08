@@ -855,7 +855,7 @@ const getScoreColor = (score) => {
 
 const getTraitLabelPosition = (index) => {
   const angle = (360 / personalityTraits.length) * index - 90; // -90 to start from top
-  const radius = 160; // Distance from center
+  const radius = 42; // Distance from center in percentage (must be < 50)
   const x = 50 + radius * Math.cos((angle * Math.PI) / 180);
   const y = 50 + radius * Math.sin((angle * Math.PI) / 180);
 

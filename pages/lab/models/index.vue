@@ -176,7 +176,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onUnmounted } from 'vue';
 import { models, type Model } from '@/data/models';
 import ModelCard from '@/components/lab/ModelCard.vue';
 
@@ -223,6 +223,11 @@ const closeModal = () => {
   selectedModel.value = null;
   document.body.style.overflow = '';
 };
+
+// Cleanup on Unmount
+onUnmounted(() => {
+    document.body.style.overflow = '';
+});
 
 const resetFilters = () => {
     searchQuery.value = '';

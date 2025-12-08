@@ -185,7 +185,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onUnmounted } from 'vue';
 import { exercises, type Exercise } from '@/data/exercises';
 import ExerciseCard from '@/components/lab/ExerciseCard.vue';
 
@@ -231,6 +231,11 @@ const closeModal = () => {
   selectedExercise.value = null;
   document.body.style.overflow = '';
 };
+
+// Cleanup on Unmount
+onUnmounted(() => {
+    document.body.style.overflow = '';
+});
 
 const resetFilters = () => {
     searchQuery.value = '';
