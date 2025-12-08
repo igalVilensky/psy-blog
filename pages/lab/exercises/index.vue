@@ -163,13 +163,20 @@
             </div>
 
             <!-- Action Button -->
-            <div class="flex justify-end">
+            <div class="flex justify-end gap-3">
                 <button 
-                  class="rounded-lg bg-gradient-to-r from-cyan-600 to-blue-600 px-6 py-3 font-semibold text-white shadow-lg shadow-cyan-500/30 transition-all hover:opacity-90 active:scale-95"
+                  class="rounded-lg bg-slate-100 dark:bg-slate-700 px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 transition-all hover:bg-slate-200 dark:hover:bg-slate-600"
                   @click="closeModal"
                 >
-                  Понятно
+                  Закрыть
                 </button>
+                <NuxtLink 
+                    v-if="selectedExercise.link"
+                    :to="selectedExercise.link"
+                    class="rounded-lg bg-gradient-to-r from-cyan-600 to-blue-600 px-6 py-3 font-semibold text-white shadow-lg shadow-cyan-500/30 transition-all hover:opacity-90 active:scale-95 flex items-center gap-2"
+                >
+                    <i class="fas fa-play"></i> Начать
+                </NuxtLink>
             </div>
         </div>
       </div>

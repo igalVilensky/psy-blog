@@ -9,6 +9,7 @@ export interface Exercise {
     metric: string;
     uiExample: string;
     relatedModels?: string;
+    link?: string;
 }
 
 export const exercises: Exercise[] = [
@@ -22,6 +23,19 @@ export const exercises: Exercise[] = [
         metric: "% правильных ответов, время реакции",
         uiExample: "3x3 сетка с буквами",
         relatedModels: "Working Memory"
+    },
+    // ... existing exercises ...
+    {
+        id: 5661,
+        title: "Pattern Detection Mini",
+        category: "Логика",
+        goal: "Развитие навыков выявления закономерностей и логического мышления",
+        instruction: "Вам будет показана последовательность элементов (чисел, фигур, направлений). Ваша задача — определить правило и выбрать правильное продолжение из предложенных вариантов.",
+        format: "Интерактивный тест, 10 заданий",
+        metric: "Точность (%), Среднее время реакции",
+        uiExample: "Горизонтальная последовательность с пропуском, 4 варианта ответа",
+        relatedModels: "Abstract Reasoning, Pattern Recognition, Cognitive Flexibility",
+        link: "/lab/exercises/pattern-detection-mini"
     },
     {
         id: 2,
