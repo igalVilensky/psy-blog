@@ -8,290 +8,148 @@
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
           <div>
             <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight">
-              ТЕСТЫ
+              ТЕСТЫ И МЕТОДИКИ
             </h1>
             <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed max-w-2xl">
-              Профессиональные психологические и когнитивные тесты для глубокого самопознания
+              Профессиональные инструменты для исследования личности и когнитивных способностей
             </p>
           </div>
 
           <!-- Stats Overview -->
           <div class="flex items-center gap-4">
             <div class="stat-card">
-              <div class="text-2xl font-bold text-cyan-600 dark:text-cyan-400">14</div>
+              <div class="text-2xl font-bold text-cyan-600 dark:text-cyan-400">{{ tests.length }}</div>
               <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide">
-                Тестов
+                Всего
               </div>
             </div>
             <div class="stat-card">
-              <div class="text-2xl font-bold text-purple-600 dark:text-purple-400">9</div>
+              <div class="text-2xl font-bold text-purple-600 dark:text-purple-400">
+                {{ tests.filter(t => t.category === 'psychology').length }}
+              </div>
               <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide">
-                Категорий
+                Психология
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                 {{ tests.filter(t => t.category === 'cognitive').length }}
+              </div>
+              <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide">
+                Когнитивные
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Main Test Categories -->
-      <div class="mb-12">
-        <div class="flex items-center justify-between mb-6">
-          <h2 class="text-xl font-semibold text-slate-900 dark:text-white">ОСНОВНЫЕ ТЕСТЫ</h2>
-          <button
-            class="text-sm text-cyan-600 dark:text-cyan-400 hover:text-cyan-500 dark:hover:text-cyan-300 transition-colors">
-            Посмотреть все →
-          </button>
-        </div>
+      <!-- Filter Navigation -->
+      <div class="flex flex-wrap items-center gap-2 mb-8">
+        <button
+          v-for="filter in filters"
+          :key="filter.value"
+          @click="currentFilter = filter.value"
+          class="px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ring-1 ring-inset"
+          :class="[
+            currentFilter === filter.value
+              ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 ring-transparent shadow-lg transform scale-105'
+              : 'bg-white dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 ring-slate-200 dark:ring-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-800'
+          ]"
+        >
+          <i :class="[filter.icon, 'mr-2']"></i>
+          {{ filter.label }}
+        </button>
+      </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <!-- 12 Archetypes -->
-          <NuxtLink to="/lab/tests/life-purpose-archetype" class="test-category-card group">
-            <div class="flex items-start justify-between mb-4">
-              <div class="icon-wrapper bg-gradient-to-br from-indigo-500 to-violet-600">
-                <i class="fas fa-star text-white text-xl"></i>
-              </div>
-              <span class="difficulty-badge difficulty-medium"> Средняя </span>
-            </div>
-
-            <h3
-              class="text-lg font-semibold text-slate-900 dark:text-white mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
-              12 Архетипов
+      <!-- Category Description -->
+      <div class="mb-8 p-6 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/50 backdrop-blur-sm animate-fade-in">
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+            :class="currentCategoryInfo.iconBg">
+            <i :class="[currentCategoryInfo.icon, 'text-white']"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">
+              {{ currentCategoryInfo.title }}
             </h3>
-            <p class="text-sm text-slate-500 dark:text-slate-400 mb-1">Личность и предназначение</p>
-            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
-              Определение доминирующих архетипов в вашем бессознательном. Глубокий анализ личности.
+            <p class="text-slate-600 dark:text-slate-300 leading-relaxed text-sm">
+              {{ currentCategoryInfo.description }}
             </p>
-
-            <div class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-700/50">
-              <div class="flex items-center gap-2 text-cyan-600 dark:text-cyan-400">
-                <i class="fas fa-clock text-xs"></i>
-                <span class="text-xs font-medium">25 мин</span>
-              </div>
-              <div class="flex items-center gap-2 text-purple-600 dark:text-purple-400">
-                <i class="fas fa-check-circle text-xs"></i>
-                <span class="text-xs font-medium">Доступен</span>
-              </div>
-            </div>
-            <div class="card-shine"></div>
-          </NuxtLink>
-
-          <!-- Big 5 Model -->
-          <NuxtLink to="/lab/tests/big-5-model" class="test-category-card group">
-            <div class="flex items-start justify-between mb-4">
-              <div class="icon-wrapper bg-gradient-to-br from-purple-500 to-indigo-600">
-                <i class="fas fa-chart-bar text-white text-xl"></i>
-              </div>
-              <span class="difficulty-badge difficulty-medium"> Средняя </span>
-            </div>
-
-            <h3
-              class="text-lg font-semibold text-slate-900 dark:text-white mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
-              Большая Пятёрка
-            </h3>
-            <p class="text-sm text-slate-500 dark:text-slate-400 mb-1">Модель личности</p>
-            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
-              Классическая модель личности: экстраверсия, доброжелательность, добросовестность и другие черты.
-            </p>
-
-            <div class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-700/50">
-              <div class="flex items-center gap-2 text-cyan-600 dark:text-cyan-400">
-                <i class="fas fa-clock text-xs"></i>
-                <span class="text-xs font-medium">20 мин</span>
-              </div>
-              <div class="flex items-center gap-2 text-purple-600 dark:text-purple-400">
-                <i class="fas fa-check-circle text-xs"></i>
-                <span class="text-xs font-medium">Доступен</span>
-              </div>
-            </div>
-            <div class="card-shine"></div>
-          </NuxtLink>
-
-          <!-- Digit Span Test -->
-          <NuxtLink to="/lab/tests/digit-span" class="test-category-card group">
-            <!-- Icon Header -->
-            <div class="flex items-start justify-between mb-4">
-              <div class="icon-wrapper bg-gradient-to-br from-cyan-500 to-purple-600">
-                <i class="fas fa-brain text-white text-xl"></i>
-              </div>
-              <span class="difficulty-badge difficulty-medium"> Средняя </span>
-            </div>
-
-            <!-- Content -->
-            <h3
-              class="text-lg font-semibold text-slate-900 dark:text-white mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
-              Digit Span Test
-            </h3>
-            <p class="text-sm text-slate-500 dark:text-slate-400 mb-1">Объем рабочей памяти</p>
-            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
-              Классический тест на оценку рабочей памяти. Используется в
-              нейропсихологии и тестах IQ (WAIS)
-            </p>
-
-            <!-- Footer -->
-            <div class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-700/50">
-              <div class="flex items-center gap-2 text-cyan-600 dark:text-cyan-400">
-                <i class="fas fa-clock text-xs"></i>
-                <span class="text-xs font-medium">5-8 мин</span>
-              </div>
-              <div class="flex items-center gap-2 text-purple-600 dark:text-purple-400">
-                <i class="fas fa-check-circle text-xs"></i>
-                <span class="text-xs font-medium">Доступен</span>
-              </div>
-            </div>
-
-            <!-- Hover Effect -->
-            <div class="card-shine"></div>
-          </NuxtLink>
-
-          <!-- N-Back Test -->
-          <NuxtLink to="/lab/tests/nback" class="test-category-card group">
-            <!-- Icon Header -->
-            <div class="flex items-start justify-between mb-4">
-              <div class="icon-wrapper bg-gradient-to-br from-purple-500 to-pink-600">
-                <i class="fas fa-layer-group text-white text-xl"></i>
-              </div>
-              <span class="difficulty-badge difficulty-hard">Сложная</span>
-            </div>
-
-            <!-- Content -->
-            <h3
-              class="text-lg font-semibold text-slate-900 dark:text-white mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
-              N-Back Test
-            </h3>
-            <p class="text-sm text-slate-500 dark:text-slate-400 mb-1">Рабочая память и внимание</p>
-            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
-              Определяйте совпадения с N шагов назад. Золотой стандарт
-              тренировки рабочей памяти и флюидного интеллекта.
-            </p>
-
-            <!-- Footer -->
-            <div class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-700/50">
-              <div class="flex items-center gap-2 text-purple-600 dark:text-purple-400">
-                <i class="fas fa-clock text-xs"></i>
-                <span class="text-xs font-medium">5-8 мин</span>
-              </div>
-              <div class="flex items-center gap-2 text-pink-600 dark:text-pink-400">
-                <i class="fas fa-check-circle text-xs"></i>
-                <span class="text-xs font-medium">Доступен</span>
-              </div>
-            </div>
-
-            <!-- Hover Effect -->
-            <div class="card-shine"></div>
-          </NuxtLink>
-
-          <!-- Trail Making Test -->
-          <NuxtLink to="/lab/tests/trail-making" class="test-category-card group">
-            <!-- Icon Header -->
-            <div class="flex items-start justify-between mb-4">
-              <div class="icon-wrapper bg-gradient-to-br from-emerald-500 to-cyan-600">
-                <i class="fas fa-route text-white text-xl"></i>
-              </div>
-              <span class="difficulty-badge difficulty-easy">Легкая</span>
-            </div>
-
-            <!-- Content -->
-            <h3
-              class="text-lg font-semibold text-slate-900 dark:text-white mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
-              Trail Making Test
-            </h3>
-            <p class="text-sm text-slate-500 dark:text-slate-400 mb-1">Скорость обработки</p>
-            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
-              Соединяйте точки в правильном порядке. Оценка исполнительных
-              функций и когнитивной гибкости.
-            </p>
-
-            <!-- Footer -->
-            <div class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-700/50">
-              <div class="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
-                <i class="fas fa-clock text-xs"></i>
-                <span class="text-xs font-medium">3-5 мин</span>
-              </div>
-              <div class="flex items-center gap-2 text-cyan-600 dark:text-cyan-400">
-                <i class="fas fa-check-circle text-xs"></i>
-                <span class="text-xs font-medium">Доступен</span>
-              </div>
-            </div>
-
-            <!-- Hover Effect -->
-            <div class="card-shine"></div>
-          </NuxtLink>
-
-          <!-- Existing Test Cards -->
-          <div v-for="test in testCategories" :key="test.id" class="test-category-card group"
-            :class="[test.disabled ? 'opacity-75 cursor-not-allowed' : 'cursor-pointer']"
-            @click="!test.disabled && navigateToTest(test)">
-            <!-- Icon Header -->
-            <div class="flex items-start justify-between mb-4">
-              <div class="icon-wrapper" :class="test.iconBg">
-                <i :class="test.icon" class="text-white text-xl"></i>
-              </div>
-              <span class="difficulty-badge" :class="getDifficultyClass(test.difficulty)">
-                {{ test.difficulty }}
-              </span>
-            </div>
-
-            <!-- Content -->
-            <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-2 transition-colors"
-              :class="!test.disabled && 'group-hover:text-cyan-600 dark:group-hover:text-cyan-400'">
-              {{ test.title }}
-            </h3>
-            <p class="text-sm text-slate-500 dark:text-slate-400 mb-1">{{ test.subtitle }}</p>
-            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
-              {{ test.description }}
-            </p>
-
-            <!-- Footer -->
-            <div class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-700/50">
-              <div class="flex items-center gap-2 text-cyan-600 dark:text-cyan-400">
-                <i class="fas fa-clock text-xs"></i>
-                <span class="text-xs font-medium">{{ test.duration }}</span>
-              </div>
-              <div class="flex items-center gap-2 text-purple-600 dark:text-purple-400">
-                <i class="fas fa-tasks text-xs"></i>
-                <span class="text-xs font-medium">{{ test.tasksCount }} заданий</span>
-              </div>
-            </div>
-
-            <!-- Hover Effect -->
-            <div v-if="!test.disabled" class="card-shine"></div>
-
-            <!-- Coming Soon Overlay -->
-            <div v-if="test.disabled"
-              class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] flex items-center justify-center z-20 rounded-2xl">
-              <div
-                class="px-4 py-2 rounded-xl bg-slate-900/80 border border-slate-700/50 text-slate-300 text-sm font-medium shadow-xl backdrop-blur-md">
-                <i class="fas fa-clock mr-2 text-cyan-500"></i>
-                Скоро
-              </div>
-            </div>
           </div>
         </div>
       </div>
 
-      <!-- Quick Tests Section -->
-      <div class="mb-12">
+      <!-- Tests Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <NuxtLink
+          v-for="test in filteredTests"
+          :key="test.id"
+          :to="test.disabled ? '' : test.link"
+          class="test-category-card group animate-fade-in-up"
+          :class="[test.disabled ? 'opacity-75 cursor-not-allowed' : 'cursor-pointer']"
+        >
+          <!-- Icon Header -->
+          <div class="flex items-start justify-between mb-4">
+            <div class="icon-wrapper" :class="test.iconBg">
+              <i :class="test.icon" class="text-white text-xl"></i>
+            </div>
+            <span class="difficulty-badge" :class="getDifficultyClass(test.difficulty)">
+              {{ test.difficulty }}
+            </span>
+          </div>
+
+          <!-- Content -->
+          <h3
+            class="text-lg font-semibold text-slate-900 dark:text-white mb-2 transition-colors"
+            :class="!test.disabled && 'group-hover:text-cyan-600 dark:group-hover:text-cyan-400'"
+          >
+            {{ test.title }}
+          </h3>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mb-1 font-medium">{{ test.subtitle }}</p>
+          <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4 line-clamp-3">
+            {{ test.description }}
+          </p>
+
+          <!-- Footer -->
+          <div class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-700/50">
+            <div class="flex items-center gap-2 text-cyan-600 dark:text-cyan-400">
+              <i class="fas fa-clock text-xs"></i>
+              <span class="text-xs font-medium">{{ test.duration }}</span>
+            </div>
+            <div class="flex items-center gap-2" :class="test.disabled ? 'text-slate-400' : 'text-purple-600 dark:text-purple-400'">
+              <i class="fas text-xs" :class="test.disabled ? 'fa-lock' : 'fa-check-circle'"></i>
+              <span class="text-xs font-medium">{{ test.disabled ? 'Скоро' : 'Доступен' }}</span>
+            </div>
+          </div>
+
+          <!-- Hover Effect -->
+          <div v-if="!test.disabled" class="card-shine"></div>
+
+          <!-- Coming Soon Overlay -->
+          <div v-if="test.disabled"
+            class="absolute inset-0 bg-slate-50/50 dark:bg-slate-900/60 backdrop-blur-[1px] flex items-center justify-center z-20 rounded-2xl pointer-events-none">
+          </div>
+        </NuxtLink>
+      </div>
+
+       <!-- Quick Tests Section (Always visible or filtered? Keeping visible as a separate block for now) -->
+       <div class="mt-16 mb-12">
         <div class="flex items-center justify-between mb-6">
           <h2 class="text-xl font-semibold text-slate-900 dark:text-white">БЫСТРЫЕ ТЕСТЫ</h2>
           <span class="text-sm text-slate-500 dark:text-slate-400">Менее 5 минут</span>
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-          <!-- Digit Span Quick Link -->
-          <NuxtLink to="/lab/tests/digit-span" class="quick-test-card">
-            <div class="quick-icon-wrapper" style="
-                background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
-              ">
-              <i class="fas fa-brain text-white text-lg"></i>
+          <NuxtLink to="/lab/tests/digit-span" class="quick-test-card group">
+            <div class="quick-icon-wrapper" style="background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);">
+              <i class="fas fa-brain text-white text-lg group-hover:scale-110 transition-transform"></i>
             </div>
             <h4 class="text-slate-800 dark:text-white text-sm font-medium mt-3 mb-1">Digit Span</h4>
             <p class="text-slate-500 dark:text-slate-400 text-xs">5 мин</p>
           </NuxtLink>
 
-          <!-- Existing Quick Tests -->
           <div v-for="quickTest in quickTests" :key="quickTest.id" class="quick-test-card relative overflow-hidden"
-            :class="[quickTest.disabled ? 'opacity-75 cursor-not-allowed' : 'cursor-pointer']"
-            @click="!quickTest.disabled && startQuickTest(quickTest)">
+            :class="[quickTest.disabled ? 'opacity-75 cursor-not-allowed' : 'cursor-pointer']">
             <div class="quick-icon-wrapper" :style="{ background: quickTest.gradient }">
               <i :class="quickTest.icon" class="text-white text-lg"></i>
             </div>
@@ -302,105 +160,37 @@
 
             <!-- Coming Soon Overlay -->
             <div v-if="quickTest.disabled"
-              class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] flex items-center justify-center z-20 rounded-xl">
-              <div
-                class="p-2 rounded-lg bg-slate-900/80 border border-slate-700/50 text-slate-300 shadow-xl backdrop-blur-md">
-                <i class="fas fa-clock text-cyan-500 text-xs"></i>
+              class="absolute inset-0 bg-slate-900/10 backdrop-blur-[1px] flex items-center justify-center z-20 rounded-xl">
+              <div class="p-1.5 rounded-lg bg-white/80 dark:bg-slate-900/80 shadow-sm">
+                 <i class="fas fa-lock text-slate-400 text-xs"></i>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      <!-- Test History / Recent Results -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <!-- Recent Tests -->
-        <div class="info-card">
-          <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold text-slate-900 dark:text-white">
-              Последние результаты
-            </h3>
-            <button
-              class="text-xs text-cyan-600 dark:text-cyan-400 hover:text-cyan-500 dark:hover:text-cyan-300 transition-colors">
-              История
-            </button>
-          </div>
-          <div class="space-y-3">
-            <div v-for="result in recentResults" :key="result.id" class="result-item">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-lg flex items-center justify-center"
-                    :style="{ background: result.color }">
-                    <i :class="result.icon" class="text-white text-sm"></i>
-                  </div>
-                  <div>
-                    <div class="text-sm font-medium text-slate-800 dark:text-white">
-                      {{ result.test }}
-                    </div>
-                    <div class="text-xs text-slate-500 dark:text-slate-400">{{ result.date }}</div>
-                  </div>
-                </div>
-                <div class="text-right">
-                  <div class="text-lg font-bold" :class="getScoreClass(result.score)">
-                    {{ result.score }}%
-                  </div>
-                  <div class="text-xs text-slate-500 dark:text-slate-400">
-                    {{ result.percentile }}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Recommendations -->
-        <div class="info-card">
-          <div class="flex items-center gap-2 mb-4">
-            <div class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center">
-              <i class="fas fa-lightbulb text-purple-600 dark:text-purple-400"></i>
-            </div>
-            <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Рекомендации</h3>
-          </div>
-          <div class="space-y-3">
-            <div v-for="recommendation in recommendations" :key="recommendation.id" class="recommendation-item">
-              <div class="flex items-start gap-3">
-                <div class="w-6 h-6 rounded-full bg-cyan-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <i class="fas fa-check text-cyan-600 dark:text-cyan-400 text-xs"></i>
-                </div>
-                <div>
-                  <div class="text-sm font-medium text-slate-800 dark:text-white mb-1">
-                    {{ recommendation.title }}
-                  </div>
-                  <div class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                    {{ recommendation.description }}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Info Banner -->
-      <div class="mt-8 p-6 rounded-2xl bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-500/20">
+      
+       <!-- Info Banner -->
+       <div class="p-6 rounded-2xl bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-500/20">
         <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
           <div class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center flex-shrink-0">
             <i class="fas fa-info-circle text-cyan-600 dark:text-cyan-400 text-xl"></i>
           </div>
           <div class="flex-1">
-            <h4 class="text-slate-900 dark:text-white font-semibold mb-1">О тестах</h4>
+            <h4 class="text-slate-900 dark:text-white font-semibold mb-1">Как выбрать тест?</h4>
             <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-              Регулярное прохождение тестов помогает лучше узнать себя, отслеживать
-              динамику развития и выявлять области для улучшения.
+              Когнитивные тесты оценивают работу мозга (память, внимание), а психологические — особенности личности и характера. 
+              Для комплексного самопознания рекомендуем проходить и те, и другие.
             </p>
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </template>
 
 <script setup>
+import { ref, computed } from 'vue';
 import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
 
 definePageMeta({
@@ -408,114 +198,175 @@ definePageMeta({
 });
 
 useHead({
-  title: "Тесты",
+  title: "Тесты и Методики",
   meta: [
     {
       name: "description",
       content:
-        "Оцените свои способности и узнайте больше о своей личности с помощью профессиональных тестов.",
-    },
-    {
-      property: "og:title",
-      content: "Тесты | MindQ Lab",
-    },
-    {
-      property: "og:description",
-      content:
-        "Оцените свои способности и узнайте больше о своей личности с помощью профессиональных тестов.",
-    },
-    {
-      property: "og:image",
-      content: "/images/tests-og.jpg", // Placeholder
-    },
-    {
-      name: "twitter:card",
-      content: "summary_large_image",
-    },
+        "Каталог профессиональных психологических и когнитивных тестов для оценки личности, памяти, внимания и мышления.",
+    }
   ],
 });
 
-const testCategories = [
-  {
-    id: "memory",
-    title: "Память",
-    subtitle: "Кратковременная и долговременная",
-    icon: "fas fa-brain",
-    iconBg: "bg-gradient-to-br from-cyan-500 to-blue-600",
-    description:
-      "Оценка способности запоминать и воспроизводить информацию различных типов",
-    duration: "15-20 мин",
-    difficulty: "Средняя",
-    tasksCount: 12,
-    disabled: true,
-  },
-  {
-    id: "attention",
-    title: "Внимание",
-    subtitle: "Концентрация и переключение",
-    icon: "fas fa-bullseye",
-    iconBg: "bg-gradient-to-br from-emerald-500 to-teal-600",
-    description:
-      "Измерение способности концентрироваться и переключать внимание между задачами",
-    duration: "10-15 мин",
-    difficulty: "Легкая",
-    tasksCount: 8,
-    disabled: true,
-  },
-  {
-    id: "logic",
-    title: "Логика",
-    subtitle: "Абстрактное мышление",
-    icon: "fas fa-project-diagram",
-    iconBg: "bg-gradient-to-br from-purple-500 to-pink-600",
-    description:
-      "Решение логических задач, анализ паттернов и абстрактное мышление",
-    duration: "20-25 мин",
-    difficulty: "Сложная",
-    tasksCount: 15,
-    disabled: true,
-  },
-  {
-    id: "reaction",
-    title: "Скорость реакции",
-    subtitle: "Моторная и когнитивная",
-    icon: "fas fa-bolt",
-    iconBg: "bg-gradient-to-br from-orange-500 to-red-600",
-    description:
-      "Тестирование времени реакции на визуальные и аудиальные стимулы",
-    duration: "5-8 мин",
-    difficulty: "Легкая",
-    tasksCount: 20,
-    disabled: true,
-  },
-  {
-    id: "verbal",
-    title: "Вербальные способности",
-    subtitle: "Речь и языковые навыки",
-    icon: "fas fa-comment-dots",
-    iconBg: "bg-gradient-to-br from-indigo-500 to-blue-600",
-    description:
-      "Оценка словарного запаса, понимания речи и вербального мышления",
-    duration: "12-18 мин",
-    difficulty: "Средняя",
-    tasksCount: 10,
-    disabled: true,
-  },
-  {
-    id: "spatial",
-    title: "Пространственное мышление",
-    subtitle: "Визуализация и ориентация",
-    icon: "fas fa-cube",
-    iconBg: "bg-gradient-to-br from-violet-500 to-purple-600",
-    description:
-      "Тесты на способность мысленно манипулировать объектами в пространстве",
-    duration: "15-20 мин",
-    difficulty: "Сложная",
-    tasksCount: 14,
-    disabled: true,
-  },
+// --- State ---
+const currentFilter = ref('all');
+
+const filters = [
+  { label: 'Все тесты', value: 'all', icon: 'fas fa-th-large' },
+  { label: 'Психологические', value: 'psychology', icon: 'fas fa-user-astronaut' },
+  { label: 'Когнитивные', value: 'cognitive', icon: 'fas fa-brain' },
 ];
 
+const categoriesInfo = {
+  all: {
+    title: 'Полный каталог',
+    description: 'Все доступные инструменты для исследования вашего разума. От классических психологических опросников до интерактивных задач на когнитивные способности.',
+    icon: 'fas fa-flask',
+    iconBg: 'bg-gradient-to-br from-slate-500 to-slate-600'
+  },
+  psychology: {
+    title: 'Психология Личности',
+    description: 'Глубинные методики для исследования вашего характера, мотивов, бессознательных установок и эмоциональной сферы. Познай себя настоящего.',
+    icon: 'fas fa-user-astronaut',
+    iconBg: 'bg-gradient-to-br from-purple-500 to-indigo-600'
+  },
+  cognitive: {
+    title: 'Когнитивные Функции',
+    description: 'Интерактивные тесты для оценки производительности мозга: рабочей памяти, внимания, скорости реакции и логического мышления. Измерь свой потенциал.',
+    icon: 'fas fa-brain',
+    iconBg: 'bg-gradient-to-br from-cyan-500 to-blue-600'
+  }
+};
+
+const currentCategoryInfo = computed(() => categoriesInfo[currentFilter.value]);
+
+// --- Tests Data ---
+const tests = [
+  // --- Psychological ---
+  {
+    id: "life-purpose-archetype",
+    title: "12 Архетипов",
+    subtitle: "Юнгианская психология",
+    description: "Определение доминирующих архетипов в вашем бессознательном. Поймите свои истинные мотивы и жизненный сценарий.",
+    icon: "fas fa-star",
+    iconBg: "bg-gradient-to-br from-indigo-500 to-violet-600",
+    difficulty: "Средняя",
+    duration: "25 мин",
+    link: "/lab/tests/life-purpose-archetype",
+    category: "psychology",
+    disabled: false
+  },
+  {
+    id: "big-5-model",
+    title: "Большая Пятёрка",
+    subtitle: "Научная модель личности",
+    description: "Золотой стандарт современной психометрии. Оценка 5 ключевых черт: Экстраверсия, Доброжелательность, Добросовестность, Нейротизм, Открытость.",
+    icon: "fas fa-chart-bar",
+    iconBg: "bg-gradient-to-br from-purple-500 to-indigo-600",
+    difficulty: "Средняя",
+    duration: "20 мин",
+    link: "/lab/tests/big-5-model",
+    category: "psychology",
+    disabled: false
+  },
+  // --- Cognitive ---
+  {
+    id: "digit-span",
+    title: "Digit Span Test",
+    subtitle: "Рабочая память",
+    description: "Классический нейропсихологический тест (WAIS) на объем слуховой рабочей памяти. Способность удерживать числа в уме.",
+    icon: "fas fa-sort-numeric-up",
+    iconBg: "bg-gradient-to-br from-cyan-500 to-purple-600",
+    difficulty: "Средняя",
+    duration: "5-8 мин",
+    link: "/lab/tests/digit-span",
+    category: "cognitive",
+    disabled: false
+  },
+  {
+    id: "nback",
+    title: "N-Back Test",
+    subtitle: "Флюидный интеллект",
+    description: "Продвинутая задача на рабочую память и контроль внимания. Доказанная эффективность в улучшении когнитивных способностей.",
+    icon: "fas fa-layer-group",
+    iconBg: "bg-gradient-to-br from-purple-500 to-pink-600",
+    difficulty: "Сложная",
+    duration: "5-10 мин",
+    link: "/lab/tests/nback",
+    category: "cognitive",
+    disabled: false
+  },
+  {
+    id: "trail-making",
+    title: "Trail Making Test",
+    subtitle: "Когнитивная гибкость",
+    description: "Тест на визуальное внимание и переключаемость. Соедините точки в правильном порядке максимально быстро.",
+    icon: "fas fa-route",
+    iconBg: "bg-gradient-to-br from-emerald-500 to-cyan-600",
+    difficulty: "Легкая",
+    duration: "3-5 мин",
+    link: "/lab/tests/trail-making",
+    category: "cognitive",
+    disabled: false
+  },
+  // --- Placeholders (Coming Soon) ---
+  {
+    id: "stroop",
+    title: "Эффект Струпа",
+    subtitle: "Тормозным контроль",
+    description: "Тест на способность подавлять автоматические реакции. Называйте цвет шрифта, игнорируя значение слова.",
+    icon: "fas fa-font",
+    iconBg: "bg-gradient-to-br from-orange-500 to-red-600",
+    difficulty: "Средняя",
+    duration: "5 мин",
+    category: "cognitive",
+    disabled: true
+  },
+  {
+    id: "raven",
+    title: "Матрицы Равена",
+    subtitle: "Абстрактная логика",
+    description: "Оценка невербального интеллекта и способности к абстрактному мышлению через поиск закономерностей.",
+    icon: "fas fa-th",
+    iconBg: "bg-gradient-to-br from-blue-500 to-indigo-600",
+    difficulty: "Сложная",
+    duration: "20 мин",
+    category: "cognitive",
+    disabled: true
+  },
+  {
+    id: "eq",
+    title: "Эмоциональный Интеллект",
+    subtitle: "Эмпатия и самоконтроль",
+    description: "Оценка вашей способности распознавать свои и чужие эмоции, управлять ими и использовать для решения задач.",
+    icon: "fas fa-heart",
+    iconBg: "bg-gradient-to-br from-pink-500 to-rose-600",
+    difficulty: "Средняя",
+    duration: "15 мин",
+    category: "psychology",
+    disabled: true
+  },
+  {
+    id: "burnout",
+    title: "Шкала Выгорания",
+    subtitle: "Психологическое состояние",
+    description: "Диагностика уровня профессионального и эмоционального выгорания. Забота о ментальном здоровье.",
+    icon: "fas fa-battery-quarter",
+    iconBg: "bg-gradient-to-br from-slate-500 to-slate-700",
+    difficulty: "Легкая",
+    duration: "5 мин",
+    category: "psychology",
+    disabled: true
+  }
+];
+
+const filteredTests = computed(() => {
+  if (currentFilter.value === 'all') return tests;
+  return tests.filter(test => test.category === currentFilter.value);
+});
+
+
+// --- Quick Tests Data (Visual placeholders mostly) ---
 const quickTests = [
   {
     id: 1,
@@ -527,102 +378,35 @@ const quickTests = [
   },
   {
     id: 2,
-    title: "Память",
-    icon: "fas fa-brain",
-    time: "3 мин",
-    gradient: "linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)",
-    disabled: true,
-  },
-  {
-    id: 3,
     title: "Внимание",
     icon: "fas fa-eye",
     time: "2 мин",
     gradient: "linear-gradient(135deg, #10b981 0%, #14b8a6 100%)",
     disabled: true,
   },
-  {
-    id: 4,
-    title: "Логика",
-    icon: "fas fa-puzzle-piece",
-    time: "4 мин",
-    gradient: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
-    disabled: true,
-  },
-  {
-    id: 5,
-    title: "Счет",
-    icon: "fas fa-calculator",
-    time: "3 мин",
-    gradient: "linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%)",
-    disabled: true,
-  },
-  {
-    id: 6,
+   {
+    id: 3,
     title: "Паттерны",
     icon: "fas fa-shapes",
     time: "3 мин",
     gradient: "linear-gradient(135deg, #ec4899 0%, #f43f5e 100%)",
     disabled: true,
   },
-];
-
-const recentResults = [
   {
-    id: 1,
-    test: "Тест на память",
-    date: "2 дня назад",
-    score: 87,
-    percentile: "Топ 15%",
-    icon: "fas fa-brain",
-    color: "linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)",
-  },
-  {
-    id: 2,
-    test: "Тест на внимание",
-    date: "5 дней назад",
-    score: 92,
-    percentile: "Топ 8%",
-    icon: "fas fa-bullseye",
-    color: "linear-gradient(135deg, #10b981 0%, #14b8a6 100%)",
-  },
-  {
-    id: 3,
-    test: "Логический тест",
-    date: "1 неделю назад",
-    score: 78,
-    percentile: "Топ 25%",
-    icon: "fas fa-project-diagram",
-    color: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
-  },
-];
-
-const recommendations = [
-  {
-    id: 1,
-    title: "Попробуйте Digit Span Test",
-    description:
-      "Новый тест на рабочую память. Узнайте свой объем кратковременной памяти",
-  },
-  {
-    id: 2,
-    title: "Улучшите результаты по логике",
-    description:
-      "Регулярная практика поможет повысить ваш показатель на 10-15%",
-  },
-  {
-    id: 3,
-    title: "Пройдите быстрые тесты",
-    description:
-      "Ежедневные 5-минутные тесты помогут поддерживать когнитивные функции",
+    id: 4,
+    title: "Счет",
+    icon: "fas fa-calculator",
+    time: "3 мин",
+    gradient: "linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%)",
+    disabled: true,
   },
 ];
 
 const getDifficultyClass = (difficulty) => {
   const classes = {
-    Легкая: "difficulty-easy",
-    Средняя: "difficulty-medium",
-    Сложная: "difficulty-hard",
+    'Легкая': "difficulty-easy",
+    'Средняя': "difficulty-medium",
+    'Сложная': "difficulty-hard",
   };
   return classes[difficulty] || "difficulty-medium";
 };
@@ -633,26 +417,18 @@ const getScoreClass = (score) => {
   if (score >= 60) return "text-yellow-600 dark:text-yellow-400";
   return "text-orange-600 dark:text-orange-400";
 };
-
-const navigateToTest = (test) => {
-  navigateTo(`/lab/tests`);
-};
-
-const startQuickTest = (test) => {
-  navigateTo(`/lab/tests`);
-};
 </script>
 
 <style scoped>
 .stat-card {
-  @apply text-center px-4 py-3 rounded-xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/10 shadow-sm dark:shadow-none;
+  @apply text-center px-4 py-3 rounded-xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/10 shadow-sm dark:shadow-none min-w-[100px];
 }
 
 .test-category-card {
-  @apply relative p-6 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/10 hover:border-cyan-500/30 transition-all duration-300 cursor-pointer overflow-hidden shadow-sm dark:shadow-none;
+  @apply relative p-6 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/10 hover:border-cyan-500/30 transition-all duration-300 block overflow-hidden shadow-sm dark:shadow-none;
 }
 
-.test-category-card:hover {
+.test-category-card:not(.cursor-not-allowed):hover {
   @apply bg-slate-50 dark:bg-slate-900/70 transform -translate-y-1 shadow-lg shadow-cyan-500/10;
 }
 
@@ -665,11 +441,11 @@ const startQuickTest = (test) => {
 }
 
 .icon-wrapper {
-  @apply w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0;
+  @apply w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg;
 }
 
 .difficulty-badge {
-  @apply px-2 py-1 rounded-lg text-xs font-medium;
+  @apply px-2.5 py-1 rounded-lg text-xs font-semibold uppercase tracking-wider;
 }
 
 .difficulty-easy {
@@ -685,40 +461,33 @@ const startQuickTest = (test) => {
 }
 
 .quick-test-card {
-  @apply p-4 rounded-xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-purple-500/10 hover:border-purple-500/30 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-all duration-300 cursor-pointer text-center shadow-sm dark:shadow-none;
+  @apply p-4 rounded-xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-purple-500/10 hover:border-purple-500/30 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-all duration-300 block text-center shadow-sm dark:shadow-none relative;
 }
 
-.quick-test-card:hover {
+.quick-test-card:not(.cursor-not-allowed):hover {
   @apply transform -translate-y-1;
 }
 
 .quick-icon-wrapper {
-  @apply w-12 h-12 mx-auto rounded-xl flex items-center justify-center;
+  @apply w-10 h-10 mx-auto rounded-xl flex items-center justify-center shadow-md;
 }
 
-.info-card {
-  @apply p-6 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/10 backdrop-blur-sm shadow-sm dark:shadow-none;
-}
-
-.result-item {
-  @apply p-4 rounded-lg bg-slate-50 dark:bg-slate-800/30 border border-slate-200 dark:border-slate-700/50 hover:border-cyan-500/30 transition-all duration-300;
-}
-
-.recommendation-item {
-  @apply p-3 rounded-lg bg-slate-50 dark:bg-slate-800/20 border border-slate-200 dark:border-slate-700/30;
-}
-
-@media (max-width: 640px) {
-  .stat-card {
-    @apply px-3 py-2;
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-
-  .test-category-card {
-    @apply p-4;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
+}
 
-  .info-card {
-    @apply p-4;
-  }
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fadeInUp 0.3s ease-out forwards;
 }
 </style>
