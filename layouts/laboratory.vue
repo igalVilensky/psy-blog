@@ -94,7 +94,7 @@ const currentStation = computed(() => {
   const stationMap = {
     "/lab": "ГЛАВНЫЙ_КОНТРОЛЬ",
     "/lab/dashboard": "НЕЙРО_ДАШБОРД",
-    "/lab/experiments": "ЭКСПЕРИМЕНТАЛЬНАЯ",
+    "/lab/growth": "ЭКСПЕРИМЕНТАЛЬНАЯ",
     "/lab/analysis": "АНАЛИЗ_ДАННЫХ",
     "/lab/community": "СООБЩЕСТВО",
     "/profile": "ПРОФИЛЬ",
@@ -109,7 +109,7 @@ const currentStation = computed(() => {
     "/lab/mindfulness": "МЕДИТАЦИЯ",
     "/lab/sound-therapy": "ЗВУКОТЕРАПИЯ",
     "/lab/brain-map": "КАРТА_МОЗГА",
-    "/lab/experiments/wheel-of-life": "КОЛЕСО_БАЛАНСА",
+    "/lab/growth/wheel-of-life": "КОЛЕСО_БАЛАНСА",
   };
   return stationMap[route.path] || "ИССЛЕДОВАТЕЛЬСКАЯ_СТАНЦИЯ";
 });

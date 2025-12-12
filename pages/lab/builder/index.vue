@@ -95,7 +95,7 @@ const availableModules: Module[] = [
     name: 'Колесо Баланса',
     icon: '🎡',
     description: 'Оценка удовлетворенности сферами жизни',
-    path: '/lab/experiments/wheel-of-life'
+    path: '/lab/growth/wheel-of-life'
   },
   {
     id: 'exp-growth',
@@ -104,7 +104,7 @@ const availableModules: Module[] = [
     name: 'Искра Роста',
     icon: '✨',
     description: 'Ежедневные задания для саморазвития',
-    path: '/lab/experiments/daily-growth-spark'
+    path: '/lab/growth/daily-growth-spark'
   },
   {
     id: 'exp-conversation',
@@ -113,7 +113,7 @@ const availableModules: Module[] = [
     name: 'Глубокий Разговор',
     icon: '💬',
     description: 'Инструмент для значимых бесед',
-    path: '/lab/experiments/deep-conversation'
+    path: '/lab/growth/deep-conversation'
   },
 
   // Psychology
@@ -177,7 +177,7 @@ const availableModules: Module[] = [
 
 const categories = {
   games: 'Игры',
-  experiments: 'Эксперименты',
+  experiments: 'Саморазвитие',
   psychology: 'Психология',
   tools: 'Инструменты'
 }

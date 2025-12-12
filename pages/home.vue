@@ -410,14 +410,14 @@ const fetchUserStats = async (userId) => {
         emotionStats: {
           totalEntries: emotionStatsResponse.data.entries.length,
         },
-        reminder: { link: "/lab/experiments/emotional-compass" },
+        reminder: { link: "/lab/growth/emotional-compass" },
         cta: null,
       };
     } else {
       stats.value.tools = {
         emotionStats: null,
         reminder: null,
-        cta: { link: "/lab/experiments/emotional-compass" },
+        cta: { link: "/lab/growth/emotional-compass" },
       };
     }
   } catch (error) {
@@ -443,7 +443,7 @@ const fetchNotifications = async (userId) => {
       localNotifications.value.push({
         id: 1,
         message: "Не забудьте записать свои эмоции сегодня!",
-        routePath: "/lab/experiments/emotional-compass",
+        routePath: "/lab/growth/emotional-compass",
         ctaText: "Записать сейчас",
       });
     }
@@ -528,7 +528,7 @@ onMounted(async () => {
       tools: {
         emotionStats: null,
         reminder: null,
-        cta: { link: "/lab/experiments/emotional-compass" },
+        cta: { link: "/lab/growth/emotional-compass" },
       },
     };
     successStories.value = await fetchSuccessStories();

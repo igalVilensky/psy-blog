@@ -238,14 +238,14 @@ const quickTools = [
     title: "Эмоциональный компас",
     icon: "fas fa-compass",
     color: "text-purple-600 dark:text-purple-400",
-    path: "/lab/experiments/emotional-compass"
+    path: "/lab/growth/emotional-compass"
   },
   {
     id: "wheel-of-life",
     title: "Колесо баланса",
     icon: "fas fa-chart-pie",
     color: "text-cyan-600 dark:text-cyan-400",
-    path: "/lab/experiments/wheel-of-life"
+    path: "/lab/growth/wheel-of-life"
   },
   {
     id: "trigger-scan",

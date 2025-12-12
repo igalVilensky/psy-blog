@@ -32,7 +32,7 @@
             База данных пуста. Создайте первую запись в Эмоциональном Компасе для активации аналитических модулей.
           </p>
           <NuxtLink
-            to="/lab/experiments/emotional-compass"
+            to="/lab/growth/emotional-compass"
             class="inline-block mt-6 px-6 py-2 rounded-lg bg-cyan-600/20 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 hover:bg-cyan-600/30 transition-all font-mono"
           >
             СОЗДАТЬ ЗАПИСЬ

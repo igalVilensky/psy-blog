@@ -184,7 +184,7 @@
         
         <div class="flex justify-center mt-8">
            <NuxtLink
-            to="/lab/experiments/big-5-model"
+            to="/lab/growth/big-5-model"
             class="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-slate-700 dark:text-slate-200 transition-all duration-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-blue-300 dark:hover:border-blue-700 shadow-sm hover:shadow-md"
           >
             <i class="fas fa-arrow-left mr-2"></i>

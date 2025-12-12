@@ -92,14 +92,14 @@ const tools = ref([
   },
   {
     name: "Эмоциональный компас",
-    path: "/lab/experiments/emotional-compass",
+    path: "/lab/growth/emotional-compass",
     description:
       "Измерьте и отслеживайте ваши эмоции в реальном времени. Научитесь лучше понимать свои чувства и управлять ими.",
     image: EmotionalBarometerImage,
   },
   {
     name: "Глубокий разговор с картами",
-    path: "/lab/experiments/deep-conversation",
+    path: "/lab/growth/deep-conversation",
     description:
       "Погрузитесь в глубокие разговоры с помощью специально разработанных карт. Откройте новые грани себя и своих отношений.",
     image: DeepConversationWithCardsImage,

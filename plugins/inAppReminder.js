@@ -43,7 +43,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     if (await shouldRemind()) {
       notificationVisible = true;
       emitter.emit("showNotification", {
-        routePath: "/lab/experiments/emotional-compass",
+        routePath: "/lab/growth/emotional-compass",
         message:
           "Не забудь добавить запись в Эмоциональный компас сегодня! Отслеживай свои эмоции и оставайся в гармонии.",
         ctaText: "Добавить запись",

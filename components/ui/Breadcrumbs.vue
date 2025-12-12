@@ -60,7 +60,7 @@ const crumbs = computed(() => {
       'mindfulness': 'Медитация',
       'brain-map': 'Карта мозга',
       'dashboard': 'Нейро Анализ',
-      'experiments': 'Эксперименты',
+      'growth': 'Саморазвитие',
       'analysis': 'Обсерватория',
       'community': 'Сообщество',
       'trail-making': 'Trail Making Test',

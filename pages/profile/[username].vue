@@ -262,7 +262,7 @@
 
         <!-- CTA Button -->
         <div v-if="emotionBarometerStats.totalEntries > 0" class="mb-6">
-          <Button to="/lab/experiments/emotional-compass" text="Перейти к барометру" iconClass="fas fa-arrow-right"
+          <Button to="/lab/growth/emotional-compass" text="Перейти к барометру" iconClass="fas fa-arrow-right"
             gradientStart="#0EA5E9" gradientEnd="#E879F9" textColor="#0EA5E9" customClass="cta-button-custom" />
         </div>
 
@@ -287,7 +287,7 @@
               Начните использовать Эмоциональный компас, чтобы отслеживать свои
               эмоции
             </p>
-            <NuxtLink to="/lab/experiments/emotional-compass" class="start-button">
+            <NuxtLink to="/lab/growth/emotional-compass" class="start-button">
               <span class="button-gradient"></span>
               <span class="button-content">
                 <i class="fas fa-play-circle mr-2"></i>

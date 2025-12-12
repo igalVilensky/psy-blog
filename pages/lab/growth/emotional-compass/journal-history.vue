@@ -43,7 +43,7 @@
               Записи отсутствуют. Начните вести дневник эмоций, чтобы отслеживать свое состояние во времени.
             </p>
             <NuxtLink
-              to="/lab/experiments/emotional-compass"
+              to="/lab/growth/emotional-compass"
               class="inline-block mt-6 px-6 py-2 rounded-lg bg-purple-600/20 text-purple-600 dark:text-purple-400 border border-purple-500/30 hover:bg-purple-600/30 transition-all font-mono"
             >
               СОЗДАТЬ ЗАПИСЬ

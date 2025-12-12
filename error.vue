@@ -288,7 +288,7 @@ const quickLinks = [
     gradient: "linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%)",
   },
   {
-    path: "/lab/experiments",
+    path: "/lab/growth",
     icon: "fas fa-flask",
     label: "Эксперименты",
     gradient: "linear-gradient(135deg, #10b981 0%, #06b6d4 100%)",

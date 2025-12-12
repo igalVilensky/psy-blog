@@ -194,6 +194,10 @@
         <StationLink to="/lab/brain-training" icon="fa-dumbbell" title="Тренировка Мозга" subtitle="Игры и упражнения"
           :active="route.path.startsWith('/lab/brain-training')" gradient-from="cyan-500" gradient-to="purple-600" />
 
+        <!-- Self Growth Station -->
+        <StationLink to="/lab/growth" icon="fa-seedling" title="Саморазвитие" subtitle="Инструменты"
+          :active="route.path.startsWith('/lab/growth')" gradient-from="green-500" gradient-to="teal-600" />
+
         <!-- Psychology Station -->
         <StationLink to="/lab/psychology" icon="fa-book-open" title="Психология" subtitle="Теории и техники"
           :active="route.path === '/lab/psychology'" gradient-from="purple-500" gradient-to="pink-600" />
@@ -214,9 +218,7 @@
         <StationLink to="/lab/dashboard" icon="fa-microchip" title="Нейро Анализ" subtitle="Картирование мозга"
           :active="route.path === '/lab/dashboard'" gradient-from="cyan-500" gradient-to="blue-600" />
 
-        <!-- Experiments Station -->
-        <StationLink to="/lab/experiments" icon="fa-atom" title="Эксперименты" subtitle="Инструменты и тесты"
-          :active="route.path === '/lab/experiments'" gradient-from="purple-500" gradient-to="pink-600" />
+
 
         <!-- Growth Observatory -->
         <StationLink to="/lab/analysis" icon="fa-chart-line" title="Обсерватория Роста" subtitle="Прогресс и аналитика"
@@ -362,6 +364,14 @@ const mobileStations = computed(() => [
     gradientTo: "purple-600",
   },
   {
+    to: "/lab/growth",
+    icon: "fa-seedling",
+    title: "Саморазвитие",
+    subtitle: "Инструменты",
+    gradientFrom: "green-500",
+    gradientTo: "teal-600",
+  },
+  {
     to: "/lab/psychology",
     icon: "fa-book-open",
     title: "Психология",
@@ -401,14 +411,7 @@ const mobileStations = computed(() => [
     gradientFrom: "cyan-500",
     gradientTo: "blue-600",
   },
-  {
-    to: "/lab/experiments",
-    icon: "fa-atom",
-    title: "Эксперименты",
-    subtitle: "Инструменты",
-    gradientFrom: "purple-500",
-    gradientTo: "pink-600",
-  },
+
   {
     to: "/lab/analysis",
     icon: "fa-chart-line",

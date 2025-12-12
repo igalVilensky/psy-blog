@@ -46,7 +46,7 @@
                 exact-active-class="bg-slate-50 dark:bg-slate-700/50 text-slate-900 dark:text-white"
                 @click="closeDropdown">
                 <i class="fas fa-chess text-green-500 w-4"></i>
-                <span>Развивающие игры</span>
+                <span>Тренировка Мозга</span>
               </NuxtLink>
               <NuxtLink to="/lab/psychology"
                 class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors duration-150"
@@ -83,12 +83,12 @@
                 <i class="fas fa-microchip text-cyan-500 w-4"></i>
                 <span>Нейро Анализ</span>
               </NuxtLink>
-              <NuxtLink to="/lab/experiments"
+              <NuxtLink to="/lab/growth"
                 class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors duration-150"
                 exact-active-class="bg-slate-50 dark:bg-slate-700/50 text-slate-900 dark:text-white"
                 @click="closeDropdown">
                 <i class="fas fa-atom text-purple-500 w-4"></i>
-                <span>Эксперименты</span>
+                <span>Саморазвитие</span>
               </NuxtLink>
               <NuxtLink to="/lab/analysis"
                 class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors duration-150"
@@ -296,7 +296,7 @@
                   exact-active-class="bg-slate-200 dark:bg-slate-700/50 text-slate-900 dark:text-white"
                   @click="closeDropdown">
                   <i class="fas fa-gamepad text-purple-400 text-xs w-4"></i>
-                  <span>Развивающие игры</span>
+                  <span>Тренировка Мозга</span>
                 </NuxtLink>
                 <NuxtLink to="/lab/psychology"
                   class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
@@ -319,6 +319,13 @@
                   <i class="fas fa-music text-indigo-400 text-xs w-4"></i>
                   <span>Звукотерапия</span>
                 </NuxtLink>
+                <NuxtLink to="/lab/growth"
+                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
+                  exact-active-class="bg-slate-200 dark:bg-slate-700/50 text-slate-900 dark:text-white"
+                  @click="closeDropdown">
+                  <i class="fas fa-seedling text-green-400 text-xs w-4"></i>
+                  <span>Саморазвитие</span>
+                </NuxtLink>
                 <NuxtLink to="/lab/brain-map"
                   class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
                   exact-active-class="bg-slate-200 dark:bg-slate-700/50 text-slate-900 dark:text-white"
@@ -332,13 +339,6 @@
                   @click="closeDropdown">
                   <i class="fas fa-microchip text-cyan-400 text-xs w-4"></i>
                   <span>Нейро Анализ</span>
-                </NuxtLink>
-                <NuxtLink to="/lab/experiments"
-                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
-                  exact-active-class="bg-slate-200 dark:bg-slate-700/50 text-slate-900 dark:text-white"
-                  @click="closeDropdown">
-                  <i class="fas fa-atom text-purple-400 text-xs w-4"></i>
-                  <span>Эксперименты</span>
                 </NuxtLink>
                 <NuxtLink to="/lab/analysis"
                   class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
@@ -494,11 +494,11 @@ const isLabRouteActive = computed(() => {
 
 const isToolsRouteActive = computed(() => {
   const toolsRoutes = [
-    "/lab/experiments/emotional-compass",
-    "/lab/experiments/wheel-of-life",
+    "/lab/growth/emotional-compass",
+    "/lab/growth/wheel-of-life",
     "/lab/tests/life-purpose-archetype",
     "/lab/tests/big-5-model",
-    "/lab/experiments/daily-growth-spark",
+    "/lab/growth/daily-growth-spark",
   ];
   return toolsRoutes.includes(route.path);
 });

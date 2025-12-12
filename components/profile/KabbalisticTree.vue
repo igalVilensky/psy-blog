@@ -86,7 +86,7 @@
         <SphereCard title="Внутренний Мир" subtitle="Брия" icon-class="fas fa-heart"
           description="Эмоциональный мир, глубина чувств и переживаний." gradient-start="#EC4899" gradient-end="#E879F9"
           icon-color="#EC4899" :loading="loadingEmotionBarometer" :data="emotionData" button-text="Эмоциональный компас"
-          button-to="/lab/experiments/emotional-compass" button-icon="fas fa-compass"
+          button-to="/lab/growth/emotional-compass" button-icon="fas fa-compass"
           :progress="Math.min(emotionData.totalEntries * 10, 100)" progress-label="Эмоциональная глубина">
           <template #data-content v-if="emotionData.totalEntries > 0">
             <div class="flex justify-between items-center">
@@ -111,7 +111,7 @@
           <template #no-data>
             <i class="fas fa-wind text-[#EC4899] text-2xl opacity-50"></i>
             <p class="text-center text-slate-400">Нет данных об эмоциях</p>
-            <NuxtLink to="/lab/experiments/emotional-compass" class="text-[#EC4899] hover:underline text-sm">
+            <NuxtLink to="/lab/growth/emotional-compass" class="text-[#EC4899] hover:underline text-sm">
               Начать исследование
             </NuxtLink>
           </template>
@@ -123,7 +123,7 @@
         <SphereCard title="Эволюция" subtitle="Йецира" icon-class="fas fa-arrow-up"
           description="Личностный рост, формирование и преобразование." gradient-start="#10B981" gradient-end="#3B82F6"
           icon-color="#10B981" :loading="loading" :data="growthData" button-text="Добавить инсайт"
-          button-to="/lab/experiments/daily-growth-spark" button-icon="fas fa-plus"
+          button-to="/lab/growth/daily-growth-spark" button-icon="fas fa-plus"
           :progress="Math.min(growthData.entries.length * 20, 100)" progress-label="Прогресс роста">
           <template #data-content v-if="growthData.entries.length > 0">
             <div class="flex justify-between items-center">
@@ -148,7 +148,7 @@
           <template #no-data>
             <i class="fas fa-lightbulb text-[#10B981] text-2xl opacity-50"></i>
             <p class="text-center text-slate-400">Нет данных о росте</p>
-            <NuxtLink to="/lab/experiments/daily-growth-spark" class="text-[#10B981] hover:underline text-sm">
+            <NuxtLink to="/lab/growth/daily-growth-spark" class="text-[#10B981] hover:underline text-sm">
               Начать путь роста
             </NuxtLink>
           </template>

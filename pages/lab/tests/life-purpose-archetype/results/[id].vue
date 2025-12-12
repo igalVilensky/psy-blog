@@ -234,14 +234,14 @@
         <!-- Navigation -->
         <div class="flex flex-col sm:flex-row justify-between gap-4 mt-8">
           <NuxtLink
-            to="/lab/experiments/life-purpose-archetype"
+            to="/lab/growth/life-purpose-archetype"
             class="flex-1 p-4 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-medium rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-sm hover:shadow"
           >
             <i class="fas fa-arrow-left"></i>
             Вернуться к тесту
           </NuxtLink>
           <NuxtLink
-            to="/lab/experiments/life-purpose-archetype/explanation"
+            to="/lab/growth/life-purpose-archetype/explanation"
             class="flex-1 p-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold rounded-xl hover:shadow-lg hover:from-purple-500 hover:to-pink-500 transition-all duration-300 flex items-center justify-center gap-2 shadow-md shadow-purple-500/20"
           >
             <i class="fas fa-book"></i>

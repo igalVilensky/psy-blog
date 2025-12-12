@@ -341,7 +341,7 @@ onMounted(async () => {
       
       <!-- History / Stats Links (Visible when not in session) -->
       <div v-if="!sessionStarted" class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto mt-12">
-         <NuxtLink to="/lab/experiments/emotional-compass/analysis" class="p-6 rounded-2xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-slate-800 hover:border-cyan-500/50 transition-all group">
+         <NuxtLink to="/lab/growth/emotional-compass/analysis" class="p-6 rounded-2xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-slate-800 hover:border-cyan-500/50 transition-all group">
             <div class="flex items-center gap-4">
                <div class="w-10 h-10 rounded-lg bg-cyan-100 dark:bg-cyan-900/30 flex items-center justify-center text-cyan-600">
                   <i class="fas fa-chart-pie"></i>
@@ -352,7 +352,7 @@ onMounted(async () => {
                </div>
             </div>
          </NuxtLink>
-         <NuxtLink to="/lab/experiments/emotional-compass/journal-history" class="p-6 rounded-2xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-slate-800 hover:border-purple-500/50 transition-all group">
+         <NuxtLink to="/lab/growth/emotional-compass/journal-history" class="p-6 rounded-2xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-slate-800 hover:border-purple-500/50 transition-all group">
             <div class="flex items-center gap-4">
                <div class="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600">
                   <i class="fas fa-history"></i>
