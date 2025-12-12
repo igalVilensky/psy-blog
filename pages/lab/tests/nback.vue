@@ -640,7 +640,7 @@
             Поделиться
           </button>
           <NuxtLink
-            to="/lab/games"
+            to="/lab/brain-training"
             class="btn-secondary px-6 sm:px-8 py-3 text-base sm:text-lg text-center inline-flex items-center justify-center order-3"
           >
             <i class="fas fa-arrow-left mr-2"></i>

@@ -251,7 +251,7 @@ const stations = [
   {
     name: "Развивающие игры",
     subtitle: "Логика и память",
-    link: "/lab/games",
+    link: "/lab/brain-training",
     icon: "fas fa-chess",
     gradientFrom: "green-500",
     gradientTo: "emerald-600",

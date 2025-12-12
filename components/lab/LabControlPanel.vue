@@ -188,9 +188,11 @@
         <StationLink to="/lab/tests" icon="fa-brain" title="Тесты" subtitle="Оценка функций"
           :active="route.path === '/lab/tests'" gradient-from="blue-500" gradient-to="indigo-600" />
 
-        <!-- Brain Games Station -->
-        <StationLink to="/lab/games" icon="fa-chess" title="Развивающие Игры" subtitle="Логика и память"
-          :active="route.path === '/lab/games'" gradient-from="green-500" gradient-to="emerald-600" />
+
+
+        <!-- Brain Training Station -->
+        <StationLink to="/lab/brain-training" icon="fa-dumbbell" title="Тренировка Мозга" subtitle="Игры и упражнения"
+          :active="route.path.startsWith('/lab/brain-training')" gradient-from="cyan-500" gradient-to="purple-600" />
 
         <!-- Psychology Station -->
         <StationLink to="/lab/psychology" icon="fa-book-open" title="Психология" subtitle="Теории и техники"
@@ -219,14 +221,6 @@
         <!-- Growth Observatory -->
         <StationLink to="/lab/analysis" icon="fa-chart-line" title="Обсерватория Роста" subtitle="Прогресс и аналитика"
           :active="route.path === '/lab/analysis'" gradient-from="emerald-500" gradient-to="green-600" />
-
-        <!-- Exercises Library Station -->
-        <StationLink to="/lab/exercises" icon="fa-dumbbell" title="Библиотека Упражнений" subtitle="50+ практик"
-          :active="route.path === '/lab/exercises'" gradient-from="rose-500" gradient-to="pink-600" />
-
-        <!-- Models Library Station -->
-        <StationLink to="/lab/models" icon="fa-project-diagram" title="Менталитека" subtitle="Когнитивные модели"
-          :active="route.path === '/lab/models'" gradient-from="purple-600" gradient-to="indigo-600" />		
 
         <!-- Community Hub -->
         <StationLink to="/lab/community" icon="fa-users" title="Сообщество" subtitle="Исследователи онлайн"
@@ -358,13 +352,14 @@ const mobileStations = computed(() => [
     gradientFrom: "blue-500",
     gradientTo: "indigo-600",
   },
+
   {
-    to: "/lab/games",
-    icon: "fa-chess",
-    title: "Игры",
-    subtitle: "Развивающие",
-    gradientFrom: "green-500",
-    gradientTo: "emerald-600",
+    to: "/lab/brain-training",
+    icon: "fa-dumbbell",
+    title: "Тренировка Мозга",
+    subtitle: "Игры и упражнения",
+    gradientFrom: "cyan-500",
+    gradientTo: "purple-600",
   },
   {
     to: "/lab/psychology",
@@ -413,22 +408,6 @@ const mobileStations = computed(() => [
     subtitle: "Инструменты",
     gradientFrom: "purple-500",
     gradientTo: "pink-600",
-  },
-  {
-    to: "/lab/exercises",
-    icon: "fa-dumbbell",
-    title: "Упражнения",
-    subtitle: "Библиотека",
-    gradientFrom: "rose-500",
-    gradientTo: "pink-600",
-  },
-  {
-    to: "/lab/models",
-    icon: "fa-project-diagram",
-    title: "Менталитека",
-    subtitle: "Модели",
-    gradientFrom: "purple-600",
-    gradientTo: "indigo-600",
   },
   {
     to: "/lab/analysis",

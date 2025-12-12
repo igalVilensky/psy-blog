@@ -35,7 +35,7 @@ export const exercises: Exercise[] = [
         metric: "Точность (%), Среднее время реакции",
         uiExample: "Горизонтальная последовательность с пропуском, 4 варианта ответа",
         relatedModels: "Abstract Reasoning, Pattern Recognition, Cognitive Flexibility",
-        link: "/lab/exercises/pattern-detection-mini"
+        link: "/lab/brain-training/pattern-detection-mini"
     },
     {
         id: 2,
@@ -575,6 +575,6 @@ export const exercises: Exercise[] = [
         metric: "Точность (%), Среднее время реакции, Время переключения, Цена переключения (мс)",
         uiExample: "Динамический стимул (число/фигура/цветное слово) на цветном фоне, кнопки ВЛЕВО/ВПРАВО",
         relatedModels: "Cognitive Flexibility, Task Switching, Executive Function, Stroop Effect",
-        link: "/lab/exercises/mental-shift"
+        link: "/lab/brain-training/mental-shift"
     }
 ];

@@ -49,7 +49,7 @@
                 Измерьте свою когнитивную гибкость в классическом
                 психологическом тесте
               </p>
-              <NuxtLink to="/lab/games/stroop" class="btn-primary inline-block">
+              <NuxtLink to="/lab/brain-training/stroop" class="btn-primary inline-block">
                 <i class="fas fa-flask mr-2"></i>
                 Попробовать сейчас
               </NuxtLink>

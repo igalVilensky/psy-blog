@@ -41,7 +41,7 @@
                 <i class="fas fa-brain text-blue-500 w-4"></i>
                 <span>Тесты</span>
               </NuxtLink>
-              <NuxtLink to="/lab/games"
+              <NuxtLink to="/lab/brain-training"
                 class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors duration-150"
                 exact-active-class="bg-slate-50 dark:bg-slate-700/50 text-slate-900 dark:text-white"
                 @click="closeDropdown">
@@ -291,7 +291,7 @@
                   <i class="fas fa-vial text-cyan-400 text-xs w-4"></i>
                   <span>Тесты</span>
                 </NuxtLink>
-                <NuxtLink to="/lab/games"
+                <NuxtLink to="/lab/brain-training"
                   class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
                   exact-active-class="bg-slate-200 dark:bg-slate-700/50 text-slate-900 dark:text-white"
                   @click="closeDropdown">
@@ -512,7 +512,7 @@ const mobileSubmenuStates = ref({
 const isLabRouteActive = computed(() => {
   const labRoutes = [
     "/lab/tests",
-    "/lab/games",
+    "/lab/brain-training",
     "/lab/psychology",
     "/lab/mindfulness",
     "/lab/growth",

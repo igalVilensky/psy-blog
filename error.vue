@@ -276,7 +276,7 @@ onUnmounted(() => {
 // Quick links
 const quickLinks = [
   {
-    path: "/lab/games",
+    path: "/lab/brain-training",
     icon: "fas fa-gamepad",
     label: "Игры",
     gradient: "linear-gradient(135deg, #06b6d4 0%, #8b5cf6 100%)",

@@ -66,7 +66,7 @@ const availableModules: Module[] = [
     name: 'Тренировка Памяти',
     icon: '🧩',
     description: 'Развитие визуальной и пространственной памяти',
-    path: '/lab/games/memory'
+    path: '/lab/brain-training/memory'
   },
   {
     id: 'game-reaction',
@@ -75,7 +75,7 @@ const availableModules: Module[] = [
     name: 'Тест Реакции',
     icon: '⚡',
     description: 'Измерение скорости реакции на стимулы',
-    path: '/lab/games/reaction'
+    path: '/lab/brain-training/reaction'
   },
   {
     id: 'game-stroop',
@@ -84,7 +84,7 @@ const availableModules: Module[] = [
     name: 'Эффект Струпа',
     icon: '🎨',
     description: 'Тренировка когнитивной гибкости',
-    path: '/lab/games/stroop'
+    path: '/lab/brain-training/stroop'
   },
 
   // Experiments

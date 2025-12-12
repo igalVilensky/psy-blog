@@ -1,18 +1,16 @@
-<!-- pages/lab/games.vue -->
+<!-- components/lab/brain-training/GamesView.vue -->
 <template>
-  <div class="games-station min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      <Breadcrumbs />
+  <div class="games-station transition-colors duration-500">
+    <div class="space-y-8">
       <!-- Header Section -->
       <div class="mb-8">
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
           <div>
-            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight">
-              РАЗВИВАЮЩИЕ ИГРЫ
-            </h1>
+            <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight">
+              Игровой Зал
+            </h2>
             <p class="text-slate-600 dark:text-cyan-300/70 text-sm sm:text-base leading-relaxed max-w-2xl">
-              Тренируйте логику, память и внимание через увлекательные игровые
-              задачи
+              Тренируйте логику, память и внимание через увлекательные игровые задачи
             </p>
           </div>
 
@@ -80,7 +78,7 @@
                   <span class="text-sm">~{{ featuredGame.duration }}</span>
                 </div>
               </div>
-              <button @click="$router.push('/lab/games/reaction')" class="btn-primary">
+              <button @click="$router.push('/lab/brain-training/reaction')" class="btn-primary">
                 <i class="fas fa-play mr-2"></i>
                 Начать игру
               </button>
@@ -296,39 +294,6 @@
 
 <script setup>
 import { ref, computed } from "vue";
-import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
-
-definePageMeta({
-  layout: "laboratory",
-});
-
-useHead({
-  title: "Развивающие Игры",
-  meta: [
-    {
-      name: "description",
-      content:
-        "Тренируйте память, внимание и реакцию с помощью научно обоснованных когнитивных игр и упражнений.",
-    },
-    {
-      property: "og:title",
-      content: "Развивающие Игры | MindQ Lab",
-    },
-    {
-      property: "og:description",
-      content:
-        "Тренируйте память, внимание и реакцию с помощью научно обоснованных когнитивных игр и упражнений.",
-    },
-    {
-      property: "og:image",
-      content: "/images/games-og.jpg", // Placeholder
-    },
-    {
-      name: "twitter:card",
-      content: "summary_large_image",
-    },
-  ],
-});
 
 const activeCategory = ref("all");
 const sortBy = ref("popular");
@@ -568,10 +533,10 @@ const playGame = (game) => {
 
   // Navigate to reaction.vue for the reaction game
   if (game.id === "reaction") {
-    navigateTo("/lab/games/reaction");
+    navigateTo("/lab/brain-training/reaction");
   } else {
     // For other games, use their ID
-    navigateTo(`/lab/games/${game.id}`);
+    navigateTo(`/lab/brain-training/${game.id}`);
   }
 };
 </script>

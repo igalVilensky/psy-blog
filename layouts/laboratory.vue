@@ -99,18 +99,17 @@ const currentStation = computed(() => {
     "/lab/community": "СООБЩЕСТВО",
     "/profile": "ПРОФИЛЬ",
     "/lab/tests": "КОГНИТИВНЫЕ_ТЕСТЫ",
-    "/lab/games": "ИГРОВАЯ_СТАНЦИЯ",
-    "/lab/games/reaction": "ТЕСТ_РЕАКЦИИ",
-    "/lab/games/memory": "ТЕСТ_ПАМЯТИ",
-    "/lab/games/logic": "ЛОГИЧЕСКИЕ_ИГРЫ",
-    "/lab/games/attention": "ТЕСТ_ВНИМАНИЯ",
-    "/lab/games/stroop": "Цветовой Струп",
+    "/lab/tests": "КОГНИТИВНЫЕ_ТЕСТЫ",
+    "/lab/brain-training": "ТРЕНИРОВКА_МОЗГА",
+    "/lab/brain-training/reaction": "ТЕСТ_РЕАКЦИИ",
+    "/lab/brain-training/memory": "ТЕСТ_ПАМЯТИ",
+    "/lab/brain-training/stroop": "Цветовой Струп",
     "/lab/psychology": "ПСИХОЛОГИЯ",
+
     "/lab/mindfulness": "МЕДИТАЦИЯ",
     "/lab/sound-therapy": "ЗВУКОТЕРАПИЯ",
     "/lab/brain-map": "КАРТА_МОЗГА",
     "/lab/experiments/wheel-of-life": "КОЛЕСО_БАЛАНСА",
-    "/lab/exercises/mental-shift": "КОГНИТИВНАЯ_ГИБКОСТЬ",
   };
   return stationMap[route.path] || "ИССЛЕДОВАТЕЛЬСКАЯ_СТАНЦИЯ";
 });

@@ -1,13 +1,38 @@
+<!-- components/lab/brain-training/ModelsView.vue -->
 <template>
   <div class="px-4 py-8 sm:px-6 lg:px-8 font-sans">
     <!-- Header Section -->
-    <div class="mx-auto max-w-7xl text-center mb-12">
-      <h1 class="mb-4 bg-gradient-to-r from-purple-600 via-indigo-600 to-cyan-600 dark:from-purple-400 dark:via-indigo-400 dark:to-cyan-400 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent sm:text-5xl lg:text-6xl animate-fade-in-up">
-        Менталитека
-      </h1>
-      <p class="mx-auto max-w-2xl text-lg text-slate-600 dark:text-slate-400">
-        Коллекция из 20 фундаментальных когнитивных моделей для эффективного мышления и обучения.
-      </p>
+    <div class="mb-8">
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight">
+            Когнитивные Модели
+          </h2>
+          <p class="text-slate-600 dark:text-cyan-300/70 text-sm sm:text-base leading-relaxed max-w-2xl">
+            Коллекция из 20 фундаментальных когнитивных моделей для эффективного мышления и обучения.
+          </p>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="flex items-center gap-4">
+          <div class="stat-card">
+            <div class="text-2xl font-bold text-purple-600 dark:text-purple-400">
+              {{ models.length }}
+            </div>
+            <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide">
+              Моделей
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+              {{ goals.length - 1 }}
+            </div>
+            <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide">
+              Категорий
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Controls Section -->
@@ -145,7 +170,7 @@
                         <i class="fas fa-dumbbell"></i> Упражнения
                     </h4>
                     <p class="text-slate-700 dark:text-slate-300 text-sm">
-                         <NuxtLink to="/lab/exercises" class="hover:underline text-rose-600 dark:text-rose-300">{{ selectedModel.relatedExercises }}</NuxtLink>
+                         <button class="hover:underline text-rose-600 dark:text-rose-300" @click="$emit('switch-tab', 'exercises')">{{ selectedModel.relatedExercises }}</button>
                     </p>
                 </div>
 
@@ -180,9 +205,7 @@ import { ref, computed, onUnmounted } from 'vue';
 import { models, type Model } from '@/data/models';
 import ModelCard from '@/components/lab/ModelCard.vue';
 
-definePageMeta({
-  layout: 'laboratory'
-});
+defineEmits(['switch-tab']);
 
 // State
 const searchQuery = ref('');
@@ -249,5 +272,9 @@ const resetFilters = () => {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+.stat-card {
+  @apply text-center px-4 py-3 rounded-xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/10 shadow-sm dark:shadow-none min-w-[100px];
 }
 </style>

@@ -1,13 +1,38 @@
+<!-- components/lab/brain-training/ExercisesView.vue -->
 <template>
   <div class="px-4 py-8 sm:px-6 lg:px-8 font-sans">
     <!-- Header Section -->
-    <div class="mx-auto max-w-7xl text-center mb-12">
-      <h1 class="mb-4 bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 dark:from-cyan-400 dark:via-blue-400 dark:to-purple-400 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent sm:text-5xl lg:text-6xl animate-fade-in-up">
-        Библиотека упражнений
-      </h1>
-      <p class="mx-auto max-w-2xl text-lg text-slate-600 dark:text-slate-400">
-        Коллекция из 50 когнитивных упражнений для развития памяти, внимания, мышления и скорости реакции.
-      </p>
+    <div class="mb-8">
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight">
+            Библиотека Упражнений
+          </h2>
+          <p class="text-slate-600 dark:text-cyan-300/70 text-sm sm:text-base leading-relaxed max-w-2xl">
+            Коллекция из 50 когнитивных упражнений для развития памяти, внимания, мышления и скорости реакции.
+          </p>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="flex items-center gap-4">
+          <div class="stat-card">
+            <div class="text-2xl font-bold text-cyan-600 dark:text-cyan-400">
+              {{ exercises.length }}
+            </div>
+            <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide">
+              Упражнений
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="text-2xl font-bold text-rose-600 dark:text-rose-400">
+              {{ categories.length - 1 }}
+            </div>
+            <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide">
+              Категорий
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Controls Section -->
@@ -155,9 +180,9 @@
                         <i class="fas fa-project-diagram"></i> Связанные ментальные модели
                     </h4>
                     <p class="text-slate-700 dark:text-slate-300 text-sm">
-                        <NuxtLink to="/lab/models" class="hover:underline text-purple-600 dark:text-purple-300 font-medium">
+                        <button class="hover:underline text-purple-600 dark:text-purple-300 font-medium" @click="$emit('switch-tab', 'models')">
                             {{ selectedExercise.relatedModels }}
-                        </NuxtLink>
+                        </button>
                     </p>
                 </div>
             </div>
@@ -171,8 +196,7 @@
                   Закрыть
                 </button>
                 <NuxtLink 
-                    v-if="selectedExercise.link"
-                    :to="selectedExercise.link"
+                    :to="selectedExercise.link || `/lab/brain-training/exercise-runner?id=${selectedExercise.id}`"
                     class="rounded-lg bg-gradient-to-r from-cyan-600 to-blue-600 px-6 py-3 font-semibold text-white shadow-lg shadow-cyan-500/30 transition-all hover:opacity-90 active:scale-95 flex items-center gap-2"
                 >
                     <i class="fas fa-play"></i> Начать
@@ -189,14 +213,12 @@ import { ref, computed, onUnmounted } from 'vue';
 import { exercises, type Exercise } from '@/data/exercises';
 import ExerciseCard from '@/components/lab/ExerciseCard.vue';
 
-definePageMeta({
-  layout: 'laboratory'
-});
-
 // State
 const searchQuery = ref('');
 const selectedCategory = ref('Все');
 const selectedExercise = ref<Exercise | null>(null);
+
+defineEmits(['switch-tab']);
 
 // Categories
 const categories = computed(() => {
@@ -257,5 +279,9 @@ const resetFilters = () => {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+.stat-card {
+  @apply text-center px-4 py-3 rounded-xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/10 shadow-sm dark:shadow-none min-w-[100px];
 }
 </style>
