@@ -258,6 +258,15 @@ const stations = [
     hoverBorder: "hover:border-green-500/60",
   },
   {
+    name: "Когнитивные Модели",
+    subtitle: "Ментальные схемы",
+    link: "/lab/brain-training",
+    icon: "fas fa-project-diagram",
+    gradientFrom: "indigo-500",
+    gradientTo: "purple-600",
+    hoverBorder: "hover:border-indigo-500/60",
+  },
+  {
     name: "Психология",
     subtitle: "Теории и техники",
     link: "/lab/psychology",
