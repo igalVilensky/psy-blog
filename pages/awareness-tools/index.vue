@@ -78,14 +78,14 @@ import big5Image from "@/assets/images/awarenessTools/big5.jpg";
 const tools = ref([
   {
     name: "12 Архетипов",
-    path: "/lab/experiments/life-purpose-archetype",
+    path: "/lab/tests/life-purpose-archetype",
     description:
       "Погрузитесь в глубокое исследование архетипов вашей личности и раскройте истинную цель вашей жизни через трансформационный процесс самопознания.",
     image: LifeArchetypeImage,
   },
   {
     name: "Большая пятёрка",
-    path: "/lab/experiments/big-5-model",
+    path: "/lab/tests/big-5-model",
     description:
       "Узнайте себя лучше через проверенную модель 'Большой Пятёрки' и откройте новые перспективы для личного и профессионального роста.",
     image: big5Image,

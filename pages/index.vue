@@ -240,7 +240,7 @@ const labActive = ref(false);
 // --- STATIONS (quick links) ---
 const stations = [
   {
-    name: "Когнитивные тесты",
+    name: "Тесты",
     subtitle: "Оценка функций",
     link: "/lab/tests",
     icon: "fas fa-brain",

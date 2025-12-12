@@ -20,14 +20,14 @@
         
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
           <NuxtLink
-            to="/lab/experiments/life-purpose-archetype/assessment"
+            to="/lab/tests/life-purpose-archetype/assessment"
             class="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white transition-all duration-200 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl hover:from-purple-500 hover:to-pink-500 shadow-lg hover:shadow-purple-500/25 transform hover:-translate-y-1"
           >
             <i class="fas fa-play mr-2"></i>
             Начать исследование
           </NuxtLink>
           <NuxtLink
-            to="/lab/experiments/life-purpose-archetype/explanation"
+            to="/lab/tests/life-purpose-archetype/explanation"
             class="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-slate-700 dark:text-slate-200 transition-all duration-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-purple-300 dark:hover:border-purple-700"
           >
             <i class="fas fa-book-open mr-2"></i>

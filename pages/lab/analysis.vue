@@ -288,7 +288,7 @@
           </div>
           <div class="flex items-center gap-3">
             <NuxtLink
-              to="/lab/experiments/big-5-model"
+              to="/lab/tests/big-5-model"
               class="text-xs px-3 py-1.5 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 hover:bg-purple-500/20 transition-colors border border-purple-500/20"
             >
               <i class="fas fa-brain mr-1"></i>

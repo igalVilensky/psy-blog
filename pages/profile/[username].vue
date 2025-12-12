@@ -400,7 +400,7 @@
                 Пройдите тест на архетипы, чтобы увидеть ваш психологический
                 профиль
               </p>
-              <NuxtLink to="/lab/experiments/life-purpose-archetype" class="start-button">
+              <NuxtLink to="/lab/tests/life-purpose-archetype" class="start-button">
                 <span class="button-gradient"></span>
                 <span class="button-content">
                   <i class="fas fa-play-circle mr-2"></i>

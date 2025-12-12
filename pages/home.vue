@@ -374,7 +374,7 @@ const fetchUserStats = async (userId) => {
         .map(([name, score]) => ({ name, score }));
       stats.value.tests = {
         completedTest: { name: "Archetype Test", topArchetypes },
-        ctas: [{ name: "Big 5 Test", link: "/lab/experiments/big-5-model" }],
+        ctas: [{ name: "Big 5 Test", link: "/lab/tests/big-5-model" }],
       };
     } else {
       stats.value.tests = {

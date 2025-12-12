@@ -104,7 +104,7 @@ const email = ref("");
 
 const sitemapLinks = [
   { label: "Лаборатория", to: "/lab" },
-  { label: "Когнитивные тесты", to: "/lab/tests" },
+  { label: "Тесты", to: "/lab/tests" },
   { label: "Развивающие игры", to: "/lab/games" },
   { label: "Психология", to: "/lab/psychology" },
   { label: "Медитация", to: "/lab/mindfulness" },

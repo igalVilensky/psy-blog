@@ -39,7 +39,7 @@
                 exact-active-class="bg-slate-50 dark:bg-slate-700/50 text-slate-900 dark:text-white"
                 @click="closeDropdown">
                 <i class="fas fa-brain text-blue-500 w-4"></i>
-                <span>Когнитивные тесты</span>
+                <span>Тесты</span>
               </NuxtLink>
               <NuxtLink to="/lab/games"
                 class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors duration-150"
@@ -289,7 +289,7 @@
                   exact-active-class="bg-slate-200 dark:bg-slate-700/50 text-slate-900 dark:text-white"
                   @click="closeDropdown">
                   <i class="fas fa-vial text-cyan-400 text-xs w-4"></i>
-                  <span>Когнитивные тесты</span>
+                  <span>Тесты</span>
                 </NuxtLink>
                 <NuxtLink to="/lab/games"
                   class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
@@ -524,8 +524,8 @@ const isToolsRouteActive = computed(() => {
   const toolsRoutes = [
     "/lab/experiments/emotional-compass",
     "/lab/experiments/wheel-of-life",
-    "/lab/experiments/life-purpose-archetype",
-    "/lab/experiments/big-5-model",
+    "/lab/tests/life-purpose-archetype",
+    "/lab/tests/big-5-model",
     "/lab/experiments/daily-growth-spark",
   ];
   return toolsRoutes.includes(route.path);

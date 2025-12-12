@@ -8,24 +8,23 @@
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
           <div>
             <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight">
-              КОГНИТИВНЫЕ ТЕСТЫ
+              ТЕСТЫ
             </h1>
             <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed max-w-2xl">
-              Комплексная оценка когнитивных функций: память, внимание, логика и
-              скорость реакции
+              Профессиональные психологические и когнитивные тесты для глубокого самопознания
             </p>
           </div>
 
           <!-- Stats Overview -->
           <div class="flex items-center gap-4">
             <div class="stat-card">
-              <div class="text-2xl font-bold text-cyan-600 dark:text-cyan-400">12</div>
+              <div class="text-2xl font-bold text-cyan-600 dark:text-cyan-400">14</div>
               <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                 Тестов
               </div>
             </div>
             <div class="stat-card">
-              <div class="text-2xl font-bold text-purple-600 dark:text-purple-400">8</div>
+              <div class="text-2xl font-bold text-purple-600 dark:text-purple-400">9</div>
               <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                 Категорий
               </div>
@@ -45,6 +44,68 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- 12 Archetypes -->
+          <NuxtLink to="/lab/tests/life-purpose-archetype" class="test-category-card group">
+            <div class="flex items-start justify-between mb-4">
+              <div class="icon-wrapper bg-gradient-to-br from-indigo-500 to-violet-600">
+                <i class="fas fa-star text-white text-xl"></i>
+              </div>
+              <span class="difficulty-badge difficulty-medium"> Средняя </span>
+            </div>
+
+            <h3
+              class="text-lg font-semibold text-slate-900 dark:text-white mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
+              12 Архетипов
+            </h3>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mb-1">Личность и предназначение</p>
+            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+              Определение доминирующих архетипов в вашем бессознательном. Глубокий анализ личности.
+            </p>
+
+            <div class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-700/50">
+              <div class="flex items-center gap-2 text-cyan-600 dark:text-cyan-400">
+                <i class="fas fa-clock text-xs"></i>
+                <span class="text-xs font-medium">25 мин</span>
+              </div>
+              <div class="flex items-center gap-2 text-purple-600 dark:text-purple-400">
+                <i class="fas fa-check-circle text-xs"></i>
+                <span class="text-xs font-medium">Доступен</span>
+              </div>
+            </div>
+            <div class="card-shine"></div>
+          </NuxtLink>
+
+          <!-- Big 5 Model -->
+          <NuxtLink to="/lab/tests/big-5-model" class="test-category-card group">
+            <div class="flex items-start justify-between mb-4">
+              <div class="icon-wrapper bg-gradient-to-br from-purple-500 to-indigo-600">
+                <i class="fas fa-chart-bar text-white text-xl"></i>
+              </div>
+              <span class="difficulty-badge difficulty-medium"> Средняя </span>
+            </div>
+
+            <h3
+              class="text-lg font-semibold text-slate-900 dark:text-white mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
+              Большая Пятёрка
+            </h3>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mb-1">Модель личности</p>
+            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+              Классическая модель личности: экстраверсия, доброжелательность, добросовестность и другие черты.
+            </p>
+
+            <div class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-700/50">
+              <div class="flex items-center gap-2 text-cyan-600 dark:text-cyan-400">
+                <i class="fas fa-clock text-xs"></i>
+                <span class="text-xs font-medium">20 мин</span>
+              </div>
+              <div class="flex items-center gap-2 text-purple-600 dark:text-purple-400">
+                <i class="fas fa-check-circle text-xs"></i>
+                <span class="text-xs font-medium">Доступен</span>
+              </div>
+            </div>
+            <div class="card-shine"></div>
+          </NuxtLink>
+
           <!-- Digit Span Test -->
           <NuxtLink to="/lab/tests/digit-span" class="test-category-card group">
             <!-- Icon Header -->
@@ -327,12 +388,10 @@
             <i class="fas fa-info-circle text-cyan-600 dark:text-cyan-400 text-xl"></i>
           </div>
           <div class="flex-1">
-            <h4 class="text-slate-900 dark:text-white font-semibold mb-1">О когнитивных тестах</h4>
+            <h4 class="text-slate-900 dark:text-white font-semibold mb-1">О тестах</h4>
             <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-              Регулярное прохождение когнитивных тестов помогает отслеживать
-              динамику развития умственных способностей и выявлять области для
-              улучшения. Рекомендуется проходить тесты в спокойной обстановке и
-              в хорошем самочувствии.
+              Регулярное прохождение тестов помогает лучше узнать себя, отслеживать
+              динамику развития и выявлять области для улучшения.
             </p>
           </div>
         </div>
@@ -349,21 +408,21 @@ definePageMeta({
 });
 
 useHead({
-  title: "Когнитивные Тесты",
+  title: "Тесты",
   meta: [
     {
       name: "description",
       content:
-        "Оцените свои когнитивные способности с помощью профессиональных психологических тестов и методик.",
+        "Оцените свои способности и узнайте больше о своей личности с помощью профессиональных тестов.",
     },
     {
       property: "og:title",
-      content: "Когнитивные Тесты | MindQ Lab",
+      content: "Тесты | MindQ Lab",
     },
     {
       property: "og:description",
       content:
-        "Оцените свои когнитивные способности с помощью профессиональных психологических тестов и методик.",
+        "Оцените свои способности и узнайте больше о своей личности с помощью профессиональных тестов.",
     },
     {
       property: "og:image",

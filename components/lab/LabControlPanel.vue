@@ -185,7 +185,7 @@
         </div>
 
         <!-- Interactive Tests Station -->
-        <StationLink to="/lab/tests" icon="fa-brain" title="Когнитивные Тесты" subtitle="Оценка функций"
+        <StationLink to="/lab/tests" icon="fa-brain" title="Тесты" subtitle="Оценка функций"
           :active="route.path === '/lab/tests'" gradient-from="blue-500" gradient-to="indigo-600" />
 
         <!-- Brain Games Station -->
@@ -354,7 +354,7 @@ const mobileStations = computed(() => [
     to: "/lab/tests",
     icon: "fa-brain",
     title: "Тесты",
-    subtitle: "Когнитивные",
+    subtitle: "Все категории",
     gradientFrom: "blue-500",
     gradientTo: "indigo-600",
   },

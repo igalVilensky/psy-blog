@@ -188,7 +188,7 @@ const activeFilter = ref("all");
 const hoveredCard = ref(null);
 
 const stats = {
-  total: 12,
+  total: 10,
   completed: 4,
   inProgress: 3,
   available: 5,
@@ -222,33 +222,7 @@ const experiments = ref([
     tags: ["баланс", "жизнь", "планирование"],
     path: "/lab/experiments/wheel-of-life",
   },
-  {
-    id: "life-purpose-archetype",
-    name: "12 Архетипов",
-    description: "Определение доминирующих архетипов в вашем бессознательном",
-    category: "archetype",
-    icon: "fas fa-star text-indigo-600 dark:text-indigo-400",
-    duration: "25 мин",
-    questions: 48,
-    difficulty: 3,
-    status: "available",
-    tags: ["архетипы", "юнг", "психоанализ"],
-    path: "/lab/experiments/life-purpose-archetype",
-  },
-  {
-    id: "big-5-model",
-    name: "Большая Пятёрка",
-    description:
-      "Классическая модель личности: экстраверсия, доброжелательность, добросовестность",
-    category: "personality",
-    icon: "fas fa-chart-bar text-purple-600 dark:text-purple-400",
-    duration: "20 мин",
-    questions: 60,
-    difficulty: 2,
-    status: "available",
-    tags: ["личность", "черты", "характер"],
-    path: "/lab/experiments/big-5-model",
-  },
+
   {
     id: "daily-growth-spark",
     name: "Ежедневная Искра Роста",

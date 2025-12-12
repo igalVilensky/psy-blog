@@ -20,14 +20,14 @@
         
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
           <NuxtLink
-            to="/lab/experiments/big-5-model/assessment"
+            to="/lab/tests/big-5-model/assessment"
             class="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white transition-all duration-200 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl hover:from-blue-500 hover:to-indigo-500 shadow-lg hover:shadow-blue-500/25 transform hover:-translate-y-1"
           >
             <i class="fas fa-play mr-2"></i>
             Пройти тест
           </NuxtLink>
           <NuxtLink
-            to="/lab/experiments/big-5-model/explanation"
+            to="/lab/tests/big-5-model/explanation"
             class="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-slate-700 dark:text-slate-200 transition-all duration-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-blue-300 dark:hover:border-blue-700"
           >
             <i class="fas fa-book-open mr-2"></i>
