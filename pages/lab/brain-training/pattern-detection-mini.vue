@@ -33,9 +33,19 @@
             </li>
           </ul>
           
-          <button @click="startGame" class="w-full py-4 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold text-lg hover:shadow-lg hover:shadow-cyan-500/25 transition transform hover:-translate-y-1">
-            Начать (10 заданий)
-          </button>
+          <div class="grid sm:grid-cols-1 gap-4 mt-8">
+             <button v-for="level in difficulties" :key="level.id" @click="startGame(level.id)" class="group relative p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 hover:border-cyan-500 dark:hover:border-cyan-500 transition-all text-left">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div :class="['font-bold text-lg mb-1', level.color]">{{ level.label }}</div>
+                        <div class="text-sm text-slate-600 dark:text-slate-400">{{ level.sub }}</div>
+                    </div>
+                    <i class="fas fa-arrow-right text-slate-300 group-hover:text-cyan-500 transition-colors"></i>
+                </div>
+             </button>
+          </div>
+          
+          <!-- Removed single start button in favor of levels -->
         </div>
       </div>
 
@@ -116,54 +126,157 @@ definePageMeta({
   layout: "laboratory",
 });
 
+// GAME CONFIG
+const LEVELS = {
+  easy: { rounds: 10, time: 20 },
+  medium: { rounds: 15, time: 15 },
+  hard: { rounds: 20, time: 10 }
+};
+
+const difficulties = [
+  { id: 'easy', label: 'Легкий уровень', sub: 'Простые арифметические и визуальные паттерны', color: 'text-emerald-500' },
+  { id: 'medium', label: 'Средний уровень', sub: 'Комбинированные правила', color: 'text-yellow-500' },
+  { id: 'hard', label: 'Сложный уровень', sub: 'Изменяющиеся правила и сложные последовательности', color: 'text-red-500' }
+];
+
 const gameState = ref('start');
 const currentRound = ref(0);
 const totalRounds = ref(10);
 const score = ref(0);
 const feedback = ref(null); // null, 'correct', 'wrong'
 const selectedAnswer = ref(null);
+const startTime = ref(0);
+const rawData = ref([]);
 
-const questions = [
-  { sequence: ['1', '3', '5', '?', '9'], options: ['6', '7', '8', '4'], answer: '7' },
-  { sequence: ['A', 'C', 'E', '?', 'I'], options: ['F', 'G', 'H', 'D'], answer: 'G' },
-  { sequence: ['⬛', '⬜', '⬛', '?', '⬛'], options: ['⬛', '⬜', '🟥', '🔷'], answer: '⬜' },
-  { sequence: ['10', '20', '30', '?', '50'], options: ['35', '40', '45', '25'], answer: '40' },
-  { sequence: ['⬆️', '➡️', '⬇️', '?', '⬆️'], options: ['⬅️', '↗️', '⬇️', '↖️'], answer: '⬅️' },
-  { sequence: ['2', '4', '8', '?', '32'], options: ['12', '16', '24', '14'], answer: '16' },
-  { sequence: ['🔴', '🔵', '🔴', '🔵', '?'], options: ['🔴', '🔵', '🟢', '🟡'], answer: '🔴' },
-  { sequence: ['1', '1', '2', '3', '?', '8'], options: ['4', '5', '6', '7'], answer: '5' }, // Fibonacci
-  { sequence: ['Z', 'X', 'V', '?', 'R'], options: ['T', 'S', 'U', 'W'], answer: 'T' },
-  { sequence: ['🌑', '🌒', '🌓', '?', '🌕'], options: ['🌔', '🌖', '🌗', '🌘'], answer: '🌔' },
+const selectedDifficulty = ref('easy');
+
+const allQuestions = [
+  // EASY - Simple Arithmetic & Visual
+  { difficulty: 'easy', sequence: ['1', '3', '5', '?', '9'], options: ['6', '7', '8', '4'], answer: '7' },
+  { difficulty: 'easy', sequence: ['2', '4', '8', '?', '32'], options: ['12', '16', '24', '14'], answer: '16' },
+  { difficulty: 'easy', sequence: ['10', '20', '30', '?', '50'], options: ['35', '40', '45', '25'], answer: '40' },
+  { difficulty: 'easy', sequence: ['⬛', '⬜', '⬛', '?', '⬛'], options: ['⬛', '⬜', '🟥', '🔷'], answer: '⬜' },
+  { difficulty: 'easy', sequence: ['⬆️', '➡️', '⬇️', '?', '⬆️'], options: ['⬅️', '↗️', '⬇️', '↖️'], answer: '⬅️' },
+  { difficulty: 'easy', sequence: ['5', '10', '15', '?', '25'], options: ['18', '20', '22', '24'], answer: '20' },
+  { difficulty: 'easy', sequence: ['A', 'A', 'B', 'B', '?'], options: ['A', 'B', 'C', 'D'], answer: 'C' },
+  { difficulty: 'easy', sequence: ['⭐', '⭐', '🌙', '🌙', '?'], options: ['⭐', '🌙', '☀️', '☁️'], answer: '⭐' },
+  { difficulty: 'easy', sequence: ['100', '90', '80', '?', '60'], options: ['75', '70', '65', '85'], answer: '70' },
+  
+  // MEDIUM - Combined Logic
+  { difficulty: 'medium', sequence: ['A', 'C', 'E', '?', 'I'], options: ['F', 'G', 'H', 'D'], answer: 'G' }, // +2 letters
+  { difficulty: 'medium', sequence: ['1', '1', '2', '3', '?', '8'], options: ['4', '5', '6', '7'], answer: '5' }, // Fibonacci
+  { difficulty: 'medium', sequence: ['🔴', '🔵', '🔴', '🔵', '?'], options: ['🔴', '🔵', '🟢', '🟡'], answer: '🔴' }, // Color pattern
+  { difficulty: 'medium', sequence: ['1', '4', '9', '?', '25'], options: ['12', '16', '20', '14'], answer: '16' }, // Squares
+  { difficulty: 'medium', sequence: ['Z', 'X', 'V', '?', 'R'], options: ['T', 'S', 'U', 'W'], answer: 'T' }, // -2 letters
+  { difficulty: 'medium', sequence: ['🌑', '🌒', '🌓', '?', '🌕'], options: ['🌔', '🌖', '🌗', '🌘'], answer: '🌔' }, // Moon phases
+  { difficulty: 'medium', sequence: ['3', '6', '12', '?', '48'], options: ['24', '21', '36', '18'], answer: '24' }, // x2
+  { difficulty: 'medium', sequence: ['⚠️', '⛔', '⚠️', '⛔', '?'], options: ['⚠️', '⛔', '✅', '❌'], answer: '⚠️' },
+  
+  // HARD - Complex/Changing
+  { difficulty: 'hard', sequence: ['2', '3', '5', '7', '?'], options: ['9', '11', '13', '15'], answer: '11' }, // Primes
+  { difficulty: 'hard', sequence: ['1', '2', '6', '24', '?'], options: ['100', '120', '48', '96'], answer: '120' }, // Factorials
+  { difficulty: 'hard', sequence: ['M', 'T', 'W', 'T', '?', 'S'], options: ['F', 'S', 'M', 'T'], answer: 'F' }, // Days of week
+  { difficulty: 'hard', sequence: ['J', 'F', 'M', 'A', '?'], options: ['M', 'J', 'J', 'A'], answer: 'M' }, // Months
+  { difficulty: 'hard', sequence: ['❤️', '💙', '💛', '❤️', '?', '💛'], options: ['❤️', '💙', '💛', '💚'], answer: '💙' },
+  { difficulty: 'hard', sequence: ['1', '8', '27', '?', '125'], options: ['36', '64', '81', '49'], answer: '64' }, // Cubes
+  { difficulty: 'hard', sequence: ['A1', 'B2', 'C3', '?', 'E5'], options: ['D3', 'D4', 'C4', 'E4'], answer: 'D4' },
+  { difficulty: 'hard', sequence: ['⬆️', '↗️', '➡️', '↘️', '?'], options: ['⬇️', '↙️', '⬅️', '↖️'], answer: '⬇️' } // Clockwise rotation
 ];
 
-const currentQuestion = computed(() => questions[currentRound.value % questions.length]);
+const currentQuestion = computed(() => {
+  if (gameState.value !== 'running') return { sequence: [], options: [] };
+  const filtered = allQuestions.filter(q => q.difficulty === selectedDifficulty.value);
+  // Fallback to simple modulo if not enough questions, or random
+  return filtered[currentRound.value % filtered.length];
+});
 
-const startGame = () => {
+const startGame = (difficulty = 'easy') => {
+  selectedDifficulty.value = difficulty;
   score.value = 0;
   currentRound.value = 0;
+  totalRounds.value = LEVELS[difficulty].rounds;
   gameState.value = 'running';
   feedback.value = null;
   selectedAnswer.value = null;
+  rawData.value = [];
+  startTime.value = performance.now();
 };
 
 const handleAnswer = (option) => {
   if (feedback.value) return;
 
+  const rt = performance.now() - startTime.value;
   selectedAnswer.value = option;
   const isCorrect = option === currentQuestion.value.answer;
   
   if (isCorrect) score.value++;
   feedback.value = isCorrect ? 'correct' : 'wrong';
 
+  // Add to rawData - strictly typed for PatternDetectionSession
+  rawData.value.push({
+      round: currentRound.value + 1,
+      sequence: currentQuestion.value.sequence,
+      options: currentQuestion.value.options,
+      correctAnswer: currentQuestion.value.answer,
+      userAnswer: option,
+      isCorrect: isCorrect,
+      rt: Math.round(rt),
+      difficulty: selectedDifficulty.value
+  });
+
   setTimeout(() => {
     if (currentRound.value < totalRounds.value - 1) {
       currentRound.value++;
       feedback.value = null;
       selectedAnswer.value = null;
+      startTime.value = performance.now(); // Reset timer for next question
     } else {
-      gameState.value = 'finished';
+      finishGame();
     }
   }, 1000);
+};
+
+const finishGame = async () => {
+    gameState.value = 'finished';
+    await saveResults();
+};
+
+const saveResults = async () => {
+    try {
+        const { $firestore, $auth } = useNuxtApp();
+        const user = $auth.currentUser;
+        
+        if (!user) {
+            console.error('User not authenticated - cannot save results');
+            return;
+        }
+
+        const { collection, addDoc, serverTimestamp } = await import('firebase/firestore');
+        
+        const difficultyMap = { 'easy': 1, 'medium': 3, 'hard': 5 };
+        
+        // Calculate avgRT
+        const totalRT = rawData.value.reduce((acc, curr) => acc + curr.rt, 0);
+        const avgRTVal = rawData.value.length > 0 ? Math.round(totalRT / rawData.value.length) : 0;
+
+        // Strict Schema Match
+        const sessionData = {
+            sessionId: `pd-${Date.now()}`,
+            createdAt: serverTimestamp(),
+            totalRounds: totalRounds.value,
+            score: score.value,
+            accuracy: Math.round((score.value / totalRounds.value) * 100),
+            avgRT: avgRTVal,
+            difficultyLevel: difficultyMap[selectedDifficulty.value] || 1,
+            rawData: rawData.value,
+            exerciseId: 'pattern-detection-mini' // Keeping this as identifier, but schema is primary
+        };
+
+        const docRef = await addDoc(collection($firestore, `users/${user.uid}/patternDetectionResults`), sessionData);
+        console.log('Results saved successfully to', docRef.path);
+    } catch (e) {
+        console.error('Error saving results:', e);
+    }
 };
 
 const getOptionClass = (option) => {

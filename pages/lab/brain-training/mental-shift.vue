@@ -227,6 +227,7 @@ const currentStimulus = ref({});
 const previousRuleId = ref(null);
 const switchTrials = ref([]); // Stores times for trials where rule changed
 const repeatTrials = ref([]); // Stores times for trials where rule stayed same
+const rawData = ref([]); // Stores detailed round info
 
 // LOGIC
 const selectLevel = (level) => {
@@ -241,6 +242,7 @@ const startGame = () => {
   times.value = [];
   switchTrials.value = [];
   repeatTrials.value = [];
+  rawData.value = []; // Reset raw data
   totalRounds.value = LEVELS[difficulty.value].rounds;
   generateRound();
 };
@@ -277,12 +279,12 @@ const createStimulus = (rule) => {
   if (rule.id === 'parity') {
     // Generate number 1-9
     const val = Math.floor(Math.random() * 9) + 1;
-    return { id, type: 'text', value: val, answer: val % 2 === 0 ? 'left' : 'right', color };
+    return { id, type: 'text', value: val, answer: val % 2 === 0 ? 'left' : 'right', color, background: 'hsl(210, 70%, 55%)' };
   }
   
   if (rule.id === 'magnitude') {
     const val = Math.floor(Math.random() * 9) + 1;
-    return { id, type: 'text', value: val, answer: val < 5 ? 'left' : 'right', color };
+    return { id, type: 'text', value: val, answer: val < 5 ? 'left' : 'right', color, background: 'hsl(45, 70%, 55%)' };
   }
 
   if (rule.id === 'shape') {
@@ -291,7 +293,7 @@ const createStimulus = (rule) => {
     const isSharp = Math.random() > 0.5;
     const arr = isSharp ? sharp : round;
     const val = arr[Math.floor(Math.random() * arr.length)];
-    return { id, type: 'icon', value: val, answer: isSharp ? 'left' : 'right', color };
+    return { id, type: 'icon', value: val, answer: isSharp ? 'left' : 'right', color, background: 'hsl(120, 50%, 45%)' };
   }
 
   if (rule.id === 'color') {
@@ -311,11 +313,12 @@ const createStimulus = (rule) => {
       type: 'text', 
       value: word, 
       answer: ink.isRed ? 'left' : 'right', 
-      color: ink.css 
+      color: ink.css,
+      background: 'hsl(0, 70%, 65%)'
     };
   }
   
-  return { id, type: 'text', value: '?', answer: 'left' };
+  return { id, type: 'text', value: '?', answer: 'left', background: 'gray' };
 };
 
 const handleInput = (direction) => {
@@ -324,10 +327,11 @@ const handleInput = (direction) => {
 
   const rt = performance.now() - startTime.value;
   const isCorrect = direction === currentStimulus.value.answer;
+  const isSwitch = previousRuleId.value !== currentRule.value.id && currentRound.value > 1;
 
   // Record stats
   if (isCorrect) {
-    if (previousRuleId.value !== currentRule.value.id && currentRound.value > 1) {
+    if (isSwitch) {
       switchTrials.value.push(rt);
     } else {
       repeatTrials.value.push(rt);
@@ -335,6 +339,23 @@ const handleInput = (direction) => {
   } else {
     errors.value++;
   }
+  
+  // Add to rawData
+  rawData.value.push({
+    round: currentRound.value,
+    stimulus: {
+        type: currentStimulus.value.type,
+        value: typeof currentStimulus.value.value === 'number' ? currentStimulus.value.value.toString() : currentStimulus.value.value,
+        background: currentStimulus.value.background,
+        ...(currentStimulus.value.color !== 'white' ? { displayColor: currentStimulus.value.color } : {})
+    },
+    rule: currentRule.value.id,
+    userResponse: direction === 'left' ? 'LEFT' : 'RIGHT',
+    correctResponse: currentStimulus.value.answer === 'left' ? 'LEFT' : 'RIGHT',
+    correct: isCorrect,
+    rt: Math.round(rt),
+    isSwitch: isSwitch
+  });
 
   // Feedback Animation
   feedback.value = isCorrect ? 'correct' : 'wrong';
@@ -349,8 +370,63 @@ const handleInput = (direction) => {
   }, 400); // 400ms delay for feedback
 };
 
-const finishGame = () => {
+const finishGame = async () => {
   gameState.value = 'finished';
+  await saveResults();
+};
+
+const saveResults = async () => {
+    try {
+        const { $firestore, $auth } = useNuxtApp();
+        const user = $auth.currentUser;
+        
+        if (!user) {
+            console.error('User not authenticated - cannot save mental shift');
+            return;
+        }
+
+        const { collection, addDoc, serverTimestamp } = await import('firebase/firestore');
+        
+        // Calculate derived stats
+        const normalRTVal = repeatTrials.value.length > 0 
+            ? Math.round(repeatTrials.value.reduce((a, b) => a + b, 0) / repeatTrials.value.length) 
+            : 0;
+            
+        const switchRTVal = switchTrials.value.length > 0 
+            ? Math.round(switchTrials.value.reduce((a, b) => a + b, 0) / switchTrials.value.length) 
+            : 0;
+
+        // Basic score calculation
+        const scoreVal = Math.max(0, Math.round(
+            (accuracy.value * 0.5 + 
+            (1 - Math.min(1, avgTime.value / 2000)) * 25 + 
+            (1 - Math.min(1, Math.max(0, switchCost.value) / 1000)) * 25
+            ) * 10 
+        ));
+
+        const difficultyMap = { 'easy': 1, 'medium': 3, 'hard': 5 };
+
+        // Match expected SCHEMA exactly
+        const sessionData = {
+            sessionId: `ms-${Date.now()}`,
+            createdAt: serverTimestamp(),
+            totalRounds: totalRounds.value,
+            accuracy: accuracy.value,
+            avgRT: avgTime.value,
+            normalRT: normalRTVal, // Computed correctly
+            switchRT: switchRTVal, // Computed correctly
+            switchCost: switchCost.value,
+            score: scoreVal,
+            difficultyLevel: difficultyMap[difficulty.value] || 1,
+            rulesUsed: [...new Set(rawData.value.map(r => r.rule))],
+            rawData: rawData.value // Full history
+        };
+
+        const docRef = await addDoc(collection($firestore, `users/${user.uid}/mentalShiftResults`), sessionData);
+        console.log('Results saved successfully to', docRef.path);
+    } catch (e) {
+        console.error('Error saving results:', e);
+    }
 };
 
 // KEYBOARD CONTROLS
