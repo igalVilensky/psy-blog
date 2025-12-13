@@ -108,7 +108,7 @@ const sitemapLinks = [
   { label: "Тренировка Мозга", to: "/lab/brain-training" },
   { label: "Психология", to: "/lab/psychology" },
   { label: "Медитация", to: "/lab/mindfulness" },
-  { label: "Звукотерапия", to: "/lab/sound-therapy" },
+
   { label: "Саморазвитие", to: "/lab/growth" },
   { label: "Карта Мозга", to: "/lab/brain-map" },
   { label: "Нейро Анализ", to: "/lab/dashboard" },

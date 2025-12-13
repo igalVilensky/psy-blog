@@ -206,9 +206,7 @@
         <StationLink to="/lab/mindfulness" icon="fa-spa" title="Медитация" subtitle="Аудио и видео"
           :active="route.path === '/lab/mindfulness'" gradient-from="teal-500" gradient-to="cyan-600" />
 
-        <!-- Sound Therapy Station -->
-        <StationLink to="/lab/sound-therapy" icon="fa-music" title="Звукотерапия" subtitle="Бинауральные ритмы"
-          :active="route.path === '/lab/sound-therapy'" gradient-from="indigo-500" gradient-to="purple-600" />
+
 
         <!-- Brain Map Station -->
         <StationLink to="/lab/brain-map" icon="fa-map" title="Карта Мозга" subtitle="Интерактивная"
@@ -387,14 +385,7 @@ const mobileStations = computed(() => [
     gradientFrom: "teal-500",
     gradientTo: "cyan-600",
   },
-  {
-    to: "/lab/sound-therapy",
-    icon: "fa-music",
-    title: "Звукотерапия",
-    subtitle: "Бинауральные",
-    gradientFrom: "indigo-500",
-    gradientTo: "purple-600",
-  },
+
   {
     to: "/lab/brain-map",
     icon: "fa-map",

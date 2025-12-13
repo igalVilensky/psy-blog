@@ -155,15 +155,7 @@ const availableModules: Module[] = [
     description: 'Практики осознанности',
     path: '/lab/mindfulness'
   },
-  {
-    id: 'tool-sound',
-    type: 'tool',
-    category: 'tools',
-    name: 'Звукотерапия',
-    icon: '🔊',
-    description: 'Бинауральные ритмы и фокус',
-    path: '/lab/sound-therapy'
-  },
+
   {
     id: 'tool-brain-map',
     type: 'tool',
@@ -233,14 +225,7 @@ const prebuiltTemplates: Partial<LabFlow>[] = [
     category: 'focus',
     tags: ['работа', 'поток', 'концентрация'],
     modules: [
-      {
-        id: 'tool-sound',
-        type: 'tool',
-        category: 'tools',
-        name: 'Звукотерапия',
-        icon: '🔊',
-        description: 'Бинауральные ритмы для фокуса'
-      },
+
       {
         id: 'game-stroop',
         type: 'game',
@@ -293,14 +278,7 @@ const prebuiltTemplates: Partial<LabFlow>[] = [
         icon: '🧘',
         description: 'Дыхательные практики'
       },
-      {
-        id: 'tool-sound',
-        type: 'tool',
-        category: 'tools',
-        name: 'Звукотерапия',
-        icon: '🔊',
-        description: 'Успокаивающие звуки природы'
-      }
+
     ],
     estimatedDuration: 10
   },

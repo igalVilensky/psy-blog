@@ -62,13 +62,7 @@
                 <i class="fas fa-spa text-teal-500 w-4"></i>
                 <span>Медитация</span>
               </NuxtLink>
-              <NuxtLink to="/lab/sound-therapy"
-                class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors duration-150"
-                exact-active-class="bg-slate-50 dark:bg-slate-700/50 text-slate-900 dark:text-white"
-                @click="closeDropdown">
-                <i class="fas fa-music text-indigo-500 w-4"></i>
-                <span>Звукотерапия</span>
-              </NuxtLink>
+
               <NuxtLink to="/lab/brain-map"
                 class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors duration-150"
                 exact-active-class="bg-slate-50 dark:bg-slate-700/50 text-slate-900 dark:text-white"
@@ -312,13 +306,7 @@
                   <i class="fas fa-infinity text-green-400 text-xs w-4"></i>
                   <span>Медитация</span>
                 </NuxtLink>
-                <NuxtLink to="/lab/sound-therapy"
-                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
-                  exact-active-class="bg-slate-200 dark:bg-slate-700/50 text-slate-900 dark:text-white"
-                  @click="closeDropdown">
-                  <i class="fas fa-music text-indigo-400 text-xs w-4"></i>
-                  <span>Звукотерапия</span>
-                </NuxtLink>
+
                 <NuxtLink to="/lab/growth"
                   class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
                   exact-active-class="bg-slate-200 dark:bg-slate-700/50 text-slate-900 dark:text-white"

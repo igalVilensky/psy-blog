@@ -71,7 +71,7 @@ const crumbs = computed(() => {
       'personality': 'Личность',
       'stroop': 'Тест Струпа',
       'reaction': 'Реакция',
-      'sound-therapy': 'Звукотерапия',
+
       'deep-conversation': 'Глубокий разговор',
       'habit-override': 'Перепрошивка Привычек',
       'blog': 'Блог',
