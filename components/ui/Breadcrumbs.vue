@@ -59,9 +59,9 @@ const crumbs = computed(() => {
       'games': 'Игры',
       'mindfulness': 'Медитация',
       'brain-map': 'Карта мозга',
-      'dashboard': 'Нейро Анализ',
+      'dashboard': 'Центр Управления',
       'growth': 'Саморазвитие',
-      'analysis': 'Обсерватория',
+      // 'analysis': 'Обсерватория', // Removed as page is deleted
       'community': 'Сообщество',
       'trail-making': 'Trail Making Test',
       'ego-states': 'Эго-состояния',

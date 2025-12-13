@@ -93,9 +93,8 @@ const currentTime = ref("");
 const currentStation = computed(() => {
   const stationMap = {
     "/lab": "ГЛАВНЫЙ_КОНТРОЛЬ",
-    "/lab/dashboard": "НЕЙРО_ДАШБОРД",
+    "/lab/dashboard": "ЦЕНТР_УПРАВЛЕНИЯ",
     "/lab/growth": "ЭКСПЕРИМЕНТАЛЬНАЯ",
-    "/lab/analysis": "АНАЛИЗ_ДАННЫХ",
     "/lab/community": "СООБЩЕСТВО",
     "/profile": "ПРОФИЛЬ",
     "/lab/tests": "КОГНИТИВНЫЕ_ТЕСТЫ",

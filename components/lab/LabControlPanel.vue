@@ -213,14 +213,11 @@
           :active="route.path === '/lab/brain-map'" gradient-from="orange-500" gradient-to="red-600" />
 
         <!-- Neuro Analysis Station -->
-        <StationLink to="/lab/dashboard" icon="fa-microchip" title="Нейро Анализ" subtitle="Картирование мозга"
+        <StationLink to="/lab/dashboard" icon="fa-microchip" title="Центр Управления" subtitle="Панель мониторинга"
           :active="route.path === '/lab/dashboard'" gradient-from="cyan-500" gradient-to="blue-600" />
 
 
 
-        <!-- Growth Observatory -->
-        <StationLink to="/lab/analysis" icon="fa-chart-line" title="Обсерватория Роста" subtitle="Прогресс и аналитика"
-          :active="route.path === '/lab/analysis'" gradient-from="emerald-500" gradient-to="green-600" />
 
         <!-- Community Hub -->
         <StationLink to="/lab/community" icon="fa-users" title="Сообщество" subtitle="Исследователи онлайн"
@@ -397,20 +394,13 @@ const mobileStations = computed(() => [
   {
     to: "/lab/dashboard",
     icon: "fa-microchip",
-    title: "Нейро Анализ",
-    subtitle: "Картирование",
+    title: "Центр Управления",
+    subtitle: "Мониторинг",
     gradientFrom: "cyan-500",
     gradientTo: "blue-600",
   },
 
-  {
-    to: "/lab/analysis",
-    icon: "fa-chart-line",
-    title: "Обсерватория",
-    subtitle: "Рост",
-    gradientFrom: "emerald-500",
-    gradientTo: "green-600",
-  },
+
   {
     to: "/lab/community",
     icon: "fa-users",

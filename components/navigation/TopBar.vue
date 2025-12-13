@@ -75,7 +75,7 @@
                 exact-active-class="bg-slate-50 dark:bg-slate-700/50 text-slate-900 dark:text-white"
                 @click="closeDropdown">
                 <i class="fas fa-microchip text-cyan-500 w-4"></i>
-                <span>Нейро Анализ</span>
+                <span>Центр Управления</span>
               </NuxtLink>
               <NuxtLink to="/lab/growth"
                 class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors duration-150"
@@ -84,13 +84,7 @@
                 <i class="fas fa-atom text-purple-500 w-4"></i>
                 <span>Саморазвитие</span>
               </NuxtLink>
-              <NuxtLink to="/lab/analysis"
-                class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors duration-150"
-                exact-active-class="bg-slate-50 dark:bg-slate-700/50 text-slate-900 dark:text-white"
-                @click="closeDropdown">
-                <i class="fas fa-chart-line text-emerald-500 w-4"></i>
-                <span>Обсерватория роста</span>
-              </NuxtLink>
+
               <NuxtLink to="/lab/community"
                 class="flex items-center space-x-3 px-4 py-2.5 text-[15px] text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors duration-150"
                 exact-active-class="bg-slate-50 dark:bg-slate-700/50 text-slate-900 dark:text-white"
@@ -326,15 +320,9 @@
                   exact-active-class="bg-slate-200 dark:bg-slate-700/50 text-slate-900 dark:text-white"
                   @click="closeDropdown">
                   <i class="fas fa-microchip text-cyan-400 text-xs w-4"></i>
-                  <span>Нейро Анализ</span>
+                  <span>Центр Управления</span>
                 </NuxtLink>
-                <NuxtLink to="/lab/analysis"
-                  class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
-                  exact-active-class="bg-slate-200 dark:bg-slate-700/50 text-slate-900 dark:text-white"
-                  @click="closeDropdown">
-                  <i class="fas fa-chart-line text-pink-400 text-xs w-4"></i>
-                  <span>Обсерватория роста</span>
-                </NuxtLink>
+
                 <NuxtLink to="/lab/community"
                   class="flex items-center space-x-2.5 px-3 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-150"
                   exact-active-class="bg-slate-200 dark:bg-slate-700/50 text-slate-900 dark:text-white"

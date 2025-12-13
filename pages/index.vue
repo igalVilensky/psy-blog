@@ -304,8 +304,8 @@ const stations = [
     hoverBorder: "hover:border-orange-500/60",
   },
   {
-    name: "Нейро Анализ",
-    subtitle: "Картирование мозга",
+    name: "Центр Управления",
+    subtitle: "Мониторинг и анализ",
     link: "/lab/dashboard",
     icon: "fas fa-microchip",
     gradientFrom: "cyan-500",
@@ -321,15 +321,7 @@ const stations = [
     gradientTo: "teal-600",
     hoverBorder: "hover:border-green-500/60",
   },
-  {
-    name: "Обсерватория роста",
-    subtitle: "Прогресс и аналитика",
-    link: "/lab/analysis",
-    icon: "fas fa-chart-line",
-    gradientFrom: "emerald-500",
-    gradientTo: "green-600",
-    hoverBorder: "hover:border-emerald-500/60",
-  },
+
   {
     name: "Сообщество",
     subtitle: "Исследователи онлайн",

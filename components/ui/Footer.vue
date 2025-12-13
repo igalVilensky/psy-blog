@@ -111,8 +111,7 @@ const sitemapLinks = [
 
   { label: "Саморазвитие", to: "/lab/growth" },
   { label: "Карта Мозга", to: "/lab/brain-map" },
-  { label: "Нейро Анализ", to: "/lab/dashboard" },
-  { label: "Обсерватория роста", to: "/lab/analysis" },
+  { label: "Центр Управления", to: "/lab/dashboard" },
   { label: "Сообщество", to: "/lab/community" },
   { label: "Блог", to: "/blog" },
   { label: "О проекте", to: "/about" },

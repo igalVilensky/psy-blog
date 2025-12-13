@@ -660,22 +660,7 @@ definePageMeta({
 });
 
 const letters = [
-  "A",
-  "B",
-  "C",
-  "D",
-  "E",
-  "F",
-  "G",
-  "H",
-  "K",
-  "L",
-  "M",
-  "N",
-  "P",
-  "R",
-  "S",
-  "T",
+  "A", "B", "C", "D", "E", "F", "G", "H", "K", "L", "M", "N", "P", "R", "S", "T",
 ];
 
 // Game state
@@ -945,7 +930,7 @@ const endLevel = () => {
   }
 };
 
-const saveResults = () => {
+const saveResults = async () => {
   const previousResults = JSON.parse(
     localStorage.getItem("nbackResults") || "[]"
   );
@@ -961,6 +946,8 @@ const saveResults = () => {
   };
   previousResults.push(newResult);
   localStorage.setItem("nbackResults", JSON.stringify(previousResults));
+
+
 };
 
 const getScoreRating = () => {
