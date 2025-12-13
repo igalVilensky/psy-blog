@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col min-h-screen bg-stone-50 text-slate-800 font-sans selection:bg-amber-100 selection:text-amber-900">
     <!-- TopBar (Sticky) -->
-    <TopBar />
+    <TopBar2 />
 
     <!-- Page Content (Main Content) -->
     <main class="flex-1 relative z-10 w-full">
@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-import TopBar from "@/components/navigation/TopBar.vue";
+import TopBar2 from "@/components/navigation/TopBar2.vue";
 import Footer2 from "@/components/ui/Footer2.vue";
 </script>
 
