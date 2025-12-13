@@ -110,7 +110,7 @@ const sitemapLinks = [
   { label: "Медитация", to: "/lab/mindfulness" },
 
   { label: "Саморазвитие", to: "/lab/growth" },
-  { label: "Карта Мозга", to: "/lab/brain-map" },
+
   { label: "Центр Управления", to: "/lab/dashboard" },
   { label: "Сообщество", to: "/lab/community" },
   { label: "Блог", to: "/blog" },

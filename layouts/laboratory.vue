@@ -107,7 +107,7 @@ const currentStation = computed(() => {
 
     "/lab/mindfulness": "МЕДИТАЦИЯ",
 
-    "/lab/brain-map": "КАРТА_МОЗГА",
+
     "/lab/growth/wheel-of-life": "КОЛЕСО_БАЛАНСА",
   };
   return stationMap[route.path] || "ИССЛЕДОВАТЕЛЬСКАЯ_СТАНЦИЯ";

@@ -58,7 +58,7 @@ const crumbs = computed(() => {
       'tests': 'Тесты',
       'games': 'Игры',
       'mindfulness': 'Медитация',
-      'brain-map': 'Карта мозга',
+
       'dashboard': 'Центр Управления',
       'growth': 'Саморазвитие',
       // 'analysis': 'Обсерватория', // Removed as page is deleted

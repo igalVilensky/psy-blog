@@ -163,7 +163,7 @@ const availableModules: Module[] = [
     name: 'Карта Мозга',
     icon: '🧠',
     description: 'Визуализация когнитивных функций',
-    path: '/lab/brain-map'
+    path: '/lab/brain-training'
   }
 ]
 

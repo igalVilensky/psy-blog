@@ -2,7 +2,8 @@
 <template>
   <div class="brain-training-page min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      <!-- Breadcrumbs placeholder if needed, or back link -->
+      <!-- Breadcrumbs -->
+      <Breadcrumbs />
       
       <!-- Page Header -->
       <div class="mb-4">
@@ -15,23 +16,39 @@
       </div>
 
       <!-- Main Navigation Tabs -->
-      <div class="flex flex-wrap gap-2 sm:gap-4 border-b border-slate-200 dark:border-slate-800 pb-1">
-        <button 
-          v-for="tab in tabs" 
-          :key="tab.id"
-          @click="activeTab = tab.id"
-          class="px-4 py-2 sm:px-6 sm:py-3 rounded-t-xl font-medium text-sm sm:text-base transition-all relative"
-          :class="activeTab === tab.id 
-            ? 'text-cyan-600 dark:text-cyan-400 bg-white dark:bg-slate-900 border-x border-t border-slate-200 dark:border-slate-800 -mb-[1px] shadow-sm' 
-            : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/50'"
-        >
-          <div class="flex items-center gap-2">
+      <div class="flex flex-col sm:flex-row gap-4 border-b-0 sm:border-b border-slate-200 dark:border-slate-800 pb-1">
+        <!-- Mobile Dropdown -->
+        <div class="sm:hidden w-full">
+            <div class="relative">
+                <select 
+                    v-model="activeTab"
+                    class="w-full appearance-none bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl py-3 pl-4 pr-10 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all font-medium"
+                >
+                    <option v-for="tab in tabs" :key="tab.id" :value="tab.id">
+                        {{ tab.label }}
+                    </option>
+                </select>
+                <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-500">
+                    <i class="fas fa-chevron-down text-xs"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Desktop Tabs -->
+        <div class="hidden sm:flex flex-wrap gap-4">
+            <button 
+            v-for="tab in tabs" 
+            :key="tab.id"
+            @click="activeTab = tab.id"
+            class="px-6 py-3 rounded-t-xl font-medium text-base transition-all relative flex items-center gap-2"
+            :class="activeTab === tab.id 
+                ? 'text-cyan-600 dark:text-cyan-400 bg-white dark:bg-slate-900 border-x border-t border-slate-200 dark:border-slate-800 -mb-[1px] shadow-sm z-10' 
+                : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/50'"
+            >
             <i :class="tab.icon"></i>
             <span>{{ tab.label }}</span>
-          </div>
-          <!-- Active Indicator Line (if not using card style) -->
-           <div v-if="activeTab === tab.id" class="absolute bottom-0 left-0 right-0 h-[2px] bg-cyan-500 dark:bg-cyan-400 lg:hidden"></div>
-        </button>
+            </button>
+        </div>
       </div>
 
       <!-- Content Area -->
@@ -51,35 +68,57 @@ import { ref, computed } from 'vue';
 import GamesView from '~/components/lab/brain-training/GamesView.vue';
 import ExercisesView from '~/components/lab/brain-training/ExercisesView.vue';
 import ModelsView from '~/components/lab/brain-training/ModelsView.vue';
+import BrainMapView from '~/components/lab/brain-training/BrainMapView.vue';
+import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
 
 definePageMeta({
   layout: "laboratory",
 });
 
-useHead({
-  title: "Тренировка Мозга",
-  meta: [
-    {
-      name: "description",
-      content: "Комплексная система развития когнитивных способностей: игры, упражнения и ментальные модели.",
+const activeTab = ref('games');
+
+const seoData = computed(() => {
+  const map = {
+    games: {
+      title: 'Развивающие Игры',
+      desc: 'Коллекция игр для тренировки памяти, внимания и скорости мышления.',
+      keywords: 'игры для мозга, тренировка памяти, развитие внимания, когнитивные игры'
     },
-     {
-      property: "og:title",
-      content: "Тренировка Мозга | MindQ Lab",
+    exercises: {
+      title: 'Когнитивные Упражнения',
+      desc: 'Научно обоснованные упражнения для развития когнитивных способностей.',
+      keywords: 'N-Back, тест Струпа, тренировка реакции, упражнения для мозга'
     },
-    {
-      property: "og:description",
-      content: "Развивайте память, внимание и мышление с помощью игр, упражнений и ментальных моделей.",
+    models: {
+      title: 'Когнитивные Модели',
+      desc: 'Библиотека ментальных моделей и фреймворков мышления.',
+      keywords: 'ментальные модели, системное мышление, принятие решений'
     },
-  ],
+    'brain-map': {
+      title: 'Интерактивная Карта Мозга',
+      desc: 'Исследуйте структуры и функции человеческого мозга.',
+      keywords: 'карта мозга, нейробиология, функции мозга, анатомия мозга'
+    }
+  };
+  return map[activeTab.value] || map.games;
 });
 
-const activeTab = ref('games');
+useHead(() => ({
+  title: `${seoData.value.title} | Тренировка Мозга`,
+  meta: [
+    { name: 'description', content: seoData.value.desc },
+    { name: 'keywords', content: seoData.value.keywords },
+    { property: 'og:title', content: `${seoData.value.title} | MindQ Lab` },
+    { property: 'og:description', content: seoData.value.desc },
+    { property: 'og:type', content: 'website' },
+  ],
+}));
 
 const tabs = [
   { id: 'games', label: 'Игры', icon: 'fas fa-gamepad' },
   { id: 'exercises', label: 'Упражнения', icon: 'fas fa-dumbbell' },
   { id: 'models', label: 'Когнитивные Модели', icon: 'fas fa-brain' },
+  { id: 'brain-map', label: 'Карта Мозга', icon: 'fas fa-project-diagram' },
 ];
 
 const currentView = computed(() => {
@@ -87,6 +126,7 @@ const currentView = computed(() => {
     case 'games': return GamesView;
     case 'exercises': return ExercisesView;
     case 'models': return ModelsView;
+    case 'brain-map': return BrainMapView;
     default: return GamesView;
   }
 });

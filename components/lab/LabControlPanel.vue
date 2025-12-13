@@ -209,8 +209,7 @@
 
 
         <!-- Brain Map Station -->
-        <StationLink to="/lab/brain-map" icon="fa-map" title="Карта Мозга" subtitle="Интерактивная"
-          :active="route.path === '/lab/brain-map'" gradient-from="orange-500" gradient-to="red-600" />
+
 
         <!-- Neuro Analysis Station -->
         <StationLink to="/lab/dashboard" icon="fa-microchip" title="Центр Управления" subtitle="Панель мониторинга"
@@ -383,14 +382,7 @@ const mobileStations = computed(() => [
     gradientTo: "cyan-600",
   },
 
-  {
-    to: "/lab/brain-map",
-    icon: "fa-map",
-    title: "Карта Мозга",
-    subtitle: "Интерактивная",
-    gradientFrom: "orange-500",
-    gradientTo: "red-600",
-  },
+
   {
     to: "/lab/dashboard",
     icon: "fa-microchip",
