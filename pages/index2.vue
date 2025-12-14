@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-stone-50">
+  <div class="bg-stone-50 dark:bg-stone-900 transition-colors duration-300">
     <Hero2 />
     <Benefits2 />
     <FeatureJourney2 />
@@ -28,6 +28,5 @@ useSeoMeta({
   description,
   ogTitle: title,
   ogDescription: description,
-  // ogImage: imageUrl, // Add if available
 });
 </script>

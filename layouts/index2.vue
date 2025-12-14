@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col min-h-screen bg-stone-50 text-slate-800 font-sans selection:bg-amber-100 selection:text-amber-900">
+  <div class="flex flex-col min-h-screen bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-stone-200 font-sans selection:bg-brand-primary/30 transition-colors duration-300">
     <!-- TopBar (Sticky) -->
     <TopBar2 />
 
@@ -16,5 +16,13 @@
 <script setup>
 import TopBar2 from "@/components/navigation/TopBar2.vue";
 import Footer2 from "@/components/ui/Footer2.vue";
-</script>
+import { useThemeStore } from "~/stores/theme";
+import { onMounted } from "vue";
 
+const themeStore = useThemeStore();
+
+// Initialize theme on mount
+onMounted(() => {
+  themeStore.initTheme();
+});
+</script>

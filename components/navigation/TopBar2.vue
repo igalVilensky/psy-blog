@@ -272,7 +272,7 @@
              <i class="fas fa-book-open text-brand-secondary"></i> Блог
           </NuxtLink>
 
-          <NuxtLink to="/about" class="flex items-center gap-3 p-4 rounded-xl hover:bg-stone-50 dark:hover:bg-stone-900 border border-transparent hover:border-stone-100 transition-colors font-bold text-brand-dark dark:text-white" @click="closeDropdown">
+          <NuxtLink to="/about2" class="flex items-center gap-3 p-4 rounded-xl hover:bg-stone-50 dark:hover:bg-stone-900 border border-transparent hover:border-stone-100 transition-colors font-bold text-brand-dark dark:text-white" @click="closeDropdown">
              <i class="fas fa-info-circle text-stone-400"></i> О проекте
           </NuxtLink>
 
