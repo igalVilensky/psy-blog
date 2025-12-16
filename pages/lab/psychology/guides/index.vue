@@ -116,7 +116,9 @@
         <!-- Background with gradient and noise -->
         <div class="absolute inset-0 bg-slate-900 dark:bg-black"></div>
         <div class="absolute inset-0 bg-gradient-to-br from-cyan-900/20 via-slate-900/50 to-purple-900/20"></div>
-        <div class="absolute inset-0 bg-[url('/images/noise.png')] opacity-[0.03] mix-blend-overlay"></div>
+        <div
+          class="absolute inset-0 bg-[url('https://toomanyadapters.com/wp-content/uploads/2022/04/White-noise.jpg')] opacity-[0.05] mix-blend-overlay">
+        </div>
 
         <!-- Decorative elements -->
         <div
