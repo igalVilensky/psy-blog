@@ -70,7 +70,7 @@
                 <div v-if="hoveredBar === index"
                   class="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-slate-900 border border-cyan-500/50 rounded-lg px-2 py-1 text-xs text-white font-mono whitespace-nowrap z-10 shadow-lg">
                   {{ bar.absoluteValue }} {{ bar.absoluteValue === 1 ? 'действие' : (bar.absoluteValue > 1 &&
-                    bar.absoluteValue < 5 ? 'действия' : 'действий' ) }} </div>
+                    bar.absoluteValue < 5 ? 'действия' : 'действий') }} </div>
                 </div>
               </div>
             </div>
@@ -99,7 +99,7 @@
                     </div>
                     <span class="text-slate-700 dark:text-white text-sm font-medium">{{
                       category.name
-                      }}</span>
+                    }}</span>
                   </div>
                   <span class="text-slate-500 dark:text-slate-400 text-sm font-mono">{{ category.percentage }}%</span>
                 </div>
@@ -137,7 +137,7 @@
               <div>
                 <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">Средняя точность</div>
                 <div class="text-2xl font-bold text-slate-900 dark:text-white font-mono">{{ trainingSummary.avgAccuracy
-                  }}%</div>
+                }}%</div>
               </div>
               <div class="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
                 <i class="fas fa-bullseye text-emerald-500"></i>
@@ -157,7 +157,7 @@
               <div>
                 <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">Лучший результат</div>
                 <div class="text-2xl font-bold text-slate-900 dark:text-white font-mono">{{ trainingSummary.bestScore
-                  }}%</div>
+                }}%</div>
               </div>
               <div class="w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center">
                 <i class="fas fa-trophy text-amber-500"></i>
@@ -189,6 +189,15 @@
                       </div>
                       <span>{{ exercise.title }}</span>
                     </div>
+                  </td>
+                  <td class="px-4 py-3 hidden sm:table-cell">
+                    <span class="text-slate-600 dark:text-slate-400">{{ exercise.category }}</span>
+                  </td>
+                  <td class="px-4 py-3 text-center">
+                    <span class="font-mono font-medium text-slate-900 dark:text-white">{{ exercise.avgScore }}%</span>
+                  </td>
+                  <td class="px-4 py-3 text-right hidden sm:table-cell">
+                    <span class="text-slate-600 dark:text-slate-400">{{ exercise.lastPlayed }}</span>
                   </td>
                   <td class="px-4 py-3 text-right">
                     <i class="fas fa-chevron-right text-xs"></i>
@@ -270,8 +279,8 @@
               </div>
               <div class="flex space-x-1">
                 <div v-for="i in 5" :key="i" class="flex-1 h-2 rounded-full transition-all duration-300" :class="i <= Math.min(5, archetypeScores.length)
-                    ? 'bg-gradient-to-r from-purple-500 to-pink-500'
-                    : 'bg-slate-200 dark:bg-slate-700/50'
+                  ? 'bg-gradient-to-r from-purple-500 to-pink-500'
+                  : 'bg-slate-200 dark:bg-slate-700/50'
                   "></div>
               </div>
             </div>
@@ -307,7 +316,7 @@
                 <i class="fas fa-heart text-xs"></i>
                 <span class="font-mono">{{
                   emotionBarometerStats.mostCommonEmotion
-                  }}</span>
+                }}</span>
                 <span class="text-slate-500 dark:text-slate-500">частая эмоция</span>
               </div>
             </div>
@@ -380,7 +389,7 @@
           </div>
 
           <!-- Recent Achievements -->
-          <div v-if="achievements.length > 0"
+          <div v-if="achievements?.length > 0"
             class="bg-white dark:bg-slate-800/30 rounded-xl p-6 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none">
             <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-6 font-montserrat">
               Достижения
@@ -615,14 +624,14 @@
                       class="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-800/30 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors">
                       <div class="flex items-center space-x-3">
                         <div class="w-2 h-2 rounded-full" :class="session.score >= 80
-                            ? 'bg-emerald-500'
-                            : session.score >= 60
-                              ? 'bg-amber-500'
-                              : 'bg-red-500'
+                          ? 'bg-emerald-500'
+                          : session.score >= 60
+                            ? 'bg-amber-500'
+                            : 'bg-red-500'
                           "></div>
                         <span class="text-sm text-slate-600 dark:text-slate-300">{{
                           formatDate(session.date)
-                          }}</span>
+                        }}</span>
                       </div>
                       <span class="font-mono text-sm font-medium text-slate-900 dark:text-white">
                         {{ session.score }}%
@@ -698,6 +707,7 @@ const hoveredCategory = ref(null);
 const hoveredTrait = ref(null);
 const patternResults = ref([]);
 const mentalShiftResults = ref([]);
+const targetTrackingResults = ref([]);
 const big5Result = ref(null);
 const assessmentTimestamp = ref(null);
 const heatmapData = ref({});
@@ -738,7 +748,7 @@ const achievements = computed(() => {
   }
 
   // 3. First Workout Achievement
-  const totalSessions = patternResults.value.length + mentalShiftResults.value.length;
+  const totalSessions = patternResults.value.length + mentalShiftResults.value.length + targetTrackingResults.value.length;
   if (totalSessions > 0) {
     list.push({
       id: 'first-workout',
@@ -830,8 +840,6 @@ const exercisesList = computed(() => {
   if (patternResults.value.length > 0) {
     const history = patternResults.value.map(r => ({
       date: r.createdAt ? new Date(r.createdAt.seconds * 1000) : new Date(),
-      // Ensure score is 0-100. N-Back logic might return raw score. 
-      // We use accuracy if available, or clamped score.
       score: r.accuracy !== undefined ? r.accuracy : (r.score > 100 ? 100 : r.score)
     }));
 
@@ -879,6 +887,36 @@ const exercisesList = computed(() => {
       bgClass: "bg-emerald-500/10",
       history: history,
       link: "/lab/tests/trail-making"
+    });
+  }
+
+  // Target Tracking (Зрительное внимание)
+  if (targetTrackingResults.value.length > 0) {
+    const history = targetTrackingResults.value.map(r => ({
+      date: r.createdAt ? new Date(r.createdAt.seconds * 1000) : new Date(),
+      // Target Tracking использует accuracy, которая уже в процентах
+      score: r.accuracy !== undefined ? r.accuracy :
+        (r.hits !== undefined && r.totalTargets !== undefined ?
+          Math.round((r.hits / r.totalTargets) * 100) : 0)
+    }));
+
+    const scores = history.map(h => h.score);
+    const avg = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
+    const best = Math.max(...scores);
+    const last = history[0].date.toLocaleDateString("ru-RU");
+
+    list.push({
+      id: "target-tracking",
+      title: "Target Tracking",
+      category: "Внимание",
+      avgScore: avg,
+      bestScore: best,
+      lastPlayed: last,
+      totalSessions: history.length,
+      icon: "fas fa-crosshairs text-purple-600 dark:text-purple-400",
+      bgClass: "bg-purple-500/10",
+      history: history,
+      link: "/lab/brain-training/target-tracking" // Убедитесь, что этот маршрут существует
     });
   }
 
@@ -960,12 +998,20 @@ const radarPolygonPoints = computed(() => radarDataPoints.value.map(point => `${
 
 // --- FUNCTIONS from ANALYSIS & DASHBOARD ---
 function calculateCognitiveScore() {
-  if (patternResults.value.length === 0) return 0;
-  // Use average accuracy 
-  const total = patternResults.value.reduce((acc, curr) => acc + (curr.accuracy || 0), 0);
-  const avg = total / patternResults.value.length;
-  return Math.round(avg) || 0;
+  // Объединяем результаты всех тренировок
+  const allResults = [...patternResults.value, ...mentalShiftResults.value, ...targetTrackingResults.value];
+  if (allResults.length === 0) return 0;
+
+  // Рассчитываем среднюю точность по всем тренировкам
+  const total = allResults.reduce((acc, curr) => {
+    if (curr.accuracy !== undefined) return acc + curr.accuracy;
+    if (curr.score !== undefined) return acc + (curr.score > 100 ? 100 : curr.score);
+    return acc;
+  }, 0);
+
+  return Math.round(total / allResults.length) || 0;
 }
+
 function calculateStreak() {
   const allResults = [...patternResults.value, ...mentalShiftResults.value];
   const days = new Set(allResults.map(r => {
@@ -1114,8 +1160,15 @@ const fetchUserData = async () => {
     const snapshotMentalShift = await getDocs(qMentalShift);
     mentalShiftResults.value = snapshotMentalShift.docs.map(doc => doc.data());
 
+    // Target Tracking Results
+    const qTargetTracking = query(collection(db, `users/${authStore.user.uid}/targetTrackingResults`), orderBy("createdAt", "desc"));
+    const snapshotTargetTracking = await getDocs(qTargetTracking);
+    targetTrackingResults.value = snapshotTargetTracking.docs.map(doc => doc.data());
+    console.log('Target Tracking Results:', targetTrackingResults.value);
+    console.log('Target Tracking Count:', targetTrackingResults.value.length);
+
     // Analysis: Heatmap
-    processHeatmapData([...patternResults.value, ...mentalShiftResults.value]);
+    processHeatmapData([...patternResults.value, ...mentalShiftResults.value, ...targetTrackingResults.value]);
 
     // Analysis: Big 5
     const qBig5 = query(collection(db, `users/${authStore.user.uid}/big5Results`), orderBy("timestamp", "desc"), limit(1));
