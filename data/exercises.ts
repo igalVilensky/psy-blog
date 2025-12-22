@@ -582,29 +582,5 @@ export const exercises: Exercise[] = [
         uiExample: "Динамический стимул (число/фигура/цветное слово) на цветном фоне, кнопки ВЛЕВО/ВПРАВО",
         relatedModels: "Cognitive Flexibility, Task Switching, Executive Function, Stroop Effect",
         link: "/lab/brain-training/mental-shift"
-    },
-    {
-        id: 51,
-        title: "Limited Resource",
-        category: "Эксперимент",
-        goal: "Исследовать влияние внутреннего состояния на процесс принятия решений в условиях дефицита ресурсов.",
-        instruction: "Вам будет предложено принять решение в рабочей ситуации при различных внутренних состояниях. Следите за тем, как меняется ваш выбор.",
-        format: "Интерактивный эксперимент, 9 шагов",
-        metric: "Качественное сравнение выборов",
-        uiExample: "Слайдеры состояний, карточки решений, визуальные индикаторы последствий",
-        relatedModels: "Decision Making, Cognitive Bias, Resource Management",
-        link: "/lab/brain-training/limited-resource"
-    },
-    {
-        id: 52,
-        title: "ONE RESOURCE",
-        category: "Playable Experiment",
-        goal: "Исследовать влияние внутреннего состояния на выбор единственного ресурса в динамичной форме.",
-        instruction: "Вам предстоит принять быстрое решение. Ваши индикаторы состояния будут меняться. Следите за своим выбором.",
-        format: "Интерактивный эксперимент, 10 шагов",
-        metric: "Вариативность выбора",
-        uiExample: "HUD-индикаторы, игровые карточки, эффекты глитча",
-        relatedModels: "Decision Experiment, State Dependency",
-        link: "/lab/brain-training/one-resource"
     }
 ];
