@@ -9,7 +9,7 @@
     <!-- Container -->
     <div class="container max-w-6xl px-4 mx-auto flex justify-between items-center py-3 relative z-10">
       <!-- Logo -->
-      <NuxtLink to="/home" class="group relative block" @click="closeDropdown">
+      <NuxtLink to="/" class="group relative block" @click="closeDropdown">
         <div
           class="w-8 h-8 sm:h-10 sm:w-10 rounded-full bg-slate-100 dark:bg-slate-950 flex items-center justify-center overflow-hidden border border-purple-400/30">
           <img src="/mindqlab-logo.png" alt="MindQLab Logo"

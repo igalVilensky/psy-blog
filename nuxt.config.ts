@@ -72,7 +72,6 @@ export default defineNuxtConfig({
   plugins: [
     "~/plugins/firebase.js",
     "~/plugins/initAuth.js",
-    "~/plugins/inAppReminder.js",
   ],
 
   sanity: {

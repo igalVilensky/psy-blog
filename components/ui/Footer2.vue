@@ -6,7 +6,7 @@
 
         <!-- Brand -->
         <div class="lg:col-span-2">
-          <NuxtLink to="/home" class="flex items-center gap-3 mb-6 group">
+          <NuxtLink to="/" class="flex items-center gap-3 mb-6 group">
             <div
               class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-primary to-brand-secondary flex items-center justify-center shadow-lg shadow-brand-primary/20">
               <img src="/mindqlab-logo.png" alt="MindQLab"

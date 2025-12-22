@@ -89,7 +89,7 @@
                 <span>Создать профиль</span>
               </NuxtLink>
 
-              <NuxtLink v-else to="/home"
+              <NuxtLink v-else to="/"
                 class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-2xl font-semibold text-base sm:text-lg hover:border-indigo-500/50 hover:text-indigo-600 dark:hover:text-indigo-400 hover:-translate-y-0.5 transition-all duration-300">
                 <i class="fas fa-home group-hover:scale-110 transition-transform duration-300"></i>
                 <span>Перейти в кабинет</span>
