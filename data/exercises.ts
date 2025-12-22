@@ -594,5 +594,17 @@ export const exercises: Exercise[] = [
         uiExample: "Слайдеры состояний, карточки решений, визуальные индикаторы последствий",
         relatedModels: "Decision Making, Cognitive Bias, Resource Management",
         link: "/lab/brain-training/limited-resource"
+    },
+    {
+        id: 52,
+        title: "ONE RESOURCE",
+        category: "Playable Experiment",
+        goal: "Исследовать влияние внутреннего состояния на выбор единственного ресурса в динамичной форме.",
+        instruction: "Вам предстоит принять быстрое решение. Ваши индикаторы состояния будут меняться. Следите за своим выбором.",
+        format: "Интерактивный эксперимент, 10 шагов",
+        metric: "Вариативность выбора",
+        uiExample: "HUD-индикаторы, игровые карточки, эффекты глитча",
+        relatedModels: "Decision Experiment, State Dependency",
+        link: "/lab/brain-training/one-resource"
     }
 ];
