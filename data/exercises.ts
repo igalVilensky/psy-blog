@@ -22,7 +22,8 @@ export const exercises: Exercise[] = [
         format: "Веб/мобильный, таймер, подсветка кнопок",
         metric: "% правильных ответов, время реакции",
         uiExample: "3x3 сетка с буквами",
-        relatedModels: "Working Memory"
+        relatedModels: "Working Memory",
+        link: "/lab/tests/nback"
     },
     // ... existing exercises ...
     {
@@ -57,7 +58,8 @@ export const exercises: Exercise[] = [
         format: "Клик/тап",
         metric: "% правильных клеток",
         uiExample: "5x5 сетка",
-        relatedModels: "Chunking"
+        relatedModels: "Chunking",
+        link: "/lab/brain-training/memory"
     },
     {
         id: 4,
@@ -90,7 +92,8 @@ export const exercises: Exercise[] = [
         format: "Кнопки с цветами",
         metric: "% правильных ответов, время",
         uiExample: "4 кнопки",
-        relatedModels: "Emotion Regulation, System 1 / System 2"
+        relatedModels: "Emotion Regulation, System 1 / System 2",
+        link: "/lab/brain-training/stroop"
     },
     {
         id: 7,
@@ -123,7 +126,8 @@ export const exercises: Exercise[] = [
         format: "Drag/Touch",
         metric: "Кол-во попаданий",
         uiExample: "Мяч движется по экрану",
-        relatedModels: "Attention Spotlight"
+        relatedModels: "Attention Spotlight",
+        link: "/lab/brain-training/target-tracking"
     },
     {
         id: 10,
@@ -167,7 +171,8 @@ export const exercises: Exercise[] = [
         format: "Кнопка",
         metric: "Время реакции",
         uiExample: "Кнопка в центре",
-        relatedModels: "OODA Loop"
+        relatedModels: "OODA Loop",
+        link: "/lab/brain-training/reaction"
     },
     {
         id: 14,
@@ -189,7 +194,8 @@ export const exercises: Exercise[] = [
         format: "Drag/Click",
         metric: "% правильных",
         uiExample: "Последовательность фигур",
-        relatedModels: "Mental Models"
+        relatedModels: "Mental Models",
+        link: "/lab/brain-training/pattern-detection-mini"
     },
     {
         id: 16,
