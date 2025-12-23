@@ -1,374 +1,455 @@
 <template>
   <div
-    class="min-h-screen bg-slate-50 px-4 dark:bg-slate-950 text-slate-900 dark:text-white overflow-hidden transition-colors duration-500 relative">
+    class="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 selection:bg-indigo-100 dark:selection:bg-indigo-900/40 font-sans">
 
-    <!-- Background Visualizer -->
-    <div class="fixed inset-0 z-0 pointer-events-none opacity-40 md:opacity-100">
-      <NeuralRewireVisualizer />
-      <div
-        class="absolute inset-0 bg-gradient-to-b from-slate-50/80 via-slate-50/20 to-slate-50/80 dark:from-slate-950/80 dark:via-slate-950/20 dark:to-slate-950/80">
-      </div>
-    </div>
-
-    <!-- Main Content -->
-    <main class="container mx-auto max-w-6xl px-4  py-12 lg:py-16 relative z-10">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start mb-16 md:mb-24">
-        <!-- Left: Hero / Intro -->
-        <section class="relative order-2 lg:order-1 animate-fade-in-left">
-          <div class="hero-content text-center lg:text-left">
-            <!-- Enhanced Petri Dish -->
-            <div class="relative inline-block mb-8 mx-auto lg:mx-0">
-              <div
-                class="petri-dish w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 rounded-full bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 flex items-center justify-center relative overflow-hidden mx-auto group cursor-pointer shadow-2xl hover:shadow-cyan-500/50 transition-all duration-500"
-                @mouseenter="labActive = true" @mouseleave="labActive = false">
-                <!-- Glow effect -->
-                <div
-                  class="absolute inset-0 bg-gradient-to-br from-cyan-400/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                </div>
-
-                <!-- Rotating ring -->
-                <div class="absolute inset-2 border-2 border-cyan-400/30 rounded-full animate-spin-slow"></div>
-
-                <!-- Flask icon -->
-                <i
-                  class="fas fa-flask text-white text-5xl sm:text-6xl md:text-7xl relative z-10 transition-all duration-500 group-hover:scale-110 group-hover:rotate-12"></i>
-
-                <!-- Pulse ring on hover -->
-                <div v-if="labActive" class="absolute inset-0 border-4 border-cyan-400/60 rounded-full animate-ping">
-                </div>
-
-                <!-- Enhanced floating particles -->
-                <div class="absolute inset-0 overflow-hidden pointer-events-none">
-                  <div v-for="i in 6" :key="i" class="particle" :style="`top: ${Math.random() * 100}%; left: ${Math.random() * 100
-                    }%; animation-delay: ${i * 0.5}s;`"></div>
-                </div>
-              </div>
-
-              <!-- Floating badges -->
-              <div
-                class="absolute -top-3 -right-3 sm:-top-4 sm:-right-4 bg-gradient-to-br from-green-500 to-emerald-600 text-white text-xs sm:text-sm font-bold px-3 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-lg animate-bounce-slow">
-                🎯 Научно
-              </div>
-              <div
-                class="absolute -bottom-3 -left-3 sm:-bottom-4 sm:-left-4 bg-gradient-to-br from-pink-500 to-rose-600 text-white text-xs sm:text-sm font-bold px-3 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-lg animate-bounce-slow"
-                style="animation-delay: 0.5s">
-                ✨ Эффективно
-              </div>
-            </div>
-
-            <!-- Enhanced Title -->
-            <h1
-              class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white text-center lg:text-left mb-6 leading-tight">
-              MindQ Lab —
-              <span class="block mt-2 text-indigo-600 dark:text-indigo-400">
-                Твоя лаборатория осознанного роста
-              </span>
-            </h1>
-
-            <!-- Enhanced Description -->
-            <p
-              class="text-slate-600 dark:text-slate-300 text-center lg:text-left text-base sm:text-lg md:text-xl max-w-2xl mx-auto lg:mx-0 mb-8 leading-relaxed">
-              Исследуй себя с помощью тестов и интерактивных инструментов,
-              получай персональные рекомендации и обучающие программы — всё в
-              одном месте.
-            </p>
-
-            <!-- Enhanced CTA Buttons -->
-            <div
-              class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-stretch sm:items-center mb-6">
-              <NuxtLink to="/lab/tests"
-                class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-semibold text-base sm:text-lg shadow-lg hover:shadow-indigo-500/30 hover:-translate-y-0.5 transition-all duration-300">
-                <i class="fas fa-vial group-hover:rotate-12 transition-transform duration-300"></i>
-                <span>Пройти тест бесплатно</span>
-                <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform duration-300"></i>
-              </NuxtLink>
-
-              <NuxtLink v-if="!isLoggedIn" to="/register"
-                class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-2xl font-semibold text-base sm:text-lg hover:border-indigo-500/50 hover:text-indigo-600 dark:hover:text-indigo-400 hover:-translate-y-0.5 transition-all duration-300">
-                <i class="fas fa-user-plus group-hover:scale-110 transition-transform duration-300"></i>
-                <span>Создать профиль</span>
-              </NuxtLink>
-
-              <NuxtLink v-else to="/"
-                class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-2xl font-semibold text-base sm:text-lg hover:border-indigo-500/50 hover:text-indigo-600 dark:hover:text-indigo-400 hover:-translate-y-0.5 transition-all duration-300">
-                <i class="fas fa-home group-hover:scale-110 transition-transform duration-300"></i>
-                <span>Перейти в кабинет</span>
-              </NuxtLink>
-            </div>
-
-            <!-- Enhanced Quick Links -->
-            <div class="text-center lg:text-left">
-              <div
-                class="inline-flex items-center gap-3 px-6 py-3 bg-white/60 dark:bg-slate-900/40 backdrop-blur-sm border border-slate-200 dark:border-slate-800/40 rounded-xl shadow-sm dark:shadow-none">
-                <span class="text-slate-500 dark:text-slate-400 text-sm">Или сразу:</span>
-                <NuxtLink to="/lab"
-                  class="text-cyan-400 hover:text-cyan-300 font-medium text-sm hover:underline transition-colors">
-                  Войти в лабораторию
-                </NuxtLink>
-                <span class="text-slate-600">•</span>
-                <NuxtLink to="/courses"
-                  class="text-purple-400 hover:text-purple-300 font-medium text-sm hover:underline transition-colors">
-                  Курсы и гайды
-                </NuxtLink>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Right: Enhanced Features / Quick Access -->
-        <aside class="order-1 lg:order-2 animate-fade-in-right hidden lg:block">
-          <div
-            class="bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800/60 shadow-xl dark:shadow-2xl hover:border-cyan-500/30 transition-all duration-500">
-            <div class="flex items-center mb-6">
-              <div
-                class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mr-4 flex-shrink-0">
-                <i class="fas fa-brain text-slate-700 dark:text-white text-2xl sm:text-3xl"></i>
-              </div>
-              <h2 class="text-xl sm:text-2xl font-bold text-slate-700 dark:text-white">
-                Исследовательские станции
-              </h2>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3">
-              <NuxtLink v-for="(station, index) in stations" :key="station.name" :to="station.link"
-                class="group flex flex-col items-center p-4 rounded-xl bg-slate-50 dark:bg-slate-800/40 hover:bg-slate-100 dark:hover:bg-slate-800/70 border border-slate-200 dark:border-slate-700/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg text-center"
-                :class="station.hoverBorder" :style="{ animationDelay: `${index * 0.1}s` }">
-                <div
-                  class="w-12 h-12 rounded-xl flex items-center justify-center mb-3 transition-transform duration-300 group-hover:scale-110"
-                  :class="`bg-gradient-to-br from-${station.gradientFrom} to-${station.gradientTo}`">
-                  <i :class="[station.icon, 'text-white text-lg']" />
-                </div>
-                <div class="w-full">
-                  <div
-                    class="text-sm font-bold text-slate-900 dark:text-white mb-1 truncate group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors">
-                    {{ station.name }}
-                  </div>
-                  <div class="text-xs text-slate-500 dark:text-slate-400 truncate">
-                    {{ station.subtitle }}
-                  </div>
-                </div>
-              </NuxtLink>
-            </div>
-
-            <!-- Enhanced Stats Summary -->
-            <div class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800/60">
-              <div class="grid grid-cols-3 gap-4">
-                <div
-                  class="stats-card group text-center p-4 bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-700/40 hover:border-cyan-500/60 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-all duration-300 hover:scale-105 cursor-pointer">
-                  <div
-                    class="text-2xl sm:text-3xl font-bold text-cyan-400 group-hover:scale-110 transition-transform duration-300">
-                    12+
-                  </div>
-                  <div
-                    class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300 transition-colors duration-300 uppercase tracking-wide">
-                    Тестов
-                  </div>
-                </div>
-                <div
-                  class="stats-card group text-center p-4 bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-700/40 hover:border-purple-500/60 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-all duration-300 hover:scale-105 cursor-pointer"
-                  style="animation-delay: 0.1s">
-                  <div
-                    class="text-2xl sm:text-3xl font-bold text-purple-400 group-hover:scale-110 transition-transform duration-300">
-                    8+
-                  </div>
-                  <div
-                    class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300 transition-colors duration-300 uppercase tracking-wide">
-                    Игр
-                  </div>
-                </div>
-                <div
-                  class="stats-card group text-center p-4 bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-700/40 hover:border-pink-500/60 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-all duration-300 hover:scale-105 cursor-pointer"
-                  style="animation-delay: 0.2s">
-                  <div
-                    class="text-2xl sm:text-3xl font-bold text-pink-400 group-hover:scale-110 transition-transform duration-300">
-                    25+
-                  </div>
-                  <div
-                    class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300 transition-colors duration-300 uppercase tracking-wide">
-                    Курсов
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </aside>
+    <!-- 1. HERO SECTION -->
+    <header
+      class="relative min-h-[95vh] flex items-center justify-center overflow-hidden border-b border-slate-100 dark:border-slate-800/50">
+      <div class="absolute inset-0 z-0 opacity-70 dark:opacity-50">
+        <ClientOnly>
+          <CursorNeuralVisualizer />
+        </ClientOnly>
       </div>
 
-      <!-- Enhanced Additional Features Section -->
-      <section class="mb-16 md:mb-24">
-        <h2
-          class="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-12 md:mb-16 animate-fade-in-up text-slate-900 dark:text-white">
-          Почему
-          <span class="text-slate-900 dark:text-white">MindQ Lab</span>?
-        </h2>
+      <div class="container mx-auto max-w-5xl px-6 relative z-10 text-center py-24 animate-fade-in">
+        <h1
+          class="text-4xl md:text-6xl lg:text-7xl font-light tracking-tight mb-8 text-slate-900 dark:text-white leading-[1.15]">
+          Единая среда для развития мышления, <br class="hidden md:block" />
+          осознанности и личного потенциала
+        </h1>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          <div v-for="(feature, index) in features" :key="feature.title"
-            class="feature-card group bg-white dark:bg-slate-900/60 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-slate-200 dark:border-slate-800/60 hover:border-cyan-500/60 hover:shadow-2xl hover:shadow-cyan-500/20 transition-all duration-500 hover:scale-105 hover:-translate-y-2 cursor-pointer"
-            :style="{ animationDelay: `${index * 0.1}s` }">
+        <p
+          class="text-lg md:text-xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto mb-12 font-light leading-relaxed">
+          MindQLab — это пространство для глубокого понимания и развития собственного разума.
+          Мы объединили когнитивные тренировки, психологические инструменты и практики осознанности
+          в системный подход для регулярного самосовершенствования.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+          <NuxtLink to="/lab"
+            class="group px-10 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-lg font-medium transition-all duration-300 hover:scale-105 active:scale-95 shadow-xl shadow-slate-200 dark:shadow-none">
+            Начать работу
+          </NuxtLink>
+          <NuxtLink to="/lab"
+            class="group px-10 py-4 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900 rounded-lg font-medium transition-all duration-300">
+            Войти в лабораторию
+          </NuxtLink>
+        </div>
+      </div>
+
+      <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-30">
+        <i class="fas fa-chevron-down text-xl"></i>
+      </div>
+    </header>
+
+    <!-- 2. CORE DOMAINS OF THE PLATFORM -->
+    <section class="py-24 border-b border-slate-100 dark:border-slate-800/50">
+      <div class="container mx-auto max-w-6xl px-6">
+        <div class="mb-20 reveal-on-scroll">
+          <h2 class="text-3xl md:text-4xl font-light mb-6">Основные направления развития</h2>
+          <div class="w-20 h-0.5 bg-indigo-500 mb-8"></div>
+          <p class="text-lg text-slate-500 dark:text-slate-400 max-w-3xl leading-relaxed">
+            Развитие личности — это многогранный процесс. На платформе вы работаете с четырьмя взаимосвязанными
+            областями,
+            которые формируют ваш когнитивный и эмоциональный профиль.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
+          <!-- Thinking -->
+          <div class="reveal-on-scroll flex flex-col group">
             <div
-              class="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
-              <i :class="feature.icon + ' text-2xl md:text-3xl text-cyan-400'"></i>
+              class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-blue-500 mb-6 group-hover:bg-blue-500 group-hover:text-white transition-all duration-500">
+              <i class="fas fa-brain text-xl"></i>
             </div>
-            <h3 class="text-xl md:text-2xl font-bold mb-3 group-hover:text-cyan-400 transition-colors duration-300">
-              {{ feature.title }}
-            </h3>
-            <p
-              class="text-sm md:text-base text-slate-600 dark:text-slate-400 leading-relaxed group-hover:text-slate-800 dark:group-hover:text-slate-300 transition-colors duration-300">
-              {{ feature.description }}
+            <h3 class="text-2xl font-medium mb-4">Мышление и когнитивные функции</h3>
+            <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+              Развитие памяти, внимания, логики и гибкости мышления. Это инструменты, которые позволяют быстрее
+              обрабатывать информацию
+              и принимать качественные решения в повседневной жизни.
             </p>
+            <div class="text-sm font-medium text-indigo-500 dark:text-indigo-400">
+              Инструменты: Интерактивные упражнения, тренажеры внимания, игры на логику.
+            </div>
+          </div>
+
+          <!-- Psychology -->
+          <div class="reveal-on-scroll flex flex-col group" style="transition-delay: 100ms">
+            <div
+              class="w-12 h-12 rounded-xl bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center text-purple-500 mb-6 group-hover:bg-purple-500 group-hover:text-white transition-all duration-500">
+              <i class="fas fa-user-shield text-xl"></i>
+            </div>
+            <h3 class="text-2xl font-medium mb-4">Психология и поведенческие паттерны</h3>
+            <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+              Изучение механизмов поведения, работа с установками и эмоциональным интеллектом. Понимание того, почему мы
+              поступаем
+              так или иначе, является ключом к осознанным изменениям.
+            </p>
+            <div class="text-sm font-medium text-indigo-500 dark:text-indigo-400">
+              Инструменты: Тесты личности, теоретические модели, техники самоанализа.
+            </div>
+          </div>
+
+          <!-- Meditation -->
+          <div class="reveal-on-scroll flex flex-col group" style="transition-delay: 200ms">
+            <div
+              class="w-12 h-12 rounded-xl bg-teal-50 dark:bg-teal-900/20 flex items-center justify-center text-teal-500 mb-6 group-hover:bg-teal-500 group-hover:text-white transition-all duration-500">
+              <i class="fas fa-spa text-xl"></i>
+            </div>
+            <h3 class="text-2xl font-medium mb-4">Медитация и осознанность</h3>
+            <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+              Практики управления вниманием и эмоциональным состоянием. Тренировка навыка присутствия «здесь и сейчас»
+              позволяет снизить уровень стресса и улучшить контакт с реальностью.
+            </p>
+            <div class="text-sm font-medium text-indigo-500 dark:text-indigo-400">
+              Инструменты: Аудио-практики, упражнения на дыхание, дневник осознанности.
+            </div>
+          </div>
+
+          <!-- Growth -->
+          <div class="reveal-on-scroll flex flex-col group" style="transition-delay: 300ms">
+            <div
+              class="w-12 h-12 rounded-xl bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center text-orange-500 mb-6 group-hover:bg-orange-500 group-hover:text-white transition-all duration-500">
+              <i class="fas fa-seedling text-xl"></i>
+            </div>
+            <h3 class="text-2xl font-medium mb-4">Саморазвитие и личный рост</h3>
+            <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+              Система планирования, отслеживания привычек и работы с жизненными целями. Структурирование знаний о себе
+              превращает абстрактное развитие в конкретные шаги.
+            </p>
+            <div class="text-sm font-medium text-indigo-500 dark:text-indigo-400">
+              Инструменты: Панель мониторинга прогресса, курсы, сообщество практиков.
+            </div>
           </div>
         </div>
-      </section>
-    </main>
+      </div>
+    </section>
+
+    <!-- 3. WHY THIS SYSTEM WORKS -->
+    <section class="py-24 bg-slate-50/50 dark:bg-slate-900/20 border-b border-slate-100 dark:border-slate-800/50">
+      <div class="container mx-auto max-w-6xl px-6">
+        <div class="mb-16 reveal-on-scroll">
+          <h2 class="text-3xl md:text-4xl font-light mb-4">Системный подход к росту</h2>
+          <p class="text-slate-500 dark:text-slate-400 max-w-2xl leading-relaxed">
+            Вместо разрозненных приложений мы предлагаем единую экосистему для всесторонней работы над собой.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div v-for="(advantage, i) in advantages" :key="i"
+            class="p-8 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl reveal-on-scroll"
+            :style="{ transitionDelay: `${i * 50}ms` }">
+            <div
+              class="w-10 h-10 rounded-lg bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center text-indigo-500 mb-6">
+              <i :class="advantage.icon"></i>
+            </div>
+            <h4 class="text-lg font-medium mb-3">{{ advantage.title }}</h4>
+            <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">{{ advantage.text }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. LABORATORY & TOOLS OVERVIEW -->
+    <section class="py-24 border-b border-slate-100 dark:border-slate-800/50 overflow-hidden">
+      <div class="container mx-auto max-w-6xl px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+          <div class="reveal-on-scroll">
+            <h2 class="text-3xl md:text-4xl font-light mb-8">Инструментарий Лаборатории</h2>
+            <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-10">
+              MindQLab построена по модульному принципу. Каждый исследователь сам выбирает глубину, направление и темп
+              освоения инструментов.
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div v-for="(tool, i) in labTools" :key="i" class="flex items-start gap-4">
+                <div class="p-2 rounded-lg bg-slate-50 dark:bg-slate-800 text-indigo-500">
+                  <i :class="tool.icon" class="text-sm"></i>
+                </div>
+                <div>
+                  <h5 class="text-sm font-medium text-slate-900 dark:text-white mb-0.5">{{ tool.name }}</h5>
+                  <p class="text-[12px] text-slate-500 dark:text-slate-400 leading-tight">{{ tool.desc }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="relative reveal-on-scroll">
+            <div
+              class="aspect-square bg-slate-50 dark:bg-slate-900 rounded-3xl overflow-hidden border border-slate-100 dark:border-slate-800 flex items-center justify-center p-12 order-first lg:order-last">
+              <!-- Visual representation of modularity -->
+              <div class="relative w-full h-full flex items-center justify-center">
+                <div
+                  class="absolute w-3/4 h-3/4 border border-dashed border-slate-200 dark:border-slate-800 rounded-full animate-spin-slow">
+                </div>
+                <div class="absolute w-1/2 h-1/2 border border-slate-100 dark:border-slate-800 rounded-full"></div>
+                <div class="grid grid-cols-2 gap-4 relative z-10 w-full">
+                  <div v-for="i in 4" :key="i"
+                    class="p-4 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-800 rounded-xl shadow-sm text-center">
+                    <div class="w-8 h-8 rounded-lg bg-indigo-500/10 mx-auto mb-2"></div>
+                    <div class="h-1.5 w-full bg-slate-100 dark:bg-slate-700 rounded-full"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. PLATFORM STATISTICS -->
+    <section class="py-24 bg-slate-900 text-white overflow-hidden border-b border-slate-800">
+      <div class="container mx-auto max-w-6xl px-6">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-8 gap-y-12">
+          <div v-for="(stat, i) in platformStats" :key="i" class="text-center reveal-on-scroll"
+            :style="{ transitionDelay: `${i * 50}ms` }">
+            <div class="text-3xl md:text-4xl font-light mb-2 tabular-nums">
+              {{ stat.value }}<span class="text-indigo-500">+</span>
+            </div>
+            <div class="text-[10px] uppercase tracking-[0.2em] text-slate-500 font-medium whitespace-nowrap">{{
+              stat.label }}</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. PRICING SECTION -->
+    <section class="py-24 border-b border-slate-100 dark:border-slate-800/50">
+      <div class="container mx-auto max-w-6xl px-6">
+        <div class="text-center mb-16 reveal-on-scroll">
+          <h2 class="text-3xl md:text-4xl font-light mb-4">Варианты участия</h2>
+          <p class="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+            Мы предлагаем прозрачную систему доступа. Вы можете начать бесплатно
+            или выбрать план, соответствующий вашим долгосрочным целям.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div v-for="(plan, i) in pricingPlans" :key="i"
+            class="flex flex-col p-8 rounded-2xl border transition-all duration-300 reveal-on-scroll"
+            :class="plan.popular ? 'border-indigo-500 dark:border-indigo-500/50 bg-indigo-50/20 dark:bg-indigo-900/10 shadow-lg' : 'border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900'"
+            :style="{ transitionDelay: `${i * 50}ms` }">
+            <div class="mb-4">
+              <div v-if="plan.popular" class="text-[10px] uppercase font-bold tracking-widest text-indigo-500 mb-2">
+                Рекомендуем</div>
+              <h4 class="text-xl font-medium">{{ plan.name }}</h4>
+            </div>
+            <div class="mb-6 flex items-baseline gap-1">
+              <span class="text-3xl font-light">{{ plan.price }}</span>
+              <span v-if="plan.price !== 'Бесплатно'" class="text-slate-400 text-sm">₽</span>
+            </div>
+            <ul class="space-y-4 mb-10 flex-grow">
+              <li v-for="(feature, fi) in plan.features" :key="fi"
+                class="flex gap-3 text-sm text-slate-500 dark:text-slate-400 leading-tight">
+                <i class="fas fa-check text-[10px] mt-1 text-indigo-500"></i>
+                {{ feature }}
+              </li>
+            </ul>
+            <NuxtLink :to="isLoggedIn ? '/lab' : '/register'"
+              class="w-full py-3 text-center rounded-lg text-sm font-medium transition-all duration-300"
+              :class="plan.popular ? 'bg-indigo-600 text-white hover:bg-indigo-700' : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700'">
+              {{ plan.cta }}
+            </NuxtLink>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. BLOG & KNOWLEDGE SECTION -->
+    <section class="py-24 border-b border-slate-100 dark:border-slate-800/50 bg-slate-50/20 dark:bg-slate-900/10">
+      <div class="container mx-auto max-w-6xl px-6">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-12 reveal-on-scroll">
+          <div class="max-w-2xl">
+            <h2 class="text-3xl md:text-4xl font-light mb-4">База знаний</h2>
+            <p class="text-slate-500 dark:text-slate-400 leading-relaxed">
+              Теоретические материалы и статьи экспертов MindQLab. Мы верим, что обучение — это неотъемлемая часть
+              развития.
+            </p>
+          </div>
+          <NuxtLink to="/blog"
+            class="text-sm font-medium text-indigo-500 hover:text-indigo-400 transition-colors mt-6 md:mt-0 flex items-center gap-2">
+            Все статьи <i class="fas fa-arrow-right text-[10px]"></i>
+          </NuxtLink>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <article v-for="(post, i) in latestPosts" :key="post._id || i"
+            class="group flex flex-col bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-slate-100 dark:border-slate-800 reveal-on-scroll"
+            :style="{ transitionDelay: `${i * 100}ms` }">
+            <div class="aspect-[16/9] bg-slate-100 dark:bg-slate-800 overflow-hidden relative">
+              <nuxt-img v-if="post.image" :src="urlFor(post.image).width(400).height(225).url()"
+                :alt="post.title || 'Пост'"
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" width="400"
+                height="225" loading="lazy" format="webp" quality="80"></nuxt-img>
+              <div v-else class="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-transparent"></div>
+              <div class="absolute bottom-4 left-4">
+                <span
+                  class="px-2 py-1 bg-white/90 dark:bg-slate-900/90 text-[10px] font-bold uppercase tracking-wider rounded border border-slate-100 dark:border-slate-800">
+                  {{ post.category || 'Статья' }}
+                </span>
+              </div>
+            </div>
+            <div class="p-6 flex flex-col flex-grow text-left">
+              <h4
+                class="text-lg font-medium mb-3 group-hover:text-indigo-500 transition-colors line-clamp-2 leading-snug text-slate-900 dark:text-white">
+                {{ post.title }}</h4>
+              <p class="text-sm text-slate-500 dark:text-slate-400 mb-6 flex-grow line-clamp-2 leading-relaxed">
+                {{ post.title }}
+              </p>
+              <div class="text-[11px] text-slate-400 uppercase tracking-widest">
+                {{ post.publishedAt ? new Date(post.publishedAt).toLocaleDateString("ru-RU", {
+                  day: "numeric", month:
+                    "short", year: "numeric"
+                }) : "" }}
+              </div>
+            </div>
+            <NuxtLink :to="post.slug?.current ? `/blog/${post.slug.current}` : '/blog'" class="absolute inset-0 z-10"
+              :aria-label="post.title"></NuxtLink>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. FAQ SECTION -->
+    <section class="py-24 border-b border-slate-100 dark:border-slate-800/50">
+      <div class="container mx-auto max-w-3xl px-6">
+        <div class="text-center mb-16 reveal-on-scroll">
+          <h2 class="text-3xl md:text-4xl font-light mb-4">Часто задаваемые вопросы</h2>
+          <p class="text-slate-500 dark:text-slate-400 leading-relaxed">Краткие ответы на ключевые вопросы о платформе.
+          </p>
+        </div>
+
+        <div class="space-y-6">
+          <div v-for="(faq, i) in faqItems" :key="i"
+            class="border-b border-slate-100 dark:border-slate-800/50 pb-6 reveal-on-scroll"
+            :style="{ transitionDelay: `${i * 50}ms` }">
+            <h5 class="text-lg font-medium mb-3 text-slate-900 dark:text-white leading-snug">{{ faq.q }}</h5>
+            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{{ faq.a }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. FINAL SECTION -->
+    <footer class="py-32 text-center reveal-on-scroll">
+      <div class="container mx-auto max-w-4xl px-6">
+        <h2 class="text-3xl md:text-5xl font-light mb-8 italic text-slate-900 dark:text-white leading-tight">«Развитие —
+          это осознанное движение навстречу собственному потенциалу»</h2>
+        <p class="text-lg text-slate-500 dark:text-slate-400 mb-12 max-w-2xl mx-auto leading-relaxed">
+          Путь исследователя начинается с первого наблюдения. Платформа MindQLab предоставляет
+          все необходимые инструменты для вашего путешествия к ясности ума и глубине осознания.
+        </p>
+        <NuxtLink to="/lab"
+          class="inline-block px-12 py-5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-all duration-300 shadow-xl shadow-indigo-200 dark:shadow-none">
+          Начать работу с платформой
+        </NuxtLink>
+      </div>
+    </footer>
+
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { onMounted, computed, ref } from 'vue';
+import { useSeoMeta } from '#app';
 import { useAuthStore } from "~/stores/auth";
-import { useRuntimeConfig, useSeoMeta } from "#app";
-import NeuralRewireVisualizer from "~/components/lab/habit-override/NeuralRewireVisualizer.vue";
+import { fetchPosts } from "~/api/sanity/posts";
+import { getImageUrl } from "~/api/sanity/client";
+import CursorNeuralVisualizer from '~/components/lab/CursorNeuralVisualizer.vue';
 
-// --- AUTH STATE ---
+// 1. Static Data Definitions
+const advantages = [
+  { title: 'Единая экосистема', text: 'Забудьте о разрозненных приложениях. Все аспекты развития личности в одном месте.', icon: 'fas fa-infinity' },
+  { title: 'Регулярная практика', text: 'Короткие сессии по 10-15 минут позволяют внедрить развитие в плотный график.', icon: 'fas fa-calendar-check' },
+  { title: 'Осознанный подход', text: 'Мы не обещаем мгновенных чудес. Мы предлагаем систему для долгосрочного роста.', icon: 'fas fa-eye' },
+  { title: 'Гибкая модульность', text: 'Свободно переключайтесь между когнитивными играми и глубокой психологией.', icon: 'fas fa-puzzle-piece' },
+  { title: 'Объективные метрики', text: 'Отслеживайте прогресс на основе реальных данных и результатов выполнения задач.', icon: 'fas fa-chart-line' },
+  { title: 'Свобода доступа', text: 'Платформа доступна из любого браузера. Исследуйте себя там, где вам удобно.', icon: 'fas fa-globe' },
+];
+
+const labTools = [
+  { name: 'Лаборатория', desc: 'Центр управления вашими исследовательскими станциями.', icon: 'fas fa-flask' },
+  { name: 'Тесты и Оценка', desc: 'Измерение потенциала и выявление зон роста.', icon: 'fas fa-vials' },
+  { name: 'Тренировка Мозга', desc: 'Упражнения для памяти, внимания и гибкости.', icon: 'fas fa-dumbbell' },
+  { name: 'Психология', desc: 'Изучение паттернов и развитие эмоционального интеллекта.', icon: 'fas fa-book-open' },
+  { name: 'Медитации', desc: 'Практики осознанности и управления состоянием.', icon: 'fas fa-spa' },
+  { name: 'Центр Управления', desc: 'Личная аналитика и мониторинг достижений.', icon: 'fas fa-microchip' },
+];
+
+const platformStats = [
+  { label: 'Тестов', value: '15' },
+  { label: 'Игр', value: '25' },
+  { label: 'Упражнений', value: '40' },
+  { label: 'Практик', value: '20' },
+  { label: 'Участников', value: '1000' },
+  { label: 'Сессий', value: '5000' },
+];
+
+const pricingPlans = [
+  { name: 'Бесплатный', price: '0', cta: 'Начать сейчас', features: ['Базовые тесты', '5 упражнений в день', 'Первичная аналитика', 'Доступ к блогу'] },
+  { name: 'Месяц', price: '990', cta: 'Выбрать план', features: ['Безлимитный доступ', 'Все когнитивные игры', 'Полная аналитика', 'Психологические модули'] },
+  { name: 'Год', price: '4990', popular: true, cta: 'Выбрать год', features: ['Все функции Месяца', 'Приоритетный доступ', 'Две недели в подарок', 'Отчет о прогрессе'] },
+  { name: 'Навсегда', price: '9990', cta: 'Получить доступ', features: ['Пожизненный доступ', 'Все будущие обновления', 'Индивидуальные настройки', 'Прямая связь с Лабораторией'] },
+];
+
+const faqItems = [
+  { q: 'Что дает платформа MindQLab?', a: 'Это система инструментов для изучения и улучшения работы вашего разума — от памяти и внимания до управления эмоциями и осознанности.' },
+  { q: 'С чего лучше начать работу?', a: 'Мы рекомендуем начать с раздела «Тесты», чтобы сформировать базовое понимание вашего текущего профиля и зон роста.' },
+  { q: 'Сколько времени нужно уделять занятиям?', a: 'Оптимально 10-15 минут в день. Главный секрет эффективности системы — в регулярности, а не длительности.' },
+  { q: 'Это обучение, тренировка или практика?', a: 'Это комбинация всех трех подходов. Вы обучаетесь через статьи, тренируетесь в играх и внедряете навыки через практики.' },
+  { q: 'Подходит ли платформа для любого уровня?', a: 'Да. Сложность большинства упражнений адаптируется под ваши результаты, обеспечивая зону ближайшего развития.' },
+  { q: 'Можно ли пользоваться бесплатно?', a: 'Да, у нас есть бессрочный бесплатный тариф с доступом к базовому набор инструментов и статистике.' },
+];
+
+// 2. Auth & Apps
 const authStore = useAuthStore();
 const isLoggedIn = computed(() => !!authStore.user);
 
-// --- UI STATE ---
-const labActive = ref(false);
+// 3. SSR-safe Fetch (Pattern: blog/index.vue)
+const posts = ref([]);
+const { projectId, dataset } = useSanity().client.config();
+const urlFor = getImageUrl(projectId, dataset);
 
-// --- STATIONS (quick links) ---
-const stations = [
-  {
-    name: "Тесты",
-    subtitle: "Оценка функций",
-    link: "/lab/tests",
-    icon: "fas fa-brain",
-    gradientFrom: "blue-500",
-    gradientTo: "indigo-600",
-    hoverBorder: "hover:border-blue-500/60",
-  },
-  {
-    name: "Тренировка Мозга",
-    subtitle: "Игры и упражнения",
-    link: "/lab/brain-training",
-    icon: "fas fa-dumbbell",
-    gradientFrom: "cyan-500",
-    gradientTo: "purple-600",
-    hoverBorder: "hover:border-cyan-500/60",
-  },
-  {
-    name: "Саморазвитие",
-    subtitle: "Инструменты и практики",
-    link: "/lab/growth",
-    icon: "fas fa-seedling",
-    gradientFrom: "green-500",
-    gradientTo: "teal-600",
-    hoverBorder: "hover:border-green-500/60",
-  },
-  {
-    name: "Психология",
-    subtitle: "Теории и техники",
-    link: "/lab/psychology",
-    icon: "fas fa-book-open",
-    gradientFrom: "purple-500",
-    gradientTo: "pink-600",
-    hoverBorder: "hover:border-purple-500/60",
-  },
-  {
-    name: "Медитация",
-    subtitle: "Аудио и видео",
-    link: "/lab/mindfulness",
-    icon: "fas fa-spa",
-    gradientFrom: "teal-500",
-    gradientTo: "cyan-600",
-    hoverBorder: "hover:border-teal-500/60",
-  },
-  {
-    name: "Центр Управления",
-    subtitle: "Мониторинг и анализ",
-    link: "/lab/dashboard",
-    icon: "fas fa-microchip",
-    gradientFrom: "cyan-500",
-    gradientTo: "blue-600",
-    hoverBorder: "hover:border-cyan-500/60",
-  },
-  {
-    name: "Сообщество",
-    subtitle: "Исследователи онлайн",
-    link: "/lab/community",
-    icon: "fas fa-users",
-    gradientFrom: "orange-500",
-    gradientTo: "amber-600",
-    hoverBorder: "hover:border-orange-500/60",
-  },
-];
+const { data: fetchedPosts } = await useAsyncData("posts-home-latest", fetchPosts);
+posts.value = Array.isArray(fetchedPosts.value) ? fetchedPosts.value : [];
 
-// --- FEATURES ---
-const features = [
-  {
-    title: "Научный подход",
-    description:
-      "Все тесты и методики основаны на проверенных психологических исследованиях",
-    icon: "fas fa-microscope",
-  },
-  {
-    title: "Персонализация",
-    description:
-      "Индивидуальные рекомендации на основе ваших результатов и прогресса",
-    icon: "fas fa-user-cog",
-  },
-  {
-    title: "Геймификация",
-    description:
-      "Увлекательные игры и челленджи для развития когнитивных способностей",
-    icon: "fas fa-trophy",
-  },
-  {
-    title: "Отслеживание прогресса",
-    description: "Визуализация вашего роста и достижений в удобном формате",
-    icon: "fas fa-chart-bar",
-  },
-  {
-    title: "Сообщество",
-    description: "Обменивайтесь опытом с единомышленниками на пути к развитию",
-    icon: "fas fa-users",
-  },
-  {
-    title: "Доступность",
-    description: "Бесплатный доступ к базовым функциям на всех устройствах",
-    icon: "fas fa-mobile-alt",
-  },
-];
-
-// --- SEO META TAGS ---
-const {
-  public: { siteUrl },
-} = useRuntimeConfig();
-
-const title = "MindQLab – Твоя лаборатория осознанного роста";
-const description =
-  "Исследуй себя, проходи тесты, развивай мышление и личность с MindQLab – психологической лабораторией нового поколения.";
-const imageUrl = `${siteUrl}/mindqlab-social-card.png`;
+const latestPosts = computed(() => posts.value.slice(0, 3));
 
 useSeoMeta({
-  title,
-  description,
-  ogTitle: title,
-  ogDescription: description,
-  ogImage: imageUrl,
-  ogUrl: siteUrl,
-  ogType: "website",
-  ogSiteName: "MindQLab",
-  twitterCard: "summary_large_image",
-  twitterTitle: title,
-  twitterDescription: description,
-  twitterImage: imageUrl,
+  title: 'MindQLab — Платформа для развития мышления и осознанности',
+  description: 'Единая экосистема для когнитивных исследований, психологического роста и медитативных практик. Научный подход к развитию личности.',
+  ogTitle: 'MindQLab — Твоя среда осознанного роста',
+  ogType: 'website',
+});
+
+// 4. Client-side Animations
+onMounted(() => {
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -100px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('active');
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.reveal-on-scroll').forEach(el => {
+    observer.observe(el);
+  });
 });
 </script>
 
 <style scoped>
-/* Enhanced Animations */
+.font-sans {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.animate-fade-in {
+  animation: fadeIn 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -381,67 +462,22 @@ useSeoMeta({
   }
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes fadeInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-40px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.reveal-on-scroll.active {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-@keyframes fadeInRight {
-  from {
-    opacity: 0;
-    transform: translateX(40px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.animate-spin-slow {
+  animation: spin 60s linear infinite;
 }
 
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes gradient {
-
-  0%,
-  100% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
-@keyframes spin-slow {
+@keyframes spin {
   from {
     transform: rotate(0deg);
   }
@@ -451,105 +487,30 @@ useSeoMeta({
   }
 }
 
-@keyframes bounce-slow {
-
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-10px);
-  }
+/* Typography refinements */
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 300;
+  letter-spacing: -0.015em;
 }
 
-@keyframes float {
-
-  0%,
-  100% {
-    transform: translate(0, 0) scale(1);
-    opacity: 0.4;
-  }
-
-  50% {
-    transform: translate(var(--float-x, 10px), var(--float-y, -15px)) scale(1.3);
-    opacity: 0.8;
-  }
+/* Custom scrollbar for better feel */
+::-webkit-scrollbar {
+  width: 8px;
 }
 
-/* Animation classes */
-.animate-fade-in-up {
-  animation: fadeInUp 0.8s ease-out backwards;
+::-webkit-scrollbar-track {
+  background: #f8fafc;
 }
 
-.animate-fade-in-left {
-  animation: fadeInLeft 0.8s ease-out backwards;
+::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 4px;
 }
 
-.animate-fade-in-right {
-  animation: fadeInRight 0.8s ease-out backwards;
-}
-
-.animate-gradient {
-  background-size: 200% auto;
-  animation: gradient 4s ease infinite;
-}
-
-.animate-spin-slow {
-  animation: spin-slow 20s linear infinite;
-}
-
-.animate-bounce-slow {
-  animation: bounce-slow 2s ease-in-out infinite;
-}
-
-/* Station items and feature cards */
-.station-item {
-  animation: slideIn 0.6s ease-out backwards;
-}
-
-.feature-card {
-  animation: fadeInUp 0.8s ease-out backwards;
-}
-
-.stats-card {
-  animation: fadeInUp 0.8s ease-out backwards;
-}
-
-/* Floating particles */
-.particle {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  background: radial-gradient(circle, rgba(34, 211, 238, 0.8), transparent);
-  border-radius: 50%;
-  animation: float 4s infinite ease-in-out;
-  --float-x: 15px;
-  --float-y: -20px;
-}
-
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Enhanced focus states for accessibility */
-a:focus-visible,
-button:focus-visible {
-  outline: 2px solid theme("colors.cyan.400");
-  outline-offset: 4px;
-  border-radius: 0.5rem;
-}
-
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+::-webkit-scrollbar-thumb:hover {
+  background: #cbd5e1;
 }
 </style>
