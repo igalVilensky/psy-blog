@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from "vue";
+import { Howl } from "howler";
 
 definePageMeta({
   layout: "laboratory",
@@ -63,6 +64,29 @@ const gameCompleted = ref(false);
 const showPreview = ref(false);
 const previewCountdown = ref(0);
 const timerInterval = ref(null);
+const soundEnabled = ref(true);
+
+// Load sound preference
+onMounted(() => {
+  const savedSound = localStorage.getItem("memory_sound_enabled");
+  if (savedSound !== null) {
+    soundEnabled.value = savedSound === "true";
+  }
+});
+
+const toggleSound = () => {
+  soundEnabled.value = !soundEnabled.value;
+  localStorage.setItem("memory_sound_enabled", soundEnabled.value);
+};
+
+// Sounds
+const successSound = new Howl({
+  src: ["/sounds/success.mp3"],
+  volume: 0.5,
+  sprite: {
+    match: [3000, 2500],
+  },
+});
 
 const currentConfig = computed(() => difficulties[difficulty.value]);
 const totalPairs = computed(() => currentConfig.value.pairs);
@@ -217,6 +241,11 @@ const checkForMatch = () => {
     card2.matched = true;
     matchedCards.value.push(card1.id, card2.id);
 
+    // Play success sound (skipping first 3 seconds)
+    if (soundEnabled.value) {
+      successSound.play("match");
+    }
+
     if (matchedCards.value.length === cards.value.length) {
       gameCompleted.value = true;
       stopTimer();
@@ -268,20 +297,15 @@ onUnmounted(() => {
 
 <template>
   <div
-    class="memory-station min-h-screen bg-slate-50 dark:bg-slate-950 px-4 sm:px-6 lg:px-8 py-8 transition-colors duration-500"
-  >
+    class="memory-station min-h-screen bg-slate-50 dark:bg-slate-950 px-4 sm:px-6 lg:px-8 py-8 transition-colors duration-500">
     <div class="max-w-4xl mx-auto">
       <!-- Header Section -->
       <div class="mb-12">
         <div class="text-center mb-8">
-          <h1
-            class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight gradient-text mb-4"
-          >
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight gradient-text mb-4">
             ПАРНЫЕ КАРТОЧКИ
           </h1>
-          <p
-            class="text-slate-600 dark:text-cyan-300/80 text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto"
-          >
+          <p class="text-slate-600 dark:text-cyan-300/80 text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto">
             Тренируйте память и внимание, находя пары одинаковых карточек
           </p>
         </div>
@@ -317,11 +341,7 @@ onUnmounted(() => {
 
       <!-- Game Controls -->
       <div class="flex flex-wrap gap-4 justify-center mb-8">
-        <button
-          @click="startGame"
-          class="btn-primary"
-          :disabled="gameStarted && !gameCompleted"
-        >
+        <button @click="startGame" class="btn-primary" :disabled="gameStarted && !gameCompleted">
           <i class="fas fa-play mr-2"></i>
           {{ gameStarted ? "Перезапуск" : "Начать игру" }}
         </button>
@@ -329,15 +349,17 @@ onUnmounted(() => {
           <i class="fas fa-cog mr-2"></i>
           Сложность: {{ difficultyLabels[difficulty] }}
         </button>
+        <button @click="toggleSound" class="btn-secondary" title="Включить/выключить звук">
+          <i :class="soundEnabled ? 'fas fa-volume-up' : 'fas fa-volume-mute'" class="mr-2"></i>
+          Звук: {{ soundEnabled ? 'Вкл' : 'Выкл' }}
+        </button>
       </div>
 
       <!-- Instructions -->
       <div v-if="!gameStarted" class="text-center max-w-2xl mx-auto mb-12">
         <div class="info-card">
           <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">🎯 Как играть?</h3>
-          <ol
-            class="space-y-3 text-slate-600 dark:text-slate-300 text-left list-decimal list-inside"
-          >
+          <ol class="space-y-3 text-slate-600 dark:text-slate-300 text-left list-decimal list-inside">
             <li>Нажмите "Начать игру" чтобы стартовать</li>
             <li>Запомните расположение карточек за {{ previewTime }} секунд</li>
             <li>Находите пары одинаковых символов</li>
@@ -350,27 +372,18 @@ onUnmounted(() => {
 
       <div v-if="gameStarted" class="game-board-container relative">
         <!-- Preview Banner (FIXED: No longer covers cards) -->
-        <div
-          v-if="showPreview"
-          class="preview-banner absolute top-4 left-1/2 transform -translate-x-1/2 z-10 bg-cyan-600/90 text-white px-6 py-3 rounded-full border border-cyan-400/50 backdrop-blur-sm shadow-lg"
-        >
+        <div v-if="showPreview"
+          class="preview-banner absolute top-4 left-1/2 transform -translate-x-1/2 z-10 bg-cyan-600/90 text-white px-6 py-3 rounded-full border border-cyan-400/50 backdrop-blur-sm shadow-lg">
           <div class="flex items-center gap-3">
             <div class="w-3 h-3 bg-white rounded-full animate-pulse"></div>
-            <span class="font-semibold"
-              >Запоминайте! Осталось: {{ previewCountdown }}с</span
-            >
+            <span class="font-semibold">Запоминайте! Осталось: {{ previewCountdown }}с</span>
           </div>
         </div>
 
         <!-- Cards Grid -->
         <div class="cards-grid mx-auto mt-16" :class="gridClasses">
-          <div
-            v-for="card in cards"
-            :key="card.id"
-            @click="flipCard(card)"
-            class="memory-card cursor-pointer transition-all duration-500 transform"
-            :class="cardClasses(card)"
-          >
+          <div v-for="card in cards" :key="card.id" @click="flipCard(card)"
+            class="memory-card cursor-pointer transition-all duration-500 transform" :class="cardClasses(card)">
             <div class="card-inner">
               <!-- Card Front -->
               <div class="card-front">
@@ -442,9 +455,7 @@ onUnmounted(() => {
 
       <!-- Tips -->
       <div class="mt-12 info-card">
-        <h4
-          class="text-xl font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2"
-        >
+        <h4 class="text-xl font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
           <i class="fas fa-lightbulb text-yellow-500 dark:text-yellow-400"></i>
           Советы для улучшения памяти
         </h4>
@@ -484,17 +495,11 @@ onUnmounted(() => {
 }
 
 .btn-primary {
-  @apply inline-flex items-center px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-500 
-         text-white font-semibold hover:from-cyan-600 hover:to-purple-600 
-         transition-all duration-300 transform hover:scale-105 
-         shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40
-         disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:scale-100;
+  @apply inline-flex items-center px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-500 text-white font-semibold hover:from-cyan-600 hover:to-purple-600 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:scale-100;
 }
 
 .btn-secondary {
-  @apply inline-flex items-center px-6 py-3 rounded-xl bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-600/50 
-         text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-200 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-500 
-         transition-all duration-300 transform hover:scale-105 shadow-sm dark:shadow-none;
+  @apply inline-flex items-center px-6 py-3 rounded-xl bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-600/50 text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-200 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-500 transition-all duration-300 transform hover:scale-105 shadow-sm dark:shadow-none;
 }
 
 .info-card {
@@ -511,7 +516,8 @@ onUnmounted(() => {
 }
 
 .cards-grid {
-  @apply grid gap-3 sm:gap-4 mx-auto mt-16; /* Added top margin for banner */
+  @apply grid gap-3 sm:gap-4 mx-auto mt-16;
+  /* Added top margin for banner */
 }
 
 .memory-card {
