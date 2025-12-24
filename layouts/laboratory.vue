@@ -51,6 +51,7 @@
                 </div>
               </div>
               <div class="user-station flex items-center space-x-3">
+                <FullscreenToggle />
                 <span
                   class="station-id text-[10px] sm:text-xs font-mono text-cyan-600 dark:text-cyan-400 bg-cyan-500/10 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg border border-cyan-500/20">
                   {{ currentStation }}
@@ -80,6 +81,7 @@ import { useThemeStore } from "~/stores/theme";
 import { useScheduler } from "~/composables/useScheduler";
 import { useNotification } from "~/composables/useNotification";
 import Notification from "~/components/base/Notification.vue";
+import FullscreenToggle from "~/components/lab/FullscreenToggle.vue";
 
 const auth = useAuthStore();
 const themeStore = useThemeStore();
