@@ -26,7 +26,7 @@
           <span v-for="(letter, index) in 'MindQLab'" :key="index"
             class="relative inline-grid place-items-center group/letter">
             <span class="invisible pointer-events-none tracking-widest text-4xl md:text-6xl lg:text-7xl">{{ letter
-              }}</span>
+            }}</span>
             <span
               class="absolute inset-0 flex items-center justify-center transition-all duration-700 ease-in-out group-hover/letter:-translate-y-2 text-slate-800 dark:text-white group-hover/letter:text-cyan-600 dark:group-hover/letter:text-cyan-400">
               <span class="relative z-10">
@@ -73,7 +73,7 @@
             class="group px-10 py-5 bg-white/10 dark:bg-slate-900/40 backdrop-blur-xl border border-slate-200/50 dark:border-white/10 hover:bg-white/20 dark:hover:bg-slate-900/60 rounded-2xl font-bold text-lg transition-all duration-300 text-slate-900 dark:text-white">
             <span class="flex items-center gap-3">
               <i class="fas fa-puzzle-piece"></i>
-              Конструктор Лаборатории
+              Конструктор систем
             </span>
           </NuxtLink>
         </div>
@@ -83,7 +83,7 @@
           <div class="flex items-center gap-3 text-slate-500 dark:text-slate-400 text-sm font-light tracking-wide">
             <span>Или сразу:</span>
             <NuxtLink to="/lab" class="text-cyan-600 dark:text-cyan-400 hover:text-cyan-500 transition-colors">Войти в
-              лабораторию</NuxtLink>
+              MindQLab</NuxtLink>
             <span class="opacity-20">•</span>
             <NuxtLink to="/courses"
               class="text-purple-600 dark:text-purple-400 hover:text-purple-500 transition-colors">Курсы и гайды

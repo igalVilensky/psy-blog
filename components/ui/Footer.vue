@@ -103,7 +103,7 @@ import { ref } from "vue";
 const email = ref("");
 
 const sitemapLinks = [
-  { label: "Лаборатория", to: "/lab" },
+  { label: "Пространство", to: "/lab" },
   { label: "Тесты", to: "/lab/tests" },
   { label: "Тренировка Мозга", to: "/lab/brain-training" },
   { label: "Психология", to: "/lab/psychology" },
@@ -130,7 +130,7 @@ const socialLinks = [
   },
   {
     icon: "fab fa-youtube",
-    link: "https://www.youtube.com/@gelichka84",
+    link: "https://www.youtube.com/@MindQLab",
   },
   {
     icon: "fab fa-linkedin",

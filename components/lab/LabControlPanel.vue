@@ -82,7 +82,7 @@
                 </div>
                 <div class="flex-1 min-w-0">
                   <div class="text-[10px] font-mono text-cyan-600 dark:text-cyan-400/70 uppercase mb-0.5">
-                    ИССЛЕДОВАТЕЛЬ
+                    ПОЛЬЗОВАТЕЛЬ
                   </div>
                   <div class="text-slate-800 dark:text-white font-bold text-sm truncate">
                     {{ user.displayName || user.email }}
@@ -165,7 +165,7 @@
               </div>
               <div class="flex-1 min-w-0">
                 <div class="text-[10px] font-mono text-cyan-700 dark:text-cyan-400/70 mb-0.5 uppercase">
-                  ИССЛЕДОВАТЕЛЬ
+                  ПОЛЬЗОВАТЕЛЬ
                 </div>
                 <div class="text-slate-900 dark:text-white font-medium text-sm truncate">
                   {{ user.displayName || user.email }}
@@ -186,7 +186,7 @@
           <div v-else class="auth-buttons space-y-2">
             <NuxtLink to="/login"
               class="block w-full text-center py-3 px-4 bg-slate-100 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-xl text-slate-700 dark:text-slate-300 text-sm font-medium transition-all border border-slate-200 dark:border-slate-700/50">
-              Вход для исследователей
+              Вход в систему
             </NuxtLink>
             <NuxtLink to="/register"
               class="block w-full text-center py-3 px-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 rounded-xl text-white text-sm font-medium transition-all shadow-lg shadow-cyan-500/20">
@@ -199,7 +199,7 @@
       <!-- Research Stations -->
       <div class="research-stations p-4 space-y-2">
         <div class="text-xs font-mono text-slate-500 dark:text-slate-500 mb-3 px-2 font-semibold">
-          ИССЛЕДОВАТЕЛЬСКИЕ СТАНЦИИ
+          РАЗДЕЛЫ MINDQLAB
         </div>
 
         <!-- Interactive Tests Station -->
@@ -237,7 +237,7 @@
 
 
         <!-- Community Hub -->
-        <StationLink to="/lab/community" icon="fa-users" title="Сообщество" subtitle="Исследователи онлайн"
+        <StationLink to="/lab/community" icon="fa-users" title="Сообщество" subtitle="Пользователи онлайн"
           :active="route.path === '/lab/community'" gradient-from="orange-500" gradient-to="amber-600" />
       </div>
     </div>
@@ -372,7 +372,7 @@ const mobileStations = computed(() => [
     to: "/lab/community",
     icon: "fa-users",
     title: "Сообщество",
-    subtitle: "Исследователи",
+    subtitle: "Пользователи",
     gradientFrom: "orange-500",
     gradientTo: "amber-600",
   },

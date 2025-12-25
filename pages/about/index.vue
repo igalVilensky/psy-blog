@@ -1,462 +1,313 @@
 <template>
   <div
-    class="min-h-screen bg-white dark:bg-slate-950 text-gray-900 dark:text-white overflow-hidden transition-colors duration-300">
-    <!-- Animated Background -->
-    <div class="fixed inset-0 pointer-events-none">
-      <div
-        class="absolute top-20 left-10 w-72 h-72 bg-cyan-500/10 dark:bg-cyan-500/10 rounded-full blur-3xl animate-pulse">
+    class="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 selection:bg-indigo-100 dark:selection:bg-indigo-900/40 font-sans">
+
+    <!-- 1. HERO SECTION -->
+    <header
+      class="relative min-h-[85vh] flex items-center justify-center overflow-hidden border-b border-slate-100 dark:border-slate-800/50">
+      <div class="absolute inset-0 z-0 opacity-70 dark:opacity-50">
+        <ClientOnly>
+          <CursorNeuralVisualizer />
+        </ClientOnly>
       </div>
-      <div
-        class="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/10 dark:bg-purple-500/10 rounded-full blur-3xl animate-pulse"
-        style="animation-delay: 1s"></div>
-      <div
-        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/5 dark:bg-blue-500/5 rounded-full blur-3xl animate-pulse"
-        style="animation-delay: 2s"></div>
-    </div>
 
-    <!-- Main Content -->
-    <main class="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-0 py-12 lg:py-16 relative">
-      <!-- Hero Section -->
-      <section class="text-center mb-16 md:mb-24">
-        <div class="hero-content">
-          <!-- Animated Petri Dish with Enhanced Effects -->
-          <div class="text-center w-full mb-8">
-            <div class="relative inline-block">
-              <div
-                class="petri-dish w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 rounded-full bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 flex items-center justify-center relative overflow-hidden mx-auto group cursor-pointer shadow-2xl hover:shadow-cyan-500/50 transition-all duration-500"
-                @mouseenter="labActive = true" @mouseleave="labActive = false">
-                <!-- Glow effect -->
-                <div
-                  class="absolute inset-0 bg-gradient-to-br from-cyan-400/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                </div>
-
-                <!-- Rotating ring -->
-                <div class="absolute inset-2 border-2 border-cyan-400/30 rounded-full animate-spin-slow"></div>
-
-                <!-- Flask icon -->
-                <i
-                  class="fas fa-flask text-white text-5xl sm:text-6xl md:text-7xl relative z-10 transition-all duration-500 group-hover:scale-110 group-hover:rotate-12"></i>
-
-                <!-- Pulse ring on hover -->
-                <div v-if="labActive" class="absolute inset-0 border-4 border-cyan-400/60 rounded-full animate-ping">
-                </div>
-
-                <!-- Enhanced floating particles -->
-                <div class="absolute inset-0 overflow-hidden pointer-events-none">
-                  <div v-for="i in 6" :key="i" class="particle" :style="`top: ${Math.random() * 100}%; left: ${Math.random() * 100
-                    }%; animation-delay: ${i * 0.5}s;`"></div>
-                </div>
-              </div>
-
-              <!-- Floating badges -->
-              <div
-                class="absolute -top-4 -right-4 sm:-top-6 sm:-right-6 bg-gradient-to-br from-green-500 to-emerald-600 text-white text-xs sm:text-sm font-bold px-3 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-lg animate-bounce-slow">
-                🎯 Научно
-              </div>
-              <div
-                class="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 bg-gradient-to-br from-pink-500 to-rose-600 text-white text-xs sm:text-sm font-bold px-3 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-lg animate-bounce-slow"
-                style="animation-delay: 0.5s">
-                ✨ Интересно
-              </div>
-            </div>
-          </div>
-
-          <!-- Enhanced Title with Better Typography -->
-          <h1
-            class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white text-center mb-6 leading-tight">
-            О MindQLab —
-            <span
-              class="block mt-2 bg-clip-text text-transparent bg-gradient-to-r from-cyan-600 dark:from-cyan-400 via-blue-600 dark:via-blue-400 to-fuchsia-600 dark:to-fuchsia-400 animate-gradient">
-              Лаборатория осознанного роста
-            </span>
-          </h1>
-
-          <!-- Enhanced Description -->
-          <p class="text-gray-700 dark:text-slate-300 text-base sm:text-lg md:text-xl max-w-4xl mx-auto mb-8 leading-relaxed px-4 animate-fade-in-up"
-            style="animation-delay: 0.2s">
-            MindQLab — это инновационная платформа для исследования сознания и
-            личностного роста, объединяющая современную психологию, нейронауки и
-            интерактивные технологии.
-          </p>
-
-          <!-- Key Benefits Pills -->
-          <div class="flex flex-wrap justify-center gap-3 mb-8 px-4 animate-fade-in-up" style="animation-delay: 0.4s">
-            <span
-              class="px-4 py-2 bg-cyan-100 dark:bg-cyan-500/10 border border-cyan-400 dark:border-cyan-500/30 rounded-full text-cyan-700 dark:text-cyan-300 text-sm font-medium hover:bg-cyan-200 dark:hover:bg-cyan-500/20 transition-colors duration-300">
-              🧠 Нейронауки
-            </span>
-            <span
-              class="px-4 py-2 bg-purple-100 dark:bg-purple-500/10 border border-purple-400 dark:border-purple-500/30 rounded-full text-purple-700 dark:text-purple-300 text-sm font-medium hover:bg-purple-200 dark:hover:bg-purple-500/20 transition-colors duration-300">
-              🎮 Геймификация
-            </span>
-            <span
-              class="px-4 py-2 bg-pink-100 dark:bg-pink-500/10 border border-pink-400 dark:border-pink-500/30 rounded-full text-pink-700 dark:text-pink-300 text-sm font-medium hover:bg-pink-200 dark:hover:bg-pink-500/20 transition-colors duration-300">
-              📊 Персонализация
-            </span>
-          </div>
-        </div>
-      </section>
-
-      <!-- Mission Section with Enhanced Design -->
-      <section class="mb-16 md:mb-24 animate-fade-in-up" style="animation-delay: 0.6s">
+      <!-- Background Glow -->
+      <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
+        aria-hidden="true">
         <div
-          class="bg-gradient-to-br from-gray-100 via-gray-50 to-gray-100 dark:from-slate-900/60 dark:via-slate-900/40 dark:to-slate-900/60 backdrop-blur-xl rounded-3xl p-6 sm:p-8 md:p-10 border border-gray-200 dark:border-slate-800/60 shadow-2xl hover:border-cyan-500/30 transition-all duration-500 hover:shadow-cyan-500/20">
-          <div class="flex flex-col sm:flex-row items-start sm:items-center mb-6 gap-4">
-            <div
-              class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
-              <i class="fas fa-bullseye text-cyan-400 text-2xl sm:text-3xl"></i>
-            </div>
-            <h2
-              class="text-3xl sm:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400">
-              Наша миссия
-            </h2>
-          </div>
-          <p class="text-gray-700 dark:text-slate-300 text-lg sm:text-xl leading-relaxed">
-            Сделать инструменты самопознания и развития доступными для каждого.
-            Мы создаем безопасное цифровое пространство, где вы можете
-            исследовать свои мысли, эмоции и поведение через научно обоснованные
-            тесты, игры и практики.
-          </p>
+          class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#38bdf8] to-[#818cf8] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.187rem]"
+          style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)">
         </div>
-      </section>
+      </div>
 
-      <!-- Approach Section with Improved Layout -->
-      <section class="mb-16 md:mb-24">
-        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-12 md:mb-16 animate-fade-in-up">
-          Наш подход:
-          <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400">Лаборатория
-            роста</span>
-        </h2>
+      <div class="container mx-auto max-w-5xl px-6 relative z-10 text-center py-24 animate-fade-in">
+        <h1
+          class="text-4xl md:text-6xl lg:text-7xl font-light tracking-tight mb-8 text-slate-900 dark:text-white leading-[1.15]">
+          <span class="block mb-4 text-indigo-500 font-medium text-lg uppercase tracking-[0.3em]">Интеллектуальное
+            пространство</span>
+          <span class="block">MindQLab</span>
+          <span
+            class="block mt-4 text-2xl md:text-4xl lg:text-5xl font-extralight tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-slate-700 to-slate-900 dark:from-white dark:via-slate-300 dark:to-white">
+            Инструменты для ума <br class="hidden md:block" /> и эмоционального баланса
+          </span>
+        </h1>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
-          <!-- Features Card with Enhanced Interactions -->
-          <div
-            class="bg-gradient-to-br from-gray-100 via-gray-50 to-gray-100 dark:from-slate-900/60 dark:via-slate-900/40 dark:to-slate-900/60 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-gray-200 dark:border-slate-800/60 shadow-2xl animate-fade-in-left">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
-              <div v-for="(feature, index) in features" :key="index"
-                class="feature-card group bg-gray-50 dark:bg-slate-800/40 rounded-2xl p-5 md:p-6 border border-gray-200 dark:border-slate-700/40 hover:border-cyan-500/60 hover:bg-gray-100 dark:hover:bg-slate-800/60 transition-all duration-300 hover:scale-105 hover:-translate-y-1 cursor-pointer"
-                :style="`animation-delay: ${index * 0.1}s;`">
-                <div
-                  class="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
-                  <i :class="feature.icon + ' text-cyan-400 text-xl md:text-2xl'"></i>
-                </div>
-                <h3
-                  class="text-lg md:text-xl font-semibold mb-3 text-gray-900 dark:text-white group-hover:text-cyan-400 transition-colors duration-300">
-                  {{ feature.title }}
-                </h3>
-                <p
-                  class="text-sm md:text-base text-gray-600 dark:text-slate-400 leading-relaxed group-hover:text-gray-700 dark:group-hover:text-slate-300 transition-colors duration-300">
-                  {{ feature.description }}
-                </p>
-              </div>
-            </div>
-          </div>
+        <p
+          class="text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto mb-16 font-light leading-relaxed">
+          Мы объединяем современные психологические практики с интерактивными тренажерами и когнитивными играми.
+          Это пространство для тех, кто ищет эффективные способы развития памяти, внимания и гибкости мышления.
+        </p>
 
-          <!-- Stats Card with Enhanced Animations -->
-          <div
-            class="bg-gradient-to-br from-gray-100 via-gray-50 to-gray-100 dark:from-slate-900/60 dark:via-slate-900/40 dark:to-slate-900/60 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-gray-200 dark:border-slate-800/60 shadow-2xl animate-fade-in-right">
-            <div class="flex items-center mb-6 md:mb-8">
-              <div
-                class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center mr-4 flex-shrink-0">
-                <i class="fas fa-chart-bar text-purple-400 text-2xl sm:text-3xl"></i>
-              </div>
-              <h2
-                class="text-2xl sm:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">
-                В цифрах
-              </h2>
-            </div>
-
-            <div class="grid grid-cols-2 gap-4 md:gap-6">
-              <div v-for="(stat, index) in stats" :key="index"
-                class="stat-card group text-center p-4 md:p-6 bg-gray-50 dark:bg-slate-800/40 rounded-2xl border border-gray-200 dark:border-slate-700/40 hover:border-purple-500/60 hover:bg-gray-100 dark:hover:bg-slate-800/60 transition-all duration-300 hover:scale-105 cursor-pointer"
-                :style="`animation-delay: ${index * 0.1}s;`">
-                <div
-                  :class="`text-3xl md:text-4xl font-bold mb-2 ${stat.color} group-hover:scale-110 transition-transform duration-300`">
-                  {{ stat.value }}
-                </div>
-                <div
-                  class="text-xs md:text-sm text-gray-600 dark:text-slate-400 group-hover:text-gray-700 dark:group-hover:text-slate-300 transition-colors duration-300 uppercase tracking-wide">
-                  {{ stat.label }}
-                </div>
-              </div>
-            </div>
-          </div>
+        <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+          <NuxtLink to="/lab"
+            class="group relative px-10 py-5 bg-gradient-to-r from-indigo-600 to-blue-600 dark:from-indigo-500 dark:to-blue-500 text-white rounded-2xl font-bold text-lg transition-all duration-300 hover:scale-105 active:scale-95 shadow-2xl shadow-indigo-500/25 hover:shadow-indigo-500/40 overflow-hidden">
+            Открыть инструменты
+          </NuxtLink>
         </div>
-      </section>
+      </div>
 
-      <!-- Team Section with Enhanced Cards -->
-      <section class="mb-16 md:mb-24">
-        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-12 md:mb-16 animate-fade-in-up">
-          Команда
-          <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400">лаборатории</span>
-        </h2>
+      <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-30">
+        <i class="fas fa-chevron-down text-xl"></i>
+      </div>
+    </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-          <!-- Team Member 1 -->
-          <div
-            class="team-card group bg-gradient-to-br from-gray-100 via-gray-50 to-gray-100 dark:from-slate-900/60 dark:via-slate-900/40 dark:to-slate-900/60 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-gray-200 dark:border-slate-800/60 shadow-2xl hover:border-cyan-500/60 hover:shadow-cyan-500/20 transition-all duration-500 hover:scale-[1.02] animate-fade-in-left">
-            <div class="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-6">
-              <div class="flex-shrink-0 relative">
-                <div
-                  class="absolute inset-0 bg-gradient-to-br from-cyan-500/30 to-blue-500/30 rounded-full blur-xl group-hover:blur-2xl transition-all duration-500">
-                </div>
-                <img src="/assets/images/profile.jpg" alt="Анастасия Гельмут"
-                  class="w-28 h-28 sm:w-32 sm:h-32 rounded-full border-4 border-gray-200 dark:border-slate-800 object-cover shadow-2xl relative z-10 group-hover:scale-110 group-hover:border-cyan-500/50 transition-all duration-500" />
-                <div
-                  class="absolute -bottom-2 -right-2 bg-gradient-to-br from-cyan-500 to-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg z-20">
-                  🧠 Психолог
-                </div>
-              </div>
-              <div class="flex-1 text-center sm:text-left">
-                <h3
-                  class="text-2xl sm:text-3xl font-bold text-cyan-400 mb-2 group-hover:text-cyan-300 transition-colors duration-300">
-                  Анастасия Виленская
-                </h3>
-                <p class="text-sm sm:text-base text-purple-400 font-semibold mb-4">
-                  Руководитель по психологии и контенту
-                </p>
-                <p
-                  class="text-gray-700 dark:text-slate-300 text-sm sm:text-base leading-relaxed group-hover:text-gray-900 dark:group-hover:text-white transition-colors duration-300">
-                  Создает психологическую основу MindQ Lab, объединяя
-                  современные методики и научные подходы в области когнитивной
-                  психологии и личностного роста.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Team Member 2 -->
-          <div
-            class="team-card group bg-gradient-to-br from-gray-100 via-gray-50 to-gray-100 dark:from-slate-900/60 dark:via-slate-900/40 dark:to-slate-900/60 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-gray-200 dark:border-slate-800/60 shadow-2xl hover:border-purple-500/60 hover:shadow-purple-500/20 transition-all duration-500 hover:scale-[1.02] animate-fade-in-right">
-            <div class="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-6">
-              <div class="flex-shrink-0 relative">
-                <div
-                  class="absolute inset-0 bg-gradient-to-br from-purple-500/30 to-pink-500/30 rounded-full blur-xl group-hover:blur-2xl transition-all duration-500">
-                </div>
-                <img src="/assets/images/igal.avif" alt="Игаль Виленский"
-                  class="w-28 h-28 sm:w-32 sm:h-32 rounded-full border-4 border-gray-200 dark:border-slate-800 object-cover shadow-2xl relative z-10 group-hover:scale-110 group-hover:border-purple-500/50 transition-all duration-500" />
-                <div
-                  class="absolute -bottom-2 -right-2 bg-gradient-to-br from-purple-500 to-pink-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg z-20">
-                  💻 Tech Lead
-                </div>
-              </div>
-              <div class="flex-1 text-center sm:text-left">
-                <h3
-                  class="text-2xl sm:text-3xl font-bold text-purple-400 mb-2 group-hover:text-purple-300 transition-colors duration-300">
-                  Игаль Виленский
-                </h3>
-                <p class="text-sm sm:text-base text-pink-400 font-semibold mb-4">
-                  Технический руководитель
-                </p>
-                <p
-                  class="text-gray-700 dark:text-slate-300 text-sm sm:text-base leading-relaxed group-hover:text-gray-900 dark:group-hover:text-white transition-colors duration-300">
-                  Отвечает за техническую реализацию MindQ Lab, включая
-                  интерактивные инструменты, тесты и игровые механики для
-                  вовлечения пользователей.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Enhanced CTA Section -->
-      <section class="animate-fade-in-up" style="animation-delay: 0.8s">
-        <div
-          class="relative bg-gradient-to-br from-gray-100 via-gray-50 to-gray-100 dark:from-slate-900/80 dark:via-slate-900/60 dark:to-slate-900/80 backdrop-blur-xl rounded-3xl p-8 sm:p-10 md:p-12 border border-cyan-500/30 shadow-2xl text-center overflow-hidden">
-          <!-- Decorative elements -->
-          <div class="absolute top-0 right-0 w-40 h-40 bg-cyan-500/10 rounded-full blur-3xl"></div>
-          <div class="absolute bottom-0 left-0 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl"></div>
-
-          <div class="relative z-10">
-            <h2
-              class="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400">
-              Начните исследовать себя
-            </h2>
-            <p
-              class="text-gray-700 dark:text-slate-300 text-base sm:text-lg md:text-xl mb-8 max-w-3xl mx-auto leading-relaxed">
-              Присоединяйтесь к MindQ Lab, чтобы открыть свой потенциал через
-              научные тесты, развивающие игры и поддерживающее сообщество.
+    <!-- 2. MISSION & VISION -->
+    <section class="py-24 border-b border-slate-100 dark:border-slate-800/50">
+      <div class="container mx-auto max-w-6xl px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+          <div class="reveal-on-scroll">
+            <h2 class="text-3xl md:text-4xl font-light mb-8">Больше, чем психология</h2>
+            <div class="w-20 h-0.5 bg-indigo-500 mb-8"></div>
+            <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+              Мы верим, что развитие личности невозможно без тренировки функций мозга. MindQLab — это не просто курсы
+              или тесты, это интерактивная площадка для качественной работы над собой.
             </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <NuxtLink to="/lab/tests"
-                class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 rounded-2xl font-semibold text-base sm:text-lg shadow-2xl hover:shadow-cyan-500/50 hover:scale-105 transition-all duration-300 w-full sm:w-auto">
-                <i class="fas fa-vial group-hover:rotate-12 transition-transform duration-300"></i>
-                <span>Начать с тестов</span>
-                <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform duration-300"></i>
-              </NuxtLink>
-              <NuxtLink to="/courses"
-                class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-gray-200 dark:bg-slate-800/60 border-2 border-purple-500/40 rounded-2xl text-gray-900 dark:text-slate-200 font-semibold text-base sm:text-lg hover:bg-purple-500/20 hover:border-purple-500/60 hover:scale-105 transition-all duration-300 w-full sm:w-auto">
-                <i class="fas fa-graduation-cap group-hover:-rotate-12 transition-transform duration-300"></i>
-                <span>Изучить курсы</span>
-                <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform duration-300"></i>
-              </NuxtLink>
+            <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
+              Здесь вы найдете упражнения на концентрацию, игры для развития памяти и инструменты для глубокого
+              самоанализа, собранные в единую удобную экосистему.
+            </p>
+          </div>
+          <div class="grid grid-cols-2 gap-6 reveal-on-scroll">
+            <div v-for="(stat, i) in stats" :key="i"
+              class="p-8 bg-slate-50 dark:bg-slate-900/40 rounded-3xl border border-slate-100 dark:border-slate-800 text-center transition-all duration-500 hover:border-indigo-500/30">
+              <div class="text-3xl md:text-4xl font-light mb-2 text-indigo-500">{{ stat.value }}</div>
+              <div class="text-[10px] uppercase tracking-[0.2em] text-slate-500 font-medium">{{ stat.label }}</div>
             </div>
           </div>
         </div>
-      </section>
-    </main>
+      </div>
+    </section>
+
+    <!-- 3. CORE PRINCIPLES -->
+    <section class="py-24 bg-slate-50/50 dark:bg-slate-900/20 border-b border-slate-100 dark:border-slate-800/50">
+      <div class="container mx-auto max-w-6xl px-6">
+        <div class="text-center mb-20 reveal-on-scroll">
+          <h2 class="text-3xl md:text-4xl font-light mb-6">Что внутри MindQLab</h2>
+          <p class="text-lg text-slate-500 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+            Мы разделили платформу на три ключевых направления, чтобы ваш рост был всесторонним.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <div v-for="(feature, i) in features" :key="i"
+            class="reveal-on-scroll flex flex-col items-center text-center group"
+            :style="{ transitionDelay: `${i * 100}ms` }">
+            <div
+              class="w-16 h-16 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 flex items-center justify-center text-indigo-500 mb-8 shadow-sm group-hover:scale-110 group-hover:border-indigo-500 transition-all duration-500">
+              <i :class="feature.icon" class="text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-medium mb-4">{{ feature.title }}</h3>
+            <p class="text-slate-500 dark:text-slate-400 leading-relaxed text-sm">
+              {{ feature.description }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. FOUNDERS / TEAM -->
+    <section class="py-24 border-b border-slate-100 dark:border-slate-800/50">
+      <div class="container mx-auto max-w-6xl px-6">
+        <div class="mb-20 reveal-on-scroll">
+          <h2 class="text-3xl md:text-4xl font-light mb-6">Создатели проекта</h2>
+          <div class="w-20 h-0.5 bg-indigo-500 mb-8"></div>
+          <p class="text-lg text-slate-500 dark:text-slate-400 max-w-3xl leading-relaxed">
+            MindQLab — это синергия психологии и технологий. Мы объединили экспертный опыт в области психического
+            здоровья с современными игровыми механиками.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <!-- Anastasia -->
+          <div
+            class="reveal-on-scroll p-8 bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-3xl flex flex-col sm:flex-row gap-8 items-center sm:items-start group transition-all duration-500 hover:shadow-xl hover:shadow-indigo-500/5">
+            <div class="shrink-0 relative">
+              <img src="/assets/images/profile.jpg" alt="Анастасия Виленская"
+                class="w-32 h-32 rounded-2xl object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
+              <div
+                class="absolute -bottom-2 -right-2 w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center text-white text-xs">
+                <i class="fas fa-brain"></i>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-2xl font-medium mb-1">Анастасия Виленская</h3>
+              <div class="text-indigo-500 text-sm font-medium mb-4 uppercase tracking-widest">Psychology & Content Lead
+              </div>
+              <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-6">
+                Создает методологическую базу проекта. Её экспертиза позволяет интегрировать сложные терапевтические и
+                когнитивные модели в понятный и увлекательный формат.
+              </p>
+              <div class="flex gap-4">
+                <a href="https://www.instagram.com/galactik.anastasia/" target="_blank"
+                  class="text-slate-400 hover:text-indigo-500 transition-colors"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-slate-400 hover:text-indigo-500 transition-colors"><i
+                    class="fab fa-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Igal -->
+          <div
+            class="reveal-on-scroll p-8 bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-3xl flex flex-col sm:flex-row gap-8 items-center sm:items-start group transition-all duration-500 hover:shadow-xl hover:shadow-indigo-500/5"
+            style="transition-delay: 100ms">
+            <div class="shrink-0 relative">
+              <img src="/assets/images/igal.avif" alt="Игаль Виленский"
+                class="w-32 h-32 rounded-2xl object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
+              <div
+                class="absolute -bottom-2 -right-2 w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-white text-xs">
+                <i class="fas fa-code"></i>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-2xl font-medium mb-1">Игаль Виленский</h3>
+              <div class="text-blue-500 text-sm font-medium mb-4 uppercase tracking-widest">Tech Lead & Architect</div>
+              <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-6">
+                Создает техническую архитектуру и интерактивные инструменты платформы. Воплощает идеи в современные
+                решения, делая развитие удобным и технологичным.
+              </p>
+              <div class="flex gap-4">
+                <a href="#" class="text-slate-400 hover:text-blue-500 transition-colors"><i
+                    class="fab fa-github"></i></a>
+                <a href="#" class="text-slate-400 hover:text-blue-500 transition-colors"><i
+                    class="fab fa-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. FINAL CTA -->
+    <footer class="py-32 text-center reveal-on-scroll">
+      <div class="container mx-auto max-w-4xl px-6">
+        <h2 class="text-3xl md:text-5xl font-light mb-8 italic text-slate-900 dark:text-white leading-tight">
+          «Качественные инструменты делают путь к себе короче»
+        </h2>
+        <p class="text-lg text-slate-500 dark:text-slate-400 mb-12 max-w-2xl mx-auto leading-relaxed">
+          Присоединяйтесь к сообществу тех, кто выбирает осознанный подход к тренировке ума и заботе о психике.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <NuxtLink to="/lab/tests"
+            class="inline-block px-12 py-5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-medium transition-all duration-300 shadow-xl shadow-indigo-200 dark:shadow-none">
+            Начать с диагностики
+          </NuxtLink>
+          <NuxtLink to="/lab/brain-training"
+            class="inline-block px-12 py-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white rounded-xl font-medium transition-all duration-300">
+            Тренировать мозг
+          </NuxtLink>
+        </div>
+      </div>
+    </footer>
+
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useHead } from "@unhead/vue";
+import CursorNeuralVisualizer from '~/components/lab/CursorNeuralVisualizer.vue';
 
-const labActive = ref(false);
-
-// SEO metadata
 useHead({
-  title: "О нас",
+  title: "О MindQLab — Пространство осознанного развития",
   meta: [
-    {
-      name: "description",
-      content:
-        "MindQ Lab — инновационная платформа для исследования сознания и личностного роста, объединяющая современную психологию, нейронауки и интерактивные технологии. Узнайте о нашей миссии и команде.",
-    },
-    {
-      name: "keywords",
-      content:
-        "MindQ Lab, о нас, лаборатория роста, психология, нейронауки, самопознание, личностный рост, команда, миссия, Игаль Виленский, Анастасия Виленская, Igal Vilensky, Anastasia Vilensky",
-    },
-    {
-      name: "author",
-      content: "Игаль Виленский, Анастасия Виленская",
-    },
-    // Open Graph tags
-    {
-      property: "og:title",
-      content: "О MindQLab — Лаборатория осознанного роста",
-    },
-    {
-      property: "og:description",
-      content:
-        "Инновационная платформа для исследования сознания и личностного роста. Современная психология, нейронауки и интерактивные технологии в одном месте.",
-    },
-    {
-      property: "og:type",
-      content: "website",
-    },
-    {
-      property: "og:url",
-      content: "https://www.mindqlab.com/about",
-    },
-    {
-      property: "og:image",
-      content: "https://www.mindqlab.com/mindqlab-logo.png",
-    },
-    // Twitter Card tags
-    {
-      name: "twitter:card",
-      content: "summary_large_image",
-    },
-    {
-      name: "twitter:title",
-      content: "О MindQLab — Лаборатория осознанного роста",
-    },
-    {
-      name: "twitter:description",
-      content:
-        "Инновационная платформа для исследования сознания и личностного роста. Современная психология, нейронауки и интерактивные технологии.",
-    },
-    {
-      name: "twitter:image",
-      content: "https://www.mindqlab.com/mindqlab-logo.png",
-    },
+    { name: "description", content: "MindQLab — это инновационная экосистема, объединяющая когнитивные тренажеры, игры и психологические инструменты для вашего развития." },
+    { name: "keywords", content: "MindQLab, о нас, тренировка мозга, когнитивные игры, психология, самопознание, интерактивные тренажеры, Игаль Виленский, Анастасия Виленская" },
+    { property: "og:title", content: "MindQLab — Платформа для осознанного развития" },
+    { property: "og:description", content: "Развивайте свой интеллект и эмоциональный баланс с помощью современных инструментов и игровых механик." },
+    { property: "og:type", content: "website" },
+    { property: "og:url", content: "https://www.mindqlab.com/about" },
+    { property: "og:image", content: "https://www.mindqlab.com/mindqlab-logo.png" },
+    { name: "twitter:card", content: "summary_large_image" },
   ],
   link: [
-    {
-      rel: "canonical",
-      href: "https://www.mindqlab.com/about",
-    },
+    { rel: "canonical", href: "https://www.mindqlab.com/about" },
   ],
+  script: [
+    {
+      type: "application/ld+json",
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "AboutPage",
+        "mainEntity": {
+          "@type": "Organization",
+          "name": "MindQLab",
+          "url": "https://www.mindqlab.com",
+          "logo": "https://www.mindqlab.com/mindqlab-logo.png",
+          "description": "Экосистема для когнитивного развития и психологического роста.",
+          "founder": [
+            {
+              "@type": "Person",
+              "name": "Анастасия Виленская"
+            },
+            {
+              "@type": "Person",
+              "name": "Игаль Виленский"
+            }
+          ]
+        }
+      })
+    }
+  ]
 });
 
 const features = [
   {
-    icon: "fas fa-microscope",
-    title: "Научный подход",
-    description:
-      "Все методики основаны на проверенных психологических исследованиях",
+    icon: "fas fa-gamepad",
+    title: "Когнитивные игры",
+    description: "Развивайте память, концентрацию и скорость мышления с помощью специально разработанных игровых тренажеров."
   },
   {
-    icon: "fas fa-user-cog",
-    title: "Персонализация",
-    description: "Индивидуальные рекомендации на основе ваших результатов",
+    icon: "fas fa-fingerprint",
+    title: "Инструменты самопознания",
+    description: "Набор психологических тестов и моделей для глубокого понимания своих привычек, паттернов и зон роста."
   },
   {
-    icon: "fas fa-trophy",
-    title: "Геймификация",
-    description: "Увлекательные игры для развития когнитивных способностей",
-  },
-  {
-    icon: "fas fa-chart-bar",
-    title: "Отслеживание",
-    description: "Визуализация вашего роста и достижений",
+    icon: "fas fa-infinity",
+    title: "Целостный подход",
+    description: "Мы объединяем тренировку функций мозга с работой над эмоциональным интеллектом в единую систему."
   },
 ];
 
 const stats = [
-  { value: "12+", label: "Тестов", color: "text-cyan-400" },
-  { value: "8+", label: "Игр", color: "text-purple-400" },
-  { value: "25+", label: "Курсов", color: "text-pink-400" },
-  { value: "247+", label: "Участников", color: "text-emerald-400" },
+  { value: "40+", label: "Инструментов" },
+  { value: "15+", label: "Тестов" },
+  { value: "25+", label: "Тренажеров" },
+  { value: "5000+", label: "Сессий" },
 ];
+
+onMounted(() => {
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -100px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('active');
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.reveal-on-scroll').forEach(el => {
+    observer.observe(el);
+  });
+});
 </script>
 
 <style scoped>
-@keyframes gradient {
-
-  0%,
-  100% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
-  }
+.font-sans {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-@keyframes spin-slow {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
+.animate-fade-in {
+  animation: fadeIn 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes bounce-slow {
-
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-@keyframes float {
-
-  0%,
-  100% {
-    transform: translate(0, 0) scale(1);
-    opacity: 0.4;
-  }
-
-  50% {
-    transform: translate(var(--float-x, 10px), var(--float-y, -15px)) scale(1.3);
-    opacity: 0.8;
-  }
-}
-
-@keyframes fadeInUp {
+@keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(40px);
+    transform: translateY(30px);
   }
 
   to {
@@ -465,81 +316,30 @@ const stats = [
   }
 }
 
-@keyframes fadeInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-40px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes fadeInRight {
-  from {
-    opacity: 0;
-    transform: translateX(40px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.reveal-on-scroll.active {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.animate-gradient {
-  background-size: 200% auto;
-  animation: gradient 4s ease infinite;
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 300;
+  letter-spacing: -0.015em;
 }
 
-.animate-spin-slow {
-  animation: spin-slow 20s linear infinite;
+.grayscale {
+  filter: grayscale(100%);
 }
 
-.animate-bounce-slow {
-  animation: bounce-slow 2s ease-in-out infinite;
-}
-
-.animate-fade-in-up {
-  animation: fadeInUp 0.8s ease-out backwards;
-}
-
-.animate-fade-in-left {
-  animation: fadeInLeft 0.8s ease-out backwards;
-}
-
-.animate-fade-in-right {
-  animation: fadeInRight 0.8s ease-out backwards;
-}
-
-.particle {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  background: radial-gradient(circle, rgba(34, 211, 238, 0.8), transparent);
-  border-radius: 50%;
-  animation: float 4s infinite ease-in-out;
-  --float-x: 15px;
-  --float-y: -20px;
-}
-
-a:focus-visible,
-button:focus-visible {
-  outline: 2px solid theme("colors.cyan.400");
-  outline-offset: 4px;
-  border-radius: 0.5rem;
-}
-
-@media (prefers-reduced-motion: reduce) {
-
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+.group:hover .grayscale {
+  filter: grayscale(0%);
 }
 </style>

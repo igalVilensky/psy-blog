@@ -43,7 +43,7 @@
           </span>
           <span
             class="block mt-4 text-3xl md:text-5xl lg:text-6xl font-extralight tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-slate-700 to-slate-900 dark:from-white dark:via-slate-300 dark:to-white">
-            Лаборатория осознанного роста
+            Пространство осознанного развития
           </span>
         </h1>
 
@@ -66,7 +66,7 @@
           </NuxtLink>
           <NuxtLink to="/lab"
             class="group px-10 py-5 bg-white/10 dark:bg-slate-900/40 backdrop-blur-xl border border-slate-200/50 dark:border-white/10 hover:bg-white/20 dark:hover:bg-slate-900/60 rounded-2xl font-bold text-lg transition-all duration-300 text-slate-900 dark:text-white">
-            Войти в лабораторию
+            Открыть MindQLab
           </NuxtLink>
         </div>
       </div>
@@ -190,9 +190,9 @@
       <div class="container mx-auto max-w-6xl px-6">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <div class="reveal-on-scroll">
-            <h2 class="text-3xl md:text-4xl font-light mb-8">Инструментарий Лаборатории</h2>
+            <h2 class="text-3xl md:text-4xl font-light mb-8">Инструментарий MindQLab</h2>
             <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-10">
-              MindQLab построена по модульному принципу. Каждый исследователь сам выбирает глубину, направление и темп
+              Платформа построена по модульному принципу. Вы сами выбираете глубину, направление и темп
               освоения инструментов.
             </p>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -385,6 +385,7 @@
 <script setup>
 import { onMounted, computed, ref } from 'vue';
 import { useSeoMeta } from '#app';
+import { useHead } from "@unhead/vue";
 import { useAuthStore } from "~/stores/auth";
 import { fetchPosts } from "~/api/sanity/posts";
 import { getImageUrl } from "~/api/sanity/client";
@@ -451,9 +452,72 @@ const latestPosts = computed(() => posts.value.slice(0, 3));
 useSeoMeta({
   title: 'MindQLab — Платформа для развития мышления и осознанности',
   description: 'Единая экосистема для когнитивных исследований, психологического роста и медитативных практик. Научный подход к развитию личности.',
-  ogTitle: 'MindQLab — Твоя среда осознанного роста',
+  ogTitle: 'MindQLab — Твое пространство осознанного развития',
   ogType: 'website',
 });
+
+useHead({
+  script: [
+    {
+      type: "application/ld+json",
+      children: JSON.stringify([
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "@id": "https://www.mindqlab.com#organization",
+          "name": "MindQLab",
+          "url": "https://www.mindqlab.com",
+          "logo": "https://www.mindqlab.com/logo.png",
+          "sameAs": [
+            "https://www.instagram.com/galactik.anastasia/",
+            "https://t.me/mindqlab",
+            "https://www.youtube.com/@MindQLab",
+            "https://www.linkedin.com/company/mindqlab",
+            "https://www.facebook.com/people/MindQlab/61583775061278/"
+          ],
+          "contactPoint": [
+            {
+              "@type": "ContactPoint",
+              "contactType": "customer support",
+              "availableLanguage": ["en"]
+            }
+          ]
+        },
+
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "@id": "https://www.mindqlab.com#website",
+          "name": "MindQLab",
+          "url": "https://www.mindqlab.com",
+          "inLanguage": "en",
+          "publisher": {
+            "@id": "https://www.mindqlab.com#organization"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://www.mindqlab.com/search?q={query}",
+            "query-input": "required name=query"
+          }
+        },
+
+        {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "@id": "https://www.mindqlab.com/#webpage",
+          "url": "https://www.mindqlab.com",
+          "name": "MindQLab — Home",
+          "isPartOf": {
+            "@id": "https://www.mindqlab.com#website"
+          },
+          "about": {
+            "@id": "https://www.mindqlab.com#organization"
+          }
+        }
+      ])
+    }
+  ]
+})
 
 // 4. Client-side Animations
 onMounted(() => {
