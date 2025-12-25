@@ -7,32 +7,21 @@
     </h3>
 
     <!-- Add Comment Form -->
-    <div v-if="authStore.user" class="bg-white dark:bg-slate-800/30 rounded-xl border border-slate-200 dark:border-slate-700/50 p-4 shadow-sm dark:shadow-none">
+    <div v-if="authStore.user"
+      class="bg-white dark:bg-slate-800/30 rounded-xl border border-slate-200 dark:border-slate-700/50 p-4 shadow-sm dark:shadow-none">
       <div class="flex items-start space-x-3">
-        <div
-          v-if="authStore.user.photoURL"
-          class="w-10 h-10 rounded-full bg-cover bg-center flex-shrink-0"
-          :style="{ backgroundImage: `url(${authStore.user.photoURL})` }"
-        ></div>
-        <div
-          v-else
-          class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center text-white font-bold flex-shrink-0"
-        >
+        <div v-if="authStore.user.photoURL" class="w-10 h-10 rounded-full bg-cover bg-center flex-shrink-0"
+          :style="{ backgroundImage: `url(${authStore.user.photoURL})` }"></div>
+        <div v-else
+          class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center text-white font-bold flex-shrink-0">
           {{ getInitials(authStore.user.displayName || authStore.user.email) }}
         </div>
         <div class="flex-1">
-          <textarea
-            v-model="newComment"
-            rows="3"
-            placeholder="Напишите комментарий..."
-            class="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-lg p-3 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50 transition-all resize-none text-sm"
-          ></textarea>
+          <textarea v-model="newComment" rows="3" placeholder="Напишите комментарий..."
+            class="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-lg p-3 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50 transition-all resize-none text-sm"></textarea>
           <div class="flex justify-end mt-2">
-            <button
-              @click="submitComment"
-              :disabled="!newComment.trim() || isSubmitting"
-              class="px-4 py-2 bg-orange-500 hover:bg-orange-600 disabled:bg-slate-300 dark:disabled:bg-slate-700 disabled:cursor-not-allowed text-white rounded-lg text-sm font-medium transition-all flex items-center space-x-2"
-            >
+            <button @click="submitComment" :disabled="!newComment.trim() || isSubmitting"
+              class="px-4 py-2 bg-orange-500 hover:bg-orange-600 disabled:bg-slate-300 dark:disabled:bg-slate-700 disabled:cursor-not-allowed text-white rounded-lg text-sm font-medium transition-all flex items-center space-x-2">
               <i v-if="isSubmitting" class="fas fa-spinner fa-spin"></i>
               <span>Отправить</span>
             </button>
@@ -40,10 +29,12 @@
         </div>
       </div>
     </div>
-    
-    <div v-else class="bg-white dark:bg-slate-800/30 rounded-xl border border-slate-200 dark:border-slate-700/50 p-6 text-center shadow-sm dark:shadow-none">
+
+    <div v-else
+      class="bg-white dark:bg-slate-800/30 rounded-xl border border-slate-200 dark:border-slate-700/50 p-6 text-center shadow-sm dark:shadow-none">
       <p class="text-slate-600 dark:text-slate-400 mb-4">Войдите, чтобы оставить комментарий</p>
-      <NuxtLink to="/auth" class="inline-block px-6 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-900 dark:text-white rounded-lg text-sm font-medium transition-colors">
+      <NuxtLink to="/auth"
+        class="inline-block px-6 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-900 dark:text-white rounded-lg text-sm font-medium transition-colors">
         Войти
       </NuxtLink>
     </div>
@@ -53,27 +44,18 @@
       <div v-if="loading" class="text-center py-8">
         <i class="fas fa-spinner fa-spin text-2xl text-orange-400"></i>
       </div>
-      
+
       <div v-else-if="comments.length === 0" class="text-center py-8 text-slate-500 dark:text-slate-500">
         <p>Пока нет комментариев. Будьте первым!</p>
       </div>
 
-      <div
-        v-else
-        v-for="comment in comments"
-        :key="comment.id"
-        class="bg-white dark:bg-slate-800/30 rounded-xl border border-slate-200 dark:border-slate-700/50 p-4 shadow-sm dark:shadow-none"
-      >
+      <div v-else v-for="comment in comments" :key="comment.id"
+        class="bg-white dark:bg-slate-800/30 rounded-xl border border-slate-200 dark:border-slate-700/50 p-4 shadow-sm dark:shadow-none">
         <div class="flex items-start space-x-3">
-          <div
-            v-if="comment.authorAvatar"
-            class="w-8 h-8 rounded-full bg-cover bg-center flex-shrink-0"
-            :style="{ backgroundImage: `url(${comment.authorAvatar})` }"
-          ></div>
-          <div
-            v-else
-            class="w-8 h-8 rounded-full bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
-          >
+          <div v-if="comment.authorAvatar" class="w-8 h-8 rounded-full bg-cover bg-center flex-shrink-0"
+            :style="{ backgroundImage: `url(${comment.authorAvatar})` }"></div>
+          <div v-else
+            class="w-8 h-8 rounded-full bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
             {{ getInitials(comment.authorName) }}
           </div>
           <div class="flex-1">
@@ -126,22 +108,22 @@ const getInitials = (name) => {
 
 const formatTime = (timestamp) => {
   if (!timestamp) return '';
-  
+
   // Handle Firestore Timestamp
   const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-  
+
   const now = new Date();
   const diff = now - date;
-  
+
   // Less than 1 minute
   if (diff < 60000) return 'Только что';
-  
+
   // Less than 1 hour
   if (diff < 3600000) return `${Math.floor(diff / 60000)} мин. назад`;
-  
+
   // Less than 24 hours
   if (diff < 86400000) return `${Math.floor(diff / 3600000)} ч. назад`;
-  
+
   // Format date
   return new Intl.DateTimeFormat('ru-RU', {
     day: 'numeric',
@@ -153,7 +135,7 @@ const formatTime = (timestamp) => {
 
 const submitComment = async () => {
   if (!newComment.value.trim()) return;
-  
+
   isSubmitting.value = true;
   try {
     await addComment(props.postId, newComment.value);

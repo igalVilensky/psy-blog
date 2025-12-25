@@ -163,7 +163,7 @@ const goToRoute = () => {
     // Force navigation even if already on the route
     router.push(props.routePath).catch(() => {
       // If already on route, force a reload by going away and back
-      router.push('/lab').then(() => {
+      router.push('/space').then(() => {
         router.push(props.routePath);
       });
     });

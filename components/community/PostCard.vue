@@ -38,7 +38,7 @@
 
     <!-- Post Content -->
     <div class="p-5">
-      <NuxtLink :to="`/lab/community/${post.id}`" class="block group-hover:opacity-90 transition-opacity">
+      <NuxtLink :to="`/space/community/${post.id}`" class="block group-hover:opacity-90 transition-opacity">
         <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3 leading-tight">
           {{ post.title }}
         </h3>
@@ -77,7 +77,7 @@
           <span class="text-sm font-medium">{{ post.likes || 0 }}</span>
         </button>
         <NuxtLink
-          :to="`/lab/community/${post.id}`"
+          :to="`/space/community/${post.id}`"
           class="flex items-center space-x-2 text-slate-500 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors group/comment"
         >
           <div

@@ -32,7 +32,7 @@
           </p>
           
           <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-            <NuxtLink to="/lab/tests" class="group relative w-full sm:w-auto px-8 py-4 bg-brand-dark dark:bg-brand-primary text-white rounded-2xl font-bold overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <NuxtLink to="/space/tests" class="group relative w-full sm:w-auto px-8 py-4 bg-brand-dark dark:bg-brand-primary text-white rounded-2xl font-bold overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                <span class="relative flex items-center justify-center gap-2">
                  Начать бесплатно <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform duration-300"></i>
                </span>

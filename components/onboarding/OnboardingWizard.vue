@@ -13,10 +13,8 @@
         </div>
         <!-- Progress Bar -->
         <div class="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-          <div 
-            class="h-full bg-gradient-to-r from-cyan-500 to-blue-600 transition-all duration-500 ease-out"
-            :style="{ width: `${(currentStep / totalSteps) * 100}%` }"
-          ></div>
+          <div class="h-full bg-gradient-to-r from-cyan-500 to-blue-600 transition-all duration-500 ease-out"
+            :style="{ width: `${(currentStep / totalSteps) * 100}%` }"></div>
         </div>
       </div>
     </header>
@@ -25,28 +23,21 @@
     <main class="flex-1 flex flex-col max-w-3xl mx-auto w-full px-4 py-8">
       <div class="flex-1">
         <Transition name="fade" mode="out-in">
-          <component 
-            :is="currentStepComponent" 
-            v-model="answers"
-            @next="nextStep"
-            @back="prevStep"
-            :key="currentStep"
-          />
+          <component :is="currentStepComponent" v-model="answers" @next="nextStep" @back="prevStep"
+            :key="currentStep" />
         </Transition>
       </div>
     </main>
     <!-- Blocking Overlay -->
-<div 
-  v-if="showBlockingOverlay" 
-  class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[9999]"
->
-  <div class="bg-white dark:bg-slate-900 rounded-2xl p-8 shadow-xl text-center w-80">
-    <i class="fas fa-circle-notch fa-spin text-3xl text-cyan-500 mb-4"></i>
-    <p class="text-slate-700 dark:text-slate-300 font-medium">
-      {{ processingMessage }}
-    </p>
-  </div>
-</div>
+    <div v-if="showBlockingOverlay"
+      class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[9999]">
+      <div class="bg-white dark:bg-slate-900 rounded-2xl p-8 shadow-xl text-center w-80">
+        <i class="fas fa-circle-notch fa-spin text-3xl text-cyan-500 mb-4"></i>
+        <p class="text-slate-700 dark:text-slate-300 font-medium">
+          {{ processingMessage }}
+        </p>
+      </div>
+    </div>
 
   </div>
 </template>

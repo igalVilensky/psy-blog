@@ -5,11 +5,7 @@
         Почему важно знать свой психологический профиль?
       </h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div
-          v-for="reason in reasons"
-          :key="reason.id"
-          class="bg-white/5 p-6 rounded-xl"
-        >
+        <div v-for="reason in reasons" :key="reason.id" class="bg-white/5 p-6 rounded-xl">
           <h3 class="text-lg text-cyan-300 mb-2">{{ reason.title }}</h3>
           <p class="text-slate-300 text-sm">{{ reason.description }}</p>
         </div>

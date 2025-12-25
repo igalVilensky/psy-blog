@@ -384,3 +384,4 @@ const getImageUrl = (imageName) => {
   return new URL(`/assets/images/courses/${imageName}`, import.meta.url).href;
 };
 </script>
+

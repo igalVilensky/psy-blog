@@ -36,7 +36,7 @@
             </li>
           </ul>
 
-          <NuxtLink to="/lab/dashboard" class="inline-flex items-center gap-3 px-8 py-4 bg-brand-secondary hover:bg-sky-600 dark:bg-brand-secondary dark:hover:bg-sky-500 text-white rounded-xl font-bold transition-all shadow-lg shadow-sky-500/25 hover:shadow-sky-500/40 transform hover:-translate-y-1">
+          <NuxtLink to="/space/dashboard" class="inline-flex items-center gap-3 px-8 py-4 bg-brand-secondary hover:bg-sky-600 dark:bg-brand-secondary dark:hover:bg-sky-500 text-white rounded-xl font-bold transition-all shadow-lg shadow-sky-500/25 hover:shadow-sky-500/40 transform hover:-translate-y-1">
             <span>Открыть демо-панель</span>
             <i class="fas fa-arrow-right"></i>
           </NuxtLink>

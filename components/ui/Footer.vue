@@ -103,16 +103,16 @@ import { ref } from "vue";
 const email = ref("");
 
 const sitemapLinks = [
-  { label: "Пространство", to: "/lab" },
-  { label: "Тесты", to: "/lab/tests" },
-  { label: "Тренировка Мозга", to: "/lab/brain-training" },
-  { label: "Психология", to: "/lab/psychology" },
-  { label: "Медитация", to: "/lab/mindfulness" },
+  { label: "Пространство", to: "/space" },
+  { label: "Тесты", to: "/space/tests" },
+  { label: "Тренировка Мозга", to: "/space/brain-training" },
+  { label: "Психология", to: "/space/psychology" },
+  { label: "Медитация", to: "/space/mindfulness" },
 
-  { label: "Саморазвитие", to: "/lab/growth" },
+  { label: "Саморазвитие", to: "/space/growth" },
 
-  { label: "Центр Управления", to: "/lab/dashboard" },
-  { label: "Сообщество", to: "/lab/community" },
+  { label: "Центр Управления", to: "/space/dashboard" },
+  { label: "Сообщество", to: "/space/community" },
   { label: "Блог", to: "/blog" },
   { label: "О проекте", to: "/about" },
   { label: "FAQ", to: "/faq" },

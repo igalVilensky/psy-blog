@@ -209,7 +209,7 @@
           Свяжитесь с нами или попробуйте платформу прямо сейчас.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <NuxtLink to="/lab/tests"
+          <NuxtLink to="/space/tests"
             class="px-8 py-4 bg-brand-dark dark:bg-white text-white dark:text-brand-dark rounded-xl font-bold hover:shadow-lg transition-all transform hover:-translate-y-1">
             Начать бесплатно
           </NuxtLink>
@@ -256,3 +256,4 @@ useHead({
   animation-delay: 4000ms;
 }
 </style>
+

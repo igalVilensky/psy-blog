@@ -81,7 +81,8 @@ import { useThemeStore } from "~/stores/theme";
 import { useScheduler } from "~/composables/useScheduler";
 import { useNotification } from "~/composables/useNotification";
 import Notification from "~/components/base/Notification.vue";
-import FullscreenToggle from "~/components/lab/FullscreenToggle.vue";
+import FullscreenToggle from "~/components/space/FullscreenToggle.vue";
+import LabControlPanel from "~/components/space/LabControlPanel.vue";
 
 const auth = useAuthStore();
 const themeStore = useThemeStore();
@@ -94,23 +95,23 @@ const currentTime = ref("");
 
 const currentStation = computed(() => {
   const stationMap = {
-    "/lab": "ГЛАВНЫЙ_КОНТРОЛЬ",
-    "/lab/dashboard": "ЦЕНТР_УПРАВЛЕНИЯ",
-    "/lab/growth": "ЭКСПЕРИМЕНТАЛЬНАЯ",
-    "/lab/community": "СООБЩЕСТВО",
+    "/space": "ГЛАВНЫЙ_КОНТРОЛЬ",
+    "/space/dashboard": "ЦЕНТР_УПРАВЛЕНИЯ",
+    "/space/growth": "ЭКСПЕРИМЕНТАЛЬНАЯ",
+    "/space/community": "СООБЩЕСТВО",
     "/profile": "ПРОФИЛЬ",
-    "/lab/tests": "КОГНИТИВНЫЕ_ТЕСТЫ",
-    "/lab/tests": "КОГНИТИВНЫЕ_ТЕСТЫ",
-    "/lab/brain-training": "ТРЕНИРОВКА_МОЗГА",
-    "/lab/brain-training/reaction": "ТЕСТ_РЕАКЦИИ",
-    "/lab/brain-training/memory": "ТЕСТ_ПАМЯТИ",
-    "/lab/brain-training/stroop": "Цветовой Струп",
-    "/lab/psychology": "ПСИХОЛОГИЯ",
+    "/space/tests": "КОГНИТИВНЫЕ_ТЕСТЫ",
+    "/space/tests": "КОГНИТИВНЫЕ_ТЕСТЫ",
+    "/space/brain-training": "ТРЕНИРОВКА_МОЗГА",
+    "/space/brain-training/reaction": "ТЕСТ_РЕАКЦИИ",
+    "/space/brain-training/memory": "ТЕСТ_ПАМЯТИ",
+    "/space/brain-training/stroop": "Цветовой Струп",
+    "/space/psychology": "ПСИХОЛОГИЯ",
 
-    "/lab/mindfulness": "МЕДИТАЦИЯ",
+    "/space/mindfulness": "МЕДИТАЦИЯ",
 
 
-    "/lab/growth/wheel-of-life": "КОЛЕСО_БАЛАНСА",
+    "/space/growth/wheel-of-life": "КОЛЕСО_БАЛАНСА",
   };
   return stationMap[route.path] || "ИССЛЕДОВАТЕЛЬСКАЯ_СТАНЦИЯ";
 });

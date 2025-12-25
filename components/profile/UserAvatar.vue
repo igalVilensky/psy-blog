@@ -1,48 +1,28 @@
 <template>
-  <div
-    class="relative group rounded-full"
-    :style="{ width: size + 'px', height: size + 'px' }"
-  >
+  <div class="relative group rounded-full" :style="{ width: size + 'px', height: size + 'px' }">
     <!-- Avatar with Image -->
     <div v-if="avatarUrl && !loading" class="avatar-container">
-      <nuxt-img
-        :src="avatarUrl"
-        alt="Avatar"
-        class="w-full h-full object-cover"
-        :width="size"
-        :height="size"
-        loading="lazy"
-        format="webp"
-        quality="90"
-      />
+      <nuxt-img :src="avatarUrl" alt="Avatar" class="w-full h-full object-cover" :width="size" :height="size"
+        loading="lazy" format="webp" quality="90" />
     </div>
 
     <!-- Loading State -->
     <div v-else-if="loading" class="avatar-placeholder">
-      <i
-        class="fas fa-spinner fa-spin text-cyan-600 dark:text-cyan-400"
-        :style="{ fontSize: Math.max(size * 0.3) + 'px' }"
-      ></i>
+      <i class="fas fa-spinner fa-spin text-cyan-600 dark:text-cyan-400"
+        :style="{ fontSize: Math.max(size * 0.3) + 'px' }"></i>
     </div>
 
     <!-- Initial State -->
     <div v-else class="avatar-placeholder">
-      <span
-        class="font-bold text-cyan-600 dark:text-cyan-400"
-        :style="{ fontSize: Math.max(size * 0.4) + 'px' }"
-      >
+      <span class="font-bold text-cyan-600 dark:text-cyan-400" :style="{ fontSize: Math.max(size * 0.4) + 'px' }">
         {{ userInitial }}
       </span>
     </div>
 
     <!-- Upload Overlay (Conditional) -->
     <label v-if="!noUpload" class="upload-overlay">
-      <input
-        type="file"
-        @change="onFileChange"
-        accept="image/jpeg,image/jpg,image/png,image/gif,image/webp,image/bmp,image/svg+xml"
-        class="hidden"
-      />
+      <input type="file" @change="onFileChange"
+        accept="image/jpeg,image/jpg,image/png,image/gif,image/webp,image/bmp,image/svg+xml" class="hidden" />
       <div class="upload-overlay-content">
         <div class="upload-icon-wrapper">
           <i class="fas fa-camera text-2xl"></i>
@@ -122,22 +102,11 @@ const uploadAvatar = async (file) => {
 
 <style scoped>
 .avatar-container {
-  @apply w-full h-full rounded-full overflow-hidden 
-         ring-4 ring-cyan-500/30 ring-offset-4 ring-offset-slate-950
-         transition-all duration-300 
-         group-hover:ring-cyan-500/50
-         group-hover:shadow-2xl group-hover:shadow-cyan-500/25
-         group-hover:scale-105;
+  @apply w-full h-full rounded-full overflow-hidden ring-4 ring-cyan-500/30 ring-offset-4 ring-offset-slate-950 transition-all duration-300 group-hover:ring-cyan-500/50 group-hover:shadow-2xl group-hover:shadow-cyan-500/25 group-hover:scale-105;
 }
 
 .avatar-placeholder {
-  @apply w-full h-full rounded-full 
-         bg-gradient-to-br from-cyan-500/10 via-cyan-500/10 to-pink-500/10
-         flex items-center justify-center 
-         ring-4 ring-cyan-500/30 ring-offset-4 ring-offset-slate-950
-         border border-cyan-500/20
-         transition-all duration-300
-         group-hover:border-cyan-500/40;
+  @apply w-full h-full rounded-full bg-gradient-to-br from-cyan-500/10 via-cyan-500/10 to-pink-500/10 flex items-center justify-center ring-4 ring-cyan-500/30 ring-offset-4 ring-offset-slate-950 border border-cyan-500/20 transition-all duration-300 group-hover:border-cyan-500/40;
 }
 
 .upload-overlay {
@@ -145,17 +114,11 @@ const uploadAvatar = async (file) => {
 }
 
 .upload-overlay-content {
-  @apply absolute inset-0 bg-gradient-to-br from-cyan-500/90 via-cyan-500/90 to-pink-500/90
-         rounded-full opacity-0 group-hover:opacity-100 
-         transition-all duration-300 flex items-center justify-center 
-         backdrop-blur-md
-         shadow-lg shadow-cyan-500/30;
+  @apply absolute inset-0 bg-gradient-to-br from-cyan-500/90 via-cyan-500/90 to-pink-500/90 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center backdrop-blur-md shadow-lg shadow-cyan-500/30;
 }
 
 .upload-icon-wrapper {
-  @apply text-white flex flex-col items-center gap-2 
-         transform transition-transform duration-300
-         group-hover:scale-110;
+  @apply text-white flex flex-col items-center gap-2 transform transition-transform duration-300 group-hover:scale-110;
 }
 
 .upload-icon-wrapper i {

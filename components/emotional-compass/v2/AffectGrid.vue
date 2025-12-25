@@ -9,17 +9,10 @@
     </p>
 
     <!-- Main Grid Area -->
-    <div 
-      ref="gridRef"
+    <div ref="gridRef"
       class="relative w-full aspect-square max-w-[400px] mx-auto bg-white dark:bg-slate-800 rounded-2xl shadow-inner border border-slate-200 dark:border-slate-700 overflow-hidden cursor-crosshair touch-none"
-      @mousedown="startDrag"
-      @touchstart.prevent="startDrag"
-      @mousemove="onDrag"
-      @touchmove.prevent="onDrag"
-      @mouseup="stopDrag"
-      @touchend="stopDrag"
-      @mouseleave="stopDrag"
-    >
+      @mousedown="startDrag" @touchstart.prevent="startDrag" @mousemove="onDrag" @touchmove.prevent="onDrag"
+      @mouseup="stopDrag" @touchend="stopDrag" @mouseleave="stopDrag">
       <!-- Background Quadrants -->
       <div class="absolute inset-0 opacity-30">
         <div class="absolute top-0 left-0 w-1/2 h-1/2 bg-red-500/20"></div> <!-- High Energy / Unpleasant -->
@@ -34,8 +27,8 @@
         <div class="absolute top-0 bottom-0 left-1/2 w-px bg-slate-300 dark:bg-slate-600"></div>
         <div class="absolute left-0 right-0 top-1/2 h-px bg-slate-300 dark:bg-slate-600"></div>
         <!-- Grid Pattern -->
-        <div class="w-full h-full opacity-10" 
-             style="background-image: radial-gradient(circle, currentColor 1px, transparent 1px); background-size: 20px 20px;">
+        <div class="w-full h-full opacity-10"
+          style="background-image: radial-gradient(circle, currentColor 1px, transparent 1px); background-size: 20px 20px;">
         </div>
       </div>
 
@@ -48,19 +41,18 @@
       </div>
 
       <!-- Draggable Puck -->
-      <div 
+      <div
         class="absolute w-6 h-6 -ml-3 -mt-3 bg-white dark:bg-slate-900 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.2)] border-2 border-cyan-500 z-10 transition-transform duration-75 ease-out flex items-center justify-center"
-        :style="{ left: `${puckX}%`, top: `${puckY}%` }"
-      >
+        :style="{ left: `${puckX}%`, top: `${puckY}%` }">
         <div class="w-2 h-2 bg-cyan-500 rounded-full"></div>
       </div>
     </div>
 
     <!-- Live Values Display -->
-  <div class="flex justify-between mt-4 text-sm text-slate-700 dark:text-slate-300 font-medium">
-  <div>Приятность: {{ pleasantnessPercent.toUpperCase() }}%</div>
-  <div>Активность: {{ activityPercent.toUpperCase() }}%</div>
-</div>
+    <div class="flex justify-between mt-4 text-sm text-slate-700 dark:text-slate-300 font-medium">
+      <div>Приятность: {{ pleasantnessPercent.toUpperCase() }}%</div>
+      <div>Активность: {{ activityPercent.toUpperCase() }}%</div>
+    </div>
 
   </div>
 </template>
@@ -143,8 +135,8 @@ watch(() => props.modelValue, (newVal) => {
     arousal.value = newVal.arousal || 0;
     // Ensure intensity is up to date if passed, otherwise calculate
     if (newVal.intensity === undefined) {
-       const intensity = calculateIntensity();
-       emit('update:modelValue', { ...newVal, intensity });
+      const intensity = calculateIntensity();
+      emit('update:modelValue', { ...newVal, intensity });
     }
   }
 }, { deep: true, immediate: true });

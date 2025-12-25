@@ -54,7 +54,7 @@
         </p>
 
         <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
-          <NuxtLink to="/lab/brain-training"
+          <NuxtLink to="/space/brain-training"
             class="group relative px-10 py-5 bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-500 dark:to-blue-500 text-white rounded-2xl font-bold text-lg transition-all duration-300 hover:scale-105 active:scale-95 shadow-2xl shadow-cyan-500/25 hover:shadow-cyan-500/40 overflow-hidden">
             <div
               class="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 skew-x-[-20deg]">
@@ -64,7 +64,7 @@
               Тренировать мозг
             </span>
           </NuxtLink>
-          <NuxtLink to="/lab"
+          <NuxtLink to="/space"
             class="group px-10 py-5 bg-white/10 dark:bg-slate-900/40 backdrop-blur-xl border border-slate-200/50 dark:border-white/10 hover:bg-white/20 dark:hover:bg-slate-900/60 rounded-2xl font-bold text-lg transition-all duration-300 text-slate-900 dark:text-white">
             Открыть MindQLab
           </NuxtLink>
@@ -278,7 +278,7 @@
                 {{ feature }}
               </li>
             </ul>
-            <NuxtLink :to="isLoggedIn ? '/lab' : '/register'"
+            <NuxtLink :to="isLoggedIn ? '/space' : '/register'"
               class="w-full py-3 text-center rounded-lg text-sm font-medium transition-all duration-300"
               :class="plan.popular ? 'bg-indigo-600 text-white hover:bg-indigo-700' : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700'">
               {{ plan.cta }}
@@ -372,7 +372,7 @@
           Путь исследователя начинается с первого наблюдения. Платформа MindQLab предоставляет
           все необходимые инструменты для вашего путешествия к ясности ума и глубине осознания.
         </p>
-        <NuxtLink to="/lab"
+        <NuxtLink to="/space"
           class="inline-block px-12 py-5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-all duration-300 shadow-xl shadow-indigo-200 dark:shadow-none">
           Начать работу с платформой
         </NuxtLink>
@@ -389,7 +389,7 @@ import { useHead } from "@unhead/vue";
 import { useAuthStore } from "~/stores/auth";
 import { fetchPosts } from "~/api/sanity/posts";
 import { getImageUrl } from "~/api/sanity/client";
-import CursorNeuralVisualizer from '~/components/lab/CursorNeuralVisualizer.vue';
+import CursorNeuralVisualizer from '~/components/space/CursorNeuralVisualizer.vue';
 
 // 1. Static Data Definitions
 const advantages = [
@@ -624,3 +624,4 @@ h4 {
   background: #cbd5e1;
 }
 </style>
+

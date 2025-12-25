@@ -55,3 +55,4 @@ const resendVerificationEmail = async () => {
   }
 };
 </script>
+

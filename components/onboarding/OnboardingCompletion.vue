@@ -1,10 +1,11 @@
 <template>
   <div class="space-y-8 text-center">
     <div class="space-y-4">
-      <div class="w-20 h-20 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center mx-auto shadow-lg shadow-cyan-500/30">
+      <div
+        class="w-20 h-20 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center mx-auto shadow-lg shadow-cyan-500/30">
         <i class="fas fa-check text-3xl text-white"></i>
       </div>
-      
+
       <h2 class="text-3xl font-bold text-slate-900 dark:text-white">
         Настройка завершена!
       </h2>
@@ -14,7 +15,8 @@
     </div>
 
     <!-- AI Summary Card -->
-    <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-xl border border-slate-100 dark:border-slate-700 text-left relative overflow-hidden">
+    <div
+      class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-xl border border-slate-100 dark:border-slate-700 text-left relative overflow-hidden">
       <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/5 rounded-full blur-3xl -mr-16 -mt-16"></div>
       <div class="absolute bottom-0 left-0 w-32 h-32 bg-blue-500/5 rounded-full blur-3xl -ml-16 -mb-16"></div>
 
@@ -40,11 +42,8 @@
             Рекомендации для старта:
           </h4>
           <ul class="space-y-2">
-            <li 
-              v-for="(rec, idx) in summary.recommendations" 
-              :key="idx"
-              class="flex items-start gap-3 text-slate-600 dark:text-slate-400"
-            >
+            <li v-for="(rec, idx) in summary.recommendations" :key="idx"
+              class="flex items-start gap-3 text-slate-600 dark:text-slate-400">
               <i class="fas fa-star text-yellow-400 mt-1 shrink-0"></i>
               <span>{{ rec }}</span>
             </li>
@@ -54,7 +53,8 @@
         <div v-if="summary?.strengths?.length" class="space-y-2">
           <h4 class="font-semibold text-slate-900 dark:text-white">Сильные стороны</h4>
           <div class="flex gap-2 flex-wrap">
-            <span v-for="(s, i) in summary.strengths" :key="i" class="px-3 py-1 bg-slate-100 dark:bg-slate-700 rounded-full text-sm text-slate-700 dark:text-slate-200">
+            <span v-for="(s, i) in summary.strengths" :key="i"
+              class="px-3 py-1 bg-slate-100 dark:bg-slate-700 rounded-full text-sm text-slate-700 dark:text-slate-200">
               {{ s }}
             </span>
           </div>
@@ -63,17 +63,15 @@
         <div v-if="summary?.risks?.length" class="space-y-2">
           <h4 class="font-semibold text-red-600">На что обратить внимание</h4>
           <ul class="text-sm text-slate-600 dark:text-slate-400">
-            <li v-for="(r,i) in summary.risks" :key="i">• {{ r }}</li>
+            <li v-for="(r, i) in summary.risks" :key="i">• {{ r }}</li>
           </ul>
         </div>
       </div>
     </div>
 
     <div class="pt-4">
-      <button
-        @click="finish"
-        class="px-10 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-xl font-bold shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 hover:scale-105 transition-all duration-200"
-      >
+      <button @click="finish"
+        class="px-10 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-xl font-bold shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 hover:scale-105 transition-all duration-200">
         Перейти в профиль
       </button>
     </div>

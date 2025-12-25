@@ -74,7 +74,7 @@
                   Пройдите тест, чтобы увидеть ваш психологический профиль.
                 </p>
                 <NuxtLink
-                  to="/lab/growth/life-purpose-archetype"
+                  to="/space/growth/life-purpose-archetype"
                   class="btn-primary mt-4"
                 >
                   <i class="fas fa-play-circle text-sm mr-2"></i>
@@ -612,3 +612,4 @@ watch(
   background-color: rgb(234, 179, 8);
 }
 </style>
+

@@ -23,7 +23,7 @@ export const exercises: Exercise[] = [
         metric: "% правильных ответов, время реакции",
         uiExample: "3x3 сетка с буквами",
         relatedModels: "Working Memory",
-        link: "/lab/tests/nback"
+        link: "/space/tests/nback"
     },
     // ... existing exercises ...
     {
@@ -36,7 +36,7 @@ export const exercises: Exercise[] = [
         metric: "Точность (%), Среднее время реакции",
         uiExample: "Горизонтальная последовательность с пропуском, 4 варианта ответа",
         relatedModels: "Abstract Reasoning, Pattern Recognition, Cognitive Flexibility",
-        link: "/lab/brain-training/pattern-detection-mini"
+        link: "/space/brain-training/pattern-detection-mini"
     },
     {
         id: 2,
@@ -59,7 +59,7 @@ export const exercises: Exercise[] = [
         metric: "% правильных клеток",
         uiExample: "5x5 сетка",
         relatedModels: "Chunking",
-        link: "/lab/brain-training/memory"
+        link: "/space/brain-training/memory"
     },
     {
         id: 4,
@@ -93,7 +93,7 @@ export const exercises: Exercise[] = [
         metric: "% правильных ответов, время",
         uiExample: "4 кнопки",
         relatedModels: "Emotion Regulation, System 1 / System 2",
-        link: "/lab/brain-training/stroop"
+        link: "/space/brain-training/stroop"
     },
     {
         id: 7,
@@ -127,7 +127,7 @@ export const exercises: Exercise[] = [
         metric: "Кол-во попаданий",
         uiExample: "Мяч движется по экрану",
         relatedModels: "Attention Spotlight",
-        link: "/lab/brain-training/target-tracking"
+        link: "/space/brain-training/target-tracking"
     },
     {
         id: 10,
@@ -172,7 +172,7 @@ export const exercises: Exercise[] = [
         metric: "Время реакции",
         uiExample: "Кнопка в центре",
         relatedModels: "OODA Loop",
-        link: "/lab/brain-training/reaction"
+        link: "/space/brain-training/reaction"
     },
     {
         id: 14,
@@ -195,7 +195,7 @@ export const exercises: Exercise[] = [
         metric: "% правильных",
         uiExample: "Последовательность фигур",
         relatedModels: "Mental Models",
-        link: "/lab/brain-training/pattern-detection-mini"
+        link: "/space/brain-training/pattern-detection-mini"
     },
     {
         id: 16,
@@ -581,6 +581,7 @@ export const exercises: Exercise[] = [
         metric: "Точность (%), Среднее время реакции, Время переключения, Цена переключения (мс)",
         uiExample: "Динамический стимул (число/фигура/цветное слово) на цветном фоне, кнопки ВЛЕВО/ВПРАВО",
         relatedModels: "Cognitive Flexibility, Task Switching, Executive Function, Stroop Effect",
-        link: "/lab/brain-training/mental-shift"
+        link: "/space/brain-training/mental-shift"
     }
 ];
+

@@ -7,7 +7,8 @@
           <i class="fas fa-user-edit text-cyan-600 dark:text-cyan-400"></i>
         </div>
         <h2 class="title-text">О себе</h2>
-        <NuxtLink to="/profile/settings" class="ml-3 text-slate-400 hover:text-cyan-500 transition-colors" title="Редактировать">
+        <NuxtLink to="/profile/settings" class="ml-3 text-slate-400 hover:text-cyan-500 transition-colors"
+          title="Редактировать">
           <i class="fas fa-pen"></i>
         </NuxtLink>
       </div>
@@ -42,13 +43,11 @@
 
         <!-- Social Media -->
         <BioInfoCard title="Соц. сети" :value="socialMedia" iconClass="fas fa-share-alt" :isSocialMedia="true"
-          iconColorClass="text-cyan-600 dark:text-cyan-400"
-          iconBgClass="bg-cyan-500/10 group-hover:bg-cyan-500/20" />
+          iconColorClass="text-cyan-600 dark:text-cyan-400" iconBgClass="bg-cyan-500/10 group-hover:bg-cyan-500/20" />
 
         <!-- Age -->
         <BioInfoCard title="Возраст" :value="age ? age + ' лет' : ''" iconClass="fas fa-birthday-cake"
-          iconColorClass="text-pink-600 dark:text-pink-400"
-          iconBgClass="bg-pink-500/10 group-hover:bg-pink-500/20" />
+          iconColorClass="text-pink-600 dark:text-pink-400" iconBgClass="bg-pink-500/10 group-hover:bg-pink-500/20" />
 
         <!-- Gender -->
         <BioInfoCard title="Пол" :value="gender === 'male' ? 'Мужской' : gender === 'female' ? 'Женский' : ''"

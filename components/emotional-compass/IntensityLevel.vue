@@ -1,8 +1,7 @@
 <template>
   <div class="max-w-2xl mx-auto">
     <div class="mb-12 text-center">
-      <div class="text-6xl font-mono font-bold mb-4 transition-colors duration-300"
-           :class="intensityColor">
+      <div class="text-6xl font-mono font-bold mb-4 transition-colors duration-300" :class="intensityColor">
         {{ intensityLevel }}
       </div>
       <p class="text-slate-600 dark:text-slate-400 text-lg">{{ intensityDescription }}</p>
@@ -11,31 +10,21 @@
     <div class="relative h-16 flex items-center">
       <!-- Track -->
       <div class="absolute w-full h-4 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
-        <div
-          class="h-full transition-all duration-300"
-          :class="trackGradient"
-          :style="{ width: `${((intensityLevel - 1) / 9) * 100}%` }"
-        ></div>
+        <div class="h-full transition-all duration-300" :class="trackGradient"
+          :style="{ width: `${((intensityLevel - 1) / 9) * 100}%` }"></div>
       </div>
 
       <!-- Slider Input -->
-      <input
-        type="range"
-        min="1"
-        max="10"
-        step="1"
-        :value="intensityLevel"
+      <input type="range" min="1" max="10" step="1" :value="intensityLevel"
         @input="$emit('update:intensityLevel', Number($event.target.value))"
-        class="absolute w-full h-full opacity-0 cursor-pointer z-20"
-      />
+        class="absolute w-full h-full opacity-0 cursor-pointer z-20" />
 
       <!-- Thumb (Visual only, follows input) -->
       <div
         class="absolute h-8 w-8 bg-white rounded-full shadow-lg border-4 transition-all duration-100 pointer-events-none z-10"
         :class="thumbBorderColor"
-        :style="{ left: `calc(${((intensityLevel - 1) / 9) * 100}%)`, transform: 'translateX(-50%)' }"
-      ></div>
-      
+        :style="{ left: `calc(${((intensityLevel - 1) / 9) * 100}%)`, transform: 'translateX(-50%)' }"></div>
+
       <!-- Ticks -->
       <div class="absolute w-full flex justify-between px-1 pointer-events-none mt-12">
         <span v-for="n in 10" :key="n" class="text-xs font-mono text-slate-500 dark:text-slate-600">{{ n }}</span>

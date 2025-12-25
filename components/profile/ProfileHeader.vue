@@ -22,16 +22,19 @@
         <!-- User Details -->
         <div class="user-details">
           <!-- User Badge -->
-          <div class="mb-4 inline-flex items-center px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 backdrop-blur-sm">
+          <div
+            class="mb-4 inline-flex items-center px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 backdrop-blur-sm">
             <i class="fas fa-star text-xs text-purple-600 dark:text-purple-400 mr-2"></i>
-            <span class="text-xs font-medium text-purple-600 dark:text-purple-400 uppercase tracking-wider">Explorer</span>
+            <span
+              class="text-xs font-medium text-purple-600 dark:text-purple-400 uppercase tracking-wider">Explorer</span>
           </div>
 
           <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight">
             {{ displayName }}
           </h1>
 
-          <div class="flex flex-col sm:flex-row items-center gap-3 sm:gap-6 text-sm text-slate-600 dark:text-slate-400 mb-6">
+          <div
+            class="flex flex-col sm:flex-row items-center gap-3 sm:gap-6 text-sm text-slate-600 dark:text-slate-400 mb-6">
             <div class="flex items-center gap-2">
               <i class="fas fa-envelope text-cyan-600 dark:text-cyan-400"></i>
               <span>{{ email }}</span>

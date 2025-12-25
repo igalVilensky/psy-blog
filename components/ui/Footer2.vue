@@ -32,43 +32,43 @@
           <h4 class="text-stone-900 dark:text-white font-bold mb-6 font-montserrat">Лаборатория</h4>
           <ul class="space-y-3 text-sm">
             <li>
-              <NuxtLink to="/lab/tests"
+              <NuxtLink to="/space/tests"
                 class="hover:text-brand-primary transition-colors duration-300 flex items-center gap-2 group"><i
                   class="fas fa-flask text-xs text-brand-primary/50 group-hover:text-brand-primary transition-colors"></i>
                 Тесты</NuxtLink>
             </li>
             <li>
-              <NuxtLink to="/lab/brain-training"
+              <NuxtLink to="/space/brain-training"
                 class="hover:text-brand-primary transition-colors duration-300 flex items-center gap-2 group"><i
                   class="fas fa-gamepad text-xs text-brand-secondary/50 group-hover:text-brand-secondary transition-colors"></i>
                 Тренировка мозга</NuxtLink>
             </li>
             <li>
-              <NuxtLink to="/lab/growth"
+              <NuxtLink to="/space/growth"
                 class="hover:text-brand-primary transition-colors duration-300 flex items-center gap-2 group"><i
                   class="fas fa-seedling text-xs text-purple-500/50 group-hover:text-purple-500 transition-colors"></i>
                 Саморазвитие</NuxtLink>
             </li>
             <li>
-              <NuxtLink to="/lab/psychology"
+              <NuxtLink to="/space/psychology"
                 class="hover:text-brand-primary transition-colors duration-300 flex items-center gap-2 group"><i
                   class="fas fa-book-open text-xs text-blue-500/50 group-hover:text-blue-500 transition-colors"></i>
                 Психология</NuxtLink>
             </li>
             <li>
-              <NuxtLink to="/lab/mindfulness"
+              <NuxtLink to="/space/mindfulness"
                 class="hover:text-brand-primary transition-colors duration-300 flex items-center gap-2 group"><i
                   class="fas fa-spa text-xs text-emerald-500/50 group-hover:text-emerald-500 transition-colors"></i>
                 Медитация</NuxtLink>
             </li>
             <li>
-              <NuxtLink to="/lab/dashboard"
+              <NuxtLink to="/space/dashboard"
                 class="hover:text-brand-primary transition-colors duration-300 flex items-center gap-2 group"><i
                   class="fas fa-chart-pie text-xs text-brand-accent/50 group-hover:text-brand-accent transition-colors"></i>
                 Дашборд</NuxtLink>
             </li>
             <li>
-              <NuxtLink to="/lab/community"
+              <NuxtLink to="/space/community"
                 class="hover:text-brand-primary transition-colors duration-300 flex items-center gap-2 group"><i
                   class="fas fa-users text-xs text-orange-500/50 group-hover:text-orange-500 transition-colors"></i>
                 Сообщество</NuxtLink>

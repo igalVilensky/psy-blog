@@ -2,7 +2,7 @@
   <nav aria-label="Breadcrumb" class="flex items-center text-sm font-medium mb-8">
     <ol class="flex items-center space-x-2">
       <li>
-        <NuxtLink to="/lab"
+        <NuxtLink to="/space"
           class="text-slate-500 hover:text-cyan-600 dark:text-slate-400 dark:hover:text-cyan-400 transition-colors flex items-center">
           <i class="fas fa-flask mr-1"></i>
           <span class="hidden sm:inline">Лаборатория</span>
@@ -46,7 +46,7 @@ const crumbs = computed(() => {
   const relevantSegments = labIndex !== -1 ? pathSegments.slice(labIndex + 1) : pathSegments;
 
   return relevantSegments.map((segment, index) => {
-    const path = '/lab/' + relevantSegments.slice(0, index + 1).join('/');
+    const path = '/space/' + relevantSegments.slice(0, index + 1).join('/');
 
     // Basic label formatting (capitalize, remove hyphens)
     // You might want a mapping object for specific route names

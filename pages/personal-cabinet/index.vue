@@ -306,3 +306,4 @@ onMounted(async () => {
   await fetchPurchasedCourses();
 });
 </script>
+

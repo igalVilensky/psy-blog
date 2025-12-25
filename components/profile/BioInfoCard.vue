@@ -2,8 +2,7 @@
   <div
     class="bg-gray-100 dark:bg-[#1A1F35]/40 p-4 sm:p-6 rounded-2xl border border-gray-300 dark:border-white/5 hover:border-cyan-500/30 dark:hover:border-[#0EA5E9]/30 transition-colors group">
     <div class="flex items-center gap-3 sm:gap-4 mb-3">
-      <div
-        class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center transition-colors"
+      <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center transition-colors"
         :class="iconBgClass">
         <i :class="[iconClass, iconColorClass]" class="text-sm sm:text-base"></i>
       </div>

@@ -51,9 +51,9 @@
 
 <script setup>
 const steps = [
-  { title: 'Начните', desc: 'Пройдите базовый тест личности, чтобы определить точку А.', icon: 'fas fa-flag', color: 'text-brand-primary', cta: 'Выбрать тест', link: '/lab/tests' },
-  { title: 'Растите', desc: 'Используйте инструменты тренировки мозга и практики.', icon: 'fas fa-seedling', color: 'text-brand-secondary', cta: 'К упражнениям', link: '/lab/brain-training' },
+  { title: 'Начните', desc: 'Пройдите базовый тест личности, чтобы определить точку А.', icon: 'fas fa-flag', color: 'text-brand-primary', cta: 'Выбрать тест', link: '/space/tests' },
+  { title: 'Растите', desc: 'Используйте инструменты тренировки мозга и практики.', icon: 'fas fa-seedling', color: 'text-brand-secondary', cta: 'К упражнениям', link: '/space/brain-training' },
   { title: 'Поймите', desc: 'Анализируйте отчеты и читайте экспертные материалы.', icon: 'fas fa-lightbulb', color: 'text-brand-accent', cta: 'Читать блог', link: '/blog' },
-  { title: 'Общайтесь', desc: 'Делитесь успехами и находите поддержку в сообществе.', icon: 'fas fa-handshake', color: 'text-emerald-500', cta: 'Вступить', link: '/lab/community' }
+  { title: 'Общайтесь', desc: 'Делитесь успехами и находите поддержку в сообществе.', icon: 'fas fa-handshake', color: 'text-emerald-500', cta: 'Вступить', link: '/space/community' }
 ]
 </script>

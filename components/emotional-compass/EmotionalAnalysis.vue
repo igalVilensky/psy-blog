@@ -4,7 +4,7 @@
   >
     <!-- Back Navigation with Enhanced Accessibility -->
     <nuxt-link
-      to="/lab/growth/emotional-compass"
+      to="/space/growth/emotional-compass"
       class="pl-4 sm:pl-0 inline-flex items-center text-[#0EA5E9] hover:text-[#22D3EE] transition-all mb-4 sm:mb-8 group"
       aria-label="Вернуться назад"
     >
@@ -253,3 +253,4 @@ const loading = computed(
   () => !props.patterns || Object.keys(props.patterns).length === 0
 );
 </script>
+

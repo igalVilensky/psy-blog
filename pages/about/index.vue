@@ -39,7 +39,7 @@
         </p>
 
         <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
-          <NuxtLink to="/lab"
+          <NuxtLink to="/space"
             class="group relative px-10 py-5 bg-gradient-to-r from-indigo-600 to-blue-600 dark:from-indigo-500 dark:to-blue-500 text-white rounded-2xl font-bold text-lg transition-all duration-300 hover:scale-105 active:scale-95 shadow-2xl shadow-indigo-500/25 hover:shadow-indigo-500/40 overflow-hidden">
             Открыть инструменты
           </NuxtLink>
@@ -187,11 +187,11 @@
           Присоединяйтесь к сообществу тех, кто выбирает осознанный подход к тренировке ума и заботе о психике.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <NuxtLink to="/lab/tests"
+          <NuxtLink to="/space/tests"
             class="inline-block px-12 py-5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-medium transition-all duration-300 shadow-xl shadow-indigo-200 dark:shadow-none">
             Начать с диагностики
           </NuxtLink>
-          <NuxtLink to="/lab/brain-training"
+          <NuxtLink to="/space/brain-training"
             class="inline-block px-12 py-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white rounded-xl font-medium transition-all duration-300">
             Тренировать мозг
           </NuxtLink>
@@ -205,7 +205,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { useHead } from "@unhead/vue";
-import CursorNeuralVisualizer from '~/components/lab/CursorNeuralVisualizer.vue';
+import CursorNeuralVisualizer from '~/components/space/CursorNeuralVisualizer.vue';
 
 useHead({
   title: "О MindQLab — Пространство осознанного развития",
@@ -343,3 +343,4 @@ h4 {
   filter: grayscale(0%);
 }
 </style>
+

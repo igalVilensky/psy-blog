@@ -1,50 +1,31 @@
 <!-- components/FloatingButton.vue -->
 <template>
-  <div
-    class="floating-button-container"
-    :style="containerStyles"
-    :class="[containerClass, { 'menu-active': showMenu }]"
-  >
+  <div class="floating-button-container" :style="containerStyles"
+    :class="[containerClass, { 'menu-active': showMenu }]">
     <!-- Main floating button -->
-    <button
-      :type="type"
-      :class="[
-        'floating-button',
-        sizeClass,
-        colorClass,
-        { 'shadow-lg hover:shadow-xl': shadow, 'rounded-full': round },
-        buttonClass,
-        { 'pulse-animation': pulseAnimation },
-      ]"
-      :disabled="disabled"
-      @click="handleClick"
-      :aria-label="ariaLabel || tooltipText"
-      :aria-expanded="showMenu ? 'true' : 'false'"
-      v-tooltip="
-        tooltipText && useDirective
-          ? {
-              content: tooltipText,
-              trigger: tooltipTrigger,
-              placement: tooltipPosition,
-            }
-          : null
-      "
-    >
+    <button :type="type" :class="[
+      'floating-button',
+      sizeClass,
+      colorClass,
+      { 'shadow-lg hover:shadow-xl': shadow, 'rounded-full': round },
+      buttonClass,
+      { 'pulse-animation': pulseAnimation },
+    ]" :disabled="disabled" @click="handleClick" :aria-label="ariaLabel || tooltipText"
+      :aria-expanded="showMenu ? 'true' : 'false'" v-tooltip="tooltipText && useDirective
+        ? {
+          content: tooltipText,
+          trigger: tooltipTrigger,
+          placement: tooltipPosition,
+        }
+        : null
+        ">
       <!-- Icon slot -->
       <slot name="icon">
-        <svg
-          v-if="icon"
-          :class="[
-            iconClass,
-            { 'transform rotate-45': showMenu && icon === 'plus' },
-          ]"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          stroke-width="2"
-          aria-hidden="true"
-        >
+        <svg v-if="icon" :class="[
+          iconClass,
+          { 'transform rotate-45': showMenu && icon === 'plus' },
+        ]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+          aria-hidden="true">
           <path :d="iconPaths[icon] || iconPaths.plus" />
         </svg>
       </slot>
@@ -53,45 +34,18 @@
       <slot></slot>
 
       <!-- Custom tooltip implementation -->
-      <span
-        v-if="tooltipText && !useDirective"
-        class="floating-tooltip"
-        :class="tooltipPosition"
-        role="tooltip"
-      >
+      <span v-if="tooltipText && !useDirective" class="floating-tooltip" :class="tooltipPosition" role="tooltip">
         {{ tooltipText }}
       </span>
     </button>
 
     <!-- Menu -->
-    <transition
-      :name="menuTransition"
-      @before-enter="beforeMenuEnter"
-      @after-leave="afterMenuLeave"
-    >
-      <div
-        v-if="showMenu && menuItems.length"
-        ref="menuRef"
-        class="floating-menu"
-        :class="[menuPositionClass, { 'z-50': showMenu }]"
-        role="menu"
-        aria-orientation="vertical"
-      >
-        <button
-          v-for="(item, index) in menuItems"
-          :key="index"
-          class="menu-item"
-          @click="handleMenuItemClick(item)"
-          role="menuitem"
-          :tabindex="showMenu ? 0 : -1"
-          :disabled="item.disabled"
-        >
-          <component
-            :is="item.icon"
-            v-if="item.icon"
-            class="menu-item-icon"
-            aria-hidden="true"
-          />
+    <transition :name="menuTransition" @before-enter="beforeMenuEnter" @after-leave="afterMenuLeave">
+      <div v-if="showMenu && menuItems.length" ref="menuRef" class="floating-menu"
+        :class="[menuPositionClass, { 'z-50': showMenu }]" role="menu" aria-orientation="vertical">
+        <button v-for="(item, index) in menuItems" :key="index" class="menu-item" @click="handleMenuItemClick(item)"
+          role="menuitem" :tabindex="showMenu ? 0 : -1" :disabled="item.disabled">
+          <component :is="item.icon" v-if="item.icon" class="menu-item-icon" aria-hidden="true" />
           <span>{{ item.label }}</span>
         </button>
       </div>
@@ -99,11 +53,8 @@
 
     <!-- Backdrop for mobile -->
     <transition name="fade">
-      <div
-        v-if="showMenu && menuItems.length && showBackdrop"
-        class="fixed inset-0 bg-black bg-opacity-25"
-        @click="showMenu = false"
-      ></div>
+      <div v-if="showMenu && menuItems.length && showBackdrop" class="fixed inset-0 bg-black bg-opacity-25"
+        @click="showMenu = false"></div>
     </transition>
   </div>
 </template>
@@ -248,13 +199,13 @@ const isMobile = ref(false);
 // Computed properties
 const sizeClass = computed(
   () =>
-    ({
-      xs: "h-8 w-8 text-xs",
-      sm: "h-10 w-10 text-sm",
-      md: "h-12 w-12",
-      lg: "h-16 w-16 text-lg",
-      xl: "h-20 w-20 text-xl",
-    }[props.size])
+  ({
+    xs: "h-8 w-8 text-xs",
+    sm: "h-10 w-10 text-sm",
+    md: "h-12 w-12",
+    lg: "h-16 w-16 text-lg",
+    xl: "h-20 w-20 text-xl",
+  }[props.size])
 );
 
 const colorClass = computed(() => {
@@ -278,13 +229,13 @@ const colorClass = computed(() => {
 
 const iconClass = computed(
   () =>
-    ({
-      xs: "h-4 w-4",
-      sm: "h-5 w-5",
-      md: "h-6 w-6",
-      lg: "h-7 w-7",
-      xl: "h-8 w-8",
-    }[props.size])
+  ({
+    xs: "h-4 w-4",
+    sm: "h-5 w-5",
+    md: "h-6 w-6",
+    lg: "h-7 w-7",
+    xl: "h-8 w-8",
+  }[props.size])
 );
 
 const containerStyles = computed(() => {
@@ -462,7 +413,7 @@ watch(showMenu, (newVal) => {
   overflow: hidden;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  transform: translateZ(0); /* Force hardware acceleration */
+  transform: translateZ(0);
 
   /* Focus state */
   @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
@@ -522,16 +473,19 @@ watch(showMenu, (newVal) => {
   left: 50%;
   transform: translateX(-50%) translateY(5px);
 }
+
 .floating-tooltip.bottom {
   top: calc(100% + 0.75rem);
   left: 50%;
   transform: translateX(-50%) translateY(-5px);
 }
+
 .floating-tooltip.left {
   right: calc(100% + 0.75rem);
   top: 50%;
   transform: translateY(-50%) translateX(5px);
 }
+
 .floating-tooltip.right {
   left: calc(100% + 0.75rem);
   top: 50%;
@@ -634,9 +588,11 @@ watch(showMenu, (newVal) => {
   0% {
     box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.7);
   }
+
   70% {
     box-shadow: 0 0 0 10px rgba(79, 70, 229, 0);
   }
+
   100% {
     box-shadow: 0 0 0 0 rgba(79, 70, 229, 0);
   }

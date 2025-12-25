@@ -35,7 +35,7 @@
               <div class="bg-white dark:bg-brand-dark rounded-3xl shadow-2xl shadow-stone-200/50 dark:shadow-black/80 border border-stone-100 dark:border-stone-800/50 p-3 grid grid-cols-2 gap-2 overflow-hidden min-w-[600px]">
                 
                 <!-- 1. Тесты -->
-                <NuxtLink to="/lab/tests" class="col-span-2 flex items-center gap-4 p-4 rounded-2xl hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors group/item" @click="closeDropdown">
+                <NuxtLink to="/space/tests" class="col-span-2 flex items-center gap-4 p-4 rounded-2xl hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors group/item" @click="closeDropdown">
                    <div class="w-12 h-12 flex-shrink-0 rounded-xl bg-brand-primary/10 text-brand-primary flex items-center justify-center text-xl group-hover/item:scale-110 transition-transform duration-300">
                       <i class="fas fa-flask"></i>
                    </div>
@@ -47,7 +47,7 @@
                 </NuxtLink>
 
                 <!-- 2. Тренировка Мозга -->
-                <NuxtLink to="/lab/brain-training" class="flex items-center gap-3 p-3 rounded-xl hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors" @click="closeDropdown">
+                <NuxtLink to="/space/brain-training" class="flex items-center gap-3 p-3 rounded-xl hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors" @click="closeDropdown">
                    <div class="w-10 h-10 rounded-lg bg-sky-50 dark:bg-sky-900/20 text-brand-secondary flex items-center justify-center"><i class="fas fa-gamepad"></i></div>
                    <div>
                       <div class="text-sm font-bold text-stone-700 dark:text-stone-200 font-montserrat">Тренировка Мозга</div>
@@ -56,7 +56,7 @@
                 </NuxtLink>
 
                 <!-- 3. Саморазвитие -->
-                <NuxtLink to="/lab/growth" class="flex items-center gap-3 p-3 rounded-xl hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors" @click="closeDropdown">
+                <NuxtLink to="/space/growth" class="flex items-center gap-3 p-3 rounded-xl hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors" @click="closeDropdown">
                    <div class="w-10 h-10 rounded-lg bg-purple-50 dark:bg-purple-900/20 text-purple-500 flex items-center justify-center"><i class="fas fa-seedling"></i></div>
                    <div>
                       <div class="text-sm font-bold text-stone-700 dark:text-stone-200 font-montserrat">Саморазвитие</div>
@@ -65,7 +65,7 @@
                 </NuxtLink>
 
                 <!-- 4. Психология -->
-                <NuxtLink to="/lab/psychology" class="flex items-center gap-3 p-3 rounded-xl hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors" @click="closeDropdown">
+                <NuxtLink to="/space/psychology" class="flex items-center gap-3 p-3 rounded-xl hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors" @click="closeDropdown">
                    <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-500 flex items-center justify-center"><i class="fas fa-book-open"></i></div>
                    <div>
                       <div class="text-sm font-bold text-stone-700 dark:text-stone-200 font-montserrat">Психология</div>
@@ -74,7 +74,7 @@
                 </NuxtLink>
 
                 <!-- 5. Медитация -->
-                <NuxtLink to="/lab/mindfulness" class="flex items-center gap-3 p-3 rounded-xl hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors" @click="closeDropdown">
+                <NuxtLink to="/space/mindfulness" class="flex items-center gap-3 p-3 rounded-xl hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors" @click="closeDropdown">
                    <div class="w-10 h-10 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 text-emerald-500 flex items-center justify-center"><i class="fas fa-spa"></i></div>
                    <div>
                       <div class="text-sm font-bold text-stone-700 dark:text-stone-200 font-montserrat">Медитация</div>
@@ -83,7 +83,7 @@
                 </NuxtLink>
 
                 <!-- 6. Центр Управления -->
-                <NuxtLink to="/lab/dashboard" class="flex items-center gap-3 p-3 rounded-xl hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors" @click="closeDropdown">
+                <NuxtLink to="/space/dashboard" class="flex items-center gap-3 p-3 rounded-xl hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors" @click="closeDropdown">
                    <div class="w-10 h-10 rounded-lg bg-indigo-50 dark:bg-indigo-900/20 text-brand-accent flex items-center justify-center"><i class="fas fa-chart-pie"></i></div>
                    <div>
                       <div class="text-sm font-bold text-stone-700 dark:text-stone-200 font-montserrat">Центр Управления</div>
@@ -92,7 +92,7 @@
                 </NuxtLink>
 
                 <!-- 7. Сообщество -->
-                <NuxtLink to="/lab/community" class="flex items-center gap-3 p-3 rounded-xl hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors" @click="closeDropdown">
+                <NuxtLink to="/space/community" class="flex items-center gap-3 p-3 rounded-xl hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors" @click="closeDropdown">
                    <div class="w-10 h-10 rounded-lg bg-orange-50 dark:bg-orange-900/20 text-orange-500 flex items-center justify-center"><i class="fas fa-users"></i></div>
                    <div>
                       <div class="text-sm font-bold text-stone-700 dark:text-stone-200 font-montserrat">Сообщество</div>
@@ -196,7 +196,7 @@
           <!-- Lab Accordion -->
           <div class="rounded-xl border border-stone-100 dark:border-stone-800 overflow-hidden" :class="isLabRouteActive ? 'bg-stone-50 dark:bg-stone-900' : 'bg-white dark:bg-brand-dark'">
              <div class="flex items-center justify-between p-1">
-                <NuxtLink to="/lab" class="flex-1 flex items-center gap-3 p-3 font-bold text-brand-dark dark:text-white" @click="closeDropdown">
+                <NuxtLink to="/space" class="flex-1 flex items-center gap-3 p-3 font-bold text-brand-dark dark:text-white" @click="closeDropdown">
                    <i class="fas fa-flask text-brand-primary"></i> Лаборатория
                 </NuxtLink>
                 <button @click="toggleMobileSubmenu('lab')" class="p-3">
@@ -208,7 +208,7 @@
              <div class="transition-all duration-300 overflow-hidden bg-stone-50/50 dark:bg-stone-900/50" :class="mobileSubmenuStates.lab || isLabRouteActive ? 'max-h-[800px]' : 'max-h-0'">
                 <div class="p-2 space-y-1">
                    
-                   <NuxtLink to="/lab/tests" class="flex flex-col px-4 py-3 rounded-lg hover:bg-white dark:hover:bg-brand-dark transition-colors" @click="closeDropdown">
+                   <NuxtLink to="/space/tests" class="flex flex-col px-4 py-3 rounded-lg hover:bg-white dark:hover:bg-brand-dark transition-colors" @click="closeDropdown">
                       <div class="flex items-center gap-2">
                          <i class="fas fa-flask text-brand-primary text-xs w-4"></i>
                          <span class="text-sm font-bold text-stone-700 dark:text-stone-200">Тесты</span>
@@ -216,7 +216,7 @@
                       <span class="text-[11px] text-stone-400 pl-6">Оценка функций</span>
                    </NuxtLink>
                    
-                   <NuxtLink to="/lab/brain-training" class="flex flex-col px-4 py-3 rounded-lg hover:bg-white dark:hover:bg-brand-dark transition-colors" @click="closeDropdown">
+                   <NuxtLink to="/space/brain-training" class="flex flex-col px-4 py-3 rounded-lg hover:bg-white dark:hover:bg-brand-dark transition-colors" @click="closeDropdown">
                       <div class="flex items-center gap-2">
                          <i class="fas fa-gamepad text-brand-secondary text-xs w-4"></i>
                          <span class="text-sm font-bold text-stone-700 dark:text-stone-200">Тренировка Мозга</span>
@@ -224,7 +224,7 @@
                       <span class="text-[11px] text-stone-400 pl-6">Игры и упражнения</span>
                    </NuxtLink>
                    
-                   <NuxtLink to="/lab/growth" class="flex flex-col px-4 py-3 rounded-lg hover:bg-white dark:hover:bg-brand-dark transition-colors" @click="closeDropdown">
+                   <NuxtLink to="/space/growth" class="flex flex-col px-4 py-3 rounded-lg hover:bg-white dark:hover:bg-brand-dark transition-colors" @click="closeDropdown">
                       <div class="flex items-center gap-2">
                          <i class="fas fa-seedling text-purple-500 text-xs w-4"></i>
                          <span class="text-sm font-bold text-stone-700 dark:text-stone-200">Саморазвитие</span>
@@ -232,7 +232,7 @@
                       <span class="text-[11px] text-stone-400 pl-6">Инструменты и практики</span>
                    </NuxtLink>
                    
-                   <NuxtLink to="/lab/psychology" class="flex flex-col px-4 py-3 rounded-lg hover:bg-white dark:hover:bg-brand-dark transition-colors" @click="closeDropdown">
+                   <NuxtLink to="/space/psychology" class="flex flex-col px-4 py-3 rounded-lg hover:bg-white dark:hover:bg-brand-dark transition-colors" @click="closeDropdown">
                       <div class="flex items-center gap-2">
                          <i class="fas fa-book-open text-blue-500 text-xs w-4"></i>
                          <span class="text-sm font-bold text-stone-700 dark:text-stone-200">Психология</span>
@@ -240,7 +240,7 @@
                       <span class="text-[11px] text-stone-400 pl-6">Теории и техники</span>
                    </NuxtLink>
 
-                   <NuxtLink to="/lab/mindfulness" class="flex flex-col px-4 py-3 rounded-lg hover:bg-white dark:hover:bg-brand-dark transition-colors" @click="closeDropdown">
+                   <NuxtLink to="/space/mindfulness" class="flex flex-col px-4 py-3 rounded-lg hover:bg-white dark:hover:bg-brand-dark transition-colors" @click="closeDropdown">
                       <div class="flex items-center gap-2">
                          <i class="fas fa-spa text-emerald-500 text-xs w-4"></i>
                          <span class="text-sm font-bold text-stone-700 dark:text-stone-200">Медитация</span>
@@ -248,7 +248,7 @@
                       <span class="text-[11px] text-stone-400 pl-6">Аудио и видео</span>
                    </NuxtLink>
                    
-                   <NuxtLink to="/lab/dashboard" class="flex flex-col px-4 py-3 rounded-lg hover:bg-white dark:hover:bg-brand-dark transition-colors" @click="closeDropdown">
+                   <NuxtLink to="/space/dashboard" class="flex flex-col px-4 py-3 rounded-lg hover:bg-white dark:hover:bg-brand-dark transition-colors" @click="closeDropdown">
                       <div class="flex items-center gap-2">
                          <i class="fas fa-chart-pie text-brand-accent text-xs w-4"></i>
                          <span class="text-sm font-bold text-stone-700 dark:text-stone-200">Центр Управления</span>
@@ -256,7 +256,7 @@
                       <span class="text-[11px] text-stone-400 pl-6">Мониторинг и анализ</span>
                    </NuxtLink>
 
-                   <NuxtLink to="/lab/community" class="flex flex-col px-4 py-3 rounded-lg hover:bg-white dark:hover:bg-brand-dark transition-colors" @click="closeDropdown">
+                   <NuxtLink to="/space/community" class="flex flex-col px-4 py-3 rounded-lg hover:bg-white dark:hover:bg-brand-dark transition-colors" @click="closeDropdown">
                       <div class="flex items-center gap-2">
                          <i class="fas fa-users text-orange-500 text-xs w-4"></i>
                          <span class="text-sm font-bold text-stone-700 dark:text-stone-200">Сообщество</span>
@@ -320,7 +320,7 @@ const mobileSubmenuStates = ref({
   lab: false,
 });
 
-const isLabRouteActive = computed(() => route.path.startsWith("/lab"));
+const isLabRouteActive = computed(() => route.path.startsWith("/space"));
 
 const getUserInitials = computed(() => {
   if (!auth.user?.displayName) return "U";
