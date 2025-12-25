@@ -67,10 +67,10 @@
             Если у вас возникли вопросы относительно нашей политики
             конфиденциальности, пожалуйста, свяжитесь с нами:
           </p>
-          <a href="mailto:vilenskyigal@gmail.com"
+          <a href="mailto:contact@mindqlab.com"
             class="inline-flex items-center gap-2 text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors duration-200 font-medium">
             <i class="fas fa-envelope"></i>
-            vilenskyigal@gmail.com
+            contact@mindqlab.com
           </a>
         </div>
       </div>
@@ -190,7 +190,7 @@ const sections = [
     title: "Контактная информация",
     content: `Если у вас возникли вопросы или предложения относительно этой Политики конфиденциальности, вы можете связаться с нами по следующему адресу:
   
-  Электронная почта: vilenskyigal@gmail.com`,
+  Электронная почта: contact@mindqlab.com`,
   },
 ];
 </script>

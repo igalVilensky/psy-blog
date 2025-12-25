@@ -45,9 +45,9 @@
               </div>
               <div class="flex-1">
                 <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">Email</div>
-                <a href="mailto:vilenskyigal@gmail.com"
+                <a href="mailto:contact@mindqlab.com"
                   class="text-slate-700 dark:text-white hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors duration-300 font-medium">
-                  vilenskyigal@gmail.com
+                  contact@mindqlab.com
                 </a>
               </div>
             </div>

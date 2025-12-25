@@ -67,10 +67,10 @@
             Если у вас возникли вопросы относительно пользовательского
             соглашения, пожалуйста, свяжитесь с нами:
           </p>
-          <a href="mailto:vilenskyigal@gmail.com"
+          <a href="mailto:contact@mindqlab.com"
             class="inline-flex items-center gap-2 text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300 transition-colors duration-200 font-medium">
             <i class="fas fa-envelope"></i>
-            vilenskyigal@gmail.com
+            contact@mindqlab.com
           </a>
         </div>
       </div>
@@ -176,7 +176,7 @@ const sections = [
     title: "Контактная информация",
     content: `Если у вас есть вопросы о данном Пользовательском соглашении, пожалуйста, свяжитесь с нами по адресу:
   
-  Электронная почта: vilenskyigal@gmail.com`,
+  Электронная почта: contact@mindqlab.com`,
   },
 ];
 </script>
