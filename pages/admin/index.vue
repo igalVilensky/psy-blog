@@ -154,7 +154,7 @@
                                         class="inline-flex items-center gap-2 px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg group-hover:bg-white dark:group-hover:bg-slate-700 transition-colors duration-300">
                                         <span
                                             class="font-mono text-[10px] text-slate-500 dark:text-slate-400 tracking-wider">{{
-                                            user.id }}</span>
+                                                user.id }}</span>
                                     </div>
                                 </td>
                                 <td class="px-8 py-6 text-center">
@@ -200,6 +200,13 @@ import Chart from 'chart.js/auto';
 definePageMeta({
     middleware: ['admin'],
     layout: 'default'
+});
+
+useHead({
+    title: 'Панель управления Admin',
+    meta: [
+        { name: 'robots', content: 'noindex, nofollow' }
+    ]
 });
 
 const authStore = useAuthStore();

@@ -5,23 +5,34 @@ import { getFirestore } from 'firebase-admin/firestore';
 export const useFirebaseAdmin = () => {
     const config = useRuntimeConfig();
 
-    const projectId = config.firebaseAdminProjectId || process.env.FIREBASE_PROJECT_ID;
-    const clientEmail = config.firebaseAdminClientEmail || process.env.FIREBASE_CLIENT_EMAIL;
-    const privateKey = (config.firebaseAdminPrivateKey || process.env.FIREBASE_PRIVATE_KEY || '').replace(/\\n/g, '\n');
+    const projectId = config.firebaseAdminProjectId;
+    const clientEmail = config.firebaseAdminClientEmail;
+    const privateKey = (config.firebaseAdminPrivateKey || '').replace(/\\n/g, '\n');
 
     if (getApps().length === 0) {
         if (projectId && clientEmail && privateKey) {
-            initializeApp({
-                credential: cert({
+            try {
+                initializeApp({
+                    credential: cert({
+                        projectId,
+                        clientEmail,
+                        privateKey,
+                    }),
                     projectId,
-                    clientEmail,
-                    privateKey,
-                }),
-                projectId,
-            });
+                });
+                console.log('Firebase Admin initialized successfully');
+            } catch (error) {
+                console.error('Firebase Admin initialization error:', error);
+                throw error;
+            }
         } else {
-            // Fallback to default credentials if available
-            initializeApp();
+            console.warn('Firebase Admin secrets missing in runtimeConfig. Attempting default initialization...');
+            try {
+                initializeApp();
+            } catch (error) {
+                console.error('Default Firebase Admin initialization failed:', error);
+                throw error;
+            }
         }
     }
 
