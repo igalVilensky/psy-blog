@@ -34,7 +34,7 @@
 
 **MindQ Lab** is a comprehensive web application designed to help users understand themselves better through interactive tools and scientific frameworks. It combines rigorous psychological models with engaging gamification to create a unique self-discovery experience.
 
-Whether you're looking to test your cognitive abilities, explore your personality traits, or simply find a moment of peace, MindQ Lab provides the tools you need.
+Whether you're looking to test your cognitive abilities, explore your personality traits, or simply find a moment of peace, MindQLab provides the tools you need.
 
 ---
 
@@ -176,5 +176,5 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ---
 
 <div align="center">
-  <p>Built with ❤️ by the MindQ Lab Team</p>
+  <p>Built with ❤️ by the MindQLab Team</p>
 </div>

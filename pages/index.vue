@@ -11,27 +11,61 @@
         </ClientOnly>
       </div>
 
+      <!-- Background Glow -->
+      <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
+        aria-hidden="true">
+        <div
+          class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#38bdf8] to-[#818cf8] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.187rem]"
+          style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)">
+        </div>
+      </div>
+
       <div class="container mx-auto max-w-5xl px-6 relative z-10 text-center py-24 animate-fade-in">
         <h1
           class="text-4xl md:text-6xl lg:text-7xl font-light tracking-tight mb-8 text-slate-900 dark:text-white leading-[1.15]">
-          Единая среда для развития мышления, <br class="hidden md:block" />
-          осознанности и личного потенциала
+          <span class="brand-name-animated flex justify-center cursor-default select-none mb-6 gap-3 md:gap-4 lg:gap-5">
+            <span v-for="(letter, index) in 'MindQLab'" :key="index"
+              class="relative inline-grid place-items-center group/letter">
+              <!-- Phantom letter to hold space -->
+              <span class="invisible pointer-events-none tracking-widest text-4xl md:text-6xl lg:text-7xl">{{ letter
+              }}</span>
+              <!-- Gentle Animated Letter -->
+              <span
+                class="absolute inset-0 flex items-center justify-center transition-all duration-700 ease-in-out group-hover/letter:-translate-y-1.5 text-slate-800 dark:text-white group-hover/letter:text-cyan-600 dark:group-hover/letter:text-cyan-400">
+                <span class="relative z-10">
+                  {{ letter }}
+                </span>
+                <!-- Minimalist Indicator -->
+                <span
+                  class="absolute bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-cyan-500 opacity-0 group-hover/letter:opacity-100 group-hover/letter:translate-y-2 transition-all duration-1000 ease-in-out blur-[1px]"></span>
+              </span>
+            </span>
+          </span>
+          <span
+            class="block mt-4 text-3xl md:text-5xl lg:text-6xl font-extralight tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-slate-700 to-slate-900 dark:from-white dark:via-slate-300 dark:to-white">
+            Лаборатория осознанного роста
+          </span>
         </h1>
 
         <p
-          class="text-lg md:text-xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto mb-12 font-light leading-relaxed">
-          MindQLab — это пространство для глубокого понимания и развития собственного разума.
-          Мы объединили когнитивные тренировки, психологические инструменты и практики осознанности
-          в системный подход для регулярного самосовершенствования.
+          class="text-lg md:text-2xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto mb-16 font-light leading-relaxed drop-shadow-sm">
+          Системный подход к развитию <span class="font-medium text-cyan-600 dark:text-cyan-400">памяти, внимания</span>
+          и <span class="font-medium text-purple-600 dark:text-purple-400">эмоционального интеллекта</span>.
         </p>
 
         <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
-          <NuxtLink to="/lab"
-            class="group px-10 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-lg font-medium transition-all duration-300 hover:scale-105 active:scale-95 shadow-xl shadow-slate-200 dark:shadow-none">
-            Начать работу
+          <NuxtLink to="/lab/brain-training"
+            class="group relative px-10 py-5 bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-500 dark:to-blue-500 text-white rounded-2xl font-bold text-lg transition-all duration-300 hover:scale-105 active:scale-95 shadow-2xl shadow-cyan-500/25 hover:shadow-cyan-500/40 overflow-hidden">
+            <div
+              class="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 skew-x-[-20deg]">
+            </div>
+            <span class="relative flex items-center gap-3">
+              <i class="fas fa-brain animate-pulse"></i>
+              Тренировать мозг
+            </span>
           </NuxtLink>
           <NuxtLink to="/lab"
-            class="group px-10 py-4 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900 rounded-lg font-medium transition-all duration-300">
+            class="group px-10 py-5 bg-white/10 dark:bg-slate-900/40 backdrop-blur-xl border border-slate-200/50 dark:border-white/10 hover:bg-white/20 dark:hover:bg-slate-900/60 rounded-2xl font-bold text-lg transition-all duration-300 text-slate-900 dark:text-white">
             Войти в лабораторию
           </NuxtLink>
         </div>
@@ -41,6 +75,7 @@
         <i class="fas fa-chevron-down text-xl"></i>
       </div>
     </header>
+
 
     <!-- 2. CORE DOMAINS OF THE PLATFORM -->
     <section class="py-24 border-b border-slate-100 dark:border-slate-800/50">
@@ -494,6 +529,17 @@ h3,
 h4 {
   font-weight: 300;
   letter-spacing: -0.015em;
+}
+
+/* Hero Enhanced Styles */
+.brand-name-animated {
+  display: flex;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+}
+
+.dark .brand-name-animated {
+  font-weight: 200;
 }
 
 /* Custom scrollbar for better feel */

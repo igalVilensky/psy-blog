@@ -9,12 +9,21 @@
     <!-- Container -->
     <div class="container max-w-6xl px-4 mx-auto flex justify-between items-center py-3 relative z-10">
       <!-- Logo -->
-      <NuxtLink to="/" class="group relative block" @click="closeDropdown">
-        <div
-          class="w-8 h-8 sm:h-10 sm:w-10 rounded-full bg-slate-100 dark:bg-slate-950 flex items-center justify-center overflow-hidden border border-purple-400/30">
-          <img src="/mindqlab-logo.png" alt="MindQLab Logo"
-            class="relative w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+      <NuxtLink to="/" class="group relative flex items-center space-x-3" @click="closeDropdown">
+        <div class="relative">
+          <div
+            class="w-8 h-8 sm:h-10 sm:w-10 rounded-full bg-slate-100 dark:bg-slate-950 flex items-center justify-center overflow-hidden border border-purple-400/30">
+            <img src="/mindqlab-logo.png" alt="MindQLab Logo"
+              class="relative w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
+          </div>
+          <div
+            class="absolute -inset-1 bg-purple-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          </div>
         </div>
+        <span
+          class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white font-montserrat tracking-tight group-hover:text-cyan-500 transition-colors duration-300">
+          MindQLab
+        </span>
       </NuxtLink>
 
       <!-- Desktop Menu -->

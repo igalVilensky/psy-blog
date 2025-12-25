@@ -10,100 +10,83 @@
       </div>
     </div>
 
+    <!-- Background Glow -->
+    <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
+      <div
+        class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#38bdf8] to-[#818cf8] opacity-20 dark:opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.187rem]"
+        style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)">
+      </div>
+    </div>
+
     <!-- Main Content -->
-    <main class="container mx-auto max-w-6xl px-4 py-12 lg:py-16 relative z-10">
-      <div class="max-w-3xl mx-auto">
-        <!-- Enhanced Petri Dish -->
-        <div class="text-center w-full mb-8">
-          <div class="relative inline-block">
-            <div
-              class="petri-dish w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 rounded-full bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 flex items-center justify-center relative overflow-hidden mx-auto group cursor-pointer shadow-2xl hover:shadow-cyan-500/50 transition-all duration-500"
-              @mouseenter="labActive = true" @mouseleave="labActive = false">
-              <!-- Glow effect -->
-              <div
-                class="absolute inset-0 bg-gradient-to-br from-cyan-400/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-              </div>
-
-              <!-- Rotating ring -->
-              <div class="absolute inset-2 border-2 border-cyan-400/30 rounded-full animate-spin-slow"></div>
-
-              <!-- Flask icon -->
-              <i
-                class="fas fa-flask text-white text-5xl sm:text-6xl md:text-7xl relative z-10 transition-all duration-500 group-hover:scale-110 group-hover:rotate-12"></i>
-
-              <!-- Pulse ring on hover -->
-              <div v-if="labActive" class="absolute inset-0 border-4 border-cyan-400/60 rounded-full animate-ping">
-              </div>
-
-              <!-- Enhanced floating particles -->
-              <div class="absolute inset-0 overflow-hidden pointer-events-none">
-                <div v-for="i in 6" :key="i" class="particle" :style="`top: ${Math.random() * 100}%; left: ${Math.random() * 100
-                  }%; animation-delay: ${i * 0.5}s;`"></div>
-              </div>
-            </div>
-
-            <!-- Floating badges -->
-            <div
-              class="absolute -top-3 -right-3 sm:-top-4 sm:-right-4 bg-gradient-to-br from-green-500 to-emerald-600 text-white text-xs sm:text-sm font-bold px-3 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-lg animate-bounce-slow">
-              🎯 Научно
-            </div>
-            <div
-              class="absolute -bottom-3 -left-3 sm:-bottom-4 sm:-left-4 bg-gradient-to-br from-pink-500 to-rose-600 text-white text-xs sm:text-sm font-bold px-3 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-lg animate-bounce-slow"
-              style="animation-delay: 0.5s">
-              ✨ Эффективно
-            </div>
-          </div>
+    <main class="container mx-auto max-w-5xl px-6 py-20 lg:py-32 relative z-10 text-center">
+      <div class="animate-fade-in-up">
+        <!-- Brand Title with Smooth Elevation -->
+        <div class="brand-name-animated flex justify-center cursor-default select-none mb-8 gap-3 md:gap-4 lg:gap-5">
+          <span v-for="(letter, index) in 'MindQLab'" :key="index"
+            class="relative inline-grid place-items-center group/letter">
+            <span class="invisible pointer-events-none tracking-widest text-4xl md:text-6xl lg:text-7xl">{{ letter
+              }}</span>
+            <span
+              class="absolute inset-0 flex items-center justify-center transition-all duration-700 ease-in-out group-hover/letter:-translate-y-2 text-slate-800 dark:text-white group-hover/letter:text-cyan-600 dark:group-hover/letter:text-cyan-400">
+              <span class="relative z-10">
+                {{ letter }}
+              </span>
+              <span
+                class="absolute bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-cyan-500 opacity-0 group-hover/letter:opacity-100 group-hover/letter:translate-y-2 transition-all duration-1000 ease-in-out blur-[1px]"></span>
+            </span>
+          </span>
         </div>
 
-        <!-- Enhanced Title (matching main index style) -->
         <h1
-          class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white text-center mb-6 leading-tight">
-          MindQ Lab —
+          class="text-3xl md:text-5xl lg:text-6xl font-light tracking-tight mb-8 text-slate-900 dark:text-white leading-[1.15]">
           <span
-            class="block mt-2 bg-clip-text text-transparent bg-gradient-to-r from-cyan-600 via-blue-600 to-fuchsia-600 dark:from-cyan-400 dark:via-blue-400 dark:to-fuchsia-400 animate-gradient">
-            Твоя лаборатория осознанного роста
+            class="block bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-slate-700 to-slate-900 dark:from-white dark:via-slate-300 dark:to-white">
+            Тренировки мозга и саморазвитие
           </span>
         </h1>
 
-        <!-- Enhanced Description (matching main index style) -->
         <p
-          class="text-slate-600 dark:text-slate-300 text-center text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-8 leading-relaxed">
-          Исследуй себя с помощью тестов и интерактивных инструментов, получай
-          персональные рекомендации и обучающие программы — всё в одном месте.
+          class="text-lg md:text-xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto mb-16 font-light leading-relaxed">
+          MindQLab — это пространство для глубокого понимания себя и системного развития.
+          Короткие <span class="text-cyan-600 dark:text-cyan-400 font-medium font-mono">10–15-минутные</span> сессии:
+          когнитивные упражнения, медитации, тесты
+          и персональная аналитика прогресса для развития <span
+            class="text-purple-600 dark:text-purple-400 font-medium">памяти, внимания</span> и <span
+            class="text-indigo-600 dark:text-indigo-400 font-medium">эмоционального интеллекта</span>.
         </p>
 
-
-
-        <!-- Enhanced CTA Buttons (matching main index style) -->
-        <div class="flex flex-col sm:flex-row gap-4 justify-center items-stretch sm:items-center mb-6">
+        <!-- CTA Buttons -->
+        <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
           <NuxtLink to="/lab/tests"
-            class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 rounded-2xl font-semibold text-white text-base sm:text-lg shadow-2xl hover:shadow-cyan-500/50 hover:scale-105 transition-all duration-300">
-            <i class="fas fa-vial group-hover:rotate-12 transition-transform duration-300"></i>
-            <span>Пройти тест бесплатно</span>
-            <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform duration-300"></i>
+            class="group relative px-10 py-5 bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-500 dark:to-blue-500 text-white rounded-2xl font-bold text-lg transition-all duration-300 hover:scale-105 active:scale-95 shadow-2xl shadow-cyan-500/25 hover:shadow-cyan-500/40 overflow-hidden">
+            <div
+              class="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 skew-x-[-20deg]">
+            </div>
+            <span class="relative flex items-center gap-3">
+              <i class="fas fa-vial"></i>
+              Пройти тест бесплатно
+            </span>
           </NuxtLink>
 
           <NuxtLink to="/lab/builder"
-            class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-white/60 dark:bg-slate-800/60 border-2 border-purple-500/40 rounded-2xl text-slate-700 dark:text-slate-200 font-semibold text-base sm:text-lg hover:bg-purple-500/10 dark:hover:bg-purple-500/20 hover:border-purple-500/60 hover:scale-105 transition-all duration-300">
-            <i
-              class="fas fa-puzzle-piece group-hover:rotate-12 transition-transform duration-300 text-purple-600 dark:text-purple-400"></i>
-            <span>Конструктор Лаборатории</span>
+            class="group px-10 py-5 bg-white/10 dark:bg-slate-900/40 backdrop-blur-xl border border-slate-200/50 dark:border-white/10 hover:bg-white/20 dark:hover:bg-slate-900/60 rounded-2xl font-bold text-lg transition-all duration-300 text-slate-900 dark:text-white">
+            <span class="flex items-center gap-3">
+              <i class="fas fa-puzzle-piece"></i>
+              Конструктор Лаборатории
+            </span>
           </NuxtLink>
         </div>
 
-        <!-- Enhanced Quick Links (matching main index style) -->
-        <div class="text-center mb-12">
-          <div
-            class="inline-flex items-center gap-3 px-6 py-3 bg-white/40 dark:bg-slate-900/40 backdrop-blur-sm border border-slate-200 dark:border-slate-800/40 rounded-xl">
-            <span class="text-slate-500 dark:text-slate-400 text-sm">Или сразу:</span>
-            <NuxtLink to="/lab"
-              class="text-cyan-600 dark:text-cyan-400 hover:text-cyan-500 dark:hover:text-cyan-300 font-medium text-sm hover:underline transition-colors">
-              Войти в лабораторию
-            </NuxtLink>
-            <span class="text-slate-400 dark:text-slate-600">•</span>
+        <!-- Quick Links -->
+        <div class="flex flex-col items-center gap-4 py-8 border-t border-slate-200/50 dark:border-white/5">
+          <div class="flex items-center gap-3 text-slate-500 dark:text-slate-400 text-sm font-light tracking-wide">
+            <span>Или сразу:</span>
+            <NuxtLink to="/lab" class="text-cyan-600 dark:text-cyan-400 hover:text-cyan-500 transition-colors">Войти в
+              лабораторию</NuxtLink>
+            <span class="opacity-20">•</span>
             <NuxtLink to="/courses"
-              class="text-purple-600 dark:text-purple-400 hover:text-purple-500 dark:hover:text-purple-300 font-medium text-sm hover:underline transition-colors">
-              Курсы и гайды
+              class="text-purple-600 dark:text-purple-400 hover:text-purple-500 transition-colors">Курсы и гайды
             </NuxtLink>
           </div>
         </div>
@@ -127,70 +110,73 @@ const auth = useAuthStore();
 
 // SEO metadata
 useHead({
-  title: "Лаборатория",
+  title: "Тренировки мозга и саморазвитие — MindQLab",
   meta: [
     {
       name: "description",
       content:
-        "MindQ Lab — твоя лаборатория осознанного роста. Исследуй себя с помощью тестов и интерактивных инструментов, получай персональные рекомендации и обучающие программы — всё в одном месте.",
+        "MindQLab — тренировки мозга, когнитивные упражнения, медитации и тесты с персональной аналитикой прогресса. 10–15 минут в день для развития памяти, внимания и осознанности.",
     },
     {
       name: "keywords",
       content:
-        "MindQ Lab, лаборатория, психологические тесты, когнитивные тесты, самопознание, личностный рост, нейронауки, развитие, медитация, осознанность",
+        "тренировки мозга, когнитивные упражнения, развитие памяти, внимание, саморазвитие онлайн, медитация, осознанность, эмоциональный интеллект, тесты личности, MindQLab",
     },
-    // Open Graph tags
-    {
-      property: "og:title",
-      content: "MindQ Lab — Лаборатория осознанного роста",
-    },
+    { property: "og:title", content: "Тренировки мозга и саморазвитие — MindQLab" },
     {
       property: "og:description",
       content:
-        "Исследуй себя с помощью тестов и интерактивных инструментов, получай персональные рекомендации и обучающие программы. Твоя цифровая лаборатория для самопознания и роста.",
+        "Когнитивные тренажёры, медитации и персональная аналитика прогресса. 10–15 минут в день — начните бесплатно в MindQLab.",
     },
-    {
-      property: "og:type",
-      content: "website",
-    },
-    {
-      property: "og:url",
-      content: "https://www.mindqlab.com/lab",
-    },
-    {
-      property: "og:image",
-      content: "https://www.mindqlab.com/mindqlab-logo.png",
-    },
-    // Twitter Card tags
-    {
-      name: "twitter:card",
-      content: "summary_large_image",
-    },
-    {
-      name: "twitter:title",
-      content: "MindQ Lab — Лаборатория осознанного роста",
-    },
+    { property: "og:type", content: "website" },
+    { property: "og:url", content: "https://www.mindqlab.com/lab" },
+    { property: "og:image", content: "https://www.mindqlab.com/mindqlab-logo.png" },
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:title", content: "Тренировки мозга и саморазвитие — MindQLab" },
     {
       name: "twitter:description",
       content:
-        "Исследуй себя с помощью тестов и интерактивных инструментов, получай персональные рекомендации и обучающие программы.",
+        "Когнитивные упражнения, медитации и аналитика прогресса — платформа MindQLab.",
     },
-    {
-      name: "twitter:image",
-      content: "https://www.mindqlab.com/mindqlab-logo.png",
-    },
+    { name: "twitter:image", content: "https://www.mindqlab.com/mindqlab-logo.png" },
   ],
-  link: [
-    {
-      rel: "canonical",
-      href: "https://www.mindqlab.com/lab",
-    },
-  ],
+  link: [{ rel: "canonical", href: "https://www.mindqlab.com/lab" }],
 });
 </script>
 
 <style scoped>
-/* Enhanced Animations */
+/* Hero Enhanced Styles */
+.brand-name-animated {
+  display: flex;
+}
+
+.dark .brand-name-animated {
+  font-weight: 200;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid theme("colors.cyan.400");
+  outline-offset: 4px;
+  border-radius: 0.5rem;
+}
+
 @keyframes gradient {
 
   0%,
@@ -239,22 +225,6 @@ useHead({
   }
 }
 
-@keyframes fadeInUp {
-  0% {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in-up {
-  animation: fadeInUp 0.5s ease-out forwards;
-}
-
 .animate-gradient {
   background-size: 200% auto;
   animation: gradient 4s ease infinite;
@@ -268,7 +238,6 @@ useHead({
   animation: bounce-slow 2s ease-in-out infinite;
 }
 
-/* Floating particles */
 .particle {
   position: absolute;
   width: 6px;
@@ -280,15 +249,7 @@ useHead({
   --float-y: -20px;
 }
 
-/* Enhanced focus states for accessibility */
-a:focus-visible,
-button:focus-visible {
-  outline: 2px solid theme("colors.cyan.400");
-  outline-offset: 4px;
-  border-radius: 0.5rem;
-}
 
-/* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
 
   *,

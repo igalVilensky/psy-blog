@@ -8,7 +8,7 @@
         <NuxtLink to="/" class="flex items-center space-x-3 group" @click.native="closeMobileMenu">
           <div class="relative">
             <div
-              class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-950 flex items-center justify-center overflow-hidden border border-purple-400/30">
+              class="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-950 flex items-center justify-center overflow-hidden border border-purple-400/30">
               <img src="/mindqlab-logo.png" alt="MindQLab Logo"
                 class="relative w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
             </div>
@@ -16,26 +16,26 @@
               class="absolute -inset-1 bg-purple-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             </div>
           </div>
-          <div>
-            <div
-              class="text-xs font-mono text-slate-600 dark:text-cyan-400 tracking-widest group-hover:text-slate-800 dark:group-hover:text-cyan-300 transition-colors font-semibold">
-              ГЛАВНАЯ
-            </div>
-            <div class="text-xs text-slate-500 dark:text-slate-400">mindqlab.com</div>
-          </div>
+          <span
+            class="text-lg font-bold text-slate-900 dark:text-white font-montserrat tracking-tight group-hover:text-cyan-500 transition-colors">
+            MindQLab
+          </span>
         </NuxtLink>
 
-        <div class="flex items-center">
+        <div class="flex items-center space-x-2">
+          <!-- Fullscreen Toggle Mobile -->
+          <FullscreenToggle />
+
           <!-- Theme Toggle Mobile -->
           <button @click="themeStore.toggleTheme()"
-            class="p-2 mr-2 rounded-lg bg-slate-100 dark:bg-slate-800/50 border border-yellow-500/20 hover:border-yellow-500/40 transition-all">
+            class="w-9 h-9 flex-shrink-0 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800/50 border border-yellow-500/20 hover:border-yellow-500/40 transition-all">
             <i class="fas text-yellow-500 dark:text-yellow-400 transition-transform duration-300"
               :class="themeStore.theme === 'dark' ? 'fa-moon' : 'fa-sun'"></i>
           </button>
 
           <!-- Mobile Menu Toggle -->
           <button @click="toggleMobileMenu"
-            class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800/50 border border-cyan-500/20 hover:border-cyan-500/40 transition-all">
+            class="w-9 h-9 flex-shrink-0 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800/50 border border-cyan-500/20 hover:border-cyan-500/40 transition-all">
             <i class="fas text-cyan-600 dark:text-cyan-400 transition-transform duration-300"
               :class="mobileMenuOpen ? 'fa-times' : 'fa-bars'"></i>
           </button>
@@ -52,73 +52,75 @@
       class="mobile-menu-panel fixed top-16 left-0 right-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-cyan-500/20 z-50 transition-all duration-300 overflow-y-auto"
       :class="mobileMenuOpen ? 'max-h-[90%] opacity-100' : 'max-h-0 opacity-0'">
       <div class="p-4 space-y-4">
-        <!-- Lab Logo Mobile -->
-        <NuxtLink to="/lab" class="lab-logo-mobile group block" @click.native="closeMobileMenu">
-          <div
-            class="flex items-center space-x-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-cyan-500/10 hover:border-cyan-500/30 transition-all">
+        <!-- Brand Section Mobile -->
+        <NuxtLink to="/" class="sm:flex items-center space-x-3 group hidden" @click.native="closeMobileMenu">
+          <div class="relative">
             <div
-              class="petri-dish w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 flex items-center justify-center relative overflow-hidden">
-              <div class="absolute inset-0 bg-gradient-to-br from-cyan-400/20 to-purple-500/20"></div>
-              <i class="fas fa-brain text-white text-lg relative z-10"></i>
+              class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-950 flex items-center justify-center overflow-hidden border border-purple-400/30">
+              <img src="/mindqlab-logo.png" alt="MindQLab Logo"
+                class="relative w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
             </div>
-            <div>
-              <div class="text-slate-800 dark:text-white font-bold text-base font-montserrat">
-                MIND Q LAB
-              </div>
-              <div class="text-cyan-600 dark:text-cyan-400/70 text-xs font-mono">
-                v2.0 ЭКСПЕРИМЕНТАЛЬНАЯ
-              </div>
+            <div
+              class="absolute -inset-1 bg-purple-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             </div>
           </div>
+          <span
+            class="text-xl font-bold text-slate-900 dark:text-white font-montserrat tracking-tight group-hover:text-cyan-500 transition-colors">
+            MindQLab
+          </span>
         </NuxtLink>
 
-        <!-- Mobile Stations Grid -->
-        <div class="grid grid-cols-2 gap-2">
-          <MobileStationLink v-for="station in mobileStations" :key="station.to" :to="station.to" :icon="station.icon"
-            :title="station.title" :subtitle="station.subtitle" :active="route.path === station.to"
-            :gradient-from="station.gradientFrom" :gradient-to="station.gradientTo" @click="closeMobileMenu" />
-        </div>
-
-        <!-- User Section Mobile -->
-        <div class="user-section-mobile pt-4 border-t border-slate-200 dark:border-cyan-500/10">
+        <!-- User Section Mobile (Moved to Top) -->
+        <div class="user-section-mobile mb-4">
           <ClientOnly>
-            <div v-if="user" class="space-y-2">
-              <div class="flex items-center space-x-3 p-3 rounded-lg bg-slate-100 dark:bg-slate-800/30">
+            <div v-if="user" class="space-y-4">
+              <div
+                class="flex items-center space-x-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-cyan-500/10">
                 <div
-                  class="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-white text-xs font-bold">
+                  class="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-white text-sm font-bold">
                   {{ getUserInitials(user) }}
                 </div>
                 <div class="flex-1 min-w-0">
-                  <div class="text-slate-800 dark:text-white font-medium text-sm truncate">
+                  <div class="text-[10px] font-mono text-cyan-600 dark:text-cyan-400/70 uppercase mb-0.5">
+                    ИССЛЕДОВАТЕЛЬ
+                  </div>
+                  <div class="text-slate-800 dark:text-white font-bold text-sm truncate">
                     {{ user.displayName || user.email }}
                   </div>
                 </div>
               </div>
               <div class="grid grid-cols-2 gap-2">
                 <NuxtLink to="/profile"
-                  class="text-center py-2 px-3 bg-slate-200/50 dark:bg-slate-700/50 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg text-slate-600 dark:text-slate-300 text-xs font-medium transition-all border border-slate-300/50 dark:border-slate-600/50"
+                  class="text-center py-2.5 px-3 bg-white dark:bg-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-lg text-slate-700 dark:text-slate-300 text-xs font-medium transition-all border border-slate-200 dark:border-slate-600/50"
                   @click.native="closeMobileMenu">
                   Профиль
                 </NuxtLink>
                 <button @click="logout"
-                  class="text-center py-2 px-3 bg-red-500/10 hover:bg-red-500/20 rounded-lg text-red-500 dark:text-red-400 text-xs font-medium transition-all border border-red-500/20">
+                  class="text-center py-2.5 px-3 bg-red-500/10 hover:bg-red-500/20 rounded-lg text-red-500 dark:text-red-400 text-xs font-medium transition-all border border-red-500/20">
                   Выход
                 </button>
               </div>
             </div>
             <div v-else class="space-y-2">
               <NuxtLink to="/login"
-                class="block w-full text-center py-2.5 px-3 bg-slate-200/50 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg text-slate-600 dark:text-slate-300 text-sm font-medium transition-all border border-slate-300/50 dark:border-slate-700/50"
+                class="block w-full text-center py-3 px-4 bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl text-slate-700 dark:text-slate-300 text-sm font-medium transition-all border border-slate-200 dark:border-slate-700/50"
                 @click.native="closeMobileMenu">
                 Вход
               </NuxtLink>
               <NuxtLink to="/register"
-                class="block w-full text-center py-2.5 px-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 rounded-lg text-white text-sm font-medium transition-all"
+                class="block w-full text-center py-3 px-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 rounded-xl text-white text-sm font-medium transition-all shadow-lg shadow-cyan-500/20"
                 @click.native="closeMobileMenu">
                 Регистрация
               </NuxtLink>
             </div>
           </ClientOnly>
+        </div>
+
+        <!-- Mobile Stations Grid -->
+        <div class="grid grid-cols-2 gap-2">
+          <MobileStationLink v-for="station in mobileStations" :key="station.to" :to="station.to" :icon="station.icon"
+            :title="station.title" :subtitle="station.subtitle" :active="route.path === station.to"
+            :gradient-from="station.gradientFrom" :gradient-to="station.gradientTo" @click="closeMobileMenu" />
         </div>
       </div>
     </div>
@@ -131,9 +133,9 @@
     <!-- Sticky Top Section (Header + Stations) -->
     <div
       class="sticky top-0 z-20 bg-white dark:bg-slate-900/95 backdrop-blur-sm border-b border-transparent dark:border-cyan-500/5">
-      <!-- Panel Header -->
-      <div class="panel-header border-b border-slate-200 dark:border-cyan-500/20 p-6">
-        <NuxtLink to="/" class="flex items-center space-x-3 mb-4 group">
+      <!-- Brand Section -->
+      <div class="brand-section px-6 pt-6 pb-4">
+        <NuxtLink to="/" class="flex items-center space-x-3 group">
           <div class="relative">
             <div
               class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-950 flex items-center justify-center overflow-hidden border border-purple-400/30">
@@ -144,38 +146,54 @@
               class="absolute -inset-1 bg-purple-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             </div>
           </div>
-          <div>
-            <div
-              class="text-xs font-mono text-slate-600 dark:text-cyan-400 tracking-widest group-hover:text-slate-800 dark:group-hover:text-cyan-300 transition-colors font-semibold">
-              ГЛАВНАЯ
-            </div>
-            <div class="text-xs text-slate-500 dark:text-slate-400">mindqlab.com</div>
-          </div>
+          <span
+            class="text-xl font-bold text-slate-900 dark:text-white font-montserrat tracking-tight group-hover:text-cyan-500 transition-colors">
+            MindQLab
+          </span>
         </NuxtLink>
+      </div>
 
-        <!-- Lab Logo -->
-        <NuxtLink to="/lab" class="lab-logo group block">
-          <div
-            class="flex items-center space-x-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-cyan-500/10 hover:border-cyan-500/30 hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-all duration-300">
-            <div
-              class="petri-dish w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 flex items-center justify-center relative overflow-hidden"
-              @mouseenter="startBrainPulse" @mouseleave="stopBrainPulse">
-              <div class="absolute inset-0 bg-gradient-to-br from-cyan-400/20 to-purple-500/20"></div>
-              <i class="fas fa-brain text-white text-xl relative z-10 transition-transform duration-300"
-                :class="{ 'scale-110': brainPulsing }"></i>
-              <div v-if="brainPulsing" class="absolute inset-0 border-2 border-cyan-400/50 rounded-full animate-ping">
+      <!-- User Section (Moved to Top) -->
+      <div class="user-section px-6 pb-6 border-b border-slate-200 dark:border-cyan-500/20">
+        <ClientOnly>
+          <div v-if="user"
+            class="user-info p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-cyan-500/10">
+            <div class="flex items-center space-x-3 mb-3">
+              <div
+                class="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-white font-bold">
+                {{ getUserInitials(user) }}
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="text-[10px] font-mono text-cyan-700 dark:text-cyan-400/70 mb-0.5 uppercase">
+                  ИССЛЕДОВАТЕЛЬ
+                </div>
+                <div class="text-slate-900 dark:text-white font-medium text-sm truncate">
+                  {{ user.displayName || user.email }}
+                </div>
               </div>
             </div>
-            <div>
-              <div class="text-slate-900 dark:text-white font-bold text-lg font-montserrat">
-                MIND Q LAB
-              </div>
-              <div class="text-cyan-700 dark:text-cyan-400/70 text-xs font-mono">
-                v2.0 ЭКСПЕРИМЕНТАЛЬНАЯ
-              </div>
+            <div class="flex space-x-2">
+              <NuxtLink to="/profile"
+                class="flex-1 text-center py-2 px-3 bg-white dark:bg-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg text-slate-700 dark:text-slate-300 text-xs font-medium transition-all border border-slate-200 dark:border-slate-600/50">
+                Профиль
+              </NuxtLink>
+              <button @click="logout"
+                class="flex-1 text-center py-2 px-3 bg-red-50 hover:bg-red-100 dark:bg-red-500/10 dark:hover:bg-red-500/20 rounded-lg text-red-600 dark:text-red-400 text-xs font-medium transition-all border border-red-200 dark:border-red-500/20">
+                Выход
+              </button>
             </div>
           </div>
-        </NuxtLink>
+          <div v-else class="auth-buttons space-y-2">
+            <NuxtLink to="/login"
+              class="block w-full text-center py-3 px-4 bg-slate-100 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-xl text-slate-700 dark:text-slate-300 text-sm font-medium transition-all border border-slate-200 dark:border-slate-700/50">
+              Вход для исследователей
+            </NuxtLink>
+            <NuxtLink to="/register"
+              class="block w-full text-center py-3 px-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 rounded-xl text-white text-sm font-medium transition-all shadow-lg shadow-cyan-500/20">
+              Присоединиться
+            </NuxtLink>
+          </div>
+        </ClientOnly>
       </div>
 
       <!-- Research Stations -->
@@ -222,50 +240,6 @@
         <StationLink to="/lab/community" icon="fa-users" title="Сообщество" subtitle="Исследователи онлайн"
           :active="route.path === '/lab/community'" gradient-from="orange-500" gradient-to="amber-600" />
       </div>
-    </div>
-
-    <!-- User Section (Pushed to bottom) -->
-    <div
-      class="user-section border-t border-slate-200 dark:border-cyan-500/10 p-4 mt-auto bg-white dark:bg-slate-900 z-10">
-      <ClientOnly>
-        <div v-if="user"
-          class="user-info p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-cyan-500/10">
-          <div class="flex items-center space-x-3 mb-3">
-            <div
-              class="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-white font-bold">
-              {{ getUserInitials(user) }}
-            </div>
-            <div class="flex-1 min-w-0">
-              <div class="text-xs font-mono text-cyan-700 dark:text-cyan-400/70 mb-0.5">
-                ИССЛЕДОВАТЕЛЬ
-              </div>
-              <div class="text-slate-900 dark:text-white font-medium text-sm truncate">
-                {{ user.displayName || user.email }}
-              </div>
-            </div>
-          </div>
-          <div class="flex space-x-2">
-            <NuxtLink to="/profile"
-              class="flex-1 text-center py-2.5 px-3 bg-white dark:bg-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg text-slate-700 dark:text-slate-300 text-xs font-medium transition-all border border-slate-200 dark:border-slate-600/50">
-              Профиль
-            </NuxtLink>
-            <button @click="logout"
-              class="flex-1 text-center py-2.5 px-3 bg-red-50 hover:bg-red-100 dark:bg-red-500/10 dark:hover:bg-red-500/20 rounded-lg text-red-600 dark:text-red-400 text-xs font-medium transition-all border border-red-200 dark:border-red-500/20">
-              Выход
-            </button>
-          </div>
-        </div>
-        <div v-else class="auth-buttons space-y-2">
-          <NuxtLink to="/login"
-            class="block w-full text-center py-3 px-4 bg-slate-100 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-xl text-slate-700 dark:text-slate-300 text-sm font-medium transition-all border border-slate-200 dark:border-slate-700/50">
-            Вход для исследователей
-          </NuxtLink>
-          <NuxtLink to="/register"
-            class="block w-full text-center py-3 px-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 rounded-xl text-white text-sm font-medium transition-all shadow-lg shadow-cyan-500/20">
-            Присоединиться
-          </NuxtLink>
-        </div>
-      </ClientOnly>
     </div>
 
     <!-- System Status -->
@@ -323,6 +297,7 @@ import { useAuthStore } from "~/stores/auth";
 import { useThemeStore } from "~/stores/theme";
 import StationLink from "~/components/lab/StationLink.vue";
 import MobileStationLink from "~/components/lab/MobileStationLink.vue";
+import FullscreenToggle from "~/components/lab/FullscreenToggle.vue";
 
 const auth = useAuthStore();
 const themeStore = useThemeStore();

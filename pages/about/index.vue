@@ -64,7 +64,7 @@
           <!-- Enhanced Title with Better Typography -->
           <h1
             class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white text-center mb-6 leading-tight">
-            О MindQ Lab —
+            О MindQLab —
             <span
               class="block mt-2 bg-clip-text text-transparent bg-gradient-to-r from-cyan-600 dark:from-cyan-400 via-blue-600 dark:via-blue-400 to-fuchsia-600 dark:to-fuchsia-400 animate-gradient">
               Лаборатория осознанного роста
@@ -74,7 +74,7 @@
           <!-- Enhanced Description -->
           <p class="text-gray-700 dark:text-slate-300 text-base sm:text-lg md:text-xl max-w-4xl mx-auto mb-8 leading-relaxed px-4 animate-fade-in-up"
             style="animation-delay: 0.2s">
-            MindQ Lab — это инновационная платформа для исследования сознания и
+            MindQLab — это инновационная платформа для исследования сознания и
             личностного роста, объединяющая современную психологию, нейронауки и
             интерактивные технологии.
           </p>
@@ -326,7 +326,7 @@ useHead({
     // Open Graph tags
     {
       property: "og:title",
-      content: "О MindQ Lab — Лаборатория осознанного роста",
+      content: "О MindQLab — Лаборатория осознанного роста",
     },
     {
       property: "og:description",
@@ -352,7 +352,7 @@ useHead({
     },
     {
       name: "twitter:title",
-      content: "О MindQ Lab — Лаборатория осознанного роста",
+      content: "О MindQLab — Лаборатория осознанного роста",
     },
     {
       name: "twitter:description",

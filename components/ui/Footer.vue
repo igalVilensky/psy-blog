@@ -78,7 +78,7 @@
       <div class="mt-12 md:mt-16 pt-8 border-t border-slate-200 dark:border-slate-800/60">
         <div class="flex flex-col md:flex-row justify-between items-center gap-4">
           <p class="text-slate-500 text-sm md:text-base text-center md:text-left">
-            © {{ new Date().getFullYear() }} MindQ Lab. Все права защищены.
+            © {{ new Date().getFullYear() }} MindQLab. Все права защищены.
           </p>
           <div class="flex flex-wrap justify-center gap-4 md:gap-6 text-sm md:text-base">
             <NuxtLink to="/legal/privacy"
