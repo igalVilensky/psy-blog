@@ -24,11 +24,16 @@ export const useAuthStore = defineStore("auth", {
           async (currentUser) => {
             if (currentUser) {
               try {
+                // Get the latest token result, including custom claims
+                const idTokenResult = await currentUser.getIdTokenResult();
                 const userProfile = await getUserProfile(currentUser.uid);
+
                 this.user = {
                   ...userProfile,
                   uid: currentUser.uid,
                   onboardingCompleted: userProfile.onboardingCompleted || false,
+                  superAdmin: !!idTokenResult.claims.superAdmin,
+                  token: idTokenResult.token,
                 };
               } catch (err) {
                 this.error = "Failed to load user profile";
@@ -48,6 +53,20 @@ export const useAuthStore = defineStore("auth", {
           }
         );
       });
+    },
+
+    async refreshIdToken() {
+      const auth = getAuth();
+      const currentUser = auth.currentUser;
+      if (currentUser) {
+        const idTokenResult = await currentUser.getIdTokenResult(true); // Force refresh
+        if (this.user) {
+          this.user.superAdmin = !!idTokenResult.claims.superAdmin;
+          this.user.token = idTokenResult.token;
+        }
+        return idTokenResult;
+      }
+      return null;
     },
 
     async fetchUserProfile(userId) {

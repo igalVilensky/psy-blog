@@ -26,6 +26,7 @@
     "canvas-confetti": "^1.9.3",
     "chart.js": "^4.4.7",
     "firebase": "^11.1.0",
+    "firebase-admin": "^13.6.0",
     "gsap": "^3.12.7",
     "howler": "^2.2.4",
     "mitt": "^3.0.1",
