@@ -208,7 +208,7 @@ import { useHead } from "@unhead/vue";
 import CursorNeuralVisualizer from '~/components/space/CursorNeuralVisualizer.vue';
 
 useHead({
-  title: "О MindQLab — Пространство осознанного развития",
+  title: "О MindQLab — Центр осознанного развития",
   meta: [
     { name: "description", content: "MindQLab — это инновационная экосистема, объединяющая когнитивные тренажеры, игры и психологические инструменты для вашего развития." },
     { name: "keywords", content: "MindQLab, о нас, тренировка мозга, когнитивные игры, психология, самопознание, интерактивные тренажеры, Игаль Виленский, Анастасия Виленская" },
@@ -343,4 +343,3 @@ h4 {
   filter: grayscale(0%);
 }
 </style>
-

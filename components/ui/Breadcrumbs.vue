@@ -41,9 +41,9 @@ const crumbs = computed(() => {
   // Auto-generate based on route if no items provided
   // This is a simple implementation and might need customization based on route structure
   const pathSegments = route.path.split('/').filter(Boolean);
-  // Remove 'lab' as it's the root
-  const labIndex = pathSegments.indexOf('lab');
-  const relevantSegments = labIndex !== -1 ? pathSegments.slice(labIndex + 1) : pathSegments;
+
+  // Remove 'space' or 'lab' from the start to avoid duplication with the root link
+  const relevantSegments = pathSegments.filter(segment => segment !== 'space' && segment !== 'lab');
 
   return relevantSegments.map((segment, index) => {
     const path = '/space/' + relevantSegments.slice(0, index + 1).join('/');

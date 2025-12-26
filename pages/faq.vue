@@ -188,4 +188,3 @@ const toggleFAQ = (index) => {
   @apply bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500 hover:text-white border border-emerald-500/20 hover:border-emerald-500;
 }
 </style>
-

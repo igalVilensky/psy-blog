@@ -230,6 +230,12 @@
         <div class="mb-6">
           <div class="flex items-center justify-between mb-4">
             <div class="flex items-center gap-4">
+              <button @click="toggleSound"
+                class="p-2 rounded-lg bg-slate-800/50 hover:bg-slate-700/50 transition-colors"
+                :title="soundEnabled ? 'Выключить звук' : 'Включить звук'">
+                <i class="fas"
+                  :class="soundEnabled ? 'fa-volume-up text-emerald-400' : 'fa-volume-mute text-slate-400'"></i>
+              </button>
               <div class="part-badge" :class="currentPart === 'A'
                 ? 'bg-gradient-to-r from-emerald-500 to-teal-500'
                 : 'bg-gradient-to-r from-cyan-500 to-blue-500'
@@ -281,19 +287,15 @@
               </text>
             </g>
 
-            <!-- Current target indicator -->
-            <g v-if="nextNode">
-              <circle :cx="nextNode.x" :cy="nextNode.y" :r="nextNode.radius + 8" class="target-pulse" />
-            </g>
+            <!-- Current target indicator REMOVED -->
           </svg>
         </div>
 
         <!-- Helper text -->
         <div class="mt-6 text-center">
           <div v-if="nextNode" class="text-lg text-slate-300">
-            Нажмите на:
-            <span class="text-2xl font-bold" :class="currentPart === 'A' ? 'text-emerald-400' : 'text-cyan-400'
-              ">{{ nextNode.label }}</span>
+            <!-- Hint text removed for better UX -->
+            Соедините точки по порядку
           </div>
           <div v-if="showError" class="text-red-400 text-sm mt-2 animate-shake">
             ❌ Неправильно! Нажмите {{ nextNode?.label }}
@@ -480,14 +482,15 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from "vue";
 import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
+import { Howl } from "howler";
 
 definePageMeta({
   layout: "laboratory",
 });
 
-// Canvas dimensions
-const canvasWidth = 800;
-const canvasHeight = 600;
+// Canvas dimensions - responsive
+const canvasWidth = ref(800);
+const canvasHeight = ref(600);
 
 // Game state
 const phase = ref("intro"); // intro, instructions, test, between, result
@@ -501,6 +504,8 @@ const timerInterval = ref(null);
 const errors = ref(0);
 const showError = ref(false);
 const svgCanvas = ref(null);
+const soundEnabled = ref(true);
+let sounds = null;
 
 // Results
 const partATime = ref(0);
@@ -528,8 +533,8 @@ const generateNodePositions = (labels) => {
 
     do {
       valid = true;
-      x = padding + Math.random() * (canvasWidth - 2 * padding);
-      y = padding + Math.random() * (canvasHeight - 2 * padding);
+      x = padding + Math.random() * (canvasWidth.value - 2 * padding);
+      y = padding + Math.random() * (canvasHeight.value - 2 * padding);
 
       // Check distance from other nodes
       for (const pos of positions) {
@@ -551,11 +556,11 @@ const generateNodePositions = (labels) => {
         const col = i % cols;
         x =
           padding +
-          (col * (canvasWidth - 2 * padding)) / cols +
+          (col * (canvasWidth.value - 2 * padding)) / cols +
           Math.random() * 50;
         y =
           padding +
-          (row * (canvasHeight - 2 * padding)) /
+          (row * (canvasHeight.value - 2 * padding)) /
           Math.ceil(labels.length / cols) +
           Math.random() * 50;
         valid = true;
@@ -632,6 +637,7 @@ const handleNodeClick = (node) => {
 
   if (node.id === expectedNode.id) {
     // Correct!
+    playSound('correct');
     node.completed = true;
 
     // Add trail from previous node
@@ -658,6 +664,7 @@ const handleNodeClick = (node) => {
     }
   } else {
     // Wrong node!
+    playSound('wrong');
     errors.value++;
     showError.value = true;
     setTimeout(() => {
@@ -739,7 +746,7 @@ const getNodeClass = (node) => {
         : "node-completed-b-letter";
   }
   if (node.id === nextNode.value?.id) {
-    return "node-next";
+    // return "node-next"; // Removed hint
   }
   return currentPart.value === "A"
     ? "node-default-a"
@@ -786,6 +793,42 @@ const shareResults = () => {
 
 onUnmounted(() => {
   stopTimer();
+  window.removeEventListener('resize', handleResize);
+});
+
+const initSounds = () => {
+  sounds = {
+    correct: new Howl({ src: ['/sounds/selection-correct.mp3'], volume: 0.5 }),
+    wrong: new Howl({ src: ['/sounds/selection-wrong.mp3'], volume: 0.5 })
+  };
+};
+
+const playSound = (type) => {
+  if (soundEnabled.value && sounds && sounds[type]) {
+    sounds[type].play();
+  }
+};
+
+const toggleSound = () => {
+  soundEnabled.value = !soundEnabled.value;
+};
+
+const handleResize = () => {
+  if (window.innerWidth < 768) {
+    // Mobile - vertical layout
+    canvasWidth.value = window.innerWidth - 32; // padding
+    canvasHeight.value = window.innerHeight * 0.6;
+  } else {
+    // Desktop
+    canvasWidth.value = 800;
+    canvasHeight.value = 600;
+  }
+};
+
+onMounted(() => {
+  handleResize();
+  initSounds();
+  window.addEventListener('resize', handleResize);
 });
 </script>
 <style scoped>
@@ -1034,4 +1077,3 @@ onUnmounted(() => {
   }
 }
 </style>
-

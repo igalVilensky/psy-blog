@@ -1,4 +1,4 @@
-<!-- pages/space/experiments.vue -->
+<!-- pages/space/growth.vue -->
 <template>
   <div class="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
@@ -522,4 +522,3 @@ const handleExperimentAction = (experiment) => {
   box-shadow: 0 20px 40px -12px rgba(168, 85, 247, 0.15);
 }
 </style>
-

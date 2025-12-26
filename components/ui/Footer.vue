@@ -103,7 +103,7 @@ import { ref } from "vue";
 const email = ref("");
 
 const sitemapLinks = [
-  { label: "Пространство", to: "/space" },
+  { label: "Центр Развития", to: "/space" },
   { label: "Тесты", to: "/space/tests" },
   { label: "Тренировка Мозга", to: "/space/brain-training" },
   { label: "Психология", to: "/space/psychology" },

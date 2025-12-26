@@ -43,7 +43,7 @@
           </span>
           <span
             class="block mt-4 text-3xl md:text-5xl lg:text-6xl font-extralight tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-slate-700 to-slate-900 dark:from-white dark:via-slate-300 dark:to-white">
-            Пространство осознанного развития
+            Центр осознанного развития
           </span>
         </h1>
 
@@ -452,7 +452,7 @@ const latestPosts = computed(() => posts.value.slice(0, 3));
 useSeoMeta({
   title: 'MindQLab — Платформа для развития мышления и осознанности',
   description: 'Единая экосистема для когнитивных исследований, психологического роста и медитативных практик. Научный подход к развитию личности.',
-  ogTitle: 'MindQLab — Твое пространство осознанного развития',
+  ogTitle: 'MindQLab — Центр осознанного развития',
   ogType: 'website',
 });
 
@@ -624,4 +624,3 @@ h4 {
   background: #cbd5e1;
 }
 </style>
-

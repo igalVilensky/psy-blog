@@ -28,14 +28,14 @@
 
       <!-- Desktop Menu -->
       <div class="hidden lg:flex items-center space-x-2">
-        <!-- Пространство Dropdown -->
+        <!-- Центр Развития Dropdown -->
         <div class="relative group">
           <NuxtLink to="/space"
             class="flex items-center space-x-2 px-3.5 py-2 rounded-lg text-[15px] font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-slate-800/50 transition-all duration-200"
             :class="{ 'bg-slate-200 dark:bg-slate-800/50 text-slate-900 dark:text-white': isLabRouteActive }"
             @click="closeDropdown">
             <i class="fas fa-cubes text-cyan-400"></i>
-            <span>Пространство</span>
+            <span>Центр Развития</span>
             <i
               class="fas fa-chevron-down text-xs text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-transform duration-200 group-hover:rotate-180"></i>
           </NuxtLink>
@@ -248,7 +248,7 @@
             </span>
           </button>
 
-          <!-- Пространство -->
+          <!-- Центр Развития -->
           <div>
             <div
               class="w-full flex items-center justify-between p-1 rounded-lg bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50"
@@ -257,7 +257,7 @@
                 class="flex-1 flex items-center space-x-4 p-2 rounded-lg hover:bg-black/5 dark:hover:bg-slate-700/50 transition-all duration-200"
                 @click="closeDropdown">
                 <i class="fas fa-cubes text-cyan-500 dark:text-cyan-400"></i>
-                <span class="font-medium text-slate-700 dark:text-slate-200">Пространство</span>
+                <span class="font-medium text-slate-700 dark:text-slate-200">Центр Развития</span>
               </NuxtLink>
               <button @click="toggleMobileSubmenu('lab')"
                 class="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-slate-700/50 transition-colors duration-200">
