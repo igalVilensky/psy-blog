@@ -1,6 +1,12 @@
 <template>
   <div
-    class="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900/50 p-6 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-indigo-500/50 hover:bg-slate-50 dark:hover:bg-slate-800/80 hover:shadow-xl hover:shadow-indigo-500/20"
+    class="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-200 dark:border-white/10 p-6 backdrop-blur-md transition-all duration-300"
+    :class="[
+      exercise.link 
+        ? 'bg-white dark:bg-slate-900/50 hover:-translate-y-1 hover:border-indigo-500/50 hover:bg-slate-50 dark:hover:bg-slate-800/80 hover:shadow-xl hover:shadow-indigo-500/20 cursor-pointer' 
+        : 'bg-slate-100 dark:bg-slate-900/20 opacity-60 grayscale cursor-default'
+    ]"
+    @click="exercise.link ? $emit('view-details', exercise) : null"
   >
     <!-- Background Glow Effect -->
     <div
@@ -36,11 +42,14 @@
       </div>
       
       <button
-        class="flex items-center space-x-2 text-sm font-semibold text-indigo-600 dark:text-indigo-400 transition-colors hover:text-indigo-500 dark:hover:text-indigo-300 focus:outline-none"
-        @click.stop="$emit('view-details', exercise)"
+        class="flex items-center space-x-2 text-sm font-semibold transition-colors focus:outline-none"
+        :class="exercise.link ? 'text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300' : 'text-slate-400 cursor-default'"
+        :disabled="!exercise.link"
+        @click.stop="exercise.link ? $emit('view-details', exercise) : null"
       >
-        <span>Подробнее</span>
-        <i class="fas fa-arrow-right transition-transform duration-300 group-hover:translate-x-1"></i>
+        <span>{{ exercise.link ? 'Подробнее' : 'Скоро' }}</span>
+        <i v-if="exercise.link" class="fas fa-arrow-right transition-transform duration-300 group-hover:translate-x-1"></i>
+        <i v-else class="fas fa-lock"></i>
       </button>
     </div>
   </div>

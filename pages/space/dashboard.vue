@@ -201,7 +201,7 @@
                       <span class="text-slate-600 dark:text-slate-400">{{ exercise.category }}</span>
                     </td>
                     <td class="px-4 py-3 text-center">
-                      <span class="font-mono font-medium text-slate-900 dark:text-white">{{ exercise.avgScore }}%</span>
+                      <span class="font-mono font-medium text-slate-900 dark:text-white">{{ exercise.avgScore }}{{ exercise.unit }}</span>
                     </td>
                     <td class="px-4 py-3 text-right hidden sm:table-cell">
                       <span class="text-slate-600 dark:text-slate-400">{{ exercise.lastPlayed }}</span>
@@ -592,7 +592,7 @@
                         Средний счет
                       </div>
                       <div class="text-lg font-bold text-slate-900 dark:text-white font-mono">
-                        {{ selectedExercise.avgScore }}%
+                        {{ selectedExercise.avgScore }}{{ selectedExercise.unit }}
                       </div>
                     </div>
                     <div class="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg text-center">
@@ -600,7 +600,7 @@
                         Лучший счет
                       </div>
                       <div class="text-lg font-bold text-emerald-600 dark:text-emerald-400 font-mono">
-                        {{ selectedExercise.bestScore }}%
+                        {{ selectedExercise.bestScore }}{{ selectedExercise.unit }}
                       </div>
                     </div>
                     <div class="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg text-center">
@@ -642,7 +642,7 @@
                           }}</span>
                         </div>
                         <span class="font-mono text-sm font-medium text-slate-900 dark:text-white">
-                          {{ session.score }}%
+                          {{ session.score }}{{ selectedExercise.unit }}
                         </span>
                       </div>
                       <div v-if="!selectedExercise.history?.length"
@@ -718,6 +718,7 @@ const hoveredTrait = ref(null);
 const patternResults = ref([]);
 const mentalShiftResults = ref([]);
 const targetTrackingResults = ref([]);
+const doubleGameResults = ref([]);
 const big5Result = ref(null);
 const assessmentTimestamp = ref(null);
 const heatmapData = ref({});
@@ -830,6 +831,8 @@ const progressData = computed(() => {
   if (big5Result.value?.timestamp) addInteraction(big5Result.value.timestamp);
   // 4. Assessment Result
   if (assessmentTimestamp.value) addInteraction(assessmentTimestamp.value);
+  // 5. Double Game Results
+  doubleGameResults.value.forEach(r => addInteraction(r.timestamp));
 
   // Normalize for display (if max is 0, default to 10 scale, otherwise scale relative to max)
   const maxVal = Math.max(...last7Days.map(d => d.value));
@@ -869,7 +872,11 @@ const exercisesList = computed(() => {
       icon: "fas fa-layer-group text-blue-600 dark:text-blue-400",
       bgClass: "bg-blue-500/10",
       history: history,
-      link: "/space/tests/nback"
+      icon: "fas fa-layer-group text-blue-600 dark:text-blue-400",
+      bgClass: "bg-blue-500/10",
+      history: history,
+      link: "/space/tests/nback",
+      unit: '%'
     });
   }
 
@@ -896,7 +903,11 @@ const exercisesList = computed(() => {
       icon: "fas fa-route text-emerald-600 dark:text-emerald-400",
       bgClass: "bg-emerald-500/10",
       history: history,
-      link: "/space/tests/trail-making"
+      icon: "fas fa-route text-emerald-600 dark:text-emerald-400",
+      bgClass: "bg-emerald-500/10",
+      history: history,
+      link: "/space/tests/trail-making",
+      unit: '%'
     });
   }
 
@@ -926,7 +937,43 @@ const exercisesList = computed(() => {
       icon: "fas fa-crosshairs text-purple-600 dark:text-purple-400",
       bgClass: "bg-purple-500/10",
       history: history,
-      link: "/space/brain-training/target-tracking" // Убедитесь, что этот маршрут существует
+      icon: "fas fa-crosshairs text-purple-600 dark:text-purple-400",
+      bgClass: "bg-purple-500/10",
+      history: history,
+      link: "/space/brain-training/target-tracking", // Убедитесь, что этот маршрут существует
+      unit: '%'
+    });
+  }
+
+  // Double Game
+  if (doubleGameResults.value.length > 0) {
+    const history = doubleGameResults.value.map(r => ({
+      date: r.timestamp ? new Date(r.timestamp.seconds * 1000) : new Date(),
+      score: r.score || 0,
+      mode: r.settings?.mode === 'timer' ? '30 Sec' : 'Endless'
+    }));
+
+    const scores = history.map(h => h.score);
+    const avg = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
+    const best = Math.max(...scores);
+    const last = history[0].date.toLocaleDateString("ru-RU");
+
+    list.push({
+      id: "double",
+      title: "Double",
+      category: "Внимание",
+      avgScore: avg,
+      bestScore: best,
+      lastPlayed: last,
+      totalSessions: history.length,
+      icon: "fas fa-clone text-indigo-600 dark:text-indigo-400",
+      bgClass: "bg-indigo-500/10",
+      history: history,
+      icon: "fas fa-clone text-indigo-600 dark:text-indigo-400",
+      bgClass: "bg-indigo-500/10",
+      history: history,
+      link: "/space/brain-training/double",
+      unit: ''
     });
   }
 
@@ -1009,7 +1056,7 @@ const radarPolygonPoints = computed(() => radarDataPoints.value.map(point => `${
 // --- FUNCTIONS from ANALYSIS & DASHBOARD ---
 function calculateCognitiveScore() {
   // Объединяем результаты всех тренировок
-  const allResults = [...patternResults.value, ...mentalShiftResults.value, ...targetTrackingResults.value];
+  const allResults = [...patternResults.value, ...mentalShiftResults.value, ...targetTrackingResults.value, ...doubleGameResults.value];
   if (allResults.length === 0) return 0;
 
   // Рассчитываем среднюю точность по всем тренировкам
@@ -1023,7 +1070,7 @@ function calculateCognitiveScore() {
 }
 
 function calculateStreak() {
-  const allResults = [...patternResults.value, ...mentalShiftResults.value];
+  const allResults = [...patternResults.value, ...mentalShiftResults.value, ...targetTrackingResults.value, ...doubleGameResults.value];
   const days = new Set(allResults.map(r => {
     if (!r.createdAt) return null;
     return new Date(r.createdAt.seconds * 1000).toDateString();
@@ -1177,8 +1224,13 @@ const fetchUserData = async () => {
     console.log('Target Tracking Results:', targetTrackingResults.value);
     console.log('Target Tracking Count:', targetTrackingResults.value.length);
 
+    // Double Game Results
+    const qDouble = query(collection(db, `users/${authStore.user.uid}/doubleGameResults`), orderBy("timestamp", "desc"));
+    const snapshotDouble = await getDocs(qDouble);
+    doubleGameResults.value = snapshotDouble.docs.map(doc => doc.data());
+
     // Analysis: Heatmap
-    processHeatmapData([...patternResults.value, ...mentalShiftResults.value, ...targetTrackingResults.value]);
+    processHeatmapData([...patternResults.value, ...mentalShiftResults.value, ...targetTrackingResults.value, ...doubleGameResults.value]);
 
     // Analysis: Big 5
     const qBig5 = query(collection(db, `users/${authStore.user.uid}/big5Results`), orderBy("timestamp", "desc"), limit(1));

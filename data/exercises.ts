@@ -26,18 +26,7 @@ export const exercises: Exercise[] = [
         link: "/space/tests/nback"
     },
     // ... existing exercises ...
-    {
-        id: 5661,
-        title: "Pattern Detection Mini",
-        category: "Логика",
-        goal: "Развитие навыков выявления закономерностей и логического мышления",
-        instruction: "Вам будет показана последовательность элементов (чисел, фигур, направлений). Ваша задача — определить правило и выбрать правильное продолжение из предложенных вариантов.",
-        format: "Интерактивный тест, 10 заданий",
-        metric: "Точность (%), Среднее время реакции",
-        uiExample: "Горизонтальная последовательность с пропуском, 4 варианта ответа",
-        relatedModels: "Abstract Reasoning, Pattern Recognition, Cognitive Flexibility",
-        link: "/space/brain-training/pattern-detection-mini"
-    },
+
     {
         id: 2,
         title: "Sequence Recall",
@@ -59,7 +48,7 @@ export const exercises: Exercise[] = [
         metric: "% правильных клеток",
         uiExample: "5x5 сетка",
         relatedModels: "Chunking",
-        link: "/space/brain-training/memory"
+        link: "" // Removed link as per user request (was incorrect)
     },
     {
         id: 4,
@@ -582,6 +571,18 @@ export const exercises: Exercise[] = [
         uiExample: "Динамический стимул (число/фигура/цветное слово) на цветном фоне, кнопки ВЛЕВО/ВПРАВО",
         relatedModels: "Cognitive Flexibility, Task Switching, Executive Function, Stroop Effect",
         link: "/space/brain-training/mental-shift"
+    },
+    {
+        id: 51,
+        title: "Double",
+        category: "Внимание",
+        goal: "Тренировка внимательности и периферического зрения",
+        instruction: "Вам нужно найти один единственный символ, который совпадает на двух игровых полях. Символ может быть любого цвета и ориентации.",
+        format: "Бесконечный режим, адаптивная сложность",
+        metric: "Очки, уровень сложности",
+        uiExample: "Два поля с символами",
+        relatedModels: "Attention Spotlight, Rapid Visual Processing",
+        link: "/space/brain-training/double"
     }
 ];
 

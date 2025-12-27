@@ -47,52 +47,7 @@
         </div>
       </div>
 
-      <!-- Featured Game -->
-      <div class="featured-game mb-12">
-        <div
-          class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-cyan-500/10 via-purple-500/10 to-pink-500/10 border border-cyan-500/20 p-8">
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <div>
-              <div
-                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/20 border border-cyan-500/40 mb-4">
-                <i class="fas fa-star text-cyan-600 dark:text-cyan-400 text-sm"></i>
-                <span class="text-xs font-medium text-cyan-700 dark:text-cyan-300">ИГРА ДНЯ</span>
-              </div>
-              <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4">
-                {{ featuredGame.title }}
-              </h2>
-              <p class="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
-                {{ featuredGame.description }}
-              </p>
-              <div class="flex flex-wrap items-center gap-4 mb-6">
-                <div class="flex items-center gap-2 text-cyan-600 dark:text-cyan-400">
-                  <i class="fas fa-gamepad"></i>
-                  <span class="text-sm">{{ featuredGame.plays }} игр</span>
-                </div>
-                <div class="flex items-center gap-2 text-purple-600 dark:text-purple-400">
-                  <i class="fas fa-trophy"></i>
-                  <span class="text-sm">{{ featuredGame.rating }} рейтинг</span>
-                </div>
-                <div class="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
-                  <i class="fas fa-clock"></i>
-                  <span class="text-sm">~{{ featuredGame.duration }}</span>
-                </div>
-              </div>
-              <button @click="$router.push('/space/brain-training/reaction')" class="btn-primary">
-                <i class="fas fa-play mr-2"></i>
-                Начать игру
-              </button>
-            </div>
-            <div class="hidden lg:block">
-              <div class="game-preview-card">
-                <div class="preview-icon-wrapper">
-                  <i :class="featuredGame.icon" class="text-white text-6xl"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
 
       <!-- Games Grid -->
       <div class="mb-12">
@@ -149,7 +104,7 @@
                 </div>
                 <span class="text-cyan-600 dark:text-cyan-400 font-medium">{{
                   game.duration
-                  }}</span>
+                }}</span>
               </div>
 
               <!-- Progress Bar (if user played) -->
@@ -310,18 +265,7 @@ const categories = [
   { id: "speed", label: "Скорость", icon: "fas fa-bolt" },
 ];
 
-const featuredGame = {
-  id: "reaction",
-  title: "Скоростная реакция",
-  description: "Кликните как можно быстрее после сигнала зелёного цвета",
-  icon: "fas fa-bolt",
-  plays: "1.2K",
-  rating: "4.7",
-  duration: "2-3 мин",
-  difficulty: "Средняя",
-  category: "logic",
-  gradient: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
-};
+
 
 const games = [
   {
@@ -436,7 +380,21 @@ const games = [
     disabled: true,
   },
   {
-    id: 9,
+    id: "reaction", // Verified ID from cleanup
+    title: "Скоростная реакция",
+    description: "Кликните как можно быстрее после сигнала зелёного цвета",
+    icon: "fas fa-bolt",
+    category: "speed",
+    difficulty: "Средняя",
+    gradient: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
+    plays: "1.2K",
+    rating: "4.7",
+    duration: "2-3 мин",
+    progress: 0,
+    disabled: false
+  },
+  {
+    id: 9, // Ensuring IDs are unique enough or string based
     title: "Шахматные задачи",
     description:
       "Решайте тактические позиции и развивайте стратегическое мышление",

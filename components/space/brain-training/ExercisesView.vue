@@ -211,7 +211,7 @@ const categories = computed(() => {
 
 // Filtered Exercises
 const filteredExercises = computed(() => {
-  return exercises.filter(exercise => {
+  const result = exercises.filter(exercise => {
     // Category Filter
     const matchesCategory = selectedCategory.value === 'Все' || exercise.category === selectedCategory.value;
 
@@ -224,7 +224,22 @@ const filteredExercises = computed(() => {
 
     return matchesCategory && matchesSearch;
   });
+
+  return result.sort((a, b) => {
+    // 1. Availability (has valid link)
+    const aLink = a.link && a.link.trim().length > 0;
+    const bLink = b.link && b.link.trim().length > 0;
+
+    if (aLink && !bLink) return -1;
+    if (!aLink && bLink) return 1;
+
+    // 2. Secondary Sort: ID (Newer/Higher IDs first? or simple ID order)
+    // Let's sort existing ones by ID or Title.
+    // Going with ID asc for stability.
+    return a.id - b.id;
+  });
 });
+
 
 // Methods
 const openModal = (exercise: Exercise) => {
