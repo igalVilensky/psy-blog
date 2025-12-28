@@ -523,16 +523,22 @@ const baRatio = computed(() => {
 // Generate random positions for nodes
 const generateNodePositions = (labels) => {
   const positions = [];
-  const padding = 80;
-  const minDistance = 100;
-  const nodeRadius = 30;
-
+  const isMobile = canvasWidth.value < 768;
+  const nodeRadius = isMobile ? 22 : 30; // Smaller nodes on mobile
+  const padding = nodeRadius + 10; // Dynamic padding based on radius
+  const minDistance = nodeRadius * 2 + 10; // Minimum distance between centers
+  
+  const cols = Math.ceil(Math.sqrt(labels.length));
+  const rows = Math.ceil(labels.length / cols);
+  
   for (let i = 0; i < labels.length; i++) {
     let x, y, valid;
     let attempts = 0;
+    const maxAttempts = 200;
 
     do {
       valid = true;
+      // Random position within safe area
       x = padding + Math.random() * (canvasWidth.value - 2 * padding);
       y = padding + Math.random() * (canvasHeight.value - 2 * padding);
 
@@ -549,23 +555,31 @@ const generateNodePositions = (labels) => {
       }
 
       attempts++;
-      if (attempts > 100) {
-        // Fallback to grid if random fails
-        const cols = Math.ceil(Math.sqrt(labels.length));
+      if (attempts > maxAttempts) {
+        // Fallback to grid with Jitter if random fails
+        // Use the full available area for the grid
+        const safeWidth = canvasWidth.value - 2 * padding;
+        const safeHeight = canvasHeight.value - 2 * padding;
+        
         const row = Math.floor(i / cols);
         const col = i % cols;
-        x =
-          padding +
-          (col * (canvasWidth.value - 2 * padding)) / cols +
-          Math.random() * 50;
-        y =
-          padding +
-          (row * (canvasHeight.value - 2 * padding)) /
-          Math.ceil(labels.length / cols) +
-          Math.random() * 50;
-        valid = true;
+        
+        // Grid cell size
+        const cellW = safeWidth / cols;
+        const cellH = safeHeight / rows;
+        
+        // Center of the cell + small random jitter
+        const jitterX = (Math.random() - 0.5) * (cellW * 0.4);
+        const jitterY = (Math.random() - 0.5) * (cellH * 0.4);
+        
+        x = padding + col * cellW + cellW / 2 + jitterX;
+        y = padding + row * cellH + cellH / 2 + jitterY;
+        
+        // Final sanity check for fallback
+        // Even if we use grid, ensure we don't land EXACTLY on another node (unlikely with grid+jitter unless cells are tiny)
+        valid = true; 
       }
-    } while (!valid);
+    } while (!valid && attempts <= maxAttempts);
 
     positions.push({
       id: i,
@@ -585,6 +599,7 @@ const startPartA = () => {
   phase.value = "test";
   currentPart.value = "A";
   const labels = Array.from({ length: 25 }, (_, i) => (i + 1).toString());
+  handleResize();
   nodes.value = generateNodePositions(labels);
   connectedNodes.value = [];
   trails.value = [];
@@ -605,6 +620,7 @@ const startPartB = () => {
     labels.push(numbers[i]);
     if (i < 12) labels.push(letters[i]);
   }
+  handleResize();
   nodes.value = generateNodePositions(labels);
   connectedNodes.value = [];
   trails.value = [];
@@ -817,7 +833,7 @@ const handleResize = () => {
   if (window.innerWidth < 768) {
     // Mobile - vertical layout
     canvasWidth.value = window.innerWidth - 32; // padding
-    canvasHeight.value = window.innerHeight * 0.6;
+    canvasHeight.value = window.innerHeight * 0.75;
   } else {
     // Desktop
     canvasWidth.value = 800;
