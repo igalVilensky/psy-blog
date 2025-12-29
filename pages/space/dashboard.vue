@@ -201,7 +201,8 @@
                       <span class="text-slate-600 dark:text-slate-400">{{ exercise.category }}</span>
                     </td>
                     <td class="px-4 py-3 text-center">
-                      <span class="font-mono font-medium text-slate-900 dark:text-white">{{ exercise.avgScore }}{{ exercise.unit }}</span>
+                      <span class="font-mono font-medium text-slate-900 dark:text-white">{{ exercise.avgScore }}{{
+                        exercise.unit }}</span>
                     </td>
                     <td class="px-4 py-3 text-right hidden sm:table-cell">
                       <span class="text-slate-600 dark:text-slate-400">{{ exercise.lastPlayed }}</span>
@@ -217,6 +218,46 @@
                   </tr>
                 </tbody>
               </table>
+            </div>
+          </div>
+
+          <!-- Cognitive Test Results Section (New) -->
+          <div v-if="testResultsList.length > 0"
+            class="bg-white dark:bg-slate-800/30 rounded-xl p-6 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none mb-8">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-xl font-bold text-slate-900 dark:text-white font-montserrat">
+                Результаты когнитивных тестов
+              </h2>
+              <NuxtLink to="/space/tests" class="text-xs text-cyan-600 dark:text-cyan-400 hover:underline">
+                Все тесты <i class="fas fa-arrow-right ml-1"></i>
+              </NuxtLink>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div v-for="test in testResultsList" :key="test.id"
+                class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 hover:border-cyan-500/30 transition-all duration-300">
+                <div class="flex items-center space-x-3 mb-4">
+                  <div class="w-10 h-10 rounded-lg flex items-center justify-center" :class="test.bgClass">
+                    <i :class="test.icon" class="text-lg"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-bold text-slate-900 dark:text-white text-sm">{{ test.title }}</h3>
+                    <p class="text-[10px] text-slate-500 uppercase tracking-wider">{{ test.category }}</p>
+                  </div>
+                </div>
+                <div class="flex items-end justify-between">
+                  <div>
+                    <div class="text-2xl font-black text-slate-900 dark:text-white font-mono leading-none">
+                      {{ test.score }}{{ test.unit }}
+                    </div>
+                    <div class="text-[10px] text-slate-400 mt-1 uppercase">Лучший результат</div>
+                  </div>
+                  <div class="text-right">
+                    <div class="text-[10px] text-slate-400 mb-1 uppercase">Последний</div>
+                    <div class="text-xs font-medium text-slate-600 dark:text-slate-300">{{ test.lastPlayed }}</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -719,6 +760,10 @@ const patternResults = ref([]);
 const mentalShiftResults = ref([]);
 const targetTrackingResults = ref([]);
 const doubleGameResults = ref([]);
+const nbackTestResults = ref([]);
+const nbackTrainingResults = ref([]);
+const digitSpanResults = ref([]);
+const trailMakingResults = ref([]);
 const big5Result = ref(null);
 const assessmentTimestamp = ref(null);
 const heatmapData = ref({});
@@ -824,15 +869,20 @@ const progressData = computed(() => {
   };
 
   // 1. Pattern Results
-  patternResults.value.forEach(r => addInteraction(r.createdAt));
-  // 2. Mental Shift Results (Note: mentalShiftResults uses createdAt sometimes, check data)
-  mentalShiftResults.value.forEach(r => addInteraction(r.createdAt || r.timestamp));
+  patternResults.value.forEach(r => addInteraction(r.timestamp || r.createdAt));
+  // 2. Mental Shift Results
+  mentalShiftResults.value.forEach(r => addInteraction(r.timestamp || r.createdAt));
   // 3. Big 5 Result
-  if (big5Result.value?.timestamp) addInteraction(big5Result.value.timestamp);
+  if (big5Result.value) addInteraction(big5Result.value.timestamp || big5Result.value.createdAt);
   // 4. Assessment Result
   if (assessmentTimestamp.value) addInteraction(assessmentTimestamp.value);
   // 5. Double Game Results
-  doubleGameResults.value.forEach(r => addInteraction(r.timestamp));
+  doubleGameResults.value.forEach(r => addInteraction(r.timestamp || r.createdAt));
+  // 6. New Tests Results
+  nbackTestResults.value.forEach(r => addInteraction(r.timestamp || r.createdAt));
+  nbackTrainingResults.value.forEach(r => addInteraction(r.timestamp || r.createdAt));
+  digitSpanResults.value.forEach(r => addInteraction(r.timestamp || r.createdAt));
+  trailMakingResults.value.forEach(r => addInteraction(r.timestamp || r.createdAt));
 
   // Normalize for display (if max is 0, default to 10 scale, otherwise scale relative to max)
   const maxVal = Math.max(...last7Days.map(d => d.value));
@@ -863,7 +913,7 @@ const exercisesList = computed(() => {
 
     list.push({
       id: "pattern-detection",
-      title: "Pattern Detection",
+      title: "Поиск паттернов",
       category: "Память",
       avgScore: avg,
       bestScore: best,
@@ -894,7 +944,7 @@ const exercisesList = computed(() => {
 
     list.push({
       id: "mental-shift",
-      title: "Mental Shift",
+      title: "Переключение",
       category: "Гибкость",
       avgScore: avg,
       bestScore: best,
@@ -928,7 +978,7 @@ const exercisesList = computed(() => {
 
     list.push({
       id: "target-tracking",
-      title: "Target Tracking",
+      title: "Слежение за целью",
       category: "Внимание",
       avgScore: avg,
       bestScore: best,
@@ -960,7 +1010,7 @@ const exercisesList = computed(() => {
 
     list.push({
       id: "double",
-      title: "Double",
+      title: "Дубль",
       category: "Внимание",
       avgScore: avg,
       bestScore: best,
@@ -969,15 +1019,108 @@ const exercisesList = computed(() => {
       icon: "fas fa-clone text-indigo-600 dark:text-indigo-400",
       bgClass: "bg-indigo-500/10",
       history: history,
-      icon: "fas fa-clone text-indigo-600 dark:text-indigo-400",
-      bgClass: "bg-indigo-500/10",
-      history: history,
       link: "/space/brain-training/double",
       unit: ''
     });
   }
 
+  // N-Back Training
+  if (nbackTrainingResults.value.length > 0) {
+    const history = nbackTrainingResults.value.map(r => ({
+      date: (r.timestamp || r.createdAt) ? new Date((r.timestamp || r.createdAt).seconds * 1000) : new Date(),
+      score: r.score || 0
+    }));
+
+    const scores = history.map(h => h.score);
+    const avg = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
+    const best = Math.max(...scores);
+    const last = history[0].date.toLocaleDateString("ru-RU");
+
+    list.push({
+      id: "nback-training",
+      title: "N-Back Тренировка",
+      category: "Память",
+      avgScore: avg,
+      bestScore: best,
+      lastPlayed: last,
+      totalSessions: history.length,
+      icon: "fas fa-brain text-purple-600 dark:text-purple-400",
+      bgClass: "bg-purple-500/10",
+      history: history,
+      link: "/space/brain-training/nback",
+      unit: ''
+    });
+  }
+
   return list.sort((a, b) => b.totalSessions - a.totalSessions);
+});
+
+const testResultsList = computed(() => {
+  const list = [];
+
+  // Digit Span
+  if (digitSpanResults.value.length > 0) {
+    const history = digitSpanResults.value.map(r => ({
+      date: r.timestamp ? new Date(r.timestamp.seconds * 1000) : new Date(),
+      score: r.total || r.score || 0,
+      level: r.maxLevel || 0
+    }));
+    const best = Math.max(...history.map(h => h.score));
+    list.push({
+      id: "digit-span",
+      title: "Объем памяти",
+      category: "Рабочая память",
+      score: best,
+      unit: " цифр",
+      lastPlayed: history[0].date.toLocaleDateString("ru-RU"),
+      icon: "fas fa-sort-numeric-down text-blue-500",
+      bgClass: "bg-blue-500/10"
+    });
+  }
+
+  // N-Back Test
+  if (nbackTestResults.value.length > 0) {
+    const history = nbackTestResults.value.map(r => ({
+      date: r.timestamp ? new Date(r.timestamp.seconds * 1000) : new Date(),
+      score: r.score || 0,
+      accuracy: r.accuracy || 0
+    }));
+    const bestAccuracy = Math.max(...history.map(h => h.accuracy));
+    list.push({
+      id: "nback-test",
+      title: "N-Back Тест",
+      category: "Флюидный интеллект",
+      score: bestAccuracy,
+      unit: "%",
+      lastPlayed: history[0].date.toLocaleDateString("ru-RU"),
+      icon: "fas fa-braille text-purple-500",
+      bgClass: "bg-purple-500/10"
+    });
+  }
+
+  // Trail Making Test
+  if (trailMakingResults.value.length > 0) {
+    const history = trailMakingResults.value.map(r => ({
+      date: r.timestamp ? new Date(r.timestamp.seconds * 1000) : new Date(),
+      score: r.baRatio || r.score || 0,
+      time: r.totalTime || 0
+    }));
+    // For Trail Making, a lower baRatio is better, but we display the latest or "best" in a sense.
+    // Usually, we just show the most recent or the best score.
+    const latest = history[0].score;
+    list.push({
+      id: "trail-making",
+      title: "TMT Тест",
+      category: "Когнитивная гибкость",
+      score: latest,
+      unit: " (B/A)",
+      lastPlayed: history[0].date.toLocaleDateString("ru-RU"),
+      icon: "fas fa-pen-nib text-emerald-500",
+      bgClass: "bg-emerald-500/10"
+    });
+  }
+
+  return list;
 });
 
 const trainingSummary = computed(() => {
@@ -1005,7 +1148,8 @@ const trainingSummary = computed(() => {
 const metrics = computed(() => {
   const totalPatterns = patternResults.value.length;
   const totalShift = mentalShiftResults.value.length;
-  const completed = totalPatterns + totalShift;
+  const totalNback = nbackTrainingResults.value.length;
+  const completed = totalPatterns + totalShift + totalNback;
 
   return {
     growthScore: 0,
@@ -1055,13 +1199,35 @@ const radarPolygonPoints = computed(() => radarDataPoints.value.map(point => `${
 
 // --- FUNCTIONS from ANALYSIS & DASHBOARD ---
 function calculateCognitiveScore() {
-  // Объединяем результаты всех тренировок
-  const allResults = [...patternResults.value, ...mentalShiftResults.value, ...targetTrackingResults.value, ...doubleGameResults.value];
+  // Объединяем результаты всех тренировок и тестов
+  const allResults = [
+    ...patternResults.value,
+    ...mentalShiftResults.value,
+    ...targetTrackingResults.value,
+    ...doubleGameResults.value,
+    ...nbackTrainingResults.value,
+    ...nbackTestResults.value,
+    ...digitSpanResults.value,
+    ...trailMakingResults.value
+  ];
   if (allResults.length === 0) return 0;
 
-  // Рассчитываем среднюю точность по всем тренировкам
   const total = allResults.reduce((acc, curr) => {
+    // Normalization logic
     if (curr.accuracy !== undefined) return acc + curr.accuracy;
+
+    // Digit Span total digits
+    if (curr.total !== undefined && curr.forward !== undefined) {
+      return acc + Math.min(100, (curr.total / 18) * 100);
+    }
+
+    // TMT baRatio
+    if (curr.baRatio !== undefined && curr.partA !== undefined) {
+      // ratio 2.0 is perfect (100%), ratio 4.0 is 60%, ratio 6 is 20%
+      const normalizedTmt = Math.max(10, 100 - (curr.baRatio - 2.0) * 20);
+      return acc + Math.min(100, normalizedTmt);
+    }
+
     if (curr.score !== undefined) return acc + (curr.score > 100 ? 100 : curr.score);
     return acc;
   }, 0);
@@ -1070,10 +1236,20 @@ function calculateCognitiveScore() {
 }
 
 function calculateStreak() {
-  const allResults = [...patternResults.value, ...mentalShiftResults.value, ...targetTrackingResults.value, ...doubleGameResults.value];
+  const allResults = [
+    ...patternResults.value,
+    ...mentalShiftResults.value,
+    ...targetTrackingResults.value,
+    ...doubleGameResults.value,
+    ...nbackTrainingResults.value,
+    ...nbackTestResults.value,
+    ...digitSpanResults.value,
+    ...trailMakingResults.value
+  ];
   const days = new Set(allResults.map(r => {
-    if (!r.createdAt) return null;
-    return new Date(r.createdAt.seconds * 1000).toDateString();
+    const timestamp = r.createdAt || r.timestamp;
+    if (!timestamp) return null;
+    return new Date(timestamp.seconds * 1000).toDateString();
   }).filter(Boolean));
   return days.size;
 }
@@ -1081,8 +1257,9 @@ function processHeatmapData(allResults) {
   const map = {};
   const now = new Date();
   allResults.forEach(res => {
-    if (!res.createdAt) return;
-    const date = new Date(res.createdAt.seconds * 1000);
+    const ts = res.timestamp || res.createdAt;
+    if (!ts) return;
+    const date = new Date(ts.seconds * 1000);
     const diffTime = Math.abs(now - date);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     const weeksAgo = Math.floor(diffDays / 7);
@@ -1229,8 +1406,43 @@ const fetchUserData = async () => {
     const snapshotDouble = await getDocs(qDouble);
     doubleGameResults.value = snapshotDouble.docs.map(doc => doc.data());
 
+    // N-Back Test Results
+    const qNbackTest = query(collection(db, `users/${authStore.user.uid}/nbackTestResults`), orderBy("timestamp", "desc"));
+    const snapshotNbackTest = await getDocs(qNbackTest);
+    nbackTestResults.value = snapshotNbackTest.docs.map(doc => doc.data());
+
+    // N-Back Training Results
+    const qNbackTraining = query(collection(db, `users/${authStore.user.uid}/nbackTrainingResults`), orderBy("timestamp", "desc"));
+    const snapshotNbackTraining = await getDocs(qNbackTraining);
+    nbackTrainingResults.value = snapshotNbackTraining.docs.map(doc => doc.data());
+
+    // Digit Span Results
+    const qDigitSpan = query(collection(db, `users/${authStore.user.uid}/digitSpanResults`), orderBy("timestamp", "desc"));
+    const snapshotDigitSpan = await getDocs(qDigitSpan);
+    digitSpanResults.value = snapshotDigitSpan.docs.map(doc => doc.data());
+
+    // Trail Making Results
+    const qTrailMaking = query(collection(db, `users/${authStore.user.uid}/trailMakingResults`), orderBy("timestamp", "desc"));
+    const snapshotTrailMaking = await getDocs(qTrailMaking);
+    trailMakingResults.value = snapshotTrailMaking.docs.map(doc => doc.data());
+
     // Analysis: Heatmap
-    processHeatmapData([...patternResults.value, ...mentalShiftResults.value, ...targetTrackingResults.value, ...doubleGameResults.value]);
+    const interactionActivity = [
+      ...patternResults.value,
+      ...mentalShiftResults.value,
+      ...targetTrackingResults.value,
+      ...doubleGameResults.value,
+      ...nbackTestResults.value,
+      ...nbackTrainingResults.value,
+      ...digitSpanResults.value,
+      ...trailMakingResults.value
+    ];
+
+    // Include personality tests if they exist
+    if (big5Result.value) interactionActivity.push(big5Result.value);
+    if (assessmentTimestamp.value) interactionActivity.push({ timestamp: assessmentTimestamp.value });
+
+    processHeatmapData(interactionActivity);
 
     // Analysis: Big 5
     const qBig5 = query(collection(db, `users/${authStore.user.uid}/big5Results`), orderBy("timestamp", "desc"), limit(1));
@@ -1348,4 +1560,3 @@ onMounted(async () => {
   }
 }
 </style>
-

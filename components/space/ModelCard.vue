@@ -13,7 +13,7 @@
         <span
           class="inline-block rounded-full bg-slate-100 dark:bg-white/5 px-3 py-1 text-xs font-medium uppercase tracking-wider text-cyan-600 dark:text-cyan-300 backdrop-blur-sm transition-colors group-hover:bg-cyan-500/10 dark:group-hover:bg-cyan-500/20 group-hover:text-cyan-700 dark:group-hover:text-cyan-200"
         >
-          {{ model.relatedGoals }}
+          {{ t(model.relatedGoals) }}
         </span>
       </div>
 
@@ -21,7 +21,7 @@
       <h3
         class="mb-2 bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-300 bg-clip-text text-xl font-bold text-transparent transition-all group-hover:bg-gradient-to-r group-hover:from-cyan-600 group-hover:to-slate-900 dark:group-hover:from-cyan-300 dark:group-hover:to-white"
       >
-        {{ model.title }}
+        {{ t(model.title) }}
       </h3>
       <p class="mb-6 line-clamp-3 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
         {{ model.explanation }}
@@ -48,6 +48,7 @@
 
 <script setup lang="ts">
 import type { Model } from '@/data/models';
+import { t } from '~/utils/translations';
 
 defineProps<{
   model: Model;

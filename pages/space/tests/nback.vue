@@ -23,9 +23,9 @@
         </div>
 
         <h1
-          class="text-2xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-3 sm:mb-4 tracking-tight gradient-text"
+          class="text-2xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-3 sm:mb-4 tracking-tight gradient-text uppercase"
         >
-          N-BACK TEST
+          Тест N-Back
         </h1>
         <p
           class="text-slate-600 dark:text-purple-300/80 text-base sm:text-lg lg:text-xl leading-relaxed max-w-2xl mx-auto mb-6 sm:mb-8 px-2"
@@ -150,14 +150,14 @@
               </div>
               <div class="text-left flex-1">
                 <h3 class="text-base sm:text-lg font-semibold text-slate-900 dark:text-white mb-2">
-                  Нажимайте SPACE при совпадении
+                  Нажимайте кнопки выбора
                 </h3>
                 <p
                   class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed mb-3"
                 >
-                  Нажмите <kbd class="kbd">SPACE</kbd> или кнопку "MATCH", когда
+                  Нажимайте <span class="text-emerald-500 font-bold">ДА</span> (или SPACE), когда
                   текущая буква совпадает с буквой
-                  <strong class="text-cyan-600 dark:text-cyan-400">N шагов назад</strong>
+                  <strong class="text-cyan-600 dark:text-cyan-400">N шагов назад</strong>. В противном случае нажимайте <span class="text-red-500 font-bold">НЕТ</span>.
                 </p>
                 <div
                   class="bg-slate-100 dark:bg-slate-800/50 p-3 sm:p-4 rounded-lg space-y-2 sm:space-y-3 text-xs sm:text-sm"
@@ -326,34 +326,59 @@
         </div>
 
         <!-- Main Display Area -->
-        <div class="game-area mb-6 sm:mb-8">
+        <div class="game-area mb-6 sm:mb-8 select-none">
           <!-- Letter Display -->
-          <div v-if="!betweenLevels" class="letter-display">
+          <div v-if="!betweenLevels" class="w-full flex justify-center relative perspective-1000">
+            <!-- Swipe Hints -->
+            <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-between px-4 sm:px-8 pointer-events-none opacity-20">
+               <div class="flex flex-col items-center">
+                 <i class="fas fa-arrow-left text-2xl sm:text-3xl mb-1 sm:mb-2"></i>
+                 <span class="text-[10px] sm:text-xs font-bold uppercase">НЕТ</span>
+               </div>
+               <div class="flex flex-col items-center">
+                 <i class="fas fa-arrow-right text-2xl sm:text-3xl mb-1 sm:mb-2"></i>
+                 <span class="text-[10px] sm:text-xs font-bold uppercase">ДА</span>
+               </div>
+            </div>
+
             <div
-              class="letter-box"
+              class="letter-box-enhanced cursor-grab active:cursor-grabbing"
               :class="{
                 'letter-correct': showFeedback && lastCorrect,
                 'letter-wrong': showFeedback && !lastCorrect,
+                'transition-all duration-300': !isDragging
               }"
+              :style="{
+                transform: `translateX(${cardOffset}px) rotate(${cardOffset / 10}deg)`,
+                opacity: responseGiven ? 0 : 1
+              }"
+              @mousedown="onDragStart"
+              @touchstart="onDragStart"
             >
               {{ currentLetter }}
-            </div>
-
-            <!-- Feedback -->
-            <div v-if="showFeedback" class="feedback-text">
-              <span
-                v-if="lastCorrect"
-                class="text-emerald-600 dark:text-emerald-400 text-xl sm:text-2xl"
-                >✓ Верно! +{{ lastPoints }}</span
-              >
-              <span v-else class="text-red-600 dark:text-red-400 text-xl sm:text-2xl"
-                >✗ Мимо!</span
-              >
+              
+              <!-- Feedback Overlay -->
+              <div v-if="showFeedback" class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <i v-if="lastCorrect" class="fas fa-check text-emerald-500 text-6xl opacity-50"></i>
+                <i v-else class="fas fa-times text-red-500 text-6xl opacity-50"></i>
+              </div>
             </div>
           </div>
 
+          <!-- Feedback text underneath -->
+          <div v-if="showFeedback && !betweenLevels" class="h-8 flex items-center justify-center mt-4">
+             <span
+                v-if="lastCorrect"
+                class="text-emerald-600 dark:text-emerald-400 text-xl font-bold"
+                >✓ Верно! +{{ lastPoints }}</span
+              >
+              <span v-else class="text-red-600 dark:text-red-400 text-xl font-bold"
+                >✗ Ошибка!</span
+              >
+          </div>
+
           <!-- Between Levels -->
-          <div v-else class="between-levels">
+          <div v-else-if="betweenLevels" class="between-levels">
             <div class="text-4xl sm:text-6xl mb-3 sm:mb-4">🎉</div>
             <h3 class="text-xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-2">
               {{ nLevel - 1 }}-Back пройден!
@@ -361,58 +386,46 @@
             <p class="text-slate-600 dark:text-slate-300 mb-3 sm:mb-4 text-sm sm:text-base">
               Точность: {{ levelAccuracy }}%
             </p>
-            <p class="text-cyan-600 dark:text-cyan-400 text-base sm:text-lg">
+            <p class="text-cyan-600 dark:text-cyan-400 text-base sm:text-lg animate-pulse">
               Переход к {{ nLevel }}-Back...
             </p>
           </div>
-
-          <!-- History Trail -->
-          <div v-if="!betweenLevels" class="history-trail">
-            <div
-              v-for="(letter, index) in displayHistory"
-              :key="index"
-              class="history-item"
-              :class="{
-                'history-target': index === displayHistory.length - nLevel - 1,
-              }"
-            >
-              {{ letter }}
-            </div>
-          </div>
         </div>
 
-        <!-- Match Button -->
-        <div class="text-center mb-4 sm:mb-6">
+        <!-- Match Buttons -->
+        <div class="flex justify-center gap-4 mb-6 sm:mb-8">
           <button
-            @click="handleMatch"
-            class="match-button"
-            :disabled="betweenLevels"
+            @click="handleResponse(false)"
+            class="choice-button choice-no"
+            :disabled="betweenLevels || responseGiven"
+          >
+            <div class="flex flex-col items-center">
+              <span class="text-2xl sm:text-3xl font-black">НЕТ</span>
+              <span class="text-[10px] opacity-70 uppercase mt-1">Не совпадает</span>
+            </div>
+          </button>
+
+          <button
+            @click="handleResponse(true)"
+            class="choice-button choice-yes"
+            :disabled="betweenLevels || responseGiven"
             :class="{ 'match-active': matchPressed }"
           >
-            <div class="flex flex-col items-center justify-center h-full">
-              <div class="text-xs text-white/80 mb-1 leading-tight">
-                SPACE или нажми
-              </div>
-              <div
-                class="text-2xl sm:text-3xl font-black text-white leading-none"
-              >
-                MATCH
-              </div>
-              <div class="text-xs text-white/70 mt-1 leading-tight">
-                Совпадение с N-назад
-              </div>
+            <div class="flex flex-col items-center">
+              <span class="text-2xl sm:text-3xl font-black">ДА</span>
+              <span class="text-[10px] opacity-70 uppercase mt-1">SPACE / Совпадение</span>
             </div>
           </button>
         </div>
 
         <!-- Helper -->
-        <div class="info-card text-center mx-2">
+        <div class="info-card text-center mx-2 py-3">
           <div class="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
-            Текущая буква совпадает с буквой
+            Совпадает ли текущая буква с той, что была 
             <strong class="text-purple-600 dark:text-purple-400"
               >{{ nLevel }} {{ nLevel === 1 ? "шаг" : "шага" }}</strong
             >
-            назад? Нажми MATCH!
+            назад?
           </div>
         </div>
       </div>
@@ -470,7 +483,7 @@
                 <span class="text-white text-lg sm:text-xl font-bold">1</span>
               </div>
               <div class="text-left">
-                <div class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">1-Back</div>
+                <div class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">1 ШАГ НАЗАД</div>
                 <div class="text-xl sm:text-2xl font-bold text-emerald-600 dark:text-emerald-400">
                   {{ results.level1.accuracy }}%
                 </div>
@@ -489,7 +502,7 @@
                 <span class="text-white text-lg sm:text-xl font-bold">2</span>
               </div>
               <div class="text-left">
-                <div class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">2-Back</div>
+                <div class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">2 ШАГА НАЗАД</div>
                 <div class="text-xl sm:text-2xl font-bold text-cyan-600 dark:text-cyan-400">
                   {{ results.level2.accuracy }}%
                 </div>
@@ -508,7 +521,7 @@
                 <span class="text-white text-lg sm:text-xl font-bold">3</span>
               </div>
               <div class="text-left">
-                <div class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">3-Back</div>
+                <div class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">3 ШАГА НАЗАД</div>
                 <div class="text-xl sm:text-2xl font-bold text-purple-600 dark:text-purple-400">
                   {{ results.level3.accuracy }}%
                 </div>
@@ -654,10 +667,13 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from "vue";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 definePageMeta({
   layout: "laboratory",
 });
+
+const { $firestore, $userId } = useNuxtApp();
 
 const letters = [
   "A", "B", "C", "D", "E", "F", "G", "H", "K", "L", "M", "N", "P", "R", "S", "T",
@@ -674,12 +690,19 @@ const displayHistory = ref([]);
 const score = ref(0);
 const combo = ref(0);
 const maxCombo = ref(0);
-const matchPressed = ref(false);
-const showFeedback = ref(false);
-const lastCorrect = ref(false);
 const lastPoints = ref(0);
 const betweenLevels = ref(false);
 const levelAccuracy = ref(0);
+const responseGiven = ref(false);
+const matchPressed = ref(false);
+const showFeedback = ref(false);
+const lastCorrect = ref(false);
+
+// Swipe state
+const cardOffset = ref(0);
+const isDragging = ref(false);
+const startX = ref(0);
+const dragThreshold = 100;
 
 // Timing
 const letterInterval = ref(null);
@@ -828,22 +851,21 @@ const nextTrial = () => {
   }
 
   currentLetter.value = sequence.value[currentTrial.value];
-  displayHistory.value.push(currentLetter.value);
-  if (displayHistory.value.length > 5) {
-    displayHistory.value.shift();
-  }
 
   trialStartTime.value = Date.now();
   matchPressed.value = false;
   showFeedback.value = false;
+  responseGiven.value = false;
 
   currentTrial.value++;
 };
 
-const handleMatch = () => {
-  if (matchPressed.value || betweenLevels.value) return;
+const handleResponse = (pressedMatch) => {
+  if (responseGiven.value || betweenLevels.value) return;
 
-  matchPressed.value = true;
+  responseGiven.value = true;
+  if (pressedMatch) matchPressed.value = true;
+  
   const reactionTime = Date.now() - trialStartTime.value;
   reactionTimes.value.push(reactionTime);
 
@@ -852,23 +874,30 @@ const handleMatch = () => {
     sequence.value[currentTrial.value - 1] ===
       sequence.value[currentTrial.value - 1 - nLevel.value];
 
-  if (isTarget) {
-    // Hit
-    currentLevelStats.value.hits++;
+  const correctlyIdentified = (pressedMatch === isTarget);
+
+  if (correctlyIdentified) {
+    if (isTarget) {
+      currentLevelStats.value.hits++;
+    } else {
+      currentLevelStats.value.correctRejections++;
+    }
     combo.value++;
     maxCombo.value = Math.max(maxCombo.value, combo.value);
 
-    // Score calculation: base points + combo bonus + speed bonus
+    // Score calculation
     const basePoints = 10 * nLevel.value;
-    const comboBonus = Math.floor(combo.value * 2);
-    const speedBonus = reactionTime < 500 ? 5 : reactionTime < 1000 ? 3 : 0;
+    const comboBonus = Math.floor(combo.value * 1.5);
+    const speedBonus = reactionTime < 700 ? 5 : reactionTime < 1200 ? 2 : 0;
     lastPoints.value = basePoints + comboBonus + speedBonus;
     score.value += lastPoints.value;
-
     lastCorrect.value = true;
   } else {
-    // False alarm
-    currentLevelStats.value.falseAlarms++;
+    if (isTarget) {
+      currentLevelStats.value.misses++;
+    } else {
+      currentLevelStats.value.falseAlarms++;
+    }
     combo.value = 0;
     lastCorrect.value = false;
     lastPoints.value = 0;
@@ -876,29 +905,14 @@ const handleMatch = () => {
 
   showFeedback.value = true;
 
-  // Continue after delay
-  feedbackTimeout.value = setTimeout(() => {
-    showFeedback.value = false;
+  // Continue after slight delay for visual feedback
+  setTimeout(() => {
+    cardOffset.value = 0;
     nextTrial();
-  }, 800);
+  }, 600);
 };
 
-const checkMiss = () => {
-  // Called when trial ends without match press
-  const isTarget =
-    currentTrial.value > nLevel.value &&
-    sequence.value[currentTrial.value - 1] ===
-      sequence.value[currentTrial.value - 1 - nLevel.value];
-
-  if (isTarget) {
-    // Miss
-    currentLevelStats.value.misses++;
-    combo.value = 0;
-  } else {
-    // Correct rejection
-    currentLevelStats.value.correctRejections++;
-  }
-};
+// checkMiss functionality integrated into startTrialTimer and handleResponse
 
 const endLevel = () => {
   // Calculate level stats
@@ -931,21 +945,37 @@ const endLevel = () => {
 };
 
 const saveResults = async () => {
+  const currentUserId = $userId();
+  
+  const resultData = {
+    timestamp: serverTimestamp(),
+    score: score.value,
+    accuracy: overallAccuracy.value,
+    avgReactionTime: avgReactionTime.value,
+    maxCombo: maxCombo.value,
+    levels: {
+      level1: { ...results.value.level1 },
+      level2: { ...results.value.level2 },
+      level3: { ...results.value.level3 }
+    }
+  };
+
+  // Save to LocalStorage for offline/guest
   const previousResults = JSON.parse(
     localStorage.getItem("nbackResults") || "[]"
   );
-  const newResult = {
-    date: new Date().toISOString(),
-    score: score.value,
-    accuracy: overallAccuracy.value,
-    maxCombo: maxCombo.value,
-    avgReactionTime: avgReactionTime.value,
-    level1: results.value.level1.accuracy,
-    level2: results.value.level2.accuracy,
-    level3: results.value.level3.accuracy,
-  };
-  previousResults.push(newResult);
+  previousResults.push({ ...resultData, timestamp: new Date().toISOString() });
   localStorage.setItem("nbackResults", JSON.stringify(previousResults));
+
+  // Save to Firestore if user is authenticated
+  if (currentUserId) {
+    try {
+      await addDoc(collection($firestore, `users/${currentUserId}/nbackTestResults`), resultData);
+      console.log("Results saved to Firestore");
+    } catch (error) {
+      console.error("Error saving results to Firestore:", error);
+    }
+  }
 
 
 };
@@ -980,7 +1010,7 @@ const shareResults = () => {
   if (navigator.share) {
     navigator
       .share({
-        title: "N-Back Test - MindQ Lab",
+        title: "Тест N-Back - MindQ Lab",
         text: text,
         url: window.location.href,
       })
@@ -993,39 +1023,59 @@ const shareResults = () => {
 
 // Keyboard handler
 const handleKeyPress = (event) => {
-  if (
-    phase.value === "test" &&
-    !betweenLevels.value &&
-    event.code === "Space"
-  ) {
+  if (phase.value !== "test" || betweenLevels.value || responseGiven.value) return;
+
+  if (event.code === "Space" || event.key === "ArrowRight") {
     event.preventDefault();
-    if (!matchPressed.value) {
-      handleMatch();
-    }
+    handleResponse(true);
+  } else if (event.key === "ArrowLeft") {
+    event.preventDefault();
+    handleResponse(false);
   }
 };
 
-// Auto-advance trial with timer
-const startTrialTimer = () => {
-  if (letterInterval.value) clearInterval(letterInterval.value);
+// Swipe/Drag Handlers
+const onDragStart = (e) => {
+  if (phase.value !== "test" || betweenLevels.value || responseGiven.value) return;
+  isDragging.value = true;
+  startX.value = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+};
 
-  letterInterval.value = setInterval(() => {
-    if (phase.value === "test" && !betweenLevels.value && !showFeedback.value) {
-      if (!matchPressed.value) {
-        checkMiss();
-      }
-      nextTrial();
-    }
-  }, 2500); // 2.5 seconds per letter
+const onDragMove = (e) => {
+  if (!isDragging.value) return;
+  const currentX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
+  cardOffset.value = currentX - startX.value;
+};
+
+const onDragEnd = () => {
+  if (!isDragging.value) return;
+  isDragging.value = false;
+  
+  if (cardOffset.value > dragThreshold) {
+    handleResponse(true);
+  } else if (cardOffset.value < -dragThreshold) {
+    handleResponse(false);
+  }
+  
+  if (!responseGiven.value) {
+    cardOffset.value = 0;
+  }
 };
 
 onMounted(() => {
   window.addEventListener("keydown", handleKeyPress);
-  startTrialTimer();
+  window.addEventListener("mousemove", onDragMove);
+  window.addEventListener("mouseup", onDragEnd);
+  window.addEventListener("touchmove", onDragMove, { passive: false });
+  window.addEventListener("touchend", onDragEnd);
 });
 
 onUnmounted(() => {
   window.removeEventListener("keydown", handleKeyPress);
+  window.removeEventListener("mousemove", onDragMove);
+  window.removeEventListener("mouseup", onDragEnd);
+  window.removeEventListener("touchmove", onDragMove);
+  window.removeEventListener("touchend", onDragEnd);
   if (letterInterval.value) clearInterval(letterInterval.value);
   if (feedbackTimeout.value) clearTimeout(feedbackTimeout.value);
 });
@@ -1082,59 +1132,45 @@ onUnmounted(() => {
 }
 
 .game-area {
-  @apply relative p-4 sm:p-8 lg:p-12 rounded-3xl bg-gradient-to-br from-slate-900/80 to-slate-800/80 border-2 border-purple-500/20 min-h-[300px] sm:min-h-[350px] lg:min-h-[400px] flex flex-col items-center justify-center;
+  @apply relative p-4 sm:p-8 lg:p-10 rounded-3xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 min-h-[300px] flex flex-col items-center justify-center shadow-xl;
 }
 
-.letter-display {
-  @apply relative h-48 sm:h-64 flex items-center justify-center bg-white dark:bg-slate-900/30 rounded-3xl border-2 border-slate-200 dark:border-slate-700/50 mb-4 sm:mb-6 shadow-sm dark:shadow-none;
+.letter-box-enhanced {
+  @apply w-32 h-32 sm:w-48 sm:h-48 rounded-3xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700
+         flex items-center justify-center text-6xl sm:text-8xl font-black text-slate-900 dark:text-white
+         transition-all duration-300 relative shadow-inner;
 }
 
-.letter-box {
-  @apply text-7xl sm:text-9xl font-black text-slate-900 dark:text-white transition-all duration-200;
+.choice-button {
+  @apply flex-1 max-w-[160px] py-4 rounded-2xl font-bold transition-all duration-200 active:scale-95 shadow-lg flex items-center justify-center border-b-4 text-white;
+}
+
+.choice-no {
+  @apply bg-rose-500 border-rose-700 hover:bg-rose-600;
+}
+
+.choice-yes {
+  @apply bg-emerald-500 border-emerald-700 hover:bg-emerald-600;
+}
+
+.choice-button:disabled {
+  @apply opacity-30 grayscale cursor-not-allowed transform-none;
 }
 
 .letter-correct {
-  @apply text-emerald-500 scale-125;
+  @apply border-emerald-500 bg-emerald-500/10 scale-105;
 }
 
 .letter-wrong {
-  @apply text-red-500 scale-90 opacity-50;
-}
-
-.feedback-text {
-  @apply absolute bottom-4 left-0 right-0 text-center font-bold animate-bounce-slow;
-}
-
-.history-trail {
-  @apply flex justify-center gap-1 sm:gap-2 h-8 sm:h-10 mb-4 sm:mb-6 overflow-hidden px-2;
-}
-
-.history-item {
-  @apply w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-xl bg-slate-800/50 border border-slate-700/50 
-         flex items-center justify-center text-lg sm:text-xl lg:text-2xl font-bold text-slate-400
-         transition-all duration-300;
-}
-
-.history-target {
-  @apply bg-purple-500/20 border-purple-500/50 text-purple-400 scale-110;
-}
-
-.match-button {
-  @apply w-full max-w-xs mx-auto sm:max-w-sm lg:max-w-md h-20 sm:h-24 lg:h-28 rounded-2xl bg-gradient-to-br from-purple-600 via-blue-600 to-cyan-600
-         text-white font-black cursor-pointer border-2 border-white/20
-         transition-all duration-200 transform hover:scale-105 hover:shadow-2xl
-         shadow-lg shadow-purple-500/40 hover:shadow-purple-500/60
-         disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
-         active:scale-95 flex items-center justify-center;
-}
-
-.match-active {
-  @apply scale-95 brightness-110 bg-gradient-to-br from-purple-700 via-blue-700 to-cyan-700
-         shadow-inner border-white/30;
+  @apply border-rose-500 bg-rose-500/10;
 }
 
 .between-levels {
-  @apply text-center py-8 sm:py-12 lg:py-16;
+  @apply text-center py-8;
+}
+
+.match-active {
+  @apply brightness-110 scale-95;
 }
 
 kbd {

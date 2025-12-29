@@ -23,7 +23,7 @@ export const exercises: Exercise[] = [
         metric: "% правильных ответов, время реакции",
         uiExample: "3x3 сетка с буквами",
         relatedModels: "Working Memory",
-        link: "/space/tests/nback"
+        link: "/space/brain-training/nback"
     },
     // ... existing exercises ...
 

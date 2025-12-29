@@ -19,7 +19,7 @@
         <span
           class="inline-block rounded-full bg-slate-100 dark:bg-white/5 px-3 py-1 text-xs font-medium uppercase tracking-wider text-indigo-600 dark:text-indigo-300 backdrop-blur-sm transition-colors group-hover:bg-indigo-500/10 dark:group-hover:bg-indigo-500/20 group-hover:text-indigo-700 dark:group-hover:text-indigo-200"
         >
-          {{ exercise.category }}
+          {{ t(exercise.category) }}
         </span>
       </div>
 
@@ -27,7 +27,7 @@
       <h3
         class="mb-2 bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-300 bg-clip-text text-xl font-bold text-transparent transition-all group-hover:bg-gradient-to-r group-hover:from-indigo-600 group-hover:to-slate-900 dark:group-hover:from-indigo-300 dark:group-hover:to-white"
       >
-        {{ exercise.title }}
+        {{ t(exercise.title) }}
       </h3>
       <p class="mb-6 line-clamp-3 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
         {{ exercise.goal }}
@@ -57,6 +57,7 @@
 
 <script setup lang="ts">
 import type { Exercise } from '@/data/exercises';
+import { t } from '~/utils/translations';
 
 defineProps<{
   exercise: Exercise;

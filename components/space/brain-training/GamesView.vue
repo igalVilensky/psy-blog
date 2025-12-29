@@ -80,7 +80,7 @@
             <div class="flex-1">
               <div class="flex items-start justify-between mb-2">
                 <h3 class="text-lg font-semibold text-slate-900 dark:text-white">
-                  {{ game.title }}
+                  {{ t(game.title) }}
                 </h3>
                 <span class="difficulty-badge" :class="getDifficultyClass(game.difficulty)">
                   {{ game.difficulty }}
@@ -249,6 +249,7 @@
 
 <script setup>
 import { ref, computed } from "vue";
+import { t } from "~/utils/translations";
 
 const activeCategory = ref("all");
 const sortBy = ref("popular");

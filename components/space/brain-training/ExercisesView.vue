@@ -107,7 +107,7 @@
                 {{ selectedExercise.category }}
               </span>
             </div>
-            <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-2">{{ selectedExercise.title }}</h2>
+            <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-2">{{ t(selectedExercise.title) }}</h2>
             <p class="text-lg text-slate-600 dark:text-slate-300">{{ selectedExercise.goal }}</p>
           </div>
 
@@ -195,6 +195,7 @@
 import { ref, computed, onUnmounted } from 'vue';
 import { exercises, type Exercise } from '@/data/exercises';
 import ExerciseCard from '@/components/space/ExerciseCard.vue';
+import { t } from '~/utils/translations';
 
 // State
 const searchQuery = ref('');

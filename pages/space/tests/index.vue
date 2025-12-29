@@ -144,7 +144,7 @@
             <div class="quick-icon-wrapper" style="background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);">
               <i class="fas fa-brain text-white text-lg group-hover:scale-110 transition-transform"></i>
             </div>
-            <h4 class="text-slate-800 dark:text-white text-sm font-medium mt-3 mb-1">Digit Span</h4>
+            <h4 class="text-slate-800 dark:text-white text-sm font-medium mt-3 mb-1">Объем памяти</h4>
             <p class="text-slate-500 dark:text-slate-400 text-xs">5 мин</p>
           </NuxtLink>
 
@@ -272,8 +272,8 @@ const tests = [
   // --- Cognitive ---
   {
     id: "digit-span",
-    title: "Digit Span Test",
-    subtitle: "Рабочая память",
+    title: "Тест объема памяти",
+    subtitle: "Рабочая память (Digit Span)",
     description: "Классический нейропсихологический тест (WAIS) на объем слуховой рабочей памяти. Способность удерживать числа в уме.",
     icon: "fas fa-sort-numeric-up",
     iconBg: "bg-gradient-to-br from-cyan-500 to-purple-600",
@@ -285,7 +285,7 @@ const tests = [
   },
   {
     id: "nback",
-    title: "N-Back Test",
+    title: "Тест N-Back",
     subtitle: "Флюидный интеллект",
     description: "Продвинутая задача на рабочую память и контроль внимания. Доказанная эффективность в улучшении когнитивных способностей.",
     icon: "fas fa-layer-group",
@@ -298,8 +298,8 @@ const tests = [
   },
   {
     id: "trail-making",
-    title: "Trail Making Test",
-    subtitle: "Когнитивная гибкость",
+    title: "TMT Тест",
+    subtitle: "Когнитивная гибкость (Trail Making)",
     description: "Тест на визуальное внимание и переключаемость. Соедините точки в правильном порядке максимально быстро.",
     icon: "fas fa-route",
     iconBg: "bg-gradient-to-br from-emerald-500 to-cyan-600",

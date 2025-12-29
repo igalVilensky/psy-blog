@@ -128,7 +128,7 @@
                         {{ selectedModel.relatedGoals }}
                     </span>
                 </div>
-                <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-3">{{ selectedModel.title }}</h2>
+                <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-3">{{ t(selectedModel.title) }}</h2>
                 <p class="text-lg text-slate-600 dark:text-slate-300">{{ selectedModel.explanation }}</p>
             </div>
 
@@ -170,7 +170,7 @@
                         <i class="fas fa-dumbbell"></i> Упражнения
                     </h4>
                     <p class="text-slate-700 dark:text-slate-300 text-sm">
-                         <button class="hover:underline text-rose-600 dark:text-rose-300" @click="$emit('switch-tab', 'exercises')">{{ selectedModel.relatedExercises }}</button>
+                         <button class="hover:underline text-rose-600 dark:text-rose-300" @click="$emit('switch-tab', 'exercises')">{{ t(selectedModel.relatedExercises) }}</button>
                     </p>
                 </div>
 
@@ -204,6 +204,7 @@
 import { ref, computed, onUnmounted } from 'vue';
 import { models, type Model } from '@/data/models';
 import ModelCard from '@/components/space/ModelCard.vue';
+import { t } from '~/utils/translations';
 
 defineEmits(['switch-tab']);
 

@@ -19,7 +19,7 @@
         </div>
 
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-4 tracking-tight">
-          TRAIL MAKING TEST
+          ТЕСТ TMT (Trail Making)
         </h1>
         <p class="text-slate-600 dark:text-emerald-300/80 text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto mb-8">
           Классический нейропсихологический тест на скорость обработки
@@ -483,6 +483,9 @@
 import { ref, computed, onMounted, onUnmounted } from "vue";
 import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
 import { Howl } from "howler";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+
+const { $firestore, $userId } = useNuxtApp();
 
 definePageMeta({
   layout: "laboratory",
@@ -709,20 +712,33 @@ const completeTest = () => {
   }
 };
 
-const saveResults = () => {
-  const previousResults = JSON.parse(
-    localStorage.getItem("trailMakingResults") || "[]"
-  );
-  const newResult = {
-    date: new Date().toISOString(),
+const saveResults = async () => {
+  const currentUserId = $userId();
+
+  const resultData = {
+    timestamp: serverTimestamp(),
     partA: partATime.value,
     partB: partBTime.value,
     baRatio: parseFloat(baRatio.value),
     errorsA: partAErrors.value,
     errorsB: partBErrors.value,
   };
-  previousResults.push(newResult);
+
+  // Save to LocalStorage
+  const previousResults = JSON.parse(
+    localStorage.getItem("trailMakingResults") || "[]"
+  );
+  previousResults.push({ ...resultData, timestamp: new Date().toISOString() });
   localStorage.setItem("trailMakingResults", JSON.stringify(previousResults));
+
+  // Save to Firestore
+  if (currentUserId) {
+    try {
+      await addDoc(collection($firestore, `users/${currentUserId}/trailMakingResults`), resultData);
+    } catch (error) {
+      console.error("Error saving to Firestore:", error);
+    }
+  }
 };
 
 const formatTime = (seconds) => {
@@ -796,7 +812,7 @@ const shareResults = () => {
   if (navigator.share) {
     navigator
       .share({
-        title: "Trail Making Test - MindQ Lab",
+        title: "Тест прокладывания пути (TMT) - MindQ Lab",
         text: text,
         url: window.location.href,
       })

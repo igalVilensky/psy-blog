@@ -546,6 +546,9 @@
 </template>
 <script setup>
 import { ref, computed, nextTick } from "vue";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+
+const { $firestore, $userId } = useNuxtApp();
 
 definePageMeta({
   layout: "laboratory",
@@ -653,18 +656,31 @@ const submitAnswer = () => {
   }
 };
 
-const saveResults = () => {
-  const previousResults = JSON.parse(
-    localStorage.getItem("digitSpanResults") || "[]"
-  );
-  const newResult = {
-    date: new Date().toISOString(),
+const saveResults = async () => {
+  const currentUserId = $userId();
+  
+  const resultData = {
+    timestamp: serverTimestamp(),
     forward: results.value.forward,
     backward: results.value.backward,
     total: totalScore.value,
   };
-  previousResults.push(newResult);
+
+  // Save to LocalStorage
+  const previousResults = JSON.parse(
+    localStorage.getItem("digitSpanResults") || "[]"
+  );
+  previousResults.push({ ...resultData, timestamp: new Date().toISOString() });
   localStorage.setItem("digitSpanResults", JSON.stringify(previousResults));
+
+  // Save to Firestore
+  if (currentUserId) {
+    try {
+      await addDoc(collection($firestore, `users/${currentUserId}/digitSpanResults`), resultData);
+    } catch (error) {
+      console.error("Error saving to Firestore:", error);
+    }
+  }
 };
 
 const getForwardInterpretation = () => {
@@ -731,7 +747,7 @@ const shareResults = () => {
   if (navigator.share) {
     navigator
       .share({
-        title: "Digit Span Test - MindQ Lab",
+        title: "Тест объема памяти (Digit Span) - MindQ Lab",
         text: text,
         url: window.location.href,
       })
