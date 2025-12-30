@@ -25,7 +25,7 @@
             </div>
             <div class="stat-card">
               <div class="text-2xl font-bold text-purple-600 dark:text-purple-400">
-                {{ tests.filter(t => t.category === 'psychology').length }}
+                {{tests.filter(t => t.category === 'psychology').length}}
               </div>
               <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                 Психология
@@ -33,7 +33,7 @@
             </div>
             <div class="stat-card">
               <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                 {{ tests.filter(t => t.category === 'cognitive').length }}
+                {{tests.filter(t => t.category === 'cognitive').length}}
               </div>
               <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                 Когнитивные
@@ -45,24 +45,20 @@
 
       <!-- Filter Navigation -->
       <div class="flex flex-wrap items-center gap-2 mb-8">
-        <button
-          v-for="filter in filters"
-          :key="filter.value"
-          @click="currentFilter = filter.value"
-          class="px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ring-1 ring-inset"
-          :class="[
+        <button v-for="filter in filters" :key="filter.value" @click="currentFilter = filter.value"
+          class="px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ring-1 ring-inset" :class="[
             currentFilter === filter.value
               ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 ring-transparent shadow-lg transform scale-105'
               : 'bg-white dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 ring-slate-200 dark:ring-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-800'
-          ]"
-        >
+          ]">
           <i :class="[filter.icon, 'mr-2']"></i>
           {{ filter.label }}
         </button>
       </div>
 
       <!-- Category Description -->
-      <div class="mb-8 p-6 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/50 backdrop-blur-sm animate-fade-in">
+      <div
+        class="mb-8 p-6 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/50 backdrop-blur-sm animate-fade-in">
         <div class="flex items-start gap-4">
           <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
             :class="currentCategoryInfo.iconBg">
@@ -81,13 +77,9 @@
 
       <!-- Tests Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <NuxtLink
-          v-for="test in filteredTests"
-          :key="test.id"
-          :to="test.disabled ? '' : test.link"
+        <NuxtLink v-for="test in filteredTests" :key="test.id" :to="test.disabled ? '' : test.link"
           class="test-category-card group animate-fade-in-up"
-          :class="[test.disabled ? 'opacity-75 cursor-not-allowed' : 'cursor-pointer']"
-        >
+          :class="[test.disabled ? 'opacity-75 cursor-not-allowed' : 'cursor-pointer']">
           <!-- Icon Header -->
           <div class="flex items-start justify-between mb-4">
             <div class="icon-wrapper" :class="test.iconBg">
@@ -99,10 +91,8 @@
           </div>
 
           <!-- Content -->
-          <h3
-            class="text-lg font-semibold text-slate-900 dark:text-white mb-2 transition-colors"
-            :class="!test.disabled && 'group-hover:text-cyan-600 dark:group-hover:text-cyan-400'"
-          >
+          <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-2 transition-colors"
+            :class="!test.disabled && 'group-hover:text-cyan-600 dark:group-hover:text-cyan-400'">
             {{ test.title }}
           </h3>
           <p class="text-sm text-slate-500 dark:text-slate-400 mb-1 font-medium">{{ test.subtitle }}</p>
@@ -116,7 +106,8 @@
               <i class="fas fa-clock text-xs"></i>
               <span class="text-xs font-medium">{{ test.duration }}</span>
             </div>
-            <div class="flex items-center gap-2" :class="test.disabled ? 'text-slate-400' : 'text-purple-600 dark:text-purple-400'">
+            <div class="flex items-center gap-2"
+              :class="test.disabled ? 'text-slate-400' : 'text-purple-600 dark:text-purple-400'">
               <i class="fas text-xs" :class="test.disabled ? 'fa-lock' : 'fa-check-circle'"></i>
               <span class="text-xs font-medium">{{ test.disabled ? 'Скоро' : 'Доступен' }}</span>
             </div>
@@ -132,8 +123,8 @@
         </NuxtLink>
       </div>
 
-       <!-- Quick Tests Section (Always visible or filtered? Keeping visible as a separate block for now) -->
-       <div class="mt-16 mb-12">
+      <!-- Quick Tests Section (Always visible or filtered? Keeping visible as a separate block for now) -->
+      <div class="mt-16 mb-12">
         <div class="flex items-center justify-between mb-6">
           <h2 class="text-xl font-semibold text-slate-900 dark:text-white">БЫСТРЫЕ ТЕСТЫ</h2>
           <span class="text-sm text-slate-500 dark:text-slate-400">Менее 5 минут</span>
@@ -162,15 +153,15 @@
             <div v-if="quickTest.disabled"
               class="absolute inset-0 bg-slate-900/10 backdrop-blur-[1px] flex items-center justify-center z-20 rounded-xl">
               <div class="p-1.5 rounded-lg bg-white/80 dark:bg-slate-900/80 shadow-sm">
-                 <i class="fas fa-lock text-slate-400 text-xs"></i>
+                <i class="fas fa-lock text-slate-400 text-xs"></i>
               </div>
             </div>
           </div>
         </div>
       </div>
-      
-       <!-- Info Banner -->
-       <div class="p-6 rounded-2xl bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-500/20">
+
+      <!-- Info Banner -->
+      <div class="p-6 rounded-2xl bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-500/20">
         <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
           <div class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center flex-shrink-0">
             <i class="fas fa-info-circle text-cyan-600 dark:text-cyan-400 text-xl"></i>
@@ -178,7 +169,8 @@
           <div class="flex-1">
             <h4 class="text-slate-900 dark:text-white font-semibold mb-1">Как выбрать тест?</h4>
             <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-              Когнитивные тесты оценивают работу мозга (память, внимание), а психологические — особенности личности и характера. 
+              Когнитивные тесты оценивают работу мозга (память, внимание), а психологические — особенности личности и
+              характера.
               Для комплексного самопознания рекомендуем проходить и те, и другие.
             </p>
           </div>
@@ -331,8 +323,9 @@ const tests = [
     iconBg: "bg-gradient-to-br from-blue-500 to-indigo-600",
     difficulty: "Сложная",
     duration: "20 мин",
+    link: "/space/tests/raven",
     category: "cognitive",
-    disabled: true
+    disabled: false
   },
   {
     id: "eq",
@@ -384,7 +377,7 @@ const quickTests = [
     gradient: "linear-gradient(135deg, #10b981 0%, #14b8a6 100%)",
     disabled: true,
   },
-   {
+  {
     id: 3,
     title: "Паттерны",
     icon: "fas fa-shapes",
@@ -477,6 +470,7 @@ const getScoreClass = (score) => {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -491,4 +485,3 @@ const getScoreClass = (score) => {
   animation: fadeInUp 0.3s ease-out forwards;
 }
 </style>
-

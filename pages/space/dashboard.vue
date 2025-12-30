@@ -766,6 +766,7 @@ const digitSpanResults = ref([]);
 const trailMakingResults = ref([]);
 const anagramResults = ref([]);
 const logicPairsResults = ref([]);
+const ravenResults = ref([]);
 const big5Result = ref(null);
 const assessmentTimestamp = ref(null);
 const heatmapData = ref({});
@@ -806,7 +807,7 @@ const achievements = computed(() => {
   }
 
   // 3. First Workout Achievement
-  const totalSessions = patternResults.value.length + mentalShiftResults.value.length + targetTrackingResults.value.length + anagramResults.value.length + logicPairsResults.value.length;
+  const totalSessions = patternResults.value.length + mentalShiftResults.value.length + targetTrackingResults.value.length + anagramResults.value.length + logicPairsResults.value.length + ravenResults.value.length;
   if (totalSessions > 0) {
     list.push({
       id: 'first-workout',
@@ -889,6 +890,8 @@ const progressData = computed(() => {
   anagramResults.value.forEach(r => addInteraction(r.timestamp || r.createdAt));
   // 8. Logic Pairs Results
   logicPairsResults.value.forEach(r => addInteraction(r.timestamp || r.createdAt));
+  // 9. Raven Results
+  ravenResults.value.forEach(r => addInteraction(r.timestamp || r.createdAt));
 
   // Normalize for display (if max is 0, default to 10 scale, otherwise scale relative to max)
   const maxVal = Math.max(...last7Days.map(d => d.value));
@@ -1182,6 +1185,25 @@ const testResultsList = computed(() => {
     });
   }
 
+  // Raven's Matrices
+  if (ravenResults.value.length > 0) {
+    const history = ravenResults.value.map(r => ({
+      date: r.timestamp ? new Date(r.timestamp.seconds * 1000) : new Date(),
+      score: r.iqEstimation || (r.score * 5 + 70)
+    }));
+    const best = Math.max(...history.map(h => h.score));
+    list.push({
+      id: "raven",
+      title: "Матрицы Равена",
+      category: "Абстрактная логика",
+      score: best,
+      unit: " IQ",
+      lastPlayed: history[0].date.toLocaleDateString("ru-RU"),
+      icon: "fas fa-th text-blue-500",
+      bgClass: "bg-blue-500/10"
+    });
+  }
+
   return list;
 });
 
@@ -1213,7 +1235,8 @@ const metrics = computed(() => {
   const totalNback = nbackTrainingResults.value.length;
   const totalAnagrams = anagramResults.value.length;
   const totalLogicPairs = logicPairsResults.value.length;
-  const completed = totalPatterns + totalShift + totalNback + totalAnagrams + totalLogicPairs;
+  const totalRaven = ravenResults.value.length;
+  const completed = totalPatterns + totalShift + totalNback + totalAnagrams + totalLogicPairs + totalRaven;
 
   return {
     growthScore: 0,
@@ -1274,7 +1297,8 @@ function calculateCognitiveScore() {
     ...digitSpanResults.value,
     ...trailMakingResults.value,
     ...anagramResults.value,
-    ...logicPairsResults.value
+    ...logicPairsResults.value,
+    ...ravenResults.value
   ];
   if (allResults.length === 0) return 0;
 
@@ -1294,7 +1318,8 @@ function calculateCognitiveScore() {
       return acc + Math.min(100, normalizedTmt);
     }
 
-    if (curr.score !== undefined) return acc + (curr.score > 100 ? 100 : curr.score);
+    if (curr.score !== undefined) return acc + (curr.score > 200 ? 100 : (curr.score > 100 ? (curr.score / 160) * 100 : curr.score));
+    if (curr.iqEstimation !== undefined) return acc + Math.min(100, (curr.iqEstimation / 140) * 100);
     return acc;
   }, 0);
 
@@ -1312,7 +1337,8 @@ function calculateStreak() {
     ...digitSpanResults.value,
     ...trailMakingResults.value,
     ...anagramResults.value,
-    ...logicPairsResults.value
+    ...logicPairsResults.value,
+    ...ravenResults.value
   ];
   const days = new Set(allResults.map(r => {
     const timestamp = r.createdAt || r.timestamp;
@@ -1504,6 +1530,11 @@ const fetchUserData = async () => {
     const snapshotLogicPairs = await getDocs(qLogicPairs);
     logicPairsResults.value = snapshotLogicPairs.docs.map(doc => doc.data());
 
+    // Raven Results
+    const qRaven = query(collection(db, `users/${authStore.user.uid}/ravenResults`), orderBy("timestamp", "desc"));
+    const snapshotRaven = await getDocs(qRaven);
+    ravenResults.value = snapshotRaven.docs.map(doc => doc.data());
+
     // Analysis: Heatmap
     const interactionActivity = [
       ...patternResults.value,
@@ -1515,7 +1546,8 @@ const fetchUserData = async () => {
       ...digitSpanResults.value,
       ...trailMakingResults.value,
       ...anagramResults.value,
-      ...logicPairsResults.value
+      ...logicPairsResults.value,
+      ...ravenResults.value
     ];
 
     // Include personality tests if they exist
