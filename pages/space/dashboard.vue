@@ -765,6 +765,7 @@ const nbackTrainingResults = ref([]);
 const digitSpanResults = ref([]);
 const trailMakingResults = ref([]);
 const anagramResults = ref([]);
+const logicPairsResults = ref([]);
 const big5Result = ref(null);
 const assessmentTimestamp = ref(null);
 const heatmapData = ref({});
@@ -805,7 +806,7 @@ const achievements = computed(() => {
   }
 
   // 3. First Workout Achievement
-  const totalSessions = patternResults.value.length + mentalShiftResults.value.length + targetTrackingResults.value.length + anagramResults.value.length;
+  const totalSessions = patternResults.value.length + mentalShiftResults.value.length + targetTrackingResults.value.length + anagramResults.value.length + logicPairsResults.value.length;
   if (totalSessions > 0) {
     list.push({
       id: 'first-workout',
@@ -886,6 +887,8 @@ const progressData = computed(() => {
   trailMakingResults.value.forEach(r => addInteraction(r.timestamp || r.createdAt));
   // 7. Anagram Results
   anagramResults.value.forEach(r => addInteraction(r.timestamp || r.createdAt));
+  // 8. Logic Pairs Results
+  logicPairsResults.value.forEach(r => addInteraction(r.timestamp || r.createdAt));
 
   // Normalize for display (if max is 0, default to 10 scale, otherwise scale relative to max)
   const maxVal = Math.max(...last7Days.map(d => d.value));
@@ -1083,6 +1086,34 @@ const exercisesList = computed(() => {
     });
   }
 
+  // Logic Pairs
+  if (logicPairsResults.value.length > 0) {
+    const history = logicPairsResults.value.map(r => ({
+      date: r.timestamp ? new Date(r.timestamp.seconds * 1000) : new Date(),
+      score: r.score || 0
+    }));
+
+    const scores = history.map(h => h.score);
+    const avg = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
+    const best = Math.max(...scores);
+    const last = history[0].date.toLocaleDateString("ru-RU");
+
+    list.push({
+      id: "logic-pairs",
+      title: "Логические Пары",
+      category: "Логика",
+      avgScore: avg,
+      bestScore: best,
+      lastPlayed: last,
+      totalSessions: history.length,
+      icon: "fas fa-th-large text-indigo-600 dark:text-indigo-400",
+      bgClass: "bg-indigo-500/10",
+      history: history,
+      link: "/space/brain-training/logic-pairs",
+      unit: ''
+    });
+  }
+
   return list.sort((a, b) => b.totalSessions - a.totalSessions);
 });
 
@@ -1181,7 +1212,8 @@ const metrics = computed(() => {
   const totalShift = mentalShiftResults.value.length;
   const totalNback = nbackTrainingResults.value.length;
   const totalAnagrams = anagramResults.value.length;
-  const completed = totalPatterns + totalShift + totalNback + totalAnagrams;
+  const totalLogicPairs = logicPairsResults.value.length;
+  const completed = totalPatterns + totalShift + totalNback + totalAnagrams + totalLogicPairs;
 
   return {
     growthScore: 0,
@@ -1241,7 +1273,8 @@ function calculateCognitiveScore() {
     ...nbackTestResults.value,
     ...digitSpanResults.value,
     ...trailMakingResults.value,
-    ...anagramResults.value
+    ...anagramResults.value,
+    ...logicPairsResults.value
   ];
   if (allResults.length === 0) return 0;
 
@@ -1278,7 +1311,8 @@ function calculateStreak() {
     ...nbackTestResults.value,
     ...digitSpanResults.value,
     ...trailMakingResults.value,
-    ...anagramResults.value
+    ...anagramResults.value,
+    ...logicPairsResults.value
   ];
   const days = new Set(allResults.map(r => {
     const timestamp = r.createdAt || r.timestamp;
@@ -1465,6 +1499,11 @@ const fetchUserData = async () => {
     const snapshotAnagrams = await getDocs(qAnagrams);
     anagramResults.value = snapshotAnagrams.docs.map(doc => doc.data());
 
+    // Logic Pairs Results
+    const qLogicPairs = query(collection(db, `users/${authStore.user.uid}/logicPairsResults`), orderBy("timestamp", "desc"));
+    const snapshotLogicPairs = await getDocs(qLogicPairs);
+    logicPairsResults.value = snapshotLogicPairs.docs.map(doc => doc.data());
+
     // Analysis: Heatmap
     const interactionActivity = [
       ...patternResults.value,
@@ -1475,7 +1514,8 @@ const fetchUserData = async () => {
       ...nbackTrainingResults.value,
       ...digitSpanResults.value,
       ...trailMakingResults.value,
-      ...anagramResults.value
+      ...anagramResults.value,
+      ...logicPairsResults.value
     ];
 
     // Include personality tests if they exist

@@ -427,7 +427,8 @@ export const exercises: Exercise[] = [
         format: "Drag/Drop",
         metric: "% верно",
         uiExample: "2 колонки объектов",
-        relatedModels: "Mental Models"
+        relatedModels: "Mental Models",
+        link: "/space/brain-training/logic-pairs"
     },
     {
         id: 38,
