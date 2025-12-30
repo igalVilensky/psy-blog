@@ -228,7 +228,8 @@ export const exercises: Exercise[] = [
         format: "Ввод",
         metric: "% правильных",
         uiExample: "7 букв в рандом порядке",
-        relatedModels: "Chunking"
+        relatedModels: "Chunking",
+        link: "/space/brain-training/anagrams"
     },
     {
         id: 20,
