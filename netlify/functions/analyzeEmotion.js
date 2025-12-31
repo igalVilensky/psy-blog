@@ -75,7 +75,7 @@ export async function handler(event, context) {
         }
 
         const body = JSON.parse(event.body);
-        const { affect, labeling, somatic, context, triggers, intensity, cognition, onboarding } = body;
+        const { affect, labeling, somatic, context, triggers, intensity, needs, onboarding, mode } = body;
 
         // 1. Analyze State
         const valence = affect?.valence || 0;
@@ -88,61 +88,49 @@ export async function handler(event, context) {
             intensity: intensity || affect?.intensity || 5,
             emotion: labeling?.primary || "Unknown",
             nuance: labeling?.secondary || "",
-            somatic: somatic || { locations: [] },
-            tags: [...(triggers || []), ...(context?.tags || [])],
-            narrative: cognition?.narrative || "",
-            facts: cognition?.facts || ""
+            somatic: somatic?.locations || [],
+            tags: [...(triggers || []), ...(context?.triggers || [])],
+            needs: needs || [],
+            mode: mode || 'standard'
         };
 
-        // 2. Score Tools
-        const scoredTools = tools.map(tool => ({
-            ...tool,
-            score: calculateScore(tool, state)
-        })).sort((a, b) => b.score - a.score);
-
-        // Select Top Tools
-        const primaryTool = scoredTools[0];
-        const secondaryTools = scoredTools.slice(1, 4);
-
-        // 3. Prepare LLM Prompt
+        // 2. Prepare LLM Prompt
         const prompt = `
-    Ты - эксперт-психолог Mind Lab.
-    Пользователь находится в состоянии:
-    - Квадрант: ${quadrant} (Валентность: ${valence.toFixed(2)}, Энергия: ${arousal.toFixed(2)})
-    - Эмоция: ${state.emotion} (${state.nuance})
+    Ты - мудрый психотерапевт и поддерживающий коуч Mind Lab.
+    Твоя задача - дать пользователю глубокую, бережную обратную связь на основе его чекина.
+    
+    ДАННЫЕ СОСТОЯНИЯ:
+    - Квадрант: ${quadrant.toUpperCase()} Zone (Валентность: ${valence.toFixed(2)}, Энергия: ${arousal.toFixed(2)})
+    - Названная эмоция: ${state.emotion} (${state.nuance})
     - Интенсивность: ${state.intensity}/10
-    - Ощущения в теле: ${state.somatic.locations.join(", ") || "нет"}
-    - Контекст: ${state.tags.join(", ")}
-    - Мысли (Нарратив): "${state.narrative}"
-    - Факты: "${state.facts}"
+    - Ощущения в теле: ${state.somatic.join(", ") || "не указаны"}
+    - Контекст/Триггеры: ${state.tags.join(", ") || "не указаны"}
+    ${state.mode === 'deep' ? `- Что сейчас хочется (потребности): ${state.needs.join(", ") || "не указаны"}` : ''}
 
-    ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ (Учитывай это при рекомендации):
-    - Цели: ${(onboarding?.goals || []).join(", ") || "Не указаны"}
-    - Ценности: ${(onboarding?.values || []).join(", ") || "Не указаны"}
-    - Базовый уровень стресса: ${onboarding?.emotionalBaseline?.stress || "?"}/10
-    - Стиль общения (Persona): ${onboarding?.persona?.tone || "Эмпатичный, профессиональный"}
+    ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ:
+    - Цели: ${(onboarding?.goals || []).join(", ") || "Самопознание"}
+    - Ценности: ${(onboarding?.values || []).join(", ") || "Развитие"}
+    - Стиль общения: ${onboarding?.persona?.tone || "Эмпатичный, профессиональный"}
 
-    Мы подобрали инструмент: "${primaryTool.title}" (${primaryTool.description}).
-
-    Твоя задача:
-    1. Написать "reasoning" (почему это подходит) - 2-3 предложения, обращайся к пользователю на "вы".
-       - Начни с фразы "Мы рекомендуем этот инструмент, потому что..." или похожей.
-       - ОБЯЗАТЕЛЬНО свяжи рекомендацию с целями или ценностями пользователя, если они указаны.
-       - Используй стиль общения: ${onboarding?.persona?.tone || "Поддерживающий"}.
-    2. Написать "routine" (мини-рутина из 3 шагов) для этого момента.
+    ТРЕБОВАНИЯ К ОТВЕТУ:
+    1. Напиши около 15-20 строк текста (примерно 200-300 слов).
+    2. Говори как профессиональный, но очень теплый терапевт. Используй "Вы".
+    3. Структура ответа:
+       - Валидация и нормализация текущего состояния (признание чувств).
+       - Отражение связи между телом, эмоцией и контекстом.
+       - Если это режим 'deep', удели особое внимание тому, "чего хочется", предложив как это можно реализовать бережно.
+       - Предложи 2-3 очень простых, "безопасных" шага для самопомощи прямо сейчас.
+       - В конце мягко напомни, что регулярное возвращение к Эмоциональному Компасу помогает лучше откалибровать свою "внутреннюю навигацию".
+    4. Тон должен быть очень деликатным, без директивных советов.
 
     Верни ответ ТОЛЬКО в формате JSON:
     {
-      "reasoning": "...",
-      "routine": [
-        { "step": 1, "action": "..." },
-        { "step": 2, "action": "..." },
-        { "step": 3, "action": "..." }
-      ]
+      "reflection": "Весь твой текст здесь с переносами строк \n\n...",
+      "shortSummary": "Краткое резюме одной фразой"
     }
     `;
 
-        // 4. Call Groq AI
+        // 3. Call Groq AI
         const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
             method: "POST",
             headers: {
@@ -152,12 +140,12 @@ export async function handler(event, context) {
             body: JSON.stringify({
                 model: "llama-3.3-70b-versatile",
                 messages: [
-                    { role: "system", content: "Отвечай только валидным JSON." },
+                    { role: "system", content: "Отвечай на русском языке. Используй только валидный JSON." },
                     { role: "user", content: prompt }
                 ],
                 response_format: { type: "json_object" },
-                temperature: 0.5,
-                max_tokens: 500
+                temperature: 0.7,
+                max_tokens: 1000
             })
         });
 
@@ -172,29 +160,21 @@ export async function handler(event, context) {
         } catch (e) {
             console.error("Failed to parse AI JSON", e);
             aiContent = {
-                reasoning: "Этот инструмент поможет вам сбалансировать состояние.",
-                routine: []
+                reflection: "Ваше состояние важно. Сейчас вы чувствуете " + state.emotion + ". Постарайтесь уделить себе немного внимания и вернуться к практике позже.",
+                shortSummary: "Бережная поддержка вашего состояния."
             };
         }
 
-        // 5. Construct Final Response
+        // 4. Construct Final Response
         const responsePayload = {
             analysis: {
                 state: `${quadrant.toUpperCase()} ZONE`,
                 emotion: state.emotion,
                 intensity: state.intensity
             },
-            primary: {
-                ...primaryTool,
-                reasoning: aiContent.reasoning,
-                matchScore: primaryTool.score
-            },
-            secondary: secondaryTools.map(t => ({
-                id: t.id,
-                title: t.title,
-                matchScore: t.score
-            })),
-            routine: aiContent.routine
+            reflection: aiContent.reflection,
+            shortSummary: aiContent.shortSummary,
+            mode: state.mode
         };
 
         return {

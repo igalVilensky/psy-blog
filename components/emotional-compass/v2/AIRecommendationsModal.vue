@@ -42,85 +42,65 @@
         <!-- Results -->
         <div v-else-if="data" class="space-y-8">
 
-          <!-- Analysis Summary -->
-          <div class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 border border-slate-100 dark:border-slate-700">
-            <div class="flex items-center gap-3 mb-2">
-              <div class="w-3 h-3 rounded-full" :class="getZoneColor(data.analysis.state)"></div>
-              <h3 class="font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wide text-sm">
-                {{ data.analysis.state }}
-              </h3>
+          <!-- Quick Mode -->
+          <div v-if="data.mode === 'quick'" class="text-center py-12 space-y-6">
+            <div
+              class="w-20 h-20 bg-cyan-100 dark:bg-cyan-900/30 rounded-full flex items-center justify-center mx-auto text-cyan-500">
+              <i class="fas fa-check-circle text-4xl"></i>
             </div>
-            <p class="text-slate-600 dark:text-slate-400 text-sm">
-              Эмоция: <span class="font-bold text-slate-800 dark:text-slate-200">{{ data.analysis.emotion }}</span>
-              (Интенсивность: {{ data.analysis.intensity }}/10)
-            </p>
+            <div class="space-y-2">
+              <h3 class="text-2xl font-bold text-slate-800 dark:text-white">Состояние сохранено!</h3>
+              <p class="text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
+                {{ data.message }}
+              </p>
+            </div>
           </div>
 
-          <!-- Primary Recommendation -->
-          <div class="space-y-4">
-            <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
-              <i class="fas fa-star text-yellow-400"></i>
-              Рекомендуемая практика
-            </h3>
+          <!-- Analysis Results (Standard/Deep) -->
+          <template v-else>
+            <!-- Analysis Summary -->
+            <div class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 border border-slate-100 dark:border-slate-700">
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-3 h-3 rounded-full" :class="getZoneColor(data.analysis.state)"></div>
+                <h3 class="font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wide text-sm">
+                  {{ data.analysis.state }}
+                </h3>
+              </div>
+              <p class="text-slate-600 dark:text-slate-400 text-sm">
+                Эмоция: <span class="font-bold text-slate-800 dark:text-slate-200">{{ data.analysis.emotion }}</span>
+                (Интенсивность: {{ data.analysis.intensity }}/10)
+              </p>
+            </div>
 
-            <div class="bg-gradient-to-br from-cyan-500 to-purple-600 rounded-2xl p-1 shadow-lg">
-              <div class="bg-white dark:bg-slate-900 rounded-xl p-6 h-full">
-                <div class="flex justify-between items-start mb-4">
-                  <div>
-                    <h4 class="text-2xl font-bold text-slate-800 dark:text-white mb-1">
-                      {{ data.primary.title }}
-                    </h4>
-                    <div class="flex gap-2 text-xs">
-                      <span class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500">
-                        {{ data.primary.duration }}
-                      </span>
-                      <span class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500">
-                        {{ data.primary.type }}
-                      </span>
-                    </div>
-                  </div>
-                  <div class="text-cyan-500 font-bold text-xl">
-                    {{ data.primary.matchScore }}%
-                  </div>
+            <!-- Therapeutic Reflection -->
+            <div class="space-y-4 animate-fadeIn">
+              <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                <i class="fas fa-spa text-purple-500"></i>
+                Размышление и поддержка
+              </h3>
+
+              <div
+                class="bg-gradient-to-br from-white to-slate-50 dark:from-slate-800 dark:to-slate-900 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-lg">
+                <div class="prose dark:prose-invert max-w-none">
+                  <p v-for="(paragraph, index) in reflectionParagraphs" :key="index"
+                    class="text-slate-600 dark:text-slate-300 mb-6 leading-relaxed font-serif text-lg italic whitespace-pre-wrap">
+                    {{ paragraph }}
+                  </p>
                 </div>
-
-                <p class="text-slate-600 dark:text-slate-300 mb-4 leading-relaxed">
-                  {{ data.primary.reasoning }}
-                </p>
 
                 <div
-                  class="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 border border-slate-100 dark:border-slate-700">
-                  <h5 class="text-xs font-bold text-slate-400 uppercase mb-3">МИНИ-РУТИНА</h5>
-                  <ul class="space-y-3">
-                    <li v-for="step in data.routine" :key="step.step"
-                      class="flex gap-3 text-sm text-slate-700 dark:text-slate-300">
-                      <span
-                        class="flex-shrink-0 w-6 h-6 rounded-full bg-cyan-100 dark:bg-cyan-900/50 text-cyan-600 dark:text-cyan-400 flex items-center justify-center font-bold text-xs">
-                        {{ step.step }}
-                      </span>
-                      <span>{{ step.action }}</span>
-                    </li>
-                  </ul>
+                  class="mt-8 pt-6 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                  <div class="flex items-center gap-2 text-xs text-slate-400 uppercase tracking-widest font-bold">
+                    <i class="fas fa-shield-alt text-cyan-500"></i>
+                    Безопасное пространство
+                  </div>
+                  <div class="text-xs text-slate-400 italic">
+                    {{ data.shortSummary }}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-
-          <!-- Secondary Recommendations -->
-          <div class="space-y-4">
-            <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100">
-              Альтернативы
-            </h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div v-for="tool in data.secondary" :key="tool.id"
-                class="p-4 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-cyan-400 transition-colors bg-white dark:bg-slate-800/30">
-                <div class="flex justify-between items-center mb-2">
-                  <h4 class="font-bold text-slate-700 dark:text-slate-200">{{ tool.title }}</h4>
-                  <span class="text-xs font-mono text-slate-400">{{ tool.matchScore }}%</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          </template>
 
         </div>
       </div>
@@ -128,8 +108,8 @@
       <!-- Footer -->
       <div class="p-6 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 flex justify-end">
         <button @click="close"
-          class="px-6 py-2 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">
-          Закрыть
+          class="px-8 py-3 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold hover:opacity-90 transition-all shadow-xl">
+          Все понятно
         </button>
       </div>
 
@@ -148,6 +128,11 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['close']);
+
+const reflectionParagraphs = computed(() => {
+  if (!props.data?.reflection) return [];
+  return props.data.reflection.split('\n').filter(p => p.trim());
+});
 
 const close = () => {
   emit('close');
@@ -177,5 +162,9 @@ const getZoneColor = (stateName) => {
     opacity: 1;
     transform: scale(1);
   }
+}
+
+.prose p {
+  margin-bottom: 1.5rem;
 }
 </style>
