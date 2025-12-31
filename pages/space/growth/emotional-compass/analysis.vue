@@ -6,37 +6,46 @@
 
       <!-- Header -->
       <div class="mb-8">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div>
-            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white font-montserrat mb-3 tracking-tight">
-              <i class="fas fa-chart-network mr-3 text-cyan-600 dark:text-cyan-400"></i>Анализ Данных
-            </h1>
-            <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
-              Детальная статистика и паттерны вашего эмоционального состояния
-            </p>
-          </div>
+        <div class="flex items-center justify-between mb-2 px-4 xl:px-0">
+          <h1 class="text-3xl font-mono font-bold text-cyan-600 dark:text-cyan-300">
+            <i class="fas fa-chart-line mr-3"></i>АНАЛИЗ СОСТОЯНИЙ
+          </h1>
         </div>
+        <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base px-4 xl:px-0">
+          Детальная статистика и паттерны вашего эмоционального состояния
+        </p>
       </div>
 
-      <!-- Analysis Section -->
-      <div v-if="entries.length > 0">
-         <EmotionalAnalysis :patterns="emotionPatterns" :entries="entries" />
+      <!-- Loading State -->
+      <div v-if="isLoading"
+        class="bg-white dark:bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-slate-700 p-24 text-center mt-8">
+        <div class="w-16 h-16 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto mb-4">
+        </div>
+        <p class="text-slate-500 animate-pulse font-mono uppercase tracking-widest">Анализируем ваши данные...</p>
       </div>
-      <div v-else class="bg-white dark:bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-cyan-500/30 p-6 sm:p-8 shadow-[0_0_30px_rgba(6,182,212,0.1)]">
-        <div class="text-center py-12">
-          <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-            <i class="fas fa-database text-slate-400 dark:text-slate-600 text-2xl"></i>
+
+      <div v-else>
+        <!-- Emotional Analysis Component -->
+        <EmotionalAnalysis v-if="Object.keys(emotionPatterns).length > 0" :patterns="emotionPatterns"
+          :emotions="emotions" class="my-8" />
+
+        <!-- Empty State -->
+        <div v-else
+          class="bg-white dark:bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-slate-700 p-12 text-center my-8">
+          <div class="text-center py-12">
+            <div
+              class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+              <i class="fas fa-database text-slate-400 dark:text-slate-600 text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-mono text-slate-500 dark:text-slate-400 mb-2">НЕТ ДАННЫХ</h3>
+            <p class="text-slate-600 dark:text-slate-500 max-w-md mx-auto">
+              База данных пуста. Создайте первую запись в Эмоциональном Компасе для активации аналитических модулей.
+            </p>
+            <NuxtLink to="/space/growth/emotional-compass"
+              class="inline-block mt-6 px-6 py-2 rounded-lg bg-cyan-600/20 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 hover:bg-cyan-600/30 transition-all font-mono">
+              СОЗДАТЬ ЗАПИСЬ
+            </NuxtLink>
           </div>
-          <h3 class="text-xl font-mono text-slate-500 dark:text-slate-400 mb-2">НЕТ ДАННЫХ</h3>
-          <p class="text-slate-600 dark:text-slate-500 max-w-md mx-auto">
-            База данных пуста. Создайте первую запись в Эмоциональном Компасе для активации аналитических модулей.
-          </p>
-          <NuxtLink
-            to="/space/growth/emotional-compass"
-            class="inline-block mt-6 px-6 py-2 rounded-lg bg-cyan-600/20 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 hover:bg-cyan-600/30 transition-all font-mono"
-          >
-            СОЗДАТЬ ЗАПИСЬ
-          </NuxtLink>
         </div>
       </div>
     </div>
@@ -59,6 +68,40 @@ const user = ref(null);
 const auth = getAuth();
 const db = getFirestore();
 const entries = ref([]);
+const isLoading = ref(true);
+
+const emotions = ref([
+  {
+    id: 1,
+    name: "Радость",
+    color: "bg-yellow-100",
+    activeColor: "bg-gradient-to-r from-[#FACC15] to-[#FDE047]",
+  },
+  {
+    id: 2,
+    name: "Грусть",
+    color: "bg-blue-100",
+    activeColor: "bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE]",
+  },
+  {
+    id: 3,
+    name: "Страх",
+    color: "bg-purple-100",
+    activeColor: "bg-gradient-to-r from-[#E879F9] to-[#C084FC]",
+  },
+  {
+    id: 4,
+    name: "Гнев",
+    color: "bg-red-100",
+    activeColor: "bg-gradient-to-r from-[#EF4444] to-[#F87171]",
+  },
+  {
+    id: 5,
+    name: "Удивление",
+    color: "bg-green-100",
+    activeColor: "bg-gradient-to-r from-[#10B981] to-[#34D399]",
+  },
+]);
 
 // Emotion pattern analysis
 const emotionPatterns = computed(() => {
@@ -73,7 +116,7 @@ const emotionPatterns = computed(() => {
     }
 
     acc[entry.emotion].count++;
-    const intensity = parseFloat(entry.intensity) || 0;
+    const intensity = parseFloat(entry.intensity || entry.affect?.intensity) || 0;
     acc[entry.emotion].avgIntensity += intensity;
 
     (entry.tags || []).forEach((tag) => {
@@ -81,16 +124,29 @@ const emotionPatterns = computed(() => {
         (acc[entry.emotion].commonSpheres[tag] || 0) + 1;
     });
 
-    if (entry.subEmotion) {
-      if (!acc[entry.emotion].subEmotions[entry.subEmotion]) {
-        acc[entry.emotion].subEmotions[entry.subEmotion] = {
+    if (entry.context?.triggers) {
+      entry.context.triggers.forEach(tag => {
+        acc[entry.emotion].commonSpheres[tag] = (acc[entry.emotion].commonSpheres[tag] || 0) + 1;
+      });
+    }
+
+    if (entry.needs) {
+      if (!acc[entry.emotion].commonNeeds) acc[entry.emotion].commonNeeds = {};
+      entry.needs.forEach(need => {
+        acc[entry.emotion].commonNeeds[need] = (acc[entry.emotion].commonNeeds[need] || 0) + 1;
+      });
+    }
+
+    const subEmotion = entry.subEmotion || entry.labeling?.secondary;
+    if (subEmotion) {
+      if (!acc[entry.emotion].subEmotions[subEmotion]) {
+        acc[entry.emotion].subEmotions[subEmotion] = {
           count: 0,
           avgIntensity: 0,
         };
       }
-      acc[entry.emotion].subEmotions[entry.subEmotion].count++;
-      acc[entry.emotion].subEmotions[entry.subEmotion].avgIntensity +=
-        parseFloat(entry.intensity) || 0;
+      acc[entry.emotion].subEmotions[subEmotion].count++;
+      acc[entry.emotion].subEmotions[subEmotion].avgIntensity += intensity;
     }
 
     return acc;
@@ -116,14 +172,16 @@ const emotionPatterns = computed(() => {
 
 // Fetch entries using service
 const fetchEntries = async (currentUser) => {
+  isLoading.value = true;
   const result = await emotionBarometerService.getHistory(db, currentUser);
-  
+
   if (result.success) {
-    entries.value = result.data.entries;
+    entries.value = result.data.entries || [];
   } else {
     console.error(result.message);
     entries.value = [];
   }
+  isLoading.value = false;
 };
 
 // Listen for auth state changes
@@ -133,4 +191,3 @@ onAuthStateChanged(auth, async (currentUser) => {
   await fetchEntries(currentUser);
 });
 </script>
-

@@ -75,6 +75,9 @@ const crumbs = computed(() => {
       'deep-conversation': 'Глубокий разговор',
       'habit-override': 'Перепрошивка Привычек',
       'blog': 'Блог',
+      'emotional-compass': 'Эмоциональный компас',
+      'journal-history': 'История журнала',
+      'analysis': 'Анализ',
     };
 
     if (mappings[segment]) {

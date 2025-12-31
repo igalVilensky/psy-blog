@@ -12,42 +12,44 @@
           </h1>
         </div>
 
-        <div v-if="entries.length > 0" class="grid grid-cols-1 gap-8">
-           <!-- Journal History Section -->
+        <!-- Loading State -->
+        <div v-if="isLoading"
+          class="bg-white dark:bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-slate-700 p-24 text-center">
+          <div class="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4">
+          </div>
+          <p class="text-slate-500 animate-pulse font-mono uppercase tracking-widest">Загрузка истории...</p>
+        </div>
+
+        <div v-else-if="entries.length > 0" class="grid grid-cols-1 gap-8">
+          <!-- Journal History Section -->
           <div
-            class="bg-white dark:bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-purple-500/30 p-6 sm:p-8 shadow-[0_0_30px_rgba(168,85,247,0.1)]"
-          >
-            <JournalHistory
-              :emotions="emotions"
-              :life-spheres="lifeSpheres"
-              :entries="entries"
-            />
+            class="bg-white dark:bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-purple-500/30 p-6 sm:p-8 shadow-[0_0_30px_rgba(168,85,247,0.1)]">
+            <JournalHistory :emotions="emotions" :life-spheres="lifeSpheres" :entries="entries" />
           </div>
 
           <!-- Emotion Chart -->
           <div
-            class="bg-white dark:bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-cyan-500/30 p-6 sm:p-8 shadow-[0_0_30px_rgba(6,182,212,0.1)]"
-          >
+            class="bg-white dark:bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-cyan-500/30 p-6 sm:p-8 shadow-[0_0_30px_rgba(6,182,212,0.1)]">
             <h3 class="text-xl font-mono font-bold text-cyan-600 dark:text-cyan-300 mb-6">ГРАФИК ЭМОЦИЙ</h3>
             <EmotionChart :entries="entries" :emotions="emotions" />
           </div>
         </div>
-        
+
         <!-- Empty State -->
-        <div v-else class="bg-white dark:bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-slate-700 p-12 text-center">
-           <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-              <i class="fas fa-book-open text-slate-400 dark:text-slate-600 text-2xl"></i>
-            </div>
-            <h3 class="text-xl font-mono text-slate-500 dark:text-slate-400 mb-2">ЖУРНАЛ ПУСТ</h3>
-            <p class="text-slate-600 dark:text-slate-500 max-w-md mx-auto">
-              Записи отсутствуют. Начните вести дневник эмоций, чтобы отслеживать свое состояние во времени.
-            </p>
-            <NuxtLink
-              to="/space/growth/emotional-compass"
-              class="inline-block mt-6 px-6 py-2 rounded-lg bg-purple-600/20 text-purple-600 dark:text-purple-400 border border-purple-500/30 hover:bg-purple-600/30 transition-all font-mono"
-            >
-              СОЗДАТЬ ЗАПИСЬ
-            </NuxtLink>
+        <div v-else
+          class="bg-white dark:bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-slate-700 p-12 text-center">
+          <div
+            class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+            <i class="fas fa-book-open text-slate-400 dark:text-slate-600 text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-mono text-slate-500 dark:text-slate-400 mb-2">ЖУРНАЛ ПУСТ</h3>
+          <p class="text-slate-600 dark:text-slate-500 max-w-md mx-auto">
+            Записи отсутствуют. Начните вести дневник эмоций, чтобы отслеживать свое состояние во времени.
+          </p>
+          <NuxtLink to="/space/growth/emotional-compass"
+            class="inline-block mt-6 px-6 py-2 rounded-lg bg-purple-600/20 text-purple-600 dark:text-purple-400 border border-purple-500/30 hover:bg-purple-600/30 transition-all font-mono">
+            СОЗДАТЬ ЗАПИСЬ
+          </NuxtLink>
         </div>
       </div>
     </div>
@@ -117,13 +119,20 @@ const user = ref(null);
 const auth = getAuth();
 const db = getFirestore();
 const entries = ref([]);
+const isLoading = ref(true);
 
 // Fetch entries using service
 const fetchEntries = async (currentUser) => {
+  isLoading.value = true;
   const result = await emotionBarometerService.getHistory(db, currentUser);
-  
+
   if (result.success) {
-    entries.value = result.data.entries.map((entry) => ({
+    // Sort descending by timestamp (newest first)
+    const sortedEntries = (result.data.entries || []).sort((a, b) => {
+      return new Date(b.timestamp) - new Date(a.timestamp);
+    });
+
+    entries.value = sortedEntries.map((entry) => ({
       ...entry,
       entry: entry.entry || "",
       perception: entry.perception || "",
@@ -139,6 +148,7 @@ const fetchEntries = async (currentUser) => {
     console.error("Failed to fetch entries:", result.message);
     entries.value = [];
   }
+  isLoading.value = false;
 };
 
 // Listen for auth state changes
@@ -148,4 +158,3 @@ onAuthStateChanged(auth, async (currentUser) => {
   await fetchEntries(currentUser);
 });
 </script>
-

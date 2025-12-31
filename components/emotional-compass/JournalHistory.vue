@@ -64,101 +64,180 @@
       <div
         class="space-y-6 overflow-y-auto pr-3 scrollbar-thin scrollbar-thumb-[#0EA5E9]/50 scrollbar-track-[#1A1F35]/20"
         style="max-height: inherit" @scroll="checkScroll">
-        <div v-for="(entry, index) in filteredEntries" :key="index"
-          class="p-6 bg-gradient-to-b from-white to-slate-50 dark:from-[#1A1F35]/40 dark:to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-cyan-500/20 transition-all duration-300 hover:shadow-[0_0_20px_5px_rgba(14,165,233,0.3)]">
-          <!-- Entry Header -->
-          <div class="flex flex-col sm:flex-row sm:justify-between gap-3 mb-4">
-            <div class="flex flex-wrap items-center gap-3">
-              <span class="text-lg font-bold text-slate-900 dark:text-white/90">
-                {{ entry.emotion }}
-                <span class="text-slate-500 dark:text-slate-300 text-sm font-semibold ml-2">
-                  ({{ entry.subEmotion }})
-                </span>
-              </span>
-              <span
-                class="px-3 py-1 bg-slate-100 dark:bg-[#1A1F35]/40 text-[#0EA5E9] text-sm font-medium rounded-full border border-[#0EA5E9]/20">
-                Интенсивность: {{ entry.intensity }}/10
-              </span>
+        <div v-for="(entry, index) in filteredEntries" :key="index">
+          <!-- Entry Card -->
+          <div
+            class="group relative p-6 bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/10 hover:-translate-y-1 overflow-hidden">
+            <!-- Decorative Background Element -->
+            <div
+              class="absolute -top-24 -right-24 w-48 h-48 bg-gradient-to-br from-purple-500/5 to-cyan-500/5 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700">
             </div>
-            <span class="text-sm text-slate-500 dark:text-slate-300 sm:text-right">
-              {{ formatDate(entry.timestamp) }}
-            </span>
-          </div>
 
-          <!-- Toggle Button -->
-          <div class="flex justify-end mb-4">
-            <button @click="toggleDetails(index)"
-              class="text-sm font-medium text-[#0EA5E9] hover:text-[#22D3EE] transition-colors flex items-center gap-1"
-              :aria-expanded="isExpanded(index)" :aria-controls="'entry-details-' + index">
-              <span>{{
-                isExpanded(index) ? "Скрыть детали" : "Показать детали"
-              }}</span>
-              <i :class="[
-                'fas',
-                isExpanded(index) ? 'fa-chevron-up' : 'fa-chevron-down',
-                'text-xs',
-                'transition-transform duration-300',
-                isExpanded(index) ? 'rotate-180' : 'rotate-0',
-              ]" aria-hidden="true"></i>
-            </button>
-          </div>
-
-          <!-- Entry Sections (Collapsible with Transition) -->
-          <Transition name="slide-fade">
-            <div v-if="isExpanded(index)" :id="'entry-details-' + index" class="space-y-6">
-              <!-- Описание -->
-              <div>
-                <h3
-                  class="text-base font-semibold text-[#0EA5E9] mb-2 flex items-center gap-2 hover:text-[#22D3EE] transition-colors">
-                  <i class="fas fa-pen text-xs" aria-hidden="true"></i>
-                  Описание
-                </h3>
-                <p
-                  class="text-sm text-slate-600 dark:text-slate-300 pl-4 border-l-2 border-[#0EA5E9]/30 leading-relaxed">
-                  {{ entry.entry }}
-                </p>
+            <!-- Entry Header -->
+            <div class="relative flex flex-col sm:flex-row sm:justify-between items-start gap-4 mb-6">
+              <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-xl shadow-inner"
+                  :class="getZoneColor(entry.emotion || entry.labeling?.primary || '')">
+                  <i :class="getEmotionIcon(entry.emotion || entry.labeling?.primary || '')" class="text-white"></i>
+                </div>
+                <div>
+                  <h3 class="text-xl font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                    {{ entry.emotion || entry.labeling?.primary }}
+                    <span v-if="entry.subEmotion || entry.labeling?.secondary"
+                      class="text-sm font-medium text-slate-400">
+                      • {{ entry.subEmotion || entry.labeling?.secondary }}
+                    </span>
+                  </h3>
+                  <div class="flex items-center gap-2 mt-1">
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400">
+                      {{ formatDate(entry.timestamp) }}
+                    </span>
+                  </div>
+                </div>
               </div>
 
-              <!-- Восприятие -->
-              <div>
-                <h3
-                  class="text-base font-semibold text-[#0EA5E9] mb-2 flex items-center gap-2 hover:text-[#22D3EE] transition-colors">
-                  <i class="fas fa-eye text-xs" aria-hidden="true"></i>
-                  Восприятие
-                </h3>
-                <p
-                  class="text-sm text-slate-600 dark:text-slate-300 pl-4 border-l-2 border-[#0EA5E9]/30 leading-relaxed">
-                  {{ entry.perception }}
-                </p>
-              </div>
-
-              <!-- Стратегии совладания -->
-              <div>
-                <h3
-                  class="text-base font-semibold text-[#0EA5E9] mb-2 flex items-center gap-2 hover:text-[#22D3EE] transition-colors">
-                  <i class="fas fa-shield-alt text-xs" aria-hidden="true"></i>
-                  Стратегии совладания
-                </h3>
-                <p
-                  class="text-sm text-slate-600 dark:text-slate-300 pl-4 border-l-2 border-[#0EA5E9]/30 leading-relaxed">
-                  {{ entry.coping }}
-                </p>
-              </div>
-
-              <!-- Действия -->
-              <div>
-                <h3
-                  class="text-base font-semibold text-[#0EA5E9] mb-2 flex items-center gap-2 hover:text-[#22D3EE] transition-colors">
-                  <i class="fas fa-tasks text-xs" aria-hidden="true"></i>
-                  Действия
-                </h3>
-                <p
-                  class="text-sm text-slate-600 dark:text-slate-300 pl-4 border-l-2 border-[#0EA5E9]/30 leading-relaxed">
-                  {{ entry.action }}
-                </p>
+              <div class="flex items-center gap-3">
+                <div
+                  class="px-3 py-1 bg-slate-50 dark:bg-slate-800 rounded-full border border-slate-100 dark:border-slate-700">
+                  <span class="text-xs font-bold text-slate-500 dark:text-slate-400">ИНТЕНСИВНОСТЬ:</span>
+                  <span class="ml-2 text-sm font-black text-purple-500">{{ entry.intensity || entry.affect?.intensity
+                  }}/10</span>
+                </div>
               </div>
             </div>
-          </Transition>
+
+            <!-- AI Magic Summary (Primary Highlight) -->
+            <div v-if="entry.shortSummary"
+              class="relative mb-6 p-4 bg-gradient-to-br from-purple-500/10 to-cyan-500/10 rounded-2xl border border-purple-500/10 group-hover:border-purple-500/20 transition-colors">
+              <div
+                class="absolute -top-2 -left-2 w-6 h-6 bg-white dark:bg-slate-900 rounded-lg flex items-center justify-center shadow-sm border border-purple-500/20">
+                <i class="fas fa-magic text-[10px] text-purple-500"></i>
+              </div>
+              <p class="text-slate-700 dark:text-slate-200 font-serif italic text-lg leading-relaxed">
+                "{{ entry.shortSummary }}"
+              </p>
+            </div>
+
+            <!-- Visual Markers (Needs & Body) -->
+            <div class="flex flex-wrap gap-4 mb-6">
+              <!-- Needs -->
+              <div v-if="entry.needs && entry.needs.length > 0" class="space-y-2">
+                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">Потребности</span>
+                <div class="flex flex-wrap gap-1.5">
+                  <span v-for="need in entry.needs" :key="need"
+                    class="px-2.5 py-1 bg-purple-500/5 text-purple-600 dark:text-purple-400 text-xs font-bold rounded-lg border border-purple-500/10">
+                    {{ need }}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Body -->
+              <div v-if="entry.somatic && entry.somatic.locations && entry.somatic.locations.length > 0"
+                class="space-y-2">
+                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">Ощущения</span>
+                <div class="flex flex-wrap gap-1.5">
+                  <span v-for="loc in entry.somatic.locations" :key="loc"
+                    class="px-2.5 py-1 bg-cyan-500/5 text-cyan-600 dark:text-cyan-400 text-xs font-bold rounded-lg border border-cyan-500/10">
+                    {{ loc }}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Details Action -->
+            <div class="flex items-center justify-between pt-4 border-t border-slate-50 dark:border-slate-800/50">
+              <div class="flex items-center gap-4">
+                <div v-if="entry.context && entry.context.triggers && entry.context.triggers.length > 0"
+                  class="flex -space-x-2">
+                  <div v-for="trigger in entry.context.triggers.slice(0, 3)" :key="trigger"
+                    class="w-6 h-6 rounded-full bg-slate-100 dark:bg-slate-800 border-2 border-white dark:border-slate-900 flex items-center justify-center"
+                    title="trigger">
+                    <i class="fas fa-bolt text-[8px] text-yellow-500"></i>
+                  </div>
+                </div>
+              </div>
+
+              <button @click="toggleDetails(index)"
+                class="flex items-center gap-2 text-sm font-bold text-slate-400 hover:text-purple-500 transition-colors py-2 px-4 rounded-xl hover:bg-purple-500/5">
+                <span>{{ isExpanded(index) ? "СВЕРНУТЬ" : "ДЕТАЛИ" }}</span>
+                <i
+                  :class="['fas', isExpanded(index) ? 'fa-chevron-up' : 'fa-chevron-down', 'text-[10px] transition-transform duration-300', isExpanded(index) ? 'rotate-180' : '']"></i>
+              </button>
+            </div>
+
+            <!-- Expanded Content -->
+            <Transition name="slide-fade">
+              <div v-if="isExpanded(index)" class="mt-6 space-y-8 animate-fadeIn">
+
+                <!-- Full Reflection -->
+                <div v-if="entry.reflection" class="group/reflection relative">
+                  <div
+                    class="absolute -left-4 top-0 bottom-0 w-1 bg-gradient-to-b from-purple-500/50 to-transparent rounded-full">
+                  </div>
+                  <h4
+                    class="text-sm font-black text-slate-800 dark:text-white uppercase tracking-widest mb-3 flex items-center gap-2">
+                    <i class="fas fa-quote-left text-purple-500"></i>
+                    Размышление MindQ
+                  </h4>
+                  <div class="prose dark:prose-invert max-w-none">
+                    <p
+                      class="text-slate-600 dark:text-slate-400 leading-relaxed font-serif text-lg italic whitespace-pre-wrap pl-2">
+                      {{ entry.reflection }}
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Personal Notes -->
+                <div v-if="entry.entry || (entry.cognition && entry.cognition.narrative)">
+                  <h4
+                    class="text-sm font-black text-slate-800 dark:text-white uppercase tracking-widest mb-3 flex items-center gap-2">
+                    <i class="far fa-sticky-note text-cyan-500"></i>
+                    Личные заметки
+                  </h4>
+                  <p
+                    class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed bg-slate-50 dark:bg-slate-800/30 p-4 rounded-2xl border border-slate-100 dark:border-slate-800">
+                    {{ entry.entry || entry.cognition?.narrative }}
+                  </p>
+                </div>
+
+                <!-- Full Context/Triggers -->
+                <div v-if="entry.context && entry.context.triggers && entry.context.triggers.length > 0">
+                  <h4
+                    class="text-sm font-black text-slate-800 dark:text-white uppercase tracking-widest mb-3 flex items-center gap-2">
+                    <i class="fas fa-bolt text-yellow-500"></i>
+                    Полный контекст
+                  </h4>
+                  <div class="flex flex-wrap gap-2 pl-2">
+                    <span v-for="tag in entry.context.triggers" :key="tag"
+                      class="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-bold rounded-xl border border-slate-200 dark:border-slate-700">
+                      {{ tag }}
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Legacy Data (Only if needed) -->
+                <div v-if="!entry.reflection && (entry.perception || entry.coping || entry.action)"
+                  class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div v-if="entry.perception" class="p-4 bg-slate-50 dark:bg-slate-800/30 rounded-xl">
+                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Восприятие
+                      (Архив)</span>
+                    <p class="text-xs text-slate-500">{{ entry.perception }}</p>
+                  </div>
+                  <div v-if="entry.coping" class="p-4 bg-slate-50 dark:bg-slate-800/30 rounded-xl">
+                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Стратегии
+                      (Архив)</span>
+                    <p class="text-xs text-slate-500">{{ entry.coping }}</p>
+                  </div>
+                  <div v-if="entry.action" class="p-4 bg-slate-50 dark:bg-slate-800/30 rounded-xl">
+                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Действия
+                      (Архив)</span>
+                    <p class="text-xs text-slate-500">{{ entry.action }}</p>
+                  </div>
+                </div>
+
+              </div>
+            </Transition>
+          </div>
 
           <!-- Tags -->
           <div class="flex flex-wrap gap-2 mt-6">
@@ -202,18 +281,58 @@ const scrollContainer = ref(null);
 
 const filteredEntries = computed(() => {
   return props.entries.filter(
-    (entry) =>
-      (!emotionFilter.value || entry.emotion === emotionFilter.value) &&
-      (!sphereFilter.value || entry.tags.includes(sphereFilter.value)) &&
-      (!searchQuery.value ||
-        entry.entry.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-        entry.perception
-          .toLowerCase()
-          .includes(searchQuery.value.toLowerCase()) ||
-        entry.coping.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-        entry.action.toLowerCase().includes(searchQuery.value.toLowerCase()))
+    (entry) => {
+      const matchesEmotion = !emotionFilter.value || (entry.emotion || entry.labeling?.primary) === emotionFilter.value;
+      const entryTags = entry.tags || [];
+      const triggerTags = entry.context?.triggers || [];
+      const allTags = [...entryTags, ...triggerTags];
+      const matchesSphere = !sphereFilter.value || allTags.includes(sphereFilter.value);
+
+      if (!searchQuery.value) return matchesEmotion && matchesSphere;
+
+      const query = searchQuery.value.toLowerCase();
+      const matchesSearch =
+        (entry.entry || entry.cognition?.narrative || "").toLowerCase().includes(query) ||
+        (entry.shortSummary || "").toLowerCase().includes(query) ||
+        (entry.reflection || "").toLowerCase().includes(query) ||
+        (entry.emotion || entry.labeling?.primary || "").toLowerCase().includes(query) ||
+        (entry.subEmotion || entry.labeling?.secondary || "").toLowerCase().includes(query);
+
+      return matchesEmotion && matchesSphere && matchesSearch;
+    }
   );
 });
+
+const getEmotionIcon = (emotionName) => {
+  const icons = {
+    'Радость': 'fas fa-smile-beam',
+    'Грусть': 'fas fa-sad-tear',
+    'Страх': 'fas fa-ghost',
+    'Гнев': 'fas fa-fire',
+    'Удивление': 'fas fa-bolt',
+    'Спокойствие': 'fas fa-leaf',
+    'Интерес': 'fas fa-search',
+    'Доверие': 'fas fa-handshake',
+    'Ожидание': 'fas fa-hourglass-half',
+    'Неприязнь': 'fas fa-frown',
+    'Отвращение': 'fas fa-nauseated',
+    'Презрение': 'fas fa-angle-double-down'
+  };
+  return icons[emotionName] || 'fas fa-heart';
+};
+
+const getZoneColor = (emotionName) => {
+  const zones = {
+    'Радость': 'bg-yellow-400',
+    'Грусть': 'bg-blue-400',
+    'Страх': 'bg-purple-400',
+    'Гнев': 'bg-red-400',
+    'Удивление': 'bg-green-400',
+    'Спокойствие': 'bg-emerald-400',
+    'Интерес': 'bg-cyan-400'
+  };
+  return zones[emotionName] || 'bg-slate-400';
+};
 
 const loading = computed(() => {
   return (

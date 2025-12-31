@@ -146,55 +146,49 @@ const addCustomNeed = () => {
 };
 
 const saveEntry = async () => {
-  loading.value = true;
+  if (!canProceed.value) return;
 
   const payload = {
-    mode: sessionMode.value,
     affect: sessionData.affect,
     labeling: sessionData.labeling,
     somatic: sessionData.somatic,
     context: sessionData.context,
     needs: sessionData.needs,
-    tags: [
-      ...(sessionData.context.triggers || []),
-      ...(sessionData.somatic.locations || []),
-      ...(sessionData.needs || [])
-    ]
+    mode: sessionMode.value
   };
 
-  const result = await emotionBarometerService.saveEntry(db, user.value, payload, showNotification);
+  showRecommendations.value = true;
+  recommendationLoading.value = true;
+  recommendationError.value = null;
 
-  loading.value = false;
-
-  if (result.success) {
-    // For quick mode, we might just show a success message
-    showRecommendations.value = true;
-    recommendationError.value = null;
-
-    if (sessionMode.value === 'quick') {
-      recommendationLoading.value = false;
+  try {
+    // 1. If not quick mode, get AI insights FIRST
+    if (sessionMode.value !== 'quick') {
+      const recommendations = await emotionBarometerService.getRecommendations(payload, onboardingData.value);
+      if (recommendations) {
+        recommendationData.value = recommendations;
+        // Inject AI results into payload for persistence
+        payload.reflection = recommendations.reflection;
+        payload.shortSummary = recommendations.shortSummary;
+      } else {
+        recommendationError.value = "Не удалось получить рекомендации";
+      }
+    } else {
+      // Quick mode preset
       recommendationData.value = {
         mode: 'quick',
         message: 'Ваше состояние успешно зафиксировано. Регулярное отслеживание помогает лучше понимать себя.'
       };
-      return;
     }
 
-    recommendationLoading.value = true;
+    // 2. Save the final payload (including AI reflection if applicable)
+    await emotionBarometerService.saveEntry(db, user.value, payload, showNotification);
 
-    // Fetch Recommendations for standard and deep
-    const recommendations = await emotionBarometerService.getRecommendations(payload, onboardingData.value);
-
+  } catch (e) {
+    console.error("Save/Analyze error:", e);
+    recommendationError.value = "Произошла ошибка при сохранении или анализе";
+  } finally {
     recommendationLoading.value = false;
-
-    if (recommendations && !recommendations.error) {
-      recommendationData.value = {
-        ...recommendations,
-        mode: sessionMode.value
-      };
-    } else {
-      recommendationError.value = "Не удалось получить рекомендации. Попробуйте позже.";
-    }
   }
 };
 
