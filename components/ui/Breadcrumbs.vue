@@ -74,6 +74,7 @@ const crumbs = computed(() => {
 
       'deep-conversation': 'Глубокий разговор',
       'habit-override': 'Перепрошивка Привычек',
+      'habit-mood-journal': 'Дневник Состояния',
       'blog': 'Блог',
       'emotional-compass': 'Эмоциональный компас',
       'journal-history': 'История журнала',

@@ -411,6 +411,19 @@ const experiments = ref([
     tags: ["самопознание", "инсайты", "рефлексия"],
     path: "/space/growth/deep-conversation",
   },
+  {
+    id: "habit-mood-journal",
+    name: "Дневник Состояния",
+    description: "Компактный трекер ваших привычек и эмоциональных состояний",
+    category: "planning",
+    icon: "fas fa-feather-pointed text-emerald-600 dark:text-emerald-400",
+    duration: "1 мин",
+    questions: 1,
+    difficulty: 1,
+    status: "available",
+    tags: ["привычки", "настроение", "микро-практика"],
+    path: "/space/growth/habit-mood-journal",
+  },
 ]);
 
 const getToolsByCategory = (cat) => experiments.value.filter(e => e.category === cat);

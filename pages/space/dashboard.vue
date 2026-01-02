@@ -558,21 +558,21 @@
                 </div>
               </button>
 
-              <NuxtLink to="/profile"
-                class="p-5 rounded-xl bg-white dark:bg-slate-800/30 border border-slate-200 dark:border-slate-700/50 hover:border-cyan-500/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all duration-300 group text-left relative overflow-hidden shadow-sm dark:shadow-none">
+              <NuxtLink to="/space/growth/habit-mood-journal"
+                class="p-5 rounded-xl bg-white dark:bg-slate-800/30 border border-slate-200 dark:border-slate-700/50 hover:border-purple-500/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all duration-300 group text-left relative overflow-hidden shadow-sm dark:shadow-none">
                 <div
-                  class="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  class="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 </div>
                 <div class="relative z-10">
                   <div
-                    class="w-12 h-12 rounded-lg bg-cyan-500/10 group-hover:bg-cyan-500/20 flex items-center justify-center mb-4 transition-all duration-300 group-hover:scale-110">
-                    <i class="fas fa-user text-xl text-cyan-600 dark:text-cyan-400"></i>
+                    class="w-12 h-12 rounded-lg bg-purple-500/10 group-hover:bg-purple-500/20 flex items-center justify-center mb-4 transition-all duration-300 group-hover:scale-110">
+                    <i class="fas fa-feather-pointed text-xl text-purple-600 dark:text-purple-400"></i>
                   </div>
                   <div
-                    class="text-slate-900 dark:text-white font-medium mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
-                    Профиль
+                    class="text-slate-900 dark:text-white font-medium mb-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+                    Дневник Состояния
                   </div>
-                  <div class="text-slate-500 dark:text-slate-400 text-sm">Управление данными</div>
+                  <div class="text-slate-500 dark:text-slate-400 text-sm">Микро-трекер привычек</div>
                 </div>
               </NuxtLink>
 
