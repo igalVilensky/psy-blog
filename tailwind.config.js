@@ -45,7 +45,14 @@ export default {
           teal: "#14B8A6",
           "dark-text": "#E7E5E4",
           "dark-bg": "#1C1917",
-          "bg-soft": "#F8F8F8"
+          "bg-soft": "#F8F8F8",
+          // New Calm Palette
+          "calm-bg": "#FAFAF8",
+          "calm-dark-bg": "#101012",
+          "calm-text": "#101012",
+          "calm-dark-text": "#E4E4E7",
+          "calm-accent": "#66B8D9",
+          "calm-accent-secondary": "#6793C4"
         }
       },
       backgroundImage: {

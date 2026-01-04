@@ -14,7 +14,6 @@ import Benefits2 from "@/components/home-page/Benefits2.vue";
 import FeatureJourney2 from "@/components/home-page/FeatureJourney2.vue";
 import ProgressVis2 from "@/components/home-page/ProgressVis2.vue";
 import Community2 from "@/components/home-page/Community2.vue";
-import { useSeoMeta } from "#app";
 
 definePageMeta({
   layout: "index2",
@@ -28,6 +27,6 @@ useSeoMeta({
   description,
   ogTitle: title,
   ogDescription: description,
+  robots: 'noindex, nofollow',
 });
 </script>
-
