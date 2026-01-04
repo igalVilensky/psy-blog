@@ -29,682 +29,195 @@
       <DashboardGuestView v-if="!authStore.user" />
 
       <!-- Dashboard Content (Authorized Only) -->
-      <div v-else class="space-y-8">
-        <!-- Dashboard Header -->
-        <div class="mb-8">
-          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div>
-              <h1
-                class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white font-montserrat mb-3 tracking-tight">
-                Центр Управления
-              </h1>
-              <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
-                Единая панель мониторинга вашего прогресса, состояния и активности
-              </p>
+      <div v-else class="space-y-12 pb-24">
+
+        <!-- Pillar 0: Hero & Insight -->
+        <DashboardHero :user-name="authStore.user?.displayName" :streak="metrics.streakDays"
+          :last-activity="exercisesList[0]" @quick-action="handleQuickAction" />
+
+        <!-- Tab Navigation -->
+        <div
+          class="relative flex items-center p-1 bg-slate-100 dark:bg-slate-900 rounded-2xl w-full max-w-md mx-auto sticky top-4 z-40 border border-slate-200 dark:border-slate-800 backdrop-blur-md shadow-lg">
+          <!-- Sliding Background Pill -->
+          <div
+            class="absolute inset-y-1 left-1 bg-white dark:bg-slate-800 rounded-xl shadow-sm transition-all duration-300 ease-spring"
+            :style="{
+              width: `calc((100% - 8px) / ${tabs.length})`,
+              transform: `translateX(calc(100% * ${tabs.findIndex(t => t.id === activeTab)}))`
+            }">
+          </div>
+
+          <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
+            class="relative flex-1 w-0 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold transition-colors duration-300 z-10"
+            :class="activeTab === tab.id
+              ? 'text-cyan-600 dark:text-cyan-400'
+              : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'">
+            <i :class="tab.icon"></i>
+            <span class="hidden sm:inline">{{ tab.label }}</span>
+          </button>
+        </div>
+
+        <!-- Pillar Content with Transition -->
+        <Transition mode="out-in" name="slide-fade">
+          <!-- Pillar 1: Identity (Personality & Soul) -->
+          <section v-if="activeTab === 'identity'" key="identity" id="identity">
+            <IdentityPillar :traits="personalityTraits" :archetypes="archetypeScores" :achievements="achievements" />
+          </section>
+
+          <!-- Pillar 2: Cognition (Brain Performance) -->
+          <section v-else-if="activeTab === 'cognition'" key="cognition" id="cognition">
+            <CognitivePillar :summary="trainingSummary" :exercises="exercisesList" :heatmap="heatmapData"
+              :total-active-days="metrics.totalActiveDays" @select-exercise="openExerciseDetails" />
+          </section>
+
+          <!-- Pillar 3: Emotion (Mental Balance) -->
+          <section v-else-if="activeTab === 'emotion'" key="emotion" id="emotion">
+            <EmotionalPillar :intensity="animatedStats.averageIntensity.toFixed(1)"
+              :common-emotion="emotionBarometerStats.mostCommonEmotion" :total-entries="animatedStats.emotionEntries" />
+          </section>
+        </Transition>
+
+        <!-- Secondary Cognitive Test Results (Optional specialized view) -->
+        <div v-if="testResultsList.length > 0"
+          class="mt-12 bg-white dark:bg-slate-800/20 rounded-2xl p-8 border border-slate-200 dark:border-slate-700/50">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white font-montserrat tracking-tight">
+              Результаты Тестов</h2>
+            <NuxtLink to="/space/tests" class="text-xs text-cyan-600 hover:underline flex items-center gap-1">
+              Библиотека тестов <i class="fas fa-arrow-right"></i>
+            </NuxtLink>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div v-for="test in testResultsList" :key="test.id"
+              class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200/30">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-8 h-8 rounded-lg bg-white dark:bg-slate-800 flex items-center justify-center shadow-sm">
+                  <i :class="test.icon" class="text-sm"></i>
+                </div>
+                <span class="text-xs font-bold text-slate-700 dark:text-slate-300 truncate">{{ test.title }}</span>
+              </div>
+              <div class="text-xl font-black font-mono text-slate-900 dark:text-white">{{ test.score }}{{ test.unit }}
+              </div>
+              <div class="text-[9px] text-slate-500 uppercase mt-1">Лучший: {{ test.lastPlayed }}</div>
             </div>
           </div>
         </div>
 
+        <div class="flex justify-center pt-12">
+          <button @click="refreshData"
+            class="flex items-center gap-2 text-slate-500 hover:text-cyan-500 transition-colors text-xs font-mono">
+            <i class="fas fa-sync" :class="{ 'animate-spin': loading }"></i>
+            ОБНОВИТЬ ДАННЫЕ ЦЕНТРА
+          </button>
+        </div>
+      </div>
 
+      <!-- Exercise Details Modal -->
+      <div v-if="isExerciseModalOpen" class="relative z-50">
+        <!-- Backdrop -->
+        <div class="fixed inset-0 bg-black/25 dark:bg-black/40 backdrop-blur-sm transition-opacity"
+          @click="closeExerciseModal"></div>
 
-
-
-        <!-- Charts Section -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <!-- Progress Over Time -->
-          <div
-            class="bg-white dark:bg-slate-800/30 rounded-xl p-6 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none">
-            <div class="flex items-center justify-between mb-6">
-              <h2 class="text-xl font-bold text-slate-900 dark:text-white font-montserrat">
-                Прогресс со временем
-              </h2>
-            </div>
-            <div class="h-64 flex items-end justify-between space-x-2">
-              <div v-for="(bar, index) in progressData" :key="index"
-                class="flex-1 relative group h-full flex flex-col justify-end" @mouseenter="hoveredBar = index"
-                @mouseleave="hoveredBar = null">
-                <div
-                  class="w-full bg-gradient-to-t from-emerald-500 to-cyan-500 rounded-t-lg transition-all duration-500 cursor-pointer"
-                  :style="{ height: `${bar.value}%` }" :class="{
-                    'opacity-100 scale-105': hoveredBar === index,
-                    'opacity-70': hoveredBar !== null && hoveredBar !== index,
-                  }"></div>
-                <div class="text-center mt-2">
-                  <div class="text-slate-500 dark:text-slate-400 text-xs font-mono">
-                    {{ bar.label }}
-                  </div>
-                  <div v-if="hoveredBar === index"
-                    class="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-slate-900 border border-cyan-500/50 rounded-lg px-2 py-1 text-xs text-white font-mono whitespace-nowrap z-10 shadow-lg">
-                    {{ bar.absoluteValue }} {{ bar.absoluteValue === 1 ? 'действие' : (bar.absoluteValue > 1 &&
-                      bar.absoluteValue < 5 ? 'действия' : 'действий') }} </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Category Distribution -->
+        <!-- Modal Panel -->
+        <div class="fixed inset-0 overflow-y-auto">
+          <div class="flex min-h-full items-center justify-center p-4 text-center">
             <div
-              class="bg-white dark:bg-slate-800/30 rounded-xl p-6 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none">
-              <div class="flex items-center justify-between mb-6">
-                <h2 class="text-xl font-bold text-slate-900 dark:text-white font-montserrat">
-                  Распределение по категориям
-                </h2>
-
+              class="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white dark:bg-slate-900 p-6 text-left align-middle shadow-xl transition-all border border-slate-200 dark:border-slate-700"
+              @click.stop>
+              <div
+                class="text-lg font-medium leading-6 text-slate-900 dark:text-white flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                  <div v-if="selectedExercise" class="w-10 h-10 rounded-lg flex items-center justify-center"
+                    :class="selectedExercise.bgClass">
+                    <i :class="selectedExercise.icon"></i>
+                  </div>
+                  <span>{{ selectedExercise?.title }}</span>
+                </div>
+                <button @click="closeExerciseModal"
+                  class="text-slate-400 hover:text-slate-500 dark:hover:text-white transition-colors">
+                  <i class="fas fa-times"></i>
+                </button>
               </div>
-              <div class="space-y-4">
-                <div v-for="category in categories" :key="category.name" class="group cursor-pointer"
-                  @mouseenter="hoveredCategory = category.name" @mouseleave="hoveredCategory = null">
-                  <div class="flex items-center justify-between mb-2">
-                    <div class="flex items-center space-x-3">
-                      <div class="w-8 h-8 rounded-lg flex items-center justify-center transition-transform duration-300"
-                        :class="[
-                          category.bgClass,
-                          hoveredCategory === category.name ? 'scale-110' : '',
-                        ]">
-                        <i :class="category.icon" class="text-sm"></i>
-                      </div>
-                      <span class="text-slate-700 dark:text-white text-sm font-medium">{{
-                        category.name
-                      }}</span>
+
+              <div class="mt-6 space-y-6" v-if="selectedExercise">
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  <div class="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg text-center">
+                    <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">
+                      Средний счет
                     </div>
-                    <span class="text-slate-500 dark:text-slate-400 text-sm font-mono">{{ category.percentage }}%</span>
+                    <div class="text-lg font-bold text-slate-900 dark:text-white font-mono">
+                      {{ selectedExercise.avgScore }}{{ selectedExercise.unit }}
+                    </div>
                   </div>
-                  <div class="w-full bg-slate-100 dark:bg-slate-700/50 rounded-full h-2 overflow-hidden">
-                    <div class="h-full rounded-full transition-all duration-500" :class="[
-                      category.barClass,
-                      hoveredCategory === category.name
-                        ? 'opacity-100'
-                        : 'opacity-70',
-                    ]" :style="{ width: `${category.percentage}%` }"></div>
+                  <div class="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg text-center">
+                    <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">
+                      Лучший счет
+                    </div>
+                    <div class="text-lg font-bold text-emerald-600 dark:text-emerald-400 font-mono">
+                      {{ selectedExercise.bestScore }}{{ selectedExercise.unit }}
+                    </div>
+                  </div>
+                  <div class="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg text-center">
+                    <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">
+                      Сессий
+                    </div>
+                    <div class="text-lg font-bold text-slate-900 dark:text-white font-mono">
+                      {{ selectedExercise.playCount || selectedExercise.totalSessions || 0 }}
+                    </div>
+                  </div>
+                  <div class="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg text-center">
+                    <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">
+                      Уровень
+                    </div>
+                    <div class="text-lg font-bold text-purple-600 dark:text-purple-400 font-mono">
+                      {{ Math.floor((selectedExercise.totalSessions || 0) / 5) + 1 }}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
 
-          <!-- Training Performance Section (Moved) -->
-          <div
-            class="bg-white dark:bg-slate-800/30 rounded-xl p-6 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none mb-8">
-            <div class="flex items-center justify-between mb-6">
-              <h2 class="text-xl font-bold text-slate-900 dark:text-white font-montserrat">
-                Эффективность тренировок
-              </h2>
-              <div class="flex items-center space-x-2">
-                <span
-                  class="text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-lg">
-                  {{ trainingSummary.totalExercises }} упражнений
-                </span>
-              </div>
-            </div>
-
-            <!-- Summary Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-              <div class="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 flex items-center justify-between">
+                <!-- History List -->
                 <div>
-                  <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">Средняя точность</div>
-                  <div class="text-2xl font-bold text-slate-900 dark:text-white font-mono">{{
-                    trainingSummary.avgAccuracy
-                  }}%</div>
-                </div>
-                <div class="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
-                  <i class="fas fa-bullseye text-emerald-500"></i>
-                </div>
-              </div>
-              <div class="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 flex items-center justify-between">
-                <div>
-                  <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">Всего сессий</div>
-                  <div class="text-2xl font-bold text-slate-900 dark:text-white font-mono">{{
-                    trainingSummary.totalSessions }}</div>
-                </div>
-                <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center">
-                  <i class="fas fa-layer-group text-blue-500"></i>
-                </div>
-              </div>
-              <div class="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 flex items-center justify-between">
-                <div>
-                  <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">Лучший результат</div>
-                  <div class="text-2xl font-bold text-slate-900 dark:text-white font-mono">{{ trainingSummary.bestScore
-                  }}%</div>
-                </div>
-                <div class="w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center">
-                  <i class="fas fa-trophy text-amber-500"></i>
-                </div>
-              </div>
-            </div>
-
-            <!-- Compact Exercise List -->
-            <div class="overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700/50">
-              <table class="w-full text-left text-sm text-slate-500 dark:text-slate-400">
-                <thead
-                  class="bg-slate-50 dark:bg-slate-800/80 text-xs uppercase font-medium text-slate-500 dark:text-slate-400">
-                  <tr>
-                    <th scope="col" class="px-4 py-3">Упражнение</th>
-                    <th scope="col" class="px-4 py-3 hidden sm:table-cell">Категория</th>
-                    <th scope="col" class="px-4 py-3 text-center">Ср. Оценка</th>
-                    <th scope="col" class="px-4 py-3 text-right hidden sm:table-cell">Последняя игра</th>
-                    <th scope="col" class="px-4 py-3 text-right"></th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-200 dark:divide-slate-700/50 bg-white dark:bg-slate-900/20">
-                  <tr v-for="exercise in exercisesList" :key="exercise.id"
-                    class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors cursor-pointer"
-                    @click="openExerciseDetails(exercise)">
-                    <td class="px-4 py-3 font-medium text-slate-900 dark:text-white">
+                  <h4 class="text-sm font-medium text-slate-900 dark:text-white mb-3">
+                    История сессий
+                  </h4>
+                  <div
+                    class="max-h-48 overflow-y-auto space-y-2 pr-2 scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-slate-700">
+                    <div v-for="(session, index) in selectedExercise.history || []" :key="index"
+                      class="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-800/30 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors">
                       <div class="flex items-center space-x-3">
-                        <div class="w-8 h-8 rounded-lg flex items-center justify-center" :class="exercise.bgClass">
-                          <i :class="exercise.icon"></i>
-                        </div>
-                        <span>{{ exercise.title }}</span>
+                        <div class="w-2 h-2 rounded-full" :class="session.score >= 80
+                          ? 'bg-emerald-500'
+                          : session.score >= 60
+                            ? 'bg-amber-500'
+                            : 'bg-red-500'
+                          "></div>
+                        <span class="text-sm text-slate-600 dark:text-slate-300">{{
+                          formatDate(session.date)
+                        }}</span>
                       </div>
-                    </td>
-                    <td class="px-4 py-3 hidden sm:table-cell">
-                      <span class="text-slate-600 dark:text-slate-400">{{ exercise.category }}</span>
-                    </td>
-                    <td class="px-4 py-3 text-center">
-                      <span class="font-mono font-medium text-slate-900 dark:text-white">{{ exercise.avgScore }}{{
-                        exercise.unit }}</span>
-                    </td>
-                    <td class="px-4 py-3 text-right hidden sm:table-cell">
-                      <span class="text-slate-600 dark:text-slate-400">{{ exercise.lastPlayed }}</span>
-                    </td>
-                    <td class="px-4 py-3 text-right">
-                      <i class="fas fa-chevron-right text-xs"></i>
-                    </td>
-                  </tr>
-                  <tr v-if="exercisesList.length === 0">
-                    <td colspan="5" class="px-4 py-8 text-center text-slate-500">
-                      Нет данных о тренировках
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <!-- Cognitive Test Results Section (New) -->
-          <div v-if="testResultsList.length > 0"
-            class="bg-white dark:bg-slate-800/30 rounded-xl p-6 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none mb-8">
-            <div class="flex items-center justify-between mb-6">
-              <h2 class="text-xl font-bold text-slate-900 dark:text-white font-montserrat">
-                Результаты когнитивных тестов
-              </h2>
-              <NuxtLink to="/space/tests" class="text-xs text-cyan-600 dark:text-cyan-400 hover:underline">
-                Все тесты <i class="fas fa-arrow-right ml-1"></i>
-              </NuxtLink>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div v-for="test in testResultsList" :key="test.id"
-                class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 hover:border-cyan-500/30 transition-all duration-300">
-                <div class="flex items-center space-x-3 mb-4">
-                  <div class="w-10 h-10 rounded-lg flex items-center justify-center" :class="test.bgClass">
-                    <i :class="test.icon" class="text-lg"></i>
-                  </div>
-                  <div>
-                    <h3 class="font-bold text-slate-900 dark:text-white text-sm">{{ test.title }}</h3>
-                    <p class="text-[10px] text-slate-500 uppercase tracking-wider">{{ test.category }}</p>
-                  </div>
-                </div>
-                <div class="flex items-end justify-between">
-                  <div>
-                    <div class="text-2xl font-black text-slate-900 dark:text-white font-mono leading-none">
-                      {{ test.score }}{{ test.unit }}
+                      <span class="font-mono text-sm font-medium text-slate-900 dark:text-white">
+                        {{ session.score }}{{ selectedExercise.unit }}
+                      </span>
                     </div>
-                    <div class="text-[10px] text-slate-400 mt-1 uppercase">Лучший результат</div>
-                  </div>
-                  <div class="text-right">
-                    <div class="text-[10px] text-slate-400 mb-1 uppercase">Последний</div>
-                    <div class="text-xs font-medium text-slate-600 dark:text-slate-300">{{ test.lastPlayed }}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Quick Stats (Restored) -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8">
-            <!-- Cognitive Scan Card (Emotion) -->
-            <div
-              class="bg-gradient-to-br from-white to-slate-50 dark:from-slate-800/50 dark:to-slate-800/30 rounded-xl p-6 border border-cyan-500/20 backdrop-blur-sm hover:border-cyan-500/40 transition-all duration-300 group relative overflow-hidden shadow-sm dark:shadow-none"
-              @mouseenter="activeCard = 'cognitive'" @mouseleave="activeCard = null">
-              <div
-                class="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              </div>
-              <div class="relative z-10">
-                <div class="flex items-center justify-between mb-4">
-                  <div class="text-cyan-600 dark:text-cyan-400/70 text-xs font-mono tracking-wider">
-                    ЭМОЦИОНАЛЬНЫЙ АНАЛИЗ
-                  </div>
-                  <div
-                    class="w-10 h-10 rounded-lg bg-cyan-500/10 flex items-center justify-center transition-transform duration-300"
-                    :class="{ 'scale-110': activeCard === 'cognitive' }">
-                    <i class="fas fa-brain text-cyan-600 dark:text-cyan-400 text-lg"></i>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="text-3xl font-bold text-slate-900 dark:text-white mb-1 font-mono">
-                    {{ animatedStats.emotionEntries }}
-                  </div>
-                  <div class="text-slate-500 dark:text-slate-400 text-sm">Записей в барометре</div>
-                </div>
-                <div class="w-full bg-slate-200 dark:bg-slate-700/50 rounded-full h-2 overflow-hidden">
-                  <div
-                    class="h-full bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full transition-all duration-1000"
-                    :style="{
-                      width: `${Math.min(
-                        100,
-                        (animatedStats.emotionEntries / 10) * 100
-                      )}%`,
-                    }"></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Active Tests Card (Archetypes) -->
-            <div
-              class="bg-gradient-to-br from-white to-slate-50 dark:from-slate-800/50 dark:to-slate-800/30 rounded-xl p-6 border border-purple-500/20 backdrop-blur-sm hover:border-purple-500/40 transition-all duration-300 group relative overflow-hidden shadow-sm dark:shadow-none"
-              @mouseenter="activeCard = 'tests'" @mouseleave="activeCard = null">
-              <div
-                class="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              </div>
-              <div class="relative z-10">
-                <div class="flex items-center justify-between mb-4">
-                  <div class="text-purple-600 dark:text-purple-400/70 text-xs font-mono tracking-wider">
-                    АРХЕТИПЫ
-                  </div>
-                  <div
-                    class="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center transition-transform duration-300"
-                    :class="{ 'scale-110': activeCard === 'tests' }">
-                    <i class="fas fa-vial text-purple-600 dark:text-purple-400 text-lg"></i>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="text-3xl font-bold text-slate-900 dark:text-white mb-1 font-mono">
-                    {{ archetypeScores.length }}
-                  </div>
-                  <div class="text-slate-500 dark:text-slate-400 text-sm">
-                    Проанализированных архетипов
-                  </div>
-                </div>
-                <div class="flex space-x-1">
-                  <div v-for="i in 5" :key="i" class="flex-1 h-2 rounded-full transition-all duration-300" :class="i <= Math.min(5, archetypeScores.length)
-                    ? 'bg-gradient-to-r from-purple-500 to-pink-500'
-                    : 'bg-slate-200 dark:bg-slate-700/50'
-                    "></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Data Points Card (Stats) -->
-            <div
-              class="bg-gradient-to-br from-white to-slate-50 dark:from-slate-800/50 dark:to-slate-800/30 rounded-xl p-6 border border-emerald-500/20 backdrop-blur-sm hover:border-emerald-500/40 transition-all duration-300 group relative overflow-hidden shadow-sm dark:shadow-none"
-              @mouseenter="activeCard = 'data'" @mouseleave="activeCard = null">
-              <div
-                class="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              </div>
-              <div class="relative z-10">
-                <div class="flex items-center justify-between mb-4">
-                  <div class="text-emerald-600 dark:text-emerald-400/70 text-xs font-mono tracking-wider">
-                    СТАТИСТИКА
-                  </div>
-                  <div
-                    class="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center transition-transform duration-300"
-                    :class="{ 'scale-110': activeCard === 'data' }">
-                    <i class="fas fa-database text-emerald-600 dark:text-emerald-400 text-lg"></i>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="text-3xl font-bold text-slate-900 dark:text-white mb-1 font-mono">
-                    {{ animatedStats.averageIntensity.toFixed(1) }}
-                  </div>
-                  <div class="text-slate-500 dark:text-slate-400 text-sm">
-                    Средняя интенсивность эмоций
-                  </div>
-                </div>
-                <div class="flex items-center space-x-2 text-emerald-600 dark:text-emerald-400 text-sm">
-                  <i class="fas fa-heart text-xs"></i>
-                  <span class="font-mono">{{
-                    emotionBarometerStats.mostCommonEmotion
-                  }}</span>
-                  <span class="text-slate-500 dark:text-slate-500">частая эмоция</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Personality Radar & Recent Achievements -->
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-            <!-- Personality Radar -->
-            <div
-              class="lg:col-span-2 bg-white dark:bg-slate-800/30 rounded-xl p-6 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none">
-              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-                <div>
-                  <h2 class="text-xl font-bold text-slate-900 dark:text-white font-montserrat">
-                    Профиль личности (Big Five)
-                  </h2>
-                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                    Основано на результатах теста Big 5
-                  </p>
-                </div>
-                <div class="flex items-center gap-3">
-                  <NuxtLink to="/space/tests/big-5-model"
-                    class="text-xs px-3 py-1.5 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 hover:bg-purple-500/20 transition-colors border border-purple-500/20">
-                    <i class="fas fa-brain mr-1"></i>
-                    Пройти тест
-                  </NuxtLink>
-                  <div class="text-xs text-slate-500 dark:text-slate-400 font-mono">
-                    ОБНОВЛЕНО: {{ lastUpdated }}
-                  </div>
-                </div>
-              </div>
-              <div class="relative h-80 flex items-center justify-center">
-                <!-- Radar Chart SVG -->
-                <svg viewBox="0 0 500 500" class="w-full h-full max-w-md">
-                  <!-- Background circles -->
-                  <circle v-for="i in 5" :key="`circle-${i}`" cx="250" cy="250" :r="i * 40" fill="none"
-                    stroke="currentColor" class="stroke-slate-200 dark:stroke-slate-700/30" stroke-width="1.5" />
-
-                  <!-- Radar axes -->
-                  <line v-for="(trait, index) in personalityTraits" :key="`axis-${trait.name}`" x1="250" y1="250"
-                    :x2="getAxisEndpoint(index).x" :y2="getAxisEndpoint(index).y" stroke="currentColor"
-                    class="stroke-slate-200 dark:stroke-slate-700/50" stroke-width="1.5" />
-
-                  <!-- Data polygon -->
-                  <polygon :points="radarPolygonPoints"
-                    class="fill-cyan-500/20 dark:fill-cyan-400/10 stroke-cyan-500 dark:stroke-cyan-400"
-                    stroke-width="3" />
-
-                  <!-- Data points -->
-                  <circle v-for="(point, index) in radarDataPoints" :key="`point-${index}`" :cx="point.x" :cy="point.y"
-                    :r="hoveredTrait === personalityTraits[index].name ? 8 : 6"
-                    :fill="getTraitColor(personalityTraits[index].color)"
-                    class="transition-all duration-300 cursor-pointer"
-                    @mouseenter="hoveredTrait = personalityTraits[index].name" @mouseleave="hoveredTrait = null" />
-
-                  <!-- Trait labels -->
-                  <g v-for="(trait, index) in personalityTraits" :key="`label-${trait.name}`">
-                    <text :x="getLabelPosition(index).x" :y="getLabelPosition(index).y" text-anchor="middle"
-                      class="text-sm font-semibold fill-slate-700 dark:fill-slate-300 cursor-pointer select-none"
-                      @mouseenter="hoveredTrait = trait.name" @mouseleave="hoveredTrait = null">
-                      {{ trait.name }}
-                    </text>
-                    <text :x="getLabelPosition(index).x" :y="getLabelPosition(index).y + 18" text-anchor="middle"
-                      class="text-base font-bold fill-cyan-600 dark:fill-cyan-400 select-none">
-                      {{ trait.value }}%
-                    </text>
-                  </g>
-                </svg>
-              </div>
-            </div>
-
-            <!-- Recent Achievements -->
-            <div v-if="achievements?.length > 0"
-              class="bg-white dark:bg-slate-800/30 rounded-xl p-6 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none">
-              <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-6 font-montserrat">
-                Достижения
-              </h2>
-              <div class="space-y-4">
-                <div v-for="achievement in achievements" :key="achievement.id"
-                  class="p-4 rounded-xl border transition-all duration-300 cursor-pointer group" :class="[
-                    achievement.unlocked
-                      ? 'bg-white dark:bg-slate-800/50 border-amber-500/30 hover:border-amber-500/50'
-                      : 'bg-slate-50 dark:bg-slate-800/20 border-slate-200 dark:border-slate-700/30 hover:border-slate-300 dark:hover:border-slate-700/50',
-                  ]">
-                  <div class="flex items-start space-x-3">
-                    <div
-                      class="w-12 h-12 rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
-                      :class="achievement.unlocked ? achievement.bgClass : 'bg-slate-200 dark:bg-slate-700/50'
-                        ">
-                      <i :class="achievement.icon" class="text-xl"
-                        :style="{ opacity: achievement.unlocked ? 1 : 0.3 }"></i>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                      <h3 class="font-medium mb-1" :class="achievement.unlocked ? 'text-slate-900 dark:text-white' : 'text-slate-500'
-                        ">
-                        {{ achievement.name }}
-                      </h3>
-                      <p class="text-slate-500 dark:text-slate-400 text-xs mb-2">
-                        {{ achievement.description }}
-                      </p>
-                      <div v-if="achievement.unlocked" class="text-xs text-amber-600 dark:text-amber-400 font-mono">
-                        {{ achievement.date }}
-                      </div>
-                      <div v-else class="text-xs text-slate-400 dark:text-slate-500 font-mono">
-                        Заблокировано
-                      </div>
+                    <div v-if="!selectedExercise.history?.length"
+                      class="text-center py-4 text-sm text-slate-500 dark:text-slate-400">
+                      История пуста
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
 
-
-
-          <!-- Activity Heatmap -->
-          <div
-            class="bg-white dark:bg-slate-800/30 rounded-xl p-6 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none mb-8">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-              <h2 class="text-xl font-bold text-slate-900 dark:text-white font-montserrat">
-                Тепловая карта активности
-              </h2>
-              <div class="flex items-center space-x-2 text-xs text-slate-500 dark:text-slate-400">
-                <span>Меньше</span>
-                <div class="flex space-x-1">
-                  <div class="w-3 h-3 rounded bg-slate-200 dark:bg-slate-700/50"></div>
-                  <div class="w-3 h-3 rounded bg-emerald-500/20"></div>
-                  <div class="w-3 h-3 rounded bg-emerald-500/40"></div>
-                  <div class="w-3 h-3 rounded bg-emerald-500/60"></div>
-                  <div class="w-3 h-3 rounded bg-emerald-500/80"></div>
-                  <div class="w-3 h-3 rounded bg-emerald-500"></div>
-                </div>
-                <span>Больше</span>
-              </div>
-            </div>
-            <div class="overflow-x-auto">
-              <div class="inline-flex space-x-1">
-                <div v-for="week in 52" :key="week" class="flex flex-col space-y-1">
-                  <div v-for="day in 7" :key="`${week}-${day}`"
-                    class="w-3 h-3 rounded cursor-pointer transition-all duration-200 hover:scale-125"
-                    :class="getHeatmapColor(week, day)" :title="`Неделя ${week}, День ${day}`"></div>
-                </div>
-              </div>
-            </div>
-            <div class="mt-4 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-              <span>52 недели активности</span>
-              <span>{{ metrics.totalActiveDays }} активных дней</span>
-            </div>
-          </div>
-
-          <!-- Quick Actions -->
-          <div v-if="!loading">
-            <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6 font-montserrat">
-              Быстрые Действия
-            </h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <NuxtLink to="/space/growth/emotional-compass"
-                class="p-5 rounded-xl bg-white dark:bg-slate-800/30 border border-slate-200 dark:border-slate-700/50 hover:border-emerald-500/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all duration-300 group text-left relative overflow-hidden shadow-sm dark:shadow-none">
-                <div
-                  class="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                </div>
-                <div class="relative z-10">
-                  <div
-                    class="w-12 h-12 rounded-lg bg-emerald-500/10 group-hover:bg-emerald-500/20 flex items-center justify-center mb-4 transition-all duration-300 group-hover:scale-110">
-                    <i class="fas fa-heart-pulse text-xl text-emerald-600 dark:text-emerald-400"></i>
-                  </div>
-                  <div
-                    class="text-slate-900 dark:text-white font-medium mb-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
-                    Эмоциональный Компас
-                  </div>
-                  <div class="text-slate-500 dark:text-slate-400 text-sm">Запись эмоций и анализ</div>
-                </div>
-              </NuxtLink>
-
-              <button @click="viewArchetypes"
-                class="p-5 rounded-xl bg-white dark:bg-slate-800/30 border border-slate-200 dark:border-slate-700/50 hover:border-amber-500/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all duration-300 group text-left relative overflow-hidden shadow-sm dark:shadow-none">
-                <div
-                  class="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                </div>
-                <div class="relative z-10">
-                  <div
-                    class="w-12 h-12 rounded-lg bg-amber-500/10 group-hover:bg-amber-500/20 flex items-center justify-center mb-4 transition-all duration-300 group-hover:scale-110">
-                    <i class="fas fa-brain text-xl text-amber-600 dark:text-amber-400"></i>
-                  </div>
-                  <div
-                    class="text-slate-900 dark:text-white font-medium mb-2 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
-                    Архетипы
-                  </div>
-                  <div class="text-slate-500 dark:text-slate-400 text-sm">Просмотр результатов теста</div>
-                </div>
-              </button>
-
-              <NuxtLink to="/space/growth/habit-mood-journal"
-                class="p-5 rounded-xl bg-white dark:bg-slate-800/30 border border-slate-200 dark:border-slate-700/50 hover:border-purple-500/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all duration-300 group text-left relative overflow-hidden shadow-sm dark:shadow-none">
-                <div
-                  class="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                </div>
-                <div class="relative z-10">
-                  <div
-                    class="w-12 h-12 rounded-lg bg-purple-500/10 group-hover:bg-purple-500/20 flex items-center justify-center mb-4 transition-all duration-300 group-hover:scale-110">
-                    <i class="fas fa-feather-pointed text-xl text-purple-600 dark:text-purple-400"></i>
-                  </div>
-                  <div
-                    class="text-slate-900 dark:text-white font-medium mb-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
-                    Дневник Состояния
-                  </div>
-                  <div class="text-slate-500 dark:text-slate-400 text-sm">Микро-трекер привычек</div>
-                </div>
-              </NuxtLink>
-
-              <button
-                class="p-5 rounded-xl bg-white dark:bg-slate-800/30 border border-slate-200 dark:border-slate-700/50 hover:border-purple-500/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all duration-300 group text-left relative overflow-hidden shadow-sm dark:shadow-none"
-                @click="refreshData">
-                <div
-                  class="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                </div>
-                <div class="relative z-10">
-                  <div
-                    class="w-12 h-12 rounded-lg bg-purple-500/10 group-hover:bg-purple-500/20 flex items-center justify-center mb-4 transition-all duration-300 group-hover:scale-110">
-                    <i class="fas fa-sync text-xl text-purple-600 dark:text-purple-400"></i>
-                  </div>
-                  <div
-                    class="text-slate-900 dark:text-white font-medium mb-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
-                    Обновить
-                  </div>
-                  <div class="text-slate-500 dark:text-slate-400 text-sm">Синхронизировать данные</div>
-                </div>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Exercise Details Modal -->
-        <div v-if="isExerciseModalOpen" class="relative z-50">
-          <!-- Backdrop -->
-          <div class="fixed inset-0 bg-black/25 dark:bg-black/40 backdrop-blur-sm transition-opacity"
-            @click="closeExerciseModal"></div>
-
-          <!-- Modal Panel -->
-          <div class="fixed inset-0 overflow-y-auto">
-            <div class="flex min-h-full items-center justify-center p-4 text-center">
-              <div
-                class="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white dark:bg-slate-900 p-6 text-left align-middle shadow-xl transition-all border border-slate-200 dark:border-slate-700"
-                @click.stop>
-                <div
-                  class="text-lg font-medium leading-6 text-slate-900 dark:text-white flex items-center justify-between">
-                  <div class="flex items-center space-x-3">
-                    <div v-if="selectedExercise" class="w-10 h-10 rounded-lg flex items-center justify-center"
-                      :class="selectedExercise.bgClass">
-                      <i :class="selectedExercise.icon"></i>
-                    </div>
-                    <span>{{ selectedExercise?.title }}</span>
-                  </div>
-                  <button @click="closeExerciseModal"
-                    class="text-slate-400 hover:text-slate-500 dark:hover:text-white transition-colors">
-                    <i class="fas fa-times"></i>
+                <div class="mt-6 flex justify-end gap-3">
+                  <button type="button"
+                    class="inline-flex justify-center rounded-lg border border-transparent bg-slate-100 dark:bg-slate-800 px-4 py-2 text-sm font-medium text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500 focus-visible:ring-offset-2 transition-all"
+                    @click="closeExerciseModal">
+                    Закрыть
                   </button>
-                </div>
-
-                <div class="mt-6 space-y-6" v-if="selectedExercise">
-                  <!-- Stats Grid -->
-                  <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                    <div class="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg text-center">
-                      <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">
-                        Средний счет
-                      </div>
-                      <div class="text-lg font-bold text-slate-900 dark:text-white font-mono">
-                        {{ selectedExercise.avgScore }}{{ selectedExercise.unit }}
-                      </div>
-                    </div>
-                    <div class="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg text-center">
-                      <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">
-                        Лучший счет
-                      </div>
-                      <div class="text-lg font-bold text-emerald-600 dark:text-emerald-400 font-mono">
-                        {{ selectedExercise.bestScore }}{{ selectedExercise.unit }}
-                      </div>
-                    </div>
-                    <div class="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg text-center">
-                      <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">
-                        Сессий
-                      </div>
-                      <div class="text-lg font-bold text-slate-900 dark:text-white font-mono">
-                        {{ selectedExercise.playCount || selectedExercise.totalSessions || 0 }}
-                      </div>
-                    </div>
-                    <div class="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg text-center">
-                      <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">
-                        Уровень
-                      </div>
-                      <div class="text-lg font-bold text-purple-600 dark:text-purple-400 font-mono">
-                        {{ Math.floor((selectedExercise.totalSessions || 0) / 5) + 1 }}
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- History List -->
-                  <div>
-                    <h4 class="text-sm font-medium text-slate-900 dark:text-white mb-3">
-                      История сессий
-                    </h4>
-                    <div
-                      class="max-h-48 overflow-y-auto space-y-2 pr-2 scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-slate-700">
-                      <div v-for="(session, index) in selectedExercise.history || []" :key="index"
-                        class="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-800/30 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors">
-                        <div class="flex items-center space-x-3">
-                          <div class="w-2 h-2 rounded-full" :class="session.score >= 80
-                            ? 'bg-emerald-500'
-                            : session.score >= 60
-                              ? 'bg-amber-500'
-                              : 'bg-red-500'
-                            "></div>
-                          <span class="text-sm text-slate-600 dark:text-slate-300">{{
-                            formatDate(session.date)
-                          }}</span>
-                        </div>
-                        <span class="font-mono text-sm font-medium text-slate-900 dark:text-white">
-                          {{ session.score }}{{ selectedExercise.unit }}
-                        </span>
-                      </div>
-                      <div v-if="!selectedExercise.history?.length"
-                        class="text-center py-4 text-sm text-slate-500 dark:text-slate-400">
-                        История пуста
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="mt-6 flex justify-end gap-3">
-                    <button type="button"
-                      class="inline-flex justify-center rounded-lg border border-transparent bg-slate-100 dark:bg-slate-800 px-4 py-2 text-sm font-medium text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500 focus-visible:ring-offset-2 transition-all"
-                      @click="closeExerciseModal">
-                      Закрыть
-                    </button>
-                    <NuxtLink :to="selectedExercise.link"
-                      class="inline-flex justify-center rounded-lg border border-transparent bg-cyan-600 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 transition-all shadow-lg shadow-cyan-500/30">
-                      <i class="fas fa-play mr-2"></i>
-                      Начать тренировку
-                    </NuxtLink>
-                  </div>
+                  <NuxtLink :to="selectedExercise.link"
+                    class="inline-flex justify-center rounded-lg border border-transparent bg-cyan-600 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 transition-all shadow-lg shadow-cyan-500/30">
+                    <i class="fas fa-play mr-2"></i>
+                    Начать тренировку
+                  </NuxtLink>
                 </div>
               </div>
             </div>
@@ -712,6 +225,7 @@
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script setup>
@@ -723,6 +237,10 @@ import { getEmotionBarometerStats } from "~/api/firebase/emotionBarometer";
 import { getLatestUserAssessment } from "~/api/firebase/assessments";
 import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
 import DashboardGuestView from "~/components/space/DashboardGuestView.vue";
+import DashboardHero from "~/components/space/dashboard/DashboardHero.vue";
+import IdentityPillar from "~/components/space/dashboard/IdentityPillar.vue";
+import CognitivePillar from "~/components/space/dashboard/CognitivePillar.vue";
+import EmotionalPillar from "~/components/space/dashboard/EmotionalPillar.vue";
 
 definePageMeta({
   layout: "laboratory",
@@ -743,19 +261,27 @@ const emotionBarometerStats = ref({
 });
 const archetypeScores = ref([]);
 const profession = ref("");
-const activeCard = ref(null);
 const animatedStats = reactive({
   emotionEntries: 0,
   averageIntensity: 0,
 });
+const activeTab = ref('identity');
+const tabs = [
+  { id: 'identity', label: 'Идентичность', icon: 'fas fa-fingerprint' },
+  { id: 'cognition', label: 'Когниция', icon: 'fas fa-brain' },
+  { id: 'emotion', label: 'Эмоции', icon: 'fas fa-heart-pulse' },
+];
 const sessionId = computed(() => `LAB-${Date.now().toString(36).toUpperCase()}`);
+
+const handleQuickAction = (action) => {
+  if (action === 'test') router.push('/space/tests');
+  if (action === 'emotion') router.push('/space/growth/emotional-compass');
+  if (action === 'archetypes') viewArchetypes();
+};
 
 // --- STATE from ANALYSIS ---
 const selectedPeriod = ref("month");
 const activeMetric = ref(null);
-const hoveredBar = ref(null);
-const hoveredCategory = ref(null);
-const hoveredTrait = ref(null);
 const patternResults = ref([]);
 const mentalShiftResults = ref([]);
 const targetTrackingResults = ref([]);
