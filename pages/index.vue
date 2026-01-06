@@ -436,23 +436,7 @@
     </section>
 
     <!-- 9. FOOTER -->
-    <footer class="pt-24 pb-12 border-t border-stone-100 dark:border-stone-800 reveal-on-scroll">
-      <div class="container mx-auto px-6 max-w-5xl text-center mb-16">
-        <p class="text-2xl font-light italic text-stone-800 dark:text-stone-200 mb-8">
-          «Развитие — это осознанное движение навстречу собственному потенциалу»
-        </p>
-      </div>
-
-      <div
-        class="container mx-auto px-6 border-t border-stone-100 dark:border-stone-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-stone-500">
-        <div class="opacity-70">&copy; {{ new Date().getFullYear() }} MindQLab.</div>
-
-        <nav class="flex gap-6">
-          <NuxtLink to="/legal/privacy" class="hover:text-mindqlab-calm-accent">Политика конфиденциальности</NuxtLink>
-          <NuxtLink to="/legal/terms" class="hover:text-mindqlab-calm-accent">Условия использования</NuxtLink>
-        </nav>
-      </div>
-    </footer>
+    <Footer class="reveal-on-scroll" />
 
   </div>
 </template>
@@ -464,6 +448,7 @@ import { fetchPosts } from "~/api/sanity/posts";
 import { getImageUrl } from "~/api/sanity/client";
 import { useAuthStore } from "~/stores/auth";
 import { useThemeStore } from "~/stores/theme"; // Import theme store
+import Footer from "~/components/ui/Footer.vue";
 
 // Disable layout inheritance to have full control
 definePageMeta({
