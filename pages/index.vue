@@ -51,6 +51,13 @@
         </div>
       </div>
 
+      <!-- Node Movement Animation -->
+      <div class="absolute inset-0 z-0 opacity-70 dark:opacity-30">
+        <ClientOnly>
+          <CursorNeuralVisualizer />
+        </ClientOnly>
+      </div>
+
       <div class="container mx-auto px-6 relative z-10 text-center max-w-4xl">
         <h1 class="text-4xl md:text-6xl font-light tracking-tight mb-6 leading-[1.15] animate-fade-up">
           Система персонального развития<br class="hidden md:block" /> на основе диагностики и прогресса
@@ -448,6 +455,7 @@ import { fetchPosts } from "~/api/sanity/posts";
 import { getImageUrl } from "~/api/sanity/client";
 import { useAuthStore } from "~/stores/auth";
 import { useThemeStore } from "~/stores/theme"; // Import theme store
+import CursorNeuralVisualizer from '~/components/space/CursorNeuralVisualizer.vue';
 import Footer from "~/components/ui/Footer.vue";
 
 // Disable layout inheritance to have full control
