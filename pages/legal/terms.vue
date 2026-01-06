@@ -1,43 +1,43 @@
 <template>
-  <div class="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div
+    class="min-h-screen bg-mindqlab-calm-bg dark:bg-mindqlab-calm-dark-bg text-stone-900 dark:text-stone-100 font-sans transition-colors duration-500">
+    <TopBar />
 
+    <div class="max-w-5xl mx-auto px-6 py-20">
       <!-- Header Section -->
-      <div class="mb-12 text-center relative mt-8">
-        <div
-          class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-3xl -z-10">
-        </div>
-
+      <div class="mb-20 text-center animate-fade-up">
         <span
-          class="inline-block px-4 py-1.5 rounded-full bg-cyan-100 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400 text-sm font-medium mb-6 border border-cyan-200 dark:border-cyan-700/50">
+          class="inline-block px-4 py-1 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400 text-xs font-medium mb-6 uppercase tracking-widest border border-stone-200 dark:border-stone-700">
           Юридическая информация
         </span>
 
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-6 tracking-tight">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-light text-stone-900 dark:text-white mb-8 tracking-tight">
           Пользовательское соглашение
         </h1>
 
-        <p class="text-lg sm:text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
+        <p
+          class="text-lg md:text-xl text-stone-500 dark:text-stone-400 max-w-3xl mx-auto leading-relaxed font-light italic">
           Условия использования платформы MindQ Lab
         </p>
       </div>
 
       <!-- Terms Content -->
       <div
-        class="bg-white dark:bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-cyan-500/20 p-6 sm:p-8 mb-12 shadow-sm dark:shadow-none">
+        class="bg-white dark:bg-stone-900/40 backdrop-blur-xl rounded-[3rem] border border-stone-100 dark:border-stone-800/50 p-8 md:p-12 mb-20">
         <!-- Last Updated Date -->
-        <div class="text-sm text-slate-500 dark:text-slate-400 mb-8">
+        <div class="text-xs text-stone-400 dark:text-stone-600 mb-12 uppercase tracking-widest">
           Последнее обновление: {{ formattedDate }}
         </div>
 
         <!-- Table of Contents -->
         <nav
-          class="mb-12 p-6 bg-slate-50 dark:bg-cyan-500/5 rounded-xl border border-slate-200 dark:border-cyan-500/10">
-          <h2 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">Содержание</h2>
-          <ul class="space-y-2">
-            <li v-for="(section, index) in sections" :key="index">
+          class="mb-16 p-8 bg-stone-50/50 dark:bg-stone-800/20 rounded-[2rem] border border-stone-100/50 dark:border-stone-800/30">
+          <h2 class="text-lg font-medium text-stone-900 dark:text-white mb-6">Содержание</h2>
+          <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
+            <li v-for="(section, index) in sections" :key="index" class="flex items-center">
+              <span class="w-1.5 h-1.5 rounded-full bg-stone-200 dark:bg-stone-700 mr-3"></span>
               <a :href="`#section-${index + 1}`"
-                class="text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300 transition-colors duration-200">
+                class="text-stone-600 dark:text-stone-400 hover:text-mindqlab-calm-accent transition-colors duration-300 font-light">
                 {{ section.title }}
               </a>
             </li>
@@ -45,13 +45,16 @@
         </nav>
 
         <!-- Terms Sections -->
-        <div class="space-y-16">
+        <div class="space-y-20">
           <section v-for="(section, index) in sections" :key="index" :id="`section-${index + 1}`"
-            class="scroll-mt-24 pt-8 first:pt-0">
-            <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6">
-              {{ index + 1 }}. {{ section.title }}
+            class="scroll-mt-32 pt-10 border-t border-stone-50 dark:border-stone-800/30 first:border-t-0 first:pt-0">
+            <h2 class="text-2xl md:text-3xl font-light text-stone-900 dark:text-white mb-8">
+              <span class="text-mindqlab-calm-accent mr-4 opacity-50">{{ (index + 1).toString().padStart(2, '0')
+              }}</span>
+              {{ section.title }}
             </h2>
-            <div class="text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-line">
+            <div
+              class="text-stone-600 dark:text-stone-400 leading-relaxed whitespace-pre-line font-light prose-stone dark:prose-invert max-w-none">
               {{ section.content }}
             </div>
           </section>
@@ -59,30 +62,33 @@
 
         <!-- Contact Section -->
         <div
-          class="mt-16 p-6 bg-gradient-to-r from-cyan-500/5 to-blue-500/5 dark:from-cyan-500/10 dark:to-blue-500/10 rounded-xl border border-cyan-200 dark:border-cyan-500/20">
-          <h2 class="text-xl font-semibold text-slate-900 dark:text-white mb-4">
+          class="mt-20 p-10 bg-stone-50/50 dark:bg-stone-800/20 rounded-[2.5rem] border border-stone-100 dark:border-stone-800/50 text-center">
+          <h2 class="text-2xl font-light text-stone-900 dark:text-white mb-6">
             Свяжитесь с нами
           </h2>
-          <p class="text-slate-600 dark:text-slate-300 mb-4">
-            Если у вас возникли вопросы относительно пользовательского
-            соглашения, пожалуйста, свяжитесь с нами:
+          <p class="text-stone-500 dark:text-stone-400 mb-8 max-w-2xl mx-auto font-light">
+            Если у вас возникли вопросы относительно пользовательского соглашения, пожалуйста, свяжитесь с нами:
           </p>
           <a href="mailto:contact@mindqlab.com"
-            class="inline-flex items-center gap-2 text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300 transition-colors duration-200 font-medium">
-            <i class="fas fa-envelope"></i>
-            contact@mindqlab.com
+            class="inline-flex flex-col sm:flex-row items-center gap-3 px-6 sm:px-8 py-4 bg-white dark:bg-stone-900 border border-stone-100 dark:border-stone-800 text-stone-900 dark:text-white rounded-[2rem] sm:rounded-full font-medium transition-all duration-300 hover:border-mindqlab-calm-accent shadow-sm max-w-full overflow-hidden">
+            <i class="fas fa-envelope text-mindqlab-calm-accent"></i>
+            <span class="truncate sm:overflow-visible max-w-full text-sm sm:text-base">contact@mindqlab.com</span>
           </a>
         </div>
       </div>
     </div>
+
+    <Footer />
   </div>
 </template>
 
 <script setup>
-
 definePageMeta({
-  layout: "laboratory",
+  layout: "default",
 });
+
+import TopBar from '~/components/navigation/TopBar.vue';
+import Footer from '~/components/ui/Footer.vue';
 
 const formattedDate = new Date().toLocaleDateString("ru-RU", {
   year: "numeric",
@@ -181,3 +187,20 @@ const sections = [
 ];
 </script>
 
+<style scoped>
+.animate-fade-up {
+  animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>
