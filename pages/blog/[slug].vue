@@ -1,220 +1,175 @@
 <template>
-  <main class="relative min-h-screen bg-white dark:bg-slate-950 transition-colors duration-300">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <div
+    class="min-h-screen bg-mindqlab-calm-bg dark:bg-mindqlab-calm-dark-bg text-stone-900 dark:text-stone-100 font-sans transition-colors duration-500 overflow-x-hidden">
+
+    <!-- Navigation -->
+    <TopBar />
+
+    <main class="container mx-auto max-w-4xl px-6 py-12">
       <!-- Back Navigation -->
-      <Breadcrumbs :items="[
-        { label: 'Блог', to: '/blog' },
-        { label: post?.title || 'Статья', to: '' }
-      ]" />
+      <nav class="mb-12 animate-fade-up" aria-label="Breadcrumb">
+        <ol class="flex items-center space-x-3 text-sm">
+          <li class="flex items-center">
+            <NuxtLink to="/blog"
+              class="text-stone-400 hover:text-mindqlab-calm-accent transition-colors flex items-center">
+              <i class="fas fa-arrow-left mr-2 text-[10px]"></i>
+              <span>Блог</span>
+            </NuxtLink>
+          </li>
+          <li class="flex items-center">
+            <i class="fas fa-chevron-right text-stone-200 dark:text-stone-800 mx-2 text-[8px]"></i>
+            <span class="text-stone-900 dark:text-white font-medium truncate max-w-[200px] sm:max-w-md">
+              {{ post?.title || 'Статья' }}
+            </span>
+          </li>
+        </ol>
+      </nav>
 
-      <article v-if="post" class="blog-post-container">
-        <!-- Featured Image Container -->
-        <div class="featured-image-wrapper">
+      <article v-if="post" class="animate-fade-up" style="animation-delay: 0.1s">
+        <!-- Featured Image -->
+        <div
+          class="relative aspect-[16/9] rounded-[2.5rem] overflow-hidden border border-stone-100 dark:border-stone-800 shadow-xl shadow-stone-200/20 dark:shadow-none mb-12">
           <nuxt-img v-if="post.image" :src="urlFor(post?.image)?.width(1200).height(675).url()" :alt="post?.title"
-            class="featured-image" width="1200" height="675" loading="lazy" format="webp" quality="80" />
-          <div class="image-overlay"></div>
+            class="w-full h-full object-cover transition-transform duration-1000" width="1200" height="675"
+            loading="lazy" format="webp" quality="90" />
+          <div class="absolute inset-0 bg-gradient-to-t from-stone-900/10 to-transparent"></div>
 
-          <!-- Category Badge -->
-          <span :class="['category-badge', getCategoryClass(post.category)]">
+          <span
+            class="absolute top-6 left-6 px-5 py-2 bg-white/90 dark:bg-stone-900/90 backdrop-blur-md rounded-full text-[10px] font-bold uppercase tracking-widest text-mindqlab-calm-accent border border-stone-100/50">
             {{ post.category || "Статья" }}
           </span>
         </div>
 
-        <!-- Content Container -->
-        <div class="content-wrapper">
-          <!-- Title -->
-          <h1 class="article-title">
+        <!-- Content Header -->
+        <header class="mb-12">
+          <h1
+            class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-stone-900 dark:text-white mb-8 leading-[1.15]">
             {{ post.title }}
           </h1>
 
-          <!-- Meta Information -->
-          <div class="meta-info-container">
-            <div class="meta-info-row">
-              <div class="meta-item">
-                <i class="far fa-calendar text-cyan-400"></i>
-                <span>{{ formatPublishDate(post.publishedAt) }}</span>
-              </div>
-              <div class="meta-item">
-                <i class="far fa-clock text-purple-400"></i>
-                <span>{{ post.readtime }} мин чтения</span>
-              </div>
-              <div class="meta-item">
-                <i class="far fa-eye text-pink-400"></i>
-                <span>{{ postViews }} просмотров</span>
-              </div>
+          <div
+            class="flex flex-wrap items-center gap-6 pb-8 border-b border-stone-100 dark:border-stone-800/50 text-[11px] font-bold uppercase tracking-widest text-stone-400">
+            <div class="flex items-center">
+              <i class="far fa-calendar mr-2 text-mindqlab-calm-accent opacity-70"></i>
+              <span>{{ formatPublishDate(post.publishedAt) }}</span>
             </div>
-            <button @click="isShareOpen = true" class="share-button">
-              <i class="fas fa-share-alt mr-2"></i>
-              Поделиться
-            </button>
+            <div class="flex items-center">
+              <i class="far fa-clock mr-2 text-mindqlab-calm-accent opacity-70"></i>
+              <span>{{ post.readtime }} мин чтения</span>
+            </div>
+            <div class="flex items-center">
+              <i class="far fa-eye mr-2 text-mindqlab-calm-accent opacity-70"></i>
+              <span>{{ postViews }} просмотров</span>
+            </div>
           </div>
+        </header>
 
-          <!-- Article Content -->
-          <div class="prose-container">
-            <SanityContent v-if="post.body" :blocks="post.body" />
-          </div>
+        <!-- Article Content -->
+        <div class="prose-container mb-20 animate-fade-up" style="animation-delay: 0.2s">
+          <SanityContent v-if="post.body" :blocks="post.body" />
         </div>
       </article>
 
-      <!-- Share Section -->
-      <div class="share-section">
-        <div class="share-header">
-          <div class="flex items-center gap-3 mb-2">
-            <div class="share-icon-wrapper">
-              <i class="fas fa-share-alt text-cyan-400"></i>
-            </div>
-            <h3 class="text-xl font-bold text-gray-900 dark:text-white">Поделиться статьей</h3>
-          </div>
-          <p class="text-gray-600 dark:text-slate-400 text-sm">
-            Понравилась статья? Поделитесь с друзьями!
-          </p>
-        </div>
+      <!-- Bottom Sections (Cards) -->
+      <div class="grid grid-cols-1 gap-8 mb-24 animate-fade-up" style="animation-delay: 0.3s">
 
-        <div class="share-buttons-grid">
-          <button @click="shareOn('twitter')" class="social-share-btn twitter-btn">
-            <div class="social-btn-bg"></div>
-            <div class="social-btn-content">
-              <i class="fab fa-twitter text-xl"></i>
-              <span class="hidden sm:inline ml-2">Twitter</span>
-            </div>
-          </button>
-
-          <button @click="shareOn('facebook')" class="social-share-btn facebook-btn">
-            <div class="social-btn-bg"></div>
-            <div class="social-btn-content">
-              <i class="fab fa-facebook text-xl"></i>
-              <span class="hidden sm:inline ml-2">Facebook</span>
-            </div>
-          </button>
-
-          <button @click="shareOn('telegram')" class="social-share-btn telegram-btn">
-            <div class="social-btn-bg"></div>
-            <div class="social-btn-content">
-              <i class="fab fa-telegram text-xl"></i>
-              <span class="hidden sm:inline ml-2">Telegram</span>
-            </div>
-          </button>
-
-          <button @click="copyLink" class="social-share-btn copy-btn">
-            <div class="social-btn-bg"></div>
-            <div class="social-btn-content">
-              <i class="fas fa-link text-xl"></i>
-              <span class="hidden sm:inline ml-2">Копировать</span>
-            </div>
-          </button>
-        </div>
-      </div>
-
-      <!-- Comments Section -->
-      <div v-if="post" class="comments-section">
-        <div class="comments-header">
-          <div class="flex items-center gap-3">
-            <div class="comments-icon-wrapper">
-              <i class="fas fa-comments text-purple-400"></i>
-            </div>
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Комментарии</h2>
-          </div>
-          <p class="text-gray-600 dark:text-slate-400 text-sm mt-2">
-            {{ comments.length }} {{ getCommentsWord(comments.length) }}
-          </p>
-        </div>
-
-        <!-- Comment Form -->
-        <form @submit.prevent="addNewComment" class="comment-form">
-          <div class="form-fields-grid">
-            <input v-model="newComment.name" type="text" placeholder="Ваше имя" class="form-input" required />
-            <input v-model="newComment.email" type="email" placeholder="Email (не публикуется)" class="form-input"
-              required />
-          </div>
-          <textarea v-model="newComment.text" placeholder="Ваш комментарий..." class="form-textarea" rows="4"
-            required></textarea>
-          <div class="flex justify-end">
-            <button type="submit" :disabled="isSubmitting" class="submit-button">
-              <i class="fas fa-paper-plane mr-2"></i>
-              {{ isSubmitting ? "Отправка..." : "Отправить комментарий" }}
+        <!-- Share & Interaction -->
+        <div
+          class="p-10 bg-white dark:bg-stone-900/40 rounded-[2.5rem] border border-stone-100 dark:border-stone-800 text-center">
+          <h3 class="text-2xl font-light mb-8 text-stone-900 dark:text-white italic">Понравилась статья?</h3>
+          <div class="flex flex-wrap justify-center gap-4">
+            <button @click="shareOn('twitter')" class="social-share-btn">
+              <i class="fab fa-twitter"></i>
+            </button>
+            <button @click="shareOn('facebook')" class="social-share-btn">
+              <i class="fab fa-facebook"></i>
+            </button>
+            <button @click="shareOn('telegram')" class="social-share-btn">
+              <i class="fab fa-telegram"></i>
+            </button>
+            <button @click="copyLink" class="social-share-btn">
+              <i class="fas fa-link"></i>
             </button>
           </div>
-        </form>
+        </div>
 
-        <!-- Comments List -->
-        <div class="comments-list">
-          <div v-for="comment in comments" :key="comment.id" class="comment-card">
-            <div class="comment-header">
-              <div class="comment-avatar">
-                <i class="fas fa-user"></i>
+        <!-- Comments Section -->
+        <div class="p-10 bg-white dark:bg-stone-900/40 rounded-[3rem] border border-stone-100 dark:border-stone-800">
+          <div class="flex items-center justify-between mb-10">
+            <h2 class="text-2xl font-light text-stone-900 dark:text-white">Комментарии</h2>
+            <span class="text-[10px] font-bold uppercase tracking-widest text-stone-400">
+              {{ comments.length }} {{ getCommentsWord(comments.length) }}
+            </span>
+          </div>
+
+          <!-- Comment Form -->
+          <form @submit.prevent="addNewComment" class="mb-12">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+              <input v-model="newComment.name" type="text" placeholder="Ваше имя" class="form-input" required />
+              <input v-model="newComment.email" type="email" placeholder="Email" class="form-input" required />
+            </div>
+            <textarea v-model="newComment.text" placeholder="Ваш комментарий..." class="form-textarea" rows="4"
+              required></textarea>
+            <div class="flex justify-end">
+              <button type="submit" :disabled="isSubmitting"
+                class="px-10 py-4 bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 rounded-full font-medium text-sm transition-all hover:bg-opacity-90 disabled:opacity-50">
+                {{ isSubmitting ? "Отправка..." : "Отправить" }}
+              </button>
+            </div>
+          </form>
+
+          <!-- List -->
+          <div class="space-y-6">
+            <div v-for="comment in comments" :key="comment.id"
+              class="pb-6 border-b border-stone-50 dark:border-stone-800/40 last:border-0">
+              <div class="flex items-center space-x-4 mb-3">
+                <div
+                  class="w-10 h-10 rounded-full bg-stone-100 dark:bg-stone-800 flex items-center justify-center text-stone-400">
+                  <i class="fas fa-user text-xs"></i>
+                </div>
+                <div>
+                  <div class="text-sm font-medium text-stone-900 dark:text-white">{{ comment.name }}</div>
+                  <div class="text-[10px] text-stone-400 uppercase tracking-widest">{{ formatDate(comment.createdAt) }}
+                  </div>
+                </div>
               </div>
-              <div class="flex-1">
-                <span class="comment-author">{{ comment.name }}</span>
-                <span class="comment-date">{{
-                  formatDate(comment.createdAt)
-                  }}</span>
-              </div>
+              <p class="text-sm text-stone-600 dark:text-stone-400 leading-relaxed pl-14">{{ comment.text }}</p>
             </div>
-            <p class="comment-text">{{ comment.text }}</p>
-          </div>
-          <div v-if="comments.length === 0" class="no-comments">
-            <i class="fas fa-comment-slash text-4xl text-gray-400 dark:text-slate-600 mb-3"></i>
-            <p class="text-gray-600 dark:text-slate-400">Пока нет комментариев. Будьте первым!</p>
+
+            <div v-if="comments.length === 0" class="text-center py-12 opacity-40">
+              <i class="far fa-comment-dots text-2xl mb-4 block"></i>
+              <p class="text-xs font-medium uppercase tracking-widest italic">Пока нет обсуждений. Будьте первым.</p>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Newsletter Section -->
-      <div class="newsletter-section">
-        <div class="newsletter-content">
-          <div class="newsletter-icon">
-            <i class="fas fa-envelope text-3xl"></i>
+        <!-- Newsletter Section -->
+        <div
+          class="p-10 bg-mindqlab-calm-accent/5 dark:bg-mindqlab-calm-accent/10 rounded-[3rem] border border-mindqlab-calm-accent/20 text-center">
+          <div
+            class="w-16 h-16 mx-auto mb-8 rounded-2xl bg-white dark:bg-stone-900 flex items-center justify-center text-mindqlab-calm-accent shadow-sm">
+            <i class="fas fa-paper-plane text-2xl"></i>
           </div>
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-            Понравилась статья?
-          </h2>
-          <p class="text-gray-700 dark:text-slate-300 mb-6">
-            Подпишитесь на рассылку и получайте новые статьи первыми
+          <h2 class="text-2xl font-light text-stone-900 dark:text-white mb-4">Вам будет что обсудить</h2>
+          <p class="text-stone-500 dark:text-stone-400 font-light mb-10 max-w-md mx-auto">
+            Получайте новые статьи и результаты наших исследований раз в неделю.
           </p>
-          <div class="newsletter-form">
-            <input type="email" v-model="email" placeholder="Введите ваш email" class="newsletter-input" />
-            <button @click="subscribeEmail" class="newsletter-button">
-              <span class="button-gradient"></span>
-              <span class="button-text">
-                <i class="fas fa-bell mr-2"></i>
-                Подписаться
-              </span>
+          <div class="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
+            <input type="email" v-model="email" placeholder="Ваш @email"
+              class="form-input flex-grow rounded-full text-center sm:text-left px-8" />
+            <button @click="subscribeEmail"
+              class="px-10 py-4 bg-mindqlab-calm-accent text-white rounded-full font-medium transition-all hover:bg-opacity-90 shadow-lg shadow-mindqlab-calm-accent/20">
+              Подписаться
             </button>
           </div>
         </div>
-      </div>
 
-      <!-- Share Modal -->
-      <div v-if="isShareOpen" class="modal-overlay" @click="isShareOpen = false">
-        <div class="modal-content" @click.stop>
-          <div class="modal-header">
-            <h3 class="text-xl font-bold text-gray-900 dark:text-white">Поделиться статьей</h3>
-            <button @click="isShareOpen = false" class="modal-close">
-              <i class="fas fa-times"></i>
-            </button>
-          </div>
-          <div class="modal-body">
-            <button @click="shareOn('twitter')" class="modal-share-btn bg-[#1DA1F2]">
-              <i class="fab fa-twitter mr-3"></i>
-              Twitter
-            </button>
-            <button @click="shareOn('facebook')" class="modal-share-btn bg-[#4267B2]">
-              <i class="fab fa-facebook mr-3"></i>
-              Facebook
-            </button>
-            <button @click="shareOn('telegram')" class="modal-share-btn bg-[#0088cc]">
-              <i class="fab fa-telegram mr-3"></i>
-              Telegram
-            </button>
-            <button @click="copyLink" class="modal-share-btn bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
-              <i class="fas fa-link mr-3"></i>
-              Копировать ссылку
-            </button>
-          </div>
-        </div>
       </div>
-    </div>
-  </main>
+    </main>
+
+    <!-- Footer -->
+    <Footer />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -228,7 +183,8 @@ import { subscribeUser } from "@/api/firebase/contact";
 import { getPostViewCount } from "@/api/firebase/views";
 import { addPostComment, getPostComments } from "@/api/firebase/comments";
 import { createError } from "h3";
-import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
+import TopBar from '~/components/navigation/TopBar.vue';
+import Footer from '~/components/ui/Footer.vue';
 
 const route = useRoute();
 const { params } = route;
@@ -246,6 +202,10 @@ const urlFor = (source: SanityImageSource) =>
     ? imageUrlBuilder({ projectId, dataset }).image(source)
     : null;
 
+if (!post.value) {
+  throw createError({ statusCode: 404, statusMessage: "Статья не найдена" });
+}
+
 // SEO
 const getPlainText = (blocks: any[] | undefined) => {
   if (!blocks) return "";
@@ -258,18 +218,8 @@ const getPlainText = (blocks: any[] | undefined) => {
   );
 };
 
-const metaDescription = computed(
-  () => post.value?.excerpt || getPlainText(post.value?.body)
-);
-const postImageUrl = computed(() =>
-  post.value?.image
-    ? urlFor(post.value.image)?.width(1200).height(630).url()
-    : `${siteUrl}/default-og-image.png`
-);
-
-if (!post.value) {
-  throw createError({ statusCode: 404, statusMessage: "Статья не найдена" });
-}
+const metaDescription = computed(() => post.value?.excerpt || getPlainText(post.value?.body));
+const postImageUrl = computed(() => post.value?.image ? urlFor(post.value.image)?.width(1200).height(630).url() : `${siteUrl}/default-og-image.png`);
 
 useSeoMeta({
   title: () => `${post.value?.title} | MindQLab`,
@@ -277,53 +227,12 @@ useSeoMeta({
   ogTitle: () => `${post.value?.title} | MindQLab`,
   ogDescription: metaDescription,
   ogImage: postImageUrl,
-  ogUrl: () => `${siteUrl}${route.fullPath}`,
   ogType: "article",
-  twitterCard: "summary_large_image",
-});
-
-useHead({
-  link: [{ rel: "canonical", href: () => `${siteUrl}${route.fullPath}` }],
-  htmlAttrs: { lang: "ru" },
-  meta: [
-    { name: "robots", content: "index, follow" },
-    { property: "og:locale", content: "ru_RU" },
-  ],
-  script: [
-    {
-      type: "application/ld+json",
-      children: computed(() =>
-        JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Article",
-          mainEntityOfPage: {
-            "@type": "WebPage",
-            "@id": `${siteUrl}${route.fullPath}`,
-          },
-          headline: post.value?.title,
-          image: postImageUrl.value,
-          datePublished: post.value?.publishedAt,
-          dateModified: post.value?._updatedAt || post.value?.publishedAt,
-          author: {
-            "@type": "Person",
-            name: post.value?.author?.name || "Команда MindQLab",
-          },
-          publisher: {
-            "@type": "Organization",
-            name: "MindQLab",
-            logo: { "@type": "ImageObject", url: `${siteUrl}/logo.png` },
-          },
-          description: metaDescription.value,
-        })
-      ),
-    },
-  ],
 });
 
 // Client-only state
 const db = getFirestore();
 const firestore = useFirestore();
-const isShareOpen = ref(false);
 const postViews = ref(0);
 const email = ref("");
 
@@ -348,8 +257,7 @@ const addNewComment = async () => {
   if (!params.slug) return;
   const slug = Array.isArray(params.slug) ? params.slug[0] : params.slug;
   isSubmitting.value = true;
-  const commentData = { ...newComment.value };
-  const response = await addPostComment(firestore, slug, commentData);
+  const response = await addPostComment(firestore, slug, { ...newComment.value });
   if (response.success) {
     await fetchComments();
     newComment.value = { name: "", email: "", text: "" };
@@ -357,37 +265,9 @@ const addNewComment = async () => {
   isSubmitting.value = false;
 };
 
-const formatDate = (date: Date) =>
-  new Date(date).toLocaleDateString("ru-RU", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-
-const formatPublishDate = (dateString: string) => {
-  const date = new Date(dateString);
-  return date.toLocaleDateString("ru-RU", {
-    day: "numeric",
-    month: "short",
-  });
-};
-
-const getCategoryClass = (category: string) => {
-  const classes: Record<string, string> = {
-    "Личностный рост": "category-growth",
-    Отношения: "category-relations",
-    Продуктивность: "category-productivity",
-  };
-  return classes[category] || "category-default";
-};
-
-const getCommentsWord = (count: number) => {
-  if (count === 1) return "комментарий";
-  if (count >= 2 && count <= 4) return "комментария";
-  return "комментариев";
-};
+const formatPublishDate = (dateString: string) => new Date(dateString).toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
+const formatDate = (date: Date) => new Date(date).toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" });
+const getCommentsWord = (count: number) => count === 1 ? "комментарий" : (count >= 2 && count <= 4 ? "комментария" : "комментариев");
 
 onMounted(async () => {
   if (post.value) {
@@ -396,357 +276,97 @@ onMounted(async () => {
   }
 });
 
-watch(
-  () => post.value,
-  async (newPost) => {
-    if (newPost) {
-      await fetchComments();
-      postViews.value = await getPostViewCount(db, newPost._id);
-    }
-  }
-);
-
 const shareOn = (platform: "twitter" | "facebook" | "telegram") => {
-  const url =
-    typeof window !== "undefined"
-      ? window.location.href
-      : `${siteUrl}${route.fullPath}`;
-  const title = post.value?.title;
+  const url = window.location.href;
+  const title = post.value?.title || "";
   const shareUrls = {
-    twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(
-      url
-    )}&text=${encodeURIComponent(title || "")}`,
-    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-      url
-    )}`,
-    telegram: `https://t.me/share/url?url=${encodeURIComponent(
-      url
-    )}&text=${encodeURIComponent(title || "")}`,
+    twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`,
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+    telegram: `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`,
   };
-  if (typeof window !== "undefined") window.open(shareUrls[platform], "_blank");
+  window.open(shareUrls[platform], "_blank");
 };
 
 const copyLink = async () => {
-  try {
-    if (typeof navigator !== "undefined" && navigator.clipboard) {
-      await navigator.clipboard.writeText(window.location.href);
-      alert("Ссылка скопирована!");
-    }
-  } catch (err) {
-    console.error("Failed to copy link:", err);
-  }
+  await navigator.clipboard.writeText(window.location.href);
+  alert("Ссылка скопирована!");
 };
 
 const subscribeEmail = async () => {
-  if (!validateEmail(email.value)) {
-    alert("Пожалуйста, введите корректный email");
-    return;
-  }
+  if (!email.value.includes('@')) return alert("Введите корректный email");
   const result = await subscribeUser(db, email.value);
-  if (result.success) {
-    alert(result.message);
-    email.value = "";
-  } else {
-    alert(result.message);
-  }
+  if (result.success) { email.value = ""; alert(result.message); }
 };
-
-const validateEmail = (email: string) =>
-  /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email.toLowerCase());
 </script>
 
 <style scoped>
-.blog-post-container {
-  @apply rounded-2xl bg-gray-100 dark:bg-slate-900/50 border border-gray-300 dark:border-cyan-500/20 overflow-hidden backdrop-blur-sm hover:border-cyan-500/30 transition-all duration-300 mb-12;
+.animate-fade-up {
+  animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.featured-image-wrapper {
-  @apply relative w-full h-[250px] sm:h-[350px] md:h-[450px] overflow-hidden;
-}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
 
-.featured-image {
-  @apply w-full h-full object-cover transition-transform duration-700 hover:scale-110;
-}
-
-.image-overlay {
-  @apply absolute inset-0 bg-gradient-to-t from-white dark:from-slate-950 via-white/20 dark:via-slate-950/20 to-transparent;
-}
-
-.category-badge {
-  @apply absolute top-6 left-6 px-4 py-2 rounded-xl text-sm font-medium backdrop-blur-md border shadow-lg;
-}
-
-.category-growth {
-  @apply bg-cyan-500/20 text-cyan-300 border-cyan-500/40;
-}
-
-.category-relations {
-  @apply bg-orange-500/20 text-orange-300 border-orange-500/40;
-}
-
-.category-productivity {
-  @apply bg-purple-500/20 text-purple-300 border-purple-500/40;
-}
-
-.category-default {
-  @apply bg-slate-500/20 text-slate-300 border-slate-500/40;
-}
-
-.content-wrapper {
-  @apply px-6 sm:px-8 md:px-12 py-8 sm:py-10;
-}
-
-.article-title {
-  @apply text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 leading-tight bg-gradient-to-r from-cyan-600 dark:from-cyan-400 to-purple-600 dark:to-purple-400 bg-clip-text text-transparent;
-}
-
-.meta-info-container {
-  @apply flex flex-col sm:flex-row sm:items-center sm:justify-between pb-6 mb-8 border-b border-gray-300 dark:border-cyan-500/20 gap-4;
-}
-
-.meta-info-row {
-  @apply flex flex-wrap items-center gap-4 sm:gap-6 text-sm;
-}
-
-.meta-item {
-  @apply flex items-center gap-2 text-gray-600 dark:text-slate-400;
-}
-
-.share-button {
-  @apply flex items-center gap-2 px-4 py-2 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500/20 hover:border-cyan-500/50 transition-all duration-300 text-sm font-medium;
-}
-
-.prose-container {
-  @apply text-gray-700 dark:text-slate-300 text-base sm:text-lg leading-relaxed;
-}
-
-.share-section {
-  @apply p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-cyan-500/20 backdrop-blur-sm mb-12;
-}
-
-.share-header {
-  @apply text-center mb-6;
-}
-
-.share-icon-wrapper {
-  @apply w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 flex items-center justify-center;
-}
-
-.share-buttons-grid {
-  @apply grid grid-cols-2 sm:grid-cols-4 gap-4;
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .social-share-btn {
-  @apply relative p-4 rounded-xl border overflow-hidden transition-all duration-300 hover:transform hover:scale-105;
-}
-
-.social-btn-bg {
-  @apply absolute inset-0 opacity-0 transition-opacity duration-300;
-}
-
-.social-share-btn:hover .social-btn-bg {
-  @apply opacity-100;
-}
-
-.social-btn-content {
-  @apply relative z-10 flex items-center justify-center text-gray-700 dark:text-white font-medium;
-}
-
-.twitter-btn {
-  @apply border-[#1DA1F2]/30 hover:border-[#1DA1F2] bg-blue-50 dark:bg-transparent;
-}
-
-.twitter-btn .social-btn-bg {
-  @apply bg-gradient-to-r from-[#1DA1F2] to-[#1DA1F2]/80;
-}
-
-.facebook-btn {
-  @apply border-[#4267B2]/30 hover:border-[#4267B2] bg-blue-50 dark:bg-transparent;
-}
-
-.facebook-btn .social-btn-bg {
-  @apply bg-gradient-to-r from-[#4267B2] to-[#4267B2]/80;
-}
-
-.telegram-btn {
-  @apply border-[#0088cc]/30 hover:border-[#0088cc] bg-blue-50 dark:bg-transparent;
-}
-
-.telegram-btn .social-btn-bg {
-  @apply bg-gradient-to-r from-[#0088cc] to-[#0088cc]/80;
-}
-
-.copy-btn {
-  @apply border-cyan-500/30 hover:border-cyan-500 bg-cyan-50 dark:bg-transparent;
-}
-
-.copy-btn .social-btn-bg {
-  @apply bg-gradient-to-r from-cyan-500 to-purple-500;
-}
-
-.comments-section {
-  @apply p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-purple-500/20 backdrop-blur-sm mb-12;
-}
-
-.comments-header {
-  @apply mb-8;
-}
-
-.comments-icon-wrapper {
-  @apply w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center;
-}
-
-.comment-form {
-  @apply mb-8 p-6 rounded-xl bg-gray-100 dark:bg-slate-800/30 border border-gray-300 dark:border-slate-700/50;
-}
-
-.form-fields-grid {
-  @apply grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4;
+  @apply w-12 h-12 rounded-full border border-stone-100 dark:border-stone-800 flex items-center justify-center text-stone-400 hover:text-mindqlab-calm-accent hover:border-mindqlab-calm-accent transition-all duration-300;
 }
 
 .form-input {
-  @apply w-full px-4 py-3 rounded-lg bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-slate-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-slate-400 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all;
+  @apply w-full px-6 py-4 rounded-2xl bg-stone-50/50 dark:bg-stone-800/20 border border-stone-100 dark:border-stone-800 text-stone-900 dark:text-white placeholder-stone-400 focus:outline-none focus:border-mindqlab-calm-accent/50 transition-all text-sm;
 }
 
 .form-textarea {
-  @apply w-full px-4 py-3 rounded-lg bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-slate-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-slate-400 resize-y mb-4 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all;
+  @apply w-full px-6 py-4 rounded-3xl bg-stone-50/50 dark:bg-stone-800/20 border border-stone-100 dark:border-stone-800 text-stone-900 dark:text-white placeholder-stone-400 focus:outline-none focus:border-mindqlab-calm-accent/50 transition-all text-sm mb-4;
 }
 
-.submit-button {
-  @apply px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-500 text-white font-medium hover:from-cyan-600 hover:to-purple-600 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none inline-flex items-center justify-center;
-}
-
-.comments-list {
-  @apply space-y-4;
-}
-
-.comment-card {
-  @apply p-4 rounded-xl bg-slate-800/30 border border-slate-700/50 hover:border-purple-500/30 transition-all duration-300;
-}
-
-.comment-header {
-  @apply flex items-center gap-3 mb-3;
-}
-
-.comment-avatar {
-  @apply w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-purple-500 flex items-center justify-center text-white flex-shrink-0;
-}
-
-.comment-author {
-  @apply block font-medium text-cyan-400 text-sm;
-}
-
-.comment-date {
-  @apply block text-xs text-slate-500;
-}
-
-.comment-text {
-  @apply text-slate-300 text-sm leading-relaxed;
-}
-
-.no-comments {
-  @apply text-center py-12 text-slate-400;
-}
-
-.newsletter-section {
-  @apply p-8 sm:p-12 rounded-2xl bg-gradient-to-br from-purple-50 dark:from-purple-500/10 via-pink-50 dark:via-pink-500/10 to-cyan-50 dark:to-cyan-500/10 border border-purple-300 dark:border-purple-500/20 backdrop-blur-sm;
-}
-
-.newsletter-content {
-  @apply text-center max-w-2xl mx-auto;
-}
-
-.newsletter-icon {
-  @apply w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-purple-200 dark:from-purple-500/20 to-pink-200 dark:to-pink-500/20 flex items-center justify-center text-purple-600 dark:text-purple-400;
-}
-
-.newsletter-form {
-  @apply flex flex-col sm:flex-row gap-3;
-}
-
-.newsletter-input {
-  @apply flex-1 px-4 py-3 rounded-lg sm:rounded-r-none bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-slate-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-slate-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all;
-}
-
-.newsletter-button {
-  @apply relative px-8 py-3 rounded-lg sm:rounded-l-none overflow-hidden transition-all duration-300;
-}
-
-.newsletter-button:hover .button-gradient {
-  @apply scale-110;
-}
-
-.button-gradient {
-  @apply absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 transition-transform duration-300;
-}
-
-.button-text {
-  @apply relative z-10 text-white font-medium flex items-center justify-center;
-}
-
-.modal-overlay {
-  @apply fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4;
-}
-
-.modal-content {
-  @apply bg-slate-900/95 backdrop-blur-xl rounded-2xl border border-cyan-500/20 p-6 max-w-md w-full;
-}
-
-.modal-header {
-  @apply flex justify-between items-center mb-6;
-}
-
-.modal-close {
-  @apply text-slate-400 hover:text-cyan-400 transition-colors p-2;
-}
-
-.modal-body {
-  @apply space-y-3;
-}
-
-.modal-share-btn {
-  @apply w-full p-4 rounded-xl text-white font-medium flex items-center justify-center hover:opacity-90 transition-all duration-300;
-}
-
-/* Prose styles for article content */
+/* Prose Styles */
 :deep(.prose-container h2) {
-  @apply text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mt-8 mb-4;
+  @apply text-2xl sm:text-3xl font-light text-stone-900 dark:text-white mt-16 mb-8;
 }
 
 :deep(.prose-container h3) {
-  @apply text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white mt-6 mb-3;
+  @apply text-xl sm:text-2xl font-light text-stone-900 dark:text-white mt-12 mb-6;
 }
 
 :deep(.prose-container p) {
-  @apply text-gray-700 dark:text-slate-300 mb-4 leading-relaxed;
+  @apply text-sm sm:text-base text-stone-600 dark:text-stone-400 mb-8 leading-relaxed font-light;
 }
 
 :deep(.prose-container ul),
 :deep(.prose-container ol) {
-  @apply mb-4 pl-6;
+  @apply mb-8 pl-6 space-y-4;
 }
 
 :deep(.prose-container li) {
-  @apply mb-2 text-gray-700 dark:text-slate-300;
+  @apply text-sm sm:text-base text-stone-600 dark:text-stone-400 font-light;
 }
 
 :deep(.prose-container a) {
-  @apply text-cyan-400 hover:text-cyan-300 underline;
+  @apply text-mindqlab-calm-accent hover:opacity-80 underline underline-offset-4 decoration-mindqlab-calm-accent/30;
 }
 
 :deep(.prose-container img) {
-  @apply rounded-xl my-6 border border-gray-300 dark:border-cyan-500/20;
+  @apply rounded-[2.5rem] my-12 border border-stone-100 dark:border-stone-800;
 }
 
 :deep(.prose-container blockquote) {
-  @apply border-l-4 border-cyan-500/50 pl-4 py-2 my-6 italic text-gray-700 dark:text-slate-300;
+  @apply border-l-2 border-mindqlab-calm-accent pl-8 py-2 my-12 italic text-stone-500 dark:text-stone-500 font-light text-lg;
 }
 
 :deep(.prose-container code) {
-  @apply bg-cyan-100 dark:bg-cyan-500/10 text-cyan-700 dark:text-cyan-300 px-2 py-1 rounded;
+  @apply bg-stone-100 dark:bg-stone-800/50 text-mindqlab-calm-accent px-2 py-0.5 rounded-md text-sm;
 }
 
 :deep(.prose-container pre) {
-  @apply bg-gray-100 dark:bg-slate-800/50 border border-gray-300 dark:border-slate-700 text-gray-900 dark:text-slate-300 p-4 rounded-xl my-6 overflow-x-auto;
+  @apply bg-stone-900 text-stone-100 p-8 rounded-[2rem] my-12 overflow-x-auto text-xs;
 }
 </style>

@@ -1,52 +1,48 @@
 <template>
   <div
-    class="min-h-screen bg-white dark:bg-slate-950 text-gray-900 dark:text-white overflow-hidden transition-colors duration-300">
-    <!-- Header Section -->
-    <header class="relative pt-8 pb-6 px-4 sm:px-0">
-      <!-- Subtle top glow -->
-      <div
-        class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent">
-      </div>
+    class="min-h-screen bg-mindqlab-calm-bg dark:bg-mindqlab-calm-dark-bg text-stone-900 dark:text-stone-100 font-sans transition-colors duration-500 overflow-x-hidden">
 
+    <!-- Navigation -->
+    <TopBar />
+
+    <!-- Header Section -->
+    <header class="relative pt-12 pb-8 px-6 border-b border-stone-100 dark:border-stone-800/50">
       <div class="container mx-auto max-w-6xl relative">
         <!-- Breadcrumb -->
-        <nav class="mb-6 animate-fade-in-up" aria-label="Breadcrumb">
-          <ol class="flex items-center space-x-2 text-sm">
+        <nav class="mb-10 animate-fade-up" aria-label="Breadcrumb">
+          <ol class="flex items-center space-x-3 text-sm">
             <li class="flex items-center group">
               <NuxtLink to="/"
-                class="text-gray-600 dark:text-slate-400 hover:text-cyan-400 transition-all duration-300 flex items-center">
-                <i class="fas fa-home mr-2 text-cyan-400"></i>
-                <span class="group-hover:translate-x-1 transition-transform duration-300">Главная</span>
+                class="text-stone-400 dark:text-stone-500 hover:text-mindqlab-calm-accent transition-all duration-300 flex items-center">
+                <i class="fas fa-home mr-2 text-xs"></i>
+                <span>Главная</span>
               </NuxtLink>
             </li>
             <li class="flex items-center">
-              <i class="fas fa-chevron-right text-gray-400 dark:text-slate-600 mx-3 text-xs"></i>
-              <span class="text-gray-900 dark:text-white font-medium" aria-current="page">Блог</span>
+              <i class="fas fa-chevron-right text-stone-300 dark:text-stone-700 mx-2 text-[10px]"></i>
+              <span class="text-stone-900 dark:text-white font-medium" aria-current="page">Блог</span>
             </li>
           </ol>
         </nav>
 
         <!-- Title -->
-        <div class="mb-8 animate-fade-in-up" style="animation-delay: 0.1s">
-          <h1
-            class="text-4xl sm:text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400">
+        <div class="mb-12 animate-fade-up" style="animation-delay: 0.1s">
+          <h1 class="text-4xl md:text-6xl font-light tracking-tight text-stone-900 dark:text-white mb-6">
             Блог
           </h1>
-          <p class="text-gray-600 dark:text-slate-400 mt-3 text-base sm:text-lg">
-            Статьи о личностном росте, психологии и саморазвитии
+          <p class="text-lg text-stone-500 dark:text-stone-400 max-w-2xl font-light leading-relaxed">
+            Статьи о личностном росте, практической психологии и системном подходе к саморазвитию.
           </p>
         </div>
 
         <!-- Categories Navigation -->
-        <nav class="relative animate-fade-in-up" style="animation-delay: 0.2s" aria-label="Категории блога">
+        <nav class="relative animate-fade-up" style="animation-delay: 0.2s" aria-label="Категории блога">
           <!-- Mobile Dropdown -->
           <div class="block md:hidden relative">
             <button type="button" @click="isOpen = !isOpen"
-              class="w-full px-4 py-3 bg-gray-100 dark:bg-slate-800/60 backdrop-blur-sm rounded-xl text-gray-900 dark:text-white flex items-center justify-between border border-gray-300 dark:border-slate-700/60 hover:border-cyan-500/60 transition-all duration-300">
-              <span class="font-medium">{{
-                activeCategory || "Все категории"
-                }}</span>
-              <i class="fas fa-chevron-down transition-transform duration-300 text-cyan-400"
+              class="w-full px-6 py-4 bg-white dark:bg-stone-900/40 rounded-2xl text-stone-900 dark:text-white flex items-center justify-between border border-stone-100 dark:border-stone-800 hover:border-mindqlab-calm-accent/40 transition-all duration-300">
+              <span class="font-medium text-sm">{{ activeCategory || "Все категории" }}</span>
+              <i class="fas fa-chevron-down transition-transform duration-300 text-mindqlab-calm-accent text-xs"
                 :class="{ 'rotate-180': isOpen }"></i>
             </button>
 
@@ -55,20 +51,18 @@
               leave-active-class="transition duration-200 ease-in" leave-from-class="transform scale-y-100 opacity-100"
               leave-to-class="transform scale-y-0 opacity-0">
               <div v-if="isOpen"
-                class="absolute top-full left-0 right-0 z-20 mt-2 bg-white dark:bg-slate-800/90 backdrop-blur-xl border border-gray-300 dark:border-slate-700/60 rounded-xl shadow-2xl origin-top">
-                <div class="py-2">
+                class="absolute top-full left-0 right-0 z-20 mt-2 bg-white dark:bg-stone-900 border border-stone-100 dark:border-stone-800 rounded-2xl shadow-xl origin-top overflow-hidden">
+                <div class="py-1">
                   <button v-for="category in categories" :key="category" @click="selectCategory(category)"
-                    class="w-full px-4 py-3 text-left text-sm font-medium transition-all duration-300" :class="[
+                    class="w-full px-6 py-4 text-left text-sm transition-all duration-300" :class="[
                       activeCategory === category
-                        ? 'text-gray-900 dark:text-white bg-cyan-500/20 border-l-2 border-cyan-400'
-                        : 'text-gray-700 dark:text-slate-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-slate-700/50',
+                        ? 'text-mindqlab-calm-accent bg-stone-50 dark:bg-stone-800/50 font-medium'
+                        : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white hover:bg-stone-50 dark:hover:bg-stone-800/30',
                     ]">
                     <span class="flex items-center justify-between">
                       <span>{{ category }}</span>
-                      <span v-if="getCategoryCount(category)"
-                        class="ml-2 text-xs px-2 py-0.5 rounded-full bg-cyan-100 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-400 border border-cyan-400 dark:border-cyan-500/30">
-                        {{ getCategoryCount(category) }}
-                      </span>
+                      <span v-if="getCategoryCount(category)" class="text-[10px] opacity-60">{{
+                        getCategoryCount(category) }}</span>
                     </span>
                   </button>
                 </div>
@@ -78,31 +72,17 @@
 
           <!-- Desktop Tabs -->
           <div class="hidden md:block">
-            <div class="relative">
-              <div class="absolute bottom-0 left-0 right-0 h-px bg-gray-200 dark:bg-slate-800/60"></div>
-              <ul class="flex flex-wrap -mb-px relative">
-                <li v-for="category in categories" :key="category" class="mr-2">
-                  <button type="button" @click="setActiveCategory(category)"
-                    class="px-6 py-3 text-sm font-medium transition-all duration-300 relative group rounded-t-lg"
-                    :class="[
-                      activeCategory === category
-                        ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-slate-800/40'
-                        : 'text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-slate-800/20',
-                    ]">
-                    <span class="relative z-10">{{ category }}</span>
-                    <span v-if="getCategoryCount(category)"
-                      class="ml-2 text-xs px-2 py-0.5 rounded-full transition-colors duration-300" :class="[
-                        activeCategory === category
-                          ? 'bg-cyan-100 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-400 border border-cyan-400 dark:border-cyan-500/30'
-                          : 'bg-gray-200 dark:bg-slate-700/50 text-gray-600 dark:text-slate-400 border border-gray-400 dark:border-slate-600/30',
-                      ]">
-                      {{ getCategoryCount(category) }}
-                    </span>
-                    <div v-if="activeCategory === category"
-                      class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-400"></div>
-                  </button>
-                </li>
-              </ul>
+            <div class="flex items-center space-x-1">
+              <button v-for="category in categories" :key="category" @click="setActiveCategory(category)"
+                class="px-6 py-3 text-sm transition-all duration-300 rounded-full border" :class="[
+                  activeCategory === category
+                    ? 'bg-mindqlab-calm-accent text-white border-mindqlab-calm-accent'
+                    : 'text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white border-transparent hover:bg-stone-50 dark:hover:bg-stone-900/40',
+                ]">
+                {{ category }}
+                <span v-if="getCategoryCount(category)" class="ml-2 text-[10px] opacity-60">{{
+                  getCategoryCount(category) }}</span>
+              </button>
             </div>
           </div>
         </nav>
@@ -110,103 +90,93 @@
     </header>
 
     <!-- Blog Posts Grid -->
-    <main class="container mx-auto max-w-6xl px-4 sm:px-0 pb-16 md:pb-24 mt-8">
+    <main class="container mx-auto max-w-6xl px-6 pb-24 pt-12">
       <!-- Loading State -->
-      <div v-if="isLoading"
-        class="text-center py-20 bg-gray-100 dark:bg-slate-900/40 backdrop-blur-xl rounded-3xl border border-gray-200 dark:border-slate-800/60">
-        <div class="text-cyan-400 mb-4">
-          <i class="fas fa-spinner fa-spin text-5xl"></i>
+      <div v-if="isLoading" class="text-center py-32 flex flex-col items-center">
+        <div class="w-12 h-12 border-2 border-mindqlab-calm-accent border-t-transparent rounded-full animate-spin mb-6">
         </div>
-        <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-2">
-          Загрузка постов...
-        </h3>
-        <p class="text-gray-600 dark:text-slate-400">Пожалуйста, подождите</p>
+        <h3 class="text-xl font-light text-stone-900 dark:text-white mb-2 italic">Подбираем лучшее...</h3>
       </div>
 
       <!-- Posts Grid -->
-      <div v-else-if="filteredPosts.length > 0" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+      <div v-else-if="filteredPosts.length > 0" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
         <article v-for="(post, index) in filteredPosts" :key="post._id"
-          class="post-card group bg-gradient-to-br from-gray-100 via-gray-50 to-gray-100 dark:from-slate-900/60 dark:via-slate-900/40 dark:to-slate-900/60 backdrop-blur-xl rounded-2xl border border-gray-200 dark:border-slate-800/60 overflow-hidden transition-all duration-500 hover:border-cyan-500/60 hover:shadow-2xl hover:shadow-cyan-500/20 hover:scale-[1.02] cursor-pointer"
-          :style="{ animationDelay: `${index * 0.1}s` }"> <!-- Image -->
-          <div class="relative aspect-[4/3] overflow-hidden">
-            <nuxt-img v-if="post.image" :src="urlFor(post.image).width(550).height(310).url()"
+          class="group flex flex-col bg-white dark:bg-stone-900/40 rounded-3xl border border-stone-100 dark:border-stone-800 overflow-hidden transition-all duration-500 hover:border-mindqlab-calm-accent/30 hover:shadow-xl hover:shadow-stone-200/20 dark:hover:shadow-none reveal-up"
+          :style="{ animationDelay: `${index * 0.1}s` }">
+
+          <!-- Image -->
+          <NuxtLink :to="`/blog/${post.slug.current}`" class="relative aspect-[16/10] overflow-hidden"
+            @click="incrementViewCount(post._id)">
+            <nuxt-img v-if="post.image" :src="urlFor(post.image).width(600).height(375).url()"
               :alt="post.title || 'Изображение поста'"
-              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" width="550"
-              height="310" loading="lazy" format="webp" quality="80" />
-            <div
-              class="absolute inset-0 bg-gradient-to-t from-gray-900 dark:from-slate-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+              class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" width="600"
+              height="375" loading="lazy" format="webp" quality="85" />
+            <div class="absolute inset-0 bg-stone-900/5 group-hover:bg-stone-900/0 transition-colors duration-500">
             </div>
 
             <!-- Category Badge -->
             <span
-              class="absolute top-4 left-4 px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg backdrop-blur-sm border transition-all duration-300 group-hover:scale-110"
-              :class="getCategoryStyle(post.category)">
+              class="absolute top-4 left-4 px-4 py-1.5 bg-white/90 dark:bg-stone-900/90 backdrop-blur-md rounded-full text-[10px] font-bold uppercase tracking-widest text-mindqlab-calm-accent border border-stone-100/50 dark:border-stone-800/50 transition-all duration-500 group-hover:-translate-y-1">
               {{ post.category }}
             </span>
-          </div>
+          </NuxtLink>
 
           <!-- Content -->
-          <div class="p-6">
+          <div class="p-8 flex flex-col flex-grow">
             <h2
-              class="text-lg md:text-xl font-bold text-gray-900 dark:text-white mb-4 line-clamp-2 group-hover:text-cyan-400 transition-colors duration-300">
+              class="text-xl font-light mb-4 line-clamp-2 text-stone-900 dark:text-white transition-colors duration-300 group-hover:text-mindqlab-calm-accent leading-snug">
               {{ post.title }}
             </h2>
 
-            <!-- Meta Info -->
+            <p v-if="post.excerpt"
+              class="text-sm text-stone-500 dark:text-stone-400 line-clamp-3 mb-6 font-light leading-relaxed">
+              {{ post.excerpt }}
+            </p>
+
             <div
-              class="flex items-center justify-between text-xs text-gray-600 dark:text-slate-400 pt-4 border-t border-gray-200 dark:border-slate-800/60">
-              <div class="flex items-center space-x-1.5 group/views">
-                <i class="far fa-eye text-cyan-400 group-hover/views:scale-110 transition-transform duration-300"></i>
-                <span>{{ post.views || 0 }}</span>
+              class="mt-auto pt-6 border-t border-stone-100 dark:border-stone-800/50 flex items-center justify-between text-[11px] font-medium uppercase tracking-wider text-stone-400">
+              <div class="flex items-center space-x-3">
+                <span class="flex items-center">
+                  <i class="far fa-eye mr-1.5 text-mindqlab-calm-accent opacity-70"></i>
+                  {{ post.views || 0 }}
+                </span>
+                <span class="flex items-center">
+                  <i class="far fa-clock mr-1.5 text-mindqlab-calm-accent opacity-70"></i>
+                  {{ post.readtime }} мин
+                </span>
               </div>
-              <div class="flex items-center space-x-1.5 group/time">
-                <i
-                  class="far fa-clock text-purple-400 group-hover/time:scale-110 transition-transform duration-300"></i>
-                <span>{{ post.readtime }} мин</span>
-              </div>
-              <div class="flex items-center space-x-1.5 group/date">
-                <i
-                  class="far fa-calendar text-pink-400 group-hover/date:scale-110 transition-transform duration-300"></i>
-                <span>{{
-                  new Date(post.publishedAt).toLocaleDateString("ru-RU", {
-                    day: "numeric",
-                    month: "short",
-                  })
+              <span>{{ new Date(post.publishedAt).toLocaleDateString("ru-RU", { day: "numeric", month: "short" })
                 }}</span>
-              </div>
             </div>
           </div>
-
-          <NuxtLink :to="`/blog/${post.slug.current}`" class="absolute inset-0 z-10"
-            @click="incrementViewCount(post._id)" :aria-label="`Читать: ${post.title}`"></NuxtLink>
         </article>
       </div>
 
       <!-- Empty State -->
-      <div v-else role="status" aria-live="polite"
-        class="text-center py-20 bg-gray-100 dark:bg-slate-900/40 backdrop-blur-xl rounded-3xl border border-gray-200 dark:border-slate-800/60">
-        <div class="text-cyan-400 mb-4">
-          <i class="fas fa-search text-5xl"></i>
-        </div>
-        <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-2">
-          Публикации не найдены
-        </h3>
-        <p class="text-gray-600 dark:text-slate-400">
-          В данной категории пока нет публикаций. Попробуйте выбрать другую
-          категорию.
+      <div v-else
+        class="text-center py-32 bg-white dark:bg-stone-900/40 rounded-[3rem] border border-stone-100 dark:border-stone-800">
+        <i class="fas fa-feather-alt text-4xl text-stone-200 dark:text-stone-800 mb-6 block"></i>
+        <h3 class="text-2xl font-light text-stone-900 dark:text-white mb-2">Статьи на подходе</h3>
+        <p class="text-stone-500 dark:text-stone-400 font-light italic">
+          В данной категории мы скоро опубликуем новые материалы.
         </p>
       </div>
     </main>
+
+    <!-- Footer -->
+    <Footer />
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useAsyncData, useNuxtApp } from "#app";
 import { fetchPosts } from "~/api/sanity/posts";
 import { getImageUrl } from "~/api/sanity/client";
 import { getPostViewCount, incrementPostViewCount } from "~/api/firebase/views";
 import { useHead } from "@unhead/vue";
+import TopBar from '~/components/navigation/TopBar.vue';
+import Footer from '~/components/ui/Footer.vue';
 
 // Reactive state
 const posts = ref([]);
@@ -231,31 +201,24 @@ const getClientFirestore = () => {
   return nuxtApp.$firestore;
 };
 
-// Fetch posts (this runs on server and client)
+// Fetch posts
 const { data: fetchedPosts } = await useAsyncData("posts", fetchPosts);
 posts.value = Array.isArray(fetchedPosts.value) ? fetchedPosts.value : [];
 isLoading.value = false;
 
-// Load view counts AFTER page is visible (non-blocking)
+// Load view counts in background
 if (process.client) {
-  // Use setTimeout to defer this until after initial render
   setTimeout(async () => {
     const fs = getClientFirestore();
     if (fs && posts.value.length > 0) {
-      // Load view counts in background without blocking UI
       const viewPromises = posts.value.map(async (post) => {
         try {
           post.views = await getPostViewCount(fs, post._id);
         } catch (error) {
-          console.warn(`Failed to load views for post ${post._id}:`, error);
           post.views = 0;
         }
       });
-
-      // Don't await - let it load in background
-      Promise.all(viewPromises).catch((err) => {
-        console.warn("Some view counts failed to load:", err);
-      });
+      Promise.all(viewPromises).catch(() => { });
     }
   }, 0);
 }
@@ -279,50 +242,34 @@ const getCategoryCount = (category) => {
   return posts.value.filter((p) => p.category === category).length;
 };
 
-// Category styling
-const getCategoryStyle = (category) => {
-  const styles = {
-    "Личностный рост": "bg-cyan-500/20 text-cyan-300 border-cyan-500/40",
-    Отношения: "bg-purple-500/20 text-purple-300 border-purple-500/40",
-    Продуктивность: "bg-pink-500/20 text-pink-300 border-pink-500/40",
-  };
-  return (
-    styles[category] || "bg-slate-700/50 text-slate-300 border-slate-600/40"
-  );
-};
-
-// Firestore view count (non-blocking)
+// Increment view count
 const incrementViewCount = async (postId) => {
   const fs = getClientFirestore();
   if (!fs) return;
-
-  // Fire and forget - don't block navigation
-  incrementPostViewCount(fs, postId).catch((err) => {
-    console.warn("Failed to increment view count:", err);
-  });
+  incrementPostViewCount(fs, postId).catch(() => { });
 };
 
 // SEO
 useHead({
-  title: "Блог о личностном росте и самопознании | MindQ Lab",
-  link: [{ rel: "canonical", href: "https://www.mindqlab.com/blog" }],
+  title: "Блог | MindQLab — Развитие через данные и практику",
   meta: [
-    {
-      name: "description",
-      content:
-        "Читайте статьи о личностном росте, психологии, продуктивности и отношениях на MindQ Lab.",
-    },
-    {
-      name: "keywords",
-      content:
-        "личностный рост, психология, продуктивность, самопознание, блог, MindQ Lab",
-    },
+    { name: "description", content: "Читайте статьи о личностном росте, психологии, продуктивности и отношениях. Переводим теорию в понятные инструменты развития." },
   ],
 });
 </script>
 
 <style scoped>
-@keyframes fadeInUp {
+.animate-fade-up {
+  animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.reveal-up {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeUp {
   from {
     opacity: 0;
     transform: translateY(20px);
@@ -334,31 +281,16 @@ useHead({
   }
 }
 
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out backwards;
+/* Custom Scrollbar for stone-palette */
+::-webkit-scrollbar {
+  width: 6px;
 }
 
-.post-card {
-  animation: fadeInUp 0.8s ease-out backwards;
+::-webkit-scrollbar-track {
+  @apply bg-stone-50 dark:bg-stone-900;
 }
 
-/* Enhanced focus states for accessibility */
-a:focus-visible,
-button:focus-visible {
-  outline: 2px solid theme("colors.cyan.400");
-  outline-offset: 4px;
-  border-radius: 0.75rem;
-}
-
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+::-webkit-scrollbar-thumb {
+  @apply bg-stone-200 dark:bg-stone-800 rounded-full;
 }
 </style>
