@@ -3,7 +3,7 @@
     class="sticky top-0 left-0 right-0 z-50 bg-mindqlab-calm-bg/80 dark:bg-mindqlab-calm-dark-bg/80 backdrop-blur-md border-b border-stone-100 dark:border-stone-800/50 transition-colors duration-500 w-full">
 
     <!-- Container -->
-    <div class="container max-w-6xl px-6 mx-auto flex justify-between items-center h-20 relative z-10">
+    <div class="container max-w-7xl px-6 mx-auto flex justify-between items-center h-20 relative z-10">
       <!-- Logo -->
       <NuxtLink to="/" class="group relative flex items-center space-x-3" @click="closeDropdown">
         <div class="relative">

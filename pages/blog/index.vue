@@ -7,7 +7,7 @@
 
     <!-- Header Section -->
     <header class="relative pt-12 pb-8 px-6 border-b border-stone-100 dark:border-stone-800/50">
-      <div class="container mx-auto max-w-6xl relative">
+      <div class="container mx-auto max-w-7xl relative sm:px-8">
         <!-- Breadcrumb -->
         <nav class="mb-10 animate-fade-up" aria-label="Breadcrumb">
           <ol class="flex items-center space-x-3 text-sm">
@@ -90,7 +90,7 @@
     </header>
 
     <!-- Blog Posts Grid -->
-    <main class="container mx-auto max-w-6xl px-6 pb-24 pt-12">
+    <main class="container mx-auto max-w-7xl px-6 pb-24 pt-12 px-8">
       <!-- Loading State -->
       <div v-if="isLoading" class="text-center py-32 flex flex-col items-center">
         <div class="w-12 h-12 border-2 border-mindqlab-calm-accent border-t-transparent rounded-full animate-spin mb-6">

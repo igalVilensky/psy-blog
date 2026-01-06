@@ -1,79 +1,81 @@
 <template>
-  <div class="profile-header-container">
-    <!-- Animated Background -->
-    <div class="header-background">
-      <div class="gradient-orb gradient-orb-1"></div>
-      <div class="gradient-orb gradient-orb-2"></div>
-      <div class="neural-grid"></div>
+  <div class="profile-header-hero relative pt-12 pb-20 md:pb-32 overflow-hidden">
+    <!-- Calm Motion Background -->
+    <div class="absolute inset-0 z-0 overflow-hidden opacity-40 dark:opacity-20 pointer-events-none">
+      <div
+        class="absolute top-[-10%] left-[-5%] w-[40%] h-[40%] bg-mindqlab-calm-accent/10 rounded-full blur-[100px] animate-float">
+      </div>
+      <div
+        class="absolute bottom-[-10%] right-[-5%] w-[30%] h-[30%] bg-mindqlab-calm-accent-secondary/10 rounded-full blur-[120px] animate-slow-float">
+      </div>
     </div>
 
-    <div class="header-content">
+    <div
+      class="header-content relative z-10 flex flex-col lg:flex-row gap-10 lg:gap-20 items-center lg:items-start text-center lg:text-left">
       <!-- Avatar Section -->
       <div class="avatar-section">
-        <div class="avatar-wrapper">
+        <div class="avatar-wrapper relative">
           <UserAvatar :avatarUrl="avatarUrl" :loading="loading" :userInitial="userInitial"
             @update:avatarUrl="$emit('update:avatarUrl', $event)" @notify="$emit('notify', $event)"
-            class="avatar-component" />
+            class="avatar-component w-48 h-48 md:w-64 md:h-64 rounded-[3rem] shadow-2xl shadow-stone-200/50 dark:shadow-none" />
+          <div
+            class="absolute -bottom-4 -right-4 w-12 h-12 rounded-2xl bg-white dark:bg-stone-900 border border-stone-100 dark:border-stone-800 flex items-center justify-center shadow-lg transform rotate-12">
+            <i class="fas fa-check-circle text-mindqlab-calm-accent text-xl"></i>
+          </div>
         </div>
       </div>
 
       <!-- User Info & Actions -->
-      <div class="info-section">
-        <!-- User Details -->
+      <div class="info-section flex-1 py-4">
         <div class="user-details">
-          <!-- User Badge -->
+          <!-- User Status Badge -->
           <div
-            class="mb-4 inline-flex items-center px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 backdrop-blur-sm">
-            <i class="fas fa-star text-xs text-purple-600 dark:text-purple-400 mr-2"></i>
+            class="mb-8 inline-flex items-center px-5 py-2 rounded-full bg-white/50 dark:bg-stone-900/30 border border-stone-100 dark:border-stone-800/50 backdrop-blur-sm shadow-sm transition-transform hover:scale-105">
+            <div class="w-1.5 h-1.5 rounded-full bg-mindqlab-calm-accent mr-3 animate-pulse"></div>
             <span
-              class="text-xs font-medium text-purple-600 dark:text-purple-400 uppercase tracking-wider">Explorer</span>
+              class="text-[10px] font-semibold text-stone-500 dark:text-stone-400 uppercase tracking-[0.25em]">Исследователь
+              Сознания</span>
           </div>
 
-          <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight">
+          <h1 class="text-5xl md:text-7xl font-light text-stone-900 dark:text-white mb-8 tracking-tighter leading-none">
             {{ displayName }}
           </h1>
 
           <div
-            class="flex flex-col sm:flex-row items-center gap-3 sm:gap-6 text-sm text-slate-600 dark:text-slate-400 mb-6">
-            <div class="flex items-center gap-2">
-              <i class="fas fa-envelope text-cyan-600 dark:text-cyan-400"></i>
-              <span>{{ email }}</span>
+            class="flex flex-wrap items-center justify-center lg:justify-start gap-6 md:gap-10 text-stone-500 dark:text-stone-400 font-light italic text-base mb-12">
+            <div class="flex items-center gap-3 group translate-z-0">
+              <div
+                class="w-8 h-8 rounded-xl bg-stone-50 dark:bg-stone-800/50 flex items-center justify-center text-mindqlab-calm-accent opacity-70 group-hover:opacity-100 transition-all">
+                <i class="fas fa-envelope text-xs"></i>
+              </div>
+              <span class="group-hover:text-stone-800 dark:group-hover:text-stone-200 transition-colors">{{ email
+                }}</span>
             </div>
-            <div class="flex items-center gap-2">
-              <i class="fas fa-calendar-alt text-amber-600 dark:text-amber-400"></i>
-              <span>На проекте с {{ joinedDate }}</span>
+            <div class="flex items-center gap-3">
+              <div
+                class="w-8 h-8 rounded-xl bg-stone-50 dark:bg-stone-800/50 flex items-center justify-center text-stone-400">
+                <i class="fas fa-calendar-day text-xs"></i>
+              </div>
+              <span>В системе с {{ joinedDate }}</span>
             </div>
           </div>
         </div>
 
         <!-- Action Buttons -->
-        <div class="action-buttons">
-          <!-- Personal Cabinet - Primary Button -->
-          <NuxtLink to="/personal-cabinet" class="action-btn btn-primary">
-            <span class="btn-gradient"></span>
-            <span class="btn-content">
-              <i class="fas fa-user-cog mr-2"></i>
-              <span class="hidden sm:inline">Личный кабинет</span>
-              <span class="sm:hidden">Кабинет</span>
-            </span>
+        <div class="action-buttons flex flex-wrap items-center justify-center lg:justify-start gap-4">
+          <NuxtLink to="/personal-cabinet" class="action-btn-new primary">
+            <i class="fas fa-layer-group text-xs mr-3"></i>
+            <span>Кабинет</span>
           </NuxtLink>
 
-          <!-- Settings Button -->
-          <NuxtLink to="/profile/settings" class="action-btn btn-secondary">
-            <span class="btn-bg"></span>
-            <span class="btn-content">
-              <i class="fas fa-cog"></i>
-              <span class="hidden lg:inline ml-2">Настройки</span>
-            </span>
+          <NuxtLink to="/profile/settings" class="action-btn-new secondary">
+            <i class="fas fa-sliders-h text-xs mr-3"></i>
+            <span>Настройки</span>
           </NuxtLink>
 
-          <!-- Logout Button -->
-          <button @click="$emit('logout')" class="action-btn btn-danger">
-            <span class="btn-bg"></span>
-            <span class="btn-content">
-              <i class="fas fa-sign-out-alt"></i>
-              <span class="hidden lg:inline ml-2">Выйти</span>
-            </span>
+          <button @click="$emit('logout')" class="action-btn-new danger">
+            <i class="fas fa-power-off text-xs mr-3"></i>
+            <span>Выход</span>
           </button>
         </div>
       </div>
@@ -125,25 +127,25 @@ const joinedDate = computed(() => {
 });
 </script>
 
-<style scoped>
-.profile-header-container {
-  @apply relative min-h-[280px] sm:min-h-[300px] rounded-xl bg-gradient-to-br from-white to-slate-50 dark:from-slate-800/50 dark:to-slate-800/30 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none overflow-hidden mb-8 transition-all duration-300;
+<style lang="postcss" scoped>
+.profile-header-hero {
+  @apply mb-12 transition-all duration-500;
 }
 
-.header-background {
-  @apply absolute inset-0 pointer-events-none;
+.action-btn-new {
+  @apply px-8 py-4 rounded-2xl font-medium text-sm transition-all duration-300 flex items-center justify-center shadow-sm;
 }
 
-.gradient-orb {
-  @apply absolute rounded-full blur-3xl opacity-30;
+.action-btn-new.primary {
+  @apply bg-mindqlab-calm-accent text-white hover:bg-opacity-90 hover:shadow-lg hover:shadow-mindqlab-calm-accent/20 hover:-translate-y-0.5;
 }
 
-.gradient-orb-1 {
-  @apply w-96 h-96 bg-cyan-500/20 top-0 -left-48 animate-float;
+.action-btn-new.secondary {
+  @apply bg-white dark:bg-stone-900 border border-stone-100 dark:border-stone-800 text-stone-600 dark:text-stone-300 hover:border-mindqlab-calm-accent hover:text-mindqlab-calm-accent;
 }
 
-.gradient-orb-2 {
-  @apply w-96 h-96 bg-cyan-500/20 bottom-0 -right-48 animate-float-delayed;
+.action-btn-new.danger {
+  @apply bg-transparent text-stone-400 hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 px-6;
 }
 
 @keyframes float {
@@ -153,152 +155,42 @@ const joinedDate = computed(() => {
     transform: translate(0, 0);
   }
 
-  33% {
-    transform: translate(20px, -20px);
-  }
-
-  66% {
-    transform: translate(-10px, 10px);
+  50% {
+    transform: translate(-20px, 20px);
   }
 }
 
-@keyframes float-delayed {
+@keyframes slow-float {
 
   0%,
   100% {
     transform: translate(0, 0);
   }
 
-  33% {
-    transform: translate(-15px, 15px);
-  }
-
-  66% {
-    transform: translate(10px, -10px);
+  50% {
+    transform: translate(20px, -20px);
   }
 }
 
 .animate-float {
-  animation: float 20s ease-in-out infinite;
+  animation: float 15s ease-in-out infinite;
 }
 
-.animate-float-delayed {
-  animation: float-delayed 25s ease-in-out infinite;
-  animation-delay: 2s;
-}
-
-.neural-grid {
-  @apply absolute inset-0 opacity-5;
-  background-image: linear-gradient(rgba(6, 182, 212, 0.3) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(6, 182, 212, 0.3) 1px, transparent 1px);
-  background-size: 50px 50px;
-}
-
-.header-content {
-  @apply relative z-10 p-6 sm:p-8 flex flex-col lg:flex-row gap-6 lg:gap-12 items-center lg:items-start;
-}
-
-.avatar-section {
-  @apply flex justify-center lg:justify-start;
-}
-
-.avatar-wrapper {
-  @apply relative;
-}
-
-.avatar-component {
-  @apply w-40 h-40 sm:w-48 sm:h-48 rounded-full transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/20;
-}
-
-.info-section {
-  @apply flex-1 flex flex-col gap-6;
-}
-
-.user-details {
-  @apply text-center lg:text-left;
-}
-
-.user-badge {
-  @apply inline-flex items-center px-4 py-2 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-600 dark:text-cyan-400 text-sm font-medium mb-4;
-}
-
-.user-name {
-  @apply text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6 pb-1 bg-gradient-to-r from-cyan-600 dark:from-cyan-400 via-cyan-600 dark:via-purple-400 to-pink-600 dark:to-pink-400 bg-clip-text text-transparent;
-}
-
-.user-meta {
-  @apply flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-6 text-gray-600 dark:text-slate-400 text-sm;
-}
-
-.meta-item {
-  @apply flex items-center gap-2;
-}
-
-.action-buttons {
-  @apply flex flex-wrap items-center justify-center lg:justify-start gap-3;
-}
-
-.action-btn {
-  @apply relative px-6 py-3 rounded-xl font-medium overflow-hidden transition-all duration-300 hover:scale-105 flex items-center justify-center;
-}
-
-.btn-gradient,
-.btn-bg {
-  @apply absolute inset-0 transition-transform duration-300;
-}
-
-.action-btn:hover .btn-gradient,
-.action-btn:hover .btn-bg {
-  @apply scale-110;
-}
-
-.btn-content {
-  @apply relative z-10 flex items-center;
-}
-
-.btn-primary {
-  @apply text-white shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40;
-}
-
-.btn-primary .btn-gradient {
-  @apply bg-gradient-to-r from-cyan-500 to-cyan-500;
-}
-
-.btn-secondary {
-  @apply border border-gray-300 dark:border-slate-700 text-gray-700 dark:text-slate-300 hover:text-gray-900 dark:hover:text-white hover:border-cyan-500/50;
-}
-
-.btn-secondary .btn-bg {
-  @apply bg-gray-100 dark:bg-slate-800/50 hover:bg-gray-200 dark:hover:bg-slate-800;
-}
-
-.btn-danger {
-  @apply border border-red-500/30 text-red-400 hover:text-white hover:border-red-500/50;
-}
-
-.btn-danger .btn-bg {
-  @apply bg-red-500/10 hover:bg-red-500/20;
+.animate-slow-float {
+  animation: slow-float 20s ease-in-out infinite;
 }
 
 @media (max-width: 640px) {
-  .profile-header-container {
-    @apply min-h-[350px];
-  }
-
-  .header-content {
-    @apply p-4;
+  .profile-header-hero {
+    @apply pt-8 pb-12;
   }
 
   .avatar-component {
-    @apply w-32 h-32;
+    @apply w-44 h-44 rounded-[2.5rem];
   }
 
-  .user-name {
-    @apply text-2xl;
-  }
-
-  .action-btn {
-    @apply px-4 py-2 text-sm;
+  .action-btn-new {
+    @apply flex-1 px-4 py-3 text-xs min-w-[120px];
   }
 }
 </style>

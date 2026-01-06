@@ -1,33 +1,38 @@
 <template>
-  <div class="relative min-h-screen bg-white dark:bg-slate-950 px-4 xl:px-0 transition-colors duration-300">
-    <!-- Loading State -->
-    <div class="loading-overlay">
-      <div class="loading-container">
-        <div class="loading-spinner-wrapper">
-          <div class="spinner-ring spinner-ring-1"></div>
-          <div class="spinner-ring spinner-ring-2"></div>
-          <div class="spinner-ring spinner-ring-3"></div>
-          <div class="spinner-core">
-            <i class="fas fa-cog text-3xl text-cyan-600 dark:text-cyan-400"></i>
+  <div
+    class="relative min-h-screen transition-colors duration-500 flex flex-col bg-mindqlab-calm-bg dark:bg-mindqlab-calm-dark-bg">
+    <TopBar />
+    <div class="flex-1 flex items-center justify-center py-20">
+      <div class="max-w-md w-full px-6 text-center animate-fade-in text-center px-6">
+        <div class="mb-12 relative inline-block">
+          <!-- Minimalist Loading Spinner -->
+          <div class="w-24 h-24 rounded-full border-[3px] border-stone-100 dark:border-stone-800/50 relative">
+            <div
+              class="absolute inset-0 rounded-full border-[3px] border-t-mindqlab-calm-accent animate-spin duration-[1.5s]">
+            </div>
+          </div>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <i class="fas fa-circle-notch text-mindqlab-calm-accent/20 animate-pulse"></i>
           </div>
         </div>
-        <div class="loading-text">
-          <h3 class="text-xl font-bold text-white mb-2">
-            {{ authStore.user ? "Перенаправление" : "Загрузка" }}
-          </h3>
-          <p class="text-slate-400 text-sm">
-            {{
-              authStore.user
-                ? `Перенаправление на ваш профиль...`
-                : "Пожалуйста, подождите..."
-            }}
-          </p>
-        </div>
-        <div class="loading-progress">
-          <div class="progress-bar"></div>
+
+        <h1 class="text-3xl font-light text-stone-900 dark:text-white mb-4 tracking-tight uppercase">
+          {{ authStore.user ? "Почти готово" : "Загрузка" }}
+        </h1>
+        <p class="text-stone-500 dark:text-stone-400 font-light italic leading-relaxed">
+          {{
+            authStore.user
+              ? `Перенаправление в ваше пространство...`
+              : "Пожалуйста, подождите, мы настраиваем среду..."
+          }}
+        </p>
+
+        <div class="mt-12 max-w-[200px] mx-auto overflow-hidden rounded-full bg-stone-100 dark:bg-stone-800/30 h-[1px]">
+          <div class="bg-mindqlab-calm-accent/40 h-full w-1/3 animate-loading-progress rounded-full"></div>
         </div>
       </div>
     </div>
+    <Footer />
   </div>
 </template>
 
@@ -35,8 +40,11 @@
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "~/stores/auth";
+import TopBar from "~/components/navigation/TopBar.vue";
+import Footer from "~/components/ui/Footer.vue";
 
 definePageMeta({
+  layout: "empty",
   seo: {
     noindex: true,
     nofollow: true,
@@ -65,97 +73,33 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* Loading State Styles */
-.loading-overlay {
-  @apply fixed inset-0 bg-white dark:bg-slate-950 z-50 flex items-center justify-center;
+.animate-fade-in {
+  animation: fadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.loading-container {
-  @apply flex flex-col items-center gap-8;
-}
-
-.loading-spinner-wrapper {
-  @apply relative w-32 h-32;
-}
-
-.spinner-ring {
-  @apply absolute inset-0 rounded-full border-4 border-transparent;
-  animation: spin 3s linear infinite;
-}
-
-.spinner-ring-1 {
-  @apply border-t-cyan-500;
-  animation-duration: 2s;
-}
-
-.spinner-ring-2 {
-  @apply border-r-cyan-500;
-  animation-duration: 3s;
-  animation-direction: reverse;
-}
-
-.spinner-ring-3 {
-  @apply border-b-pink-500;
-  animation-duration: 4s;
-}
-
-.spinner-core {
-  @apply absolute inset-0 flex items-center justify-center;
-  animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes spin {
+@keyframes fadeIn {
   from {
-    transform: rotate(0deg);
+    opacity: 0;
+    transform: translateY(10px);
   }
 
   to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes pulse {
-
-  0%,
-  100% {
     opacity: 1;
-    transform: scale(1);
-  }
-
-  50% {
-    opacity: 0.5;
-    transform: scale(0.95);
+    transform: translateY(0);
   }
 }
 
-.loading-text {
-  @apply text-center;
-}
-
-.loading-progress {
-  @apply w-64 h-1 bg-slate-800 rounded-full overflow-hidden;
-}
-
-.progress-bar {
-  @apply h-full bg-gradient-to-r from-cyan-500 via-cyan-500 to-pink-500 rounded-full;
-  animation: progress 2s ease-in-out infinite;
-}
-
-@keyframes progress {
+@keyframes loading-progress {
   0% {
-    width: 0%;
-    margin-left: 0%;
-  }
-
-  50% {
-    width: 75%;
-    margin-left: 0%;
+    transform: translateX(-100%);
   }
 
   100% {
-    width: 0%;
-    margin-left: 100%;
+    transform: translateX(300%);
   }
+}
+
+.animate-loading-progress {
+  animation: loading-progress 2s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
 }
 </style>
-

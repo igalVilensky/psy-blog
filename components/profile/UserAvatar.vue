@@ -8,13 +8,13 @@
 
     <!-- Loading State -->
     <div v-else-if="loading" class="avatar-placeholder">
-      <i class="fas fa-spinner fa-spin text-cyan-600 dark:text-cyan-400"
+      <i class="fas fa-spinner fa-spin text-mindqlab-calm-accent"
         :style="{ fontSize: Math.max(size * 0.3) + 'px' }"></i>
     </div>
 
     <!-- Initial State -->
     <div v-else class="avatar-placeholder">
-      <span class="font-bold text-cyan-600 dark:text-cyan-400" :style="{ fontSize: Math.max(size * 0.4) + 'px' }">
+      <span class="font-bold text-mindqlab-calm-accent" :style="{ fontSize: Math.max(size * 0.4) + 'px' }">
         {{ userInitial }}
       </span>
     </div>
@@ -100,13 +100,13 @@ const uploadAvatar = async (file) => {
 };
 </script>
 
-<style scoped>
+<style lang="postcss" scoped>
 .avatar-container {
-  @apply w-full h-full rounded-full overflow-hidden ring-4 ring-cyan-500/30 ring-offset-4 ring-offset-slate-950 transition-all duration-300 group-hover:ring-cyan-500/50 group-hover:shadow-2xl group-hover:shadow-cyan-500/25 group-hover:scale-105;
+  @apply w-full h-full rounded-full overflow-hidden ring-4 ring-mindqlab-calm-accent/20 ring-offset-4 ring-offset-mindqlab-calm-bg dark:ring-offset-mindqlab-calm-dark-bg transition-all duration-500 group-hover:ring-mindqlab-calm-accent/40 group-hover:scale-105;
 }
 
 .avatar-placeholder {
-  @apply w-full h-full rounded-full bg-gradient-to-br from-cyan-500/10 via-cyan-500/10 to-pink-500/10 flex items-center justify-center ring-4 ring-cyan-500/30 ring-offset-4 ring-offset-slate-950 border border-cyan-500/20 transition-all duration-300 group-hover:border-cyan-500/40;
+  @apply w-full h-full rounded-full bg-stone-100 dark:bg-stone-800/30 flex items-center justify-center ring-4 ring-mindqlab-calm-accent/20 ring-offset-4 ring-offset-mindqlab-calm-bg dark:ring-offset-mindqlab-calm-dark-bg border border-stone-200 dark:border-stone-700/50 transition-all duration-500 group-hover:border-mindqlab-calm-accent/30;
 }
 
 .upload-overlay {
@@ -114,18 +114,18 @@ const uploadAvatar = async (file) => {
 }
 
 .upload-overlay-content {
-  @apply absolute inset-0 bg-gradient-to-br from-cyan-500/90 via-cyan-500/90 to-pink-500/90 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center backdrop-blur-md shadow-lg shadow-cyan-500/30;
+  @apply absolute inset-0 bg-stone-900/60 dark:bg-stone-100/10 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center backdrop-blur-sm;
 }
 
 .upload-icon-wrapper {
-  @apply text-white flex flex-col items-center gap-2 transform transition-transform duration-300 group-hover:scale-110;
+  @apply text-white dark:text-stone-900 flex flex-col items-center gap-2 transform transition-all duration-500 translate-y-2 group-hover:translate-y-0 capitalize;
 }
 
 .upload-icon-wrapper i {
-  @apply drop-shadow-lg;
+  @apply text-xl opacity-80;
 }
 
 .upload-icon-wrapper span {
-  @apply font-semibold tracking-wide;
+  @apply text-[10px] font-medium tracking-[0.2em] uppercase;
 }
 </style>

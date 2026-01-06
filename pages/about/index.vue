@@ -43,7 +43,7 @@
 
     <!-- 2. THE PHILOSOPHY -->
     <section class="py-24 border-b border-stone-100 dark:border-stone-800/50 reveal-on-scroll">
-      <div class="container mx-auto max-w-6xl px-6">
+      <div class="container mx-auto max-w-7xl px-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <div>
             <h2 class="text-3xl md:text-4xl font-light mb-8 text-stone-900 dark:text-white">Больше, чем просто
@@ -72,7 +72,7 @@
     <!-- 3. THE 5-STEP CYCLE -->
     <section
       class="py-24 bg-stone-50/50 dark:bg-stone-900/20 border-b border-stone-100 dark:border-stone-800/50 reveal-on-scroll">
-      <div class="container mx-auto max-w-6xl px-6">
+      <div class="container mx-auto max-w-7xl px-8">
         <div class="text-center mb-20">
           <h2 class="text-3xl md:text-4xl font-light mb-6 text-stone-900 dark:text-white">Метод MindQLab</h2>
           <p class="text-lg text-stone-500 dark:text-stone-400 max-w-2xl mx-auto leading-relaxed">
@@ -124,7 +124,7 @@
 
     <!-- 5. FOUNDERS -->
     <section class="py-24 bg-stone-50/30 dark:bg-stone-900/10 reveal-on-scroll">
-      <div class="container mx-auto max-w-6xl px-6">
+      <div class="container mx-auto max-w-7xl px-8">
         <div class="mb-16">
           <h2 class="text-3xl md:text-4xl font-light mb-6 text-stone-900 dark:text-white">Создатели проекта</h2>
           <div class="w-16 h-0.5 bg-mindqlab-calm-accent mb-8"></div>

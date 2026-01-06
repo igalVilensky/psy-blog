@@ -2,31 +2,35 @@
   <!-- Loading State -->
   <div v-if="isLoading" class="loading-overlay">
     <div class="loading-container">
-      <div class="loading-spinner-wrapper">
-        <div class="spinner-ring spinner-ring-1"></div>
-        <div class="spinner-ring spinner-ring-2"></div>
-        <div class="spinner-ring spinner-ring-3"></div>
-        <div class="spinner-core">
-          <i class="fas fa-user text-3xl text-cyan-600 dark:text-cyan-400"></i>
+      <div class="mb-12 relative inline-block">
+        <div class="w-24 h-24 rounded-full border-[3px] border-stone-100 dark:border-stone-800/50 relative">
+          <div
+            class="absolute inset-0 rounded-full border-[3px] border-t-mindqlab-calm-accent animate-spin duration-[1.5s]">
+          </div>
+        </div>
+        <div class="absolute inset-0 flex items-center justify-center">
+          <i class="fas fa-user text-stone-300 dark:text-stone-700 text-2xl"></i>
         </div>
       </div>
       <div class="loading-text">
-        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Загрузка профиля</h3>
-        <p class="text-slate-600 dark:text-slate-400 text-sm">Подготовка данных...</p>
+        <h3 class="text-2xl font-light text-stone-900 dark:text-white mb-3 uppercase tracking-widest">Профиль</h3>
+        <p class="text-stone-400 dark:text-stone-500 font-light italic">Настройка личного пространства...</p>
       </div>
-      <div class="loading-progress">
-        <div class="progress-bar"></div>
+      <div class="w-64 h-[1px] bg-stone-100 dark:bg-stone-800/50 mt-12 relative overflow-hidden">
+        <div class="absolute inset-0 bg-mindqlab-calm-accent/40 animate-progress"></div>
       </div>
     </div>
   </div>
 
-  <!-- Main Content -->
-  <div class="relative min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
-    <div class="max-w-6xl mx-auto px-4 sm:px-0 pb-12 pt-8 sm:pt-12">
+  <div
+    class="relative min-h-screen bg-mindqlab-calm-bg dark:bg-mindqlab-calm-dark-bg transition-colors duration-500 flex flex-col">
+    <TopBar />
+
+    <div class="flex-1 max-w-7xl mx-auto px-6 sm:px-8 pb-24 pt-12 sm:pt-20 w-full">
 
       <!-- Profile Header -->
-      <ProfileHeader :avatarUrl="avatarUrl" :loading="loading" :displayName="authStore.user?.displayName || 'User'"
-        :email="authStore.user?.email || 'Email not provided'"
+      <ProfileHeader :avatarUrl="avatarUrl" :loading="loading"
+        :displayName="authStore.user?.displayName || 'Пользователь'" :email="authStore.user?.email || 'Email не указан'"
         :userInitial="authStore.user?.displayName?.charAt(0).toUpperCase()" @update:avatarUrl="avatarUrl = $event"
         @logout="logoutUser" @notify="handleNotification($event)" />
 
@@ -35,137 +39,136 @@
         :aboutYourself="aboutYourself" />
 
       <!-- Navigation Tabs -->
-      <div class="mb-8">
-        <div class="flex gap-2 overflow-x-auto pb-2">
-          <button @click="activeTab = 'overview'" class="filter-tab"
-            :class="activeTab === 'overview' ? 'filter-tab-active' : ''">
-            <i class="fas fa-th mr-2"></i>
-            Обзор
+      <div class="mb-12 border-b border-stone-100 dark:border-stone-800/50">
+        <div class="flex gap-12 overflow-x-auto pb-0 no-scrollbar">
+          <button @click="activeTab = 'overview'" class="tab-link"
+            :class="activeTab === 'overview' ? 'tab-link-active' : ''">
+            <span class="text-[10px] uppercase tracking-[0.2em]">Обзор</span>
           </button>
-          <button @click="activeTab = 'emotions'" class="filter-tab"
-            :class="activeTab === 'emotions' ? 'filter-tab-active' : ''">
-            <i class="fas fa-heart mr-2"></i>
-            Эмоции
+          <button @click="activeTab = 'emotions'" class="tab-link"
+            :class="activeTab === 'emotions' ? 'tab-link-active' : ''">
+            <span class="text-[10px] uppercase tracking-[0.2em]">Эмоции</span>
           </button>
-          <button @click="activeTab = 'archetypes'" class="filter-tab"
-            :class="activeTab === 'archetypes' ? 'filter-tab-active' : ''">
-            <i class="fas fa-users mr-2"></i>
-            Архетипы
+          <button @click="activeTab = 'archetypes'" class="tab-link"
+            :class="activeTab === 'archetypes' ? 'tab-link-active' : ''">
+            <span class="text-[10px] uppercase tracking-[0.2em]">Архетипы</span>
           </button>
-          <button @click="activeTab = 'flows'" class="filter-tab"
-            :class="activeTab === 'flows' ? 'filter-tab-active' : ''">
-            <i class="fas fa-stream mr-2"></i>
-            Потоки
+          <button @click="activeTab = 'flows'" class="tab-link" :class="activeTab === 'flows' ? 'tab-link-active' : ''">
+            <span class="text-[10px] uppercase tracking-[0.2em]">Потоки</span>
           </button>
         </div>
       </div>
 
       <!-- Overview Tab -->
       <div v-if="activeTab === 'overview'" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        
+
         <!-- Onboarding CTA -->
         <div class="col-span-1 lg:col-span-2" v-if="!authStore.user?.onboardingCompleted">
-          <div class="bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl p-6 text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg shadow-cyan-500/20">
+          <div
+            class="bg-white dark:bg-stone-900 border border-stone-100 dark:border-stone-800/50 rounded-[2.5rem] p-8 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-8 shadow-sm backdrop-blur-xl transition-all duration-500 hover:border-mindqlab-calm-accent/30">
             <div>
-              <h3 class="text-xl font-bold mb-2">Персональная настройка</h3>
-              <p class="text-cyan-100">Пройдите короткий опрос, чтобы получить персональные рекомендации.</p>
+              <h3 class="text-2xl font-light text-stone-900 dark:text-white mb-3 uppercase tracking-tight">Персональная
+                настройка</h3>
+              <p class="text-stone-500 dark:text-stone-400 font-light italic">Пройдите короткий опрос, чтобы система
+                подготовила для вас индивидуальный план развития.</p>
             </div>
-            <Button 
-              to="/onboarding" 
-              text="Начать" 
-              iconClass="fas fa-arrow-right"
-              customClass="bg-white text-cyan-600 hover:bg-cyan-50 border-none whitespace-nowrap"
-            />
+            <NuxtLink to="/onboarding"
+              class="px-10 py-4 bg-mindqlab-calm-accent text-white rounded-full font-medium hover:bg-opacity-90 shadow-lg shadow-mindqlab-calm-accent/20 whitespace-nowrap transition-all">
+              Начать опрос
+            </NuxtLink>
           </div>
         </div>
 
         <div class="col-span-1 lg:col-span-2" v-else>
-           <div class="bg-white dark:bg-slate-800 rounded-xl p-6 border border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div
+            class="bg-stone-50/50 dark:bg-stone-800/20 border border-stone-100 dark:border-stone-800/50 rounded-[2.5rem] p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
             <div>
-              <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-1">Ваш профиль настроен</h3>
-              <p class="text-slate-600 dark:text-slate-400 text-sm">Вы можете обновить свои цели и предпочтения в любое время.</p>
+              <h3 class="text-xl font-light text-stone-900 dark:text-white mb-2 uppercase tracking-tight">Статус
+                профиля: Настроен</h3>
+              <p class="text-stone-500 dark:text-stone-400 text-sm font-light italic">Ваша персональная карта развития
+                построена. Вы можете обновить её в любое время.</p>
             </div>
-            <Button 
-              to="/onboarding" 
-              text="Обновить оценку" 
-              iconClass="fas fa-sync-alt"
-              customClass="bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 border-none whitespace-nowrap"
-            />
+            <NuxtLink to="/onboarding"
+              class="px-8 py-3 bg-white dark:bg-stone-900 border border-stone-100 dark:border-stone-800 text-stone-600 dark:text-stone-400 rounded-full text-sm font-medium hover:border-mindqlab-calm-accent transition-all whitespace-nowrap">
+              Обновить оценку
+            </NuxtLink>
           </div>
         </div>
-        <!-- Quick Stats -->
         <div class="settings-card">
-          <div class="flex items-center gap-3 mb-6">
+          <div class="flex items-center gap-4 mb-8">
             <div class="settings-icon-wrapper">
-              <i class="fas fa-chart-line text-cyan-600 dark:text-cyan-400"></i>
+              <i class="fas fa-chart-line text-mindqlab-calm-accent opacity-60"></i>
             </div>
-            <h2 class="text-xl font-bold text-gray-900 dark:text-white">Быстрая статистика</h2>
+            <h2 class="text-xl font-light text-stone-900 dark:text-white uppercase tracking-tight">Быстрая статистика
+            </h2>
           </div>
-          <div class="space-y-4">
+          <div class="space-y-6">
             <div class="stat-item">
-              <div class="flex items-center gap-3">
-                <i class="fas fa-clipboard-list text-cyan-600 dark:text-cyan-400"></i>
-                <span class="text-gray-700 dark:text-slate-300">Всего записей</span>
+              <div class="flex items-center gap-4">
+                <i class="fas fa-clipboard-list text-stone-300 dark:text-stone-700"></i>
+                <span class="text-stone-500 dark:text-stone-400 font-light">Всего записей</span>
               </div>
-              <span class="text-2xl font-bold text-gray-900 dark:text-white">{{
+              <span class="text-2xl font-light text-stone-900 dark:text-white">{{
                 emotionBarometerStats.totalEntries
               }}</span>
             </div>
             <div class="stat-item">
-              <div class="flex items-center gap-3">
-                <i class="fas fa-smile text-cyan-600 dark:text-cyan-400"></i>
-                <span class="text-gray-700 dark:text-slate-300">Частая эмоция</span>
+              <div class="flex items-center gap-4">
+                <i class="fas fa-smile text-stone-300 dark:text-stone-700"></i>
+                <span class="text-stone-500 dark:text-stone-400 font-light">Частая эмоция</span>
               </div>
-              <span class="text-lg font-semibold text-cyan-600 dark:text-cyan-400">{{
+              <span class="text-base font-medium text-mindqlab-calm-accent">{{
                 emotionBarometerStats.mostCommonEmotion
               }}</span>
             </div>
             <div class="stat-item">
-              <div class="flex items-center gap-3">
-                <i class="fas fa-tachometer-alt text-emerald-400"></i>
-                <span class="text-gray-700 dark:text-slate-300">Средняя интенсивность</span>
+              <div class="flex items-center gap-4">
+                <i class="fas fa-tachometer-alt text-stone-300 dark:text-stone-700"></i>
+                <span class="text-stone-500 dark:text-stone-400 font-light">Средняя интенсивность</span>
               </div>
-              <span class="text-lg font-semibold text-emerald-400">{{
+              <span class="text-base font-medium text-stone-900 dark:text-white uppercase">{{
                 emotionBarometerStats.averageIntensity.toFixed(1)
               }}</span>
             </div>
           </div>
         </div>
 
-        <!-- Recent Activity -->
         <div class="settings-card">
-          <div class="flex items-center gap-3 mb-6">
-            <div class="settings-icon-wrapper bg-gradient-to-br from-cyan-500/20 to-pink-500/20">
-              <i class="fas fa-history text-cyan-600 dark:text-cyan-400"></i>
+          <div class="flex items-center gap-4 mb-8">
+            <div class="settings-icon-wrapper">
+              <i class="fas fa-history text-mindqlab-calm-accent opacity-60"></i>
             </div>
-            <h2 class="text-xl font-bold text-gray-900 dark:text-white">Последняя активность</h2>
+            <h2 class="text-xl font-light text-stone-900 dark:text-white uppercase tracking-tight">Последняя активность
+            </h2>
           </div>
-          <div class="space-y-3">
+          <div class="space-y-4">
             <div class="activity-item">
-              <div class="activity-icon bg-cyan-500/20">
-                <i class="fas fa-heart text-cyan-600 dark:text-cyan-400 text-sm"></i>
+              <div class="activity-icon">
+                <i class="fas fa-heart text-stone-300 dark:text-stone-700 text-xs"></i>
               </div>
               <div class="flex-1">
-                <p class="text-gray-700 dark:text-slate-300 text-sm">Новая запись эмоций</p>
-                <p class="text-gray-500 dark:text-slate-500 text-xs mt-1">2 часа назад</p>
+                <p class="text-stone-900 dark:text-white text-sm font-light">Новая запись эмоций</p>
+                <p class="text-stone-400 dark:text-stone-500 text-[10px] uppercase tracking-widest mt-1">2 часа назад
+                </p>
               </div>
             </div>
             <div class="activity-item">
-              <div class="activity-icon bg-cyan-500/20">
-                <i class="fas fa-brain text-cyan-600 dark:text-cyan-400 text-sm"></i>
+              <div class="activity-icon">
+                <i class="fas fa-brain text-stone-300 dark:text-stone-700 text-xs"></i>
               </div>
               <div class="flex-1">
-                <p class="text-gray-700 dark:text-slate-300 text-sm">Пройден тест на архетипы</p>
-                <p class="text-gray-500 dark:text-slate-500 text-xs mt-1">1 день назад</p>
+                <p class="text-stone-900 dark:text-white text-sm font-light">Пройден тест на архетипы</p>
+                <p class="text-stone-400 dark:text-stone-500 text-[10px] uppercase tracking-widest mt-1">1 день назад
+                </p>
               </div>
             </div>
             <div class="activity-item">
-              <div class="activity-icon bg-emerald-500/20">
-                <i class="fas fa-trophy text-emerald-400 text-sm"></i>
+              <div class="activity-icon">
+                <i class="fas fa-trophy text-mindqlab-calm-accent/40 text-xs"></i>
               </div>
               <div class="flex-1">
-                <p class="text-gray-700 dark:text-slate-300 text-sm">Достижение разблокировано</p>
-                <p class="text-gray-500 dark:text-slate-500 text-xs mt-1">3 дня назад</p>
+                <p class="text-stone-900 dark:text-white text-sm font-light">Достижение разблокировано</p>
+                <p class="text-stone-400 dark:text-stone-500 text-[10px] uppercase tracking-widest mt-1">3 дня назад</p>
               </div>
             </div>
           </div>
@@ -174,11 +177,12 @@
         <!-- AI Summary Section -->
         <div v-if="authStore.user?.onboardingCompleted && aiSummary" class="col-span-1 lg:col-span-2">
           <div class="settings-card">
-            <div class="flex items-center gap-3 mb-6">
-              <div class="settings-icon-wrapper bg-gradient-to-br from-purple-500/20 to-pink-500/20">
-                <i class="fas fa-brain text-purple-600 dark:text-purple-400"></i>
+            <div class="flex items-center gap-4 mb-10 pb-6 border-b border-stone-50 dark:border-stone-800/30">
+              <div class="settings-icon-wrapper">
+                <i class="fas fa-brain text-mindqlab-calm-accent opacity-60"></i>
               </div>
-              <h2 class="text-xl font-bold text-gray-900 dark:text-white">Ваш психологический профиль</h2>
+              <h2 class="text-xl font-light text-stone-900 dark:text-white uppercase tracking-tight">Ваш психологический
+                профиль</h2>
             </div>
 
             <!-- Loading State -->
@@ -189,8 +193,10 @@
             <!-- Summary Content -->
             <div v-else class="space-y-6">
               <!-- Main Summary -->
-              <div class="p-4 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-lg border border-purple-200 dark:border-purple-800">
-                <p class="text-gray-800 dark:text-slate-200 leading-relaxed">{{ aiSummary.summary }}</p>
+              <div
+                class="p-8 bg-stone-50/50 dark:bg-stone-800/20 rounded-[2rem] border border-stone-100 dark:border-stone-800/50">
+                <p class="text-stone-600 dark:text-stone-300 font-light leading-relaxed italic whitespace-pre-line">{{
+                  aiSummary.summary }}</p>
               </div>
 
               <!-- Strengths -->
@@ -200,8 +206,8 @@
                   Ваши сильные стороны
                 </h3>
                 <ul class="space-y-2">
-                  <li v-for="(strength, index) in aiSummary.strengths" :key="index" 
-                      class="flex items-start gap-2 text-gray-700 dark:text-slate-300">
+                  <li v-for="(strength, index) in aiSummary.strengths" :key="index"
+                    class="flex items-start gap-2 text-gray-700 dark:text-slate-300">
                     <i class="fas fa-check-circle text-green-500 mt-1"></i>
                     <span>{{ strength }}</span>
                   </li>
@@ -215,8 +221,8 @@
                   На что обратить внимание
                 </h3>
                 <ul class="space-y-2">
-                  <li v-for="(risk, index) in aiSummary.risks" :key="index" 
-                      class="flex items-start gap-2 text-gray-700 dark:text-slate-300">
+                  <li v-for="(risk, index) in aiSummary.risks" :key="index"
+                    class="flex items-start gap-2 text-gray-700 dark:text-slate-300">
                     <i class="fas fa-info-circle text-orange-500 mt-1"></i>
                     <span>{{ risk }}</span>
                   </li>
@@ -230,8 +236,8 @@
                   Рекомендации
                 </h3>
                 <ul class="space-y-2">
-                  <li v-for="(rec, index) in aiSummary.recommendations" :key="index" 
-                      class="flex items-start gap-2 text-gray-700 dark:text-slate-300">
+                  <li v-for="(rec, index) in aiSummary.recommendations" :key="index"
+                    class="flex items-start gap-2 text-gray-700 dark:text-slate-300">
                     <i class="fas fa-arrow-right text-cyan-500 mt-1"></i>
                     <span>{{ rec }}</span>
                   </li>
@@ -244,19 +250,17 @@
 
       <!-- Emotions Tab -->
       <div v-if="activeTab === 'emotions'" class="emotion-barometer-section">
-        <div class="section-header">
-          <div class="flex items-center gap-3">
-            <div class="section-icon-wrapper">
-              <i class="fas fa-chart-line text-cyan-600 dark:text-cyan-400"></i>
-            </div>
-            <div>
-              <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
-                Эмоциональный компас
-              </h2>
-              <p class="text-sm text-gray-600 dark:text-slate-400 mt-1">
-                Отслеживайте свое эмоциональное состояние
-              </p>
-            </div>
+        <div class="flex items-center gap-4 mb-12">
+          <div class="section-icon-wrapper">
+            <i class="fas fa-chart-line text-mindqlab-calm-accent opacity-60"></i>
+          </div>
+          <div>
+            <h2 class="text-3xl font-light text-stone-900 dark:text-white uppercase tracking-tight">
+              Эмоциональный компас
+            </h2>
+            <p class="text-stone-500 dark:text-stone-400 font-light italic mt-1">
+              Отслеживайте свое эмоциональное состояние
+            </p>
           </div>
         </div>
 
@@ -356,7 +360,7 @@
           <!-- Emotion Distribution Chart -->
           <div class="chart-container">
             <h3 class="chart-title">
-              <i class="fas fa-chart-pie text-cyan-600 dark:text-cyan-400 mr-2"></i>
+              <i class="fas fa-chart-pie text-mindqlab-calm-accent opacity-60 mr-3"></i>
               Распределение эмоций
             </h3>
             <div class="chart-wrapper">
@@ -368,13 +372,12 @@
 
       <!-- Archetypes Tab -->
       <div v-if="activeTab === 'archetypes'">
-        <!-- Redesigned Psychological Profile to match new style -->
         <div class="settings-card">
-          <div class="flex items-center gap-3 mb-6">
+          <div class="flex items-center gap-4 mb-10 pb-6 border-b border-stone-50 dark:border-stone-800/30">
             <div class="settings-icon-wrapper">
-              <i class="fas fa-brain text-cyan-600 dark:text-cyan-400"></i>
+              <i class="fas fa-brain text-mindqlab-calm-accent opacity-60"></i>
             </div>
-            <h2 class="text-xl font-bold text-gray-900 dark:text-white">
+            <h2 class="text-xl font-light text-stone-900 dark:text-white uppercase tracking-tight">
               Психологический профиль
             </h2>
           </div>
@@ -401,11 +404,8 @@
                 профиль
               </p>
               <NuxtLink to="/lab/tests/life-purpose-archetype" class="start-button">
-                <span class="button-gradient"></span>
-                <span class="button-content">
-                  <i class="fas fa-play-circle mr-2"></i>
-                  Пройти тест
-                </span>
+                <i class="fas fa-play-circle mr-3"></i>
+                Пройти тест
               </NuxtLink>
             </div>
           </div>
@@ -440,7 +440,7 @@
                     <span class="text-gray-600 dark:text-slate-400">Прогресс</span>
                     <span class="text-cyan-600 dark:text-cyan-400">{{
                       calculateArchetypePercentage(archetype.level)
-                      }}%</span>
+                    }}%</span>
                   </div>
                   <div class="h-2 bg-slate-700/50 rounded-full overflow-hidden">
                     <div
@@ -588,6 +588,8 @@
       </div>
     </div>
 
+
+    <Footer />
     <!-- Notification Component -->
     <Notification v-if="notificationMessage" :message="notificationMessage" :type="notificationType"
       @close="hideNotification" class="z-50" />
@@ -603,6 +605,8 @@ import { getFirestore, doc, getDoc, collection, query, where, getDocs, orderBy }
 import { Chart, registerables } from "chart.js";
 import ProfileHeader from "~/components/profile/ProfileHeader.vue";
 import BioSection from "~/components/profile/BioSection.vue";
+import TopBar from "~/components/navigation/TopBar.vue";
+import Footer from "~/components/ui/Footer.vue";
 import Button from "~/components/base/Button.vue";
 import Notification from "~/components/base/Notification.vue";
 import { getEmotionBarometerStats } from "~/api/firebase/emotionBarometer";
@@ -610,6 +614,7 @@ import { getLatestUserAssessment } from "~/api/firebase/assessments";
 import { fetchUserAvatarUrl } from "~/api/firebase/userProfile";
 
 definePageMeta({
+  layout: "empty",
   seo: {
     noindex: true,
     nofollow: true,
@@ -957,7 +962,7 @@ const fetchAiSummary = async (userId) => {
     const db = getFirestore();
     const aiSummaryRef = doc(db, "users", userId, "aiSummary", "latest");
     const aiSummarySnap = await getDoc(aiSummaryRef);
-    
+
     if (aiSummarySnap.exists()) {
       aiSummary.value = aiSummarySnap.data();
       console.log("🤖 AI Summary loaded:", aiSummary.value);
@@ -1058,142 +1063,72 @@ const navigateToFlow = (flowId) => {
 };
 </script>
 
-<style scoped>
+<style lang="postcss" scoped>
 .loading-overlay {
-  @apply fixed inset-0 bg-white dark:bg-slate-950 flex items-center justify-center;
+  @apply fixed inset-0 bg-mindqlab-calm-bg dark:bg-mindqlab-calm-dark-bg flex items-center justify-center;
   z-index: 9999 !important;
 }
 
 .loading-container {
-  @apply flex flex-col items-center gap-8;
-}
-
-.loading-spinner-wrapper {
-  @apply relative w-32 h-32;
-}
-
-.spinner-ring {
-  @apply absolute inset-0 rounded-full border-4 border-transparent;
-  animation: spin 3s linear infinite;
-}
-
-.spinner-ring-1 {
-  @apply border-t-cyan-500;
-  animation-duration: 2s;
-}
-
-.spinner-ring-2 {
-  @apply border-r-cyan-500;
-  animation-duration: 3s;
-  animation-direction: reverse;
-}
-
-.spinner-ring-3 {
-  @apply border-b-pink-500;
-  animation-duration: 4s;
-}
-
-.spinner-core {
-  @apply absolute inset-0 flex items-center justify-center;
-  animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes pulse {
-
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  50% {
-    opacity: 0.5;
-    transform: scale(0.95);
-  }
-}
-
-.loading-text {
-  @apply text-center;
-}
-
-.loading-progress {
-  @apply w-64 h-1 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden;
-}
-
-.progress-bar {
-  @apply h-full bg-gradient-to-r from-cyan-500 via-cyan-500 to-pink-500 rounded-full;
-  animation: progress 2s ease-in-out infinite;
+  @apply flex flex-col items-center text-center;
 }
 
 @keyframes progress {
   0% {
-    width: 0%;
-    margin-left: 0%;
-  }
-
-  50% {
-    width: 75%;
-    margin-left: 0%;
+    transform: translateX(-100%);
   }
 
   100% {
-    width: 0%;
-    margin-left: 100%;
+    transform: translateX(100%);
   }
 }
 
-.filter-tab {
-  @apply px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 bg-gray-100 dark:bg-slate-800/50 text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200 border border-gray-300 dark:border-slate-700/50 hover:border-cyan-500/30 whitespace-nowrap;
+.animate-progress {
+  animation: progress 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
-.filter-tab-active {
-  @apply bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 border-cyan-500/40;
+.tab-link {
+  @apply py-4 relative transition-all duration-300 text-stone-400 hover:text-stone-900 dark:hover:text-white border-b-2 border-transparent;
+}
+
+.tab-link-active {
+  @apply text-stone-900 dark:text-white border-mindqlab-calm-accent;
 }
 
 .settings-card {
-  @apply p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-cyan-500/20 backdrop-blur-sm hover:border-cyan-500/30 transition-all duration-300;
+  @apply p-8 sm:p-10 rounded-[2.5rem] bg-white dark:bg-stone-900/40 border border-stone-100 dark:border-stone-800/50 shadow-sm backdrop-blur-xl transition-all duration-500;
 }
 
 .settings-icon-wrapper {
-  @apply w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center;
+  @apply w-12 h-12 rounded-xl bg-stone-50 dark:bg-stone-800/50 flex items-center justify-center shadow-sm;
 }
 
 .stat-item {
-  @apply flex items-center justify-between p-4 rounded-lg bg-gray-100 dark:bg-slate-800/30;
+  @apply flex items-center justify-between p-6 rounded-2xl bg-stone-50/50 dark:bg-stone-800/20 border border-stone-100/50 dark:border-stone-800/30;
 }
 
 .activity-item {
-  @apply flex items-start gap-3 p-4 rounded-lg bg-gray-100 dark:bg-slate-800/30 hover:bg-gray-200 dark:hover:bg-slate-800/50 transition-all duration-300;
+  @apply flex items-start gap-4 p-5 rounded-2xl bg-stone-50/30 dark:bg-stone-800/10 hover:bg-white dark:hover:bg-stone-800/30 transition-all duration-300;
 }
 
 .activity-icon {
-  @apply w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0;
+  @apply w-10 h-10 rounded-xl bg-white dark:bg-stone-800/50 flex items-center justify-center shadow-sm flex-shrink-0;
 }
 
 .emotion-barometer-section {
-  @apply p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-cyan-500/20 backdrop-blur-sm hover:border-cyan-500/30 transition-all duration-300;
+  @apply p-8 sm:p-12 rounded-[3.5rem] bg-white dark:bg-stone-900/40 border border-stone-100 dark:border-stone-800/50 shadow-sm backdrop-blur-xl transition-all duration-500;
 }
 
 .section-header {
-  @apply mb-6 pb-6 border-b border-cyan-500/10;
+  @apply mb-12 pb-8 border-b border-stone-50 dark:border-stone-800/30;
 }
 
 .section-icon-wrapper {
-  @apply w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center;
+  @apply w-14 h-14 rounded-2xl bg-stone-50 dark:bg-stone-800/50 flex items-center justify-center shadow-sm;
 }
 
 .cta-button-custom {
-  @apply inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-600 dark:text-cyan-400 hover:bg-cyan-500/20 hover:border-cyan-500/50 transition-all duration-300 font-medium;
+  @apply inline-flex items-center gap-2 px-8 py-4 rounded-full bg-stone-50 dark:bg-stone-800/50 border border-stone-100 dark:border-stone-800/50 text-stone-600 dark:text-stone-400 hover:text-mindqlab-calm-accent hover:border-mindqlab-calm-accent/30 transition-all duration-300 font-medium;
 }
 
 .loading-state {
@@ -1205,7 +1140,7 @@ const navigateToFlow = (flowId) => {
 }
 
 .empty-state {
-  @apply flex items-center justify-center py-16;
+  @apply flex items-center justify-center py-24;
 }
 
 .empty-content {
@@ -1213,87 +1148,77 @@ const navigateToFlow = (flowId) => {
 }
 
 .empty-icon {
-  @apply w-24 h-24 rounded-2xl bg-gradient-to-br from-cyan-500/10 to-cyan-500/10 flex items-center justify-center mb-6 animate-pulse;
+  @apply w-24 h-24 rounded-3xl bg-stone-50 dark:bg-stone-800/50 flex items-center justify-center mb-8 shadow-sm;
 }
 
 .start-button {
-  @apply relative inline-flex items-center justify-center px-8 py-3 rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-cyan-500/25;
-}
-
-.button-gradient {
-  @apply absolute inset-0 bg-gradient-to-r from-cyan-500 to-cyan-500;
-}
-
-.start-button:hover .button-gradient {
-  @apply scale-110;
-}
-
-.button-content {
-  @apply relative z-10 text-white font-medium flex items-center;
+  @apply px-10 py-5 rounded-full bg-mindqlab-calm-accent text-white font-medium hover:bg-opacity-90 transition-all duration-300 shadow-lg shadow-mindqlab-calm-accent/20;
 }
 
 .stats-grid {
-  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8;
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12;
 }
 
 .stat-card {
-  @apply p-6 rounded-xl bg-gray-100 dark:bg-slate-800/30 border border-gray-300 dark:border-slate-700/50 hover:border-cyan-500/30 transition-all duration-300 flex items-center gap-4;
+  @apply p-8 rounded-[2rem] bg-stone-50/50 dark:bg-stone-800/20 border border-stone-100/50 dark:border-stone-800/30 transition-all duration-500 flex items-center gap-5;
 }
 
 .stat-icon-wrapper {
-  @apply w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0;
-}
-
-.stat-content {
-  @apply flex-1;
+  @apply w-14 h-14 rounded-2xl bg-white dark:bg-stone-800/40 flex items-center justify-center shadow-sm flex-shrink-0;
 }
 
 .stat-label {
-  @apply text-gray-600 dark:text-slate-400 text-sm mb-1;
+  @apply text-stone-400 dark:text-stone-500 text-[10px] uppercase tracking-[0.2em] font-medium mb-1;
 }
 
 .stat-value {
-  @apply text-gray-900 dark:text-white text-2xl font-bold;
+  @apply text-stone-900 dark:text-white text-3xl font-light tracking-tight;
 }
 
 .chart-container {
-  @apply mt-8 p-6 rounded-xl bg-gray-100 dark:bg-slate-800/30 border border-gray-300 dark:border-slate-700/50;
+  @apply mt-12 p-10 rounded-[3rem] bg-stone-50/30 dark:bg-stone-800/10 border border-stone-100/50 dark:border-stone-800/30;
 }
 
 .chart-title {
-  @apply text-lg font-semibold text-gray-900 dark:text-white mb-6 flex items-center;
+  @apply text-xl font-light text-stone-900 dark:text-white mb-10 flex items-center uppercase tracking-tight;
 }
 
 .chart-wrapper {
-  @apply max-w-md mx-auto h-64;
+  @apply max-w-sm mx-auto h-72;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 @media (max-width: 640px) {
   .emotion-barometer-section {
-    @apply p-4;
+    @apply p-6 rounded-[2.5rem];
   }
 
   .stats-grid {
-    @apply gap-3;
+    @apply gap-4;
   }
 
   .stat-card {
-    @apply p-4;
+    @apply p-6;
   }
 
   .chart-container {
-    @apply p-4;
+    @apply p-6 rounded-[2rem];
   }
 
   .settings-card {
-    @apply p-4;
+    @apply p-6 rounded-[2rem];
   }
 
-  .filter-tab {
-    @apply px-4 py-2 text-xs;
+  .tab-link {
+    @apply py-3;
   }
 }
 </style>
-.settings-card {
-  @apply p-6 rounded-xl bg-gradient-to-br from-white to-slate-50 dark:from-slate-800/50 dark:to-slate-800/30 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none transition-all duration-300 hover:border-cyan-500/30;
-}

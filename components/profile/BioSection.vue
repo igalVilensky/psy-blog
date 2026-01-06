@@ -4,22 +4,31 @@
     <div class="section-header">
       <div class="header-title">
         <div class="title-icon-wrapper">
-          <i class="fas fa-user-edit text-cyan-600 dark:text-cyan-400"></i>
+          <i class="fas fa-user text-mindqlab-calm-accent opacity-60"></i>
         </div>
-        <h2 class="title-text">О себе</h2>
-        <NuxtLink to="/profile/settings" class="ml-3 text-slate-400 hover:text-cyan-500 transition-colors"
-          title="Редактировать">
-          <i class="fas fa-pen"></i>
-        </NuxtLink>
+        <div class="flex flex-col">
+          <div class="flex items-center gap-3">
+            <h2 class="title-text">Профиль пользователя</h2>
+            <NuxtLink to="/profile/settings"
+              class="text-stone-400 hover:text-mindqlab-calm-accent transition-colors text-xs" title="Редактировать">
+              <i class="fas fa-pen"></i>
+            </NuxtLink>
+          </div>
+          <p class="text-xs text-stone-400 dark:text-stone-500 font-light italic mt-1">Персональная информация и био</p>
+        </div>
       </div>
 
       <div class="progress-wrapper">
-        <span class="progress-label">Заполнено:</span>
-        <div class="progress-bar-container">
-          <div class="progress-bar-bg">
-            <div class="progress-bar-fill" :style="{ width: bioCompletionPercentage + '%' }"></div>
+        <div class="flex flex-col items-end gap-2">
+          <div class="flex items-center gap-3">
+            <span class="progress-label">Полнота профиля</span>
+            <span class="progress-percentage">{{ bioCompletionPercentage }}%</span>
           </div>
-          <span class="progress-percentage">{{ bioCompletionPercentage }}%</span>
+          <div class="progress-bar-container">
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" :style="{ width: bioCompletionPercentage + '%' }"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -37,50 +46,41 @@
       <!-- Info Cards Grid -->
       <div class="info-cards-grid">
         <!-- Profession -->
-        <BioInfoCard title="Профессия" :value="profession" iconClass="fas fa-briefcase"
-          iconColorClass="text-emerald-600 dark:text-emerald-400"
-          iconBgClass="bg-emerald-500/10 group-hover:bg-emerald-500/20" />
+        <BioInfoCard title="Профессия" :value="profession" iconClass="fas fa-briefcase" />
 
         <!-- Social Media -->
-        <BioInfoCard title="Соц. сети" :value="socialMedia" iconClass="fas fa-share-alt" :isSocialMedia="true"
-          iconColorClass="text-cyan-600 dark:text-cyan-400" iconBgClass="bg-cyan-500/10 group-hover:bg-cyan-500/20" />
+        <BioInfoCard title="Соц. сети" :value="socialMedia" iconClass="fas fa-at" :isSocialMedia="true" />
 
         <!-- Age -->
-        <BioInfoCard title="Возраст" :value="age ? age + ' лет' : ''" iconClass="fas fa-birthday-cake"
-          iconColorClass="text-pink-600 dark:text-pink-400" iconBgClass="bg-pink-500/10 group-hover:bg-pink-500/20" />
+        <BioInfoCard title="Возраст" :value="age ? age + ' лет' : ''" iconClass="fas fa-calendar" />
 
         <!-- Gender -->
         <BioInfoCard title="Пол" :value="gender === 'male' ? 'Мужской' : gender === 'female' ? 'Женский' : ''"
-          iconClass="fas fa-venus-mars" iconColorClass="text-purple-600 dark:text-purple-400"
-          iconBgClass="bg-purple-500/10 group-hover:bg-purple-500/20" />
+          iconClass="fas fa-user-friends" />
       </div>
 
       <!-- About Text Card -->
       <div class="about-card">
         <div class="about-header">
           <div class="about-icon-wrapper">
-            <i class="fas fa-quote-right text-cyan-600 dark:text-cyan-400"></i>
+            <i class="fas fa-feather text-mindqlab-calm-accent opacity-60"></i>
           </div>
-          <p class="about-label">О себе</p>
+          <p class="about-label">История жизни</p>
         </div>
         <p v-if="aboutYourself" class="about-text">
           {{ aboutYourself }}
         </p>
         <p v-else class="about-placeholder">
-          <i class="fas fa-pen text-slate-500 mr-2"></i>
-          Расскажите о себе...
+          Расскажите немного о себе, своих целях и устремлениях...
         </p>
       </div>
 
       <!-- CTA Button -->
       <div v-if="bioCompletionPercentage < 100" class="cta-container">
         <NuxtLink to="/profile/settings" class="cta-button">
-          <span class="cta-gradient"></span>
-          <span class="cta-content">
-            <i class="fas fa-plus mr-2"></i>
-            <span class="hidden sm:inline">Добавить информацию</span>
-            <span class="sm:hidden">Добавить</span>
-          </span>
+          <i class="fas fa-plus mr-3 text-xs"></i>
+          <span class="hidden sm:inline">Дополнить информацию</span>
+          <span class="sm:hidden">Дополнить</span>
         </NuxtLink>
       </div>
     </div>
@@ -143,47 +143,47 @@ const bioCompletionPercentage = computed(() => {
 
 <style scoped>
 .bio-section-container {
-  @apply p-6 sm:p-8 rounded-xl bg-gradient-to-br from-white to-slate-50 dark:from-slate-800/50 dark:to-slate-800/30 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none mb-8 transition-all duration-300;
+  @apply p-8 sm:p-12 rounded-[3.5rem] bg-white dark:bg-stone-900/40 border border-stone-100 dark:border-stone-800/50 shadow-sm backdrop-blur-xl mb-12 transition-all duration-500;
 }
 
 .section-header {
-  @apply flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-cyan-500/10;
+  @apply flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-12 pb-8 border-b border-stone-50 dark:border-stone-800/30;
 }
 
 .header-title {
-  @apply flex items-center gap-3;
+  @apply flex items-center gap-5;
 }
 
 .title-icon-wrapper {
-  @apply w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center text-xl;
+  @apply w-14 h-14 rounded-2xl bg-stone-50 dark:bg-stone-800/50 flex items-center justify-center text-xl shadow-sm;
 }
 
 .title-text {
-  @apply text-2xl font-bold text-gray-900 dark:text-white;
+  @apply text-3xl font-light text-stone-900 dark:text-white uppercase tracking-tight;
 }
 
 .progress-wrapper {
-  @apply flex items-center gap-3 sm:gap-4;
+  @apply w-full md:w-auto;
 }
 
 .progress-label {
-  @apply text-gray-600 dark:text-slate-400 text-sm whitespace-nowrap;
+  @apply text-stone-400 dark:text-stone-500 text-[10px] uppercase tracking-[0.2em] font-medium;
 }
 
 .progress-bar-container {
-  @apply flex items-center gap-3;
+  @apply flex items-center;
 }
 
 .progress-bar-bg {
-  @apply w-24 sm:w-32 bg-slate-800/50 rounded-full h-2.5 border border-slate-700/50 overflow-hidden;
+  @apply w-full md:w-48 bg-stone-100 dark:bg-stone-800/30 rounded-full h-1 overflow-hidden;
 }
 
 .progress-bar-fill {
-  @apply h-full rounded-full transition-all duration-500 ease-out bg-gradient-to-r from-cyan-500 via-cyan-500 to-pink-500 shadow-lg shadow-cyan-500/50;
+  @apply h-full rounded-full transition-all duration-1000 ease-out bg-mindqlab-calm-accent shadow-sm;
 }
 
 .progress-percentage {
-  @apply text-cyan-600 dark:text-cyan-400 text-sm font-bold whitespace-nowrap;
+  @apply text-stone-900 dark:text-white text-sm font-medium tracking-tight;
 }
 
 .loading-state {
@@ -195,76 +195,68 @@ const bioCompletionPercentage = computed(() => {
 }
 
 .bio-content {
-  @apply space-y-6;
+  @apply space-y-10;
 }
 
 .info-cards-grid {
-  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4;
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6;
 }
 
 .about-card {
-  @apply p-6 sm:p-8 rounded-xl bg-gray-100 dark:bg-slate-800/30 border border-gray-300 dark:border-slate-700/50 hover:border-cyan-500/30 transition-all duration-300;
+  @apply p-8 sm:p-10 rounded-[2.5rem] bg-stone-50/50 dark:bg-stone-800/20 border border-stone-100/50 dark:border-stone-800/30 transition-all duration-500;
 }
 
 .about-header {
-  @apply flex items-center gap-4 mb-4;
+  @apply flex items-center gap-4 mb-8;
 }
 
 .about-icon-wrapper {
-  @apply w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500/20 to-cyan-500/20 flex items-center justify-center;
+  @apply w-10 h-10 rounded-xl bg-white dark:bg-stone-800/50 flex items-center justify-center shadow-sm;
 }
 
 .about-label {
-  @apply text-gray-600 dark:text-slate-400 font-medium;
+  @apply text-stone-400 dark:text-stone-500 text-[10px] uppercase tracking-[0.2em] font-medium;
 }
 
 .about-text {
-  @apply text-gray-900 dark:text-white text-base leading-relaxed whitespace-pre-line;
+  @apply text-stone-600 dark:text-stone-300 text-base md:text-lg font-light leading-relaxed italic whitespace-pre-line;
 }
 
 .about-placeholder {
-  @apply text-gray-400 dark:text-slate-500 text-sm italic flex items-center;
+  @apply text-stone-400 dark:text-stone-600 text-base font-light italic;
 }
 
 .cta-container {
-  @apply flex justify-center sm:justify-start pt-2;
+  @apply flex justify-center sm:justify-start pt-4;
 }
 
 .cta-button {
-  @apply relative inline-flex items-center justify-center px-8 py-3 rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-cyan-500/25;
-}
-
-.cta-gradient {
-  @apply absolute inset-0 bg-gradient-to-r from-cyan-500 via-cyan-500 to-pink-500;
-}
-
-.cta-button:hover .cta-gradient {
-  @apply scale-110;
-}
-
-.cta-content {
-  @apply relative z-10 text-white font-medium flex items-center;
+  @apply px-10 py-5 rounded-full bg-white dark:bg-stone-900 border border-stone-100 dark:border-stone-800 text-stone-900 dark:text-white font-medium hover:border-mindqlab-calm-accent transition-all duration-300 shadow-sm flex items-center;
 }
 
 @media (max-width: 640px) {
   .bio-section-container {
-    @apply p-4;
+    @apply p-6 rounded-[2.5rem];
   }
 
   .section-header {
-    @apply pb-4;
+    @apply mb-8 pb-6;
   }
 
   .title-icon-wrapper {
-    @apply w-10 h-10;
+    @apply w-12 h-12;
   }
 
   .title-text {
-    @apply text-xl;
+    @apply text-2xl;
   }
 
   .about-card {
-    @apply p-4;
+    @apply p-6 rounded-[2rem];
+  }
+
+  .cta-button {
+    @apply w-full justify-center px-6 py-4;
   }
 }
 </style>

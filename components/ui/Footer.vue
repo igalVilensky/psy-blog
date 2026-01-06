@@ -2,7 +2,7 @@
   <footer
     class="relative z-20 bg-mindqlab-calm-bg dark:bg-mindqlab-calm-dark-bg text-mindqlab-calm-text dark:text-mindqlab-calm-dark-text border-t border-stone-100 dark:border-stone-800/60 transition-colors duration-500 overflow-hidden">
 
-    <div class="relative container mx-auto px-6 max-w-6xl py-16 md:py-24">
+    <div class="relative container mx-auto px-6 max-w-7xl py-16 md:py-24">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8">
 
         <!-- Brand & Mission -->
