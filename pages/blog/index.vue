@@ -1,6 +1,6 @@
 <template>
   <div
-    class="min-h-screen bg-mindqlab-calm-bg dark:bg-mindqlab-calm-dark-bg text-stone-900 dark:text-stone-100 font-sans transition-colors duration-500 overflow-x-hidden">
+    class="min-h-screen bg-mindqlab-calm-bg dark:bg-mindqlab-calm-dark-bg text-stone-900 dark:text-stone-100 font-sans transition-colors duration-500">
 
     <!-- Navigation -->
     <TopBar />
@@ -146,7 +146,7 @@
                 </span>
               </div>
               <span>{{ new Date(post.publishedAt).toLocaleDateString("ru-RU", { day: "numeric", month: "short" })
-                }}</span>
+              }}</span>
             </div>
           </div>
         </article>
