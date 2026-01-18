@@ -33,8 +33,10 @@ export const useAuthStore = defineStore("auth", {
                   uid: currentUser.uid,
                   onboardingCompleted: userProfile.onboardingCompleted || false,
                   superAdmin: !!idTokenResult.claims.superAdmin,
+                  isCoach: userProfile.role === "coach" || !!idTokenResult.claims.coach,
                   token: idTokenResult.token,
                 };
+                console.log(this.user);
               } catch (err) {
                 this.error = "Failed to load user profile";
                 console.error(err);

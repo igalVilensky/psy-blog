@@ -55,7 +55,7 @@ export const updateUserAvatarUrl = async (userId, newAvatarUrl) => {
 };
 
 // Register a new user
-export const registerUser = async (email, password, displayName) => {
+export const registerUser = async (email, password, displayName, additionalData = {}) => {
   const auth = getAuth();
   const db = getFirestore();
 
@@ -75,6 +75,7 @@ export const registerUser = async (email, password, displayName) => {
       createdAt: new Date(),
       acceptedPrivacyPolicy: true,
       acceptedTerms: true,
+      ...additionalData
     });
 
     await sendEmailVerification(user);

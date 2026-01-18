@@ -330,10 +330,16 @@ const handleRegister = async () => {
   isLoading.value = true;
 
   try {
+    const additionalData = {};
+    if (route.query.coach) {
+      additionalData.coachId = route.query.coach;
+    }
+
     const firebaseResponse = await registerUser(
       email.value,
       password.value,
-      displayName.value
+      displayName.value,
+      additionalData
     );
     if (!firebaseResponse.success)
       throw new Error(firebaseResponse.message || "Ошибка при регистрации.");
