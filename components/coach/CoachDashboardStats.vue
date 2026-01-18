@@ -1,18 +1,20 @@
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-    <div v-for="stat in stats" :key="stat.label" 
-         class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm transition-all hover:shadow-md">
-      <div class="flex items-center justify-between mb-2">
-        <div :class="`w-10 h-10 rounded-xl flex items-center justify-center ${stat.bgClass}`">
-          <i :class="`${stat.icon} ${stat.textClass}`"></i>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div v-for="stat in stats" :key="stat.label"
+      class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm transition-all hover:shadow-xl hover:-translate-y-1 group">
+      <div class="flex items-center justify-between mb-4">
+        <div
+          :class="`w-12 h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 ${stat.bgClass}`">
+          <i :class="`${stat.icon} text-xl ${stat.textClass}`"></i>
         </div>
-        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">{{ stat.label }}</span>
-      </div>
-      <div class="flex items-end justify-between">
-        <div class="text-2xl font-black font-mono text-slate-900 dark:text-white">{{ stat.value }}</div>
-        <div v-if="stat.trend" :class="`text-xs font-bold ${stat.trendColor}`">
+        <div v-if="stat.trend"
+          :class="`px-2 py-1 rounded-lg text-[10px] font-black ${stat.trendColor} bg-emerald-500/10`">
           {{ stat.trend }} <i :class="stat.trendIcon"></i>
         </div>
+      </div>
+      <div>
+        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">{{ stat.label }}</span>
+        <div class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">{{ stat.value }}</div>
       </div>
     </div>
   </div>

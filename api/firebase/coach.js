@@ -66,7 +66,7 @@ export const addCoachNote = async (coachId, clientId, content) => {
             coachId,
             clientId,
             content,
-            createdAt: serverTimestamp()
+            timestamp: serverTimestamp()
         });
         return { success: true, id: docRef.id };
     } catch (error) {
@@ -86,7 +86,7 @@ export const getCoachNotes = async (coachId, clientId) => {
             notesRef,
             where("coachId", "==", coachId),
             where("clientId", "==", clientId),
-            orderBy("createdAt", "desc")
+            orderBy("timestamp", "desc")
         );
         const snapshot = await getDocs(q);
         return snapshot.docs.map(doc => ({
