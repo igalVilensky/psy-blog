@@ -263,6 +263,24 @@
             ОНЛАЙН
           </span>
         </div>
+        <!-- Profile Link -->
+        <NuxtLink to="/profile"
+          class="group flex items-center px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors mb-1"
+          :class="{ 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white': route.path.startsWith('/profile') }">
+          <i class="fas fa-user-circle w-5 h-5 flex-shrink-0 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors"
+            :class="{ 'text-purple-500 dark:text-purple-400': route.path.startsWith('/profile') }"></i>
+          <span class="ml-3">Профиль</span>
+        </NuxtLink>
+
+        <!-- Coach Panel Link (Highlighted) -->
+        <div v-if="user?.role === 'coach'" class="mt-4 pt-4 border-t border-slate-200 dark:border-slate-800">
+          <NuxtLink to="/coach"
+            class="group flex items-center px-3 py-2 text-sm font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 rounded-lg transition-all border border-indigo-200 dark:border-indigo-800/30">
+            <i class="fas fa-th-large w-5 h-5 flex-shrink-0 text-indigo-500 transition-colors"></i>
+            <span class="ml-3 uppercase tracking-wide text-xs">Панель Коуча</span>
+          </NuxtLink>
+        </div>
+
         <div
           class="flex justify-between items-center p-2 rounded-lg bg-slate-50 dark:bg-slate-800/30 border border-cyan-500/20 dark:border-cyan-500/10">
           <span class="text-slate-700 dark:text-slate-300 text-xs flex items-center space-x-2">

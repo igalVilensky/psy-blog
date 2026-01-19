@@ -4,17 +4,19 @@
     <div class="section-header">
       <div class="header-title">
         <div class="title-icon-wrapper">
-          <i class="fas fa-user text-mindqlab-calm-accent opacity-60"></i>
+          <i class="fas fa-user text-stone-900 dark:text-white opacity-60"></i>
         </div>
         <div class="flex flex-col">
           <div class="flex items-center gap-3">
             <h2 class="title-text">Профиль пользователя</h2>
             <NuxtLink to="/profile/settings"
-              class="text-stone-400 hover:text-mindqlab-calm-accent transition-colors text-xs" title="Редактировать">
+              class="text-stone-400 hover:text-stone-900 dark:hover:text-white transition-colors text-xs"
+              title="Редактировать">
               <i class="fas fa-pen"></i>
             </NuxtLink>
           </div>
-          <p class="text-xs text-stone-400 dark:text-stone-500 font-light italic mt-1">Персональная информация и био</p>
+          <p class="text-xs text-stone-500 dark:text-stone-400 font-medium uppercase tracking-wide mt-1">Персональная
+            информация</p>
         </div>
       </div>
 
@@ -46,24 +48,25 @@
       <!-- Info Cards Grid -->
       <div class="info-cards-grid">
         <!-- Profession -->
-        <BioInfoCard title="Профессия" :value="profession" iconClass="fas fa-briefcase" />
+        <BioInfoCard title="Профессия" :value="profession" iconClass="fas fa-briefcase" accentColor="blue" />
 
         <!-- Social Media -->
-        <BioInfoCard title="Соц. сети" :value="socialMedia" iconClass="fas fa-at" :isSocialMedia="true" />
+        <BioInfoCard title="Соц. сети" :value="socialMedia" iconClass="fas fa-at" :isSocialMedia="true"
+          accentColor="purple" />
 
         <!-- Age -->
-        <BioInfoCard title="Возраст" :value="age ? age + ' лет' : ''" iconClass="fas fa-calendar" />
+        <BioInfoCard title="Возраст" :value="age ? age + ' лет' : ''" iconClass="fas fa-calendar" accentColor="amber" />
 
         <!-- Gender -->
         <BioInfoCard title="Пол" :value="gender === 'male' ? 'Мужской' : gender === 'female' ? 'Женский' : gender"
-          iconClass="fas fa-user-friends" />
+          iconClass="fas fa-user-friends" accentColor="emerald" />
       </div>
 
       <!-- About Text Card -->
       <div class="about-card">
         <div class="about-header">
           <div class="about-icon-wrapper">
-            <i class="fas fa-feather text-mindqlab-calm-accent opacity-60"></i>
+            <i class="fas fa-feather text-stone-900 dark:text-white opacity-60"></i>
           </div>
           <p class="about-label">История жизни</p>
         </div>
@@ -143,7 +146,7 @@ const bioCompletionPercentage = computed(() => {
 
 <style scoped>
 .bio-section-container {
-  @apply p-8 sm:p-12 rounded-[3.5rem] bg-white dark:bg-stone-900/40 border border-stone-100 dark:border-stone-800/50 shadow-sm backdrop-blur-xl mb-12 transition-all duration-500;
+  @apply p-8 sm:p-12 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 mb-12;
 }
 
 .section-header {
@@ -155,11 +158,11 @@ const bioCompletionPercentage = computed(() => {
 }
 
 .title-icon-wrapper {
-  @apply w-14 h-14 rounded-2xl bg-stone-50 dark:bg-stone-800/50 flex items-center justify-center text-xl shadow-sm;
+  @apply w-14 h-14 bg-stone-100 dark:bg-stone-800 flex items-center justify-center text-xl;
 }
 
 .title-text {
-  @apply text-3xl font-light text-stone-900 dark:text-white uppercase tracking-tight;
+  @apply text-2xl font-bold text-stone-900 dark:text-white uppercase tracking-tight;
 }
 
 .progress-wrapper {
@@ -175,11 +178,11 @@ const bioCompletionPercentage = computed(() => {
 }
 
 .progress-bar-bg {
-  @apply w-full md:w-48 bg-stone-100 dark:bg-stone-800/30 rounded-full h-1 overflow-hidden;
+  @apply w-full md:w-48 bg-stone-200 dark:bg-stone-800 h-2;
 }
 
 .progress-bar-fill {
-  @apply h-full rounded-full transition-all duration-1000 ease-out bg-mindqlab-calm-accent shadow-sm;
+  @apply h-full bg-stone-900 dark:bg-white transition-all duration-1000 ease-out;
 }
 
 .progress-percentage {
@@ -203,7 +206,7 @@ const bioCompletionPercentage = computed(() => {
 }
 
 .about-card {
-  @apply p-8 sm:p-10 rounded-[2.5rem] bg-stone-50/50 dark:bg-stone-800/20 border border-stone-100/50 dark:border-stone-800/30 transition-all duration-500;
+  @apply p-8 sm:p-10 bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 border-l-4 border-l-stone-900 dark:border-l-white;
 }
 
 .about-header {
@@ -211,7 +214,7 @@ const bioCompletionPercentage = computed(() => {
 }
 
 .about-icon-wrapper {
-  @apply w-10 h-10 rounded-xl bg-white dark:bg-stone-800/50 flex items-center justify-center shadow-sm;
+  @apply w-10 h-10 bg-white dark:bg-stone-800 flex items-center justify-center border border-stone-200 dark:border-stone-700;
 }
 
 .about-label {
@@ -219,11 +222,11 @@ const bioCompletionPercentage = computed(() => {
 }
 
 .about-text {
-  @apply text-stone-600 dark:text-stone-300 text-base md:text-lg font-light leading-relaxed italic whitespace-pre-line;
+  @apply text-stone-700 dark:text-stone-300 text-base font-medium leading-relaxed whitespace-pre-line;
 }
 
 .about-placeholder {
-  @apply text-stone-400 dark:text-stone-600 text-base font-light italic;
+  @apply text-stone-400 dark:text-stone-600 text-sm font-medium uppercase tracking-wide;
 }
 
 .cta-container {
@@ -231,12 +234,12 @@ const bioCompletionPercentage = computed(() => {
 }
 
 .cta-button {
-  @apply px-10 py-5 rounded-full bg-white dark:bg-stone-900 border border-stone-100 dark:border-stone-800 text-stone-900 dark:text-white font-medium hover:border-mindqlab-calm-accent transition-all duration-300 shadow-sm flex items-center;
+  @apply px-8 py-4 bg-stone-900 dark:bg-white text-white dark:text-stone-900 text-xs font-bold uppercase tracking-widest hover:bg-stone-800 dark:hover:bg-stone-200 transition-all;
 }
 
 @media (max-width: 640px) {
   .bio-section-container {
-    @apply p-6 rounded-[2.5rem];
+    @apply p-6;
   }
 
   .section-header {
@@ -252,7 +255,7 @@ const bioCompletionPercentage = computed(() => {
   }
 
   .about-card {
-    @apply p-6 rounded-[2rem];
+    @apply p-6;
   }
 
   .cta-button {

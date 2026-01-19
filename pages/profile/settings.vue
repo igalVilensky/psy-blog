@@ -1,43 +1,41 @@
 <template>
   <div
-    class="relative min-h-screen transition-colors duration-500 flex flex-col bg-mindqlab-calm-bg dark:bg-mindqlab-calm-dark-bg">
+    class="relative min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-white transition-colors duration-500 flex flex-col font-sans">
     <TopBar />
     <!-- Loading State -->
     <div v-if="isLoading" class="flex-1 flex items-center justify-center py-20">
       <div class="loading-container">
         <div class="mb-12 relative inline-block">
-          <div class="w-24 h-24 rounded-full border-[3px] border-stone-100 dark:border-stone-800/50 relative">
+          <div class="w-24 h-24 border-[3px] border-stone-200 dark:border-stone-700 relative">
             <div
-              class="absolute inset-0 rounded-full border-[3px] border-t-mindqlab-calm-accent animate-spin duration-[1.5s]">
+              class="absolute inset-0 border-[3px] border-t-stone-900 dark:border-t-white animate-spin duration-[1.5s]">
             </div>
           </div>
           <div class="absolute inset-0 flex items-center justify-center">
-            <i class="fas fa-cog text-stone-300 dark:text-stone-700 text-2xl"></i>
+            <i class="fas fa-cog text-stone-300 dark:text-stone-600 text-2xl animate-pulse"></i>
           </div>
         </div>
         <div class="loading-text">
-          <h3 class="text-2xl font-light text-stone-900 dark:text-white mb-3 uppercase tracking-widest">Настройки</h3>
-          <p class="text-stone-400 dark:text-stone-500 font-light italic">Персонализация вашего опыта...</p>
-        </div>
-        <div class="w-64 h-[1px] bg-stone-100 dark:bg-stone-800/50 mt-12 relative overflow-hidden">
-          <div class="absolute inset-0 bg-mindqlab-calm-accent/40 animate-progress"></div>
+          <h3 class="text-2xl font-bold text-stone-900 dark:text-white mb-3 uppercase tracking-widest">Настройки</h3>
+          <p class="text-stone-600 dark:text-stone-400 font-medium uppercase tracking-wide text-xs">Персонализация
+            вашего опыта...</p>
         </div>
       </div>
     </div>
 
     <!-- Main Content -->
-    <div v-else class="flex-1 max-w-7xl mx-auto px-6 sm:px-8 py-12 sm:py-20 w-full">
+    <div v-else class="max-w-7xl mx-auto px-6 py-8 w-full">
       <!-- Page Header -->
       <div class="mb-12">
         <NuxtLink to="/profile"
-          class="inline-flex items-center text-stone-400 hover:text-mindqlab-calm-accent transition-all duration-300 mb-6 group">
+          class="inline-flex items-center text-stone-400 hover:text-stone-900 dark:hover:text-white transition-all duration-300 mb-6 group">
           <i class="fas fa-arrow-left mr-3 transform transition-transform group-hover:-translate-x-1 text-xs"></i>
-          <span class="text-xs uppercase tracking-[0.2em] font-medium">Вернуться в профиль</span>
+          <span class="text-xs uppercase tracking-[0.2em] font-bold">Вернуться в профиль</span>
         </NuxtLink>
-        <h1 class="text-4xl md:text-5xl font-light text-stone-900 dark:text-white mb-4 uppercase tracking-tight">
+        <h1 class="text-4xl md:text-5xl font-bold text-stone-900 dark:text-white mb-4 uppercase tracking-tight">
           Настройки профиля
         </h1>
-        <p class="text-stone-500 dark:text-stone-400 font-light italic">
+        <p class="text-stone-600 dark:text-stone-400 font-medium uppercase tracking-wide text-sm">
           Управление персональной информацией и параметрами аккаунта
         </p>
       </div>
@@ -47,16 +45,16 @@
         <!-- Main Settings Column -->
         <div class="lg:col-span-2 space-y-6">
           <!-- Profile Settings -->
-          <section class="settings-card">
+          <section class="settings-card border-l-4 border-l-stone-900 dark:border-l-white">
             <div class="settings-header">
               <div class="flex items-center gap-4">
                 <div class="settings-icon-wrapper">
-                  <i class="fas fa-user-edit text-mindqlab-calm-accent opacity-60"></i>
+                  <i class="fas fa-user-edit text-stone-900 dark:text-white opacity-60"></i>
                 </div>
-                <h2 class="text-xl font-light text-stone-900 dark:text-white uppercase tracking-tight">Персональные
+                <h2 class="text-xl font-bold text-stone-900 dark:text-white uppercase tracking-tight">Персональные
                   данные</h2>
               </div>
-              <span class="text-[10px] text-stone-400 uppercase tracking-widest font-light italic">Поля со звездочкой
+              <span class="text-[10px] text-stone-400 uppercase tracking-widest font-bold">Поля со звездочкой
                 обязательны</span>
             </div>
 
@@ -139,58 +137,68 @@
 
               <!-- Save Button -->
               <div class="pt-6">
-                <button type="submit" class="submit-btn text-white uppercase tracking-widest text-xs font-semibold">
+                <button type="submit"
+                  class="submit-btn bg-stone-900 text-white dark:bg-white dark:text-stone-900 hover:bg-stone-800 dark:hover:bg-stone-200 border border-stone-900 dark:border-white uppercase tracking-widest text-xs font-bold">
                   <i class="fas fa-save mr-3"></i>
                   Сохранить изменения
                 </button>
               </div>
             </form>
           </section>
+        </div>
 
+        <div class="space-y-6">
           <!-- Coach Role Section -->
-          <section v-if="!isCoach" class="settings-card bg-indigo-50/30 dark:bg-indigo-900/10 border-indigo-100 dark:border-indigo-800/30">
+          <section v-if="!isCoach" class="settings-card bg-stone-50 dark:bg-stone-900 border-l-4 border-l-indigo-600">
             <div class="settings-header">
               <div class="flex items-center gap-4">
-                <div class="settings-icon-wrapper bg-white dark:bg-slate-800">
-                  <i class="fas fa-user-tie text-indigo-500"></i>
+                <div class="settings-icon-wrapper bg-white dark:bg-stone-800">
+                  <i class="fas fa-user-tie text-indigo-600"></i>
                 </div>
-                <h2 class="text-xl font-light text-stone-900 dark:text-white uppercase tracking-tight">Стать Коучем</h2>
+                <h2 class="text-xl font-bold text-stone-900 dark:text-white uppercase tracking-tight">Стать Коучем
+                </h2>
               </div>
             </div>
 
             <div class="space-y-6">
-              <p class="text-sm text-stone-500 dark:text-stone-400 leading-relaxed">
-                Вы можете получить доступ к профессиональным инструментам для управления клиентами, мониторинга их прогресса и ведения базы в единой панели.
+              <p class="text-sm text-stone-700 dark:text-stone-300 leading-relaxed font-medium">
+                Вы можете получить доступ к профессиональным инструментам для управления клиентами, мониторинга их
+                прогресса и ведения базы в единой панели.
               </p>
-              
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div class="flex items-start gap-3 p-4 rounded-2xl bg-white/50 dark:bg-black/20 border border-white dark:border-white/5">
-                  <i class="fas fa-users-cog text-indigo-500 mt-1"></i>
-                  <div class="text-[10px] uppercase tracking-wider text-stone-400 font-bold">Управление клиентами</div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4">
+                <div
+                  class="flex items-start gap-3 p-4 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700">
+                  <i class="fas fa-users-cog text-indigo-600 mt-1"></i>
+                  <div class="text-[10px] uppercase tracking-wider text-stone-500 dark:text-stone-400 font-bold">
+                    Управление клиентами
+                  </div>
                 </div>
-                <div class="flex items-start gap-3 p-4 rounded-2xl bg-white/50 dark:bg-black/20 border border-white dark:border-white/5">
-                  <i class="fas fa-chart-line text-indigo-500 mt-1"></i>
-                  <div class="text-[10px] uppercase tracking-wider text-stone-400 font-bold">Глубокая аналитика</div>
+                <div
+                  class="flex items-start gap-3 p-4 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700">
+                  <i class="fas fa-chart-line text-indigo-600 mt-1"></i>
+                  <div class="text-[10px] uppercase tracking-wider text-stone-500 dark:text-stone-400 font-bold">
+                    Глубокая аналитика</div>
                 </div>
               </div>
 
-              <button @click="becomeACoach" 
-                class="w-full py-5 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold uppercase tracking-widest text-xs transition-all shadow-lg shadow-indigo-500/25">
+              <button @click="becomeACoach"
+                class="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold uppercase tracking-widest text-xs transition-all">
                 Активировать панель коуча
               </button>
             </div>
           </section>
 
           <section v-else class="settings-card border-emerald-100 dark:border-emerald-800/30">
-             <div class="settings-header">
+            <div class="settings-header">
               <div class="flex items-center gap-4">
                 <div class="settings-icon-wrapper bg-emerald-50 dark:bg-emerald-900/20">
                   <i class="fas fa-check-circle text-emerald-500"></i>
                 </div>
-                <h2 class="text-xl font-light text-stone-900 dark:text-white uppercase tracking-tight">Вы — Коуч</h2>
+                <h2 class="text-xl font-bold text-stone-900 dark:text-white uppercase tracking-tight">Вы — Коуч</h2>
               </div>
             </div>
-            <p class="text-sm text-stone-500 dark:text-stone-400 leading-relaxed">
+            <p class="text-sm text-stone-500 dark:text-stone-400 leading-relaxed font-medium">
               Ваш профессиональный аккаунт активен. Вы можете перейти в панель управления клиентами.
             </p>
             <div class="mt-8">
@@ -201,62 +209,14 @@
             </div>
           </section>
 
-          <!-- Feedback Section -->
+          <!-- Account Management -->
           <section class="settings-card">
             <div class="settings-header">
               <div class="flex items-center gap-4">
                 <div class="settings-icon-wrapper">
-                  <i class="fas fa-comment-dots text-mindqlab-calm-accent opacity-60"></i>
+                  <i class="fas fa-shield-alt text-stone-900 dark:text-white opacity-60"></i>
                 </div>
-                <h2 class="text-xl font-light text-stone-900 dark:text-white uppercase tracking-tight">Обратная связь
-                </h2>
-              </div>
-            </div>
-
-            <form @submit.prevent="submitFeedbackForm" class="settings-form">
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <!-- Name -->
-                <div class="form-group">
-                  <label class="form-label">Ваше имя</label>
-                  <input v-model="feedbackForm.name" type="text" placeholder="Как к вам обращаться?"
-                    class="form-input" />
-                </div>
-
-                <!-- Email -->
-                <div class="form-group">
-                  <label class="form-label">Email для связи</label>
-                  <input v-model="feedbackForm.email" type="email" placeholder="example@mail.com" class="form-input" />
-                </div>
-              </div>
-
-              <!-- Message -->
-              <div class="form-group">
-                <label class="form-label">Ваше сообщение</label>
-                <textarea v-model="feedbackForm.message" class="form-textarea" rows="4"
-                  placeholder="Предложения, отзывы или вопросы..."></textarea>
-              </div>
-
-              <!-- Submit Button -->
-              <div class="pt-4">
-                <button type="submit" :disabled="isSubmittingFeedback"
-                  class="submit-btn text-white uppercase tracking-widest text-xs font-semibold">
-                  <i class="fas fa-paper-plane mr-3"></i>
-                  {{ isSubmittingFeedback ? "Отправка..." : "Отправить отзыв" }}
-                </button>
-              </div>
-            </form>
-          </section>
-        </div>
-
-        <div class="space-y-8">
-          <!-- Account Management -->
-          <section class="settings-card !p-8">
-            <div class="settings-header !mb-8">
-              <div class="flex items-center gap-4">
-                <div class="settings-icon-wrapper">
-                  <i class="fas fa-shield-alt text-mindqlab-calm-accent opacity-60"></i>
-                </div>
-                <h2 class="text-lg font-light text-stone-900 dark:text-white uppercase tracking-tight">
+                <h2 class="text-lg font-bold text-stone-900 dark:text-white uppercase tracking-tight">
                   Безопасность
                 </h2>
               </div>
@@ -264,46 +224,70 @@
 
             <div class="space-y-4">
               <button @click="changePassword" class="sidebar-btn">
-                <i class="fas fa-key text-stone-300 dark:text-stone-700 mr-4 text-xs"></i>
-                <span class="text-xs uppercase tracking-widest font-medium">Безопасность</span>
-                <i class="fas fa-chevron-right text-stone-200 dark:text-stone-800 ml-auto text-[10px]"></i>
+                <i class="fas fa-key text-stone-400 dark:text-stone-600 mr-4 text-xs"></i>
+                <span class="text-xs uppercase tracking-widest font-bold">Сбросить пароль</span>
+                <i class="fas fa-chevron-right text-stone-300 dark:text-stone-700 ml-auto text-[10px]"></i>
               </button>
               <button @click="exportData" class="sidebar-btn">
-                <i class="fas fa-download text-stone-300 dark:text-stone-700 mr-4 text-xs"></i>
-                <span class="text-xs uppercase tracking-widest font-medium">Данные</span>
-                <i class="fas fa-chevron-right text-stone-200 dark:text-stone-800 ml-auto text-[10px]"></i>
+                <i class="fas fa-download text-stone-400 dark:text-stone-600 mr-4 text-xs"></i>
+                <span class="text-xs uppercase tracking-widest font-bold">Экспорт данных</span>
+                <i class="fas fa-chevron-right text-stone-300 dark:text-stone-700 ml-auto text-[10px]"></i>
               </button>
               <button @click="confirmDeleteAccount" class="sidebar-btn danger">
-                <i class="fas fa-trash text-red-200 dark:text-red-900/40 mr-4 text-xs"></i>
-                <span class="text-xs uppercase tracking-widest font-medium">Удаление</span>
-                <i class="fas fa-chevron-right text-stone-200 dark:text-stone-800 ml-auto text-[10px]"></i>
+                <i class="fas fa-trash text-red-400/70 mr-4 text-xs"></i>
+                <span class="text-xs uppercase tracking-widest font-bold text-red-500/80">Удалить аккаунт</span>
+                <i class="fas fa-chevron-right text-stone-300 dark:text-stone-700 ml-auto text-[10px]"></i>
               </button>
             </div>
           </section>
 
           <!-- Support & Help -->
-          <section class="settings-card !p-8">
-            <div class="settings-header !mb-8">
+          <section class="settings-card">
+            <div class="settings-header">
               <div class="flex items-center gap-4">
                 <div class="settings-icon-wrapper">
-                  <i class="fas fa-life-ring text-mindqlab-calm-accent opacity-60"></i>
+                  <i class="fas fa-life-ring text-stone-900 dark:text-white opacity-60"></i>
                 </div>
-                <h2 class="text-lg font-light text-stone-900 dark:text-white uppercase tracking-tight">Помощь</h2>
+                <h2 class="text-lg font-bold text-stone-900 dark:text-white uppercase tracking-tight">Помощь</h2>
               </div>
             </div>
 
             <div class="space-y-4">
               <NuxtLink to="/faq" class="sidebar-btn">
-                <i class="fas fa-question-circle text-stone-300 dark:text-stone-700 mr-4 text-xs"></i>
-                <span class="text-xs uppercase tracking-widest font-medium">Вопросы</span>
-                <i class="fas fa-chevron-right text-stone-200 dark:text-stone-800 ml-auto text-[10px]"></i>
+                <i class="fas fa-question-circle text-stone-400 dark:text-stone-600 mr-4 text-xs"></i>
+                <span class="text-xs uppercase tracking-widest font-bold">Частые вопросы</span>
+                <i class="fas fa-chevron-right text-stone-300 dark:text-stone-700 ml-auto text-[10px]"></i>
               </NuxtLink>
               <button @click="contactSupport" class="sidebar-btn">
-                <i class="fas fa-headset text-stone-300 dark:text-stone-700 mr-4 text-xs"></i>
-                <span class="text-xs uppercase tracking-widest font-medium">Поддержка</span>
-                <i class="fas fa-chevron-right text-stone-200 dark:text-stone-800 ml-auto text-[10px]"></i>
+                <i class="fas fa-headset text-stone-400 dark:text-stone-600 mr-4 text-xs"></i>
+                <span class="text-xs uppercase tracking-widest font-bold">Поддержка</span>
+                <i class="fas fa-chevron-right text-stone-300 dark:text-stone-700 ml-auto text-[10px]"></i>
               </button>
             </div>
+          </section>
+
+          <!-- Feedback Section -->
+          <section class="settings-card">
+            <div class="settings-header">
+              <div class="flex items-center gap-4">
+                <div class="settings-icon-wrapper">
+                  <i class="fas fa-comment-dots text-stone-900 dark:text-white opacity-60"></i>
+                </div>
+                <h2 class="text-xl font-bold text-stone-900 dark:text-white uppercase tracking-tight">Отзыв</h2>
+              </div>
+            </div>
+
+            <form @submit.prevent="submitFeedbackForm" class="settings-form !space-y-6">
+              <div class="form-group">
+                <input v-model="feedbackForm.message" type="text" placeholder="Ваши идеи или предложения..."
+                  class="form-input" />
+              </div>
+              <button type="submit" :disabled="isSubmittingFeedback" class="sidebar-btn justify-center text-center">
+                <span class="text-xs uppercase tracking-widest font-bold">
+                  {{ isSubmittingFeedback ? "Отправка..." : "Отправить" }}
+                </span>
+              </button>
+            </form>
           </section>
         </div>
       </div>
@@ -319,8 +303,6 @@
 <script setup>
 import { ref, reactive } from "vue";
 import { useRouter } from "vue-router";
-import TopBar from "~/components/navigation/TopBar.vue";
-import Footer from "~/components/ui/Footer.vue";
 import {
   getAuth,
   onAuthStateChanged,
@@ -337,6 +319,8 @@ import {
 } from "@/api/firebase/userProfile";
 import { useNotification } from "@/composables/useNotification";
 import Notification from "@/components/base/Notification.vue";
+import TopBar from "~/components/navigation/TopBar.vue";
+import Footer from "~/components/ui/Footer.vue";
 
 definePageMeta({
   layout: "empty",
@@ -386,6 +370,10 @@ onAuthStateChanged(getAuth(), async (user) => {
       socialMedia.value = Array.isArray(userData.socialMedia)
         ? userData.socialMedia
         : [{ type: "telegram", url: "" }];
+
+      // Pre-fill feedback form slightly
+      feedbackForm.name = displayName.value;
+      feedbackForm.email = user.email;
     }
 
     // Simulate loading delay for smooth transition
@@ -445,7 +433,8 @@ const saveProfile = async () => {
 
 const goBackToProfile = () => {
   if (displayName.value) {
-    router.push(`/profile/${displayName.value}`);
+    const formattedUsername = displayName.value.replace(/\s/g, "-");
+    router.push(`/profile/${formattedUsername}`);
   } else {
     router.push("/profile");
   }
@@ -521,8 +510,7 @@ const submitFeedbackForm = async () => {
   const result = await submitContactForm(db, feedbackForm);
   if (result.success) {
     showNotification(result.message, "success");
-    feedbackForm.name = "";
-    feedbackForm.email = "";
+    // Don't clear message immediately in case they want to send similar? No, clear is better.
     feedbackForm.message = "";
   } else {
     showNotification(result.message, "error");
@@ -580,33 +568,34 @@ const exportData = () => {
 
 <style lang="postcss" scoped>
 .settings-card {
-  @apply p-8 sm:p-12 rounded-[3rem] bg-white dark:bg-stone-900/40 border border-stone-100 dark:border-stone-800/50 shadow-sm backdrop-blur-xl transition-all duration-500;
+  @apply p-8 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 flex flex-col justify-between mb-6 border-l-4;
 }
 
 .settings-header {
-  @apply flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-12 pb-8 border-b border-stone-50 dark:border-stone-800/30;
+  @apply flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-10 pb-6 border-b border-stone-100 dark:border-stone-800/30;
 }
 
 .settings-icon-wrapper {
-  @apply w-12 h-12 rounded-xl bg-stone-50 dark:bg-stone-800/50 flex items-center justify-center shadow-sm;
+  @apply w-12 h-12 bg-stone-100 dark:bg-stone-800 flex items-center justify-center;
 }
 
 .settings-form {
-  @apply space-y-10;
+  @apply space-y-8;
 }
 
 .form-group {
-  @apply space-y-4;
+  @apply space-y-3;
 }
 
 .form-label {
-  @apply block text-[10px] uppercase tracking-[0.2em] font-medium text-stone-400 dark:text-stone-500;
+  @apply block text-[10px] uppercase tracking-[0.2em] font-bold text-stone-400 dark:text-stone-500;
 }
 
 .form-input,
 .form-textarea,
+.social-input,
 .social-select {
-  @apply w-full px-6 py-4 rounded-2xl bg-stone-50/50 dark:bg-stone-800/20 border border-stone-100 dark:border-stone-800/50 text-stone-900 dark:text-white placeholder-stone-300 dark:placeholder-stone-600 focus:outline-none focus:border-mindqlab-calm-accent focus:ring-1 focus:ring-mindqlab-calm-accent transition-all duration-300 font-light;
+  @apply w-full bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 px-4 py-3 text-sm text-stone-900 dark:text-white focus:ring-1 focus:ring-stone-900 dark:focus:ring-white focus:border-stone-900 dark:focus:border-white transition-all outline-none rounded-none;
 }
 
 .form-textarea {
@@ -614,7 +603,7 @@ const exportData = () => {
 }
 
 .char-counter {
-  @apply text-right text-[10px] uppercase tracking-widest text-stone-400 font-light mt-2;
+  @apply text-right text-[10px] uppercase tracking-widest text-stone-400 font-bold mt-2;
 }
 
 .social-media-row {
@@ -626,7 +615,7 @@ const exportData = () => {
 }
 
 .social-input {
-  @apply flex-1 px-4 py-3 rounded-2xl bg-stone-50/50 dark:bg-stone-800/20 border border-stone-100 dark:border-stone-800/50 text-stone-900 dark:text-white placeholder-stone-300 dark:placeholder-stone-600 text-sm focus:outline-none focus:border-mindqlab-calm-accent transition-all font-light;
+  @apply flex-1 px-4 py-3 rounded-2xl bg-stone-50/50 dark:bg-stone-800/20 border border-stone-100 dark:border-stone-800/50 text-stone-900 dark:text-white placeholder-stone-300 dark:placeholder-stone-600 text-sm focus:outline-none focus:border-stone-900 dark:focus:border-white transition-all font-medium;
 }
 
 .remove-btn {
@@ -634,11 +623,11 @@ const exportData = () => {
 }
 
 .add-social-btn {
-  @apply text-stone-400 hover:text-mindqlab-calm-accent text-[10px] uppercase tracking-[0.2em] font-medium flex items-center transition-all mt-6;
+  @apply text-stone-400 hover:text-stone-900 dark:hover:text-white text-[10px] uppercase tracking-[0.2em] font-bold flex items-center transition-all mt-6;
 }
 
 .submit-btn {
-  @apply w-full px-10 py-5 rounded-full bg-mindqlab-calm-accent text-white font-medium hover:bg-opacity-90 transition-all duration-300 shadow-lg shadow-mindqlab-calm-accent/20;
+  @apply w-full px-10 py-5 rounded-xl bg-stone-900 dark:bg-white text-white dark:text-stone-900 font-bold hover:bg-opacity-90 transition-all duration-300 shadow-lg shadow-stone-900/10;
 }
 
 .submit-btn:disabled {
@@ -646,7 +635,7 @@ const exportData = () => {
 }
 
 .sidebar-btn {
-  @apply w-full flex items-center px-6 py-4 rounded-2xl bg-stone-50/30 dark:bg-stone-800/10 border border-stone-100 dark:border-stone-800/50 text-stone-600 dark:text-stone-400 hover:border-mindqlab-calm-accent/30 hover:bg-white dark:hover:bg-stone-800/30 transition-all duration-300 text-left;
+  @apply w-full flex items-center px-6 py-4 rounded-2xl bg-stone-50/30 dark:bg-stone-800/10 border border-stone-100 dark:border-stone-800/50 text-stone-600 dark:text-stone-400 hover:border-stone-200 dark:hover:border-stone-700 hover:bg-white dark:hover:bg-stone-800/30 transition-all duration-300 text-left;
 }
 
 .sidebar-btn.danger {
@@ -657,23 +646,9 @@ const exportData = () => {
   @apply flex flex-col items-center text-center;
 }
 
-@keyframes progress {
-  0% {
-    transform: translateX(-100%);
-  }
-
-  100% {
-    transform: translateX(100%);
-  }
-}
-
-.animate-progress {
-  animation: progress 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-}
-
 @media (max-width: 640px) {
   .settings-card {
-    @apply p-8 rounded-[2.5rem];
+    @apply p-8 rounded-[2rem];
   }
 
   .settings-header {

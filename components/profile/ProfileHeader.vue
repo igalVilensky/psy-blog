@@ -1,13 +1,8 @@
 <template>
   <div class="profile-header-hero relative pt-12 pb-20 md:pb-32">
-    <!-- Calm Motion Background -->
-    <div class="absolute inset-0 z-0 overflow-hidden opacity-40 dark:opacity-20 pointer-events-none">
-      <div
-        class="absolute top-[-10%] left-[-5%] w-[40%] h-[40%] bg-mindqlab-calm-accent/10 rounded-full blur-[100px] animate-float">
-      </div>
-      <div
-        class="absolute bottom-[-10%] right-[-5%] w-[30%] h-[30%] bg-mindqlab-calm-accent-secondary/10 rounded-full blur-[120px] animate-slow-float">
-      </div>
+    <!-- Coach Background (Clean) -->
+    <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+      <!-- Removed soft orbs, keeping it clean as per coach style -->
     </div>
 
     <div
@@ -17,10 +12,10 @@
         <div class="avatar-wrapper relative overflow-visible">
           <UserAvatar :avatarUrl="avatarUrl" :loading="loading" :userInitial="userInitial"
             @update:avatarUrl="$emit('update:avatarUrl', $event)" @notify="$emit('notify', $event)"
-            class="avatar-component w-48 h-48 md:w-64 md:h-64 rounded-[3rem] shadow-2xl shadow-stone-200/50 dark:shadow-none" />
+            class="avatar-component w-48 h-48 md:w-64 md:h-64 shadow-2xl shadow-stone-200/50 dark:shadow-none" />
           <div
-            class="absolute -bottom-4 -right-4 w-12 h-12 rounded-2xl bg-white dark:bg-stone-900 border border-stone-100 dark:border-stone-800 flex items-center justify-center shadow-lg transform rotate-12">
-            <i class="fas fa-check-circle text-mindqlab-calm-accent text-xl"></i>
+            class="absolute -bottom-4 -right-4 w-12 h-12 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 flex items-center justify-center shadow-lg">
+            <i class="fas fa-check-circle text-emerald-600 text-xl"></i>
           </div>
         </div>
       </div>
@@ -30,33 +25,31 @@
         <div class="user-details">
           <!-- User Status Badge -->
           <div
-            class="mb-8 inline-flex items-center px-5 py-2 rounded-full bg-white/50 dark:bg-stone-900/30 border border-stone-100 dark:border-stone-800/50 backdrop-blur-sm shadow-sm transition-transform hover:scale-105">
-            <div class="w-1.5 h-1.5 rounded-full bg-mindqlab-calm-accent mr-3 animate-pulse"></div>
-            <span
-              class="text-[10px] font-semibold text-stone-500 dark:text-stone-400 uppercase tracking-[0.25em]">Исследователь
+            class="mb-6 inline-flex items-center px-4 py-1 bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700">
+            <div class="w-1.5 h-1.5 bg-emerald-600 mr-2"></div>
+            <span class="text-xs font-bold text-stone-600 dark:text-stone-300 uppercase tracking-widest">Исследователь
               Сознания</span>
           </div>
 
-          <h1 class="text-5xl md:text-7xl font-light text-stone-900 dark:text-white mb-8 tracking-tighter leading-none">
+          <h1 class="text-4xl md:text-6xl font-bold text-stone-900 dark:text-white mb-6 uppercase tracking-tight">
             {{ displayName }}
           </h1>
 
           <div
-            class="flex flex-wrap items-center justify-center lg:justify-start gap-6 md:gap-10 text-stone-500 dark:text-stone-400 font-light italic text-base mb-12">
-            <div class="flex items-center gap-3 group translate-z-0">
+            class="flex flex-wrap items-center justify-center lg:justify-start gap-8 text-stone-600 dark:text-stone-400 text-sm mb-10 font-medium">
+            <div class="flex items-center gap-3 group">
               <div
-                class="w-8 h-8 rounded-xl bg-stone-50 dark:bg-stone-800/50 flex items-center justify-center text-mindqlab-calm-accent opacity-70 group-hover:opacity-100 transition-all">
+                class="w-8 h-8 bg-stone-100 dark:bg-stone-800 flex items-center justify-center text-stone-900 dark:text-white">
                 <i class="fas fa-envelope text-xs"></i>
               </div>
-              <span class="group-hover:text-stone-800 dark:group-hover:text-stone-200 transition-colors">{{ email
-              }}</span>
+              <span class="uppercase tracking-wide">{{ email }}</span>
             </div>
             <div class="flex items-center gap-3">
               <div
-                class="w-8 h-8 rounded-xl bg-stone-50 dark:bg-stone-800/50 flex items-center justify-center text-stone-400">
+                class="w-8 h-8 bg-stone-100 dark:bg-stone-800 flex items-center justify-center text-stone-900 dark:text-white">
                 <i class="fas fa-calendar-day text-xs"></i>
               </div>
-              <span>В системе с {{ joinedDate }}</span>
+              <span class="uppercase tracking-wide">В системе с {{ joinedDate }}</span>
             </div>
           </div>
         </div>
@@ -133,19 +126,19 @@ const joinedDate = computed(() => {
 }
 
 .action-btn-new {
-  @apply px-8 py-4 rounded-2xl font-medium text-sm transition-all duration-300 flex items-center justify-center shadow-sm;
+  @apply px-8 py-3 font-bold text-xs uppercase tracking-widest transition-all duration-300 flex items-center justify-center border;
 }
 
 .action-btn-new.primary {
-  @apply bg-mindqlab-calm-accent text-white hover:bg-opacity-90 hover:shadow-lg hover:shadow-mindqlab-calm-accent/20 hover:-translate-y-0.5;
+  @apply bg-stone-900 dark:bg-white text-white dark:text-stone-900 border-stone-900 dark:border-white hover:bg-stone-800 dark:hover:bg-stone-200;
 }
 
 .action-btn-new.secondary {
-  @apply bg-white dark:bg-stone-900 border border-stone-100 dark:border-stone-800 text-stone-600 dark:text-stone-300 hover:border-mindqlab-calm-accent hover:text-mindqlab-calm-accent;
+  @apply bg-transparent border-stone-200 dark:border-stone-800 text-stone-900 dark:text-white hover:bg-stone-50 dark:hover:bg-stone-800;
 }
 
 .action-btn-new.danger {
-  @apply bg-transparent text-stone-400 hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 px-6;
+  @apply bg-transparent border-transparent text-stone-500 hover:text-red-600 px-6;
 }
 
 @keyframes float {
@@ -186,7 +179,7 @@ const joinedDate = computed(() => {
   }
 
   .avatar-component {
-    @apply w-44 h-44 rounded-[2.5rem];
+    @apply w-44 h-44;
   }
 
   .action-btn-new {

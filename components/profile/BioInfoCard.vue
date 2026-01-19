@@ -1,15 +1,14 @@
 <template>
   <div
-    class="bg-white dark:bg-stone-900 border border-stone-100 dark:border-stone-800/50 p-6 rounded-[2rem] transition-all duration-300 hover:border-mindqlab-calm-accent/30 group">
-    <div class="flex items-center gap-4 mb-4">
-      <div
-        class="w-10 h-10 rounded-xl bg-stone-50 dark:bg-stone-800/50 flex items-center justify-center transition-colors">
-        <i :class="[iconClass, 'text-mindqlab-calm-accent opacity-60']" class="text-base"></i>
-      </div>
-      <p class="text-stone-400 dark:text-stone-500 font-medium text-[10px] uppercase tracking-[0.2em]">{{ title }}</p>
+    class="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-6 flex flex-col justify-between h-full border-l-4 group transition-all hover:shadow-md"
+    :class="borderClass">
+    <div class="flex items-center justify-between mb-2">
+      <span class="text-stone-400 dark:text-stone-500 font-bold text-[10px] uppercase tracking-[0.2em]">{{ title
+      }}</span>
+      <i :class="[iconClass, 'text-stone-300 dark:text-stone-700']" class="text-sm"></i>
     </div>
     <!-- Regular Value -->
-    <p v-if="!isSocialMedia && value" class="text-stone-900 dark:text-white font-light text-base sm:text-lg">
+    <p v-if="!isSocialMedia && value" class="text-stone-900 dark:text-white font-bold text-xl sm:text-2xl mt-auto">
       {{ value }}
     </p>
     <!-- Social Media Links -->
@@ -22,10 +21,10 @@
             'fab fa-instagram': platform.type === 'instagram',
             'fab fa-facebook': platform.type === 'facebook',
           },
-          'text-mindqlab-calm-accent opacity-60 text-lg'
+          'text-stone-300 dark:text-stone-600 text-lg group-hover:text-stone-500 dark:group-hover:text-stone-400 transition-colors'
         ]"></i>
         <a :href="normalizeUrl(platform.type, platform.url)" target="_blank"
-          class="text-stone-900 dark:text-white font-light text-sm sm:text-base hover:text-mindqlab-calm-accent transition-colors truncate max-w-full"
+          class="text-stone-900 dark:text-white font-bold text-sm hover:text-stone-600 dark:hover:text-stone-300 transition-colors truncate max-w-full"
           :title="platform.url">
           {{ platform.url }}
         </a>
@@ -37,11 +36,26 @@
 </template>
 
 <script setup>
-defineProps({
+import { computed } from 'vue';
+
+const props = defineProps({
   title: { type: String, required: true },
   value: { type: [String, Array], default: "" },
   iconClass: { type: String, required: true },
   isSocialMedia: { type: Boolean, default: false },
+  accentColor: { type: String, default: 'stone' } // blue, purple, amber, emerald, stone
+});
+
+const borderClass = computed(() => {
+  switch (props.accentColor) {
+    case 'blue': return 'border-l-blue-500 dark:border-l-blue-500';
+    case 'purple': return 'border-l-purple-500 dark:border-l-purple-500';
+    case 'amber': return 'border-l-amber-500 dark:border-l-amber-500';
+    case 'emerald': return 'border-l-emerald-500 dark:border-l-emerald-500';
+    case 'stone':
+    default:
+      return 'border-l-stone-300 dark:border-l-stone-700';
+  }
 });
 
 // Normalize URL for display and linking

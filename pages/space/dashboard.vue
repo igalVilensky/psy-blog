@@ -1,24 +1,24 @@
 <!-- pages/space/dashboard.vue -->
 <template>
-  <div class="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500 relative">
-    <!-- LOADING_STATE_PLACEHOLDER -->
-    <div v-if="loading" class="absolute inset-0 z-50 bg-slate-50 dark:bg-slate-950 flex items-center justify-center">
-      <div class="loading-container">
-        <div class="loading-spinner-wrapper">
-          <div class="spinner-ring spinner-ring-1"></div>
-          <div class="spinner-ring spinner-ring-2"></div>
-          <div class="spinner-ring spinner-ring-3"></div>
-          <div class="spinner-core">
-            <i class="fas fa-brain text-3xl text-cyan-600 dark:text-cyan-400"></i>
-          </div>
+  <div class="min-h-screen bg-stone-50 dark:bg-stone-950 transition-colors duration-500 relative">
+    <!-- Dynamic Loading State -->
+    <div v-if="loading"
+      class="absolute inset-0 z-50 bg-stone-50 dark:bg-stone-950 flex flex-col items-center justify-center p-4">
+      <div class="relative w-24 h-24 mb-8">
+        <!-- Neural-like Spinner -->
+        <div class="absolute inset-0 rounded-full border-4 border-stone-200 dark:border-stone-800"></div>
+        <div
+          class="absolute inset-0 rounded-full border-4 border-stone-900 dark:border-white border-t-transparent animate-spin">
         </div>
-        <div class="loading-text">
-          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Загрузка центра управления</h3>
-          <p class="text-slate-600 dark:text-slate-400 text-sm">Синхронизация данных...</p>
+        <div class="absolute inset-0 flex items-center justify-center">
+          <i class="fas fa-brain text-4xl text-stone-900 dark:text-white animate-pulse"></i>
         </div>
-        <div class="loading-progress">
-          <div class="progress-bar"></div>
-        </div>
+      </div>
+      <div class="text-center space-y-2">
+        <h3 class="text-xl font-bold text-stone-900 dark:text-white uppercase tracking-widest animate-pulse">Загрузка
+          Данных</h3>
+        <p class="text-stone-500 dark:text-stone-400 text-xs font-bold uppercase tracking-wide">Синхронизация профиля...
+        </p>
       </div>
     </div>
 
@@ -35,30 +35,23 @@
         <DashboardHero :user-name="authStore.user?.displayName" :streak="metrics.streakDays"
           :last-activity="exercisesList[0]" @quick-action="handleQuickAction" />
 
-        <!-- Tab Navigation -->
-        <div
-          class="relative flex items-center p-1 bg-slate-100 dark:bg-slate-900 rounded-2xl w-full max-w-md mx-auto sticky top-4 z-40 border border-slate-200 dark:border-slate-800 backdrop-blur-md shadow-lg">
-          <!-- Sliding Background Pill -->
-          <div
-            class="absolute inset-y-1 left-1 bg-white dark:bg-slate-800 rounded-xl shadow-sm transition-all duration-300 ease-spring"
-            :style="{
-              width: `calc((100% - 8px) / ${tabs.length})`,
-              transform: `translateX(calc(100% * ${tabs.findIndex(t => t.id === activeTab)}))`
-            }">
-          </div>
-
-          <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
-            class="relative flex-1 w-0 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold transition-colors duration-300 z-10"
-            :class="activeTab === tab.id
-              ? 'text-cyan-600 dark:text-cyan-400'
-              : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'">
-            <i :class="tab.icon"></i>
-            <span class="hidden sm:inline">{{ tab.label }}</span>
-          </button>
+        <!-- Tab Navigation - Profile Style -->
+        <div class="border-b border-stone-200 dark:border-stone-800 mb-8">
+          <nav class="-mb-px flex space-x-8 overflow-x-auto" aria-label="Tabs">
+            <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id" :class="[
+              activeTab === tab.id
+                ? 'border-stone-900 dark:border-white text-stone-900 dark:text-white'
+                : 'border-transparent text-stone-500 hover:text-stone-700 hover:border-stone-300 dark:text-stone-400 dark:hover:text-stone-300 dark:hover:border-stone-700',
+              'whitespace-nowrap py-4 px-1 border-b-2 font-bold text-sm uppercase tracking-wider transition-colors duration-200 flex items-center gap-2'
+            ]">
+              <i :class="tab.icon"></i>
+              {{ tab.label }}
+            </button>
+          </nav>
         </div>
 
         <!-- Pillar Content with Transition -->
-        <Transition mode="out-in" name="slide-fade">
+        <Transition mode="out-in" name="fade">
           <!-- Pillar 1: Identity (Personality & Soul) -->
           <section v-if="activeTab === 'identity'" key="identity" id="identity">
             <IdentityPillar :traits="personalityTraits" :archetypes="archetypeScores" :achievements="achievements" />
@@ -77,100 +70,105 @@
           </section>
         </Transition>
 
-        <!-- Secondary Cognitive Test Results (Optional specialized view) -->
+        <!-- Secondary Cognitive Test Results -->
         <div v-if="testResultsList.length > 0"
-          class="mt-12 bg-white dark:bg-slate-800/20 rounded-2xl p-8 border border-slate-200 dark:border-slate-700/50">
+          class="mt-12 bg-white dark:bg-stone-900 p-8 border border-stone-200 dark:border-stone-800 border-l-4 border-l-stone-900 dark:border-l-white">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-            <h2 class="text-xl font-bold text-slate-900 dark:text-white font-montserrat tracking-tight">
+            <h2 class="text-xl font-bold text-stone-900 dark:text-white uppercase tracking-tight">
               Результаты Тестов</h2>
-            <NuxtLink to="/space/tests" class="text-xs text-cyan-600 hover:underline flex items-center gap-1">
+            <NuxtLink to="/space/tests"
+              class="text-xs font-bold uppercase tracking-wider text-stone-500 hover:text-stone-900 dark:hover:text-white flex items-center gap-2 transition-colors">
               Библиотека тестов <i class="fas fa-arrow-right"></i>
             </NuxtLink>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div v-for="test in testResultsList" :key="test.id"
-              class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200/30">
+              class="p-4 bg-stone-50 dark:bg-stone-800/50 border border-stone-200 dark:border-stone-700 transition-all hover:border-stone-400 dark:hover:border-stone-500 group">
               <div class="flex items-center gap-3 mb-3">
-                <div class="w-8 h-8 rounded-lg bg-white dark:bg-slate-800 flex items-center justify-center shadow-sm">
-                  <i :class="test.icon" class="text-sm"></i>
+                <div
+                  class="w-8 h-8 bg-white dark:bg-stone-800 flex items-center justify-center border border-stone-200 dark:border-stone-700">
+                  <i :class="test.icon"
+                    class="text-sm text-stone-400 group-hover:text-stone-900 dark:text-stone-500 dark:group-hover:text-white transition-colors"></i>
                 </div>
-                <span class="text-xs font-bold text-slate-700 dark:text-slate-300 truncate">{{ test.title }}</span>
+                <span class="text-xs font-bold uppercase text-stone-600 dark:text-stone-300 truncate">{{ test.title
+                }}</span>
               </div>
-              <div class="text-xl font-black font-mono text-slate-900 dark:text-white">{{ test.score }}{{ test.unit }}
+              <div class="text-xl font-bold text-stone-900 dark:text-white">{{ test.score }}{{ test.unit }}
               </div>
-              <div class="text-[9px] text-slate-500 uppercase mt-1">Лучший: {{ test.lastPlayed }}</div>
+              <div class="text-[10px] text-stone-400 uppercase tracking-wide mt-1">Лучший: {{ test.lastPlayed }}</div>
             </div>
           </div>
         </div>
 
         <div class="flex justify-center pt-12">
           <button @click="refreshData"
-            class="flex items-center gap-2 text-slate-500 hover:text-cyan-500 transition-colors text-xs font-mono">
+            class="flex items-center gap-2 text-stone-400 hover:text-stone-900 dark:hover:text-white transition-colors text-xs font-bold uppercase tracking-widest">
             <i class="fas fa-sync" :class="{ 'animate-spin': loading }"></i>
-            ОБНОВИТЬ ДАННЫЕ ЦЕНТРА
+            ОБНОВИТЬ ДАННЫЕ
           </button>
         </div>
       </div>
 
-      <!-- Exercise Details Modal -->
+      <!-- Exercise Details Modal - Simplified -->
       <div v-if="isExerciseModalOpen" class="relative z-50">
-        <!-- Backdrop -->
-        <div class="fixed inset-0 bg-black/25 dark:bg-black/40 backdrop-blur-sm transition-opacity"
-          @click="closeExerciseModal"></div>
+        <div class="fixed inset-0 bg-stone-900/80 backdrop-blur-sm transition-opacity" @click="closeExerciseModal">
+        </div>
 
-        <!-- Modal Panel -->
         <div class="fixed inset-0 overflow-y-auto">
           <div class="flex min-h-full items-center justify-center p-4 text-center">
             <div
-              class="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white dark:bg-slate-900 p-6 text-left align-middle shadow-xl transition-all border border-slate-200 dark:border-slate-700"
+              class="w-full max-w-2xl transform overflow-hidden bg-white dark:bg-stone-900 p-8 text-left align-middle shadow-xl transition-all border-2 border-stone-900 dark:border-white"
               @click.stop>
               <div
-                class="text-lg font-medium leading-6 text-slate-900 dark:text-white flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                  <div v-if="selectedExercise" class="w-10 h-10 rounded-lg flex items-center justify-center"
-                    :class="selectedExercise.bgClass">
-                    <i :class="selectedExercise.icon"></i>
+                class="flex items-center justify-between mb-6 border-b-2 border-stone-100 dark:border-stone-800 pb-4">
+                <div class="flex items-center space-x-4">
+                  <div v-if="selectedExercise"
+                    class="w-12 h-12 flex items-center justify-center bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700">
+                    <i :class="selectedExercise.icon" class="text-xl text-stone-900 dark:text-white"></i>
                   </div>
-                  <span>{{ selectedExercise?.title }}</span>
+                  <h3 class="text-lg font-bold text-stone-900 dark:text-white uppercase tracking-wide">{{
+                    selectedExercise?.title }}</h3>
                 </div>
                 <button @click="closeExerciseModal"
-                  class="text-slate-400 hover:text-slate-500 dark:hover:text-white transition-colors">
-                  <i class="fas fa-times"></i>
+                  class="text-stone-400 hover:text-stone-900 dark:hover:text-white transition-colors">
+                  <i class="fas fa-times text-xl"></i>
                 </button>
               </div>
 
-              <div class="mt-6 space-y-6" v-if="selectedExercise">
+              <div class="space-y-8" v-if="selectedExercise">
                 <!-- Stats Grid -->
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                  <div class="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg text-center">
-                    <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">
-                      Средний счет
+                  <div
+                    class="bg-stone-50 dark:bg-stone-800 p-4 border border-stone-200 dark:border-stone-700 text-center">
+                    <div class="text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-1">
+                      Средний
                     </div>
-                    <div class="text-lg font-bold text-slate-900 dark:text-white font-mono">
+                    <div class="text-xl font-bold text-stone-900 dark:text-white">
                       {{ selectedExercise.avgScore }}{{ selectedExercise.unit }}
                     </div>
                   </div>
-                  <div class="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg text-center">
-                    <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">
-                      Лучший счет
+                  <div class="bg-stone-50 dark:bg-stone-800 p-4 border-l-4 border-emerald-500 text-center">
+                    <div class="text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-1">
+                      Лучший
                     </div>
-                    <div class="text-lg font-bold text-emerald-600 dark:text-emerald-400 font-mono">
+                    <div class="text-xl font-bold text-stone-900 dark:text-white">
                       {{ selectedExercise.bestScore }}{{ selectedExercise.unit }}
                     </div>
                   </div>
-                  <div class="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg text-center">
-                    <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">
+                  <div
+                    class="bg-stone-50 dark:bg-stone-800 p-4 border border-stone-200 dark:border-stone-700 text-center">
+                    <div class="text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-1">
                       Сессий
                     </div>
-                    <div class="text-lg font-bold text-slate-900 dark:text-white font-mono">
+                    <div class="text-xl font-bold text-stone-900 dark:text-white">
                       {{ selectedExercise.playCount || selectedExercise.totalSessions || 0 }}
                     </div>
                   </div>
-                  <div class="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg text-center">
-                    <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">
+                  <div class="bg-stone-50 dark:bg-stone-800 p-4 border-l-4 border-purple-500 text-center">
+                    <div class="text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-1">
                       Уровень
                     </div>
-                    <div class="text-lg font-bold text-purple-600 dark:text-purple-400 font-mono">
+                    <div class="text-xl font-bold text-stone-900 dark:text-white">
                       {{ Math.floor((selectedExercise.totalSessions || 0) / 5) + 1 }}
                     </div>
                   </div>
@@ -178,45 +176,45 @@
 
                 <!-- History List -->
                 <div>
-                  <h4 class="text-sm font-medium text-slate-900 dark:text-white mb-3">
+                  <h4 class="text-xs font-bold text-stone-500 uppercase tracking-widest mb-4">
                     История сессий
                   </h4>
                   <div
-                    class="max-h-48 overflow-y-auto space-y-2 pr-2 scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-slate-700">
+                    class="max-h-48 overflow-y-auto space-y-1 pr-2 scrollbar-thin scrollbar-thumb-stone-300 dark:scrollbar-thumb-stone-600">
                     <div v-for="(session, index) in selectedExercise.history || []" :key="index"
-                      class="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-800/30 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors">
+                      class="flex items-center justify-between p-3 border-b border-stone-100 dark:border-stone-800 hover:bg-stone-50 dark:hover:bg-stone-800/50 transition-colors">
                       <div class="flex items-center space-x-3">
-                        <div class="w-2 h-2 rounded-full" :class="session.score >= 80
+                        <div class="w-1.5 h-1.5" :class="session.score >= 80
                           ? 'bg-emerald-500'
                           : session.score >= 60
                             ? 'bg-amber-500'
                             : 'bg-red-500'
                           "></div>
-                        <span class="text-sm text-slate-600 dark:text-slate-300">{{
+                        <span class="text-xs font-mono text-stone-500">{{
                           formatDate(session.date)
                         }}</span>
                       </div>
-                      <span class="font-mono text-sm font-medium text-slate-900 dark:text-white">
+                      <span class="font-bold text-sm text-stone-900 dark:text-white">
                         {{ session.score }}{{ selectedExercise.unit }}
                       </span>
                     </div>
                     <div v-if="!selectedExercise.history?.length"
-                      class="text-center py-4 text-sm text-slate-500 dark:text-slate-400">
+                      class="text-center py-4 text-xs text-stone-400 italic">
                       История пуста
                     </div>
                   </div>
                 </div>
 
-                <div class="mt-6 flex justify-end gap-3">
+                <div class="flex justify-end gap-4 pt-4 border-t border-stone-100 dark:border-stone-800">
                   <button type="button"
-                    class="inline-flex justify-center rounded-lg border border-transparent bg-slate-100 dark:bg-slate-800 px-4 py-2 text-sm font-medium text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500 focus-visible:ring-offset-2 transition-all"
+                    class="px-6 py-2 text-xs font-bold uppercase tracking-wider text-stone-500 hover:text-stone-900 dark:hover:text-white transition-colors"
                     @click="closeExerciseModal">
                     Закрыть
                   </button>
                   <NuxtLink :to="selectedExercise.link"
-                    class="inline-flex justify-center rounded-lg border border-transparent bg-cyan-600 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 transition-all shadow-lg shadow-cyan-500/30">
+                    class="px-6 py-2 bg-stone-900 dark:bg-white text-white dark:text-stone-900 text-xs font-bold uppercase tracking-wider hover:bg-stone-800 dark:hover:bg-stone-200 transition-colors">
                     <i class="fas fa-play mr-2"></i>
-                    Начать тренировку
+                    Начать
                   </NuxtLink>
                 </div>
               </div>

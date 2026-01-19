@@ -1,29 +1,7 @@
 <template>
   <!-- Loading State -->
-  <div v-if="isLoading" class="loading-overlay">
-    <div class="loading-container">
-      <div class="mb-12 relative inline-block">
-        <div class="w-24 h-24 rounded-full border-[3px] border-stone-100 dark:border-stone-800/50 relative">
-          <div
-            class="absolute inset-0 rounded-full border-[3px] border-t-mindqlab-calm-accent animate-spin duration-[1.5s]">
-          </div>
-        </div>
-        <div class="absolute inset-0 flex items-center justify-center">
-          <i class="fas fa-user text-stone-300 dark:text-stone-700 text-2xl"></i>
-        </div>
-      </div>
-      <div class="loading-text">
-        <h3 class="text-2xl font-light text-stone-900 dark:text-white mb-3 uppercase tracking-widest">Профиль</h3>
-        <p class="text-stone-400 dark:text-stone-500 font-light italic">Настройка личного пространства...</p>
-      </div>
-      <div class="w-64 h-[1px] bg-stone-100 dark:bg-stone-800/50 mt-12 relative overflow-hidden">
-        <div class="absolute inset-0 bg-mindqlab-calm-accent/40 animate-progress"></div>
-      </div>
-    </div>
-  </div>
-
   <div
-    class="relative min-h-screen bg-mindqlab-calm-bg dark:bg-mindqlab-calm-dark-bg transition-colors duration-500 flex flex-col">
+    class="relative min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-white transition-colors duration-500 flex flex-col font-sans">
     <TopBar />
 
     <div class="flex-1 max-w-7xl mx-auto px-6 sm:px-8 pb-24 pt-12 sm:pt-20 w-full">
@@ -39,22 +17,15 @@
         :aboutYourself="aboutYourself" />
 
       <!-- Navigation Tabs -->
-      <div class="mb-12 border-b border-stone-100 dark:border-stone-800/50">
-        <div class="flex gap-12 overflow-x-auto pb-0 no-scrollbar">
-          <button @click="activeTab = 'overview'" class="tab-link"
-            :class="activeTab === 'overview' ? 'tab-link-active' : ''">
-            <span class="text-[10px] uppercase tracking-[0.2em]">Обзор</span>
+      <div class="mb-12 border-b border-stone-200 dark:border-stone-800">
+        <div class="flex gap-8 overflow-x-auto pb-0 no-scrollbar">
+          <button @click="activeTab = 'overview'" class="tab-link pb-4 px-2"
+            :class="activeTab === 'overview' ? 'tab-link-active' : 'text-stone-400 dark:text-stone-500 hover:text-stone-700 dark:hover:text-stone-300'">
+            <span class="text-xs font-bold uppercase tracking-widest">Обзор</span>
           </button>
-          <button @click="activeTab = 'emotions'" class="tab-link"
-            :class="activeTab === 'emotions' ? 'tab-link-active' : ''">
-            <span class="text-[10px] uppercase tracking-[0.2em]">Эмоции</span>
-          </button>
-          <button @click="activeTab = 'archetypes'" class="tab-link"
-            :class="activeTab === 'archetypes' ? 'tab-link-active' : ''">
-            <span class="text-[10px] uppercase tracking-[0.2em]">Архетипы</span>
-          </button>
-          <button @click="activeTab = 'flows'" class="tab-link" :class="activeTab === 'flows' ? 'tab-link-active' : ''">
-            <span class="text-[10px] uppercase tracking-[0.2em]">Потоки</span>
+          <button @click="activeTab = 'flows'" class="tab-link pb-4 px-2"
+            :class="activeTab === 'flows' ? 'tab-link-active' : 'text-stone-400 dark:text-stone-500 hover:text-stone-700 dark:hover:text-stone-300'">
+            <span class="text-xs font-bold uppercase tracking-widest">Потоки</span>
           </button>
         </div>
       </div>
@@ -65,15 +36,15 @@
         <!-- Onboarding CTA -->
         <div class="col-span-1 lg:col-span-2" v-if="!authStore.user?.onboardingCompleted">
           <div
-            class="bg-white dark:bg-stone-900 border border-stone-100 dark:border-stone-800/50 rounded-[2.5rem] p-8 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-8 shadow-sm backdrop-blur-xl transition-all duration-500 hover:border-mindqlab-calm-accent/30">
+            class="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-8 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-8 border-l-4 border-l-stone-900 dark:border-l-white">
             <div>
-              <h3 class="text-2xl font-light text-stone-900 dark:text-white mb-3 uppercase tracking-tight">Персональная
+              <h3 class="text-xl font-bold text-stone-900 dark:text-white mb-3 uppercase tracking-tight">Персональная
                 настройка</h3>
-              <p class="text-stone-500 dark:text-stone-400 font-light italic">Пройдите короткий опрос, чтобы система
+              <p class="text-stone-600 dark:text-stone-400 text-sm font-medium">Пройдите короткий опрос, чтобы система
                 подготовила для вас индивидуальный план развития.</p>
             </div>
             <NuxtLink to="/onboarding"
-              class="px-10 py-4 bg-mindqlab-calm-accent text-white rounded-full font-medium hover:bg-opacity-90 shadow-lg shadow-mindqlab-calm-accent/20 whitespace-nowrap transition-all">
+              class="px-8 py-3 bg-stone-900 dark:bg-white text-white dark:text-stone-900 font-bold uppercase tracking-widest text-xs hover:bg-stone-800 dark:hover:bg-stone-200 transition-all whitespace-nowrap">
               Начать опрос
             </NuxtLink>
           </div>
@@ -81,423 +52,22 @@
 
         <div class="col-span-1 lg:col-span-2" v-else>
           <div
-            class="bg-stone-50/50 dark:bg-stone-800/20 border border-stone-100 dark:border-stone-800/50 rounded-[2.5rem] p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+            class="bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-8 flex flex-col sm:flex-row items-center justify-between gap-6 border-l-4 border-l-emerald-500">
             <div>
-              <h3 class="text-xl font-light text-stone-900 dark:text-white mb-2 uppercase tracking-tight">Статус
+              <h3 class="text-xl font-bold text-stone-900 dark:text-white mb-2 uppercase tracking-tight">Статус
                 профиля: Настроен</h3>
-              <p class="text-stone-500 dark:text-stone-400 text-sm font-light italic">Ваша персональная карта развития
+              <p class="text-stone-600 dark:text-stone-400 text-sm font-medium">Ваша персональная карта развития
                 построена. Вы можете обновить её в любое время.</p>
             </div>
             <NuxtLink to="/onboarding"
-              class="px-8 py-3 bg-white dark:bg-stone-900 border border-stone-100 dark:border-stone-800 text-stone-600 dark:text-stone-400 rounded-full text-sm font-medium hover:border-mindqlab-calm-accent transition-all whitespace-nowrap">
+              class="px-8 py-3 border border-stone-300 dark:border-stone-700 text-stone-700 dark:text-stone-300 text-xs font-bold uppercase tracking-widest hover:bg-stone-100 dark:hover:bg-stone-800 transition-all whitespace-nowrap">
               Обновить оценку
             </NuxtLink>
           </div>
         </div>
-        <div class="settings-card">
-          <div class="flex items-center gap-4 mb-8">
-            <div class="settings-icon-wrapper">
-              <i class="fas fa-chart-line text-mindqlab-calm-accent opacity-60"></i>
-            </div>
-            <h2 class="text-xl font-light text-stone-900 dark:text-white uppercase tracking-tight">Быстрая статистика
-            </h2>
-          </div>
-          <div class="space-y-6">
-            <div class="stat-item">
-              <div class="flex items-center gap-4">
-                <i class="fas fa-clipboard-list text-stone-300 dark:text-stone-700"></i>
-                <span class="text-stone-500 dark:text-stone-400 font-light">Всего записей</span>
-              </div>
-              <span class="text-2xl font-light text-stone-900 dark:text-white">{{
-                emotionBarometerStats.totalEntries
-              }}</span>
-            </div>
-            <div class="stat-item">
-              <div class="flex items-center gap-4">
-                <i class="fas fa-smile text-stone-300 dark:text-stone-700"></i>
-                <span class="text-stone-500 dark:text-stone-400 font-light">Частая эмоция</span>
-              </div>
-              <span class="text-base font-medium text-mindqlab-calm-accent">{{
-                emotionBarometerStats.mostCommonEmotion
-              }}</span>
-            </div>
-            <div class="stat-item">
-              <div class="flex items-center gap-4">
-                <i class="fas fa-tachometer-alt text-stone-300 dark:text-stone-700"></i>
-                <span class="text-stone-500 dark:text-stone-400 font-light">Средняя интенсивность</span>
-              </div>
-              <span class="text-base font-medium text-stone-900 dark:text-white uppercase">{{
-                emotionBarometerStats.averageIntensity.toFixed(1)
-              }}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="settings-card">
-          <div class="flex items-center gap-4 mb-8">
-            <div class="settings-icon-wrapper">
-              <i class="fas fa-history text-mindqlab-calm-accent opacity-60"></i>
-            </div>
-            <h2 class="text-xl font-light text-stone-900 dark:text-white uppercase tracking-tight">Последняя активность
-            </h2>
-          </div>
-          <div class="space-y-4">
-            <div class="activity-item">
-              <div class="activity-icon">
-                <i class="fas fa-heart text-stone-300 dark:text-stone-700 text-xs"></i>
-              </div>
-              <div class="flex-1">
-                <p class="text-stone-900 dark:text-white text-sm font-light">Новая запись эмоций</p>
-                <p class="text-stone-400 dark:text-stone-500 text-[10px] uppercase tracking-widest mt-1">2 часа назад
-                </p>
-              </div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-icon">
-                <i class="fas fa-brain text-stone-300 dark:text-stone-700 text-xs"></i>
-              </div>
-              <div class="flex-1">
-                <p class="text-stone-900 dark:text-white text-sm font-light">Пройден тест на архетипы</p>
-                <p class="text-stone-400 dark:text-stone-500 text-[10px] uppercase tracking-widest mt-1">1 день назад
-                </p>
-              </div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-icon">
-                <i class="fas fa-trophy text-mindqlab-calm-accent/40 text-xs"></i>
-              </div>
-              <div class="flex-1">
-                <p class="text-stone-900 dark:text-white text-sm font-light">Достижение разблокировано</p>
-                <p class="text-stone-400 dark:text-stone-500 text-[10px] uppercase tracking-widest mt-1">3 дня назад</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- AI Summary Section -->
-        <div v-if="authStore.user?.onboardingCompleted && aiSummary" class="col-span-1 lg:col-span-2">
-          <div class="settings-card">
-            <div class="flex items-center gap-4 mb-10 pb-6 border-b border-stone-50 dark:border-stone-800/30">
-              <div class="settings-icon-wrapper">
-                <i class="fas fa-brain text-mindqlab-calm-accent opacity-60"></i>
-              </div>
-              <h2 class="text-xl font-light text-stone-900 dark:text-white uppercase tracking-tight">Ваш психологический
-                профиль</h2>
-            </div>
-
-            <!-- Loading State -->
-            <div v-if="loadingAiSummary" class="flex items-center justify-center py-8">
-              <i class="fas fa-spinner fa-spin text-3xl text-purple-600 dark:text-purple-400"></i>
-            </div>
-
-            <!-- Summary Content -->
-            <div v-else class="space-y-6">
-              <!-- Main Summary -->
-              <div
-                class="p-8 bg-stone-50/50 dark:bg-stone-800/20 rounded-[2rem] border border-stone-100 dark:border-stone-800/50">
-                <p class="text-stone-600 dark:text-stone-300 font-light leading-relaxed italic whitespace-pre-line">{{
-                  aiSummary.summary }}</p>
-              </div>
-
-              <!-- Strengths -->
-              <div v-if="aiSummary.strengths && aiSummary.strengths.length > 0">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
-                  <i class="fas fa-star text-yellow-500"></i>
-                  Ваши сильные стороны
-                </h3>
-                <ul class="space-y-2">
-                  <li v-for="(strength, index) in aiSummary.strengths" :key="index"
-                    class="flex items-start gap-2 text-gray-700 dark:text-slate-300">
-                    <i class="fas fa-check-circle text-green-500 mt-1"></i>
-                    <span>{{ strength }}</span>
-                  </li>
-                </ul>
-              </div>
-
-              <!-- Risks -->
-              <div v-if="aiSummary.risks && aiSummary.risks.length > 0">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
-                  <i class="fas fa-exclamation-triangle text-orange-500"></i>
-                  На что обратить внимание
-                </h3>
-                <ul class="space-y-2">
-                  <li v-for="(risk, index) in aiSummary.risks" :key="index"
-                    class="flex items-start gap-2 text-gray-700 dark:text-slate-300">
-                    <i class="fas fa-info-circle text-orange-500 mt-1"></i>
-                    <span>{{ risk }}</span>
-                  </li>
-                </ul>
-              </div>
-
-              <!-- Recommendations -->
-              <div v-if="aiSummary.recommendations && aiSummary.recommendations.length > 0">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
-                  <i class="fas fa-lightbulb text-cyan-500"></i>
-                  Рекомендации
-                </h3>
-                <ul class="space-y-2">
-                  <li v-for="(rec, index) in aiSummary.recommendations" :key="index"
-                    class="flex items-start gap-2 text-gray-700 dark:text-slate-300">
-                    <i class="fas fa-arrow-right text-cyan-500 mt-1"></i>
-                    <span>{{ rec }}</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
-      <!-- Emotions Tab -->
-      <div v-if="activeTab === 'emotions'" class="emotion-barometer-section">
-        <div class="flex items-center gap-4 mb-12">
-          <div class="section-icon-wrapper">
-            <i class="fas fa-chart-line text-mindqlab-calm-accent opacity-60"></i>
-          </div>
-          <div>
-            <h2 class="text-3xl font-light text-stone-900 dark:text-white uppercase tracking-tight">
-              Эмоциональный компас
-            </h2>
-            <p class="text-stone-500 dark:text-stone-400 font-light italic mt-1">
-              Отслеживайте свое эмоциональное состояние
-            </p>
-          </div>
-        </div>
-
-        <!-- CTA Button -->
-        <div v-if="emotionBarometerStats.totalEntries > 0" class="mb-6">
-          <Button to="/lab/growth/emotional-compass" text="Перейти к барометру" iconClass="fas fa-arrow-right"
-            gradientStart="#0EA5E9" gradientEnd="#E879F9" textColor="#0EA5E9" customClass="cta-button-custom" />
-        </div>
-
-        <!-- Loading State -->
-        <div v-if="loadingEmotionBarometer" class="loading-state">
-          <div class="loading-content">
-            <i class="fas fa-spinner fa-spin text-4xl text-cyan-600 dark:text-cyan-400 mb-4"></i>
-            <p class="text-gray-700 dark:text-slate-300">Загрузка данных...</p>
-          </div>
-        </div>
-
-        <!-- No Data State -->
-        <div v-else-if="emotionBarometerStats.totalEntries === 0" class="empty-state">
-          <div class="empty-content">
-            <div class="empty-icon">
-              <i class="fas fa-chart-pie text-5xl text-cyan-600 dark:text-cyan-400"></i>
-            </div>
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-              Нет данных для отображения
-            </h3>
-            <p class="text-gray-600 dark:text-slate-400 mb-6">
-              Начните использовать Эмоциональный компас, чтобы отслеживать свои
-              эмоции
-            </p>
-            <NuxtLink to="/lab/growth/emotional-compass" class="start-button">
-              <span class="button-gradient"></span>
-              <span class="button-content">
-                <i class="fas fa-play-circle mr-2"></i>
-                Начать отслеживание
-              </span>
-            </NuxtLink>
-          </div>
-        </div>
-
-        <!-- Stats Grid -->
-        <div v-else>
-          <div class="stats-grid">
-            <!-- Total Entries -->
-            <div class="stat-card">
-              <div class="stat-icon-wrapper bg-gradient-to-br from-cyan-500/20 to-blue-500/20">
-                <i class="fas fa-calculator text-cyan-600 dark:text-cyan-400 text-xl"></i>
-              </div>
-              <div class="stat-content">
-                <p class="stat-label">Всего записей</p>
-                <p class="stat-value">
-                  {{ emotionBarometerStats.totalEntries }}
-                </p>
-              </div>
-            </div>
-
-            <!-- Most Common Emotion -->
-            <div class="stat-card">
-              <div class="stat-icon-wrapper bg-gradient-to-br from-cyan-500/20 to-pink-500/20">
-                <i class="fas fa-heart text-cyan-600 dark:text-cyan-400 text-xl"></i>
-              </div>
-              <div class="stat-content">
-                <p class="stat-label">Частая эмоция</p>
-                <p class="stat-value">
-                  {{ emotionBarometerStats.mostCommonEmotion }}
-                </p>
-              </div>
-            </div>
-
-            <!-- Average Intensity -->
-            <div class="stat-card">
-              <div class="stat-icon-wrapper bg-gradient-to-br from-emerald-500/20 to-teal-500/20">
-                <i class="fas fa-tachometer-alt text-emerald-400 text-xl"></i>
-              </div>
-              <div class="stat-content">
-                <p class="stat-label">Средняя интенсивность</p>
-                <p class="stat-value">
-                  {{ emotionBarometerStats.averageIntensity.toFixed(1) }}
-                </p>
-              </div>
-            </div>
-
-            <!-- Most Common Tag -->
-            <div class="stat-card">
-              <div class="stat-icon-wrapper bg-gradient-to-br from-cyan-500/20 to-red-500/20">
-                <i class="fas fa-tags text-orange-400 text-xl"></i>
-              </div>
-              <div class="stat-content">
-                <p class="stat-label">Частая сфера жизни</p>
-                <p class="stat-value">
-                  {{ emotionBarometerStats.mostCommonTag }}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Emotion Distribution Chart -->
-          <div class="chart-container">
-            <h3 class="chart-title">
-              <i class="fas fa-chart-pie text-mindqlab-calm-accent opacity-60 mr-3"></i>
-              Распределение эмоций
-            </h3>
-            <div class="chart-wrapper">
-              <canvas ref="emotionChart" class="w-full h-64"></canvas>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Archetypes Tab -->
-      <div v-if="activeTab === 'archetypes'">
-        <div class="settings-card">
-          <div class="flex items-center gap-4 mb-10 pb-6 border-b border-stone-50 dark:border-stone-800/30">
-            <div class="settings-icon-wrapper">
-              <i class="fas fa-brain text-mindqlab-calm-accent opacity-60"></i>
-            </div>
-            <h2 class="text-xl font-light text-stone-900 dark:text-white uppercase tracking-tight">
-              Психологический профиль
-            </h2>
-          </div>
-
-          <!-- Loading State -->
-          <div v-if="loadingAssessments" class="loading-state">
-            <div class="loading-content">
-              <i class="fas fa-spinner fa-spin text-4xl text-cyan-600 dark:text-cyan-400 mb-4"></i>
-              <p class="text-gray-700 dark:text-slate-300">Загрузка профиля...</p>
-            </div>
-          </div>
-
-          <!-- No Data State -->
-          <div v-else-if="!archetypeScores || archetypeScores.length === 0" class="empty-state">
-            <div class="empty-content">
-              <div class="empty-icon">
-                <i class="fas fa-users text-5xl text-cyan-600 dark:text-cyan-400"></i>
-              </div>
-              <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                Нет данных архетипов
-              </h3>
-              <p class="text-gray-600 dark:text-slate-400 mb-6">
-                Пройдите тест на архетипы, чтобы увидеть ваш психологический
-                профиль
-              </p>
-              <NuxtLink to="/lab/tests/life-purpose-archetype" class="start-button">
-                <i class="fas fa-play-circle mr-3"></i>
-                Пройти тест
-              </NuxtLink>
-            </div>
-          </div>
-
-          <!-- Archetypes Grid -->
-          <div v-else class="space-y-6">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div v-for="(archetype, index) in archetypeScores" :key="archetype.name" class="archetype-card"
-                :style="{ animationDelay: `${index * 100}ms` }">
-                <div class="flex items-center gap-4 mb-4">
-                  <div
-                    class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center">
-                    <i :class="[
-                      'fas',
-                      archetype.icon || 'fa-question',
-                      'text-cyan-600 dark:text-cyan-400 text-xl',
-                    ]"></i>
-                  </div>
-                  <div class="flex-1">
-                    <h3 class="font-semibold text-gray-900 dark:text-white capitalize">
-                      {{ archetype.name }}
-                    </h3>
-                    <p class="text-gray-600 dark:text-slate-400 text-sm">
-                      Уровень: {{ archetype.level }}
-                    </p>
-                  </div>
-                </div>
-
-                <!-- Progress Bar -->
-                <div class="mb-4">
-                  <div class="flex justify-between text-sm mb-1">
-                    <span class="text-gray-600 dark:text-slate-400">Прогресс</span>
-                    <span class="text-cyan-600 dark:text-cyan-400">{{
-                      calculateArchetypePercentage(archetype.level)
-                    }}%</span>
-                  </div>
-                  <div class="h-2 bg-slate-700/50 rounded-full overflow-hidden">
-                    <div
-                      class="h-2 rounded-full bg-gradient-to-r from-cyan-500 to-cyan-500 transition-all duration-1000"
-                      :style="{
-                        width: `${calculateArchetypePercentage(
-                          archetype.level
-                        )}%`,
-                      }"></div>
-                  </div>
-                </div>
-
-                <!-- Download Button -->
-                <button v-if="archetype.guideUrl && archetype.guideUrl !== '#'"
-                  @click="handleDownload(archetype.guideUrl)"
-                  class="w-full py-2 px-4 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 rounded-lg border border-cyan-500/20 hover:border-cyan-500/40 transition-all duration-300 flex items-center justify-center gap-2">
-                  <i class="fas fa-download text-sm"></i>
-                  <span class="text-sm">Скачать гайд</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Additional Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-              <!-- Big Five Summary -->
-              <div
-                class="bg-gray-100 dark:bg-slate-800/30 rounded-xl p-6 border border-gray-300 dark:border-slate-700/50">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                  <i class="fas fa-star text-cyan-600 dark:text-cyan-400"></i>
-                  Big Five Traits
-                </h3>
-                <div class="space-y-3">
-                  <div v-for="trait in bigFiveTraits" :key="trait.name" class="flex items-center justify-between">
-                    <span class="text-gray-700 dark:text-slate-300 text-sm">{{ trait.name }}</span>
-                    <span class="text-cyan-600 dark:text-cyan-400 font-semibold">{{ trait.value }}%</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Cognitive Styles Summary -->
-              <div
-                class="bg-gray-100 dark:bg-slate-800/30 rounded-xl p-6 border border-gray-300 dark:border-slate-700/50">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                  <i class="fas fa-brain text-emerald-400"></i>
-                  Когнитивные стили
-                </h3>
-                <div class="space-y-3">
-                  <div v-for="style in cognitiveStyles" :key="style.name" class="flex items-center justify-between">
-                    <span class="text-gray-700 dark:text-slate-300 text-sm">{{ style.name }}</span>
-                    <span class="text-emerald-400 font-semibold">{{ style.level }}/10</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- Lab Flows Tab -->
 
       <!-- Lab Flows Tab -->
       <div v-if="activeTab === 'flows'" class="flows-section">
@@ -587,6 +157,7 @@
         </div>
       </div>
     </div>
+
 
 
     <Footer />
@@ -1064,11 +635,6 @@ const navigateToFlow = (flowId) => {
 </script>
 
 <style lang="postcss" scoped>
-.loading-overlay {
-  @apply fixed inset-0 bg-mindqlab-calm-bg dark:bg-mindqlab-calm-dark-bg flex items-center justify-center;
-  z-index: 9999 !important;
-}
-
 .loading-container {
   @apply flex flex-col items-center text-center;
 }
@@ -1088,19 +654,24 @@ const navigateToFlow = (flowId) => {
 }
 
 .tab-link {
-  @apply py-4 relative transition-all duration-300 text-stone-400 hover:text-stone-900 dark:hover:text-white border-b-2 border-transparent;
+  @apply relative transition-colors duration-300 whitespace-nowrap;
 }
 
 .tab-link-active {
-  @apply text-stone-900 dark:text-white border-mindqlab-calm-accent;
+  @apply text-stone-900 dark:text-white;
+}
+
+.tab-link-active::after {
+  content: "";
+  @apply absolute bottom-0 left-0 w-full h-0.5 bg-stone-900 dark:bg-white;
 }
 
 .settings-card {
-  @apply p-8 sm:p-10 rounded-[2.5rem] bg-white dark:bg-stone-900/40 border border-stone-100 dark:border-stone-800/50 shadow-sm backdrop-blur-xl transition-all duration-500;
+  @apply p-8 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 flex flex-col justify-between;
 }
 
 .settings-icon-wrapper {
-  @apply w-12 h-12 rounded-xl bg-stone-50 dark:bg-stone-800/50 flex items-center justify-center shadow-sm;
+  @apply w-12 h-12 bg-stone-100 dark:bg-stone-800 flex items-center justify-center;
 }
 
 .stat-item {
@@ -1128,7 +699,7 @@ const navigateToFlow = (flowId) => {
 }
 
 .cta-button-custom {
-  @apply inline-flex items-center gap-2 px-8 py-4 rounded-full bg-stone-50 dark:bg-stone-800/50 border border-stone-100 dark:border-stone-800/50 text-stone-600 dark:text-stone-400 hover:text-mindqlab-calm-accent hover:border-mindqlab-calm-accent/30 transition-all duration-300 font-medium;
+  @apply inline-flex items-center gap-2 px-8 py-4 rounded-full bg-stone-50 dark:bg-stone-800/50 border border-stone-100 dark:border-stone-800/50 text-stone-600 dark:text-stone-400 hover:text-cyan-600 hover:border-cyan-500/30 transition-all duration-300 font-medium;
 }
 
 .loading-state {
@@ -1152,7 +723,7 @@ const navigateToFlow = (flowId) => {
 }
 
 .start-button {
-  @apply px-10 py-5 rounded-full bg-mindqlab-calm-accent text-white font-medium hover:bg-opacity-90 transition-all duration-300 shadow-lg shadow-mindqlab-calm-accent/20;
+  @apply px-10 py-5 rounded-full bg-stone-900 dark:bg-white text-white dark:text-stone-900 font-medium hover:bg-opacity-90 transition-all duration-300 shadow-lg shadow-stone-900/10;
 }
 
 .stats-grid {

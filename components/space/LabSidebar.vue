@@ -4,7 +4,7 @@
         <div class="h-16 flex items-center px-6 border-b-2 border-stone-900 dark:border-white">
             <NuxtLink to="/" class="flex items-center gap-2 group">
                 <div class="w-8 h-8 bg-stone-900 dark:bg-white flex items-center justify-center">
-                    <i class="fas fa-flask text-white dark:text-stone-900 text-sm"></i>
+                    <i class="fas fa-brain text-white dark:text-stone-900 text-sm"></i>
                 </div>
                 <div>
                     <span
@@ -25,8 +25,16 @@
 
                 <div class="space-y-1">
                     <template v-for="item in section.items" :key="item.path">
+                        <!-- Highlighted Coach Link -->
+                        <NuxtLink v-if="item.isHighlight" :to="item.path" @click="$emit('close')" :class="[
+                            'flex items-center gap-3 px-3 py-2 text-sm font-bold transition-all relative group bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 border border-indigo-100 dark:border-indigo-800/30 rounded-lg mt-2'
+                        ]">
+                            <i :class="[item.icon, 'text-sm text-indigo-500 dark:text-indigo-400']"></i>
+                            <span class="uppercase tracking-wide text-xs">{{ item.label }}</span>
+                        </NuxtLink>
+
                         <!-- Standard Link -->
-                        <NuxtLink v-if="!item.comingSoon" :to="item.path" @click="$emit('close')" :class="[
+                        <NuxtLink v-else-if="!item.comingSoon" :to="item.path" @click="$emit('close')" :class="[
                             'flex items-center gap-3 px-3 py-2 text-sm font-semibold transition-all relative group',
                             isActive(item.path)
                                 ? 'bg-stone-900 dark:bg-white text-white dark:text-stone-900'
@@ -115,7 +123,7 @@ const navSections = computed(() => {
         sections.push({
             title: 'Коучинг',
             items: [
-                { label: 'Панель Коуча', path: '/coach', icon: 'fas fa-user-tie' },
+                { label: 'Панель Коуча', path: '/coach', icon: 'fas fa-th-large', isHighlight: true },
             ]
         });
     }
