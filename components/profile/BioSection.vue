@@ -55,7 +55,7 @@
         <BioInfoCard title="Возраст" :value="age ? age + ' лет' : ''" iconClass="fas fa-calendar" />
 
         <!-- Gender -->
-        <BioInfoCard title="Пол" :value="gender === 'male' ? 'Мужской' : gender === 'female' ? 'Женский' : ''"
+        <BioInfoCard title="Пол" :value="gender === 'male' ? 'Мужской' : gender === 'female' ? 'Женский' : gender"
           iconClass="fas fa-user-friends" />
       </div>
 
