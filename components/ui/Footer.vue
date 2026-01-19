@@ -87,23 +87,33 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { useAuthStore } from "~/stores/auth";
 
+const auth = useAuthStore();
 const email = ref("");
 
-const sitemapLinks = [
-  { label: "Центр Развития", to: "/space" },
-  { label: "Тесты", to: "/space/tests" },
-  { label: "Тренировка Мозга", to: "/space/brain-training" },
-  { label: "Психология", to: "/space/psychology" },
-  { label: "Медитация", to: "/space/mindfulness" },
-  { label: "Саморазвитие", to: "/space/growth" },
-  { label: "Дашборд", to: "/space/dashboard" },
-  { label: "Сообщество", to: "/space/community" },
-  { label: "Блог", to: "/blog" },
-  { label: "О проекте", to: "/about" },
-  { label: "FAQ", to: "/faq" }
-];
+const sitemapLinks = computed(() => {
+  const links = [
+    { label: "Центр Развития", to: "/space" },
+    { label: "Тесты", to: "/space/tests" },
+    { label: "Тренировка Мозга", to: "/space/brain-training" },
+    { label: "Психология", to: "/space/psychology" },
+    { label: "Медитация", to: "/space/mindfulness" },
+    { label: "Саморазвитие", to: "/space/growth" },
+    { label: "Дашборд", to: "/space/dashboard" },
+    { label: "Сообщество", to: "/space/community" },
+    { label: "Блог", to: "/blog" },
+    { label: "О проекте", to: "/about" },
+    { label: "FAQ", to: "/faq" }
+  ];
+
+  if (auth.user?.isCoach) {
+    links.splice(8, 0, { label: "Дашборд Коуча", to: "/coach" });
+  }
+
+  return links;
+});
 
 const socialLinks = [
   { icon: "fab fa-instagram", link: "https://www.instagram.com/galactik.anastasia/" },

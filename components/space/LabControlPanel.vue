@@ -239,6 +239,11 @@
         <!-- Community Hub -->
         <StationLink to="/space/community" icon="fa-users" title="Сообщество" subtitle="Пользователи онлайн"
           :active="route.path === '/space/community'" gradient-from="orange-500" gradient-to="amber-600" />
+
+        <!-- Coach Hub -->
+        <StationLink v-if="auth.user?.isCoach" to="/coach" icon="fa-user-tie" title="Дашборд Коуча"
+          subtitle="Управление клиентами" :active="route.path.startsWith('/coach')" gradient-from="amber-500"
+          gradient-to="orange-600" />
       </div>
     </div>
 
@@ -314,69 +319,84 @@ const brainPulsing = ref(false);
 const mobileMenuOpen = ref(false);
 
 // Mobile stations data for consistent rendering
-const mobileStations = computed(() => [
-  {
-    to: "/space/tests",
-    icon: "fa-brain",
-    title: "Тесты",
-    subtitle: "Все категории",
-    gradientFrom: "blue-500",
-    gradientTo: "indigo-600",
-  },
+const mobileStations = computed(() => {
+  const stations = [
+    {
+      to: "/space/tests",
+      icon: "fa-brain",
+      title: "Тесты",
+      subtitle: "Все категории",
+      gradientFrom: "blue-500",
+      gradientTo: "indigo-600",
+    },
 
-  {
-    to: "/space/brain-training",
-    icon: "fa-dumbbell",
-    title: "Тренировка Мозга",
-    subtitle: "Игры и упражнения",
-    gradientFrom: "cyan-500",
-    gradientTo: "purple-600",
-  },
-  {
-    to: "/space/growth",
-    icon: "fa-seedling",
-    title: "Саморазвитие",
-    subtitle: "Инструменты",
-    gradientFrom: "green-500",
-    gradientTo: "teal-600",
-  },
-  {
-    to: "/space/psychology",
-    icon: "fa-book-open",
-    title: "Психология",
-    subtitle: "Теории",
-    gradientFrom: "purple-500",
-    gradientTo: "pink-600",
-  },
-  {
-    to: "/space/mindfulness",
-    icon: "fa-spa",
-    title: "Медитация",
-    subtitle: "Аудио/видео",
-    gradientFrom: "teal-500",
-    gradientTo: "cyan-600",
-  },
-
-
-  {
-    to: "/space/dashboard",
-    icon: "fa-microchip",
-    title: "Центр Управления",
-    subtitle: "Мониторинг",
-    gradientFrom: "cyan-500",
-    gradientTo: "blue-600",
-  },
+    {
+      to: "/space/brain-training",
+      icon: "fa-dumbbell",
+      title: "Тренировка Мозга",
+      subtitle: "Игры и упражнения",
+      gradientFrom: "cyan-500",
+      gradientTo: "purple-600",
+    },
+    {
+      to: "/space/growth",
+      icon: "fa-seedling",
+      title: "Саморазвитие",
+      subtitle: "Инструменты",
+      gradientFrom: "green-500",
+      gradientTo: "teal-600",
+    },
+    {
+      to: "/space/psychology",
+      icon: "fa-book-open",
+      title: "Психология",
+      subtitle: "Теории",
+      gradientFrom: "purple-500",
+      gradientTo: "pink-600",
+    },
+    {
+      to: "/space/mindfulness",
+      icon: "fa-spa",
+      title: "Медитация",
+      subtitle: "Аудио/видео",
+      gradientFrom: "teal-500",
+      gradientTo: "cyan-600",
+    },
 
 
-  {
-    to: "/space/community",
-    icon: "fa-users",
-    title: "Сообщество",
-    subtitle: "Пользователи",
-    gradientFrom: "orange-500",
-    gradientTo: "amber-600",
-  },
-]);
+    {
+      to: "/space/dashboard",
+      icon: "fa-microchip",
+      title: "Центр Управления",
+      subtitle: "Мониторинг",
+      gradientFrom: "cyan-500",
+      gradientTo: "blue-600",
+    },
+
+
+    {
+      to: "/space/community",
+      icon: "fa-users",
+      title: "Сообщество",
+      subtitle: "Пользователи",
+      gradientFrom: "orange-500",
+      gradientTo: "amber-600",
+    },
+  ];
+
+  if (auth.user?.isCoach) {
+    stations.push({
+      to: "/coach",
+      icon: "fa-user-tie",
+      title: "Панель Коуча",
+      subtitle: "Клиенты",
+      gradientFrom: "amber-500",
+      gradientTo: "orange-600",
+    });
+  }
+
+  return stations;
+});
 
 const toggleMobileMenu = () => {
   mobileMenuOpen.value = !mobileMenuOpen.value;

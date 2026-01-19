@@ -149,6 +149,14 @@
                     <span>Кабинет</span>
                   </NuxtLink>
                   <div class="h-px bg-stone-100 dark:bg-stone-800 mx-4 my-2"></div>
+                  <!-- Coach Link -->
+                  <NuxtLink v-if="auth.user.isCoach" to="/coach"
+                    class="flex items-center space-x-3 px-4 py-3 text-sm text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-500/10 transition-colors"
+                    @click="closeDropdown">
+                    <i class="fas fa-user-tie text-center w-5"></i>
+                    <span class="font-semibold">Дашборд Коуча</span>
+                  </NuxtLink>
+                  <div v-if="auth.user.isCoach" class="h-px bg-stone-100 dark:bg-stone-800 mx-4 my-2"></div>
                   <button @click="logoutUser"
                     class="w-full flex items-center space-x-3 px-4 py-3 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors">
                     <i class="fas fa-sign-out-alt text-center w-5"></i>
@@ -239,10 +247,11 @@
                 { label: 'Медитация', to: '/space/mindfulness', icon: 'fa-spa' },
                 { label: 'Дашборд', to: '/space/dashboard', icon: 'fa-chart-pie' },
                 { label: 'Саморазвитие', to: '/space/growth', icon: 'fa-seedling' },
-                { label: 'Сообщество', to: '/space/community', icon: 'fa-users' }
+                { label: 'Сообщество', to: '/space/community', icon: 'fa-users' },
+                ...(auth.user?.isCoach ? [{ label: 'Дашборд Коуча', to: '/coach', icon: 'fa-user-tie', coach: true }] : [])
               ]" :key="link.to" :to="link.to"
                 class="flex items-center space-x-3 p-2 text-sm text-stone-600 dark:text-stone-300"
-                @click="closeDropdown">
+                :class="{ 'text-amber-600 dark:text-amber-400 font-bold': link.coach }" @click="closeDropdown">
                 <i :class="['fas', link.icon, 'w-5 text-center text-mindqlab-calm-accent']"></i>
                 <span>{{ link.label }}</span>
               </NuxtLink>
