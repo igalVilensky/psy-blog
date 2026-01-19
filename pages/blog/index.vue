@@ -1,48 +1,49 @@
 <template>
   <div
-    class="min-h-screen bg-mindqlab-calm-bg dark:bg-mindqlab-calm-dark-bg text-stone-900 dark:text-stone-100 font-sans transition-colors duration-500">
+    class="min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-white font-sans transition-colors duration-500">
 
     <!-- Navigation -->
     <TopBar />
 
     <!-- Header Section -->
-    <header class="relative pt-12 pb-8 px-6 border-b border-stone-100 dark:border-stone-800/50">
+    <header class="relative pt-12 pb-8 px-6 border-b border-stone-200 dark:border-stone-800">
       <div class="container mx-auto max-w-7xl relative sm:px-8">
         <!-- Breadcrumb -->
-        <nav class="mb-10 animate-fade-up" aria-label="Breadcrumb">
-          <ol class="flex items-center space-x-3 text-sm">
+        <nav class="mb-10" aria-label="Breadcrumb">
+          <ol class="flex items-center space-x-3 text-xs font-bold uppercase tracking-widest">
             <li class="flex items-center group">
               <NuxtLink to="/"
-                class="text-stone-400 dark:text-stone-500 hover:text-mindqlab-calm-accent transition-all duration-300 flex items-center">
-                <i class="fas fa-home mr-2 text-xs"></i>
+                class="text-stone-400 hover:text-stone-900 dark:hover:text-white transition-all duration-300 flex items-center">
+                <i class="fas fa-home mr-2"></i>
                 <span>Главная</span>
               </NuxtLink>
             </li>
             <li class="flex items-center">
               <i class="fas fa-chevron-right text-stone-300 dark:text-stone-700 mx-2 text-[10px]"></i>
-              <span class="text-stone-900 dark:text-white font-medium" aria-current="page">Блог</span>
+              <span class="text-stone-900 dark:text-white" aria-current="page">Блог</span>
             </li>
           </ol>
         </nav>
 
         <!-- Title -->
-        <div class="mb-12 animate-fade-up" style="animation-delay: 0.1s">
-          <h1 class="text-4xl md:text-6xl font-light tracking-tight text-stone-900 dark:text-white mb-6">
+        <div class="mb-12">
+          <h1 class="text-4xl md:text-6xl font-bold uppercase tracking-tight text-stone-900 dark:text-white mb-6">
             Блог
           </h1>
-          <p class="text-lg text-stone-500 dark:text-stone-400 max-w-2xl font-light leading-relaxed">
+          <p
+            class="text-sm font-medium text-stone-500 dark:text-stone-400 max-w-2xl uppercase tracking-wide leading-relaxed">
             Статьи о личностном росте, практической психологии и системном подходе к саморазвитию.
           </p>
         </div>
 
         <!-- Categories Navigation -->
-        <nav class="relative animate-fade-up" style="animation-delay: 0.2s" aria-label="Категории блога">
+        <nav class="relative" aria-label="Категории блога">
           <!-- Mobile Dropdown -->
           <div class="block md:hidden relative">
             <button type="button" @click="isOpen = !isOpen"
-              class="w-full px-6 py-4 bg-white dark:bg-stone-900/40 rounded-2xl text-stone-900 dark:text-white flex items-center justify-between border border-stone-100 dark:border-stone-800 hover:border-mindqlab-calm-accent/40 transition-all duration-300">
-              <span class="font-medium text-sm">{{ activeCategory || "Все категории" }}</span>
-              <i class="fas fa-chevron-down transition-transform duration-300 text-mindqlab-calm-accent text-xs"
+              class="w-full px-6 py-4 bg-white dark:bg-stone-900 text-stone-900 dark:text-white flex items-center justify-between border border-stone-200 dark:border-stone-800 hover:border-stone-400 transition-all duration-300">
+              <span class="font-bold uppercase tracking-custom text-xs">{{ activeCategory || "Все категории" }}</span>
+              <i class="fas fa-chevron-down transition-transform duration-300 text-stone-400"
                 :class="{ 'rotate-180': isOpen }"></i>
             </button>
 
@@ -51,13 +52,14 @@
               leave-active-class="transition duration-200 ease-in" leave-from-class="transform scale-y-100 opacity-100"
               leave-to-class="transform scale-y-0 opacity-0">
               <div v-if="isOpen"
-                class="absolute top-full left-0 right-0 z-20 mt-2 bg-white dark:bg-stone-900 border border-stone-100 dark:border-stone-800 rounded-2xl shadow-xl origin-top overflow-hidden">
+                class="absolute top-full left-0 right-0 z-20 mt-0 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-xl origin-top overflow-hidden">
                 <div class="py-1">
                   <button v-for="category in categories" :key="category" @click="selectCategory(category)"
-                    class="w-full px-6 py-4 text-left text-sm transition-all duration-300" :class="[
+                    class="w-full px-6 py-4 text-left text-xs font-bold uppercase tracking-wider transition-all duration-300"
+                    :class="[
                       activeCategory === category
-                        ? 'text-mindqlab-calm-accent bg-stone-50 dark:bg-stone-800/50 font-medium'
-                        : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white hover:bg-stone-50 dark:hover:bg-stone-800/30',
+                        ? 'text-white bg-stone-900 dark:bg-stone-100 dark:text-stone-900'
+                        : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white hover:bg-stone-50 dark:hover:bg-stone-800',
                     ]">
                     <span class="flex items-center justify-between">
                       <span>{{ category }}</span>
@@ -72,12 +74,12 @@
 
           <!-- Desktop Tabs -->
           <div class="hidden md:block">
-            <div class="flex items-center space-x-1">
+            <div class="flex items-center space-x-2">
               <button v-for="category in categories" :key="category" @click="setActiveCategory(category)"
-                class="px-6 py-3 text-sm transition-all duration-300 rounded-full border" :class="[
+                class="px-6 py-3 text-xs font-bold uppercase tracking-wider transition-all duration-300 border" :class="[
                   activeCategory === category
-                    ? 'bg-mindqlab-calm-accent text-white border-mindqlab-calm-accent'
-                    : 'text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white border-transparent hover:bg-stone-50 dark:hover:bg-stone-900/40',
+                    ? 'bg-stone-900 text-white border-stone-900 dark:bg-white dark:text-stone-900 dark:border-white'
+                    : 'text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white bg-white dark:bg-stone-900 border-stone-200 dark:border-stone-800 hover:border-stone-400 dark:hover:border-stone-600',
                 ]">
                 {{ category }}
                 <span v-if="getCategoryCount(category)" class="ml-2 text-[10px] opacity-60">{{
@@ -90,33 +92,36 @@
     </header>
 
     <!-- Blog Posts Grid -->
-    <main class="container mx-auto max-w-7xl px-6 pb-24 pt-12 px-8">
+    <main class="container mx-auto max-w-7xl px-6 pb-24 pt-12 sm:px-8">
       <!-- Loading State -->
       <div v-if="isLoading" class="text-center py-32 flex flex-col items-center">
-        <div class="w-12 h-12 border-2 border-mindqlab-calm-accent border-t-transparent rounded-full animate-spin mb-6">
+        <div class="w-12 h-12 border-4 border-stone-200 border-t-stone-900 rounded-full animate-spin mb-6">
         </div>
-        <h3 class="text-xl font-light text-stone-900 dark:text-white mb-2 italic">Подбираем лучшее...</h3>
+        <h3 class="text-lg font-bold uppercase tracking-widest text-stone-900 dark:text-white mb-2">Загрузка...</h3>
       </div>
 
       <!-- Posts Grid -->
       <div v-else-if="filteredPosts.length > 0" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
         <article v-for="(post, index) in filteredPosts" :key="post._id"
-          class="group flex flex-col bg-white dark:bg-stone-900/40 rounded-3xl border border-stone-100 dark:border-stone-800 overflow-hidden transition-all duration-500 hover:border-mindqlab-calm-accent/30 hover:shadow-xl hover:shadow-stone-200/20 dark:hover:shadow-none reveal-up"
-          :style="{ animationDelay: `${index * 0.1}s` }">
+          class="group flex flex-col bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 transition-all duration-500 hover:border-stone-400 dark:hover:border-stone-600">
 
           <!-- Image -->
-          <NuxtLink :to="`/blog/${post.slug.current}`" class="relative aspect-[16/10] overflow-hidden"
+          <NuxtLink :to="`/blog/${post.slug.current}`"
+            class="relative aspect-[16/10] overflow-hidden bg-stone-100 dark:bg-stone-800"
             @click="incrementViewCount(post._id)">
             <nuxt-img v-if="post.image" :src="urlFor(post.image).width(600).height(375).url()"
               :alt="post.title || 'Изображение поста'"
               class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" width="600"
               height="375" loading="lazy" format="webp" quality="85" />
-            <div class="absolute inset-0 bg-stone-900/5 group-hover:bg-stone-900/0 transition-colors duration-500">
+            <div v-else class="w-full h-full flex items-center justify-center text-stone-300">
+              <i class="fas fa-image text-4xl"></i>
+            </div>
+            <div class="absolute inset-0 bg-stone-900/0 group-hover:bg-stone-900/10 transition-colors duration-500">
             </div>
 
             <!-- Category Badge -->
             <span
-              class="absolute top-4 left-4 px-4 py-1.5 bg-white/90 dark:bg-stone-900/90 backdrop-blur-md rounded-full text-[10px] font-bold uppercase tracking-widest text-mindqlab-calm-accent border border-stone-100/50 dark:border-stone-800/50 transition-all duration-500 group-hover:-translate-y-1">
+              class="absolute top-4 left-4 px-3 py-1 bg-white dark:bg-stone-900 text-stone-900 dark:text-white text-[10px] font-bold uppercase tracking-widest border border-stone-200 dark:border-stone-800">
               {{ post.category }}
             </span>
           </NuxtLink>
@@ -124,24 +129,24 @@
           <!-- Content -->
           <div class="p-8 flex flex-col flex-grow">
             <h2
-              class="text-xl font-light mb-4 line-clamp-2 text-stone-900 dark:text-white transition-colors duration-300 group-hover:text-mindqlab-calm-accent leading-snug">
+              class="text-lg font-bold uppercase tracking-tight mb-4 line-clamp-2 text-stone-900 dark:text-white transition-colors duration-300 group-hover:text-stone-600 dark:group-hover:text-stone-300 leading-snug">
               {{ post.title }}
             </h2>
 
             <p v-if="post.excerpt"
-              class="text-sm text-stone-500 dark:text-stone-400 line-clamp-3 mb-6 font-light leading-relaxed">
+              class="text-xs font-medium text-stone-500 dark:text-stone-400 line-clamp-3 mb-6 uppercase tracking-wide leading-relaxed">
               {{ post.excerpt }}
             </p>
 
             <div
-              class="mt-auto pt-6 border-t border-stone-100 dark:border-stone-800/50 flex items-center justify-between text-[11px] font-medium uppercase tracking-wider text-stone-400">
-              <div class="flex items-center space-x-3">
+              class="mt-auto pt-6 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-stone-400">
+              <div class="flex items-center space-x-4">
                 <span class="flex items-center">
-                  <i class="far fa-eye mr-1.5 text-mindqlab-calm-accent opacity-70"></i>
+                  <i class="far fa-eye mr-2 text-stone-300"></i>
                   {{ post.views || 0 }}
                 </span>
                 <span class="flex items-center">
-                  <i class="far fa-clock mr-1.5 text-mindqlab-calm-accent opacity-70"></i>
+                  <i class="far fa-clock mr-2 text-stone-300"></i>
                   {{ post.readtime }} мин
                 </span>
               </div>
@@ -153,11 +158,10 @@
       </div>
 
       <!-- Empty State -->
-      <div v-else
-        class="text-center py-32 bg-white dark:bg-stone-900/40 rounded-[3rem] border border-stone-100 dark:border-stone-800">
-        <i class="fas fa-feather-alt text-4xl text-stone-200 dark:text-stone-800 mb-6 block"></i>
-        <h3 class="text-2xl font-light text-stone-900 dark:text-white mb-2">Статьи на подходе</h3>
-        <p class="text-stone-500 dark:text-stone-400 font-light italic">
+      <div v-else class="text-center py-32 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800">
+        <i class="fas fa-feather-alt text-4xl text-stone-300 dark:text-stone-700 mb-6 block"></i>
+        <h3 class="text-xl font-bold uppercase tracking-widest text-stone-900 dark:text-white mb-2">СКОРО</h3>
+        <p class="text-xs font-bold uppercase tracking-wide text-stone-500 dark:text-stone-400">
           В данной категории мы скоро опубликуем новые материалы.
         </p>
       </div>
@@ -259,28 +263,6 @@ useHead({
 </script>
 
 <style scoped>
-.animate-fade-up {
-  animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.reveal-up {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 /* Custom Scrollbar for stone-palette */
 ::-webkit-scrollbar {
   width: 6px;
@@ -291,6 +273,6 @@ useHead({
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-stone-200 dark:bg-stone-800 rounded-full;
+  @apply bg-stone-300 dark:bg-stone-700;
 }
 </style>
