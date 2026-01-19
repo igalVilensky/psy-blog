@@ -87,6 +87,19 @@
                 </div>
               </form>
 
+              <!-- Divider -->
+              <div class="relative my-6">
+                <div class="absolute inset-0 flex items-center">
+                  <div class="w-full border-t border-stone-200 dark:border-stone-800/50"></div>
+                </div>
+                <div class="relative flex justify-center text-[10px] uppercase tracking-wider">
+                  <span class="px-2 bg-white/80 dark:bg-stone-900/60 text-stone-400">или</span>
+                </div>
+              </div>
+
+              <!-- Google Button -->
+              <GoogleSignInButton @error="(msg) => error = msg" />
+
               <div class="mt-8 text-center">
                 <p class="text-xs text-stone-400 dark:text-stone-500 font-light">
                   Нет аккаунта?
@@ -134,6 +147,7 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import TopBar from '~/components/navigation/TopBar.vue';
 import Footer from '~/components/ui/Footer.vue';
 import CursorNeuralVisualizer from '~/components/space/CursorNeuralVisualizer.vue';
+import GoogleSignInButton from '~/components/ui/GoogleSignInButton.vue';
 
 definePageMeta({
   layout: "empty",
