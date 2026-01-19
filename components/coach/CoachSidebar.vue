@@ -1,82 +1,77 @@
 <template>
-    <aside class="flex flex-col h-full overflow-hidden">
-        <!-- Brand -->
-        <div class="h-16 flex items-center gap-3 px-6 border-b border-slate-200 dark:border-slate-800">
-            <div
-                class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20">
-                <i class="fas fa-brain text-xl"></i>
-            </div>
-            <div class="flex flex-col">
-                <span class="text-sm font-black tracking-tighter text-slate-900 dark:text-white leading-none">MIND Q
-                    <span class="text-indigo-600">LAB</span></span>
-                <span class="text-[9px] font-bold text-slate-400 tracking-[0.2em] uppercase mt-1">Coach Portal</span>
+    <aside class="flex flex-col h-full bg-white dark:bg-stone-900 border-r-2 border-stone-900 dark:border-white">
+        <!-- Brand - Bold and editorial -->
+        <div class="h-16 flex items-center px-6 border-b-2 border-stone-900 dark:border-white">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-stone-900 dark:bg-white flex items-center justify-center">
+                    <i class="fas fa-brain text-white dark:text-stone-900 text-sm"></i>
+                </div>
+                <div>
+                    <span class="text-sm font-bold text-stone-900 dark:text-white">MindQLab</span>
+                    <div class="text-[9px] font-semibold text-stone-500 dark:text-stone-400 uppercase tracking-wider">
+                        Коуч</div>
+                </div>
             </div>
         </div>
 
-        <!-- Navigation -->
-        <nav class="flex-1 overflow-y-auto py-6 px-4 space-y-1">
-            <div v-for="section in navSections" :key="section.title" class="space-y-1 pb-4">
+        <!-- Navigation - Clean editorial style -->
+        <nav class="flex-1 overflow-y-auto py-4 px-4">
+            <div v-for="section in navSections" :key="section.title" class="mb-6">
                 <h5 v-if="section.title"
-                    class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-[0.1em] mb-2">{{ section.title
-                    }}</h5>
+                    class="px-3 text-[10px] font-bold text-stone-400 dark:text-stone-600 uppercase tracking-widest mb-2 border-l-2 border-stone-900 dark:border-white pl-2">
+                    {{ section.title }}
+                </h5>
 
-                <template v-for="item in section.items" :key="item.path">
-                    <!-- Standard Link -->
-                    <NuxtLink v-if="!item.comingSoon" :to="item.path" @click="$emit('close')" :class="[
-                        'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold transition-all group relative',
-                        isActive(item.path)
-                            ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/25'
-                            : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
-                    ]">
-                        <i :class="[
-                            item.icon,
-                            'text-lg transition-transform group-hover:scale-110',
-                            isActive(item.path) ? 'text-white' : 'text-slate-400 group-hover:text-indigo-500'
-                        ]"></i>
-                        <span>{{ item.label }}</span>
-                        <div v-if="isActive(item.path)" class="ml-auto w-1.5 h-1.5 rounded-full bg-white shadow-sm">
+                <div class="space-y-1">
+                    <template v-for="item in section.items" :key="item.path">
+                        <!-- Standard Link -->
+                        <NuxtLink v-if="!item.comingSoon" :to="item.path" @click="$emit('close')" :class="[
+                            'flex items-center gap-3 px-3 py-2 text-sm font-semibold transition-all relative group',
+                            isActive(item.path)
+                                ? 'bg-stone-900 dark:bg-white text-white dark:text-stone-900'
+                                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white hover:bg-stone-100 dark:hover:bg-stone-800'
+                        ]">
+                            <i :class="[item.icon, 'text-sm']"></i>
+                            <span>{{ item.label }}</span>
+                            <div v-if="isActive(item.path)"
+                                class="absolute left-0 top-0 bottom-0 w-1 bg-stone-900 dark:bg-white"></div>
+                        </NuxtLink>
+
+                        <!-- Coming Soon Item -->
+                        <div v-else
+                            class="flex items-center gap-3 px-3 py-2 text-sm font-semibold opacity-30 cursor-not-allowed text-stone-500 dark:text-stone-600">
+                            <i :class="[item.icon, 'text-sm']"></i>
+                            <span>{{ item.label }}</span>
+                            <div
+                                class="ml-auto px-1.5 py-0.5 bg-stone-200 dark:bg-stone-800 text-[8px] font-bold text-stone-500 uppercase tracking-tight border border-stone-300 dark:border-stone-700">
+                                SOON
+                            </div>
                         </div>
-                    </NuxtLink>
-
-                    <!-- Coming Soon Item -->
-                    <div v-else
-                        class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold opacity-40 cursor-not-allowed grayscale-[0.5] text-slate-500 dark:text-slate-400">
-                        <i :class="[item.icon, 'text-lg text-slate-400']"></i>
-                        <span>{{ item.label }}</span>
-                        <div
-                            class="ml-auto px-1.5 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-[8px] font-black text-slate-400 uppercase tracking-tighter border border-slate-200 dark:border-slate-700">
-                            SOON</div>
-                    </div>
-                </template>
+                    </template>
+                </div>
             </div>
         </nav>
 
-        <!-- Bottom Actions -->
-        <div class="p-4 border-t border-slate-200 dark:border-slate-800 space-y-2">
-            <button @click="logout"
-                class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-slate-500 hover:bg-rose-50 dark:hover:bg-rose-900/10 hover:text-rose-600 transition-all group">
-                <i class="fas fa-sign-out-alt text-lg text-slate-400 group-hover:text-rose-600"></i>
-                <span>Выйти</span>
+        <!-- Bottom Actions - Sharp and clean -->
+        <div class="p-4 border-t-2 border-stone-900 dark:border-white space-y-2">
+            <!-- Dark Mode Toggle -->
+            <button @click="toggleDarkMode"
+                class="w-full flex items-center gap-3 px-3 py-2 text-sm font-semibold text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white hover:bg-stone-100 dark:hover:bg-stone-800 transition-all">
+                <i :class="[isDark ? 'fas fa-sun' : 'fas fa-moon', 'text-sm']"></i>
+                <span>{{ isDark ? 'Светлая' : 'Тёмная' }}</span>
             </button>
 
-            <div
-                class="mt-4 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50">
-                <div class="flex items-center gap-2 mb-2">
-                    <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
-                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Help Center</span>
-                </div>
-                <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed mb-3">Нужна помощь в управлении
-                    клиентами?</p>
-                <button
-                    class="w-full py-2 rounded-lg bg-white dark:bg-slate-800 text-[10px] font-black uppercase text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900 shadow-sm hover:shadow-md transition-all">
-                    Документация
-                </button>
-            </div>
+            <button @click="logout"
+                class="w-full flex items-center gap-3 px-3 py-2 text-sm font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 transition-all">
+                <i class="fas fa-sign-out-alt text-sm"></i>
+                <span>Выйти</span>
+            </button>
         </div>
     </aside>
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useAuthStore } from '~/stores/auth';
 
@@ -86,12 +81,15 @@ const router = useRouter();
 const route = useRoute();
 const authStore = useAuthStore();
 
+const isDark = ref(false);
+
 const navSections = [
     {
         title: 'Основное',
         items: [
             { label: 'Панель', path: '/coach', icon: 'fas fa-th-large' },
-            { label: 'Клиенты', path: '/coach', icon: 'fas fa-user-friends' },
+            { label: 'Клиенты', path: '/coach/clients', icon: 'fas fa-user-friends' },
+            { label: 'Лаборатория', path: '/space', icon: 'fas fa-flask' },
         ]
     },
     {
@@ -110,13 +108,32 @@ const navSections = [
 ];
 
 const isActive = (path) => {
-    // Exact match for the dashboard/clients list
-    if (path === '/coach') return route.path === '/coach' || route.path.startsWith('/coach/clients');
+    if (path === '/coach') return route.path === '/coach';
     return route.path.startsWith(path);
+};
+
+const toggleDarkMode = () => {
+    isDark.value = !isDark.value;
+    if (isDark.value) {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+    }
 };
 
 const logout = async () => {
     await authStore.signOut();
-    router.push('/auth/login');
+    router.push('/login');
 };
+
+onMounted(() => {
+    const savedTheme = localStorage.getItem('theme');
+    isDark.value = savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+    if (isDark.value) {
+        document.documentElement.classList.add('dark');
+    }
+});
 </script>

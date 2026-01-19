@@ -1,87 +1,66 @@
 <template>
-    <div
-        class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white flex transition-colors duration-500">
+    <div class="min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-white flex">
         <!-- Sidebar -->
-        <CoachSidebar
-            class="hidden lg:block w-72 flex-none border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900" />
+        <CoachSidebar class="hidden lg:block w-64 flex-none bg-white dark:bg-stone-900" />
 
         <!-- Mobile Header -->
         <div
-            class="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 z-40 px-4 flex items-center justify-between">
+            class="lg:hidden fixed top-0 left-0 right-0 h-14 bg-white dark:bg-stone-900 border-b-2 border-stone-900 dark:border-white z-40 px-4 flex items-center justify-between">
             <div class="flex items-center gap-2">
-                <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white">
-                    <i class="fas fa-brain"></i>
+                <div class="w-7 h-7 bg-stone-900 dark:bg-white flex items-center justify-center">
+                    <i class="fas fa-brain text-white dark:text-stone-900 text-xs"></i>
                 </div>
-                <span class="font-bold tracking-tight text-slate-900 dark:text-white">COACH <span
-                        class="text-indigo-600">PORTAL</span></span>
+                <span class="font-bold text-stone-900 dark:text-white text-sm">MindQLab Коуч</span>
             </div>
             <button @click="isSidebarOpen = true"
-                class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
-                <i class="fas fa-bars text-xl"></i>
+                class="p-2 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white">
+                <i class="fas fa-bars text-lg"></i>
             </button>
         </div>
 
         <!-- Mobile Sidebar Overlay -->
         <Transition name="fade">
             <div v-if="isSidebarOpen" @click="isSidebarOpen = false"
-                class="lg:hidden fixed inset-0 bg-slate-950/50 backdrop-blur-sm z-50"></div>
+                class="lg:hidden fixed inset-0 bg-stone-900/60 z-50"></div>
         </Transition>
 
         <!-- Mobile Sidebar -->
         <Transition name="slide">
             <CoachSidebar v-if="isSidebarOpen" @close="isSidebarOpen = false"
-                class="lg:hidden fixed inset-y-0 left-0 w-72 z-50 shadow-2xl bg-white dark:bg-slate-900" />
+                class="lg:hidden fixed inset-y-0 left-0 w-64 z-50 shadow-2xl bg-white dark:bg-stone-900" />
         </Transition>
 
         <!-- Main Content -->
         <main class="flex-1 flex flex-col min-w-0">
             <!-- Desktop Header -->
             <header
-                class="hidden lg:flex h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 items-center justify-between px-8 sticky top-0 z-30">
-                <div class="flex items-center gap-4">
-                    <h2 class="text-sm font-bold text-slate-400 uppercase tracking-widest">{{ pageTitle }}</h2>
+                class="hidden lg:flex h-14 bg-white dark:bg-stone-900 border-b-2 border-stone-900 dark:border-white items-center justify-between px-6 sticky top-0 z-30">
+                <div>
+                    <h2 class="text-sm font-bold text-stone-900 dark:text-white uppercase tracking-wide">{{ pageTitle }}
+                    </h2>
                 </div>
 
-                <div class="flex items-center gap-6">
-                    <!-- Quick Actions -->
-                    <div class="flex items-center gap-2">
-                        <button
-                            class="p-2 rounded-lg text-slate-400 hover:text-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-all">
-                            <i class="fas fa-search text-lg"></i>
-                        </button>
-                        <button
-                            class="p-2 rounded-lg text-slate-400 hover:text-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-all relative">
-                            <i class="fas fa-bell text-lg"></i>
-                            <span
-                                class="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full border-2 border-white dark:border-slate-900"></span>
-                        </button>
-                    </div>
-
+                <div class="flex items-center gap-4">
                     <!-- User Profile -->
                     <ClientOnly>
-                        <div class="flex items-center gap-3 pl-6 border-l border-slate-200 dark:border-slate-800">
-                            <div class="text-right hidden sm:block">
-                                <div class="text-xs font-bold text-slate-900 dark:text-white">
-                                    {{ authStore.user?.displayName || 'Coach' }}
+                        <div class="flex items-center gap-3">
+                            <div class="text-right">
+                                <div class="text-xs font-bold text-stone-900 dark:text-white">
+                                    {{ authStore.user?.displayName || 'Коуч' }}
                                 </div>
-                                <div class="text-[10px] text-slate-500 uppercase font-bold tracking-tighter">
-                                    Certified Professional
+                                <div
+                                    class="text-[9px] text-stone-500 dark:text-stone-400 uppercase font-semibold tracking-wide">
+                                    Профессионал
                                 </div>
                             </div>
                             <div
-                                class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold border-2 border-white dark:border-slate-800 shadow-sm">
+                                class="w-9 h-9 bg-stone-900 dark:bg-white flex items-center justify-center text-white dark:text-stone-900 font-bold text-sm">
                                 {{ authStore.user?.displayName?.[0]?.toUpperCase() || 'C' }}
                             </div>
                         </div>
                         <template #fallback>
-                            <div
-                                class="flex items-center gap-3 pl-6 border-l border-slate-200 dark:border-slate-800 opacity-50">
-                                <div class="text-right hidden sm:block">
-                                    <div class="text-xs font-bold text-slate-900 dark:text-white">Loading...</div>
-                                    <div class="text-[10px] text-slate-500 uppercase font-bold tracking-tighter">Account
-                                    </div>
-                                </div>
-                                <div class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800 animate-pulse"></div>
+                            <div class="flex items-center gap-3 opacity-50">
+                                <div class="w-9 h-9 bg-stone-200 dark:bg-stone-800 animate-pulse"></div>
                             </div>
                         </template>
                     </ClientOnly>
@@ -89,10 +68,8 @@
             </header>
 
             <!-- Content Area -->
-            <div class="flex-1 pt-16 lg:pt-0 overflow-y-auto">
-                <div class="animate-content">
-                    <NuxtPage />
-                </div>
+            <div class="flex-1 pt-14 lg:pt-0 overflow-y-auto">
+                <NuxtPage />
             </div>
         </main>
 
@@ -118,10 +95,10 @@ const { notificationMessage, notificationType, notificationVisible, notification
 const isSidebarOpen = ref(false);
 
 const pageTitle = computed(() => {
-    if (route.path === '/coach') return 'Обзор панели';
+    if (route.path === '/coach') return 'Панель управления';
     if (route.path.startsWith('/coach/clients')) return 'Управление клиентами';
-    if (route.path === '/coach/analytics') return 'Аналитика системы';
-    return 'Личный Кабинет';
+    if (route.path === '/coach/analytics') return 'Аналитика';
+    return 'Панель коуча';
 });
 
 const handleExecuteFlow = (flowId) => {
@@ -132,25 +109,9 @@ const handleExecuteFlow = (flowId) => {
 </script>
 
 <style scoped>
-.animate-content {
-    animation: fadeIn 0.4s ease-out;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(8px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 .fade-enter-active,
 .fade-leave-active {
-    transition: opacity 0.3s;
+    transition: opacity 0.2s;
 }
 
 .fade-enter-from,
@@ -160,7 +121,7 @@ const handleExecuteFlow = (flowId) => {
 
 .slide-enter-active,
 .slide-leave-active {
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.3s ease;
 }
 
 .slide-enter-from,
