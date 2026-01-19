@@ -1,5 +1,5 @@
 <template>
-  <div class="profile-header-hero relative pt-12 pb-20 md:pb-32 overflow-hidden">
+  <div class="profile-header-hero relative pt-12 pb-20 md:pb-32">
     <!-- Calm Motion Background -->
     <div class="absolute inset-0 z-0 overflow-hidden opacity-40 dark:opacity-20 pointer-events-none">
       <div
@@ -13,8 +13,8 @@
     <div
       class="header-content relative z-10 flex flex-col lg:flex-row gap-10 lg:gap-20 items-center lg:items-start text-center lg:text-left">
       <!-- Avatar Section -->
-      <div class="avatar-section">
-        <div class="avatar-wrapper relative">
+      <div class="avatar-section overflow-visible">
+        <div class="avatar-wrapper relative overflow-visible">
           <UserAvatar :avatarUrl="avatarUrl" :loading="loading" :userInitial="userInitial"
             @update:avatarUrl="$emit('update:avatarUrl', $event)" @notify="$emit('notify', $event)"
             class="avatar-component w-48 h-48 md:w-64 md:h-64 rounded-[3rem] shadow-2xl shadow-stone-200/50 dark:shadow-none" />
@@ -49,7 +49,7 @@
                 <i class="fas fa-envelope text-xs"></i>
               </div>
               <span class="group-hover:text-stone-800 dark:group-hover:text-stone-200 transition-colors">{{ email
-                }}</span>
+              }}</span>
             </div>
             <div class="flex items-center gap-3">
               <div
