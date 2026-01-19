@@ -34,7 +34,7 @@
         <main class="flex-1 flex flex-col min-w-0">
             <!-- Desktop Header -->
             <header
-                class="hidden lg:flex h-14 bg-white dark:bg-stone-900 border-b-2 border-stone-900 dark:border-white items-center justify-between px-6 sticky top-0 z-30">
+                class="hidden lg:flex h-16 bg-white dark:bg-stone-900 border-b-2 border-stone-900 dark:border-white items-center justify-between px-6 sticky top-0 z-30">
                 <div>
                     <h2 class="text-sm font-bold text-stone-900 dark:text-white uppercase tracking-wide">{{ pageTitle }}
                     </h2>
