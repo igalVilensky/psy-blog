@@ -195,6 +195,39 @@
       </div>
     </section>
 
+    <!-- 5.5 PROFESSIONAL TOOLS SECTION -->
+    <section class="py-24 bg-indigo-50/20 dark:bg-indigo-900/10 border-b border-stone-100 dark:border-stone-800/50 reveal-on-scroll">
+      <div class="container mx-auto max-w-7xl px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+          <div class="order-2 lg:order-1">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div v-for="(tool, i) in professionalTools" :key="i" class="p-6 bg-white dark:bg-slate-900/60 rounded-[2rem] border border-slate-100 dark:border-slate-800 shadow-sm group hover:border-indigo-500/30 transition-all duration-500">
+                <div class="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 mb-4 group-hover:scale-110 transition-transform">
+                  <i :class="['fas', tool.icon, 'text-xl']"></i>
+                </div>
+                <h4 class="font-bold text-slate-900 dark:text-white mb-2">{{ tool.title }}</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{{ tool.description }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="order-1 lg:order-2">
+            <div class="flex items-center gap-2 mb-4">
+              <div class="w-2 h-2 rounded-full bg-indigo-500"></div>
+              <span class="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-500">Professional Suite</span>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-light mb-8 text-stone-900 dark:text-white">Для тех, кто <span class="text-indigo-600 dark:text-indigo-400">сопровождает</span> рост</h2>
+            <div class="w-16 h-0.5 bg-indigo-500 mb-8"></div>
+            <p class="text-lg text-stone-600 dark:text-stone-400 leading-relaxed mb-6">
+              Мы верим, что современные технологии должны помогать профессионалам быть точнее. Панель Коуча в MindQLab — это не просто CRM, а мощный аналитический инструмент.
+            </p>
+            <p class="text-lg text-stone-600 dark:text-stone-400 leading-relaxed">
+              Объективные данные о когнитивном состоянии клиента позволяют строить более глубокие гипотезы и видеть реальный эффект от вашей совместной работы.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- 6. FINAL CTA -->
     <section class="py-32 text-center reveal-on-scroll">
       <div class="container mx-auto max-w-4xl px-6">
@@ -258,6 +291,14 @@ const layers = [
   { stage: "3", icon: "fa-compass", title: "Система рекомендаций", description: "Формирует персональный план действий, отсекая лишний информационный шум." },
   { stage: "4", icon: "fa-dumbbell", title: "Лаборатория навыков", description: "Интерактивные тренажеры для развития памяти, фокуса и когнитивного контроля." },
   { stage: "5", icon: "fa-history", title: "Мониторинг прогресса", description: "Отслеживает динамику развития через повторные замеры и историю тренировок." },
+  { stage: "Prof", icon: "fa-user-tie", title: "Панель Коуча", description: "Профессиональный слой для ведения клиентов, мониторинга их состояния и управления прогрессом." },
+];
+
+const professionalTools = [
+  { icon: "fa-user-plus", title: "Управление базой", description: "Приглашение клиентов и удобная организация всех подопечных в одном месте." },
+  { icon: "fa-chart-line", title: "Аналитика прогресса", description: "Доступ к истории тестов и динамике показателей каждого клиента." },
+  { icon: "fa-notes-medical", title: "Система заметок", description: "Ведение профессиональных наблюдений и истории взаимодействия." },
+  { icon: "fa-calendar-check", title: "Мониторинг активности", description: "Отслеживание регулярности практик и вовлеченности клиента в процесс." },
 ];
 
 onMounted(() => {

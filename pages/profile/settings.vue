@@ -147,6 +147,60 @@
             </form>
           </section>
 
+          <!-- Coach Role Section -->
+          <section v-if="!isCoach" class="settings-card bg-indigo-50/30 dark:bg-indigo-900/10 border-indigo-100 dark:border-indigo-800/30">
+            <div class="settings-header">
+              <div class="flex items-center gap-4">
+                <div class="settings-icon-wrapper bg-white dark:bg-slate-800">
+                  <i class="fas fa-user-tie text-indigo-500"></i>
+                </div>
+                <h2 class="text-xl font-light text-stone-900 dark:text-white uppercase tracking-tight">Стать Коучем</h2>
+              </div>
+            </div>
+
+            <div class="space-y-6">
+              <p class="text-sm text-stone-500 dark:text-stone-400 leading-relaxed">
+                Вы можете получить доступ к профессиональным инструментам для управления клиентами, мониторинга их прогресса и ведения базы в единой панели.
+              </p>
+              
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="flex items-start gap-3 p-4 rounded-2xl bg-white/50 dark:bg-black/20 border border-white dark:border-white/5">
+                  <i class="fas fa-users-cog text-indigo-500 mt-1"></i>
+                  <div class="text-[10px] uppercase tracking-wider text-stone-400 font-bold">Управление клиентами</div>
+                </div>
+                <div class="flex items-start gap-3 p-4 rounded-2xl bg-white/50 dark:bg-black/20 border border-white dark:border-white/5">
+                  <i class="fas fa-chart-line text-indigo-500 mt-1"></i>
+                  <div class="text-[10px] uppercase tracking-wider text-stone-400 font-bold">Глубокая аналитика</div>
+                </div>
+              </div>
+
+              <button @click="becomeACoach" 
+                class="w-full py-5 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold uppercase tracking-widest text-xs transition-all shadow-lg shadow-indigo-500/25">
+                Активировать панель коуча
+              </button>
+            </div>
+          </section>
+
+          <section v-else class="settings-card border-emerald-100 dark:border-emerald-800/30">
+             <div class="settings-header">
+              <div class="flex items-center gap-4">
+                <div class="settings-icon-wrapper bg-emerald-50 dark:bg-emerald-900/20">
+                  <i class="fas fa-check-circle text-emerald-500"></i>
+                </div>
+                <h2 class="text-xl font-light text-stone-900 dark:text-white uppercase tracking-tight">Вы — Коуч</h2>
+              </div>
+            </div>
+            <p class="text-sm text-stone-500 dark:text-stone-400 leading-relaxed">
+              Ваш профессиональный аккаунт активен. Вы можете перейти в панель управления клиентами.
+            </p>
+            <div class="mt-8">
+              <NuxtLink to="/coach" class="submit-btn !bg-emerald-500 flex items-center justify-center gap-3">
+                <i class="fas fa-rocket"></i>
+                ПЕРЕЙТИ В ПАНЕЛЬ
+              </NuxtLink>
+            </div>
+          </section>
+
           <!-- Feedback Section -->
           <section class="settings-card">
             <div class="settings-header">
@@ -304,6 +358,8 @@ const displayName = ref("");
 const profession = ref("");
 const age = ref("");
 const gender = ref("");
+const role = ref("");
+const isCoach = ref(false);
 const aboutYourself = ref("");
 const socialMedia = ref([{ type: "telegram", url: "" }]);
 const isLoading = ref(true);
@@ -325,6 +381,8 @@ onAuthStateChanged(getAuth(), async (user) => {
       age.value = userData.age || "";
       gender.value = userData.gender || "";
       aboutYourself.value = userData.aboutYourself || "";
+      role.value = userData.role || "";
+      isCoach.value = userData.role === "coach";
       socialMedia.value = Array.isArray(userData.socialMedia)
         ? userData.socialMedia
         : [{ type: "telegram", url: "" }];
@@ -491,6 +549,26 @@ const changePassword = async () => {
     } catch (error) {
       console.error("Error sending password reset email:", error);
       showNotification("Ошибка при отправке письма: " + error.message, "error");
+    }
+  }
+};
+
+const becomeACoach = async () => {
+  const user = getAuth().currentUser;
+  if (!user) {
+    showNotification("Пользователь не авторизован.", "error");
+    return;
+  }
+
+  const confirmation = confirm("Вы хотите активировать профессиональную панель коуча?");
+  if (confirmation) {
+    const result = await updateUserData(user.uid, { role: 'coach' });
+    if (result.success) {
+      showNotification("Поздравляем! Теперь вы коуч.", "success");
+      isCoach.value = true;
+      // Also potentially refresh auth store if needed
+    } else {
+      showNotification("Ошибка: " + result.message, "error");
     }
   }
 };

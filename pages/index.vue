@@ -298,11 +298,85 @@
             </div>
             <div class="text-xs font-bold uppercase tracking-wider text-stone-400 md:ml-6 mt-4 md:mt-0">Этап 5</div>
           </div>
+
+          <!-- Layer 6 (Professional) -->
+          <div
+            class="layer-item flex flex-col md:flex-row items-center p-6 bg-indigo-50/50 dark:bg-indigo-900/10 rounded-2xl border border-indigo-100 dark:border-indigo-800/50 hover:border-indigo-500/40 transition-colors">
+            <div
+              class="layer-icon w-12 h-12 rounded-lg bg-white dark:bg-slate-800 flex items-center justify-center text-indigo-600 dark:text-indigo-400 md:mr-6 mb-4 md:mb-0 shrink-0 transition-colors duration-300 shadow-sm">
+              <i class="fas fa-user-tie"></i>
+            </div>
+            <div class="flex-grow text-center md:text-left">
+              <h4 class="font-medium text-lg mb-1 text-slate-900 dark:text-white">Панель для специалистов</h4>
+              <p class="text-sm text-indigo-900/60 dark:text-indigo-300/60">Позволяет коучам и психологам управлять
+                клиентами, видеть их прогресс и результаты в реальном времени.</p>
+            </div>
+            <div class="text-xs font-bold uppercase tracking-wider text-indigo-500 md:ml-6 mt-4 md:mt-0">Professional</div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- 5. APPROACH & CREDIBILITY (New) -->
+    <!-- 5. COACH & PROFESSIONAL TOOLS -->
+    <section class="py-24 bg-indigo-50/20 dark:bg-indigo-950/20 reveal-on-scroll border-y border-indigo-100/50 dark:border-indigo-900/30">
+      <div class="container mx-auto px-6 max-w-5xl">
+        <div class="flex flex-col md:flex-row items-center gap-12">
+          <div class="flex-1 space-y-6">
+            <div class="flex items-center gap-2">
+              <div class="w-2 h-2 rounded-full bg-indigo-500"></div>
+              <span class="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-500">Для специалистов</span>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-light leading-tight">Инструменты для эффективного <span class="text-indigo-600 dark:text-indigo-400 italic">сопровождения</span></h2>
+            <p class="text-stone-600 dark:text-stone-400 leading-relaxed">
+              Мы разработали специальный функционал для коучей, тренеров и психологов. Теперь вы можете не только рекомендовать упражнения, но и отслеживать динамику ваших клиентов в единой панели.
+            </p>
+            <ul class="space-y-4">
+              <li class="flex items-start gap-3">
+                <div class="mt-1 w-5 h-5 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shrink-0">
+                  <i class="fas fa-check text-[10px]"></i>
+                </div>
+                <div>
+                  <h4 class="font-medium text-sm">Управление клиентами</h4>
+                  <p class="text-xs text-stone-500">Приглашайте клиентов через персональные ссылки и ведите свою базу в удобном интерфейсе.</p>
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <div class="mt-1 w-5 h-5 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shrink-0">
+                  <i class="fas fa-check text-[10px]"></i>
+                </div>
+                <div>
+                  <h4 class="font-medium text-sm">Прозрачная аналитика</h4>
+                  <p class="text-xs text-stone-500">Визуализация прогресса, результаты тестов и уровень вовлеченности каждого клиента.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="flex-1 relative">
+            <div class="absolute inset-0 bg-indigo-500/10 blur-3xl rounded-full"></div>
+            <div class="relative bg-white dark:bg-slate-900 rounded-[2rem] p-8 border border-slate-100 dark:border-slate-800 shadow-2xl overflow-hidden group">
+              <div class="flex items-center justify-between mb-8">
+                <div>
+                  <div class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Preview</div>
+                  <h3 class="text-lg font-bold text-slate-900 dark:text-white">Панель Коуча</h3>
+                </div>
+                <div class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center text-indigo-600">
+                  <i class="fas fa-users-cog"></i>
+                </div>
+              </div>
+              <div class="space-y-4">
+                <div v-for="i in 3" :key="i" class="h-12 rounded-xl bg-slate-50 dark:bg-slate-800/50 flex items-center px-4 gap-4">
+                  <div class="w-8 h-8 rounded-lg bg-slate-200 dark:bg-slate-700 animate-pulse"></div>
+                  <div class="h-2 w-24 bg-slate-200 dark:bg-slate-700 rounded animate-pulse"></div>
+                  <div class="ml-auto w-12 h-2 bg-indigo-200 dark:bg-indigo-900/50 rounded animate-pulse"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. APPROACH & CREDIBILITY -->
     <section class="py-24 bg-stone-50/50 dark:bg-stone-900/30 reveal-on-scroll">
       <div class="container mx-auto px-6 max-w-4xl text-center">
         <h2 class="text-3xl font-light mb-8">Подход и принципы</h2>
