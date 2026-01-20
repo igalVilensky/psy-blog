@@ -1,166 +1,434 @@
 <template>
-  <!-- Loading State -->
   <div
     class="relative min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-white transition-colors duration-500 flex flex-col font-sans">
-    <TopBar />
+    <!-- Mobile Header -->
+    <div
+      class="lg:hidden fixed top-0 left-0 right-0 h-14 bg-white dark:bg-stone-900 border-b-2 border-stone-900 dark:border-white z-40 px-4 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="w-7 h-7 bg-stone-900 dark:bg-white flex items-center justify-center">
+          <i class="fas fa-user text-white dark:text-stone-900 text-xs"></i>
+        </div>
+        <span class="font-bold text-stone-900 dark:text-white text-sm">Профиль</span>
+      </div>
+      <button @click="openSettings"
+        class="p-2 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white">
+        <i class="fas fa-cog text-sm"></i>
+      </button>
+    </div>
 
-    <div class="flex-1 max-w-7xl mx-auto px-6 sm:px-8 pb-24 pt-12 sm:pt-20 w-full">
-
-      <!-- Profile Header -->
-      <ProfileHeader :avatarUrl="avatarUrl" :loading="loading"
-        :displayName="authStore.user?.displayName || 'Пользователь'" :email="authStore.user?.email || 'Email не указан'"
-        :userInitial="authStore.user?.displayName?.charAt(0).toUpperCase()" @update:avatarUrl="avatarUrl = $event"
-        @logout="logoutUser" @notify="handleNotification($event)" />
-
-      <!-- Bio Section -->
-      <BioSection :loading="loadingBio" :profession="profession" :socialMedia="socialMedia" :age="age" :gender="gender"
-        :aboutYourself="aboutYourself" />
-
-      <!-- Navigation Tabs -->
-      <div class="mb-12 border-b border-stone-200 dark:border-stone-800">
-        <div class="flex gap-8 overflow-x-auto pb-0 no-scrollbar">
-          <button @click="activeTab = 'overview'" class="tab-link pb-4 px-2"
-            :class="activeTab === 'overview' ? 'tab-link-active' : 'text-stone-400 dark:text-stone-500 hover:text-stone-700 dark:hover:text-stone-300'">
-            <span class="text-xs font-bold uppercase tracking-widest">Обзор</span>
-          </button>
-          <button @click="activeTab = 'flows'" class="tab-link pb-4 px-2"
-            :class="activeTab === 'flows' ? 'tab-link-active' : 'text-stone-400 dark:text-stone-500 hover:text-stone-700 dark:hover:text-stone-300'">
-            <span class="text-xs font-bold uppercase tracking-widest">Потоки</span>
+    <!-- Main Content -->
+    <main class="flex-1 flex min-w-0 pt-14 lg:pt-0">
+      <!-- Desktop Sidebar -->
+      <div
+        class="hidden lg:block w-64 flex-none bg-white dark:bg-stone-900 border-r-2 border-stone-900 dark:border-white">
+        <div class="p-6 border-b-2 border-stone-900 dark:border-white">
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-8 h-8 bg-stone-900 dark:bg-white flex items-center justify-center">
+              <i class="fas fa-user text-white dark:text-stone-900 text-sm"></i>
+            </div>
+            <span class="font-bold text-stone-900 dark:text-white">Профиль</span>
+          </div>
+          <button @click="openSettings"
+            class="flex items-center gap-2 text-sm text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white transition-colors">
+            <i class="fas fa-cog text-xs"></i>
+            <span>Настройки</span>
           </button>
         </div>
+
+        <nav class="p-4 space-y-2">
+          <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
+            class="w-full text-left px-4 py-3 text-sm font-semibold transition-all" :class="activeTab === tab.id
+              ? 'bg-stone-900 dark:bg-white text-white dark:text-stone-900'
+              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'">
+            <div class="flex items-center gap-3">
+              <i :class="tab.icon"></i>
+              <span>{{ tab.label }}</span>
+            </div>
+          </button>
+        </nav>
       </div>
 
-      <!-- Overview Tab -->
-      <div v-if="activeTab === 'overview'" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-        <!-- Onboarding CTA -->
-        <div class="col-span-1 lg:col-span-2" v-if="!authStore.user?.onboardingCompleted">
-          <div
-            class="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-8 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-8 border-l-4 border-l-stone-900 dark:border-l-white">
-            <div>
-              <h3 class="text-xl font-bold text-stone-900 dark:text-white mb-3 uppercase tracking-tight">Персональная
-                настройка</h3>
-              <p class="text-stone-600 dark:text-stone-400 text-sm font-medium">Пройдите короткий опрос, чтобы система
-                подготовила для вас индивидуальный план развития.</p>
-            </div>
-            <NuxtLink to="/onboarding"
-              class="px-8 py-3 bg-stone-900 dark:bg-white text-white dark:text-stone-900 font-bold uppercase tracking-widest text-xs hover:bg-stone-800 dark:hover:bg-stone-200 transition-all whitespace-nowrap">
-              Начать опрос
-            </NuxtLink>
-          </div>
-        </div>
-
-        <div class="col-span-1 lg:col-span-2" v-else>
-          <div
-            class="bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-8 flex flex-col sm:flex-row items-center justify-between gap-6 border-l-4 border-l-emerald-500">
-            <div>
-              <h3 class="text-xl font-bold text-stone-900 dark:text-white mb-2 uppercase tracking-tight">Статус
-                профиля: Настроен</h3>
-              <p class="text-stone-600 dark:text-stone-400 text-sm font-medium">Ваша персональная карта развития
-                построена. Вы можете обновить её в любое время.</p>
-            </div>
-            <NuxtLink to="/onboarding"
-              class="px-8 py-3 border border-stone-300 dark:border-stone-700 text-stone-700 dark:text-stone-300 text-xs font-bold uppercase tracking-widest hover:bg-stone-100 dark:hover:bg-stone-800 transition-all whitespace-nowrap">
-              Обновить оценку
-            </NuxtLink>
-          </div>
-        </div>
-      </div>
-
-      <!-- Lab Flows Tab -->
-
-      <!-- Lab Flows Tab -->
-      <div v-if="activeTab === 'flows'" class="flows-section">
-        <div class="settings-card">
-          <div class="flex items-center gap-3 mb-6">
-            <div class="settings-icon-wrapper">
-              <i class="fas fa-stream text-cyan-600 dark:text-cyan-400"></i>
-            </div>
-            <h2 class="text-xl font-bold text-gray-900 dark:text-white">
-              Публичные потоки
+      <!-- Content Area -->
+      <div class="flex-1 overflow-y-auto">
+        <!-- Desktop Header -->
+        <header
+          class="hidden lg:flex h-16 bg-white dark:bg-stone-900 border-b-2 border-stone-900 dark:border-white items-center justify-between px-6 sticky top-0 z-30">
+          <div>
+            <h2 class="text-sm font-bold text-stone-900 dark:text-white uppercase tracking-wide">
+              {{ activeTabLabel }}
             </h2>
           </div>
+          <div class="flex items-center gap-4">
+            <div class="font-mono text-xs text-stone-500 dark:text-stone-400">
+              {{ currentTime }}
+            </div>
+            <button @click="openSettings"
+              class="p-2 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white">
+              <i class="fas fa-cog"></i>
+            </button>
+          </div>
+        </header>
 
+        <div class="p-6 lg:p-8 space-y-8">
           <!-- Loading State -->
-          <div v-if="loadingFlows" class="loading-state">
-            <div class="loading-content">
-              <i class="fas fa-spinner fa-spin text-4xl text-cyan-600 dark:text-cyan-400 mb-4"></i>
-              <p class="text-gray-700 dark:text-slate-300">Загрузка потоков...</p>
+          <div v-if="isLoading" class="flex items-center justify-center py-32">
+            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-stone-900 dark:border-white"></div>
+          </div>
+
+          <!-- Overview Tab -->
+          <div v-else-if="activeTab === 'overview'" class="space-y-8">
+            <!-- Profile Header -->
+            <div class="border-b border-stone-200 dark:border-stone-800 pb-6">
+              <div class="flex flex-col md:flex-row md:items-start justify-between gap-6">
+                <div class="flex items-center gap-4">
+                  <div
+                    class="w-16 h-16 bg-stone-100 dark:bg-stone-800 flex items-center justify-center overflow-hidden">
+                    <img v-if="avatarUrl" :src="avatarUrl" class="w-full h-full object-cover" />
+                    <i v-else class="fas fa-user text-2xl text-stone-400 dark:text-stone-600"></i>
+                  </div>
+                  <div>
+                    <h1 class="text-2xl font-bold text-stone-900 dark:text-white">{{ authStore.user?.displayName ||
+                      'Пользователь' }}</h1>
+                    <p class="text-sm text-stone-500 dark:text-stone-400 mt-1">{{ authStore.user?.email }}</p>
+                    <div class="flex items-center gap-2 mt-2">
+                      <span class="text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400">
+                        {{ authStore.user?.isCoach ? 'Коуч' : 'Пользователь' }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <button @click="openSettings"
+                  class="px-6 py-3 border border-stone-300 dark:border-stone-700 text-sm font-semibold text-stone-700 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors self-start">
+                  <i class="fas fa-cog mr-2"></i>
+                  Настройки
+                </button>
+              </div>
+            </div>
+
+            <!-- Bio Info -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div class="lg:col-span-2 space-y-6">
+                <!-- Personal Info -->
+                <div class="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-6">
+                  <h3 class="text-lg font-bold text-stone-900 dark:text-white mb-4">Личная информация</h3>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <div
+                        class="text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400 mb-2">
+                        Профессия</div>
+                      <div class="text-stone-900 dark:text-white">{{ profession || 'Не указано' }}</div>
+                    </div>
+                    <div>
+                      <div
+                        class="text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400 mb-2">
+                        Возраст</div>
+                      <div class="text-stone-900 dark:text-white">{{ age || 'Не указан' }}</div>
+                    </div>
+                    <div>
+                      <div
+                        class="text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400 mb-2">
+                        Пол</div>
+                      <div class="text-stone-900 dark:text-white">{{ gender || 'Не указан' }}</div>
+                    </div>
+                    <div>
+                      <div
+                        class="text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400 mb-2">
+                        Статус</div>
+                      <div class="text-stone-900 dark:text-white">{{ authStore.user?.onboardingCompleted ?
+                        'Профильнастроен' : 'Требуется настройка' }}</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- About -->
+                <div v-if="aboutYourself"
+                  class="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-6">
+                  <h3 class="text-lg font-bold text-stone-900 dark:text-white mb-4">О себе</h3>
+                  <p class="text-stone-700 dark:text-stone-300">{{ aboutYourself }}</p>
+                </div>
+
+                <!-- Social Media -->
+                <div v-if="socialMedia.length > 0"
+                  class="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-6">
+                  <h3 class="text-lg font-bold text-stone-900 dark:text-white mb-4">Социальные сети</h3>
+                  <div class="flex flex-wrap gap-3">
+                    <a v-for="(platform, index) in socialMedia" :key="index" :href="platform.url" target="_blank"
+                      class="px-4 py-2 bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 text-sm font-semibold transition-colors">
+                      <i :class="getSocialIcon(platform.type)" class="mr-2"></i>
+                      {{ getSocialLabel(platform.type) }}
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Quick Actions -->
+              <div class="space-y-6">
+                <!-- Onboarding CTA -->
+                <div v-if="!authStore.user?.onboardingCompleted"
+                  class="bg-white dark:bg-stone-900 border-l-4 border-emerald-600 p-6">
+                  <h3 class="text-lg font-bold text-stone-900 dark:text-white mb-3">Персональная настройка</h3>
+                  <p class="text-sm text-stone-600 dark:text-stone-400 mb-6">Пройдите опрос для индивидуального плана
+                    развития</p>
+                  <NuxtLink to="/onboarding"
+                    class="block w-full px-6 py-3 bg-stone-900 dark:bg-white hover:bg-stone-800 dark:hover:bg-stone-100 text-white dark:text-stone-900 text-sm font-semibold text-center transition-all">
+                    Начать опрос
+                  </NuxtLink>
+                </div>
+
+                <!-- Profile Complete -->
+                <div v-else class="bg-white dark:bg-stone-900 border-l-4 border-emerald-600 p-6">
+                  <h3 class="text-lg font-bold text-stone-900 dark:text-white mb-3">Профиль настроен</h3>
+                  <p class="text-sm text-stone-600 dark:text-stone-400 mb-6">Ваша персональная карта развития построена
+                  </p>
+                  <NuxtLink to="/onboarding"
+                    class="block w-full px-6 py-3 border border-stone-300 dark:border-stone-700 text-stone-700 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-800 text-sm font-semibold text-center transition-all">
+                    Обновить оценку
+                  </NuxtLink>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-6">
+                  <h3 class="text-lg font-bold text-stone-900 dark:text-white mb-4">Быстрые действия</h3>
+                  <div class="space-y-3">
+                    <NuxtLink to="/space/dashboard"
+                      class="flex items-center justify-between p-3 bg-stone-50 dark:bg-stone-800 hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors border border-stone-100 dark:border-stone-700">
+                      <span class="text-sm font-semibold text-stone-700 dark:text-stone-300">Центр управления</span>
+                      <i class="fas fa-arrow-right text-stone-400"></i>
+                    </NuxtLink>
+                    <NuxtLink to="/space"
+                      class="flex items-center justify-between p-3 bg-stone-50 dark:bg-stone-800 hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors border border-stone-100 dark:border-stone-700">
+                      <span class="text-sm font-semibold text-stone-700 dark:text-stone-300">Лаборатория</span>
+                      <i class="fas fa-arrow-right text-stone-400"></i>
+                    </NuxtLink>
+                    <NuxtLink v-if="authStore.user?.isCoach" to="/coach"
+                      class="flex items-center justify-between p-3 bg-stone-50 dark:bg-stone-800 hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors border border-stone-100 dark:border-stone-700">
+                      <span class="text-sm font-semibold text-stone-700 dark:text-stone-300">Панель коуча</span>
+                      <i class="fas fa-arrow-right text-stone-400"></i>
+                    </NuxtLink>
+                    <button @click="logoutUser"
+                      class="w-full flex items-center justify-between p-3 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-800/30 transition-colors border border-red-200 dark:border-red-700">
+                      <span class="text-sm font-semibold text-red-700 dark:text-red-300">Выйти</span>
+                      <i class="fas fa-sign-out-alt text-red-400"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- Empty State -->
-          <div v-else-if="publicFlows.length === 0" class="empty-state">
-            <div class="empty-content">
-              <div class="empty-icon">
-                <i class="fas fa-stream text-5xl text-cyan-600 dark:text-cyan-400"></i>
+          <!-- Flows Tab -->
+          <div v-else-if="activeTab === 'flows'" class="space-y-8">
+            <div class="border-b border-stone-200 dark:border-stone-800 pb-6">
+              <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div>
+                  <div class="flex items-center gap-2 mb-2">
+                    <div class="w-1 h-4 bg-stone-900 dark:bg-white"></div>
+                    <span
+                      class="text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400">Потоки</span>
+                  </div>
+                  <h1 class="text-3xl font-bold text-stone-900 dark:text-white">
+                    Публичные потоки
+                  </h1>
+                </div>
+                <NuxtLink to="/lab/builder"
+                  class="px-6 py-3 bg-stone-900 dark:bg-white hover:bg-stone-800 dark:hover:bg-stone-100 text-white dark:text-stone-900 text-sm font-semibold transition-all">
+                  <i class="fas fa-plus mr-2"></i>
+                  Создать поток
+                </NuxtLink>
               </div>
-              <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                Нет публичных потоков
-              </h3>
-              <p class="text-gray-600 dark:text-slate-400 mb-6">
+            </div>
+
+            <!-- Loading State -->
+            <div v-if="loadingFlows" class="flex items-center justify-center py-20">
+              <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-stone-900 dark:border-white"></div>
+            </div>
+
+            <!-- Empty State -->
+            <div v-else-if="publicFlows.length === 0"
+              class="text-center py-20 border-2 border-dashed border-stone-300 dark:border-stone-700">
+              <i class="fas fa-stream text-4xl text-stone-300 dark:text-stone-700 mb-4"></i>
+              <h3 class="text-lg font-semibold text-stone-900 dark:text-white mb-2">Нет публичных потоков</h3>
+              <p class="text-stone-500 dark:text-stone-400 text-sm mb-6">
                 Этот пользователь еще не опубликовал потоки.
               </p>
-              <NuxtLink to="/lab/builder" class="start-button">
-                <span class="button-gradient"></span>
-                <span class="button-content">
-                  <i class="fas fa-plus-circle mr-2"></i>
-                  Создать поток
-                </span>
+              <NuxtLink to="/lab/builder"
+                class="inline-flex items-center gap-2 px-8 py-3 bg-stone-900 dark:bg-white hover:bg-stone-800 dark:hover:bg-stone-100 text-white dark:text-stone-900 text-sm font-semibold transition-all">
+                <i class="fas fa-plus-circle"></i>
+                Создать поток
+              </NuxtLink>
+            </div>
+
+            <!-- Flows Grid -->
+            <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div v-for="flow in publicFlows" :key="flow.id" @click="navigateToFlow(flow.id)"
+                class="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-6 hover:border-stone-900 dark:hover:border-white transition-colors cursor-pointer">
+                <!-- Header -->
+                <div class="mb-4">
+                  <h3 class="text-lg font-bold text-stone-900 dark:text-white truncate">
+                    {{ flow.name }}
+                  </h3>
+                  <p v-if="flow.description" class="mt-2 text-sm text-stone-600 dark:text-stone-400 line-clamp-2">
+                    {{ flow.description }}
+                  </p>
+                </div>
+
+                <!-- Badges -->
+                <div class="mb-4 flex flex-wrap gap-2">
+                  <span
+                    class="px-3 py-1 bg-stone-900 dark:bg-white text-white dark:text-stone-900 text-xs font-semibold">
+                    {{ flowTypes[flow.type] || 'Поток' }}
+                  </span>
+                  <span
+                    class="px-3 py-1 bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 text-xs font-semibold">
+                    {{ flowCategories[flow.category] || 'Общее' }}
+                  </span>
+                </div>
+
+                <!-- Stats -->
+                <div class="flex items-center justify-between text-xs text-stone-500 dark:text-stone-400">
+                  <div class="flex items-center gap-1">
+                    <i class="fas fa-puzzle-piece"></i>
+                    <span>{{ flow.modules?.length || 0 }} модулей</span>
+                  </div>
+                  <div v-if="flow.estimatedDuration" class="flex items-center gap-1">
+                    <i class="fas fa-clock"></i>
+                    <span>~{{ flow.estimatedDuration }} мин</span>
+                  </div>
+                  <div v-if="flow.timesUsed > 0" class="flex items-center gap-1">
+                    <i class="fas fa-play-circle"></i>
+                    <span>{{ flow.timesUsed }}x</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Emotions Tab -->
+          <div v-else-if="activeTab === 'emotions'" class="space-y-8">
+            <div class="border-b border-stone-200 dark:border-stone-800 pb-6">
+              <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div>
+                  <div class="flex items-center gap-2 mb-2">
+                    <div class="w-1 h-4 bg-stone-900 dark:bg-white"></div>
+                    <span
+                      class="text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400">Эмоции</span>
+                  </div>
+                  <h1 class="text-3xl font-bold text-stone-900 dark:text-white">
+                    Эмоциональный барометр
+                  </h1>
+                </div>
+              </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div class="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-6">
+                <div class="text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400 mb-2">Всего
+                  записей</div>
+                <div class="text-2xl font-bold text-stone-900 dark:text-white">{{ emotionBarometerStats.totalEntries }}
+                </div>
+              </div>
+              <div class="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-6">
+                <div class="text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400 mb-2">
+                  Частая эмоция</div>
+                <div class="text-2xl font-bold text-stone-900 dark:text-white truncate">{{
+                  emotionBarometerStats.mostCommonEmotion || 'Нет данных' }}</div>
+              </div>
+              <div class="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-6">
+                <div class="text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400 mb-2">Сред.
+                  интенсивность</div>
+                <div class="text-2xl font-bold text-stone-900 dark:text-white">{{
+                  Math.round(emotionBarometerStats.averageIntensity) }}/10</div>
+              </div>
+              <div class="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-6">
+                <div class="text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400 mb-2">
+                  Популярный тег</div>
+                <div class="text-2xl font-bold text-stone-900 dark:text-white truncate">{{
+                  emotionBarometerStats.mostCommonTag || 'Нет данных' }}</div>
+              </div>
+            </div>
+
+            <!-- Chart -->
+            <div v-if="emotionBarometerStats.totalEntries > 0"
+              class="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-6">
+              <h3 class="text-lg font-bold text-stone-900 dark:text-white mb-6">Распределение эмоций</h3>
+              <div class="h-64">
+                <canvas ref="emotionChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Assessments Tab -->
+          <div v-else-if="activeTab === 'assessments'" class="space-y-8">
+            <div class="border-b border-stone-200 dark:border-stone-800 pb-6">
+              <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div>
+                  <div class="flex items-center gap-2 mb-2">
+                    <div class="w-1 h-4 bg-stone-900 dark:bg-white"></div>
+                    <span
+                      class="text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400">Психология</span>
+                  </div>
+                  <h1 class="text-3xl font-bold text-stone-900 dark:text-white">
+                    Психологический профиль
+                  </h1>
+                </div>
+              </div>
+            </div>
+
+            <div v-if="assessmentError"
+              class="text-center py-20 border-2 border-dashed border-stone-300 dark:border-stone-700">
+              <i class="fas fa-exclamation-triangle text-4xl text-stone-300 dark:text-stone-700 mb-4"></i>
+              <h3 class="text-lg font-semibold text-stone-900 dark:text-white mb-2">{{ assessmentError }}</h3>
+            </div>
+
+            <div v-else-if="loadingAssessments" class="flex items-center justify-center py-20">
+              <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-stone-900 dark:border-white"></div>
+            </div>
+
+            <div v-else-if="latestAssessment" class="space-y-6">
+              <!-- Archetype Scores -->
+              <div class="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-6">
+                <h3 class="text-lg font-bold text-stone-900 dark:text-white mb-6">Архетипы личности</h3>
+                <div class="space-y-4">
+                  <div v-for="archetype in archetypeScores" :key="archetype.name"
+                    class="flex items-center justify-between p-4 bg-stone-50 dark:bg-stone-800 hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors border border-stone-100 dark:border-stone-700">
+                    <div class="flex items-center gap-3">
+                      <i :class="archetype.icon" class="text-stone-600 dark:text-stone-400"></i>
+                      <span class="text-sm font-semibold text-stone-900 dark:text-white">{{ archetype.name }}</span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                      <div class="text-right">
+                        <div class="text-sm font-bold text-stone-900 dark:text-white">{{ archetype.level }}/30</div>
+                        <div class="text-xs text-stone-500 dark:text-stone-400">
+                          {{ calculateArchetypePercentage(archetype.level) }}%
+                        </div>
+                      </div>
+                      <button @click="handleDownload(archetype.guideUrl)"
+                        class="px-4 py-2 bg-stone-900 dark:bg-white hover:bg-stone-800 dark:hover:bg-stone-100 text-white dark:text-stone-900 text-xs font-semibold transition-all">
+                        <i class="fas fa-download"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div v-else class="text-center py-20 border-2 border-dashed border-stone-300 dark:border-stone-700">
+              <i class="fas fa-brain text-4xl text-stone-300 dark:text-stone-700 mb-4"></i>
+              <h3 class="text-lg font-semibold text-stone-900 dark:text-white mb-2">Тестирование не пройдено</h3>
+              <p class="text-stone-500 dark:text-stone-400 text-sm mb-6">
+                Пройдите опрос, чтобы получить психологический профиль
+              </p>
+              <NuxtLink to="/onboarding"
+                class="inline-flex items-center gap-2 px-8 py-3 bg-stone-900 dark:bg-white hover:bg-stone-800 dark:hover:bg-stone-100 text-white dark:text-stone-900 text-sm font-semibold transition-all">
+                Пройти опрос
               </NuxtLink>
             </div>
           </div>
-
-          <!-- Flows Grid -->
-          <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div v-for="flow in publicFlows" :key="flow.id" @click="navigateToFlow(flow.id)"
-              class="flow-card-mini group relative overflow-hidden rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-all hover:shadow-md cursor-pointer dark:border-slate-700 dark:bg-slate-800">
-              <!-- Header -->
-              <div class="mb-3">
-                <h3 class="truncate text-lg font-bold text-slate-900 dark:text-white">
-                  {{ flow.name }}
-                </h3>
-                <p v-if="flow.description" class="mt-1 line-clamp-2 text-sm text-slate-600 dark:text-slate-400">
-                  {{ flow.description }}
-                </p>
-              </div>
-
-              <!-- Badges -->
-              <div class="mb-3 flex flex-wrap gap-2">
-                <span
-                  class="inline-flex items-center rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 px-2.5 py-0.5 text-xs font-medium text-white">
-                  {{ flowTypes[flow.type] || 'Поток' }}
-                </span>
-                <span
-                  class="inline-flex items-center rounded-full border border-slate-300 bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-700 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300">
-                  {{ flowCategories[flow.category] || 'Общее' }}
-                </span>
-              </div>
-
-              <!-- Stats -->
-              <div class="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
-                <div class="flex items-center gap-1">
-                  <i class="fas fa-puzzle-piece"></i>
-                  <span>{{ flow.modules?.length || 0 }} модулей</span>
-                </div>
-                <div v-if="flow.estimatedDuration" class="flex items-center gap-1">
-                  <i class="fas fa-clock"></i>
-                  <span>~{{ flow.estimatedDuration }} мин</span>
-                </div>
-                <div v-if="flow.timesUsed > 0" class="flex items-center gap-1">
-                  <i class="fas fa-play-circle"></i>
-                  <span>{{ flow.timesUsed }}x</span>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
-    </div>
+    </main>
 
-
-
-    <Footer />
     <!-- Notification Component -->
     <Notification v-if="notificationMessage" :message="notificationMessage" :type="notificationType"
       @close="hideNotification" class="z-50" />
@@ -168,17 +436,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick, watch } from "vue";
-import { useRouter, useRoute } from "vue-router";
-import { useNotification } from "@/composables/useNotification";
+import { ref, computed, onMounted, nextTick, watch } from "vue";
+import { useRouter } from "vue-router";
 import { useAuthStore } from "~/stores/auth";
 import { getFirestore, doc, getDoc, collection, query, where, getDocs, orderBy } from "firebase/firestore";
 import { Chart, registerables } from "chart.js";
-import ProfileHeader from "~/components/profile/ProfileHeader.vue";
-import BioSection from "~/components/profile/BioSection.vue";
-import TopBar from "~/components/navigation/TopBar.vue";
-import Footer from "~/components/ui/Footer.vue";
-import Button from "~/components/base/Button.vue";
+import { useNotification } from "~/composables/useNotification";
 import Notification from "~/components/base/Notification.vue";
 import { getEmotionBarometerStats } from "~/api/firebase/emotionBarometer";
 import { getLatestUserAssessment } from "~/api/firebase/assessments";
@@ -186,39 +449,10 @@ import { fetchUserAvatarUrl } from "~/api/firebase/userProfile";
 
 definePageMeta({
   layout: "empty",
-  seo: {
-    noindex: true,
-    nofollow: true,
-  },
 });
 
 // Register Chart.js plugins
 Chart.register(...registerables);
-
-// Google Drive links for the 12 archetypes
-const archetypeGuides = {
-  воин: "https://drive.google.com/uc?export=download&id=1Z9XqjKfmXtIuPkpqFjlZf0UeK5uZd4-7",
-  мудрец:
-    "https://drive.google.com/uc?export=download&id=1jRFDKQh_LeSy_hFS-rBic-qOXhwN1w9d",
-  искатель:
-    "https://drive.google.com/uc?export=download&id=1t9Eyq6mPBA-Zh1YPkDjtnoAicYIYdnSL",
-  творец:
-    "https://drive.google.com/uc?export=download&id=1EB-sU__obr0nar984wxVEOWvMGU3LWNg",
-  правитель:
-    "https://drive.google.com/uc?export=download&id=1kC5TMJUWRAy5pKXOlW4qlAx6PXoe--2g",
-  маг: "https://drive.google.com/uc?export=download&id=1r-5W_RuCHRXJX6QOXmmQT8TL7asKvGAQ",
-  любовник:
-    "https://drive.google.com/uc?export=download&id=1NzU0BGyZGTTqx_1kCnyr97CFbRIg72PN",
-  шут: "https://drive.google.com/uc?export=download&id=1Vecj9bKoGI2iRulAjBSMAAe_A0A526BV",
-  сирота:
-    "https://drive.google.com/uc?export=download&id=1lqXNJNpE2S96t4bioP5ZUHd-tsu_To0B",
-  опекун:
-    "https://drive.google.com/uc?export=download&id=1MjruEXhQa24RGxpEHiuLszqbu3_1OBeY",
-  простодушный:
-    "https://drive.google.com/uc?export=download&id=1JLFEcqtBb6rT7QWW6BAwbRi0o17tAJ6E",
-  бунтарь:
-    "https://drive.google.com/uc?export=download&id=1nET_NObXciLQlL44TB_Jo6qPEmR-4Nd4",
-};
 
 const {
   notificationMessage,
@@ -227,16 +461,22 @@ const {
   hideNotification,
 } = useNotification();
 
-// Refs for loading states and data
+// Refs
+const authStore = useAuthStore();
+const router = useRouter();
 const isLoading = ref(true);
-const loading = ref(true);
-const loadingBio = ref(true);
-const loadingEmotionBarometer = ref(true);
-const loadingAssessments = ref(false);
-const avatarUrl = ref(null);
-const emotionChart = ref(null);
+const currentTime = ref("");
 const activeTab = ref("overview");
+const emotionChart = ref(null);
 const chartInstance = ref(null);
+
+// Bio Data
+const profession = ref("");
+const socialMedia = ref([]);
+const age = ref("");
+const gender = ref("");
+const aboutYourself = ref("");
+const avatarUrl = ref(null);
 
 // Lab Flows Data
 const publicFlows = ref([]);
@@ -259,13 +499,6 @@ const flowCategories = {
   custom: 'Другое'
 };
 
-// Bio Data
-const profession = ref("");
-const socialMedia = ref("");
-const age = ref("");
-const gender = ref("");
-const aboutYourself = ref("");
-
 // Emotion Barometer Stats
 const emotionBarometerStats = ref({
   totalEntries: 0,
@@ -279,116 +512,79 @@ const emotionBarometerStats = ref({
 const latestAssessment = ref(null);
 const assessmentError = ref(null);
 const archetypeScores = ref([]);
+const loadingAssessments = ref(false);
 
-// AI Summary Data
-const aiSummary = ref(null);
-const loadingAiSummary = ref(false);
+// Archetype Guides
+const archetypeGuides = {
+  воин: "https://drive.google.com/uc?export=download&id=1Z9XqjKfmXtIuPkpqFjlZf0UeK5uZd4-7",
+  мудрец: "https://drive.google.com/uc?export=download&id=1jRFDKQh_LeSy_hFS-rBic-qOXhwN1w9d",
+  искатель: "https://drive.google.com/uc?export=download&id=1t9Eyq6mPBA-Zh1YPkDjtnoAicYIYdnSL",
+  творец: "https://drive.google.com/uc?export=download&id=1EB-sU__obr0nar984wxVEOWvMGU3LWNg",
+  правитель: "https://drive.google.com/uc?export=download&id=1kC5TMJUWRAy5pKXOlW4qlAx6PXoe--2g",
+  маг: "https://drive.google.com/uc?export=download&id=1r-5W_RuCHRXJX6QOXmmQT8TL7asKvGAQ",
+  любовник: "https://drive.google.com/uc?export=download&id=1NzU0BGyZGTTqx_1kCnyr97CFbRIg72PN",
+  шут: "https://drive.google.com/uc?export=download&id=1Vecj9bKoGI2iRulAjBSMAAe_A0A526BV",
+  сирота: "https://drive.google.com/uc?export=download&id=1lqXNJNpE2S96t4bioP5ZUHd-tsu_To0B",
+  опекун: "https://drive.google.com/uc?export=download&id=1MjruEXhQa24RGxpEHiuLszqbu3_1OBeY",
+  простодушный: "https://drive.google.com/uc?export=download&id=1JLFEcqtBb6rT7QWW6BAwbRi0o17tAJ6E",
+  бунтарь: "https://drive.google.com/uc?export=download&id=1nET_NObXciLQlL44TB_Jo6qPEmR-4Nd4",
+};
 
-// Sample data for other sections
-const bigFiveTraits = [
-  { name: "Открытость", value: 78 },
-  { name: "Добросовестность", value: 65 },
-  { name: "Экстраверсия", value: 82 },
-  { name: "Доброжелательность", value: 70 },
-  { name: "Нейротизм", value: 45 },
+const tabs = [
+  { id: 'overview', label: 'Обзор', icon: 'fas fa-user' },
+  { id: 'flows', label: 'Потоки', icon: 'fas fa-stream' },
+  { id: 'emotions', label: 'Эмоции', icon: 'fas fa-heart' },
+  { id: 'assessments', label: 'Психология', icon: 'fas fa-brain' },
 ];
 
-const cognitiveStyles = [
-  { name: "Логическое мышление", level: 8 },
-  { name: "Креативность", level: 7 },
-  { name: "Интуиция", level: 9 },
-  { name: "Эмпатия", level: 6 },
-];
-
-const authStore = useAuthStore();
-const router = useRouter();
-const route = useRoute();
-
-// Watch for tab changes to initialize chart when emotions tab is selected
-watch(activeTab, async (newTab) => {
-  if (
-    newTab === "emotions" &&
-    emotionBarometerStats.value.totalEntries > 0 &&
-    !chartInstance.value
-  ) {
-    await nextTick();
-    initializeChart();
-  }
-
-  // Load flows when flows tab is selected (only if user is authenticated)
-  if (newTab === "flows" && publicFlows.value.length === 0 && authStore.user) {
-    await fetchPublicFlows(authStore.user.uid);
-  }
+const activeTabLabel = computed(() => {
+  return tabs.find(tab => tab.id === activeTab.value)?.label || 'Профиль';
 });
 
-// Auth protection at the start of onMounted
-onMounted(async () => {
-  isLoading.value = true; // Ensure loading is true from the start
+const updateTime = () => {
+  const now = new Date();
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  const seconds = String(now.getSeconds()).padStart(2, "0");
+  currentTime.value = `${hours}:${minutes}:${seconds}`;
+};
 
-  await authStore.initAuth();
+let timeInterval;
 
-  if (!authStore.user) {
-    router.push("/login");
-    return;
-  }
+const openSettings = () => {
+  router.push('/profile/settings');
+};
 
-  // Verify username matches current user
-  const currentUsername = authStore.user.displayName?.replace(/\s/g, "-");
-  if (route.params.username !== currentUsername) {
-    router.push(`/profile/${currentUsername}`);
-    return;
-  }
-
-  // Now load the user's data
-  await loadUserData();
-});
-
-// Separate function for loading user data
 const loadUserData = async () => {
-  try {
-    // Start all data loading operations in parallel
-    const [avatarData, bioData, emotionData, assessmentData, aiSummaryData] =
-      await Promise.allSettled([
-        fetchUserAvatarUrl(authStore.user.uid),
-        fetchBioData(authStore.user.uid),
-        fetchEmotionBarometerData(authStore.user.uid),
-        fetchLatestAssessment(authStore.user.uid),
-        fetchAiSummary(authStore.user.uid),
-      ]);
+  if (!authStore.user) return;
 
-    // Handle results
+  try {
+    const [avatarData, bioData, emotionData, assessmentData] = await Promise.allSettled([
+      fetchUserAvatarUrl(authStore.user.uid),
+      fetchBioData(authStore.user.uid),
+      fetchEmotionBarometerData(authStore.user.uid),
+      fetchLatestAssessment(authStore.user.uid),
+    ]);
+
     if (avatarData.status === "fulfilled") {
       avatarUrl.value = avatarData.value;
     }
 
-    // Handle other data loading results
-    if (emotionData.status === "fulfilled") {
-    } else if (emotionData.status === "rejected") {
+    if (emotionData.status === "rejected") {
       console.error("❌ Emotion data loading failed:", emotionData.reason);
     }
 
-    if (assessmentData.status === "fulfilled") {
-    } else if (assessmentData.status === "rejected") {
-      console.error(
-        "❌ Assessment data loading failed:",
-        assessmentData.reason
-      );
-    }
-
-    if (aiSummaryData.status === "fulfilled") {
-    } else if (aiSummaryData.status === "rejected") {
-      console.error("❌ AI summary loading failed:", aiSummaryData.reason);
+    if (assessmentData.status === "rejected") {
+      console.error("❌ Assessment data loading failed:", assessmentData.reason);
     }
   } catch (error) {
     console.error("Error loading user data:", error);
     showNotification("Произошла ошибка при загрузке данных", "error");
   } finally {
     isLoading.value = false;
-    loading.value = false;
   }
 };
 
-// Fetch Bio Data
 const fetchBioData = async (userId) => {
   const db = getFirestore();
   const userRef = doc(db, "users", userId);
@@ -398,81 +594,16 @@ const fetchBioData = async (userId) => {
     if (userSnap.exists()) {
       const data = userSnap.data();
       profession.value = data.profession || "";
-      socialMedia.value = data.socialMedia || "";
+      socialMedia.value = Array.isArray(data.socialMedia) ? data.socialMedia : [];
       age.value = data.age || "";
       gender.value = data.gender || "";
       aboutYourself.value = data.aboutYourself || "";
     }
   } catch (error) {
     console.error("Error fetching bio data:", error);
-  } finally {
-    loadingBio.value = false;
   }
 };
 
-// Initialize chart function
-const initializeChart = () => {
-  if (!emotionChart.value) {
-    return;
-  }
-
-  // Destroy existing chart instance if it exists
-  if (chartInstance.value) {
-    chartInstance.value.destroy();
-  }
-
-  const distribution = emotionBarometerStats.value.emotionDistribution;
-
-  const ctx = emotionChart.value.getContext("2d");
-  chartInstance.value = new Chart(ctx, {
-    type: "doughnut",
-    data: {
-      labels: Object.keys(distribution),
-      datasets: [
-        {
-          data: Object.values(distribution),
-          backgroundColor: [
-            "rgba(6, 182, 212, 0.8)",
-            "rgba(168, 85, 247, 0.8)",
-            "rgba(236, 72, 153, 0.8)",
-            "rgba(34, 211, 238, 0.8)",
-            "rgba(251, 146, 60, 0.8)",
-            "rgba(16, 185, 129, 0.8)",
-          ],
-          borderColor: "rgba(15, 23, 42, 0.8)",
-          borderWidth: 2,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          position: "bottom",
-          labels: {
-            color: "rgba(203, 213, 225, 1)",
-            padding: 15,
-            font: {
-              size: 12,
-            },
-          },
-        },
-        tooltip: {
-          backgroundColor: "rgba(15, 23, 42, 0.95)",
-          titleColor: "rgba(6, 182, 212, 1)",
-          bodyColor: "rgba(203, 213, 225, 1)",
-          borderColor: "rgba(6, 182, 212, 0.3)",
-          borderWidth: 1,
-          padding: 12,
-          displayColors: true,
-        },
-      },
-    },
-  });
-};
-
-// Fetch Emotion Barometer Data
 const fetchEmotionBarometerData = async (userId) => {
   try {
     const db = getFirestore();
@@ -480,18 +611,12 @@ const fetchEmotionBarometerData = async (userId) => {
 
     if (success) {
       emotionBarometerStats.value = stats;
-      console.log("📊 Emotion stats loaded:", stats);
-    } else {
-      console.error("Failed to fetch emotion barometer stats");
     }
   } catch (error) {
     console.error("Error loading emotion barometer data:", error);
-  } finally {
-    loadingEmotionBarometer.value = false;
   }
 };
 
-// Fetch the latest assessment results
 const fetchLatestAssessment = async (userId) => {
   loadingAssessments.value = true;
   assessmentError.value = null;
@@ -502,9 +627,6 @@ const fetchLatestAssessment = async (userId) => {
 
     if (success && assessment) {
       latestAssessment.value = assessment;
-      console.log("🧠 Assessment loaded:", assessment);
-
-      // Transform the scores into the format expected by the component
       archetypeScores.value = Object.entries(assessment.scores).map(
         ([name, level]) => ({
           name,
@@ -513,10 +635,8 @@ const fetchLatestAssessment = async (userId) => {
           guideUrl: archetypeGuides[name] || "#",
         })
       );
-      console.log("🎯 Archetype scores transformed:", archetypeScores.value);
     } else {
       assessmentError.value = "Не удалось загрузить результаты теста.";
-      console.log("❌ No assessment data found");
     }
   } catch (error) {
     console.error("Error fetching latest assessment:", error);
@@ -526,28 +646,95 @@ const fetchLatestAssessment = async (userId) => {
   }
 };
 
-// Fetch AI Summary
-const fetchAiSummary = async (userId) => {
-  loadingAiSummary.value = true;
+const fetchPublicFlows = async (userId) => {
+  loadingFlows.value = true;
   try {
     const db = getFirestore();
-    const aiSummaryRef = doc(db, "users", userId, "aiSummary", "latest");
-    const aiSummarySnap = await getDoc(aiSummaryRef);
+    const labFlowsRef = collection(db, 'labFlows');
+    const q = query(
+      labFlowsRef,
+      where('userId', '==', userId),
+      where('isPublic', '==', true),
+      orderBy('createdAt', 'desc')
+    );
 
-    if (aiSummarySnap.exists()) {
-      aiSummary.value = aiSummarySnap.data();
-      console.log("🤖 AI Summary loaded:", aiSummary.value);
-    } else {
-      console.log("ℹ️ No AI summary found");
-    }
+    const querySnapshot = await getDocs(q);
+    publicFlows.value = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
   } catch (error) {
-    console.error("Error fetching AI summary:", error);
+    console.error('Error fetching public flows:', error);
   } finally {
-    loadingAiSummary.value = false;
+    loadingFlows.value = false;
   }
 };
 
-// Get icon for archetype
+const initializeChart = () => {
+  if (!emotionChart.value || !emotionBarometerStats.value.totalEntries > 0) return;
+
+  if (chartInstance.value) {
+    chartInstance.value.destroy();
+  }
+
+  const distribution = emotionBarometerStats.value.emotionDistribution;
+  const ctx = emotionChart.value.getContext("2d");
+
+  chartInstance.value = new Chart(ctx, {
+    type: "doughnut",
+    data: {
+      labels: Object.keys(distribution),
+      datasets: [{
+        data: Object.values(distribution),
+        backgroundColor: [
+          "rgba(6, 182, 212, 0.8)",
+          "rgba(168, 85, 247, 0.8)",
+          "rgba(236, 72, 153, 0.8)",
+          "rgba(34, 211, 238, 0.8)",
+          "rgba(251, 146, 60, 0.8)",
+          "rgba(16, 185, 129, 0.8)",
+        ],
+        borderColor: "rgba(15, 23, 42, 0.8)",
+        borderWidth: 2,
+      }],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: "bottom",
+          labels: {
+            color: "rgba(203, 213, 225, 1)",
+            padding: 15,
+            font: { size: 12 },
+          },
+        },
+      },
+    },
+  });
+};
+
+const getSocialIcon = (type) => {
+  const icons = {
+    telegram: 'fab fa-telegram',
+    vk: 'fab fa-vk',
+    instagram: 'fab fa-instagram',
+    facebook: 'fab fa-facebook',
+  };
+  return icons[type] || 'fas fa-link';
+};
+
+const getSocialLabel = (type) => {
+  const labels = {
+    telegram: 'Telegram',
+    vk: 'VK',
+    instagram: 'Instagram',
+    facebook: 'Facebook',
+  };
+  return labels[type] || 'Соц. сеть';
+};
+
 const getIconForArchetype = (name) => {
   const icons = {
     творец: "fa-paint-brush",
@@ -566,21 +753,17 @@ const getIconForArchetype = (name) => {
   return icons[name] || "fa-question";
 };
 
-// Calculate archetype percentage for progress bar
 const calculateArchetypePercentage = (level) => {
-  // Assuming level is between 6-30 (from your data)
   const min = 6;
   const max = 30;
   return Math.round(((level - min) / (max - min)) * 100);
 };
 
-// Handle download logic
 const handleDownload = (url) => {
   if (!url || url === "#") {
     console.log("No guide available for this archetype");
     return;
   }
-  console.log("Downloading from:", url);
   const link = document.createElement("a");
   link.href = url;
   link.download = "";
@@ -590,206 +773,46 @@ const handleDownload = (url) => {
   document.body.removeChild(link);
 };
 
-// Logout user
 const logoutUser = async () => {
   await authStore.logout();
   router.push("/login");
 };
 
-const handleNotification = ({ message, type }) => {
-  showNotification(message, type);
-};
-
-// Fetch public flows for the user
-const fetchPublicFlows = async (userId) => {
-  loadingFlows.value = true;
-  try {
-    const db = getFirestore();
-    const labFlowsRef = collection(db, 'labFlows');
-    const q = query(
-      labFlowsRef,
-      where('userId', '==', userId),
-      where('isPublic', '==', true),
-      orderBy('createdAt', 'desc')
-    );
-
-    const querySnapshot = await getDocs(q);
-    publicFlows.value = querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }));
-
-    console.log('📚 Public flows loaded:', publicFlows.value.length);
-  } catch (error) {
-    console.error('Error fetching public flows:', error);
-    showNotification('Ошибка при загрузке потоков', 'error');
-  } finally {
-    loadingFlows.value = false;
-  }
-};
-
-// Navigate to flow page
 const navigateToFlow = (flowId) => {
   router.push(`/lab/flow/${flowId}`);
 };
+
+watch(activeTab, async (newTab) => {
+  if (newTab === 'emotions' && emotionBarometerStats.value.totalEntries > 0) {
+    await nextTick();
+    initializeChart();
+  }
+
+  if (newTab === 'flows' && authStore.user && publicFlows.value.length === 0) {
+    await fetchPublicFlows(authStore.user.uid);
+  }
+
+  if (newTab === 'assessments' && authStore.user && !latestAssessment.value) {
+    await fetchLatestAssessment(authStore.user.uid);
+  }
+}, { immediate: true });
+
+onMounted(async () => {
+  await authStore.initAuth();
+
+  if (!authStore.user) {
+    router.push("/login");
+    return;
+  }
+
+  updateTime();
+  timeInterval = setInterval(updateTime, 1000);
+
+  await loadUserData();
+});
+
+onUnmounted(() => {
+  if (timeInterval) clearInterval(timeInterval);
+  if (chartInstance.value) chartInstance.value.destroy();
+});
 </script>
-
-<style lang="postcss" scoped>
-.loading-container {
-  @apply flex flex-col items-center text-center;
-}
-
-@keyframes progress {
-  0% {
-    transform: translateX(-100%);
-  }
-
-  100% {
-    transform: translateX(100%);
-  }
-}
-
-.animate-progress {
-  animation: progress 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-}
-
-.tab-link {
-  @apply relative transition-colors duration-300 whitespace-nowrap;
-}
-
-.tab-link-active {
-  @apply text-stone-900 dark:text-white;
-}
-
-.tab-link-active::after {
-  content: "";
-  @apply absolute bottom-0 left-0 w-full h-0.5 bg-stone-900 dark:bg-white;
-}
-
-.settings-card {
-  @apply p-8 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 flex flex-col justify-between;
-}
-
-.settings-icon-wrapper {
-  @apply w-12 h-12 bg-stone-100 dark:bg-stone-800 flex items-center justify-center;
-}
-
-.stat-item {
-  @apply flex items-center justify-between p-6 rounded-2xl bg-stone-50/50 dark:bg-stone-800/20 border border-stone-100/50 dark:border-stone-800/30;
-}
-
-.activity-item {
-  @apply flex items-start gap-4 p-5 rounded-2xl bg-stone-50/30 dark:bg-stone-800/10 hover:bg-white dark:hover:bg-stone-800/30 transition-all duration-300;
-}
-
-.activity-icon {
-  @apply w-10 h-10 rounded-xl bg-white dark:bg-stone-800/50 flex items-center justify-center shadow-sm flex-shrink-0;
-}
-
-.emotion-barometer-section {
-  @apply p-8 sm:p-12 rounded-[3.5rem] bg-white dark:bg-stone-900/40 border border-stone-100 dark:border-stone-800/50 shadow-sm backdrop-blur-xl transition-all duration-500;
-}
-
-.section-header {
-  @apply mb-12 pb-8 border-b border-stone-50 dark:border-stone-800/30;
-}
-
-.section-icon-wrapper {
-  @apply w-14 h-14 rounded-2xl bg-stone-50 dark:bg-stone-800/50 flex items-center justify-center shadow-sm;
-}
-
-.cta-button-custom {
-  @apply inline-flex items-center gap-2 px-8 py-4 rounded-full bg-stone-50 dark:bg-stone-800/50 border border-stone-100 dark:border-stone-800/50 text-stone-600 dark:text-stone-400 hover:text-cyan-600 hover:border-cyan-500/30 transition-all duration-300 font-medium;
-}
-
-.loading-state {
-  @apply flex items-center justify-center py-24;
-}
-
-.loading-content {
-  @apply flex flex-col items-center text-center;
-}
-
-.empty-state {
-  @apply flex items-center justify-center py-24;
-}
-
-.empty-content {
-  @apply flex flex-col items-center text-center max-w-md;
-}
-
-.empty-icon {
-  @apply w-24 h-24 rounded-3xl bg-stone-50 dark:bg-stone-800/50 flex items-center justify-center mb-8 shadow-sm;
-}
-
-.start-button {
-  @apply px-10 py-5 rounded-full bg-stone-900 dark:bg-white text-white dark:text-stone-900 font-medium hover:bg-opacity-90 transition-all duration-300 shadow-lg shadow-stone-900/10;
-}
-
-.stats-grid {
-  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12;
-}
-
-.stat-card {
-  @apply p-8 rounded-[2rem] bg-stone-50/50 dark:bg-stone-800/20 border border-stone-100/50 dark:border-stone-800/30 transition-all duration-500 flex items-center gap-5;
-}
-
-.stat-icon-wrapper {
-  @apply w-14 h-14 rounded-2xl bg-white dark:bg-stone-800/40 flex items-center justify-center shadow-sm flex-shrink-0;
-}
-
-.stat-label {
-  @apply text-stone-400 dark:text-stone-500 text-[10px] uppercase tracking-[0.2em] font-medium mb-1;
-}
-
-.stat-value {
-  @apply text-stone-900 dark:text-white text-3xl font-light tracking-tight;
-}
-
-.chart-container {
-  @apply mt-12 p-10 rounded-[3rem] bg-stone-50/30 dark:bg-stone-800/10 border border-stone-100/50 dark:border-stone-800/30;
-}
-
-.chart-title {
-  @apply text-xl font-light text-stone-900 dark:text-white mb-10 flex items-center uppercase tracking-tight;
-}
-
-.chart-wrapper {
-  @apply max-w-sm mx-auto h-72;
-}
-
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-@media (max-width: 640px) {
-  .emotion-barometer-section {
-    @apply p-6 rounded-[2.5rem];
-  }
-
-  .stats-grid {
-    @apply gap-4;
-  }
-
-  .stat-card {
-    @apply p-6;
-  }
-
-  .chart-container {
-    @apply p-6 rounded-[2rem];
-  }
-
-  .settings-card {
-    @apply p-6 rounded-[2rem];
-  }
-
-  .tab-link {
-    @apply py-3;
-  }
-}
-</style>
