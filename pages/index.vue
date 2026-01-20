@@ -3,8 +3,8 @@
     class="min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-white font-sans transition-colors duration-500">
     <!-- NAVIGATION -->
     <nav
-      class="fixed top-0 inset-x-0 z-50 bg-white/80 dark:bg-stone-900/80 backdrop-blur-md border-b-2 border-stone-900 dark:border-white">
-      <div class="container mx-auto px-6 h-16 flex items-center justify-between">
+      class="fixed  top-0 inset-x-0 z-50 bg-white/80 dark:bg-stone-900/80 backdrop-blur-md border-b-2 border-stone-900 dark:border-white">
+      <div class="container max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <NuxtLink to="/" class="flex items-center gap-2">
           <div class="w-8 h-8 bg-stone-900 dark:bg-white flex items-center justify-center">
             <i class="fas fa-flask text-white dark:text-stone-900 text-sm"></i>

@@ -1,7 +1,7 @@
-# AI Recommendation Engine Architecture for Mind Lab
+# AI Recommendation Engine Architecture for MindQLab
 
 ## 1. Overview
-The **Mind Lab Recommendation Engine** is a hybrid system combining rule-based psychological logic with Large Language Model (LLM) reasoning. It processes "Emotional Compass" entries to provide personalized, scientifically-grounded interventions.
+The **MindQLab Recommendation Engine** is a hybrid system combining rule-based psychological logic with Large Language Model (LLM) reasoning. It processes "Emotional Compass" entries to provide personalized, scientifically-grounded interventions.
 
 **Language:** Russian (Output), English (Internal Logic/Comments)
 **Infrastructure:** Netlify Functions (Node.js) + Groq AI (Llama 3 70B)

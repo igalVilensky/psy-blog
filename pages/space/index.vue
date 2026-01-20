@@ -125,6 +125,9 @@
 import { useHead } from "@unhead/vue";
 import NeuralRewireVisualizer from "~/components/space/habit-override/NeuralRewireVisualizer.vue";
 
+definePageMeta({
+  layout: "laboratory",
+});
 // SEO metadata
 useHead({
   title: "Тренировки мозга и саморазвитие — MindQLab",
