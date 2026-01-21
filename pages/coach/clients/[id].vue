@@ -226,15 +226,90 @@
             </div>
             <div v-else-if="notes.length > 0" class="space-y-4">
               <div v-for="note in notes" :key="note.id"
-                class="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-5">
-                <div class="flex justify-between items-center mb-3">
-                  <span class="text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400">{{
-                    formatDate(note.timestamp || note.createdAt) }}</span>
-                  <button class="text-stone-400 hover:text-red-600 transition-colors">
-                    <i class="fas fa-trash-alt text-xs"></i>
-                  </button>
+                class="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 flex flex-col">
+
+                <!-- Note Header (Actions & Timestamp) -->
+                <div
+                  class="px-5 py-3 border-b border-stone-100 dark:border-stone-800 flex justify-between items-center bg-stone-50/50 dark:bg-stone-800/20">
+                  <span class="text-[10px] font-bold uppercase tracking-widest text-stone-400">
+                    {{ formatDate(note.timestamp || note.createdAt) }}
+                  </span>
+                  <div class="flex items-center gap-4">
+                    <button v-if="!note.normalization" @click="normalizeNote(note)"
+                      :disabled="normalizingNotes.has(note.id)"
+                      class="text-[10px] font-bold uppercase tracking-wider text-stone-500 hover:text-stone-900 dark:hover:text-white transition-colors disabled:opacity-50 flex items-center gap-1.5">
+                      <i class="fas"
+                        :class="normalizingNotes.has(note.id) ? 'fa-spinner fa-spin' : 'fa-wand-magic-sparkles'"></i>
+                      {{ normalizingNotes.has(note.id) ? 'Обработка...' : 'Структурировать' }}
+                    </button>
+                    <button @click="handleNoteDelete(note.id)"
+                      class="text-stone-300 hover:text-red-600 transition-colors">
+                      <i class="fas fa-trash-alt text-[10px]"></i>
+                    </button>
+                  </div>
                 </div>
-                <p class="text-sm text-stone-700 dark:text-stone-300 whitespace-pre-wrap">{{ note.content }}</p>
+
+                <!-- Main Content Area -->
+                <div class="p-5 space-y-6">
+                  <!-- Structured Analysis (Primary if exists) -->
+                  <div v-if="note.normalization" class="space-y-4">
+                    <div class="flex items-center gap-2 mb-2">
+                      <div class="h-px flex-1 bg-stone-100 dark:bg-stone-800"></div>
+                      <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-stone-400">Аналитический
+                        разрез</span>
+                      <div class="h-px flex-1 bg-stone-100 dark:bg-stone-800"></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+                      <div v-if="note.normalization.session_focus" class="space-y-1">
+                        <span class="text-[9px] font-bold uppercase tracking-widest text-stone-400 block">Фокус
+                          сессии</span>
+                        <p class="text-sm font-semibold text-stone-900 dark:text-stone-100 leading-snug">{{
+                          note.normalization.session_focus }}</p>
+                      </div>
+                      <div v-if="note.normalization.client_state" class="space-y-1">
+                        <span class="text-[9px] font-bold uppercase tracking-widest text-stone-400 block">Состояние
+                          клиента</span>
+                        <p class="text-sm font-semibold text-stone-900 dark:text-stone-100 leading-snug">{{
+                          note.normalization.client_state }}</p>
+                      </div>
+                      <div v-if="note.normalization.core_tension" class="space-y-1">
+                        <span class="text-[9px] font-bold uppercase tracking-widest text-stone-400 block">Ключевое
+                          напряжение</span>
+                        <p class="text-sm font-semibold text-stone-900 dark:text-stone-100 leading-snug">{{
+                          note.normalization.core_tension }}</p>
+                      </div>
+                      <div v-if="note.normalization.coach_intention" class="space-y-1">
+                        <span class="text-[9px] font-bold uppercase tracking-widest text-stone-400 block">Намерение
+                          коуча</span>
+                        <p class="text-sm font-semibold text-stone-900 dark:text-stone-100 leading-snug">{{
+                          note.normalization.coach_intention }}</p>
+                      </div>
+                      <div v-if="note.normalization.unresolved_thread"
+                        class="md:col-span-2 space-y-1 pt-2 border-t border-stone-50 dark:border-stone-800/50">
+                        <span class="text-[9px] font-bold uppercase tracking-widest text-stone-400 block">Неразрешенная
+                          нить</span>
+                        <p class="text-sm font-semibold text-stone-900 dark:text-stone-100 leading-relaxed">{{
+                          note.normalization.unresolved_thread }}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Raw Content (Secondary if structured exists, Primary otherwise) -->
+                  <div :class="[
+                    'space-y-3',
+                    note.normalization ? 'pt-4 border-t border-stone-100 dark:border-stone-800 opacity-60 hover:opacity-100 transition-opacity' : ''
+                  ]">
+                    <div v-if="note.normalization" class="flex items-center gap-2 mb-1">
+                      <span class="text-[9px] font-bold uppercase tracking-widest text-stone-400">Исходная
+                        заметка</span>
+                    </div>
+                    <p class="text-sm leading-relaxed"
+                      :class="note.normalization ? 'text-stone-500 dark:text-stone-400' : 'text-stone-800 dark:text-stone-200'">
+                      {{ note.content }}
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
             <div v-else class="text-center py-20 border-2 border-dashed border-stone-300 dark:border-stone-700">
@@ -261,7 +336,7 @@ import { ref, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from '~/stores/auth';
 import { getFirestore, collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
-import { getCoachClientDetails, addCoachNote, getCoachNotes, getClientTrainingResults, getClientEmotionHistory } from '~/api/firebase/coach';
+import { getCoachClientDetails, addCoachNote, getCoachNotes, getClientTrainingResults, getClientEmotionHistory, updateCoachNoteNormalization, deleteCoachNote } from '~/api/firebase/coach';
 
 definePageMeta({
   layout: 'coach',
@@ -290,10 +365,10 @@ const notes = ref([]);
 const newNote = ref('');
 const notesLoading = ref(false);
 const noteSaving = ref(false);
-const emotionsData = ref(null);
 const emotionsLoading = ref(false);
 const trainingData = ref(null);
 const trainingLoading = ref(false);
+const normalizingNotes = ref(new Set());
 
 const EXERCISE_NAMES = {
   targetTracking: 'Отслеживание целей',
@@ -361,6 +436,53 @@ const saveNote = async () => {
     await loadNotes();
   }
   noteSaving.value = false;
+};
+
+const normalizeNote = async (note) => {
+  if (normalizingNotes.value.has(note.id)) return;
+
+  normalizingNotes.value.add(note.id);
+  try {
+    const response = await fetch('/api/ai/normalize-note', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ noteContent: note.content })
+    });
+
+    if (!response.ok) throw new Error('Normalization failed');
+
+    const normalizedData = await response.json();
+    const res = await updateCoachNoteNormalization(note.id, normalizedData);
+
+    if (res.success) {
+      // Update local state
+      const noteIndex = notes.value.findIndex(n => n.id === note.id);
+      if (noteIndex !== -1) {
+        notes.value[noteIndex].normalization = normalizedData;
+        notes.value[noteIndex].normalizedAt = new Date();
+      }
+    }
+  } catch (err) {
+    console.error('Error normalizing note:', err);
+  } finally {
+    normalizingNotes.value.delete(note.id);
+  }
+};
+
+const handleNoteDelete = async (noteId) => {
+  if (!confirm('Вы уверены, что хотите удалить эту заметку?')) return;
+
+  try {
+    const res = await deleteCoachNote(noteId);
+    if (res.success) {
+      notes.value = notes.value.filter(n => n.id !== noteId);
+    } else {
+      alert('Ошибка при удалении заметки');
+    }
+  } catch (err) {
+    console.error('Error deleting note:', err);
+    alert('Произошла ошибка при удалении');
+  }
 };
 
 const loadEmotions = async () => {

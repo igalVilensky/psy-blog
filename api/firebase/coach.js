@@ -8,6 +8,8 @@ import {
     doc,
     getDoc,
     addDoc,
+    updateDoc,
+    deleteDoc,
     serverTimestamp,
     orderBy,
     limit
@@ -71,6 +73,39 @@ export const addCoachNote = async (coachId, clientId, content) => {
         return { success: true, id: docRef.id };
     } catch (error) {
         console.error("Error adding coach note:", error);
+        return { success: false, error };
+    }
+};
+
+/**
+ * Update a note with AI normalization data
+ */
+export const updateCoachNoteNormalization = async (noteId, normalization) => {
+    const db = getFirestore();
+    try {
+        const noteRef = doc(db, "coachNotes", noteId);
+        await updateDoc(noteRef, {
+            normalization,
+            normalizedAt: serverTimestamp()
+        });
+        return { success: true };
+    } catch (error) {
+        console.error("Error updating coach note normalization:", error);
+        return { success: false, error };
+    }
+};
+
+/**
+ * Delete a coach note
+ */
+export const deleteCoachNote = async (noteId) => {
+    const db = getFirestore();
+    try {
+        const noteRef = doc(db, "coachNotes", noteId);
+        await deleteDoc(noteRef);
+        return { success: true };
+    } catch (error) {
+        console.error("Error deleting coach note:", error);
         return { success: false, error };
     }
 };
