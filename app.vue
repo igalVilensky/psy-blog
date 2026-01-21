@@ -55,7 +55,7 @@ useHead({
       sizes: "180x180",
       href: "/apple-touch-icon.png",
     },
-    { rel: "manifest", href: "/site.webmanifest" },
+    { rel: "manifest", href: "/manifest.webmanifest" },
     { rel: "mask-icon", href: "/safari-pinned-tab.svg", color: "#5bbad5" },
     { rel: "canonical", href: `https://www.mindqlab.com${route.path || "/"}` },
   ],
