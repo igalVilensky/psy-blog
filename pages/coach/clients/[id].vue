@@ -212,10 +212,48 @@
         <div v-if="activeTab === 'notes'" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div class="bg-white dark:bg-stone-900 border-l-4 border-stone-900 dark:border-white p-6">
             <h3 class="text-xl font-bold text-stone-900 dark:text-white mb-4">Новая заметка</h3>
-            <textarea v-model="newNote" placeholder="Введите текст заметки..."
-              class="w-full h-32 p-3 bg-stone-50 dark:bg-stone-800 border border-stone-300 dark:border-stone-700 text-sm focus:outline-none resize-none mb-4"></textarea>
-            <button @click="saveNote" :disabled="!newNote || noteSaving"
-              class="w-full py-3 bg-stone-900 dark:bg-white text-white dark:text-stone-900 text-sm font-semibold hover:bg-stone-800 dark:hover:bg-stone-100 disabled:opacity-50">
+            <div class="relative group">
+              <textarea v-model="newNote" placeholder="Введите текст заметки..."
+                class="w-full h-32 p-3 bg-stone-50 dark:bg-stone-800 border border-stone-300 dark:border-stone-700 text-sm focus:outline-none resize-none mb-4 transition-all focus:border-stone-900 dark:focus:border-white"
+                :class="[isListening ? 'ring-1 ring-red-500/50' : '']"></textarea>
+
+              <!-- Voice Toggle Button -->
+              <div class="absolute right-3 bottom-7 flex items-center gap-2">
+                <div v-if="isListening"
+                  class="flex items-center gap-2 px-2 py-1 bg-red-50 dark:bg-red-900/20 text-[10px] font-bold text-red-600 dark:text-red-400 uppercase tracking-widest animate-pulse border border-red-200 dark:border-red-800/50">
+                  <span class="w-1.5 h-1.5 bg-red-600 rounded-full"></span>
+                  Слушаю...
+                </div>
+
+                <div v-if="isSupported"
+                  class="flex border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 shadow-sm overflow-hidden">
+                  <button @click="dictationLang = 'ru-RU'"
+                    class="px-2 py-1 text-[9px] font-bold border-r border-stone-200 dark:border-stone-800 transition-colors"
+                    :class="dictationLang === 'ru-RU' ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-900' : 'text-stone-400 hover:text-stone-600'">
+                    RU
+                  </button>
+                  <button @click="dictationLang = 'en-US'" class="px-2 py-1 text-[9px] font-bold transition-colors"
+                    :class="dictationLang === 'en-US' ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-900' : 'text-stone-400 hover:text-stone-600'">
+                    EN
+                  </button>
+                  <button @click="toggleSpeech"
+                    class="px-3 py-1 flex items-center justify-center transition-all border-l border-stone-200 dark:border-stone-800"
+                    :class="[
+                      isListening ? 'bg-red-600 text-white hover:bg-red-700' : 'text-stone-600 dark:text-stone-400 hover:bg-stone-50 dark:hover:bg-stone-800'
+                    ]" :title="isListening ? 'Остановить' : 'Начать диктовку'">
+                    <i class="fas" :class="isListening ? 'fa-stop text-xs' : 'fa-microphone'"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div v-if="speechError" class="mb-4 text-[10px] font-bold text-red-500 uppercase flex items-center gap-1.5">
+              <i class="fas fa-exclamation-circle"></i>
+              Ошибка: {{ speechError }}
+            </div>
+
+            <button @click="saveNote" :disabled="!newNote || noteSaving || isListening"
+              class="w-full py-3 bg-stone-900 dark:bg-white text-white dark:text-stone-900 text-sm font-semibold hover:bg-stone-800 dark:hover:bg-stone-100 disabled:opacity-50 transition-all active:scale-[0.98]">
               {{ noteSaving ? 'Сохранение...' : 'Сохранить' }}
             </button>
           </div>
@@ -337,6 +375,7 @@ import { useRoute } from 'vue-router';
 import { useAuthStore } from '~/stores/auth';
 import { getFirestore, collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 import { getCoachClientDetails, addCoachNote, getCoachNotes, getClientTrainingResults, getClientEmotionHistory, updateCoachNoteNormalization, deleteCoachNote } from '~/api/firebase/coach';
+import { useSpeechRecognition } from '~/composables/useSpeechRecognition';
 
 definePageMeta({
   layout: 'coach',
@@ -369,6 +408,37 @@ const emotionsLoading = ref(false);
 const trainingData = ref(null);
 const trainingLoading = ref(false);
 const normalizingNotes = ref(new Set());
+
+// Speech Recognition setup
+const {
+  isSupported,
+  isListening,
+  transcript,
+  error: speechError,
+  start: startSpeech,
+  stop: stopSpeech,
+  language: speechLang
+} = useSpeechRecognition();
+
+const dictationLang = ref('ru-RU');
+
+watch(transcript, (newText) => {
+  if (newText) {
+    if (newNote.value) {
+      newNote.value += ' ' + newText;
+    } else {
+      newNote.value = newText;
+    }
+  }
+});
+
+const toggleSpeech = () => {
+  if (isListening.value) {
+    stopSpeech();
+  } else {
+    startSpeech(dictationLang.value);
+  }
+};
 
 const EXERCISE_NAMES = {
   targetTracking: 'Отслеживание целей',
