@@ -7,8 +7,7 @@
       <div class="relative w-24 h-24 mb-8">
         <!-- Neural-like Spinner -->
         <div class="absolute inset-0 rounded-full border-4 border-stone-200 dark:border-stone-800"></div>
-        <div
-          class="absolute inset-0 rounded-full border-4 border-stone-900 dark:border-white border-t-transparent animate-spin">
+        <div class="absolute inset-0 rounded-full border-4 border-stone-900 border-t-transparent animate-spin">
         </div>
         <div class="absolute inset-0 flex items-center justify-center">
           <i class="fas fa-brain text-4xl text-stone-900 dark:text-white animate-pulse"></i>
