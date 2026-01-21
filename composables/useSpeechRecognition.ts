@@ -3,12 +3,14 @@ import { ref, onBeforeUnmount } from 'vue';
 export const useSpeechRecognition = () => {
     const isSupported = typeof window !== 'undefined' && (!!(window as any).SpeechRecognition || !!(window as any).webkitSpeechRecognition);
     const isListening = ref(false);
-    const transcript = ref('');
+    const transcript = ref<{ text: string } | null>(null);
+    const interimTranscript = ref('');
     const error = ref<string | null>(null);
     const language = ref('ru-RU');
 
     let recognition: any = null;
     let timeoutId: any = null;
+    let lastProcessedIndex = 0;
 
     if (isSupported) {
         const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
@@ -26,15 +28,25 @@ export const useSpeechRecognition = () => {
         };
 
         recognition.onresult = (event: any) => {
-            let result = '';
-            for (let i = event.resultIndex; i < event.results.length; ++i) {
-                if (event.results[i].isFinal) {
-                    result += event.results[i][0].transcript;
+            let finalDelta = '';
+            let interim = '';
+
+            for (let i = 0; i < event.results.length; ++i) {
+                const result = event.results[i];
+                if (result.isFinal) {
+                    if (i >= lastProcessedIndex) {
+                        finalDelta += result[0].transcript;
+                        lastProcessedIndex = i + 1;
+                    }
+                } else {
+                    interim += result[0].transcript;
                 }
             }
-            if (result) {
-                transcript.value = result;
+
+            if (finalDelta) {
+                transcript.value = { text: finalDelta };
             }
+            interimTranscript.value = interim;
         };
 
         recognition.onerror = (event: any) => {
@@ -53,7 +65,9 @@ export const useSpeechRecognition = () => {
     const start = (lang = 'ru-RU') => {
         if (!recognition || isListening.value) return;
 
-        transcript.value = '';
+        transcript.value = null;
+        interimTranscript.value = '';
+        lastProcessedIndex = 0;
         recognition.lang = lang;
         language.value = lang;
 

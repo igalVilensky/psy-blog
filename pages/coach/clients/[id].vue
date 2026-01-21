@@ -216,6 +216,13 @@
               <textarea v-model="newNote" placeholder="Введите текст заметки..."
                 class="w-full h-32 p-3 bg-stone-50 dark:bg-stone-800 border border-stone-300 dark:border-stone-700 text-sm focus:outline-none resize-none mb-4 transition-all focus:border-stone-900 dark:focus:border-white"
                 :class="[isListening ? 'ring-1 ring-red-500/50' : '']"></textarea>
+              
+              <!-- Interim Script Overlay (Mobile friendly feedback) -->
+              <div v-if="isListening && interimTranscript" class="absolute inset-x-3 bottom-14 pointer-events-none">
+                <p class="text-[10px] text-stone-400 dark:text-stone-500 italic bg-white/80 dark:bg-stone-900/80 backdrop-blur-sm px-2 py-1 border border-stone-100 dark:border-stone-800 line-clamp-1">
+                  {{ interimTranscript }}...
+                </p>
+              </div>
 
               <!-- Voice Toggle Button -->
               <div class="absolute right-3 bottom-7 flex items-center gap-2">
@@ -414,6 +421,7 @@ const {
   isSupported,
   isListening,
   transcript,
+  interimTranscript,
   error: speechError,
   start: startSpeech,
   stop: stopSpeech,
@@ -422,12 +430,13 @@ const {
 
 const dictationLang = ref('ru-RU');
 
-watch(transcript, (newText) => {
-  if (newText) {
+watch(transcript, (newObj) => {
+  if (newObj?.text) {
+    const text = newObj.text;
     if (newNote.value) {
-      newNote.value += ' ' + newText;
+      newNote.value += ' ' + text;
     } else {
-      newNote.value = newText;
+      newNote.value = text;
     }
   }
 });
