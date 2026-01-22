@@ -14,6 +14,7 @@ export const addGuideComment = async (firestore, guideSlug, commentData) => {
     const commentsRef = collection(firestore, "guides", guideSlug, "comments");
     const newComment = {
       ...commentData,
+      userId: commentData.userId || null,
       createdAt: serverTimestamp(),
     };
 
@@ -68,6 +69,7 @@ export const addPostComment = async (firestore, postSlug, commentData) => {
     const commentsRef = collection(firestore, "posts", postSlug, "comments");
     const newComment = {
       ...commentData,
+      userId: commentData.userId || null,
       createdAt: serverTimestamp(),
     };
 

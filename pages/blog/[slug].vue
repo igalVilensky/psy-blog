@@ -190,6 +190,7 @@ import { useFirestore } from "~/plugins/firebase";
 import { subscribeUser } from "@/api/firebase/contact";
 import { getPostViewCount } from "@/api/firebase/views";
 import { addPostComment, getPostComments } from "@/api/firebase/comments";
+import { useAuthStore } from "@/stores/auth";
 import { createError } from "h3";
 import TopBar from '~/components/navigation/TopBar.vue';
 import Footer from '~/components/ui/Footer.vue';
@@ -241,6 +242,7 @@ useSeoMeta({
 // Client-only state
 const db = getFirestore();
 const firestore = useFirestore();
+const authStore = useAuthStore();
 const postViews = ref(0);
 const email = ref("");
 
@@ -254,6 +256,14 @@ const comments = ref<Comment[]>([]);
 const newComment = ref({ name: "", email: "", text: "" });
 const isSubmitting = ref(false);
 
+// Auto-fill user info if logged in
+watch(() => authStore.user, (user) => {
+  if (user) {
+    if (!newComment.value.name) newComment.value.name = user.displayName || "";
+    if (!newComment.value.email) newComment.value.email = user.email || "";
+  }
+}, { immediate: true });
+
 const fetchComments = async () => {
   if (!params.slug) return;
   const slug = Array.isArray(params.slug) ? params.slug[0] : params.slug;
@@ -265,10 +275,20 @@ const addNewComment = async () => {
   if (!params.slug) return;
   const slug = Array.isArray(params.slug) ? params.slug[0] : params.slug;
   isSubmitting.value = true;
-  const response = await addPostComment(firestore, slug, { ...newComment.value });
+
+  const commentPayload = {
+    ...newComment.value,
+    userId: authStore.user?.uid || null
+  };
+
+  const response = await addPostComment(firestore, slug, commentPayload);
   if (response.success) {
     await fetchComments();
-    newComment.value = { name: "", email: "", text: "" };
+    newComment.value = {
+      name: authStore.user?.displayName || "",
+      email: authStore.user?.email || "",
+      text: ""
+    };
   }
   isSubmitting.value = false;
 };
