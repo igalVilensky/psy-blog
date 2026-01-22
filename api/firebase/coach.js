@@ -63,10 +63,9 @@ export const getCoachClientDetails = async (clientId) => {
 export const addCoachNote = async (coachId, clientId, content) => {
     const db = getFirestore();
     try {
-        const notesRef = collection(db, "coachNotes");
+        const notesRef = collection(db, "users", clientId, "coachNotes");
         const docRef = await addDoc(notesRef, {
             coachId,
-            clientId,
             content,
             timestamp: serverTimestamp()
         });
@@ -80,10 +79,10 @@ export const addCoachNote = async (coachId, clientId, content) => {
 /**
  * Update a note with AI normalization data
  */
-export const updateCoachNoteNormalization = async (noteId, normalization) => {
+export const updateCoachNoteNormalization = async (clientId, noteId, normalization) => {
     const db = getFirestore();
     try {
-        const noteRef = doc(db, "coachNotes", noteId);
+        const noteRef = doc(db, "users", clientId, "coachNotes", noteId);
         await updateDoc(noteRef, {
             normalization,
             normalizedAt: serverTimestamp()
@@ -98,10 +97,10 @@ export const updateCoachNoteNormalization = async (noteId, normalization) => {
 /**
  * Delete a coach note
  */
-export const deleteCoachNote = async (noteId) => {
+export const deleteCoachNote = async (clientId, noteId) => {
     const db = getFirestore();
     try {
-        const noteRef = doc(db, "coachNotes", noteId);
+        const noteRef = doc(db, "users", clientId, "coachNotes", noteId);
         await deleteDoc(noteRef);
         return { success: true };
     } catch (error) {
@@ -116,11 +115,10 @@ export const deleteCoachNote = async (noteId) => {
 export const getCoachNotes = async (coachId, clientId) => {
     const db = getFirestore();
     try {
-        const notesRef = collection(db, "coachNotes");
+        const notesRef = collection(db, "users", clientId, "coachNotes");
         const q = query(
             notesRef,
             where("coachId", "==", coachId),
-            where("clientId", "==", clientId),
             orderBy("timestamp", "desc")
         );
         const snapshot = await getDocs(q);

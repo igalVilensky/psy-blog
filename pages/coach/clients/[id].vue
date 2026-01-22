@@ -531,7 +531,7 @@ const normalizeNote = async (note) => {
     if (!response.ok) throw new Error('Normalization failed');
 
     const normalizedData = await response.json();
-    const res = await updateCoachNoteNormalization(note.id, normalizedData);
+    const res = await updateCoachNoteNormalization(client.value.id, note.id, normalizedData);
 
     if (res.success) {
       // Update local state
@@ -552,7 +552,7 @@ const handleNoteDelete = async (noteId) => {
   if (!confirm('Вы уверены, что хотите удалить эту заметку?')) return;
 
   try {
-    const res = await deleteCoachNote(noteId);
+    const res = await deleteCoachNote(client.value.id, noteId);
     if (res.success) {
       notes.value = notes.value.filter(n => n.id !== noteId);
     } else {
