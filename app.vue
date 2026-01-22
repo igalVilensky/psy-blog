@@ -20,7 +20,7 @@ onMounted(() => {
 useHead({
   // Global title template
   titleTemplate: (title) =>
-    title ? `${title} – MindQLab` : "MindQLab — Среда осознанного развития",
+    title ? `${title} – MindQLab` : "MindQLab - Среда осознанного развития",
 
   meta: [
     { charset: "utf-8" },

@@ -761,7 +761,6 @@ const calculateArchetypePercentage = (level) => {
 
 const handleDownload = (url) => {
   if (!url || url === "#") {
-    console.log("No guide available for this archetype");
     return;
   }
   const link = document.createElement("a");

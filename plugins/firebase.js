@@ -54,10 +54,8 @@ export default defineNuxtPlugin((nuxtApp) => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         userId.value = user.uid;
-        // console.log("Пользователь вошёл:", userId.value);
       } else {
         userId.value = null;
-        // console.log("Пользователь вышел");
       }
     });
   }

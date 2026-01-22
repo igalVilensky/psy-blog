@@ -39,14 +39,14 @@ class MandalaEffect {
     this.particles = [];
     const layers = 6; // Reduced layers for clarity
     const particlesPerLayer = 16;
-    
+
     for (let i = 0; i < layers; i++) {
       const radius = 30 + i * 35;
       const speed = (i % 2 === 0 ? 1 : -1) * (0.5 + Math.random() * 0.5);
       const size = 1.5 + Math.random() * 2;
-      const hue = 170 + i * 10 + Math.random() * 20; 
+      const hue = 170 + i * 10 + Math.random() * 20;
       const color = `hsla(${hue}, 80%, 70%, 0.8)`; // Brighter
-      
+
       for (let j = 0; j < particlesPerLayer; j++) {
         const angle = (j / particlesPerLayer) * Math.PI * 2;
         this.particles.push({
@@ -79,7 +79,7 @@ class MandalaEffect {
       // Draw
       const x = centerX + Math.cos(p.angle) * p.radius;
       const y = centerY + Math.sin(p.angle) * p.radius;
-      
+
       ctx.beginPath();
       ctx.arc(x, y, p.size, 0, Math.PI * 2);
       ctx.fillStyle = p.color;
@@ -115,35 +115,35 @@ class WaveEffect {
 
   draw(ctx, width, height, time) {
     const centerY = height / 2;
-    
+
     // Use composite operation for glowing overlap
     ctx.globalCompositeOperation = 'screen';
 
     this.waves.forEach((wave, i) => {
       ctx.beginPath();
       ctx.moveTo(0, height); // Start from bottom corners to fill
-      
+
       for (let x = 0; x <= width; x += 10) {
         // Complex wave equation
         const y = centerY + wave.y +
-                  Math.sin(x * wave.frequency + time * wave.speed * 20 + wave.offset) * wave.amplitude +
-                  Math.sin(x * wave.frequency * 2 + time * wave.speed * 15) * (wave.amplitude * 0.5);
+          Math.sin(x * wave.frequency + time * wave.speed * 20 + wave.offset) * wave.amplitude +
+          Math.sin(x * wave.frequency * 2 + time * wave.speed * 15) * (wave.amplitude * 0.5);
         ctx.lineTo(x, y);
       }
-      
+
       ctx.lineTo(width, height);
       ctx.lineTo(0, height);
       ctx.closePath();
-      
+
       // Gradient fill
       const gradient = ctx.createLinearGradient(0, centerY - 100, 0, height);
       gradient.addColorStop(0, wave.color);
       gradient.addColorStop(1, 'transparent');
-      
+
       ctx.fillStyle = gradient;
       ctx.fill();
     });
-    
+
     ctx.globalCompositeOperation = 'source-over';
   }
 }
@@ -178,7 +178,7 @@ class OrbEffect {
       // Move
       orb.x += orb.vx;
       orb.y += orb.vy;
-      
+
       // Wrap around
       if (orb.x < -0.2) orb.x = 1.2;
       if (orb.x > 1.2) orb.x = -0.2;
@@ -187,16 +187,16 @@ class OrbEffect {
 
       const x = orb.x * width;
       const y = orb.y * height;
-      
+
       // Pulse
       const currentRadius = orb.radius + Math.sin(time * 2 + orb.pulseOffset) * 10;
-      
+
       // Draw soft glow
       const gradient = ctx.createRadialGradient(x, y, 0, x, y, currentRadius);
       gradient.addColorStop(0, `hsla(${orb.hue}, 80%, 70%, 0.4)`);
       gradient.addColorStop(0.5, `hsla(${orb.hue}, 80%, 70%, 0.1)`);
       gradient.addColorStop(1, 'transparent');
-      
+
       ctx.fillStyle = gradient;
       ctx.beginPath();
       ctx.arc(x, y, currentRadius, 0, Math.PI * 2);
@@ -214,7 +214,7 @@ const resize = () => {
   const parent = canvas.value.parentElement;
   width = parent.clientWidth;
   height = parent.clientHeight;
-  
+
   const dpr = window.devicePixelRatio || 1;
   canvas.value.width = width * dpr;
   canvas.value.height = height * dpr;
@@ -245,13 +245,11 @@ onMounted(() => {
     ctx = canvas.value.getContext('2d');
     resize();
     window.addEventListener('resize', resize);
-    
+
     // Randomly select effect
     const effects = [MandalaEffect, WaveEffect, OrbEffect];
     const RandomEffect = effects[Math.floor(Math.random() * effects.length)];
     currentEffect = new RandomEffect();
-    console.log("✨ Selected meditation visual:", RandomEffect.name);
-    
     animate();
   }
 });
@@ -266,6 +264,7 @@ onUnmounted(() => {
 
 <style scoped>
 canvas {
-  filter: blur(1px); /* Increased blur for dreamier look */
+  filter: blur(1px);
+  /* Increased blur for dreamier look */
 }
 </style>

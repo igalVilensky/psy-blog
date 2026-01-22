@@ -47,7 +47,6 @@ export const useAuthStore = defineStore("auth", {
                   isCoach: userProfile.role === "coach" || !!idTokenResult.claims.coach,
                   token: idTokenResult.token,
                 };
-                console.log(this.user);
               } catch (err) {
                 this.error = "Failed to load user profile";
                 console.error(err);

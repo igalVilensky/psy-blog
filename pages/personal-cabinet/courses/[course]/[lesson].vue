@@ -15,20 +15,14 @@
         <!-- Course Progress Bar -->
         <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
           <div class="flex items-center justify-between mb-2">
-            <span class="text-sm font-medium text-gray-600"
-              >Прогресс курса</span
-            >
+            <span class="text-sm font-medium text-gray-600">Прогресс курса</span>
             <span class="text-sm text-gray-500">
               {{ completedLessons.length }}/{{ course?.lessons.length }} уроков
             </span>
           </div>
           <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
-            <div
-              class="h-full bg-gradient-to-r from-blue-500 to-blue-600 transition-all duration-500"
-              :style="`width: ${
-                (completedLessons.length / course?.lessons.length) * 100
-              }%`"
-            ></div>
+            <div class="h-full bg-gradient-to-r from-blue-500 to-blue-600 transition-all duration-500" :style="`width: ${(completedLessons.length / course?.lessons.length) * 100
+              }%`"></div>
           </div>
         </div>
 
@@ -36,9 +30,7 @@
         <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
           <div class="flex flex-col sm:flex-row gap-6">
             <div class="flex-1">
-              <h1
-                class="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent"
-              >
+              <h1 class="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
                 {{ lesson?.title }}
               </h1>
               <p class="text-gray-600 mt-3 text-lg">
@@ -57,18 +49,13 @@
               </div>
             </div>
             <div class="flex items-center">
-              <button
-                v-if="!isLessonCompleted"
-                @click="markLessonAsCompleted"
-                class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 shadow-sm transition-all duration-200 hover:shadow"
-              >
+              <button v-if="!isLessonCompleted" @click="markLessonAsCompleted"
+                class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 shadow-sm transition-all duration-200 hover:shadow">
                 <i class="fas fa-check-circle mr-2"></i>
                 Завершить урок
               </button>
-              <div
-                v-else
-                class="inline-flex items-center px-6 py-3 bg-green-50 text-green-700 rounded-xl border border-green-200"
-              >
+              <div v-else
+                class="inline-flex items-center px-6 py-3 bg-green-50 text-green-700 rounded-xl border border-green-200">
                 <i class="fas fa-check-circle mr-2"></i>
                 Урок завершен
               </div>
@@ -77,19 +64,13 @@
         </div>
 
         <!-- Video Player Card -->
-        <div
-          class="bg-white rounded-xl sm:p-6 shadow-sm border border-gray-100"
-        >
+        <div class="bg-white rounded-xl sm:p-6 shadow-sm border border-gray-100">
           <div class="aspect-w-16 aspect-h-9">
-            <iframe
-              :src="`https://www.youtube.com/embed/${getYouTubeVideoId(
-                lesson?.videoUrl
-              )}`"
-              class="w-full h-full rounded-xl"
-              frameborder="0"
+            <iframe :src="`https://www.youtube.com/embed/${getYouTubeVideoId(
+              lesson?.videoUrl
+            )}`" class="w-full h-full rounded-xl" frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-            ></iframe>
+              allowfullscreen></iframe>
           </div>
         </div>
 
@@ -101,31 +82,20 @@
           </h2>
           <textarea
             class="w-full h-32 p-4 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-            placeholder="Добавьте свои заметки к уроку..."
-          ></textarea>
+            placeholder="Добавьте свои заметки к уроку..."></textarea>
         </div>
 
         <!-- Navigation Buttons -->
         <div class="flex flex-col sm:flex-row justify-between gap-4 mt-8">
-          <NuxtLink
-            v-if="previousLesson"
-            :to="`/personal-cabinet/courses/${courseSlug}/${previousLesson.slug}`"
-            class="inline-flex items-center px-6 py-3 bg-white text-gray-700 rounded-xl hover:bg-gray-50 shadow-sm border border-gray-200 transition-all duration-200 group"
-          >
-            <i
-              class="fas fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"
-            ></i>
+          <NuxtLink v-if="previousLesson" :to="`/personal-cabinet/courses/${courseSlug}/${previousLesson.slug}`"
+            class="inline-flex items-center px-6 py-3 bg-white text-gray-700 rounded-xl hover:bg-gray-50 shadow-sm border border-gray-200 transition-all duration-200 group">
+            <i class="fas fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i>
             Предыдущий урок
           </NuxtLink>
-          <NuxtLink
-            v-if="nextLesson"
-            :to="`/personal-cabinet/courses/${courseSlug}/${nextLesson.slug}`"
-            class="inline-flex justify-end items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 shadow-sm transition-all duration-200 group sm:ml-auto"
-          >
+          <NuxtLink v-if="nextLesson" :to="`/personal-cabinet/courses/${courseSlug}/${nextLesson.slug}`"
+            class="inline-flex justify-end items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 shadow-sm transition-all duration-200 group sm:ml-auto">
             Следующий урок
-            <i
-              class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"
-            ></i>
+            <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
           </NuxtLink>
         </div>
       </div>
@@ -184,12 +154,6 @@ const fetchCourseData = async () => {
     // Fetch static course data from data/courses folder
     const courseModule = await import(`~/data/courses/${courseSlug}.js`);
     course.value = courseModule.course;
-
-    // Log the course data and lessons
-    console.log("Course Data:", course.value);
-    console.log("Total Lessons:", course.value?.lessons.length);
-    console.log("All Lessons:", course.value?.lessons);
-
     // Find the current lesson by matching the slug
     lesson.value = course.value.lessons.find((l) => l.slug === lessonSlug);
 
@@ -343,21 +307,11 @@ const normalizeSlug = (slug) => slug.trim().toLowerCase().replace(/\s+/g, "-");
 // Find the current lesson index
 const currentLessonIndex = computed(() => {
   const lessons = course.value?.lessons || [];
-
-  // Log the slugs of the lessons
-  lessons.forEach((lesson) => {
-    console.log("Lesson Slug:", lesson.slug);
-  });
-
-  console.log("URL Lesson Slug:", lessonSlug);
-
   const normalizedLessonSlug = normalizeSlug(lessonSlug);
-  console.log("Normalized URL Lesson Slug:", normalizedLessonSlug);
 
   const index = lessons.findIndex(
     (l) => normalizeSlug(l.slug) === normalizedLessonSlug
   );
-  console.log("Found Index:", index);
 
   return index;
 });
@@ -369,7 +323,6 @@ const previousLesson = computed(() => {
       ? course.value.lessons[currentLessonIndex.value - 1]
       : null;
 
-  console.log("Previous Lesson:", prevLesson);
   return prevLesson;
 });
 
@@ -379,7 +332,6 @@ const nextLesson = computed(() => {
       ? course.value.lessons[currentLessonIndex.value + 1]
       : null;
 
-  console.log("Next Lesson:", nextLesson);
   return nextLesson;
 });
 
@@ -390,7 +342,8 @@ onMounted(async () => {
 <style>
 .aspect-w-16 {
   position: relative;
-  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  padding-bottom: 56.25%;
+  /* 16:9 Aspect Ratio */
 }
 
 .aspect-w-16 iframe {

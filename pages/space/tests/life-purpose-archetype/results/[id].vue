@@ -273,10 +273,8 @@ const formatDate = (timestamp) => {
 // Handle download programmatically
 const handleDownload = (url) => {
   if (url === "#") {
-    console.log("No guide available for this archetype");
     return; // Ignore if no guide exists
   }
-  console.log("Downloading from:", url);
   const link = document.createElement("a");
   link.href = url;
   link.download = ""; // Optional: Set a specific filename here if desired (e.g., "Сирота_Гайд.pdf")

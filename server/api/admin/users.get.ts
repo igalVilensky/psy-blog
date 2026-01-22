@@ -24,9 +24,7 @@ export default defineEventHandler(async (event) => {
         }
 
         // 2. Fetch Users from Firestore
-        console.log('Fetching users from Firestore...');
         const usersSnapshot = await adminDb.collection('users').get();
-        console.log(`Found ${usersSnapshot.size} documents in 'users' collection`);
 
         const users = usersSnapshot.docs.map((doc: any) => {
             const data = doc.data();

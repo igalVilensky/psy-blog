@@ -66,7 +66,7 @@ export default defineNuxtConfig({
       globPatterns: ["**/*.{js,css,html,png,svg,ico}"],
     },
     client: {
-      installPrompt: true,
+      installPrompt: false,
     },
     devOptions: {
       enabled: true,

@@ -1015,8 +1015,6 @@ const fetchUserData = async () => {
     const qTargetTracking = query(collection(db, `users/${authStore.user.uid}/targetTrackingResults`), orderBy("createdAt", "desc"));
     const snapshotTargetTracking = await getDocs(qTargetTracking);
     targetTrackingResults.value = snapshotTargetTracking.docs.map(doc => doc.data());
-    console.log('Target Tracking Results:', targetTrackingResults.value);
-    console.log('Target Tracking Count:', targetTrackingResults.value.length);
 
     // Double Game Results
     const qDouble = query(collection(db, `users/${authStore.user.uid}/doubleGameResults`), orderBy("timestamp", "desc"));

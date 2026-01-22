@@ -57,8 +57,6 @@ export const purchaseCourse = async (userId, course) => {
     // Add the course data to the coursesData collection
     const courseRef = doc(db, "coursesData", `${userId}_${course.id}`);
     await setDoc(courseRef, courseData);
-
-    console.log("Course purchased successfully:", courseData);
   } catch (error) {
     console.error("Error purchasing course:", error);
     throw error;

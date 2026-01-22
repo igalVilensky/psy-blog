@@ -488,8 +488,6 @@ const getDifficultyClass = (difficulty) => {
 };
 
 const playGame = (game) => {
-  console.log("Playing game:", game.title);
-
   // Navigate to reaction.vue for the reaction game
   if (game.id === "reaction") {
     navigateTo("/space/brain-training/reaction");

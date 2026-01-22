@@ -104,7 +104,7 @@
                     <div class="flex flex-col" v-if="settings.mode === 'endless'">
                         <span class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-1">Уровень</span>
                         <span class="text-2xl font-black text-slate-700 dark:text-slate-200 font-mono">{{ level
-                            }}</span>
+                        }}</span>
                     </div>
                     <div class="flex flex-col" v-else>
                         <span class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-1">Время</span>
@@ -512,7 +512,6 @@ const generateLevel = () => {
 
     targetShapeId = targetId;
     targetName.value = SHAPES.find(s => s.id === targetId)?.name || 'Unknown';
-    console.log(`[DoubleGame] Level ${level.value}. Target: ${targetName.value} (ID: ${targetId}).`);
 
     // Layout & Draw
     currentShapesLeft = layoutGrid(finalLeft);

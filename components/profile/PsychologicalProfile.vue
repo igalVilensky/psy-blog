@@ -3,16 +3,11 @@
     <!-- Main Content -->
     <div class="lg:col-span-2 space-y-8">
       <div
-        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-6 sm:p-8 transition-all duration-300"
-      >
+        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-6 sm:p-8 transition-all duration-300">
         <!-- Title and Tabs -->
         <div class="flex flex-col justify-between mb-6">
-          <div
-            class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 mb-4"
-          >
-            <h2
-              class="text-xl font-bold text-white/90 text-left flex items-center whitespace-nowrap"
-            >
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 mb-4">
+            <h2 class="text-xl font-bold text-white/90 text-left flex items-center whitespace-nowrap">
               <i class="fas fa-brain text-[#0EA5E9] mr-2"></i>
               Психологический профиль
             </h2>
@@ -23,22 +18,15 @@
 
           <!-- Tabs with Smooth Transitions -->
           <div class="flex flex-wrap gap-2 sm:gap-4 w-full">
-            <button
-              v-for="tab in tabs"
-              :key="tab.id"
-              @click="switchTab(tab.id)"
-              :class="[
-                'w-full sm:w-auto flex-1 px-4 py-2.5 rounded-lg transition-all duration-300 flex items-center justify-center gap-2',
-                activeTab === tab.id
-                  ? 'bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white shadow-lg shadow-[#0EA5E9]/20'
-                  : 'bg-[#0EA5E9]/20 text-[#0EA5E9] hover:bg-[#0EA5E9]/30 hover:scale-102',
-              ]"
-            >
+            <button v-for="tab in tabs" :key="tab.id" @click="switchTab(tab.id)" :class="[
+              'w-full sm:w-auto flex-1 px-4 py-2.5 rounded-lg transition-all duration-300 flex items-center justify-center gap-2',
+              activeTab === tab.id
+                ? 'bg-gradient-to-r from-[#0EA5E9] to-[#E879F9] text-white shadow-lg shadow-[#0EA5E9]/20'
+                : 'bg-[#0EA5E9]/20 text-[#0EA5E9] hover:bg-[#0EA5E9]/30 hover:scale-102',
+            ]">
               <i :class="['fas', tab.icon]"></i>
               <span>{{ tab.name }}</span>
-              <span class="text-xs opacity-75" v-if="tab.count"
-                >({{ tab.count }})</span
-              >
+              <span class="text-xs opacity-75" v-if="tab.count">({{ tab.count }})</span>
             </button>
           </div>
         </div>
@@ -51,32 +39,17 @@
         </div>
 
         <!-- Content with Transitions -->
-        <TransitionGroup
-          name="fade"
-          tag="div"
-          v-else
-          class="transition-all duration-300"
-        >
+        <TransitionGroup name="fade" tag="div" v-else class="transition-all duration-300">
           <!-- Archetypes Tab -->
           <div v-if="activeTab === 'archetypes'" key="archetypes">
-            <div
-              v-if="!archetypes || archetypes.length === 0"
-              class="empty-state"
-            >
-              <div
-                class="flex flex-col items-center justify-center h-64 text-center"
-              >
-                <i
-                  class="fas fa-chart-pie text-4xl text-[#0EA5E9] mb-4 animate-bounce"
-                ></i>
+            <div v-if="!archetypes || archetypes.length === 0" class="empty-state">
+              <div class="flex flex-col items-center justify-center h-64 text-center">
+                <i class="fas fa-chart-pie text-4xl text-[#0EA5E9] mb-4 animate-bounce"></i>
                 <p class="text-slate-300">Нет данных для отображения.</p>
                 <p class="text-sm text-slate-400 mt-2">
                   Пройдите тест, чтобы увидеть ваш психологический профиль.
                 </p>
-                <NuxtLink
-                  to="/space/growth/life-purpose-archetype"
-                  class="btn-primary mt-4"
-                >
+                <NuxtLink to="/space/growth/life-purpose-archetype" class="btn-primary mt-4">
                   <i class="fas fa-play-circle text-sm mr-2"></i>
                   Пройти тест
                 </NuxtLink>
@@ -85,25 +58,17 @@
 
             <div v-else class="space-y-6">
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div
-                  v-for="(archetype, index) in visibleArchetypes"
-                  :key="archetype.name"
-                  class="archetype-card"
-                  :style="{ animationDelay: `${index * 100}ms` }"
-                >
-                  <div
-                    :class="[
-                      'w-16 h-16 rounded-full flex items-center justify-center transition-transform hover:scale-110',
-                      `bg-[#0EA5E9]/20`,
-                    ]"
-                  >
-                    <i
-                      :class="[
-                        'fas',
-                        archetype.icon || 'fa-question',
-                        `text-[#E879F9] text-2xl`,
-                      ]"
-                    ></i>
+                <div v-for="(archetype, index) in visibleArchetypes" :key="archetype.name" class="archetype-card"
+                  :style="{ animationDelay: `${index * 100}ms` }">
+                  <div :class="[
+                    'w-16 h-16 rounded-full flex items-center justify-center transition-transform hover:scale-110',
+                    `bg-[#0EA5E9]/20`,
+                  ]">
+                    <i :class="[
+                      'fas',
+                      archetype.icon || 'fa-question',
+                      `text-[#E879F9] text-2xl`,
+                    ]"></i>
                   </div>
                   <div class="flex-1">
                     <h3 class="font-semibold text-white/90 mb-1 capitalize">
@@ -120,23 +85,19 @@
                             width: `${calculateArchetypePercentage(
                               archetype.level
                             )}%`,
-                          }"
-                        ></div>
+                          }"></div>
                       </div>
                       <span class="ml-2 text-sm font-medium text-slate-400">{{
                         archetype.level
                       }}</span>
                     </div>
                     <!-- Download Button -->
-                    <button
-                      v-if="
-                        isAuthenticated &&
-                        archetype.guideUrl &&
-                        archetype.guideUrl !== '#'
-                      "
-                      @click="handleDownload(archetype.guideUrl)"
-                      class="mt-4 w-full bg-[#1A2038] hover:bg-[#0EA5E9]/20 text-[#0EA5E9] py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition-all duration-300 border border-[#0EA5E9]/20"
-                    >
+                    <button v-if="
+                      isAuthenticated &&
+                      archetype.guideUrl &&
+                      archetype.guideUrl !== '#'
+                    " @click="handleDownload(archetype.guideUrl)"
+                      class="mt-4 w-full bg-[#1A2038] hover:bg-[#0EA5E9]/20 text-[#0EA5E9] py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition-all duration-300 border border-[#0EA5E9]/20">
                       <i class="fas fa-download"></i>
                       <span>Скачать гайд</span>
                     </button>
@@ -144,18 +105,12 @@
                 </div>
               </div>
 
-              <button
-                v-if="archetypes.length > 4"
-                @click="toggleShowMore"
-                class="btn-secondary w-full sm:w-auto"
-              >
-                <i
-                  :class="[
-                    'fas',
-                    showMore ? 'fa-chevron-up' : 'fa-chevron-down',
-                    'mr-2',
-                  ]"
-                ></i>
+              <button v-if="archetypes.length > 4" @click="toggleShowMore" class="btn-secondary w-full sm:w-auto">
+                <i :class="[
+                  'fas',
+                  showMore ? 'fa-chevron-up' : 'fa-chevron-down',
+                  'mr-2',
+                ]"></i>
                 {{ showMore ? "Скрыть" : "Показать больше" }}
               </button>
             </div>
@@ -163,55 +118,32 @@
 
           <!-- Big Five Tab -->
           <div v-if="activeTab === 'bigFive'" key="bigFive" class="space-y-6">
-            <div
-              v-for="(trait, index) in bigFiveTraits"
-              :key="trait.name"
-              class="trait-card"
-              :style="{ animationDelay: `${index * 100}ms` }"
-            >
+            <div v-for="(trait, index) in bigFiveTraits" :key="trait.name" class="trait-card"
+              :style="{ animationDelay: `${index * 100}ms` }">
               <div class="flex justify-between items-center mb-2">
                 <div class="flex items-center gap-2">
-                  <i
-                    :class="['fas', trait.icon, `text-${trait.color}-400`]"
-                  ></i>
+                  <i :class="['fas', trait.icon, `text-${trait.color}-400`]"></i>
                   <span class="text-slate-300 font-medium">{{
                     trait.name
                   }}</span>
                 </div>
-                <span class="text-sm font-medium text-slate-400"
-                  >{{ trait.value }}%</span
-                >
+                <span class="text-sm font-medium text-slate-400">{{ trait.value }}%</span>
               </div>
-              <div
-                class="relative h-2 bg-[#0EA5E9]/20 rounded-full overflow-hidden"
-              >
-                <div
-                  class="absolute h-2 rounded-full transition-all duration-1000 animate-widthExpand"
-                  :class="`bg-${trait.color}-500`"
-                  :style="{ width: `${trait.value}%` }"
-                ></div>
+              <div class="relative h-2 bg-[#0EA5E9]/20 rounded-full overflow-hidden">
+                <div class="absolute h-2 rounded-full transition-all duration-1000 animate-widthExpand"
+                  :class="`bg-${trait.color}-500`" :style="{ width: `${trait.value}%` }"></div>
               </div>
               <p class="text-sm text-slate-400 mt-2">{{ trait.description }}</p>
             </div>
           </div>
 
           <!-- Cognitive Styles Tab -->
-          <div
-            v-if="activeTab === 'cognitive'"
-            key="cognitive"
-            class="space-y-6"
-          >
+          <div v-if="activeTab === 'cognitive'" key="cognitive" class="space-y-6">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div
-                v-for="(style, index) in cognitiveStyles"
-                :key="style.name"
-                class="cognitive-card"
-                :style="{ animationDelay: `${index * 100}ms` }"
-              >
+              <div v-for="(style, index) in cognitiveStyles" :key="style.name" class="cognitive-card"
+                :style="{ animationDelay: `${index * 100}ms` }">
                 <div class="flex items-center gap-3 mb-3">
-                  <div
-                    class="w-10 h-10 rounded-full bg-[#0EA5E9]/20 flex items-center justify-center"
-                  >
+                  <div class="w-10 h-10 rounded-full bg-[#0EA5E9]/20 flex items-center justify-center">
                     <i :class="['fas', style.icon, 'text-[#0EA5E9]']"></i>
                   </div>
                   <h3 class="font-semibold text-white/90">{{ style.name }}</h3>
@@ -221,14 +153,10 @@
                 </p>
                 <div class="flex items-center gap-2">
                   <div class="flex-1 h-2 bg-[#0EA5E9]/20 rounded-full">
-                    <div
-                      class="h-2 rounded-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9]"
-                      :style="{ width: `${style.level * 10}%` }"
-                    ></div>
+                    <div class="h-2 rounded-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9]"
+                      :style="{ width: `${style.level * 10}%` }"></div>
                   </div>
-                  <span class="text-sm font-medium text-slate-400"
-                    >{{ style.level }}/10</span
-                  >
+                  <span class="text-sm font-medium text-slate-400">{{ style.level }}/10</span>
                 </div>
               </div>
             </div>
@@ -240,8 +168,7 @@
     <!-- Right Sidebar Stats -->
     <div class="space-y-8">
       <div
-        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-6 sm:p-8"
-      >
+        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-6 sm:p-8">
         <h2 class="text-xl font-bold text-white/90 mb-6 flex items-center">
           <i class="fas fa-chart-line text-[#0EA5E9] mr-2"></i>
           Развитие личности
@@ -253,12 +180,9 @@
               <span class="font-semibold text-white/90">{{ stat.value }}</span>
             </div>
             <div class="h-1.5 bg-[#0EA5E9]/20 rounded-full">
-              <div
-                class="h-1.5 rounded-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9]"
-                :style="{
-                  width: getStatWidth(stat.value),
-                }"
-              ></div>
+              <div class="h-1.5 rounded-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9]" :style="{
+                width: getStatWidth(stat.value),
+              }"></div>
             </div>
           </div>
         </div>
@@ -266,23 +190,16 @@
 
       <!-- Additional Stats Card -->
       <div
-        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-6 sm:p-8"
-      >
+        class="bg-gradient-to-b from-[#1A1F35]/40 to-[#1E293B]/60 backdrop-blur-xl rounded-2xl border border-white/10 p-6 sm:p-8">
         <h3 class="text-lg font-semibold text-white/90 mb-4">Прогресс</h3>
         <div class="space-y-4">
           <div class="flex items-center justify-between text-sm">
             <span class="text-slate-400">Завершено тестов</span>
-            <span class="text-white/90"
-              >{{ completedTests }}/{{ totalTests }}</span
-            >
+            <span class="text-white/90">{{ completedTests }}/{{ totalTests }}</span>
           </div>
-          <div
-            class="relative h-2 bg-[#0EA5E9]/20 rounded-full overflow-hidden"
-          >
-            <div
-              class="absolute h-2 rounded-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9]"
-              :style="{ width: `${(completedTests / totalTests) * 100}%` }"
-            ></div>
+          <div class="relative h-2 bg-[#0EA5E9]/20 rounded-full overflow-hidden">
+            <div class="absolute h-2 rounded-full bg-gradient-to-r from-[#0EA5E9] to-[#E879F9]"
+              :style="{ width: `${(completedTests / totalTests) * 100}%` }"></div>
           </div>
         </div>
       </div>
@@ -497,10 +414,8 @@ const toggleShowMore = () => {
 // Handle download logic
 const handleDownload = (url) => {
   if (!url || url === "#") {
-    console.log("No guide available for this archetype");
     return;
   }
-  console.log("Downloading from:", url);
   const link = document.createElement("a");
   link.href = url;
   link.download = "";
@@ -526,10 +441,6 @@ watch(
 watch(
   () => props.archetypes,
   (newArchetypes) => {
-    console.log(
-      "🔄 Archetypes updated in PsychologicalProfile:",
-      newArchetypes
-    );
   },
   { immediate: true }
 );
@@ -575,6 +486,7 @@ watch(
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -599,17 +511,20 @@ watch(
 .bg-pink-500 {
   background-color: rgb(236, 72, 153);
 }
+
 .bg-blue-500 {
   background-color: rgb(59, 130, 246);
 }
+
 .bg-green-500 {
   background-color: rgb(34, 197, 94);
 }
+
 .bg-cyan-500 {
   background-color: rgb(168, 85, 247);
 }
+
 .bg-yellow-500 {
   background-color: rgb(234, 179, 8);
 }
 </style>
-

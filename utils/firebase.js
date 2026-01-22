@@ -18,7 +18,6 @@ export const getUserProfile = async (userId) => {
     if (userDocSnap.exists()) {
       return userDocSnap.data();
     } else {
-      console.log("No such document!");
       return null;
     }
   } catch (error) {

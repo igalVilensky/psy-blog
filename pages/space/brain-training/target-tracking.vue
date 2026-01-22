@@ -77,13 +77,13 @@
                             feedback === 'hit' ? 'animate-hit' : '',
                             feedback === 'miss' ? 'animate-miss' : ''
                         ]" :style="{
-                left: targetPosition.x + 'px',
-                top: targetPosition.y + 'px',
-                width: targetSize + 'px',
-                height: targetSize + 'px',
-                background: 'radial-gradient(circle at 30% 30%, #ec4899, #be185d)',
-                transform: `translate(-50%, -50%) scale(${feedback === 'hit' ? 0 : 1})`
-            }">
+                            left: targetPosition.x + 'px',
+                            top: targetPosition.y + 'px',
+                            width: targetSize + 'px',
+                            height: targetSize + 'px',
+                            background: 'radial-gradient(circle at 30% 30%, #ec4899, #be185d)',
+                            transform: `translate(-50%, -50%) scale(${feedback === 'hit' ? 0 : 1})`
+                        }">
                         <div class="absolute inset-0 rounded-full bg-white/30 blur-sm"></div>
                     </div>
 
@@ -386,7 +386,6 @@ const saveResults = async () => {
         };
 
         const docRef = await addDoc(collection($firestore, `users/${user.uid}/targetTrackingResults`), sessionData);
-        console.log('Results saved successfully to', docRef.path);
     } catch (e) {
         console.error('Error saving results:', e);
     }
@@ -530,4 +529,3 @@ onUnmounted(() => {
     }
 }
 </style>
-
