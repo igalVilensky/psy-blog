@@ -1,7 +1,7 @@
 // Mental Shift - Cognitive Flexibility Training Engine
 // Implements multi-modal rule switching with numeric, shape, and Stroop tasks
 
-export type Difficulty = 'easy' | 'medium' | 'hard';
+
 export type StimulusType = 'number' | 'shape' | 'colorWord';
 export type RuleType = 'parity' | 'magnitude' | 'shapeEdges' | 'stroopConflict';
 
