@@ -103,6 +103,7 @@ const sitemapLinks = computed(() => {
     { label: "Психология", to: "/space/psychology" },
     { label: "Медитация", to: "/space/mindfulness" },
     { label: "Саморазвитие", to: "/space/growth" },
+    { label: "Голос → Структура", to: "/space/experiments/voice-structure" },
     { label: "Дашборд", to: "/space/dashboard" },
     { label: "Сообщество", to: "/space/community" },
     { label: "Блог", to: "/blog" },

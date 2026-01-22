@@ -77,6 +77,12 @@
                 <i class="fas fa-seedling w-5 text-center"></i>
                 <span>Саморазвитие</span>
               </NuxtLink>
+              <NuxtLink to="/space/experiments/voice-structure"
+                class="flex items-center space-x-3 px-6 py-3 text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/10 transition-colors"
+                exact-active-class="bg-amber-50 dark:bg-amber-900/20" @click="closeDropdown">
+                <i class="fas fa-microphone-alt w-5 text-center"></i>
+                <span>Голос &rarr; Структура</span>
+              </NuxtLink>
               <NuxtLink to="/space/community"
                 class="flex items-center space-x-3 px-6 py-3 text-xs font-bold uppercase tracking-wider text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-white hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors"
                 exact-active-class="text-stone-900 dark:text-white bg-stone-50 dark:bg-stone-800"
@@ -214,7 +220,7 @@
                   <div class="text-stone-900 dark:text-white font-bold uppercase tracking-wide truncate">{{
                     auth.user.displayName ||
                     auth.user.email
-                    }}</div>
+                  }}</div>
                   <button @click="logoutUser"
                     class="text-xs uppercase tracking-wider text-red-500 font-bold mt-1">Выйти</button>
                 </div>
@@ -249,6 +255,7 @@
                 { label: 'Медитация', to: '/space/mindfulness', icon: 'fa-spa' },
                 { label: 'Дашборд', to: '/space/dashboard', icon: 'fa-chart-pie' },
                 { label: 'Саморазвитие', to: '/space/growth', icon: 'fa-seedling' },
+                { label: 'Голос → Структура', to: '/space/experiments/voice-structure', icon: 'fa-microphone-alt' },
                 { label: 'Сообщество', to: '/space/community', icon: 'fa-users' },
                 ...(auth.user?.isCoach ? [{ label: 'Дашборд Коуча', to: '/coach', icon: 'fa-user-tie', coach: true }] : [])
               ]" :key="link.to" :to="link.to"

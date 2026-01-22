@@ -309,6 +309,24 @@
               Этап 5</div>
           </div>
 
+          <!-- Layer: Experimental (Voice to Structure) -->
+          <div
+            class="flex flex-col md:flex-row items-center p-6 bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/50">
+            <div
+              class="w-12 h-12 bg-amber-100 dark:bg-amber-900/40 flex items-center justify-center mb-4 md:mb-0 md:mr-6">
+              <i class="fas fa-microphone-alt text-amber-600 dark:text-amber-400"></i>
+            </div>
+            <div class="flex-grow text-center md:text-left">
+              <h4 class="text-lg font-bold text-stone-900 dark:text-white mb-1">Голосовое структурирование (Beta)</h4>
+              <p class="text-sm text-stone-600 dark:text-stone-400">Экспериментальный AI-инструмент для превращения
+                хаотичных мыслей в четкие когнитивные структуры.</p>
+            </div>
+            <NuxtLink to="/space/experiments/voice-structure"
+              class="text-xs font-bold uppercase tracking-wide text-amber-600 dark:text-amber-400 hover:underline md:ml-6 mt-4 md:mt-0 whitespace-nowrap">
+              ПРОБОВАТЬ &rarr;
+            </NuxtLink>
+          </div>
+
           <!-- Layer 6 (Professional) -->
           <div
             class="flex flex-col md:flex-row items-center p-6 bg-white dark:bg-stone-900 border-2 border-stone-900 dark:border-white">

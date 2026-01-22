@@ -106,6 +106,7 @@ const navSections = computed(() => {
             title: 'Развитие',
             items: [
                 { label: 'Саморазвитие', path: '/space/growth', icon: 'fas fa-seedling' },
+                { label: 'Голос → Структура', path: '/space/experiments/voice-structure', icon: 'fas fa-microphone-alt' },
                 { label: 'Психология', path: '/space/psychology', icon: 'fas fa-book-open' },
                 { label: 'Медитация', path: '/space/mindfulness', icon: 'fas fa-spa' },
             ]
