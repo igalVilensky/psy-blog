@@ -1,7 +1,9 @@
 // plugins/initAuth.js
 import { useAuthStore } from "~/stores/auth";
 
-export default defineNuxtPlugin(async () => {
+export default defineNuxtPlugin(() => {
   const authStore = useAuthStore();
-  await authStore.initAuth(); // Wait for auth initialization to complete
+  // Don't await authStore.initAuth() here to avoid blocking the initial page render.
+  // This significantly improves the Time to Interactive (TTI) and First Contentful Paint (FCP).
+  authStore.initAuth();
 });

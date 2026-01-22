@@ -44,10 +44,10 @@
 
           <div class="space-y-4">
             <h1 class="text-2xl font-bold text-stone-900 dark:text-white uppercase tracking-tight">
-              {{ authStore.user ? 'Почти готово' : 'Загрузка' }}
+              Загрузка
             </h1>
             <p class="text-sm text-stone-600 dark:text-stone-400 font-semibold uppercase tracking-wide">
-              {{ authStore.user ? 'Перенаправление в ваше пространство...' : 'Настраиваем среду...' }}
+              Настраиваем среду...
             </p>
           </div>
 
@@ -94,22 +94,23 @@ onMounted(async () => {
   updateTime();
   timeInterval = setInterval(updateTime, 1000);
 
-  await authStore.initAuth();
+  // Initialize auth if not already initialized
+  if (authStore.loading) {
+    await authStore.initAuth();
+  }
 
   if (!authStore.user) {
     router.push("/login");
     return;
   }
 
-  // Simulate a brief loading period
-  setTimeout(() => {
-    if (authStore.user.displayName) {
-      const formattedUsername = authStore.user.displayName.replace(/\s/g, "-");
-      router.push(`/profile/${formattedUsername}`);
-    } else {
-      router.push("/login");
-    }
-  }, 1500);
+  // Redirect immediately when user is found
+  if (authStore.user.displayName) {
+    const formattedUsername = authStore.user.displayName.replace(/\s/g, "-");
+    router.push(`/profile/${formattedUsername}`);
+  } else {
+    router.push("/login");
+  }
 });
 
 onUnmounted(() => {
