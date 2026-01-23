@@ -137,13 +137,19 @@ const fetchSession = async () => {
     error.value = null;
 
     try {
-        const docRef = doc($firestore, 'voice_structures', route.params.id);
+        if (!authStore.user?.uid) {
+            error.value = "Пользователь не авторизован.";
+            loading.value = false;
+            return;
+        }
+
+        const docRef = doc($firestore, 'users', authStore.user.uid, 'voice_structures', route.params.id);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
             const sessionData = docSnap.data();
 
-            // Basic security: check ownership
+            // Basic security: check ownership (already handled by Firestore rules, but good for client feedback)
             if (sessionData.userId !== authStore.user?.uid) {
                 error.value = 'Доступ запрещен. Это не ваша сессия.';
                 return;
