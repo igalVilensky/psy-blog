@@ -153,7 +153,7 @@
                     <div class="space-y-1">
                         <h2 class="text-sm font-black uppercase tracking-widest text-stone-400">Результат анализа</h2>
                         <p class="text-lg font-bold text-stone-900 dark:text-white uppercase">{{ selectedTemplate?.name
-                        }}</p>
+                            }}</p>
                     </div>
                     <div class="flex items-center gap-4">
                         <NuxtLink v-if="lastDocId" :to="`/space/experiments/voice-structure/${lastDocId}`"
@@ -380,8 +380,7 @@ const fetchHistory = async () => {
     historyLoading.value = true;
     try {
         const q = query(
-            collection($firestore, 'voice_structures'),
-            where('userId', '==', authStore.user.uid),
+            collection($firestore, 'users', authStore.user.uid, 'voice_structures'),
             orderBy('createdAt', 'desc'),
             limit(10)
         );

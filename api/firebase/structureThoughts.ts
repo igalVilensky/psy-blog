@@ -15,7 +15,7 @@ export const structureThoughts = async (firestore, userId, template, content, so
 
     try {
         // 1. Save raw input to Firestore first
-        const docRef = await addDoc(collection(firestore, "voice_structures"), {
+        const docRef = await addDoc(collection(firestore, "users", userId, "voice_structures"), {
             userId,
             template,
             rawInput: content,
@@ -49,7 +49,7 @@ export const structureThoughts = async (firestore, userId, template, content, so
         const result = await response.json();
 
         // 3. Save structured output back to Firestore
-        await updateDoc(doc(firestore, "voice_structures", docRef.id), {
+        await updateDoc(doc(firestore, "users", userId, "voice_structures", docRef.id), {
             structuredOutput: result.structured || result
         });
 
