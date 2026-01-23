@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-white flex">
     <!-- Sidebar -->
-    <LabSidebar class="hidden lg:block w-64 flex-none bg-white dark:bg-stone-900" />
+    <LabSidebar class="hidden lg:block fixed top-0 left-0 w-64 z-40" />
 
     <!-- Mobile Header -->
     <div
@@ -31,7 +31,7 @@
     </Transition>
 
     <!-- Main Content -->
-    <main class="flex-1 flex flex-col min-w-0">
+    <main class="flex-1 flex flex-col min-w-0 lg:ml-64">
       <!-- Desktop Header -->
       <header
         class="hidden lg:flex h-16 bg-white dark:bg-stone-900 border-b-2 border-stone-900 dark:border-white items-center justify-between px-6 sticky top-0 z-30">

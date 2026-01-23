@@ -1,7 +1,7 @@
 <template>
-    <aside class="flex flex-col h-full bg-white dark:bg-stone-900 border-r-2 border-stone-900 dark:border-white">
+    <aside class="flex flex-col h-screen bg-white dark:bg-stone-900 border-r-2 border-stone-900 dark:border-white">
         <!-- Brand - Bold and editorial -->
-        <div class="h-16 flex items-center px-6 border-b-2 border-stone-900 dark:border-white">
+        <div class="h-16 flex items-center px-6 border-b-2 border-stone-900 dark:border-white flex-shrink-0">
             <NuxtLink to="/" class="flex items-center gap-2 group">
                 <div class="w-8 h-8 bg-stone-900 dark:bg-white flex items-center justify-center">
                     <i class="fas fa-brain text-white dark:text-stone-900 text-sm"></i>
@@ -62,7 +62,7 @@
         </nav>
 
         <!-- Bottom Actions - Sharp and clean -->
-        <div class="p-4 border-t-2 border-stone-900 dark:border-white space-y-2">
+        <div class="p-4 border-t-2 border-stone-900 dark:border-white space-y-2 flex-shrink-0">
             <!-- Dark Mode Toggle -->
             <button @click="toggleDarkMode"
                 class="w-full flex items-center gap-3 px-3 py-2 text-sm font-semibold text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white hover:bg-stone-100 dark:hover:bg-stone-800 transition-all">
