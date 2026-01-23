@@ -27,7 +27,7 @@ logs
 .netlify
 
 # Firebase Rules
-firestore.rules
+# firestore.rules
 
 # Netlify CLI / Edge Functions lock
 demo.lock

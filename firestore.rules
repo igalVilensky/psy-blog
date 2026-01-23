@@ -1,0 +1,619 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ============================================
+    // HELPER FUNCTIONS
+    // ============================================
+
+    // Helper function to check if user is authenticated
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Helper function to check if user is the owner
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Helper function for super admin access
+    function isSuperAdmin() {
+      return isSignedIn() && (request.auth.token.superAdmin == true || request.auth.token.admin == true);
+    }
+
+    // Helper function to check if user is a coach
+    function isCoach() {
+      return isSignedIn() && (isSuperAdmin() || request.auth.token.coach == true || request.auth.token.role == 'coach');
+    }
+
+    // Helper function to check if a coach is assigned to a specific client
+    function isClientOfCoach(clientId) {
+      return isCoach() && get(/databases/$(database)/documents/users/$(clientId)).data.coachId == request.auth.uid;
+    }
+
+    // Helper function for emotion entry validation
+    function validateEmotionEntry(data) {
+      return data.emotion is string &&
+             data.intensity is number &&
+             data.intensity >= 1 &&
+             data.intensity <= 10 &&
+             data.entry is string &&
+             data.tags is list &&
+             data.status == "completed";
+    }
+
+    // Helper function for daily growth spark entry validation
+    function validateDailyGrowthSparkEntry(entry) {
+      return entry == null || (
+        entry.date is string &&
+        entry.gameResults is map &&
+        entry.gameResults.wins is number &&
+        entry.energy is map &&
+        entry.energy.level is number &&
+        entry.energy.level >= 0 &&
+        entry.energy.level <= 10 &&
+        entry.energy.fuelFactors is list &&
+        (entry.insight == null || (
+          entry.insight.text is string &&
+          entry.insight.category is string &&
+          entry.insight.isAnonymous is bool
+        )) &&
+        entry.timestamp is string
+      );
+    }
+
+    // Helper function for habit mood journal validation
+    function validateHabitMoodEntry(entry) {
+      return entry.mood is number &&
+             entry.mood >= 1 &&
+             entry.mood <= 5 &&
+             entry.note is string &&
+             entry.habits is map &&
+             entry.timestamp is timestamp;
+    }
+
+    // Helper function for validating progress data
+    function validateProgressData(data) {
+      return data.keter is map &&
+             data.keter.points is number &&
+             data.keter.lastActive is timestamp &&
+             data.chokhmah is map &&
+             data.chokhmah.points is number &&
+             data.chokhmah.lastActive is timestamp &&
+             data.binah is map &&
+             data.binah.points is number &&
+             data.binah.lastActive is timestamp &&
+             data.chesed is map &&
+             data.chesed.points is number &&
+             data.chesed.lastActive is timestamp &&
+             data.gevurah is map &&
+             data.gevurah.points is number &&
+             data.gevurah.lastActive is timestamp &&
+             data.tiferet is map &&
+             data.tiferet.points is number &&
+             data.tiferet.lastActive is timestamp &&
+             data.netzach is map &&
+             data.netzach.points is number &&
+             data.netzach.lastActive is timestamp &&
+             data.hod is map &&
+             data.hod.points is number &&
+             data.hod.lastActive is timestamp &&
+             data.yesod is map &&
+             data.yesod.points is number &&
+             data.yesod.lastActive is timestamp &&
+             data.malkhut is map &&
+             data.malkhut.points is number &&
+             data.malkhut.lastActive is timestamp;
+    }
+
+    // Helper function for validating daily data
+    function validateDailyData(data) {
+      return data.keter is map &&
+             data.keter.actions is number &&
+             data.keter.actions >= 0 &&
+             data.keter.actions <= 3 &&
+             data.chokhmah is map &&
+             data.chokhmah.actions is number &&
+             data.chokhmah.actions >= 0 &&
+             data.chokhmah.actions <= 3 &&
+             data.binah is map &&
+             data.binah.actions is number &&
+             data.binah.actions >= 0 &&
+             data.binah.actions <= 3 &&
+             data.chesed is map &&
+             data.chesed.actions is number &&
+             data.chesed.actions >= 0 &&
+             data.chesed.actions <= 3 &&
+             data.gevurah is map &&
+             data.gevurah.actions is number &&
+             data.gevurah.actions >= 0 &&
+             data.gevurah.actions <= 3 &&
+             data.tiferet is map &&
+             data.tiferet.actions is number &&
+             data.tiferet.actions >= 0 &&
+             data.tiferet.actions <= 3 &&
+             data.netzach is map &&
+             data.netzach.actions is number &&
+             data.netzach.actions >= 0 &&
+             data.netzach.actions <= 3 &&
+             data.hod is map &&
+             data.hod.actions is number &&
+             data.hod.actions >= 0 &&
+             data.hod.actions <= 3 &&
+             data.yesod is map &&
+             data.yesod.actions is number &&
+             data.yesod.actions >= 0 &&
+             data.yesod.actions <= 3 &&
+             data.malkhut is map &&
+             data.malkhut.actions is number &&
+             data.malkhut.actions >= 0 &&
+             data.malkhut.actions <= 3;
+    }
+    
+    // ============================================
+    // MEDITATION SESSIONS
+    // ============================================
+    
+    match /meditation_sessions/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // ============================================
+    // LAB FLOWS
+    // ============================================
+    
+    // Lab Flows - Custom lab builder flows
+    match /labFlows/{flowId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() &&
+                     request.resource.data.userId == request.auth.uid &&
+                     request.resource.data.name is string &&
+                     request.resource.data.modules is list &&
+                     request.resource.data.createdAt is timestamp &&
+                     request.resource.data.updatedAt is timestamp;
+      allow update: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+    // Flow Sessions - Tracking execution history
+    match /flowSessions/{sessionId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+
+
+    // ============================================
+    // COMMUNITY RULES
+    // ============================================
+
+    // Community Posts Collection
+    match /community_posts/{postId} {
+      // Anyone can read posts
+      allow read: if true;
+      
+      // Only authenticated users can create posts
+      allow create: if isSignedIn() 
+        && request.resource.data.authorId == request.auth.uid
+        && request.resource.data.createdAt is timestamp
+        && request.resource.data.title is string
+        && request.resource.data.content is string;
+      
+      // Only post author can update their own posts
+      // OR any authenticated user can update likes, shares, and comments count
+      allow update: if isOwner(resource.data.authorId)
+        || (isSignedIn() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likes', 'likedBy']))
+        || (isSignedIn() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['shares']))
+        || (isSignedIn() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['comments']));
+      
+      // Only post author can delete their own posts
+      allow delete: if isOwner(resource.data.authorId);
+
+      // Comments Subcollection
+      match /comments/{commentId} {
+        allow read: if true;
+        allow create: if isSignedIn() 
+          && request.resource.data.authorId == request.auth.uid
+          && request.resource.data.content is string
+          && request.resource.data.createdAt is timestamp;
+        allow update, delete: if isOwner(resource.data.authorId);
+      }
+    }
+    
+    // Community Stats Collection
+    match /community_stats/{statId} {
+      // Anyone can read stats
+      allow read: if true;
+      
+      // Allow authenticated users to write (for transactions and increments)
+      allow write: if isSignedIn();
+    }
+    
+    // User Posts Tracking (for counting user's posts)
+    match /user_posts/{userId} {
+      allow read: if true;
+      allow write: if isSignedIn();
+    }
+
+    // ============================================
+    // USER RULES
+    // ============================================
+
+    // User Document
+    match /users/{userId} {
+      // Allow read for owner, admins, or assigned coaches
+      allow read: if isSignedIn() && (request.auth.uid == userId || isSuperAdmin() || resource.data.coachId == request.auth.uid);
+      
+      allow create, update: if isSignedIn() &&
+        (request.auth.uid == userId || isSuperAdmin());
+      
+      allow delete: if isSignedIn() && (request.auth.uid == userId || isSuperAdmin());
+    }
+
+    // User Onboarding
+    match /users/{userId}/onboarding/{docId} {
+      allow read, write: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // User AI Summary
+    match /users/{userId}/aiSummary/{docId} {
+      allow read, write: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // User Progress
+    match /users/{userId}/progress/{progressId} {
+      allow read: if isSignedIn() && request.auth.uid == userId;
+      allow create, update: if isSignedIn() &&
+                             request.auth.uid == userId &&
+                             progressId == "sefirot" &&
+                             request.resource.data.keys().hasAll([
+                               'keter', 'chokhmah', 'binah', 'chesed', 'gevurah',
+                               'tiferet', 'netzach', 'hod', 'yesod', 'malkhut'
+                             ]) &&
+                             validateProgressData(request.resource.data);
+      allow delete: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Daily Actions
+    match /users/{userId}/daily/{date} {
+      allow read: if isSignedIn() && request.auth.uid == userId;
+      allow create, update: if isSignedIn() &&
+                             request.auth.uid == userId &&
+                             request.resource.data.keys().hasAll([
+                               'keter', 'chokhmah', 'binah', 'chesed', 'gevurah',
+                               'tiferet', 'netzach', 'hod', 'yesod', 'malkhut'
+                             ]) &&
+                             validateDailyData(request.resource.data);
+      allow delete: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Daily Logs (New Daily Habit Engine)
+    match /users/{userId}/daily_logs/{logId} {
+      allow read, write: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Custom Flows (User created flows)
+    match /users/{userId}/custom_flows/{flowId} {
+      allow read, write: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Pattern Detection Results
+    match /users/{userId}/patternDetectionResults/{sessionId} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isSuperAdmin() || isClientOfCoach(userId));
+      allow write: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Mental Shift Results
+    match /users/{userId}/mentalShiftResults/{sessionId} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isSuperAdmin() || isClientOfCoach(userId));
+      allow write: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Target Tracking Results
+    match /users/{userId}/targetTrackingResults/{sessionId} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isSuperAdmin() || isClientOfCoach(userId));
+      allow write: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Stroop Results
+    match /users/{userId}/stroopResults/{sessionId} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isSuperAdmin() || isClientOfCoach(userId));
+      allow write: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Reaction Results
+    match /users/{userId}/reactionResults/{sessionId} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isSuperAdmin() || isClientOfCoach(userId));
+      allow write: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // N-Back Test Results
+    match /users/{userId}/nbackTestResults/{sessionId} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isSuperAdmin() || isClientOfCoach(userId));
+      allow write: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // N-Back Training Results
+    match /users/{userId}/nbackTrainingResults/{sessionId} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isSuperAdmin() || isClientOfCoach(userId));
+      allow write: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Digit Span Results
+    match /users/{userId}/digitSpanResults/{sessionId} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isSuperAdmin() || isClientOfCoach(userId));
+      allow write: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Trail Making Results
+    match /users/{userId}/trailMakingResults/{sessionId} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isSuperAdmin() || isClientOfCoach(userId));
+      allow write: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Double Game Results
+    match /users/{userId}/doubleGameResults/{sessionId} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isSuperAdmin() || isClientOfCoach(userId));
+      allow write: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Anagram Results
+    match /users/{userId}/anagramResults/{sessionId} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isSuperAdmin() || isClientOfCoach(userId));
+      allow write: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Logic Pairs Results
+    match /users/{userId}/logicPairsResults/{sessionId} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isSuperAdmin() || isClientOfCoach(userId));
+      allow write: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Raven Results
+    match /users/{userId}/ravenResults/{sessionId} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isSuperAdmin() || isClientOfCoach(userId));
+      allow write: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Big 5 Assessment Results
+    match /users/{userId}/big5Results/{resultId} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isSuperAdmin() || isClientOfCoach(userId));
+      allow write: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Coach Notes
+    match /users/{userId}/coachNotes/{noteId} {
+      allow read, write: if isSuperAdmin() || isClientOfCoach(userId);
+    }
+
+    // ============================================
+    // TOOLS & ASSESSMENTS
+    // ============================================
+
+    // Deep Conversation Journal
+    match /deep_conversation_journal/{userId} {
+      allow read, write: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Emotion Barometer
+    match /emotion_barometer/{entryId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() &&
+                     request.resource.data.userId == request.auth.uid &&
+                     request.resource.data.timestamp is timestamp &&
+                     validateEmotionEntry(request.resource.data);
+      allow update: if isSignedIn() &&
+                     resource.data.userId == request.auth.uid &&
+                     request.resource.data.userId == resource.data.userId &&
+                     validateEmotionEntry(request.resource.data);
+      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    match /emotion_barometer/{userId} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isSuperAdmin() || isClientOfCoach(userId));
+      allow write: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Emotion Diary
+    match /emotion_diary/{userId} {
+      allow read, create, update, delete: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Wheel of Life
+    match /wheel_of_life/{userId} {
+      allow read, create, update, delete: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Daily Growth Spark
+    match /daily_growth_spark/{userId} {
+      allow read: if isSignedIn() && request.auth.uid == userId;
+      allow create: if isSignedIn() &&
+                     request.auth.uid == userId &&
+                     request.resource.data.entries is list &&
+                     request.resource.data.streakDays is number &&
+                     request.resource.data.points is number &&
+                     request.resource.data.lastUpdated is string &&
+                     validateDailyGrowthSparkEntry(
+                       request.resource.data.entries.size() > 0 ?
+                       request.resource.data.entries[0] : null
+                     );
+      allow update: if isSignedIn() &&
+                     request.auth.uid == userId &&
+                     request.resource.data.points >= resource.data.points &&
+                     request.resource.data.entries.size() >= resource.data.entries.size() &&
+                     validateDailyGrowthSparkEntry(
+                       request.resource.data.entries[
+                         request.resource.data.entries.size() - 1
+                       ]
+                     );
+      allow delete: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Shared Insights
+    match /shared_insights/{insightId} {
+      allow read: if true;
+      allow create: if isSignedIn() &&
+                     request.resource.data.userId == request.auth.uid &&
+                     request.resource.data.text is string &&
+                     request.resource.data.category is string &&
+                     request.resource.data.isAnonymous is bool &&
+                     request.resource.data.timestamp is string &&
+                     request.resource.data.date is string &&
+                     (request.resource.data.displayName is string || request.resource.data.displayName == null);
+      allow update, delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    // Archetype Results
+    match /archetypeResults/{resultId} {
+      allow read: if isSignedIn() &&
+                   (resource.data.userId == request.auth.uid || resource.data.userId == null);
+      allow create: if isSignedIn() &&
+                     (request.resource.data.userId == null || request.resource.data.userId == request.auth.uid) &&
+                     request.resource.data.timestamp is timestamp &&
+                     request.resource.data.results is map;
+      allow update: if isSignedIn() &&
+                     (
+                       (resource.data.userId == null && request.resource.data.userId == request.auth.uid) ||
+                       (resource.data.userId == request.auth.uid && request.resource.data.userId == resource.data.userId)
+                     );
+      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    // Assessment Progress
+    match /assessmentProgress/{progressId} {
+      allow read, create, update, delete: if isSignedIn() && progressId == request.auth.uid;
+    }
+
+    // Habit & Mood Journal
+    match /habit_mood_journal/{entryId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() &&
+                     request.resource.data.userId == request.auth.uid &&
+                     validateHabitMoodEntry(request.resource.data);
+      allow update: if isSignedIn() &&
+                     resource.data.userId == request.auth.uid &&
+                     validateHabitMoodEntry(request.resource.data);
+      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    // ============================================
+    // BLOG & CONTENT
+    // ============================================
+
+    // Posts
+    match /posts/{postId} {
+      allow read: if true;
+
+      // Creation: anyone can initialize a post for view tracking (minimal data)
+      // OR signed-in authors can create full posts
+      allow create: if (request.resource.data.keys().hasOnly(['views']) && request.resource.data.views == 1)
+                     || (isSignedIn() &&
+                         request.resource.data.views is number &&
+                         request.resource.data.views == 0 &&
+                         request.resource.data.title is string &&
+                         request.resource.data.content is string &&
+                         request.resource.data.createdAt is timestamp &&
+                         request.resource.data.userId == request.auth.uid);
+
+      // Updates: signed-in users can edit their own posts fully
+      // OR anyone can increment views
+      allow update: if (isSignedIn() &&
+                     resource.data.userId == request.auth.uid &&
+                     request.resource.data.views >= resource.data.views &&
+                     request.resource.data.title is string &&
+                     request.resource.data.content is string)
+                     || (request.resource.data.keys().hasOnly(['views']) &&
+                        request.resource.data.views == resource.data.views + 1);
+
+      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    // Post Comments
+    match /posts/{postId}/comments/{commentId} {
+      allow read: if true;
+      allow create: if request.resource.data.name is string &&
+                     request.resource.data.email is string &&
+                     request.resource.data.text is string &&
+                     request.resource.data.createdAt is timestamp &&
+                     (request.resource.data.userId == null || request.resource.data.userId == request.auth.uid);
+      allow update, delete: if isSuperAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+    }
+
+    // Guides Comments
+    match /guides/{guideSlug}/comments/{commentId} {
+      allow read: if true;
+      allow create: if request.resource.data.name is string &&
+                     request.resource.data.email is string &&
+                     request.resource.data.text is string &&
+                     request.resource.data.createdAt is timestamp &&
+                     (request.resource.data.userId == null || request.resource.data.userId == request.auth.uid);
+      allow update, delete: if isSuperAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+    }
+
+    // ============================================
+    // COURSES & SUBSCRIPTIONS
+    // ============================================
+
+    // Courses
+    match /courses/{userId_courseId} {
+      allow read, create, update, delete: if isSignedIn() &&
+                                           request.auth.uid == userId_courseId.split('_')[0];
+    }
+
+    // Test Courses
+    match /coursesData/{courseEntry} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create, update: if isSignedIn() &&
+                             request.resource.data.userId == request.auth.uid &&
+                             request.resource.data.courseId is string &&
+                             request.resource.data.progress is map &&
+                             request.resource.data.progress.completedLessons is list &&
+                             request.resource.data.progress.progressPercentage is number &&
+                             request.resource.data.progress.totalLessons is number &&
+                             request.resource.data.lastAccessed is timestamp;
+      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    // Subscriptions
+    match /subscriptions/{subscriptionId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() &&
+                     request.resource.data.userId == request.auth.uid &&
+                     request.resource.data.plan is string &&
+                     request.resource.data.status is string &&
+                     request.resource.data.createdAt is timestamp;
+      allow update, delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    // ============================================
+    // CONTACT & MESSAGES
+    // ============================================
+
+    // Contact Messages
+    match /contactMessages/{messageId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() &&
+                     request.resource.data.userId == request.auth.uid &&
+                     request.resource.data.message is string &&
+                     request.resource.data.createdAt is timestamp;
+      allow update, delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    // Voice Structures (Internal Beta)
+    match /voice_structures/{docId} {
+      allow read, write: if isSignedIn() && request.auth.uid == (resource == null ? request.resource.data.userId : resource.data.userId);
+    }
+
+  
+
+    // ============================================
+    // DEFAULT DENY
+    // ============================================
+
+    // Default rule: deny everything else
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
