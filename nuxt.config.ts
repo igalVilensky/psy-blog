@@ -35,6 +35,12 @@ export default defineNuxtConfig({
     "@vite-pwa/nuxt",
   ],
 
+  routeRules: {
+    "/": { prerender: true },
+    "/about/**": { prerender: true },
+    "/blog/**": { prerender: true },
+  },
+
   pwa: {
     registerType: "autoUpdate",
     manifest: {

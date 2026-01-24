@@ -201,8 +201,6 @@
                 <div class="absolute inset-0 bg-slate-900 dark:bg-black"></div>
                 <div class="absolute inset-0 bg-gradient-to-br from-cyan-900/20 via-slate-900/50 to-purple-900/20">
                 </div>
-                <div class="absolute inset-0 bg-[url('/images/noise.png')] opacity-[0.03] mix-blend-overlay"></div>
-
                 <!-- Decorative elements -->
                 <div
                     class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent">
@@ -343,4 +341,3 @@ const toggleShowNotes = (podcastId) => {
         showNotesPodcastId.value === podcastId ? null : podcastId;
 };
 </script>
-
