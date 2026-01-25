@@ -1,65 +1,40 @@
 <template>
-  <div class="relative min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-white flex">
-    <!-- Mobile Header -->
-    <div
-      class="lg:hidden fixed top-0 left-0 right-0 h-14 bg-white dark:bg-stone-900 border-b-2 border-stone-900 dark:border-white z-40 px-4 flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <div class="w-7 h-7 bg-stone-900 dark:bg-white flex items-center justify-center">
-          <i class="fas fa-square text-white dark:text-stone-900 text-xs"></i>
+  <div
+    class="relative min-h-screen bg-gradient-to-br from-zinc-50 to-white dark:from-black dark:to-zinc-950 text-zinc-900 dark:text-white flex items-center justify-center">
+    <!-- Main Content -->
+    <div class="max-w-sm w-full px-6 text-center">
+      <!-- Loading Animation -->
+      <div class="mb-10 relative mx-auto w-24 h-24">
+        <div class="absolute inset-0 rounded-2xl border-2 border-zinc-200 dark:border-zinc-800"></div>
+        <div
+          class="absolute inset-0 rounded-2xl border-2 border-t-cyan-500 border-r-transparent border-b-transparent border-l-transparent animate-spin">
         </div>
-        <span class="font-bold text-stone-900 dark:text-white text-sm">Загрузка</span>
+        <div class="absolute inset-0 flex items-center justify-center">
+          <div
+            class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center animate-pulse">
+            <i class="fas fa-brain text-white text-lg"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <h1 class="text-2xl font-bold text-zinc-900 dark:text-white">
+          Загрузка
+        </h1>
+        <p class="text-sm text-zinc-500 dark:text-zinc-400 font-medium">
+          Настраиваем среду...
+        </p>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="mt-12 max-w-[200px] mx-auto overflow-hidden rounded-full">
+        <div class="relative h-1 bg-zinc-200 dark:bg-zinc-800">
+          <div
+            class="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full animate-loading-progress">
+          </div>
+        </div>
       </div>
     </div>
-
-    <!-- Main Content -->
-    <main class="flex-1 flex flex-col min-w-0 pt-14 lg:pt-0">
-      <!-- Desktop Header -->
-      <header
-        class="hidden lg:flex h-16 bg-white dark:bg-stone-900 border-b-2 border-stone-900 dark:border-white items-center justify-between px-6 sticky top-0 z-30">
-        <div>
-          <h2 class="text-sm font-bold text-stone-900 dark:text-white uppercase tracking-wide">
-            Загрузка пространства
-          </h2>
-        </div>
-        <div class="flex items-center gap-4">
-          <div class="font-mono text-xs text-stone-500 dark:text-stone-400">
-            {{ currentTime }}
-          </div>
-        </div>
-      </header>
-
-      <!-- Loading Content -->
-      <div class="flex-1 flex items-center justify-center">
-        <div class="max-w-sm w-full px-6 text-center">
-          <!-- Loading Square -->
-          <div class="mb-10 relative mx-auto w-24 h-24">
-            <div class="absolute inset-0 border-[3px] border-stone-200 dark:border-stone-700"></div>
-            <div
-              class="absolute inset-0 border-[3px] border-t-stone-900 dark:border-t-white animate-spin duration-[1.5s]">
-            </div>
-            <div class="absolute inset-0 flex items-center justify-center">
-              <i class="fas fa-square text-stone-900 dark:text-white text-sm animate-pulse"></i>
-            </div>
-          </div>
-
-          <div class="space-y-4">
-            <h1 class="text-2xl font-bold text-stone-900 dark:text-white uppercase tracking-tight">
-              Загрузка
-            </h1>
-            <p class="text-sm text-stone-600 dark:text-stone-400 font-semibold uppercase tracking-wide">
-              Настраиваем среду...
-            </p>
-          </div>
-
-          <!-- Progress Bar -->
-          <div class="mt-12 max-w-[200px] mx-auto overflow-hidden">
-            <div class="relative h-[2px] bg-stone-200 dark:bg-stone-800">
-              <div class="absolute inset-y-0 left-0 w-1/3 bg-stone-900 dark:bg-white animate-loading-progress"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
   </div>
 </template>
 

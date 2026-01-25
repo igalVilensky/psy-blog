@@ -1,16 +1,17 @@
 <template>
   <div
-    class="relative min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-white transition-colors duration-500 flex flex-col font-sans">
+    class="relative min-h-screen bg-gradient-to-br from-zinc-50 to-white dark:from-black dark:to-zinc-950 text-zinc-900 dark:text-white transition-colors duration-500 flex flex-col font-sans">
     <!-- Mobile Header -->
     <div
-      class="lg:hidden fixed top-0 left-0 right-0 h-14 bg-white dark:bg-stone-900 border-b-2 border-stone-900 dark:border-white z-40 px-4 flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <div class="w-7 h-7 bg-stone-900 dark:bg-white flex items-center justify-center">
-          <i class="fas fa-sliders-h text-white dark:text-stone-900 text-xs"></i>
+      class="lg:hidden fixed top-0 left-0 right-0 h-14 bg-white/90 dark:bg-black/90 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800 z-40 px-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
+          <i class="fas fa-sliders-h text-white text-xs"></i>
         </div>
-        <span class="font-bold text-stone-900 dark:text-white text-sm">Настройки</span>
+        <span class="font-bold text-zinc-900 dark:text-white text-sm">Настройки</span>
       </div>
-      <NuxtLink to="/profile" class="p-2 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white">
+      <NuxtLink to="/profile"
+        class="p-2 text-zinc-500 dark:text-zinc-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
         <i class="fas fa-arrow-left text-sm"></i>
       </NuxtLink>
     </div>
@@ -19,26 +20,28 @@
     <main class="flex-1 flex min-w-0 pt-14 lg:pt-0">
       <!-- Desktop Sidebar -->
       <div
-        class="hidden lg:block w-64 flex-none bg-white dark:bg-stone-900 border-r-2 border-stone-900 dark:border-white">
-        <div class="p-6 border-b-2 border-stone-900 dark:border-white">
-          <div class="flex items-center gap-2 mb-4">
-            <div class="w-8 h-8 bg-stone-900 dark:bg-white flex items-center justify-center">
-              <i class="fas fa-sliders-h text-white dark:text-stone-900 text-sm"></i>
+        class="hidden lg:flex flex-col w-64 flex-none bg-white dark:bg-black border-r border-zinc-200 dark:border-zinc-800 sticky top-0 h-screen">
+        <div class="p-6 border-b border-zinc-200 dark:border-zinc-800">
+          <div class="flex items-center gap-3 mb-4">
+            <div
+              class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
+              <i class="fas fa-sliders-h text-white text-sm"></i>
             </div>
-            <span class="font-bold text-stone-900 dark:text-white">Настройки</span>
+            <span class="font-bold text-zinc-900 dark:text-white">Настройки</span>
           </div>
           <NuxtLink to="/profile"
-            class="flex items-center gap-2 text-sm text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white transition-colors">
+            class="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors font-medium">
             <i class="fas fa-arrow-left text-xs"></i>
             <span>Вернуться в профиль</span>
           </NuxtLink>
         </div>
 
-        <nav class="p-4 space-y-2">
+        <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
           <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
-            class="w-full text-left px-4 py-3 text-sm font-semibold transition-all" :class="activeTab === tab.id
-              ? 'bg-stone-900 dark:bg-white text-white dark:text-stone-900'
-              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'">
+            class="w-full text-left px-4 py-3 text-sm font-bold rounded-xl transition-all"
+            :class="activeTab === tab.id
+              ? 'bg-gradient-to-r from-cyan-500/10 to-blue-600/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20 dark:border-cyan-500/30'
+              : 'text-zinc-600 dark:text-zinc-400 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-zinc-50 dark:hover:bg-zinc-900'">
             <div class="flex items-center gap-3">
               <i :class="tab.icon"></i>
               <span>{{ tab.label }}</span>
@@ -51,14 +54,14 @@
       <div class="flex-1 overflow-y-auto">
         <!-- Desktop Header -->
         <header
-          class="hidden lg:flex h-16 bg-white dark:bg-stone-900 border-b-2 border-stone-900 dark:border-white items-center justify-between px-6 sticky top-0 z-30">
+          class="hidden lg:flex h-16 bg-white/90 dark:bg-black/90 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800 items-center justify-between px-6 sticky top-0 z-30">
           <div>
-            <h2 class="text-sm font-bold text-stone-900 dark:text-white uppercase tracking-wide">
+            <h2 class="text-base font-bold text-zinc-900 dark:text-white">
               {{ activeTabLabel }}
             </h2>
           </div>
           <div class="flex items-center gap-4">
-            <div class="font-mono text-xs text-stone-500 dark:text-stone-400">
+            <div class="font-mono text-xs text-zinc-500 dark:text-zinc-400">
               {{ currentTime }}
             </div>
           </div>
@@ -67,20 +70,20 @@
         <div class="p-6 lg:p-8 space-y-8">
           <!-- Loading State -->
           <div v-if="isLoading" class="flex items-center justify-center py-32">
-            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-stone-900 dark:border-white"></div>
+            <div class="w-10 h-10 border-2 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin"></div>
           </div>
 
           <!-- Profile Tab -->
           <div v-else-if="activeTab === 'profile'" class="space-y-8">
-            <div class="border-b border-stone-200 dark:border-stone-800 pb-6">
+            <div class="border-b border-zinc-200 dark:border-zinc-800 pb-6">
               <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div>
                   <div class="flex items-center gap-2 mb-2">
-                    <div class="w-1 h-4 bg-stone-900 dark:bg-white"></div>
+                    <div class="w-1.5 h-6 bg-gradient-to-b from-cyan-500 to-blue-600 rounded-full"></div>
                     <span
-                      class="text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400">Профиль</span>
+                      class="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">Профиль</span>
                   </div>
-                  <h1 class="text-3xl font-bold text-stone-900 dark:text-white">
+                  <h1 class="text-3xl font-bold text-zinc-900 dark:text-white">
                     Персональные данные
                   </h1>
                 </div>
@@ -90,39 +93,35 @@
             <form @submit.prevent="saveProfile" class="space-y-6">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label
-                    class="block text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400 mb-2">
+                  <label class="block text-xs font-bold uppercase tracking-wide text-zinc-500 dark:text-zinc-400 mb-2">
                     Имя пользователя *
                   </label>
                   <input v-model="displayName" type="text" required placeholder="Как вас называть?"
-                    class="w-full bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 px-4 py-3 text-sm focus:outline-none focus:border-stone-900 dark:focus:border-white transition-colors" />
+                    class="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all" />
                 </div>
 
                 <div>
-                  <label
-                    class="block text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400 mb-2">
+                  <label class="block text-xs font-bold uppercase tracking-wide text-zinc-500 dark:text-zinc-400 mb-2">
                     Сфера деятельности
                   </label>
                   <input v-model="profession" type="text" placeholder="Ваша профессия"
-                    class="w-full bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 px-4 py-3 text-sm focus:outline-none focus:border-stone-900 dark:focus:border-white transition-colors" />
+                    class="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all" />
                 </div>
 
                 <div>
-                  <label
-                    class="block text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400 mb-2">
+                  <label class="block text-xs font-bold uppercase tracking-wide text-zinc-500 dark:text-zinc-400 mb-2">
                     Возраст
                   </label>
                   <input v-model="age" type="number" min="13" max="120" placeholder="Ваш возраст"
-                    class="w-full bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 px-4 py-3 text-sm focus:outline-none focus:border-stone-900 dark:focus:border-white transition-colors" />
+                    class="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all" />
                 </div>
 
                 <div>
-                  <label
-                    class="block text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400 mb-2">
+                  <label class="block text-xs font-bold uppercase tracking-wide text-zinc-500 dark:text-zinc-400 mb-2">
                     Пол
                   </label>
                   <select v-model="gender"
-                    class="w-full bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 px-4 py-3 text-sm focus:outline-none focus:border-stone-900 dark:focus:border-white transition-colors">
+                    class="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all">
                     <option value="" disabled>Не выбран</option>
                     <option value="Мужской">Мужской</option>
                     <option value="Женский">Женский</option>
@@ -131,27 +130,25 @@
               </div>
 
               <div>
-                <label
-                  class="block text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400 mb-2">
+                <label class="block text-xs font-bold uppercase tracking-wide text-zinc-500 dark:text-zinc-400 mb-2">
                   Расскажите о себе
                 </label>
                 <textarea v-model="aboutYourself" rows="4" maxlength="300"
                   placeholder="Несколько слов о ваших интересах или целях..."
-                  class="w-full bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 px-4 py-3 text-sm focus:outline-none focus:border-stone-900 dark:focus:border-white transition-colors resize-none"></textarea>
-                <div class="text-right text-xs text-stone-500 dark:text-stone-400 mt-2">
+                  class="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all resize-none"></textarea>
+                <div class="text-right text-xs text-zinc-500 dark:text-zinc-400 mt-2 font-medium">
                   {{ aboutYourself.length }} / 300 симв.
                 </div>
               </div>
 
               <div>
-                <label
-                  class="block text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400 mb-2">
+                <label class="block text-xs font-bold uppercase tracking-wide text-zinc-500 dark:text-zinc-400 mb-2">
                   Социальные сети
                 </label>
                 <div class="space-y-4">
                   <div v-for="(platform, index) in socialMedia" :key="index" class="flex gap-4 items-center">
                     <select v-model="platform.type"
-                      class="w-32 bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 px-4 py-3 text-sm focus:outline-none focus:border-stone-900 dark:focus:border-white transition-colors">
+                      class="w-32 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all">
                       <option value="telegram">Telegram</option>
                       <option value="vk">VK</option>
                       <option value="instagram">Instagram</option>
@@ -159,22 +156,22 @@
                     </select>
                     <input v-model="platform.url" type="text"
                       :placeholder="platform.type === 'telegram' ? '@username' : 'https://...'"
-                      class="flex-1 bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 px-4 py-3 text-sm focus:outline-none focus:border-stone-900 dark:focus:border-white transition-colors" />
+                      class="flex-1 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all" />
                     <button type="button" @click="removeSocialPlatform(index)"
-                      class="w-8 h-8 flex items-center justify-center text-stone-400 hover:text-red-500">
+                      class="w-10 h-10 flex items-center justify-center rounded-xl text-zinc-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
                       <i class="fas fa-times"></i>
                     </button>
                   </div>
                 </div>
                 <button type="button" @click="addSocialPlatform"
-                  class="mt-4 px-4 py-2 border border-stone-300 dark:border-stone-700 text-xs font-semibold text-stone-600 dark:text-stone-400 hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors">
+                  class="mt-4 px-4 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 text-xs font-bold text-zinc-600 dark:text-zinc-400 hover:border-cyan-500 hover:text-cyan-600 dark:hover:border-cyan-400 dark:hover:text-cyan-400 transition-all">
                   <i class="fas fa-plus mr-2"></i>
                   Добавить профиль
                 </button>
               </div>
 
               <button type="submit"
-                class="px-8 py-3 bg-stone-900 dark:bg-white hover:bg-stone-800 dark:hover:bg-stone-100 text-white dark:text-stone-900 text-sm font-semibold transition-all">
+                class="px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:shadow-lg hover:shadow-cyan-500/25 text-white text-sm font-bold transition-all rounded-xl">
                 Сохранить изменения
               </button>
             </form>
@@ -182,15 +179,15 @@
 
           <!-- Account Tab -->
           <div v-else-if="activeTab === 'account'" class="space-y-8">
-            <div class="border-b border-stone-200 dark:border-stone-800 pb-6">
+            <div class="border-b border-zinc-200 dark:border-zinc-800 pb-6">
               <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div>
                   <div class="flex items-center gap-2 mb-2">
-                    <div class="w-1 h-4 bg-stone-900 dark:bg-white"></div>
+                    <div class="w-1.5 h-6 bg-gradient-to-b from-cyan-500 to-blue-600 rounded-full"></div>
                     <span
-                      class="text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400">Аккаунт</span>
+                      class="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">Аккаунт</span>
                   </div>
-                  <h1 class="text-3xl font-bold text-stone-900 dark:text-white">
+                  <h1 class="text-3xl font-bold text-zinc-900 dark:text-white">
                     Управление аккаунтом
                   </h1>
                 </div>
@@ -199,28 +196,34 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <!-- Security -->
-              <div class="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-6">
-                <h3 class="text-lg font-bold text-stone-900 dark:text-white mb-4">Безопасность</h3>
+              <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6">
+                <h3 class="text-lg font-bold text-zinc-900 dark:text-white mb-4">Безопасность</h3>
                 <div class="space-y-4">
                   <button @click="changePassword"
-                    class="w-full flex items-center justify-between p-4 bg-stone-50 dark:bg-stone-800 hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors border border-stone-100 dark:border-stone-700">
-                    <span class="text-sm font-semibold text-stone-700 dark:text-stone-300">Сбросить пароль</span>
-                    <i class="fas fa-chevron-right text-stone-400"></i>
+                    class="w-full flex items-center justify-between p-4 bg-zinc-50 dark:bg-zinc-800 hover:bg-cyan-500/10 dark:hover:bg-cyan-500/10 transition-all rounded-xl border border-zinc-200 dark:border-zinc-700 group">
+                    <span
+                      class="text-sm font-bold text-zinc-700 dark:text-zinc-300 group-hover:text-cyan-600 dark:group-hover:text-cyan-400">Сбросить
+                      пароль</span>
+                    <i
+                      class="fas fa-chevron-right text-zinc-400 group-hover:text-cyan-500 group-hover:translate-x-1 transition-all"></i>
                   </button>
                   <button @click="exportData"
-                    class="w-full flex items-center justify-between p-4 bg-stone-50 dark:bg-stone-800 hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors border border-stone-100 dark:border-stone-700">
-                    <span class="text-sm font-semibold text-stone-700 dark:text-stone-300">Экспорт данных</span>
-                    <i class="fas fa-chevron-right text-stone-400"></i>
+                    class="w-full flex items-center justify-between p-4 bg-zinc-50 dark:bg-zinc-800 hover:bg-cyan-500/10 dark:hover:bg-cyan-500/10 transition-all rounded-xl border border-zinc-200 dark:border-zinc-700 group">
+                    <span
+                      class="text-sm font-bold text-zinc-700 dark:text-zinc-300 group-hover:text-cyan-600 dark:group-hover:text-cyan-400">Экспорт
+                      данных</span>
+                    <i
+                      class="fas fa-chevron-right text-zinc-400 group-hover:text-cyan-500 group-hover:translate-x-1 transition-all"></i>
                   </button>
                 </div>
               </div>
 
               <!-- Danger Zone -->
-              <div class="bg-white dark:bg-stone-900 border border-red-200 dark:border-red-800/30 p-6">
-                <h3 class="text-lg font-bold text-stone-900 dark:text-white mb-4">Опасная зона</h3>
+              <div class="bg-white dark:bg-zinc-900 border border-red-200 dark:border-red-800/30 rounded-2xl p-6">
+                <h3 class="text-lg font-bold text-zinc-900 dark:text-white mb-4">Опасная зона</h3>
                 <button @click="confirmDeleteAccount"
-                  class="w-full flex items-center justify-between p-4 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-800/30 transition-colors border border-red-200 dark:border-red-700">
-                  <span class="text-sm font-semibold text-red-700 dark:text-red-300">Удалить аккаунт</span>
+                  class="w-full flex items-center justify-between p-4 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-800/30 transition-all rounded-xl border border-red-200 dark:border-red-800/50">
+                  <span class="text-sm font-bold text-red-600 dark:text-red-400">Удалить аккаунт</span>
                   <i class="fas fa-chevron-right text-red-400"></i>
                 </button>
               </div>
@@ -229,68 +232,71 @@
 
           <!-- Coach Tab -->
           <div v-else-if="activeTab === 'coach'" class="space-y-8">
-            <div class="border-b border-stone-200 dark:border-stone-800 pb-6">
+            <div class="border-b border-zinc-200 dark:border-zinc-800 pb-6">
               <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div>
                   <div class="flex items-center gap-2 mb-2">
-                    <div class="w-1 h-4 bg-stone-900 dark:bg-white"></div>
+                    <div class="w-1.5 h-6 bg-gradient-to-b from-cyan-500 to-blue-600 rounded-full"></div>
                     <span
-                      class="text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400">Профессиональный
+                      class="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">Профессиональный
                       доступ</span>
                   </div>
-                  <h1 class="text-3xl font-bold text-stone-900 dark:text-white">
+                  <h1 class="text-3xl font-bold text-zinc-900 dark:text-white">
                     Панель коуча
                   </h1>
                 </div>
               </div>
             </div>
 
-            <div v-if="!isCoach" class="bg-white dark:bg-stone-900 border-l-4 border-indigo-600 p-6">
+            <div v-if="!isCoach" class="bg-white dark:bg-zinc-900 border-l-4 border-indigo-500 rounded-2xl p-6">
               <div class="flex items-center gap-4 mb-6">
-                <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
+                <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl flex items-center justify-center">
                   <i class="fas fa-user-tie text-indigo-600 dark:text-indigo-400"></i>
                 </div>
                 <div>
-                  <h3 class="text-xl font-bold text-stone-900 dark:text-white">Стать Коучем</h3>
-                  <p class="text-sm text-stone-600 dark:text-stone-400 mt-1">Активируйте профессиональные инструменты
+                  <h3 class="text-xl font-bold text-zinc-900 dark:text-white">Стать Коучем</h3>
+                  <p class="text-sm text-zinc-600 dark:text-zinc-400 mt-1 font-medium">Активируйте профессиональные
+                    инструменты
                   </p>
                 </div>
               </div>
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <div class="p-4 bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700">
+                <div class="p-4 bg-zinc-50 dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700">
                   <i class="fas fa-users-cog text-indigo-600 mb-2"></i>
-                  <div class="text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400">
+                  <div class="text-xs font-bold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
                     Управление клиентами
                   </div>
                 </div>
-                <div class="p-4 bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700">
+                <div class="p-4 bg-zinc-50 dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700">
                   <i class="fas fa-chart-line text-indigo-600 mb-2"></i>
-                  <div class="text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400">
+                  <div class="text-xs font-bold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
                     Глубокая аналитика
                   </div>
                 </div>
               </div>
 
               <button @click="becomeACoach"
-                class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold transition-all">
+                class="w-full py-3 bg-gradient-to-r from-indigo-500 to-purple-600 hover:shadow-lg hover:shadow-indigo-500/25 text-white text-sm font-bold transition-all rounded-xl">
                 Активировать панель коуча
               </button>
             </div>
 
-            <div v-else class="bg-white dark:bg-stone-900 border-l-4 border-emerald-600 p-6">
+            <div v-else class="bg-white dark:bg-zinc-900 border-l-4 border-emerald-500 rounded-2xl p-6">
               <div class="flex items-center gap-4 mb-6">
-                <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
+                <div
+                  class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl flex items-center justify-center">
                   <i class="fas fa-check-circle text-emerald-600 dark:text-emerald-400"></i>
                 </div>
                 <div>
-                  <h3 class="text-xl font-bold text-stone-900 dark:text-white">Вы — Коуч</h3>
-                  <p class="text-sm text-stone-600 dark:text-stone-400 mt-1">Профессиональный аккаунт активен</p>
+                  <h3 class="text-xl font-bold text-zinc-900 dark:text-white">Вы — Коуч</h3>
+                  <p class="text-sm text-zinc-600 dark:text-zinc-400 mt-1 font-medium">Профессиональный аккаунт активен
+                  </p>
                 </div>
               </div>
 
               <NuxtLink to="/coach"
-                class="inline-flex items-center gap-2 px-8 py-3 bg-stone-900 dark:bg-white hover:bg-stone-800 dark:hover:bg-stone-100 text-white dark:text-stone-900 text-sm font-semibold transition-all">
+                class="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:shadow-lg hover:shadow-cyan-500/25 text-white text-sm font-bold transition-all rounded-xl">
                 <i class="fas fa-rocket"></i>
                 Перейти в панель
               </NuxtLink>
@@ -299,15 +305,15 @@
 
           <!-- Support Tab -->
           <div v-else-if="activeTab === 'support'" class="space-y-8">
-            <div class="border-b border-stone-200 dark:border-stone-800 pb-6">
+            <div class="border-b border-zinc-200 dark:border-zinc-800 pb-6">
               <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div>
                   <div class="flex items-center gap-2 mb-2">
-                    <div class="w-1 h-4 bg-stone-900 dark:bg-white"></div>
+                    <div class="w-1.5 h-6 bg-gradient-to-b from-cyan-500 to-blue-600 rounded-full"></div>
                     <span
-                      class="text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400">Поддержка</span>
+                      class="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">Поддержка</span>
                   </div>
-                  <h1 class="text-3xl font-bold text-stone-900 dark:text-white">
+                  <h1 class="text-3xl font-bold text-zinc-900 dark:text-white">
                     Помощь и обратная связь
                   </h1>
                 </div>
@@ -317,34 +323,39 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <!-- Resources -->
               <div class="space-y-6">
-                <div class="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-6">
-                  <h3 class="text-lg font-bold text-stone-900 dark:text-white mb-4">Ресурсы</h3>
+                <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6">
+                  <h3 class="text-lg font-bold text-zinc-900 dark:text-white mb-4">Ресурсы</h3>
                   <div class="space-y-4">
                     <NuxtLink to="/faq"
-                      class="flex items-center justify-between p-4 bg-stone-50 dark:bg-stone-800 hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors border border-stone-100 dark:border-stone-700">
-                      <span class="text-sm font-semibold text-stone-700 dark:text-stone-300">Частые вопросы</span>
-                      <i class="fas fa-chevron-right text-stone-400"></i>
+                      class="flex items-center justify-between p-4 bg-zinc-50 dark:bg-zinc-800 hover:bg-cyan-500/10 dark:hover:bg-cyan-500/10 transition-all rounded-xl border border-zinc-200 dark:border-zinc-700 group">
+                      <span
+                        class="text-sm font-bold text-zinc-700 dark:text-zinc-300 group-hover:text-cyan-600 dark:group-hover:text-cyan-400">Частые
+                        вопросы</span>
+                      <i
+                        class="fas fa-chevron-right text-zinc-400 group-hover:text-cyan-500 group-hover:translate-x-1 transition-all"></i>
                     </NuxtLink>
                     <button @click="contactSupport"
-                      class="w-full flex items-center justify-between p-4 bg-stone-50 dark:bg-stone-800 hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors border border-stone-100 dark:border-stone-700">
-                      <span class="text-sm font-semibold text-stone-700 dark:text-stone-300">Связаться с
-                        поддержкой</span>
-                      <i class="fas fa-chevron-right text-stone-400"></i>
+                      class="w-full flex items-center justify-between p-4 bg-zinc-50 dark:bg-zinc-800 hover:bg-cyan-500/10 dark:hover:bg-cyan-500/10 transition-all rounded-xl border border-zinc-200 dark:border-zinc-700 group">
+                      <span
+                        class="text-sm font-bold text-zinc-700 dark:text-zinc-300 group-hover:text-cyan-600 dark:group-hover:text-cyan-400">Связаться
+                        с поддержкой</span>
+                      <i
+                        class="fas fa-chevron-right text-zinc-400 group-hover:text-cyan-500 group-hover:translate-x-1 transition-all"></i>
                     </button>
                   </div>
                 </div>
               </div>
 
               <!-- Feedback -->
-              <div class="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-6">
-                <h3 class="text-lg font-bold text-stone-900 dark:text-white mb-4">Обратная связь</h3>
+              <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6">
+                <h3 class="text-lg font-bold text-zinc-900 dark:text-white mb-4">Обратная связь</h3>
                 <form @submit.prevent="submitFeedbackForm" class="space-y-4">
                   <div>
                     <textarea v-model="feedbackForm.message" rows="4" placeholder="Ваши идеи или предложения..."
-                      class="w-full bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 px-4 py-3 text-sm focus:outline-none focus:border-stone-900 dark:focus:border-white transition-colors resize-none"></textarea>
+                      class="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all resize-none"></textarea>
                   </div>
                   <button type="submit" :disabled="isSubmittingFeedback"
-                    class="w-full py-3 bg-stone-900 dark:bg-white hover:bg-stone-800 dark:hover:bg-stone-100 text-white dark:text-stone-900 text-sm font-semibold transition-all disabled:opacity-50">
+                    class="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:shadow-lg hover:shadow-cyan-500/25 text-white text-sm font-bold transition-all rounded-xl disabled:opacity-50">
                     {{ isSubmittingFeedback ? 'Отправка...' : 'Отправить отзыв' }}
                   </button>
                 </form>
@@ -362,7 +373,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from "vue";
+import { ref, reactive, computed, onMounted, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 import {
   getAuth,
@@ -641,3 +652,14 @@ onUnmounted(() => {
   if (timeInterval) clearInterval(timeInterval);
 });
 </script>
+
+<style scoped>
+::selection {
+  background-color: rgba(6, 182, 212, 0.3);
+  color: inherit;
+}
+
+.dark ::selection {
+  background-color: rgba(6, 182, 212, 0.5);
+}
+</style>
