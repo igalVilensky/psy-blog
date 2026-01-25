@@ -1,6 +1,6 @@
 <template>
   <div
-    class="min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-white font-sans transition-colors duration-500">
+    class="min-h-screen bg-gradient-to-br from-zinc-50/50 to-white dark:from-zinc-950/50 dark:to-black text-zinc-900 dark:text-white font-sans transition-colors duration-500">
     <div class="max-w-7xl mx-auto px-6 py-8 space-y-8">
       <Breadcrumbs />
 
@@ -11,7 +11,7 @@
             <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3">
               Тесты и методики
             </h1>
-            <p class="text-stone-600 dark:text-stone-400 text-base leading-relaxed max-w-2xl">
+            <p class="text-zinc-600 dark:text-zinc-400 text-base leading-relaxed max-w-2xl font-medium">
               Профессиональные инструменты для исследования личности и когнитивных способностей
             </p>
           </div>
@@ -19,24 +19,26 @@
           <!-- Stats Overview -->
           <div class="flex items-center gap-4">
             <div class="stat-card">
-              <div class="text-2xl font-bold text-stone-900 dark:text-white">{{ tests.length }}</div>
-              <div class="text-xs text-stone-500 dark:text-stone-400 uppercase tracking-wide">
+              <div
+                class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-400 dark:to-blue-400">
+                {{ tests.length }}</div>
+              <div class="text-xs text-zinc-500 dark:text-zinc-400 uppercase tracking-wide font-bold">
                 Всего
               </div>
             </div>
             <div class="stat-card">
-              <div class="text-2xl font-bold text-stone-900 dark:text-white">
+              <div class="text-2xl font-bold text-zinc-900 dark:text-white">
                 {{tests.filter(t => t.category === 'psychology').length}}
               </div>
-              <div class="text-xs text-stone-500 dark:text-stone-400 uppercase tracking-wide">
+              <div class="text-xs text-zinc-500 dark:text-zinc-400 uppercase tracking-wide font-bold">
                 Психология
               </div>
             </div>
             <div class="stat-card">
-              <div class="text-2xl font-bold text-stone-900 dark:text-white">
+              <div class="text-2xl font-bold text-zinc-900 dark:text-white">
                 {{tests.filter(t => t.category === 'cognitive').length}}
               </div>
-              <div class="text-xs text-stone-500 dark:text-stone-400 uppercase tracking-wide">
+              <div class="text-xs text-zinc-500 dark:text-zinc-400 uppercase tracking-wide font-bold">
                 Когнитивные
               </div>
             </div>
@@ -47,10 +49,10 @@
       <!-- Filter Navigation -->
       <div class="flex flex-wrap items-center gap-2 mb-8">
         <button v-for="filter in filters" :key="filter.value" @click="currentFilter = filter.value"
-          class="px-5 py-2.5 text-sm font-medium transition-all duration-300 border-2" :class="[
+          class="px-5 py-2.5 text-sm font-bold transition-all duration-300 rounded-xl" :class="[
             currentFilter === filter.value
-              ? 'bg-stone-900 dark:bg-white border-stone-900 dark:border-white text-white dark:text-stone-900'
-              : 'bg-white dark:bg-stone-900 border-stone-200 dark:border-stone-800 text-stone-600 dark:text-stone-400 hover:bg-stone-50 dark:hover:bg-stone-800 hover:border-stone-900 dark:hover:border-white hover:text-stone-900 dark:hover:text-white'
+              ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/25'
+              : 'bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:border-cyan-500 dark:hover:border-cyan-500 hover:text-cyan-600 dark:hover:text-cyan-400'
           ]">
           <i :class="[filter.icon, 'mr-2']"></i>
           {{ filter.label }}
@@ -58,17 +60,18 @@
       </div>
 
       <!-- Category Description -->
-      <div class="mb-8 p-6 bg-white dark:bg-stone-900 border-2 border-stone-900 dark:border-white">
+      <div
+        class="mb-8 p-6 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 border-l-4 border-l-cyan-500 rounded-2xl">
         <div class="flex items-start gap-4">
           <div
-            class="w-10 h-10 flex items-center justify-center flex-shrink-0 border-2 border-stone-900 dark:border-white">
-            <i :class="[currentCategoryInfo.icon, 'text-stone-900 dark:text-white']"></i>
+            class="w-12 h-12 flex items-center justify-center flex-shrink-0 bg-gradient-to-br from-cyan-500/10 to-blue-600/10 border border-cyan-500/20 rounded-xl">
+            <i :class="[currentCategoryInfo.icon, 'text-cyan-600 dark:text-cyan-400']"></i>
           </div>
           <div>
             <h3 class="text-lg font-bold mb-2">
               {{ currentCategoryInfo.title }}
             </h3>
-            <p class="text-stone-600 dark:text-stone-300 leading-relaxed text-sm">
+            <p class="text-zinc-600 dark:text-zinc-300 leading-relaxed text-sm font-medium">
               {{ currentCategoryInfo.description }}
             </p>
           </div>
@@ -82,45 +85,47 @@
 
           <!-- Icon Header -->
           <div class="flex items-start justify-between mb-4 relative">
-            <div class="icon-wrapper border-2 border-stone-900 dark:border-white relative">
-              <i :class="test.icon" class="text-stone-900 dark:text-white text-xl"></i>
+            <div class="icon-wrapper relative">
+              <i :class="test.icon" class="text-cyan-600 dark:text-cyan-400 text-xl"></i>
 
               <!-- Lock overlay for disabled tests -->
               <div v-if="test.disabled"
-                class="absolute inset-0 bg-white/90 dark:bg-stone-900/90 flex items-center justify-center">
-                <i class="fas fa-lock text-stone-900 dark:text-white text-sm"></i>
+                class="absolute inset-0 bg-white/90 dark:bg-zinc-900/90 flex items-center justify-center rounded-xl">
+                <i class="fas fa-lock text-zinc-400 dark:text-zinc-600 text-sm"></i>
               </div>
             </div>
             <span class="difficulty-badge"
-              :class="test.disabled ? 'text-stone-400 dark:text-stone-600 border-stone-400 dark:border-stone-600' : ''">
+              :class="test.disabled ? 'text-zinc-400 dark:text-zinc-600 border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800' : 'text-zinc-600 dark:text-zinc-400 border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800'">
               {{ test.difficulty }}
             </span>
           </div>
 
           <!-- Content -->
-          <h3 class="text-lg font-semibold mb-2 transition-colors"
-            :class="test.disabled ? 'text-stone-400 dark:text-stone-600' : (!test.disabled && 'group-hover:text-stone-900 dark:group-hover:text-white')">
+          <h3 class="text-lg font-bold mb-2 transition-colors"
+            :class="test.disabled ? 'text-zinc-400 dark:text-zinc-600' : (!test.disabled && 'group-hover:text-cyan-600 dark:group-hover:text-cyan-400')">
             {{ test.title }}
           </h3>
-          <p class="text-sm mb-1 font-medium"
-            :class="test.disabled ? 'text-stone-400 dark:text-stone-600' : 'text-stone-500 dark:text-stone-400'">
+          <p class="text-sm mb-1 font-bold uppercase tracking-wide"
+            :class="test.disabled ? 'text-zinc-400 dark:text-zinc-600' : 'text-zinc-500 dark:text-zinc-400'">
             {{ test.subtitle }}
           </p>
-          <p class="text-sm leading-relaxed mb-4 line-clamp-3"
-            :class="test.disabled ? 'text-stone-400 dark:text-stone-600' : 'text-stone-600 dark:text-stone-300'">
+          <p class="text-sm leading-relaxed mb-4 line-clamp-3 font-medium"
+            :class="test.disabled ? 'text-zinc-400 dark:text-zinc-600' : 'text-zinc-600 dark:text-zinc-300'">
             {{ test.description }}
           </p>
 
           <!-- Footer -->
-          <div class="flex items-center justify-between pt-4 border-t-2"
-            :class="test.disabled ? 'border-stone-400 dark:border-stone-600' : 'border-stone-900 dark:border-white'">
-            <div class="flex items-center gap-2" :class="test.disabled ? 'text-stone-400 dark:text-stone-600' : ''">
+          <div class="flex items-center justify-between pt-4 border-t"
+            :class="test.disabled ? 'border-zinc-200 dark:border-zinc-800' : 'border-zinc-200 dark:border-zinc-800'">
+            <div class="flex items-center gap-2"
+              :class="test.disabled ? 'text-zinc-400 dark:text-zinc-600' : 'text-zinc-500 dark:text-zinc-400'">
               <i class="fas fa-clock text-xs"></i>
-              <span class="text-xs font-medium">{{ test.duration }}</span>
+              <span class="text-xs font-bold">{{ test.duration }}</span>
             </div>
-            <div class="flex items-center gap-2" :class="test.disabled ? 'text-stone-400 dark:text-stone-600' : ''">
+            <div class="flex items-center gap-2"
+              :class="test.disabled ? 'text-zinc-400 dark:text-zinc-600' : 'text-emerald-600 dark:text-emerald-400'">
               <i class="fas text-xs" :class="test.disabled ? 'fa-lock' : 'fa-check-circle'"></i>
-              <span class="text-xs font-medium">{{ test.disabled ? 'Скоро' : 'Доступен' }}</span>
+              <span class="text-xs font-bold">{{ test.disabled ? 'Скоро' : 'Доступен' }}</span>
             </div>
           </div>
 
@@ -133,38 +138,40 @@
       <!-- Quick Tests Section -->
       <div class="mt-16 mb-12">
         <div class="flex items-center justify-between mb-6">
-          <h2 class="text-xl font-semibold">БЫСТРЫЕ ТЕСТЫ</h2>
-          <span class="text-sm text-stone-500 dark:text-stone-400">Менее 5 минут</span>
+          <h2 class="text-xl font-bold uppercase tracking-tight">БЫСТРЫЕ ТЕСТЫ</h2>
+          <span class="text-sm text-zinc-500 dark:text-zinc-400 font-medium">Менее 5 минут</span>
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
           <NuxtLink to="/space/tests/digit-span" class="quick-test-card group">
-            <div class="quick-icon-wrapper border-2 border-stone-900 dark:border-white">
-              <i class="fas fa-brain text-stone-900 dark:text-white text-lg"></i>
+            <div class="quick-icon-wrapper">
+              <i class="fas fa-brain text-cyan-600 dark:text-cyan-400 text-lg"></i>
             </div>
-            <h4 class="text-sm font-medium mt-3 mb-1">Объем памяти</h4>
-            <p class="text-stone-500 dark:text-stone-400 text-xs">5 мин</p>
+            <h4
+              class="text-sm font-bold mt-3 mb-1 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
+              Объем памяти</h4>
+            <p class="text-zinc-500 dark:text-zinc-400 text-xs font-medium">5 мин</p>
           </NuxtLink>
 
           <div v-for="quickTest in quickTests" :key="quickTest.id" class="quick-test-card relative overflow-hidden"
             :class="[quickTest.disabled ? 'cursor-not-allowed' : 'cursor-pointer']">
 
-            <div class="quick-icon-wrapper border-2 border-stone-900 dark:border-white relative">
-              <i :class="quickTest.icon" class="text-stone-900 dark:text-white text-lg"></i>
+            <div class="quick-icon-wrapper relative">
+              <i :class="quickTest.icon" class="text-cyan-600 dark:text-cyan-400 text-lg"></i>
 
               <!-- Lock overlay for disabled tests -->
               <div v-if="quickTest.disabled"
-                class="absolute inset-0 bg-stone-50/90 dark:bg-stone-900/90 flex items-center justify-center">
-                <i class="fas fa-lock text-stone-900 dark:text-white text-sm"></i>
+                class="absolute inset-0 bg-zinc-50/90 dark:bg-zinc-900/90 flex items-center justify-center rounded-xl">
+                <i class="fas fa-lock text-zinc-400 dark:text-zinc-600 text-sm"></i>
               </div>
             </div>
 
-            <h4 class="text-sm font-medium mt-3 mb-1"
-              :class="quickTest.disabled ? 'text-stone-400 dark:text-stone-600' : ''">
+            <h4 class="text-sm font-bold mt-3 mb-1"
+              :class="quickTest.disabled ? 'text-zinc-400 dark:text-zinc-600' : ''">
               {{ quickTest.title }}
             </h4>
-            <p class="text-xs"
-              :class="quickTest.disabled ? 'text-stone-400 dark:text-stone-600' : 'text-stone-500 dark:text-stone-400'">
+            <p class="text-xs font-medium"
+              :class="quickTest.disabled ? 'text-zinc-400 dark:text-zinc-600' : 'text-zinc-500 dark:text-zinc-400'">
               {{ quickTest.time }}
             </p>
           </div>
@@ -172,15 +179,16 @@
       </div>
 
       <!-- Info Banner -->
-      <div class="p-6 border-2 border-stone-900 dark:border-white bg-white dark:bg-stone-900">
+      <div
+        class="p-6 border border-zinc-200 dark:border-zinc-800 border-l-4 border-l-cyan-500 bg-white dark:bg-zinc-900 rounded-2xl">
         <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
           <div
-            class="w-12 h-12 border-2 border-stone-900 dark:border-white flex items-center justify-center flex-shrink-0">
-            <i class="fas fa-info-circle text-stone-900 dark:text-white text-xl"></i>
+            class="w-12 h-12 bg-gradient-to-br from-cyan-500/10 to-blue-600/10 border border-cyan-500/20 flex items-center justify-center flex-shrink-0 rounded-xl">
+            <i class="fas fa-info-circle text-cyan-600 dark:text-cyan-400 text-xl"></i>
           </div>
           <div class="flex-1">
-            <h4 class="font-semibold mb-1">Как выбрать тест?</h4>
-            <p class="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
+            <h4 class="font-bold mb-1">Как выбрать тест?</h4>
+            <p class="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed font-medium">
               Когнитивные тесты оценивают работу мозга (память, внимание), а психологические — особенности личности и
               характера.
               Для комплексного самопознания рекомендуем проходить и те, и другие.
@@ -393,30 +401,30 @@ const quickTests = [
 
 <style scoped>
 .stat-card {
-  @apply text-center px-4 py-3 border-2 border-stone-900 dark:border-white bg-white dark:bg-stone-900 min-w-[100px];
+  @apply text-center px-4 py-3 border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 min-w-[100px] rounded-xl;
 }
 
 .test-category-card {
-  @apply relative p-6 border-2 border-stone-200 dark:border-stone-800 hover:border-stone-900 dark:hover:border-white transition-all duration-300 block bg-white dark:bg-stone-900;
+  @apply relative p-6 border border-zinc-200 dark:border-zinc-800 hover:border-cyan-500/50 dark:hover:border-cyan-500/30 transition-all duration-300 block bg-white dark:bg-zinc-900 rounded-2xl;
 }
 
 .test-category-card:not(.cursor-not-allowed):hover {
-  @apply bg-stone-50 dark:bg-stone-800;
+  @apply bg-zinc-50 dark:bg-zinc-800/50 shadow-lg;
 }
 
 .icon-wrapper {
-  @apply w-12 h-12 flex items-center justify-center flex-shrink-0;
+  @apply w-12 h-12 flex items-center justify-center flex-shrink-0 bg-gradient-to-br from-cyan-500/10 to-blue-600/10 border border-cyan-500/20 rounded-xl;
 }
 
 .difficulty-badge {
-  @apply px-2.5 py-1 text-xs font-semibold uppercase tracking-wider border-2 border-stone-900 dark:border-white;
+  @apply px-2.5 py-1 text-xs font-bold uppercase tracking-wider border rounded-lg;
 }
 
 .quick-test-card {
-  @apply p-4 border-2 border-stone-200 dark:border-stone-800 hover:border-stone-900 dark:hover:border-white hover:bg-stone-50 dark:hover:bg-stone-800 transition-all duration-300 block text-center bg-white dark:bg-stone-900 relative;
+  @apply p-4 border border-zinc-200 dark:border-zinc-800 hover:border-cyan-500/50 dark:hover:border-cyan-500/30 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-all duration-300 block text-center bg-white dark:bg-zinc-900 relative rounded-xl;
 }
 
 .quick-icon-wrapper {
-  @apply w-10 h-10 mx-auto flex items-center justify-center;
+  @apply w-12 h-12 mx-auto flex items-center justify-center bg-gradient-to-br from-cyan-500/10 to-blue-600/10 border border-cyan-500/20 rounded-xl;
 }
 </style>
