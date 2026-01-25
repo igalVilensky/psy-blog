@@ -1,25 +1,26 @@
 <template>
-    <aside class="flex flex-col h-screen bg-white dark:bg-stone-900 border-r-2 border-stone-900 dark:border-white">
-        <!-- Brand - Bold and editorial -->
-        <div class="h-16 flex items-center px-6 border-b-2 border-stone-900 dark:border-white flex-shrink-0">
-            <NuxtLink to="/" class="flex items-center gap-2 group">
-                <div class="w-8 h-8 bg-stone-900 dark:bg-white flex items-center justify-center">
-                    <i class="fas fa-brain text-white dark:text-stone-900 text-sm"></i>
+    <aside class="flex flex-col h-screen bg-white dark:bg-black border-r border-zinc-200 dark:border-zinc-800">
+        <!-- Brand -->
+        <div class="h-16 flex items-center px-6 border-b border-zinc-200 dark:border-zinc-800 flex-shrink-0">
+            <NuxtLink to="/" class="flex items-center gap-3 group">
+                <div class="relative w-8 h-8">
+                    <img src="/mindqlab-logo.png" alt="MindQLab Logo"
+                        class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" />
                 </div>
                 <div>
                     <span
-                        class="text-sm font-bold text-stone-900 dark:text-white group-hover:text-stone-600 dark:group-hover:text-stone-300 transition-colors">MindQLab</span>
-                    <div class="text-[9px] font-semibold text-stone-500 dark:text-stone-400 uppercase tracking-wider">
+                        class="text-sm font-bold text-zinc-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">MindQLab</span>
+                    <div class="text-[10px] font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">
                         Лаборатория</div>
                 </div>
             </NuxtLink>
         </div>
 
-        <!-- Navigation - Clean editorial style -->
-        <nav class="flex-1 overflow-y-auto py-4 px-4">
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto py-6 px-4">
             <div v-for="section in navSections" :key="section.title" class="mb-6">
                 <h5 v-if="section.title"
-                    class="px-3 text-[10px] font-bold text-stone-400 dark:text-stone-600 uppercase tracking-widest mb-2 border-l-2 border-stone-900 dark:border-white pl-2">
+                    class="px-3 text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-3">
                     {{ section.title }}
                 </h5>
 
@@ -27,33 +28,34 @@
                     <template v-for="item in section.items" :key="item.path">
                         <!-- Highlighted Coach Link -->
                         <NuxtLink v-if="item.isHighlight" :to="item.path" @click="$emit('close')" :class="[
-                            'flex items-center gap-3 px-3 py-2 text-sm font-bold transition-all relative group bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 border border-indigo-100 dark:border-indigo-800/30 rounded-lg mt-2'
+                            'flex items-center gap-3 px-4 py-3 text-sm font-medium transition-all relative group bg-gradient-to-r from-cyan-500/10 to-blue-600/10 text-cyan-600 dark:text-cyan-400 hover:from-cyan-500/20 hover:to-blue-600/20 border border-cyan-500/20 dark:border-cyan-500/30 rounded-lg mt-2'
                         ]">
-                            <i :class="[item.icon, 'text-sm text-indigo-500 dark:text-indigo-400']"></i>
-                            <span class="uppercase tracking-wide text-xs">{{ item.label }}</span>
+                            <i :class="[item.icon, 'text-sm']"></i>
+                            <span>{{ item.label }}</span>
                         </NuxtLink>
 
                         <!-- Standard Link -->
                         <NuxtLink v-else-if="!item.comingSoon" :to="item.path" @click="$emit('close')" :class="[
-                            'flex items-center gap-3 px-3 py-2 text-sm font-semibold transition-all relative group',
+                            'flex items-center gap-3 px-4 py-3 text-sm font-medium transition-all relative group rounded-lg',
                             isActive(item.path)
-                                ? 'bg-stone-900 dark:bg-white text-white dark:text-stone-900'
-                                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white hover:bg-stone-100 dark:hover:bg-stone-800'
+                                ? 'bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20 dark:border-cyan-500/30'
+                                : 'text-zinc-600 dark:text-zinc-400 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-cyan-500/10 dark:hover:bg-cyan-500/10'
                         ]">
                             <i :class="[item.icon, 'text-sm']"></i>
                             <span>{{ item.label }}</span>
                             <div v-if="isActive(item.path)"
-                                class="absolute left-0 top-0 bottom-0 w-1 bg-stone-900 dark:bg-white"></div>
+                                class="absolute left-0 top-1.5 bottom-1.5 w-1 bg-gradient-to-b from-cyan-500 to-blue-600 rounded-r">
+                            </div>
                         </NuxtLink>
 
                         <!-- Coming Soon Item -->
                         <div v-else
-                            class="flex items-center gap-3 px-3 py-2 text-sm font-semibold opacity-30 cursor-not-allowed text-stone-500 dark:text-stone-600">
+                            class="flex items-center gap-3 px-4 py-3 text-sm font-medium opacity-50 cursor-not-allowed text-zinc-400 dark:text-zinc-600 rounded-lg">
                             <i :class="[item.icon, 'text-sm']"></i>
                             <span>{{ item.label }}</span>
                             <div
-                                class="ml-auto px-1.5 py-0.5 bg-stone-200 dark:bg-stone-800 text-[8px] font-bold text-stone-500 uppercase tracking-tight border border-stone-300 dark:border-stone-700">
-                                SOON
+                                class="ml-auto px-2 py-0.5 bg-zinc-100 dark:bg-zinc-800 text-[10px] font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-tight border border-zinc-200 dark:border-zinc-700 rounded">
+                                Soon
                             </div>
                         </div>
                     </template>
@@ -61,17 +63,17 @@
             </div>
         </nav>
 
-        <!-- Bottom Actions - Sharp and clean -->
-        <div class="p-4 border-t-2 border-stone-900 dark:border-white space-y-2 flex-shrink-0">
+        <!-- Bottom Actions -->
+        <div class="p-4 border-t border-zinc-200 dark:border-zinc-800 space-y-2 flex-shrink-0">
             <!-- Dark Mode Toggle -->
             <button @click="toggleDarkMode"
-                class="w-full flex items-center gap-3 px-3 py-2 text-sm font-semibold text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white hover:bg-stone-100 dark:hover:bg-stone-800 transition-all">
+                class="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-cyan-500/10 transition-all rounded-lg">
                 <i :class="[isDark ? 'fas fa-sun' : 'fas fa-moon', 'text-sm']"></i>
                 <span>{{ isDark ? 'Светлая' : 'Тёмная' }}</span>
             </button>
 
             <button @click="logout"
-                class="w-full flex items-center gap-3 px-3 py-2 text-sm font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 transition-all">
+                class="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-500/10 transition-all rounded-lg">
                 <i class="fas fa-sign-out-alt text-sm"></i>
                 <span>Выйти</span>
             </button>

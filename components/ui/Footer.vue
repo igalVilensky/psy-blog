@@ -1,24 +1,30 @@
 <template>
   <footer
-    class="relative z-20 bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-white border-t border-stone-200 dark:border-stone-800 transition-colors duration-500 overflow-hidden">
+    class="relative z-20 bg-white dark:bg-black text-zinc-900 dark:text-white border-t border-zinc-200 dark:border-zinc-800 transition-colors duration-500 overflow-hidden">
 
-    <div class="relative container mx-auto px-6 max-w-7xl py-16 md:py-24">
+    <div class="relative container mx-auto px-4 sm:px-6 max-w-7xl py-16 md:py-24">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8">
 
         <!-- Brand & Mission -->
         <div class="lg:col-span-2">
-          <NuxtLink to="/"
-            class="text-2xl font-bold uppercase tracking-tight flex items-center gap-2 mb-6 text-stone-900 dark:text-white hover:text-stone-600 transition-colors duration-300">
-            <span>MindQLab</span>
-          </NuxtLink>
-          <p
-            class="text-stone-500 dark:text-stone-400 text-xs font-medium leading-relaxed mb-8 max-w-sm uppercase tracking-wide">
-            Платформа для диагностики, понимания и развития мышления. Структурированный подход к личной эффективности.
+          <div class="flex items-center gap-3 mb-6">
+            <NuxtLink to="/" class="flex items-center gap-3 group">
+              <div class="relative w-12 h-12">
+                <img src="/mindqlab-logo.png" alt="MindQLab Logo"
+                  class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" />
+              </div>
+              <span
+                class="text-2xl font-bold text-zinc-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">MindQLab</span>
+            </NuxtLink>
+          </div>
+          <p class="text-zinc-600 dark:text-zinc-400 text-sm font-medium leading-relaxed mb-8 max-w-md">
+            Научный подход к когнитивному развитию. Система диагностики, анализа и практик для работы с мышлением и
+            эмоциональной устойчивостью.
           </p>
           <div class="flex flex-wrap gap-3">
             <a v-for="(social, index) in socialLinks" :key="index" :href="social.link" target="_blank"
               rel="noopener noreferrer"
-              class="w-10 h-10 flex items-center justify-center border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 text-stone-400 hover:text-stone-900 dark:hover:text-white hover:border-stone-400 transition-all duration-300">
+              class="w-10 h-10 flex items-center justify-center border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 hover:text-cyan-600 dark:hover:text-cyan-400 hover:border-cyan-500/50 hover:bg-cyan-500/10 transition-all duration-300 rounded-lg">
               <i :class="social.icon" class="text-lg"></i>
             </a>
           </div>
@@ -26,12 +32,13 @@
 
         <!-- Sitemap -->
         <div>
-          <h4 class="text-xs font-bold uppercase tracking-widest mb-6 text-stone-900 dark:text-white">Навигация</h4>
+          <h4 class="text-sm font-bold uppercase tracking-wider mb-6 text-zinc-800 dark:text-zinc-200">Навигация</h4>
           <ul class="space-y-3">
             <li v-for="(link, index) in sitemapLinks.slice(0, 6)" :key="index">
               <NuxtLink :to="link.to"
-                class="footer-nav-link group flex items-center gap-2 text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white transition-all duration-300 text-xs font-bold uppercase tracking-wider">
-                <span class="w-0 h-0.5 bg-stone-900 dark:bg-white transition-all duration-300 group-hover:w-2"></span>
+                class="footer-nav-link group flex items-center gap-2 text-zinc-600 dark:text-zinc-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all duration-300 text-sm font-medium">
+                <span
+                  class="w-0 h-0.5 bg-gradient-to-r from-cyan-500 to-blue-600 transition-all duration-300 group-hover:w-3"></span>
                 {{ link.label }}
               </NuxtLink>
             </li>
@@ -40,12 +47,13 @@
 
         <!-- Resources -->
         <div>
-          <h4 class="text-xs font-bold uppercase tracking-widest mb-6 text-stone-900 dark:text-white">Ресурсы</h4>
+          <h4 class="text-sm font-bold uppercase tracking-wider mb-6 text-zinc-800 dark:text-zinc-200">Ресурсы</h4>
           <ul class="space-y-3">
             <li v-for="(link, index) in sitemapLinks.slice(6)" :key="index">
               <NuxtLink :to="link.to"
-                class="footer-nav-link group flex items-center gap-2 text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white transition-all duration-300 text-xs font-bold uppercase tracking-wider">
-                <span class="w-0 h-0.5 bg-stone-900 dark:bg-white transition-all duration-300 group-hover:w-2"></span>
+                class="footer-nav-link group flex items-center gap-2 text-zinc-600 dark:text-zinc-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all duration-300 text-sm font-medium">
+                <span
+                  class="w-0 h-0.5 bg-gradient-to-r from-cyan-500 to-blue-600 transition-all duration-300 group-hover:w-3"></span>
                 {{ link.label }}
               </NuxtLink>
             </li>
@@ -54,17 +62,19 @@
 
         <!-- Newsletter -->
         <div class="lg:col-span-1">
-          <h4 class="text-xs font-bold uppercase tracking-widest mb-6 text-stone-900 dark:text-white">Подписка</h4>
-          <p
-            class="text-stone-500 dark:text-stone-400 text-[10px] font-bold uppercase tracking-wide mb-6 leading-relaxed">
-            Получайте еженедельные инсайты и новости системы.
+          <h4 class="text-sm font-bold uppercase tracking-wider mb-6 text-zinc-800 dark:text-zinc-200">Обновления</h4>
+          <p class="text-zinc-600 dark:text-zinc-400 text-xs font-medium mb-6 leading-relaxed">
+            Получайте полезные материалы о развитии мышления и новых возможностях системы.
           </p>
           <div class="flex flex-col gap-3">
-            <input type="email" v-model="email" placeholder="YOUR@EMAIL.COM"
-              class="w-full px-4 py-3 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 focus:border-stone-900 dark:focus:border-white outline-none text-xs font-bold uppercase tracking-custom transition-all placeholder-stone-300" />
+            <input type="email" v-model="email" placeholder="Ваш email"
+              class="w-full px-4 py-3 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 focus:border-cyan-500 outline-none text-sm placeholder-zinc-500 dark:placeholder-zinc-500 rounded-lg transition-colors" />
             <button @click="subscribeEmail"
-              class="w-full py-3 bg-stone-900 dark:bg-white text-white dark:text-stone-900 text-xs font-bold uppercase tracking-widest hover:bg-stone-800 dark:hover:bg-stone-200 transition-all">
-              Подписаться
+              class="group w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-sm font-semibold hover:shadow-lg hover:shadow-cyan-500/25 transition-all rounded-lg">
+              <span class="flex items-center justify-center gap-2">
+                Подписаться
+                <i class="fas fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
+              </span>
             </button>
           </div>
         </div>
@@ -72,15 +82,18 @@
 
       <!-- Bottom Bar -->
       <div
-        class="mt-24 pt-8 border-t border-stone-200 dark:border-stone-800 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] font-bold uppercase tracking-widest text-stone-400">
-        <div class="opacity-70">&copy; {{ new Date().getFullYear() }} MindQLab. Все права защищены.</div>
+        class="mt-16 pt-8 border-t border-zinc-200 dark:border-zinc-800 flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-zinc-500 dark:text-zinc-500">
+        <div class="text-center md:text-left">&copy; {{ new Date().getFullYear() }} MindQLab. Все права защищены.</div>
 
-        <nav class="flex gap-8">
-          <NuxtLink to="/legal/privacy" class="hover:text-stone-900 dark:hover:text-white transition-colors">
-            Конфиденциальность</NuxtLink>
-          <NuxtLink to="/legal/terms" class="hover:text-stone-900 dark:hover:text-white transition-colors">Условия
+        <nav class="flex gap-6 flex-wrap justify-center">
+          <NuxtLink to="/legal/privacy" class="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
+            Конфиденциальность
           </NuxtLink>
-          <NuxtLink to="/contact" class="hover:text-stone-900 dark:hover:text-white transition-colors">Контакты
+          <NuxtLink to="/legal/terms" class="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
+            Условия
+          </NuxtLink>
+          <NuxtLink to="/contact" class="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
+            Контакты
           </NuxtLink>
         </nav>
       </div>
@@ -146,29 +159,37 @@ const validateEmail = (email) => {
 input:focus-visible,
 button:focus-visible,
 a:focus-visible {
-  outline: 2px solid #1c1917;
-  /* stone-900 */
-  outline-offset: 4px;
-}
-
-.dark input:focus-visible,
-.dark button:focus-visible,
-.dark a:focus-visible {
-  outline: 2px solid #ffffff;
+  outline: 2px solid #06b6d4;
+  /* cyan-500 */
+  outline-offset: 2px;
+  border-radius: 0.375rem;
 }
 
 /* Active link highlighting */
 .footer-nav-link.router-link-active {
-  color: #1c1917 !important;
-  /* stone-900 */
+  color: #06b6d4 !important;
+  /* cyan-500 */
 }
 
 .dark .footer-nav-link.router-link-active {
-  color: #ffffff !important;
+  color: #06b6d4 !important;
+  /* cyan-500 */
 }
 
 .footer-nav-link.router-link-active span {
-  width: 0.5rem !important;
-  /* 8px */
+  width: 0.75rem !important;
+  /* 12px */
+}
+
+/* Smooth transitions */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Logo image optimization */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
 }
 </style>
