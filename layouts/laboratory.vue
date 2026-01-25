@@ -2,7 +2,7 @@
   <div
     class="min-h-screen bg-gradient-to-br from-zinc-50 to-white dark:from-black dark:to-zinc-950 text-zinc-900 dark:text-white flex">
     <!-- Sidebar -->
-    <LabSidebar class="hidden lg:block fixed top-0 left-0 w-64 z-40" />
+    <LabSidebar class="hidden lg:block fixed top-0 left-0 w-64 h-screen z-40" />
 
     <!-- Mobile Header -->
     <div

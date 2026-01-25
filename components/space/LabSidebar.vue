@@ -1,7 +1,9 @@
 <template>
-    <aside class="flex flex-col h-screen bg-white dark:bg-black border-r border-zinc-200 dark:border-zinc-800">
+    <aside
+        class="flex flex-col min-h-screen h-full bg-white dark:bg-black border-r border-zinc-200 dark:border-zinc-800 overflow-y-auto">
         <!-- Brand -->
-        <div class="h-16 flex items-center px-6 border-b border-zinc-200 dark:border-zinc-800 flex-shrink-0">
+        <div
+            class="h-16 flex items-center justify-between px-6 border-b border-zinc-200 dark:border-zinc-800 flex-shrink-0 sticky top-0 bg-white dark:bg-black z-10">
             <NuxtLink to="/" class="flex items-center gap-3 group">
                 <div class="relative w-8 h-8">
                     <img src="/mindqlab-logo.png" alt="MindQLab Logo"
@@ -14,10 +16,17 @@
                         Лаборатория</div>
                 </div>
             </NuxtLink>
+
+            <!-- Dark Mode Toggle -->
+            <button @click="toggleDarkMode"
+                class="w-9 h-9 rounded-full bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center hover:scale-110 transition-transform">
+                <span v-if="isDark" class="text-sm">☀️</span>
+                <span v-else class="text-sm">🌙</span>
+            </button>
         </div>
 
         <!-- Navigation -->
-        <nav class="flex-1 overflow-y-auto py-6 px-4">
+        <nav class="flex-1 py-6 px-4">
             <div v-for="section in navSections" :key="section.title" class="mb-6">
                 <h5 v-if="section.title"
                     class="px-3 text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-3">
@@ -61,23 +70,16 @@
                     </template>
                 </div>
             </div>
+
+            <!-- Logout as a nav item -->
+            <div class="mt-6 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+                <button @click="logout"
+                    class="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-500/10 transition-all rounded-lg">
+                    <i class="fas fa-sign-out-alt text-sm"></i>
+                    <span>Выйти</span>
+                </button>
+            </div>
         </nav>
-
-        <!-- Bottom Actions -->
-        <div class="p-4 border-t border-zinc-200 dark:border-zinc-800 space-y-2 flex-shrink-0">
-            <!-- Dark Mode Toggle -->
-            <button @click="toggleDarkMode"
-                class="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-cyan-500/10 transition-all rounded-lg">
-                <i :class="[isDark ? 'fas fa-sun' : 'fas fa-moon', 'text-sm']"></i>
-                <span>{{ isDark ? 'Светлая' : 'Тёмная' }}</span>
-            </button>
-
-            <button @click="logout"
-                class="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-500/10 transition-all rounded-lg">
-                <i class="fas fa-sign-out-alt text-sm"></i>
-                <span>Выйти</span>
-            </button>
-        </div>
     </aside>
 </template>
 
