@@ -1,21 +1,11 @@
 <template>
   <div
-    class="min-h-screen transition-colors duration-500 flex flex-col bg-mindqlab-calm-bg dark:bg-mindqlab-calm-dark-bg text-stone-900 dark:text-stone-100 font-sans">
+    class="min-h-screen transition-colors duration-500 flex flex-col bg-gradient-to-br from-zinc-50 to-white dark:from-black dark:to-zinc-950 text-zinc-900 dark:text-white font-sans">
     <TopBar />
 
     <main class="flex-1 relative flex items-center justify-center py-20 overflow-hidden">
       <!-- Background Animation -->
-      <div class="absolute inset-0 z-0 opacity-40 dark:opacity-20 pointer-events-none">
-        <div
-          class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-mindqlab-calm-accent/10 rounded-full blur-[100px] animate-float-delayed">
-        </div>
-        <div
-          class="absolute bottom-[-10%] right-[-10%] w-[30%] h-[30%] bg-mindqlab-calm-accent-secondary/10 rounded-full blur-[120px] animate-slow-float">
-        </div>
-      </div>
-
-      <!-- Neural Visualizer -->
-      <div class="absolute inset-0 z-0 opacity-60 dark:opacity-20 pointer-events-none">
+      <div class="absolute inset-0 z-0 pointer-events-none">
         <ClientOnly>
           <CursorNeuralVisualizer />
         </ClientOnly>
@@ -24,15 +14,22 @@
       <div class="container mx-auto px-6 relative z-10">
         <div class="max-w-4xl mx-auto">
           <div
-            class="bg-white/80 dark:bg-stone-900/60 backdrop-blur-xl rounded-[3rem] border border-stone-100 dark:border-stone-800/50 shadow-2xl overflow-hidden grid md:grid-cols-2 animate-fade-up">
+            class="bg-white/90 dark:bg-zinc-900/80 backdrop-blur-xl rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-2xl overflow-hidden grid md:grid-cols-2 animate-fade-up">
 
             <!-- Login Form -->
             <div class="p-8 sm:p-12">
               <div class="mb-10">
-                <h2 class="text-3xl font-light text-stone-900 dark:text-white uppercase tracking-tight mb-2">
-                  Вход в <span class="text-mindqlab-calm-accent font-medium">MindQLab</span>
+                <div
+                  class="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/10 to-blue-600/10 border border-cyan-500/20 dark:border-cyan-500/30 mb-6">
+                  <div class="w-2 h-2 rounded-full bg-cyan-500 mr-2 animate-pulse"></div>
+                  <span
+                    class="text-xs font-medium text-cyan-600 dark:text-cyan-400 uppercase tracking-wider">Авторизация</span>
+                </div>
+                <h2 class="text-3xl font-bold text-zinc-900 dark:text-white mb-2">
+                  Вход в <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-400 dark:to-blue-400">MindQLab</span>
                 </h2>
-                <p class="text-stone-400 dark:text-stone-500 font-light italic text-sm">
+                <p class="text-zinc-500 dark:text-zinc-400 text-sm font-medium">
                   Продолжите свой путь развития
                 </p>
               </div>
@@ -42,11 +39,11 @@
                 <div class="form-group">
                   <label for="email" class="form-label">Email</label>
                   <div class="relative">
-                    <span class="absolute inset-y-0 left-4 flex items-center text-stone-300 dark:text-stone-600 mr-2">
+                    <span class="absolute inset-y-0 left-4 flex items-center text-zinc-400 dark:text-zinc-500">
                       <i class="far fa-envelope text-sm"></i>
                     </span>
                     <input type="email" id="email" v-model="email" autocomplete="email" required
-                      class="form-input !pl-10" placeholder="your@email.com" />
+                      class="form-input !pl-11" placeholder="your@email.com" />
                   </div>
                 </div>
 
@@ -54,13 +51,13 @@
                 <div class="form-group">
                   <label for="password" class="form-label">Пароль</label>
                   <div class="relative">
-                    <span class="absolute inset-y-0 left-4 flex items-center text-stone-300 dark:text-stone-600">
+                    <span class="absolute inset-y-0 left-4 flex items-center text-zinc-400 dark:text-zinc-500">
                       <i class="fas fa-lock text-sm"></i>
                     </span>
                     <input :type="showPassword ? 'text' : 'password'" id="password" v-model="password"
-                      autocomplete="current-password" required class="form-input !pl-10 pr-12" placeholder="••••••••" />
+                      autocomplete="current-password" required class="form-input !pl-11 pr-12" placeholder="••••••••" />
                     <button type="button" @click="togglePassword"
-                      class="absolute inset-y-0 right-0 flex items-center pr-5 text-stone-300 dark:text-stone-600 hover:text-mindqlab-calm-accent transition-colors">
+                      class="absolute inset-y-0 right-0 flex items-center pr-4 text-zinc-400 dark:text-zinc-500 hover:text-cyan-600 transition-colors">
                       <i :class="showPassword ? 'far fa-eye-slash' : 'far fa-eye'" class="text-sm"></i>
                     </button>
                   </div>
@@ -68,32 +65,30 @@
 
                 <!-- Error Message -->
                 <div v-if="error"
-                  class="p-4 rounded-2xl bg-red-50 dark:bg-red-950/20 border border-red-100 dark:border-red-900/30 text-red-500 text-xs font-light leading-relaxed animate-shake">
+                  class="p-4 rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 text-sm font-medium animate-shake">
                   <i class="fas fa-exclamation-circle mr-2"></i> {{ error }}
                 </div>
 
                 <!-- Submit Button -->
-                <div class="pt-4">
-                  <button type="submit" :disabled="isLoading" class="submit-btn group relative overflow-hidden">
-                    <span class="relative z-10 flex items-center justify-center gap-2">
-                      <i v-if="isLoading" class="fas fa-spinner fa-spin mr-2"></i>
-                      <i v-else class="fas fa-arrow-right mr-2 transition-transform group-hover:translate-x-1"></i>
-                      {{ isLoading ? "Вход..." : "ВОЙТИ" }}
+                <div class="pt-2">
+                  <button type="submit" :disabled="isLoading"
+                    class="group w-full px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold uppercase tracking-wider text-sm hover:shadow-xl hover:shadow-cyan-500/25 transition-all duration-300 transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">
+                    <span class="flex items-center justify-center gap-2">
+                      <i v-if="isLoading" class="fas fa-spinner fa-spin"></i>
+                      <i v-else class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                      {{ isLoading ? "Вход..." : "Войти" }}
                     </span>
-                    <div
-                      class="absolute inset-0 bg-gradient-to-r from-mindqlab-calm-accent to-mindqlab-calm-accent-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    </div>
                   </button>
                 </div>
               </form>
 
               <!-- Divider -->
-              <div class="relative my-6">
+              <div class="relative my-8">
                 <div class="absolute inset-0 flex items-center">
-                  <div class="w-full border-t border-stone-200 dark:border-stone-800/50"></div>
+                  <div class="w-full border-t border-zinc-200 dark:border-zinc-800"></div>
                 </div>
-                <div class="relative flex justify-center text-[10px] uppercase tracking-wider">
-                  <span class="px-2 bg-white/80 dark:bg-stone-900/60 text-stone-400">или</span>
+                <div class="relative flex justify-center text-xs uppercase tracking-wider">
+                  <span class="px-4 bg-white dark:bg-zinc-900 text-zinc-400">или</span>
                 </div>
               </div>
 
@@ -101,10 +96,10 @@
               <GoogleSignInButton @error="(msg) => error = msg" />
 
               <div class="mt-8 text-center">
-                <p class="text-xs text-stone-400 dark:text-stone-500 font-light">
+                <p class="text-sm text-zinc-500 dark:text-zinc-400 font-medium">
                   Нет аккаунта?
                   <NuxtLink to="/register"
-                    class="text-mindqlab-calm-accent hover:underline font-medium transition-colors">
+                    class="text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300 font-bold transition-colors">
                     Создать профиль
                   </NuxtLink>
                 </p>
@@ -113,23 +108,22 @@
 
             <!-- Side Info -->
             <div
-              class="bg-stone-50/50 dark:bg-stone-800/30 p-8 sm:p-12 flex flex-col justify-center border-l border-stone-100 dark:border-stone-800/50">
-              <h3 class="text-xl font-light text-stone-900 dark:text-white uppercase tracking-tight mb-8">
+              class="bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-800/50 dark:to-zinc-900/50 p-8 sm:p-12 flex flex-col justify-center border-l border-zinc-200 dark:border-zinc-800">
+              <h3 class="text-xl font-bold text-zinc-900 dark:text-white mb-8">
                 С возвращением
               </h3>
-              <div class="space-y-8">
+              <div class="space-y-6">
                 <div v-for="(item, i) in infoItems" :key="i" class="flex items-start gap-4 group">
                   <div
-                    class="w-10 h-10 rounded-xl bg-white dark:bg-stone-800 flex items-center justify-center text-mindqlab-calm-accent shadow-sm border border-stone-100 dark:border-stone-700/50 group-hover:border-mindqlab-calm-accent/30 transition-all duration-500 shrink-0">
-                    <i :class="['fas', item.icon, 'text-sm']"></i>
+                    class="w-12 h-12 rounded-xl bg-white dark:bg-zinc-800 flex items-center justify-center shadow-sm border border-zinc-200 dark:border-zinc-700 group-hover:border-cyan-500/50 transition-all duration-300 shrink-0">
+                    <i :class="['fas', item.icon, 'text-cyan-600 dark:text-cyan-400']"></i>
                   </div>
                   <div>
-                    <h4 class="text-sm font-medium text-stone-800 dark:text-stone-200 mb-1">{{ item.title }}</h4>
-                    <p class="text-xs text-stone-500 dark:text-stone-400 font-light leading-relaxed">{{ item.text }}</p>
+                    <h4 class="text-sm font-bold text-zinc-900 dark:text-white mb-1">{{ item.title }}</h4>
+                    <p class="text-xs text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed">{{ item.text }}</p>
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
         </div>
@@ -196,25 +190,17 @@ const handleLogin = async () => {
 };
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
 .form-group {
   @apply space-y-2;
 }
 
 .form-label {
-  @apply block text-[10px] uppercase tracking-[0.2em] font-medium text-stone-400 dark:text-stone-500;
+  @apply block text-xs uppercase tracking-wider font-bold text-zinc-500 dark:text-zinc-400;
 }
 
 .form-input {
-  @apply w-full px-6 py-4 rounded-2xl bg-stone-50/50 dark:bg-stone-800/20 border border-stone-100 dark:border-stone-800/50 text-stone-900 dark:text-white placeholder-stone-300 dark:placeholder-stone-600 focus:outline-none focus:border-mindqlab-calm-accent focus:ring-1 focus:ring-mindqlab-calm-accent transition-all duration-300 font-light text-sm;
-}
-
-.submit-btn {
-  @apply w-full px-10 py-5 rounded-full bg-mindqlab-calm-accent text-white font-bold uppercase tracking-[0.2em] text-xs hover:bg-opacity-90 transition-all duration-300 shadow-lg shadow-mindqlab-calm-accent/20;
-}
-
-.submit-btn:disabled {
-  @apply opacity-50 grayscale cursor-not-allowed;
+  @apply w-full px-4 py-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all duration-300 font-medium text-sm;
 }
 
 .animate-fade-up {
@@ -259,5 +245,14 @@ const handleLogin = async () => {
   60% {
     transform: translate3d(4px, 0, 0);
   }
+}
+
+::selection {
+  background-color: rgba(6, 182, 212, 0.3);
+  color: inherit;
+}
+
+.dark ::selection {
+  background-color: rgba(6, 182, 212, 0.5);
 }
 </style>
