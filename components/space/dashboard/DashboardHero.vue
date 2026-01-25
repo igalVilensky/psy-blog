@@ -1,27 +1,28 @@
 <!-- components/space/dashboard/DashboardHero.vue -->
 <template>
   <div
-    class="relative bg-white dark:bg-stone-900 p-8 mb-8 border border-stone-200 dark:border-stone-800 border-l-4 border-l-stone-900 dark:border-l-white transition-colors duration-500">
+    class="relative bg-white dark:bg-zinc-900 p-8 mb-8 border border-zinc-200 dark:border-zinc-800 border-l-4 border-l-cyan-500 rounded-2xl transition-colors duration-500">
     <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
       <div class="flex-1 min-w-0">
         <!-- Meta Info -->
         <div class="flex items-center gap-3 mb-4">
           <span
-            class="px-2 py-1 bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 text-[10px] font-bold uppercase tracking-widest border border-stone-200 dark:border-stone-700">
+            class="px-3 py-1.5 bg-gradient-to-r from-cyan-500/10 to-blue-600/10 text-cyan-600 dark:text-cyan-400 text-[10px] font-bold uppercase tracking-widest border border-cyan-500/20 dark:border-cyan-500/30 rounded-lg">
             {{ timeOfDayLabel }}
           </span>
-          <span class="text-stone-400 dark:text-stone-500 text-[10px] font-bold uppercase tracking-wider">{{ currentDate
+          <span class="text-zinc-400 dark:text-zinc-500 text-[10px] font-bold uppercase tracking-wider">{{ currentDate
           }}</span>
         </div>
 
         <!-- Greeting & Insight -->
         <div class="space-y-2 group">
           <h1
-            class="text-3xl font-bold uppercase tracking-tight text-stone-900 dark:text-white flex items-baseline gap-2">
-            Привет, <span class="text-stone-500 dark:text-stone-400">
+            class="text-3xl font-bold uppercase tracking-tight text-zinc-900 dark:text-white flex items-baseline gap-2">
+            Привет, <span
+              class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-400 dark:to-blue-400">
               {{ userName || 'Странник' }}</span>
           </h1>
-          <p class="text-sm font-medium text-stone-500 dark:text-stone-400 leading-relaxed max-w-2xl">
+          <p class="text-sm font-medium text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-2xl">
             {{ insightMessage }}
           </p>
         </div>
@@ -29,12 +30,12 @@
         <!-- Actions -->
         <div class="flex flex-wrap gap-3 mt-6">
           <NuxtLink to="/space/tests"
-            class="px-6 py-2 bg-stone-900 dark:bg-white text-white dark:text-stone-900 text-xs font-bold uppercase tracking-wider hover:bg-stone-800 dark:hover:bg-stone-200 transition-colors flex items-center gap-2">
+            class="px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-xs font-bold uppercase tracking-wider hover:shadow-lg hover:shadow-cyan-500/25 transition-all flex items-center gap-2 rounded-xl">
             <i class="fas fa-play text-[10px]"></i>
             Тренировка
           </NuxtLink>
           <NuxtLink to="/space/growth/emotional-compass"
-            class="px-6 py-2 bg-transparent border border-stone-300 dark:border-stone-600 text-stone-900 dark:text-white text-xs font-bold uppercase tracking-wider hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors flex items-center gap-2">
+            class="px-6 py-2.5 bg-transparent border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white text-xs font-bold uppercase tracking-wider hover:border-cyan-500 hover:text-cyan-600 dark:hover:border-cyan-400 dark:hover:text-cyan-400 transition-all flex items-center gap-2 rounded-xl">
             <i class="fas fa-heart text-[10px]"></i>
             Замер
           </NuxtLink>
@@ -44,23 +45,23 @@
       <!-- Compact Stat Cards -->
       <div class="flex gap-4 shrink-0">
         <div
-          class="flex flex-col justify-center bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 border-l-4 border-l-cyan-500 px-5 py-4 min-w-[140px] group transition-all hover:bg-white dark:hover:bg-stone-700">
-          <div class="text-[9px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-widest mb-1">Фокус дня
+          class="flex flex-col justify-center bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 border-l-4 border-l-cyan-500 px-5 py-4 min-w-[140px] group transition-all hover:bg-white dark:hover:bg-zinc-700 rounded-xl">
+          <div class="text-[9px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-1">Фокус дня
           </div>
-          <div class="text-xl font-bold text-stone-900 dark:text-white">
+          <div class="text-xl font-bold text-zinc-900 dark:text-white">
             Гибкость</div>
-          <div class="w-full h-1 bg-stone-200 dark:bg-stone-700 mt-2 overflow-hidden">
-            <div class="h-full bg-cyan-500 w-2/3"></div>
+          <div class="w-full h-1 bg-zinc-200 dark:bg-zinc-700 mt-2 overflow-hidden rounded-full">
+            <div class="h-full bg-gradient-to-r from-cyan-500 to-blue-600 w-2/3 rounded-full"></div>
           </div>
         </div>
         <div
-          class="flex flex-col justify-center bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 border-l-4 border-l-purple-500 px-5 py-4 min-w-[140px] group transition-all hover:bg-white dark:hover:bg-stone-700">
-          <div class="text-[9px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-widest mb-1">Прогресс
+          class="flex flex-col justify-center bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 border-l-4 border-l-purple-500 px-5 py-4 min-w-[140px] group transition-all hover:bg-white dark:hover:bg-zinc-700 rounded-xl">
+          <div class="text-[9px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-1">Прогресс
           </div>
-          <div class="text-xl font-bold text-stone-900 dark:text-white">
+          <div class="text-xl font-bold text-zinc-900 dark:text-white">
             {{ streak }} Дн.</div>
-          <div class="w-full h-1 bg-stone-200 dark:bg-stone-700 mt-2 overflow-hidden">
-            <div class="h-full bg-purple-500 w-1/2"></div>
+          <div class="w-full h-1 bg-zinc-200 dark:bg-zinc-700 mt-2 overflow-hidden rounded-full">
+            <div class="h-full bg-gradient-to-r from-purple-500 to-pink-500 w-1/2 rounded-full"></div>
           </div>
         </div>
       </div>
@@ -100,9 +101,3 @@ const insightMessage = computed(() => {
   return 'Ваш мозг показывает высокую активность в области когнитивной гибкости. Сегодня идеальный день, чтобы закрепить результат или попробовать что-то совершенно новое.';
 });
 </script>
-
-<style scoped>
-.font-montserrat {
-  font-family: 'Montserrat', sans-serif;
-}
-</style>
