@@ -1,45 +1,45 @@
 <template>
   <div
-    class="min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-white font-sans transition-colors duration-500">
+    class="min-h-screen bg-gradient-to-br from-zinc-50/50 to-white dark:from-zinc-950/50 dark:to-black text-zinc-900 dark:text-white font-sans transition-colors duration-500 overflow-x-hidden">
     <div class="max-w-7xl mx-auto px-6 py-8 space-y-8">
       <!-- Breadcrumbs -->
       <Breadcrumbs />
 
       <!-- Page Header -->
       <div class="mb-4">
-        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3">
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black mb-3 tracking-tight">
           Тренировка Мозга
         </h1>
-        <p class="text-stone-600 dark:text-stone-400 text-base leading-relaxed max-w-2xl">
-          Комплексная система развития когнитивных способностей: игры, упражнения и ментальные модели.
+        <p class="text-zinc-600 dark:text-zinc-400 text-base leading-relaxed max-w-2xl font-medium">
+          Комплексная система развития когнитивных способностей: научно обоснованные игры, упражнения и ментальные
+          модели.
         </p>
       </div>
 
       <!-- Main Navigation Tabs -->
-      <div class="flex flex-col sm:flex-row gap-4 border-b-2 border-stone-900 dark:border-white pb-1">
+      <div class="flex flex-col sm:flex-row gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-px">
         <!-- Mobile Dropdown -->
-        <div class="sm:hidden w-full">
+        <div class="sm:hidden w-full mb-4">
           <div class="relative">
             <select v-model="activeTab"
-              class="w-full appearance-none bg-white dark:bg-stone-900 border-2 border-stone-900 dark:border-white text-stone-900 dark:text-white py-3 pl-4 pr-10 focus:outline-none font-medium">
+              class="w-full appearance-none bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white py-3 pl-4 pr-10 focus:outline-none font-bold rounded-xl shadow-sm">
               <option v-for="tab in tabs" :key="tab.id" :value="tab.id">
                 {{ tab.label }}
               </option>
             </select>
-            <div
-              class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-stone-900 dark:text-white">
+            <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-zinc-500">
               <i class="fas fa-chevron-down text-xs"></i>
             </div>
           </div>
         </div>
 
         <!-- Desktop Tabs -->
-        <div class="hidden sm:flex flex-wrap gap-4">
+        <div class="hidden sm:flex flex-wrap gap-2">
           <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
-            class="px-6 py-3 font-medium text-base transition-all relative flex items-center gap-2"
+            class="px-6 py-3 font-bold text-sm uppercase tracking-wider transition-all relative flex items-center gap-2 rounded-t-xl border-b-2"
             :class="activeTab === tab.id
-              ? 'text-stone-900 dark:text-white bg-white dark:bg-stone-900 border-2 border-stone-900 dark:border-white border-b-0 -mb-[3px] z-10'
-              : 'text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white hover:bg-stone-100 dark:hover:bg-stone-800'">
+              ? 'text-cyan-600 dark:text-cyan-400 border-cyan-500 bg-white dark:bg-zinc-900 shadow-sm'
+              : 'text-zinc-500 dark:text-zinc-400 hover:text-cyan-600 dark:hover:text-cyan-400 border-transparent'">
             <i :class="tab.icon"></i>
             <span>{{ tab.label }}</span>
           </button>
@@ -47,7 +47,8 @@
       </div>
 
       <!-- Content Area -->
-      <div class="bg-white dark:bg-stone-900 min-h-[500px] border-2 border-stone-900 dark:border-white p-6">
+      <div
+        class="bg-white dark:bg-zinc-900/50 backdrop-blur-sm min-h-[500px] border border-zinc-200 dark:border-zinc-800 p-8 rounded-2xl shadow-xl">
         <Transition name="fade" mode="out-in">
           <KeepAlive>
             <component :is="currentView" @switch-tab="switchTab" />

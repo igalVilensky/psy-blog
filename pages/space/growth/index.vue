@@ -1,310 +1,297 @@
 <template>
   <div
-    class="min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-white font-sans transition-colors duration-500">
+    class="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-white font-sans transition-colors duration-500">
     <div class="max-w-7xl mx-auto px-6 py-8 space-y-8">
       <Breadcrumbs />
       <!-- Page Header -->
-      <div class="mb-8">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div class="mb-12">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
           <div>
-            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3">
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black mb-3 tracking-tight">
               Пространство Роста
             </h1>
-            <p class="text-stone-600 dark:text-stone-400 text-base">
+            <p class="text-zinc-600 dark:text-zinc-400 text-base font-medium leading-relaxed max-w-2xl">
               Инструменты для осознанного развития личности и эмоционального интеллекта
             </p>
           </div>
         </div>
+      </div>
 
-        <!-- Categories Sections -->
-        <div class="space-y-12">
+      <!-- Categories Sections -->
+      <div class="space-y-16">
 
-          <!-- Emotional Intelligence -->
-          <section>
-            <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-              <i class="fas fa-heart"></i>
-              Эмоциональный Интеллект
-            </h2>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div v-for="experiment in getToolsByCategory('emotional')" :key="experiment.id"
-                class="experiment-card bg-white dark:bg-stone-900 border-2 border-stone-200 dark:border-stone-800 hover:border-stone-900 dark:hover:border-white transition-all duration-300"
-                @mouseenter="hoveredCard = experiment.id" @mouseleave="hoveredCard = null">
+        <!-- Emotional Intelligence -->
+        <section>
+          <h2
+            class="text-xl font-bold mb-8 flex items-center gap-3 uppercase tracking-tight text-zinc-900 dark:text-white">
+            <div class="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center">
+              <i class="fas fa-heart text-cyan-600 dark:text-cyan-400"></i>
+            </div>
+            Эмоциональный Интеллект
+          </h2>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div v-for="experiment in getToolsByCategory('emotional')" :key="experiment.id"
+              class="experiment-card group bg-white dark:bg-zinc-900/50 backdrop-blur-sm border border-zinc-200 dark:border-zinc-800 hover:border-cyan-500/50 transition-all duration-300 rounded-3xl overflow-hidden shadow-sm"
+              @mouseenter="hoveredCard = experiment.id" @mouseleave="hoveredCard = null">
 
-                <!-- Card Header -->
-                <div class="relative p-6 border-b-2 border-stone-900 dark:border-white">
-                  <div class="relative z-10">
-                    <div class="flex items-start justify-between mb-4">
-                      <div
-                        class="w-14 h-14 flex items-center justify-center border-2 border-stone-900 dark:border-white">
-                        <i :class="experiment.icon"></i>
-                      </div>
-                      <div class="px-3 py-1 border-2 border-stone-900 dark:border-white text-xs font-medium">
-                        {{ getStatusText(experiment.status) }}
-                      </div>
+              <!-- Card Header -->
+              <div class="relative p-8 border-b border-zinc-100 dark:border-zinc-800/50">
+                <div class="relative z-10">
+                  <div class="flex items-start justify-between mb-6">
+                    <div
+                      class="w-16 h-16 flex items-center justify-center rounded-2xl bg-zinc-50 dark:bg-zinc-800 group-hover:bg-cyan-500/10 transition-colors shadow-inner">
+                      <i
+                        :class="[experiment.icon, 'text-2xl text-zinc-600 dark:text-zinc-300 group-hover:text-cyan-600 dark:group-hover:text-cyan-400']"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-2">
-                      {{ experiment.name }}
-                    </h3>
-                    <p class="text-stone-600 dark:text-stone-400 text-sm leading-relaxed">
-                      {{ experiment.description }}
-                    </p>
-                  </div>
-                </div>
-
-                <!-- Card Body -->
-                <div class="p-6">
-                  <!-- Meta Info -->
-                  <div class="grid grid-cols-3 gap-4 mb-6">
-                    <div>
-                      <div class="text-stone-500 text-xs mb-1">Длительность</div>
-                      <div class="text-sm font-medium flex items-center space-x-1">
-                        <i class="fas fa-clock text-xs"></i>
-                        <span>{{ experiment.duration }}</span>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="text-stone-500 text-xs mb-1">Вопросов</div>
-                      <div class="text-sm font-medium flex items-center space-x-1">
-                        <i class="fas fa-list-check text-xs"></i>
-                        <span>{{ experiment.questions }}</span>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="text-stone-500 text-xs mb-1">Сложность</div>
-                      <div class="flex items-center space-x-1">
-                        <i v-for="i in 3" :key="i" class="fas fa-circle text-xs" :class="i <= experiment.difficulty
-                          ? ''
-                          : 'text-stone-300 dark:text-stone-700'
-                          "></i>
-                      </div>
+                    <div
+                      class="px-3 py-1.5 rounded-xl border border-zinc-200 dark:border-zinc-700 text-[10px] font-black uppercase tracking-widest text-zinc-500">
+                      {{ getStatusText(experiment.status) }}
                     </div>
                   </div>
-
-                  <!-- Progress Bar (if in progress) -->
-                  <div v-if="experiment.status === 'in-progress'" class="mb-6">
-                    <div class="flex justify-between items-center mb-2">
-                      <span class="text-stone-500 dark:text-stone-400 text-xs">Прогресс</span>
-                      <span class="text-xs font-mono">
-                        {{ experiment.progress }}%
-                      </span>
-                    </div>
-                    <div class="w-full bg-stone-200 dark:bg-stone-700 h-2 overflow-hidden">
-                      <div class="h-full bg-stone-900 dark:bg-white transition-all duration-500"
-                        :style="{ width: `${experiment.progress}%` }"></div>
-                    </div>
-                  </div>
-
-                  <!-- Tags -->
-                  <div class="flex flex-wrap gap-2 mb-6">
-                    <span v-for="tag in experiment.tags" :key="tag"
-                      class="px-2 py-1 border border-stone-200 dark:border-stone-800 text-stone-600 dark:text-stone-400 text-xs">
-                      {{ tag }}
-                    </span>
-                  </div>
-
-                  <!-- Action Button -->
-                  <button @click="handleExperimentAction(experiment)"
-                    class="w-full py-3 border-2 font-medium transition-all duration-300 flex items-center justify-center space-x-2"
-                    :class="getActionButtonClass(experiment.status)">
-                    <i :class="getActionIcon(experiment.status)"></i>
-                    <span>{{ getActionText(experiment.status) }}</span>
-                  </button>
+                  <h3 class="text-2xl font-black mb-3 uppercase tracking-tight">
+                    {{ experiment.name }}
+                  </h3>
+                  <p class="text-zinc-500 dark:text-zinc-400 text-sm leading-relaxed font-medium line-clamp-2">
+                    {{ experiment.description }}
+                  </p>
                 </div>
               </div>
-            </div>
-          </section>
 
-          <!-- Life Balance -->
-          <section>
-            <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-              <i class="fas fa-balance-scale"></i>
-              Жизненный Баланс и Планирование
-            </h2>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div v-for="experiment in getToolsByCategory('planning')" :key="experiment.id"
-                class="experiment-card bg-white dark:bg-stone-900 border-2 border-stone-200 dark:border-stone-800 hover:border-stone-900 dark:hover:border-white transition-all duration-300"
-                @mouseenter="hoveredCard = experiment.id" @mouseleave="hoveredCard = null">
-
-                <!-- Card Header -->
-                <div class="relative p-6 border-b-2 border-stone-900 dark:border-white">
-                  <div class="relative z-10">
-                    <div class="flex items-start justify-between mb-4">
-                      <div
-                        class="w-14 h-14 flex items-center justify-center border-2 border-stone-900 dark:border-white">
-                        <i :class="experiment.icon"></i>
-                      </div>
-                      <div class="px-3 py-1 border-2 border-stone-900 dark:border-white text-xs font-medium">
-                        {{ getStatusText(experiment.status) }}
-                      </div>
+              <!-- Card Body -->
+              <div class="p-8">
+                <!-- Meta Info -->
+                <div class="grid grid-cols-3 gap-6 mb-8">
+                  <div>
+                    <div class="text-zinc-400 text-[10px] font-black uppercase tracking-widest mb-2">Длительность</div>
+                    <div class="text-sm font-bold flex items-center space-x-2 text-zinc-700 dark:text-zinc-200">
+                      <i class="fas fa-clock text-cyan-600 dark:text-cyan-400 text-xs"></i>
+                      <span>{{ experiment.duration }}</span>
                     </div>
-                    <h3 class="text-xl font-bold mb-2">
-                      {{ experiment.name }}
-                    </h3>
-                    <p class="text-stone-600 dark:text-stone-400 text-sm leading-relaxed">
-                      {{ experiment.description }}
-                    </p>
+                  </div>
+                  <div>
+                    <div class="text-zinc-400 text-[10px] font-black uppercase tracking-widest mb-2">Вопросов</div>
+                    <div class="text-sm font-bold flex items-center space-x-2 text-zinc-700 dark:text-zinc-200">
+                      <i class="fas fa-list-check text-cyan-600 dark:text-cyan-400 text-xs"></i>
+                      <span>{{ experiment.questions }}</span>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="text-zinc-400 text-[10px] font-black uppercase tracking-widest mb-2">Сложность</div>
+                    <div class="flex items-center space-x-1.5">
+                      <i v-for="i in 3" :key="i" class="fas fa-circle text-[8px]" :class="i <= experiment.difficulty
+                        ? 'text-cyan-500'
+                        : 'text-zinc-200 dark:text-zinc-800'
+                        "></i>
+                    </div>
                   </div>
                 </div>
 
-                <!-- Card Body -->
-                <div class="p-6">
-                  <!-- Meta Info -->
-                  <div class="grid grid-cols-3 gap-4 mb-6">
-                    <div>
-                      <div class="text-stone-500 text-xs mb-1">Длительность</div>
-                      <div class="text-sm font-medium flex items-center space-x-1">
-                        <i class="fas fa-clock text-xs"></i>
-                        <span>{{ experiment.duration }}</span>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="text-stone-500 text-xs mb-1">Вопросов</div>
-                      <div class="text-sm font-medium flex items-center space-x-1">
-                        <i class="fas fa-list-check text-xs"></i>
-                        <span>{{ experiment.questions }}</span>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="text-stone-500 text-xs mb-1">Сложность</div>
-                      <div class="flex items-center space-x-1">
-                        <i v-for="i in 3" :key="i" class="fas fa-circle text-xs" :class="i <= experiment.difficulty
-                          ? ''
-                          : 'text-stone-300 dark:text-stone-700'
-                          "></i>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Progress Bar (if in progress) -->
-                  <div v-if="experiment.status === 'in-progress'" class="mb-6">
-                    <div class="flex justify-between items-center mb-2">
-                      <span class="text-stone-500 dark:text-stone-400 text-xs">Прогресс</span>
-                      <span class="text-xs font-mono">
-                        {{ experiment.progress }}%
-                      </span>
-                    </div>
-                    <div class="w-full bg-stone-200 dark:bg-stone-700 h-2 overflow-hidden">
-                      <div class="h-full bg-stone-900 dark:bg-white transition-all duration-500"
-                        :style="{ width: `${experiment.progress}%` }"></div>
-                    </div>
-                  </div>
-
-                  <!-- Tags -->
-                  <div class="flex flex-wrap gap-2 mb-6">
-                    <span v-for="tag in experiment.tags" :key="tag"
-                      class="px-2 py-1 border border-stone-200 dark:border-stone-800 text-stone-600 dark:text-stone-400 text-xs">
-                      {{ tag }}
+                <!-- Progress Bar (if in progress) -->
+                <div v-if="experiment.status === 'in-progress'" class="mb-8">
+                  <div class="flex justify-between items-center mb-2.5">
+                    <span class="text-zinc-400 text-[10px] font-black uppercase tracking-widest">Прогресс</span>
+                    <span class="text-[10px] font-black uppercase tracking-widest text-cyan-600 dark:text-cyan-400">
+                      {{ experiment.progress }}%
                     </span>
                   </div>
-
-                  <!-- Action Button -->
-                  <button @click="handleExperimentAction(experiment)"
-                    class="w-full py-3 border-2 font-medium transition-all duration-300 flex items-center justify-center space-x-2"
-                    :class="getActionButtonClass(experiment.status)">
-                    <i :class="getActionIcon(experiment.status)"></i>
-                    <span>{{ getActionText(experiment.status) }}</span>
-                  </button>
+                  <div class="w-full bg-zinc-100 dark:bg-zinc-800 h-1.5 rounded-full overflow-hidden">
+                    <div class="h-full bg-gradient-to-r from-cyan-500 to-blue-600 transition-all duration-1000"
+                      :style="{ width: `${experiment.progress}%` }"></div>
+                  </div>
                 </div>
+
+                <!-- Tags -->
+                <div class="flex flex-wrap gap-2 mb-8">
+                  <span v-for="tag in experiment.tags" :key="tag"
+                    class="px-2.5 py-1 rounded-lg border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50 text-zinc-500 dark:text-zinc-400 text-[10px] font-bold uppercase tracking-widest">
+                    {{ tag }}
+                  </span>
+                </div>
+
+                <!-- Action Button -->
+                <button @click="handleExperimentAction(experiment)"
+                  class="w-full py-4 rounded-2xl font-black uppercase tracking-widest text-xs transition-all duration-300 flex items-center justify-center space-x-3 shadow-lg hover:shadow-cyan-500/20 active:scale-95"
+                  :class="getActionButtonClass(experiment.status)">
+                  <i :class="getActionIcon(experiment.status)"></i>
+                  <span>{{ getActionText(experiment.status) }}</span>
+                </button>
               </div>
             </div>
-          </section>
+          </div>
+        </section>
 
-          <!-- Mindfulness & Reflection -->
-          <section>
-            <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-              <i class="fas fa-spa"></i>
-              Осознанность и Рефлексия
-            </h2>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div v-for="experiment in getToolsByCategory('mindfulness')" :key="experiment.id"
-                class="experiment-card bg-white dark:bg-stone-900 border-2 border-stone-200 dark:border-stone-800 hover:border-stone-900 dark:hover:border-white transition-all duration-300"
-                @mouseenter="hoveredCard = experiment.id" @mouseleave="hoveredCard = null">
+        <!-- Life Balance -->
+        <section>
+          <h2
+            class="text-xl font-bold mb-8 flex items-center gap-3 uppercase tracking-tight text-zinc-900 dark:text-white">
+            <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
+              <i class="fas fa-balance-scale text-blue-600 dark:text-blue-400"></i>
+            </div>
+            Жизненный Баланс и Планирование
+          </h2>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div v-for="experiment in getToolsByCategory('planning')" :key="experiment.id"
+              class="experiment-card group bg-white dark:bg-zinc-900/50 backdrop-blur-sm border border-zinc-200 dark:border-zinc-800 hover:border-blue-500/50 transition-all duration-300 rounded-3xl overflow-hidden shadow-sm"
+              @mouseenter="hoveredCard = experiment.id" @mouseleave="hoveredCard = null">
 
-                <!-- Card Header -->
-                <div class="relative p-6 border-b-2 border-stone-900 dark:border-white">
-                  <div class="relative z-10">
-                    <div class="flex items-start justify-between mb-4">
-                      <div
-                        class="w-14 h-14 flex items-center justify-center border-2 border-stone-900 dark:border-white">
-                        <i :class="experiment.icon"></i>
-                      </div>
-                      <div class="px-3 py-1 border-2 border-stone-900 dark:border-white text-xs font-medium">
-                        {{ getStatusText(experiment.status) }}
-                      </div>
+              <!-- Card Header -->
+              <div class="relative p-8 border-b border-zinc-100 dark:border-zinc-800/50">
+                <div class="relative z-10">
+                  <div class="flex items-start justify-between mb-6">
+                    <div
+                      class="w-16 h-16 flex items-center justify-center rounded-2xl bg-zinc-50 dark:bg-zinc-800 group-hover:bg-blue-500/10 transition-colors shadow-inner">
+                      <i
+                        :class="[experiment.icon, 'text-2xl text-zinc-600 dark:text-zinc-300 group-hover:text-blue-600 dark:group-hover:text-blue-400']"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-2">
-                      {{ experiment.name }}
-                    </h3>
-                    <p class="text-stone-600 dark:text-stone-400 text-sm leading-relaxed">
-                      {{ experiment.description }}
-                    </p>
-                  </div>
-                </div>
-
-                <!-- Card Body -->
-                <div class="p-6">
-                  <!-- Meta Info -->
-                  <div class="grid grid-cols-3 gap-4 mb-6">
-                    <div>
-                      <div class="text-stone-500 text-xs mb-1">Длительность</div>
-                      <div class="text-sm font-medium flex items-center space-x-1">
-                        <i class="fas fa-clock text-xs"></i>
-                        <span>{{ experiment.duration }}</span>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="text-stone-500 text-xs mb-1">Вопросов</div>
-                      <div class="text-sm font-medium flex items-center space-x-1">
-                        <i class="fas fa-list-check text-xs"></i>
-                        <span>{{ experiment.questions }}</span>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="text-stone-500 text-xs mb-1">Сложность</div>
-                      <div class="flex items-center space-x-1">
-                        <i v-for="i in 3" :key="i" class="fas fa-circle text-xs" :class="i <= experiment.difficulty
-                          ? ''
-                          : 'text-stone-300 dark:text-stone-700'
-                          "></i>
-                      </div>
+                    <div
+                      class="px-3 py-1.5 rounded-xl border border-zinc-200 dark:border-zinc-700 text-[10px] font-black uppercase tracking-widest text-zinc-500">
+                      {{ getStatusText(experiment.status) }}
                     </div>
                   </div>
-
-                  <!-- Progress Bar (if in progress) -->
-                  <div v-if="experiment.status === 'in-progress'" class="mb-6">
-                    <div class="flex justify-between items-center mb-2">
-                      <span class="text-stone-500 dark:text-stone-400 text-xs">Прогресс</span>
-                      <span class="text-xs font-mono">
-                        {{ experiment.progress }}%
-                      </span>
-                    </div>
-                    <div class="w-full bg-stone-200 dark:bg-stone-700 h-2 overflow-hidden">
-                      <div class="h-full bg-stone-900 dark:bg-white transition-all duration-500"
-                        :style="{ width: `${experiment.progress}%` }"></div>
-                    </div>
-                  </div>
-
-                  <!-- Tags -->
-                  <div class="flex flex-wrap gap-2 mb-6">
-                    <span v-for="tag in experiment.tags" :key="tag"
-                      class="px-2 py-1 border border-stone-200 dark:border-stone-800 text-stone-600 dark:text-stone-400 text-xs">
-                      {{ tag }}
-                    </span>
-                  </div>
-
-                  <!-- Action Button -->
-                  <button @click="handleExperimentAction(experiment)"
-                    class="w-full py-3 border-2 font-medium transition-all duration-300 flex items-center justify-center space-x-2"
-                    :class="getActionButtonClass(experiment.status)">
-                    <i :class="getActionIcon(experiment.status)"></i>
-                    <span>{{ getActionText(experiment.status) }}</span>
-                  </button>
+                  <h3 class="text-2xl font-black mb-3 uppercase tracking-tight">
+                    {{ experiment.name }}
+                  </h3>
+                  <p class="text-zinc-500 dark:text-zinc-400 text-sm leading-relaxed font-medium line-clamp-2">
+                    {{ experiment.description }}
+                  </p>
                 </div>
               </div>
-            </div>
-          </section>
 
-        </div>
+              <!-- Card Body -->
+              <div class="p-8">
+                <!-- Meta Info -->
+                <div class="grid grid-cols-3 gap-6 mb-8">
+                  <div>
+                    <div class="text-zinc-400 text-[10px] font-black uppercase tracking-widest mb-2">Длительность</div>
+                    <div class="text-sm font-bold flex items-center space-x-2 text-zinc-700 dark:text-zinc-200">
+                      <i class="fas fa-clock text-blue-600 dark:text-blue-400 text-xs"></i>
+                      <span>{{ experiment.duration }}</span>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="text-zinc-400 text-[10px] font-black uppercase tracking-widest mb-2">Вопросов</div>
+                    <div class="text-sm font-bold flex items-center space-x-2 text-zinc-700 dark:text-zinc-200">
+                      <i class="fas fa-list-check text-blue-600 dark:text-blue-400 text-xs"></i>
+                      <span>{{ experiment.questions }}</span>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="text-zinc-400 text-[10px] font-black uppercase tracking-widest mb-2">Сложность</div>
+                    <div class="flex items-center space-x-1.5">
+                      <i v-for="i in 3" :key="i" class="fas fa-circle text-[8px]" :class="i <= experiment.difficulty
+                        ? 'text-blue-500'
+                        : 'text-zinc-200 dark:text-zinc-800'
+                        "></i>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Tags -->
+                <div class="flex flex-wrap gap-2 mb-8">
+                  <span v-for="tag in experiment.tags" :key="tag"
+                    class="px-2.5 py-1 rounded-lg border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50 text-zinc-500 dark:text-zinc-400 text-[10px] font-bold uppercase tracking-widest">
+                    {{ tag }}
+                  </span>
+                </div>
+
+                <!-- Action Button -->
+                <button @click="handleExperimentAction(experiment)"
+                  class="w-full py-4 rounded-2xl font-black uppercase tracking-widest text-xs transition-all duration-300 flex items-center justify-center space-x-3 shadow-lg hover:shadow-blue-500/20 active:scale-95"
+                  :class="getActionButtonClass(experiment.status, 'planning')">
+                  <i :class="getActionIcon(experiment.status)"></i>
+                  <span>{{ getActionText(experiment.status) }}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Mindfulness & Reflection -->
+        <section>
+          <h2
+            class="text-xl font-bold mb-8 flex items-center gap-3 uppercase tracking-tight text-zinc-900 dark:text-white">
+            <div class="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center">
+              <i class="fas fa-spa text-purple-600 dark:text-purple-400"></i>
+            </div>
+            Осознанность и Рефлексия
+          </h2>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div v-for="experiment in getToolsByCategory('mindfulness')" :key="experiment.id"
+              class="experiment-card group bg-white dark:bg-zinc-900/50 backdrop-blur-sm border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/50 transition-all duration-300 rounded-3xl overflow-hidden shadow-sm"
+              @mouseenter="hoveredCard = experiment.id" @mouseleave="hoveredCard = null">
+
+              <!-- Card Header -->
+              <div class="relative p-8 border-b border-zinc-100 dark:border-zinc-800/50">
+                <div class="relative z-10">
+                  <div class="flex items-start justify-between mb-6">
+                    <div
+                      class="w-16 h-16 flex items-center justify-center rounded-2xl bg-zinc-50 dark:bg-zinc-800 group-hover:bg-purple-500/10 transition-colors shadow-inner">
+                      <i
+                        :class="[experiment.icon, 'text-2xl text-zinc-600 dark:text-zinc-300 group-hover:text-purple-600 dark:group-hover:text-purple-400']"></i>
+                    </div>
+                    <div
+                      class="px-3 py-1.5 rounded-xl border border-zinc-200 dark:border-zinc-700 text-[10px] font-black uppercase tracking-widest text-zinc-500">
+                      {{ getStatusText(experiment.status) }}
+                    </div>
+                  </div>
+                  <h3 class="text-2xl font-black mb-3 uppercase tracking-tight">
+                    {{ experiment.name }}
+                  </h3>
+                  <p class="text-zinc-500 dark:text-zinc-400 text-sm leading-relaxed font-medium line-clamp-2">
+                    {{ experiment.description }}
+                  </p>
+                </div>
+              </div>
+
+              <!-- Card Body -->
+              <div class="p-8">
+                <!-- Meta Info -->
+                <div class="grid grid-cols-3 gap-6 mb-8">
+                  <div>
+                    <div class="text-zinc-400 text-[10px] font-black uppercase tracking-widest mb-2">Длительность</div>
+                    <div class="text-sm font-bold flex items-center space-x-2 text-zinc-700 dark:text-zinc-200">
+                      <i class="fas fa-clock text-purple-600 dark:text-purple-400 text-xs"></i>
+                      <span>{{ experiment.duration }}</span>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="text-zinc-400 text-[10px] font-black uppercase tracking-widest mb-2">Вопросов</div>
+                    <div class="text-sm font-bold flex items-center space-x-2 text-zinc-700 dark:text-zinc-200">
+                      <i class="fas fa-list-check text-purple-600 dark:text-purple-400 text-xs"></i>
+                      <span>{{ experiment.questions }}</span>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="text-zinc-400 text-[10px] font-black uppercase tracking-widest mb-2">Сложность</div>
+                    <div class="flex items-center space-x-1.5">
+                      <i v-for="i in 3" :key="i" class="fas fa-circle text-[8px]" :class="i <= experiment.difficulty
+                        ? 'text-purple-500'
+                        : 'text-zinc-200 dark:text-zinc-800'
+                        "></i>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Tags -->
+                <div class="flex flex-wrap gap-2 mb-8">
+                  <span v-for="tag in experiment.tags" :key="tag"
+                    class="px-2.5 py-1 rounded-lg border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50 text-zinc-500 dark:text-zinc-400 text-[10px] font-bold uppercase tracking-widest">
+                    {{ tag }}
+                  </span>
+                </div>
+
+                <!-- Action Button -->
+                <button @click="handleExperimentAction(experiment)"
+                  class="w-full py-4 rounded-2xl font-black uppercase tracking-widest text-xs transition-all duration-300 flex items-center justify-center space-x-3 shadow-lg hover:shadow-purple-500/20 active:scale-95"
+                  :class="getActionButtonClass(experiment.status, 'mindfulness')">
+                  <i :class="getActionIcon(experiment.status)"></i>
+                  <span>{{ getActionText(experiment.status) }}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
       </div>
     </div>
   </div>
@@ -418,11 +405,19 @@ const getStatusText = (status) => {
   return texts[status] || "Доступно";
 };
 
-const getActionButtonClass = (status) => {
+const getActionButtonClass = (status, category = 'emotional') => {
+  const accentColors = {
+    emotional: "bg-cyan-600 dark:bg-cyan-500 hover:bg-cyan-700 dark:hover:bg-cyan-400 shadow-cyan-500/25",
+    planning: "bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-400 shadow-blue-500/25",
+    mindfulness: "bg-purple-600 dark:bg-purple-500 hover:bg-purple-700 dark:hover:bg-purple-400 shadow-purple-500/25",
+  };
+
+  const accent = accentColors[category] || accentColors.emotional;
+
   const classes = {
-    completed: "border-stone-200 dark:border-stone-800 text-stone-600 dark:text-stone-400 hover:bg-stone-50 dark:hover:bg-stone-800",
-    "in-progress": "border-stone-900 dark:border-white text-stone-900 dark:text-white hover:bg-stone-900 dark:hover:bg-white hover:text-white dark:hover:text-stone-900",
-    available: "border-stone-900 dark:border-white text-stone-900 dark:text-white hover:bg-stone-900 dark:hover:bg-white hover:text-white dark:hover:text-stone-900",
+    completed: "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700 border-zinc-200 dark:border-zinc-700",
+    "in-progress": `${accent} text-white border-transparent`,
+    available: `${accent} text-white border-transparent`,
   };
   return classes[status] || classes.available;
 };

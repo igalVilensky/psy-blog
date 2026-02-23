@@ -1,49 +1,45 @@
 <template>
   <!-- Hero Content -->
-  <div class="flex-1 pt-14 lg:pt-0 overflow-y-auto">
+  <div class="flex-1 pt-14 lg:pt-0 overflow-y-auto bg-gradient-to-br from-zinc-50/50 to-white dark:from-zinc-950/50 dark:to-black">
     <div class="relative p-6 lg:p-8">
       <!-- Background Visualizer -->
       <div class="absolute inset-0 z-0 pointer-events-none opacity-40 md:opacity-60">
         <NeuralRewireVisualizer />
         <div
-          class="absolute inset-0 bg-gradient-to-b from-stone-50/80 via-stone-50/20 to-stone-50/80 dark:from-stone-950/80 dark:via-stone-950/20 dark:to-stone-950/80">
+          class="absolute inset-0 bg-gradient-to-b from-zinc-50/80 via-zinc-50/20 to-zinc-50/80 dark:from-zinc-950/80 dark:via-zinc-950/20 dark:to-zinc-950/80">
         </div>
       </div>
-
       <!-- Hero Content -->
       <div class="relative z-10 max-w-4xl mx-auto text-center py-12 lg:py-20">
         <!-- Brand Title -->
         <div class="flex justify-center mb-8">
           <div class="flex items-center gap-3">
-            <div class="w-12 h-12 bg-stone-900 dark:bg-white flex items-center justify-center">
-              <i class="fas fa-flask text-white dark:text-stone-900 text-lg"></i>
+            <div class="w-12 h-12 bg-zinc-900 dark:bg-white flex items-center justify-center rounded-xl shadow-lg border border-zinc-200 dark:border-zinc-800">
+              <i class="fas fa-flask text-white dark:text-zinc-900 text-lg"></i>
             </div>
-            <h1 class="text-4xl font-bold text-stone-900 dark:text-white uppercase tracking-tight">
+            <h1 class="text-4xl font-black text-zinc-900 dark:text-white uppercase tracking-tight">
               MindQLab
             </h1>
           </div>
         </div>
 
         <!-- Main Heading -->
-        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-stone-900 dark:text-white mb-6 leading-tight">
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-black text-zinc-900 dark:text-white mb-6 leading-tight">
           Тренировки мозга и саморазвитие
         </h2>
 
         <!-- Description -->
-        <p class="text-base md:text-lg text-stone-600 dark:text-stone-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+        <p class="text-base md:text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed font-medium">
           Пространство для глубокого понимания себя и системного развития.
-          <span class="font-semibold text-stone-900 dark:text-white">10–15-минутные</span> сессии: когнитивные
+          <span class="font-bold text-cyan-600 dark:text-cyan-400">10–15-минутные</span> сессии: когнитивные
           упражнения,
-          медитации, тесты и персональная аналитика прогресса для развития
-          <span class="font-semibold text-stone-900 dark:text-white">памяти</span>,
-          <span class="font-semibold text-stone-900 dark:text-white">внимания</span> и
-          <span class="font-semibold text-stone-900 dark:text-white">эмоционального интеллекта</span>.
+          медитации, тесты и персональная аналитика прогресса.
         </p>
 
         <!-- CTA Buttons -->
         <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
           <NuxtLink to="/space/tests"
-            class="group relative px-8 py-4 bg-stone-900 dark:bg-white hover:bg-stone-800 dark:hover:bg-stone-100 text-white dark:text-stone-900 text-sm font-semibold transition-all overflow-hidden">
+            class="group relative px-8 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 text-white text-sm font-bold uppercase tracking-wider rounded-xl shadow-lg shadow-cyan-500/25 transition-all hover:-translate-y-0.5 overflow-hidden">
             <div
               class="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-full transition-transform duration-1000">
             </div>
@@ -54,7 +50,7 @@
           </NuxtLink>
 
           <NuxtLink to="/space/builder"
-            class="px-8 py-4 border border-stone-300 dark:border-stone-700 hover:bg-stone-50 dark:hover:bg-stone-800 text-stone-900 dark:text-white text-sm font-semibold transition-all">
+            class="px-8 py-4 border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-bold uppercase tracking-wider rounded-xl transition-all">
             <span class="flex items-center gap-3">
               <i class="fas fa-puzzle-piece"></i>
               Конструктор систем
@@ -63,18 +59,18 @@
         </div>
 
         <!-- Quick Links -->
-        <div class="pt-8 border-t border-stone-200 dark:border-stone-800">
+        <div class="pt-8 border-t border-zinc-200 dark:border-zinc-800">
           <div
-            class="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm text-stone-500 dark:text-stone-400">
+            class="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm text-zinc-500 dark:text-zinc-400">
             <span>Или сразу:</span>
             <div class="flex items-center gap-4">
               <NuxtLink to="/space/dashboard"
-                class="text-stone-900 dark:text-white hover:text-stone-700 dark:hover:text-stone-300 transition-colors font-semibold">
+                class="text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300 transition-colors font-bold uppercase tracking-wide">
                 Войти в MindQLab
               </NuxtLink>
-              <span class="text-stone-300 dark:text-stone-700">•</span>
+              <span class="text-zinc-300 dark:text-zinc-700 font-bold">•</span>
               <NuxtLink to="/courses"
-                class="text-stone-900 dark:text-white hover:text-stone-700 dark:hover:text-stone-300 transition-colors font-semibold">
+                class="text-zinc-900 dark:text-white hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors font-bold uppercase tracking-wide">
                 Курсы и гайды
               </NuxtLink>
             </div>
@@ -85,35 +81,35 @@
       <!-- Features Grid -->
       <div class="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
         <!-- Feature 1 -->
-        <div class="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-6">
-          <div class="w-12 h-12 bg-stone-100 dark:bg-stone-800 flex items-center justify-center mb-4">
-            <i class="fas fa-brain text-stone-900 dark:text-white text-lg"></i>
+        <div class="bg-white dark:bg-zinc-900/50 backdrop-blur-sm border border-zinc-200 dark:border-zinc-800 p-8 rounded-2xl hover:border-cyan-500/50 transition-all duration-300 group">
+          <div class="w-14 h-14 bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center mb-6 rounded-xl group-hover:bg-cyan-500/10 transition-colors">
+            <i class="fas fa-brain text-cyan-600 dark:text-cyan-400 text-xl"></i>
           </div>
-          <h3 class="text-lg font-bold text-stone-900 dark:text-white mb-3">Когнитивные тренажеры</h3>
-          <p class="text-sm text-stone-600 dark:text-stone-400">
-            Упражнения для развития памяти, внимания и мышления
+          <h3 class="text-lg font-bold text-zinc-900 dark:text-white mb-3 uppercase tracking-tight">Когнитивные тренажеры</h3>
+          <p class="text-sm text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed">
+            Упражнения для развития памяти, внимания и гибкости мышления
           </p>
         </div>
 
         <!-- Feature 2 -->
-        <div class="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-6">
-          <div class="w-12 h-12 bg-stone-100 dark:bg-stone-800 flex items-center justify-center mb-4">
-            <i class="fas fa-chart-line text-stone-900 dark:text-white text-lg"></i>
+        <div class="bg-white dark:bg-zinc-900/50 backdrop-blur-sm border border-zinc-200 dark:border-zinc-800 p-8 rounded-2xl hover:border-cyan-500/50 transition-all duration-300 group">
+          <div class="w-14 h-14 bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center mb-6 rounded-xl group-hover:bg-cyan-500/10 transition-colors">
+            <i class="fas fa-chart-line text-cyan-600 dark:text-cyan-400 text-xl"></i>
           </div>
-          <h3 class="text-lg font-bold text-stone-900 dark:text-white mb-3">Аналитика прогресса</h3>
-          <p class="text-sm text-stone-600 dark:text-stone-400">
-            Подробная статистика и отслеживание результатов
+          <h3 class="text-lg font-bold text-zinc-900 dark:text-white mb-3 uppercase tracking-tight">Аналитика прогресса</h3>
+          <p class="text-sm text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed">
+            Система глубокой статистики и отслеживания когнитивных показателей
           </p>
         </div>
 
         <!-- Feature 3 -->
-        <div class="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-6">
-          <div class="w-12 h-12 bg-stone-100 dark:bg-stone-800 flex items-center justify-center mb-4">
-            <i class="fas fa-user-clock text-stone-900 dark:text-white text-lg"></i>
+        <div class="bg-white dark:bg-zinc-900/50 backdrop-blur-sm border border-zinc-200 dark:border-zinc-800 p-8 rounded-2xl hover:border-cyan-500/50 transition-all duration-300 group">
+          <div class="w-14 h-14 bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center mb-6 rounded-xl group-hover:bg-cyan-500/10 transition-colors">
+            <i class="fas fa-user-clock text-cyan-600 dark:text-cyan-400 text-xl"></i>
           </div>
-          <h3 class="text-lg font-bold text-stone-900 dark:text-white mb-3">Персонализация</h3>
-          <p class="text-sm text-stone-600 dark:text-stone-400">
-            Индивидуальные программы развития под ваши цели
+          <h3 class="text-lg font-bold text-zinc-900 dark:text-white mb-3 uppercase tracking-tight">Персонализация</h3>
+          <p class="text-sm text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed">
+            Индивидуальные программы развития, адаптированные под ваши цели
           </p>
         </div>
       </div>

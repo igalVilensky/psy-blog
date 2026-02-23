@@ -1,54 +1,70 @@
 <template>
-  <div class="relative min-h-screen text-slate-800 dark:text-slate-200">
-    <div class="container mx-auto px-4 xl:px-0 max-w-6xl relative z-10 py-12">
-      <div class="grid grid-cols-1 gap-8">
+  <div
+    class="relative min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 transition-colors duration-500 font-sans">
+    <div class="container mx-auto px-6 max-w-6xl relative z-10 py-12">
+      <div class="grid grid-cols-1 gap-12">
         <!-- Breadcrumbs -->
         <Breadcrumbs />
 
         <!-- Header -->
-        <div class="flex items-center justify-between mb-4">
-          <h1 class="text-3xl font-mono font-bold text-purple-600 dark:text-purple-300">
-            <i class="fas fa-history mr-3"></i>ИСТОРИЯ ЖУРНАЛА
-          </h1>
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-4">
+          <div>
+            <h1 class="text-3xl sm:text-4xl font-black text-zinc-900 dark:text-white uppercase tracking-tight mb-3">
+              История Журнала
+            </h1>
+            <p class="text-zinc-500 dark:text-zinc-400 text-sm font-medium leading-relaxed max-w-2xl">
+              Просмотр и анализ ваших прошлых записей для отслеживания динамики изменений.
+            </p>
+          </div>
+          <div class="w-12 h-12 rounded-2xl bg-purple-500/10 flex items-center justify-center">
+            <i class="fas fa-history text-purple-600 dark:text-purple-400 text-xl"></i>
+          </div>
         </div>
 
         <!-- Loading State -->
         <div v-if="isLoading"
-          class="bg-white dark:bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-slate-700 p-24 text-center">
-          <div class="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4">
+          class="bg-white dark:bg-zinc-900/50 backdrop-blur-xl rounded-[2rem] border border-zinc-200 dark:border-zinc-800 p-24 text-center shadow-sm">
+          <div
+            class="w-20 h-20 border-[6px] border-purple-500/10 border-t-purple-500 rounded-full animate-spin mx-auto mb-8">
           </div>
-          <p class="text-slate-500 animate-pulse font-mono uppercase tracking-widest">Загрузка истории...</p>
+          <p class="text-zinc-400 font-black uppercase tracking-[0.2em] text-[10px] animate-pulse">Загрузка архива...
+          </p>
         </div>
 
-        <div v-else-if="entries.length > 0" class="grid grid-cols-1 gap-8">
+        <div v-else-if="entries.length > 0" class="grid grid-cols-1 gap-12">
           <!-- Journal History Section -->
           <div
-            class="bg-white dark:bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-purple-500/30 p-6 sm:p-8 shadow-[0_0_30px_rgba(168,85,247,0.1)]">
+            class="bg-white dark:bg-zinc-900/50 backdrop-blur-xl rounded-3xl border border-zinc-200 dark:border-zinc-800 p-8 shadow-sm">
             <JournalHistory :emotions="emotions" :life-spheres="lifeSpheres" :entries="entries" />
           </div>
 
           <!-- Emotion Chart -->
           <div
-            class="bg-white dark:bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-cyan-500/30 p-6 sm:p-8 shadow-[0_0_30px_rgba(6,182,212,0.1)]">
-            <h3 class="text-xl font-mono font-bold text-cyan-600 dark:text-cyan-300 mb-6">ГРАФИК ЭМОЦИЙ</h3>
+            class="bg-white dark:bg-zinc-900/50 backdrop-blur-xl rounded-3xl border border-zinc-200 dark:border-zinc-800 p-8 shadow-sm overflow-hidden">
+            <h3 class="text-xs font-black uppercase tracking-[0.2em] text-zinc-400 mb-8 flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-500">
+                <i class="fas fa-chart-area text-sm"></i>
+              </div>
+              График Эмоций
+            </h3>
             <EmotionChart :entries="entries" :emotions="emotions" />
           </div>
         </div>
 
         <!-- Empty State -->
         <div v-else
-          class="bg-white dark:bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-slate-700 p-12 text-center">
+          class="bg-white dark:bg-zinc-900/50 backdrop-blur-xl rounded-[2.5rem] border border-zinc-200 dark:border-zinc-800 p-16 text-center shadow-sm">
           <div
-            class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-            <i class="fas fa-book-open text-slate-400 dark:text-slate-600 text-2xl"></i>
+            class="w-20 h-20 mx-auto mb-8 rounded-3xl bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center shadow-inner">
+            <i class="fas fa-book-open text-zinc-300 dark:text-zinc-600 text-3xl"></i>
           </div>
-          <h3 class="text-xl font-mono text-slate-500 dark:text-slate-400 mb-2">ЖУРНАЛ ПУСТ</h3>
-          <p class="text-slate-600 dark:text-slate-500 max-w-md mx-auto">
+          <h3 class="text-xl font-black text-zinc-900 dark:text-white mb-4 uppercase tracking-tight">Журнал пуст</h3>
+          <p class="text-zinc-500 dark:text-zinc-400 max-w-md mx-auto font-medium leading-relaxed text-sm">
             Записи отсутствуют. Начните вести дневник эмоций, чтобы отслеживать свое состояние во времени.
           </p>
           <NuxtLink to="/space/growth/emotional-compass"
-            class="inline-block mt-6 px-6 py-2 rounded-lg bg-purple-600/20 text-purple-600 dark:text-purple-400 border border-purple-500/30 hover:bg-purple-600/30 transition-all font-mono">
-            СОЗДАТЬ ЗАПИСЬ
+            class="inline-flex mt-10 px-8 py-4 rounded-2xl bg-purple-600 text-white font-black uppercase tracking-widest text-xs hover:bg-purple-700 transition-all shadow-lg shadow-purple-500/25 active:scale-95">
+            Создать запись
           </NuxtLink>
         </div>
       </div>

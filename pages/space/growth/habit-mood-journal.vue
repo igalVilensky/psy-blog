@@ -1,46 +1,59 @@
 <template>
-  <div class="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+  <div
+    class="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 transition-colors duration-500 font-sans selection:bg-purple-500/30">
+    <div class="container mx-auto px-6 py-12 max-w-6xl">
       <Breadcrumbs />
 
       <!-- Page Header -->
-      <div class="mb-12">
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <div class="mb-16 mt-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-8">
           <div class="max-w-2xl">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 text-purple-600 dark:text-purple-400 text-[10px] font-bold uppercase tracking-wider mb-4 border border-purple-500/20">
+            <div
+              class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 text-purple-600 dark:text-purple-400 text-[10px] font-black uppercase tracking-widest mb-6 border border-purple-500/10">
               <i class="fas fa-microchip"></i>
               Микро-практика
             </div>
-            <h1 class="text-4xl md:text-5xl font-black text-slate-900 dark:text-white font-montserrat tracking-tight mb-4">
+            <h1 class="text-3xl sm:text-5xl font-black text-zinc-900 dark:text-white tracking-tight uppercase mb-6">
               Дневник Состояния
             </h1>
-            <p class="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">
-              Отслеживайте свои привычки и настроение одним касанием. Маленькие шаги ведут к большим изменениям в качестве жизни и ясности ума.
+            <p class="text-zinc-500 dark:text-zinc-400 text-base sm:text-lg font-medium leading-relaxed">
+              Отслеживайте свои привычки и настроение одним касанием. Маленькие шаги ведут к большим изменениям в
+              качестве жизни и ясности ума.
             </p>
           </div>
           <div v-if="authStore.user" class="flex flex-col items-end">
-            <div class="text-[10px] text-slate-400 uppercase font-mono mb-1">Последнее обновление</div>
-            <div class="text-sm font-bold text-slate-900 dark:text-white">{{ lastSyncTime }}</div>
+            <div class="text-[10px] text-zinc-400 uppercase font-black tracking-widest mb-2">Синхронизация</div>
+            <div
+              class="px-4 py-2 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs font-bold text-zinc-900 dark:text-white shadow-sm">
+              <i class="fas fa-clock mr-2 text-zinc-400"></i>{{ lastSyncTime }}
+            </div>
           </div>
         </div>
       </div>
 
       <!-- Guest State -->
-      <div v-if="!authStore.user" class="bg-white dark:bg-slate-900 rounded-3xl p-12 text-center border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden relative group">
-        <div class="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-50 group-hover:opacity-100 transition-opacity"></div>
+      <div v-if="!authStore.user"
+        class="bg-white dark:bg-zinc-900 rounded-[2.5rem] p-12 text-center border border-zinc-200 dark:border-zinc-800 shadow-xl shadow-zinc-500/5 overflow-hidden relative group">
+        <div
+          class="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+        </div>
         <div class="relative z-10 max-w-md mx-auto">
-          <div class="w-20 h-20 bg-purple-500/10 rounded-2xl flex items-center justify-center mx-auto mb-8 text-purple-600 dark:text-purple-400 text-4xl transform -rotate-6 group-hover:rotate-0 transition-transform">
+          <div
+            class="w-24 h-24 bg-purple-50 dark:bg-purple-900/20 rounded-3xl flex items-center justify-center mx-auto mb-10 text-purple-600 dark:text-purple-400 text-4xl transform -rotate-6 group-hover:rotate-0 transition-all duration-500 shadow-lg shadow-purple-500/10">
             <i class="fas fa-lock"></i>
           </div>
-          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">Начните свой путь к осознанности</h2>
-          <p class="text-slate-500 dark:text-slate-400 mb-8">
-            Для сохранения прогресса, отслеживания серий и доступа к аналитике, пожалуйста, войдите в свой аккаунт.
+          <h2 class="text-2xl font-black text-zinc-900 dark:text-white mb-4 uppercase tracking-tight">Начните свой путь
+          </h2>
+          <p class="text-zinc-500 dark:text-zinc-400 mb-10 font-medium leading-relaxed">
+            Для сохранения прогресса, отслеживания серий и доступа к аналитике, пожалуйста, авторизуйтесь в системе.
           </p>
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <NuxtLink to="/auth/login" class="px-8 py-4 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-purple-500/25">
+            <NuxtLink to="/auth/login"
+              class="px-10 py-5 bg-purple-600 hover:bg-purple-700 text-white rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-xl shadow-purple-500/25 active:scale-95">
               Войти
             </NuxtLink>
-            <NuxtLink to="/auth/register" class="px-8 py-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">
+            <NuxtLink to="/auth/register"
+              class="px-10 py-5 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-all shadow-sm">
               Регистрация
             </NuxtLink>
           </div>
@@ -48,95 +61,121 @@
       </div>
 
       <!-- Main Dashboard (Authorized Only) -->
-      <div v-else class="space-y-8">
+      <div v-else class="space-y-12">
         <!-- Navigation Tabs -->
-        <div class="flex items-center gap-1 p-1 bg-slate-200/50 dark:bg-slate-800/50 rounded-xl w-fit">
-          <button 
-            @click="activeTab = 'today'"
-            class="px-6 py-2.5 rounded-lg text-sm font-bold transition-all"
-            :class="activeTab === 'today' ? 'bg-white dark:bg-slate-700 text-purple-600 dark:text-purple-400 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'"
-          >
+        <div class="flex items-center gap-2 p-1.5 bg-zinc-200/50 dark:bg-zinc-800/50 rounded-2xl w-fit">
+          <button @click="activeTab = 'today'"
+            class="px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all"
+            :class="activeTab === 'today' ? 'bg-white dark:bg-zinc-900 text-purple-600 dark:text-purple-400 shadow-lg' : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'">
             Сегодня
           </button>
-          <button 
-            @click="activeTab = 'history'"
-            class="px-6 py-2.5 rounded-lg text-sm font-bold transition-all"
-            :class="activeTab === 'history' ? 'bg-white dark:bg-slate-800 text-purple-600 dark:text-purple-400 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'"
-          >
+          <button @click="activeTab = 'history'"
+            class="px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all"
+            :class="activeTab === 'history' ? 'bg-white dark:bg-zinc-900 text-purple-600 dark:text-purple-400 shadow-lg' : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-400'">
             Прогресс
           </button>
         </div>
 
         <!-- Today Tab -->
-        <div v-if="activeTab === 'today'" class="space-y-8">
+        <div v-if="activeTab === 'today'" class="space-y-12">
           <!-- CTA Card -->
-          <div class="bg-white dark:bg-slate-900 rounded-3xl p-8 md:p-12 border border-slate-200 dark:border-slate-800 shadow-xl relative overflow-hidden group">
-            <div class="absolute top-0 right-0 w-64 h-64 bg-purple-500/5 rounded-full -mr-32 -mt-32 blur-3xl group-hover:bg-purple-500/10 transition-colors"></div>
-            
-            <div class="relative z-10 flex flex-col md:flex-row items-center gap-8">
+          <div
+            class="bg-white dark:bg-zinc-900/80 backdrop-blur-xl rounded-[2.5rem] p-10 md:p-16 border border-zinc-200 dark:border-zinc-800 shadow-2xl shadow-zinc-500/5 relative overflow-hidden group">
+            <div
+              class="absolute -top-12 -right-12 w-80 h-80 bg-purple-500/5 rounded-full blur-[80px] group-hover:bg-purple-500/10 transition-colors duration-1000">
+            </div>
+
+            <div class="relative z-10 flex flex-col md:flex-row items-center gap-12">
               <div class="flex-1 text-center md:text-left">
-                <h2 class="text-3xl font-black text-slate-900 dark:text-white mb-4">Готовы к обновлению?</h2>
-                <p class="text-slate-600 dark:text-slate-400 text-lg mb-8 max-w-md">
+                <h2 class="text-3xl font-black text-zinc-900 dark:text-white mb-6 uppercase tracking-tight">Готовы к
+                  обновлению?</h2>
+                <p class="text-zinc-500 dark:text-zinc-400 text-lg mb-10 max-w-md font-medium leading-relaxed">
                   Маленькая запись сегодня — это большая ясность завтра. Зафиксируйте свои успехи и состояние.
                 </p>
-                <button 
-                  @click="isEntryModalOpen = true"
-                  class="px-10 py-5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white rounded-2xl font-black text-lg transition-all shadow-xl shadow-purple-500/25 flex items-center gap-3 mx-auto md:mx-0"
-                >
-                  <i class="fas fa-plus-circle"></i>
+                <button @click="isEntryModalOpen = true"
+                  class="px-12 py-6 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white rounded-2xl font-black uppercase tracking-[0.15em] text-xs transition-all shadow-2xl shadow-purple-500/30 flex items-center gap-4 mx-auto md:mx-0 active:scale-95">
+                  <i class="fas fa-plus-circle text-lg"></i>
                   Сделать запись
                 </button>
               </div>
-              <div class="w-48 h-48 flex items-center justify-center">
-                <div class="relative">
-                  <div class="absolute inset-0 bg-purple-500 blur-2xl opacity-20 animate-pulse"></div>
-                  <i class="fas fa-calendar-check text-8xl text-purple-500 relative z-10"></i>
+              <div class="w-64 h-64 flex items-center justify-center">
+                <div class="relative group-hover:scale-110 transition-transform duration-700">
+                  <div class="absolute inset-0 bg-purple-500/20 blur-3xl animate-pulse rounded-full"></div>
+                  <div
+                    class="w-48 h-48 rounded-3xl bg-white dark:bg-zinc-800 flex items-center justify-center shadow-2xl border border-zinc-100 dark:border-zinc-700 relative z-10">
+                    <i class="fas fa-calendar-check text-7xl text-purple-600 dark:text-purple-500"></i>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
           <!-- Quick Recap (if any entries today) -->
-          <div v-if="hasEntryToday" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-6 flex items-center gap-4">
-              <div class="w-12 h-12 rounded-full bg-emerald-500 flex items-center justify-center text-white text-xl">
-                 <i class="fas fa-check"></i>
+          <div v-if="hasEntryToday" class="grid grid-cols-1 md:grid-cols-2 gap-8 animate-fadeIn">
+            <div
+              class="bg-emerald-500/5 dark:bg-emerald-500/10 border border-emerald-500/20 rounded-[2rem] p-8 flex items-center gap-6 shadow-sm">
+              <div
+                class="w-16 h-16 rounded-2xl bg-emerald-500 flex items-center justify-center text-white text-2xl shadow-lg shadow-emerald-500/20">
+                <i class="fas fa-check"></i>
               </div>
               <div>
-                <div class="font-bold text-slate-900 dark:text-white">Чек-ин выполнен!</div>
-                <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Отличная работа по поддержанию осознанности!</p>
+                <div class="font-black text-zinc-900 dark:text-white uppercase tracking-tight text-lg mb-1">Чек-ин
+                  выполнен!</div>
+                <p class="text-sm text-zinc-500 dark:text-zinc-400 font-medium">Ваша осознанность на высоком уровне. Так
+                  держать!</p>
               </div>
             </div>
           </div>
         </div>
 
         <!-- History & Analytics Tab -->
-        <div v-else class="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <div v-if="loading" class="flex items-center justify-center p-20">
-            <i class="fas fa-circle-notch fa-spin text-purple-500 text-4xl"></i>
+        <div v-else class="space-y-12 animate-fadeIn">
+          <div v-if="loading" class="flex flex-col items-center justify-center p-32 gap-6">
+            <div class="w-16 h-16 border-4 border-purple-500/10 border-t-purple-500 rounded-full animate-spin"></div>
+            <p class="text-[10px] font-black uppercase tracking-widest text-zinc-400 animate-pulse">Анализ данных...</p>
           </div>
           <template v-else>
             <HabitMoodAnalytics :entries="entries" />
-            
+
             <!-- Recent List -->
-            <div class="bg-white dark:bg-slate-800/30 rounded-2xl border border-slate-200 dark:border-slate-700/50 p-8 shadow-sm">
-              <h3 class="text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-widest mb-8">История состояний</h3>
-              <div class="space-y-4">
-                <div v-for="(entry, index) in entries" :key="index" class="flex items-start gap-6 p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all border border-transparent hover:border-slate-200 dark:hover:border-slate-700">
-                  <div class="text-4xl">{{ getMoodEmoji(entry.mood) }}</div>
+            <div
+              class="bg-white dark:bg-zinc-900/50 backdrop-blur-xl rounded-[2.5rem] border border-zinc-200 dark:border-zinc-800 p-10 shadow-sm">
+              <h3 class="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em] mb-12 flex items-center gap-3">
+                <div
+                  class="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-500">
+                  <i class="fas fa-history text-sm"></i>
+                </div>
+                История состояний
+              </h3>
+              <div class="space-y-6">
+                <div v-for="(entry, index) in entries" :key="index"
+                  class="flex items-start gap-8 p-8 rounded-[2rem] bg-zinc-50 dark:bg-zinc-800/40 hover:bg-white dark:hover:bg-zinc-800 transition-all border border-transparent hover:border-zinc-200 dark:hover:border-zinc-700 shadow-sm hover:shadow-xl">
+                  <div class="text-5xl transform hover:scale-110 transition-transform cursor-default">{{
+                    getMoodEmoji(entry.mood) }}</div>
                   <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between mb-2">
-                       <span class="text-sm font-black text-slate-900 dark:text-white">{{ formatDate(entry.timestamp) }}</span>
-                       <div class="flex gap-1.5">
-                         <span v-for="(val, key) in entry.habits" :key="key" v-show="val" class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[8px] font-bold uppercase">{{ habitLabels[key] }}</span>
-                       </div>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                      <span class="text-sm font-black text-zinc-900 dark:text-white uppercase tracking-widest">{{
+                        formatDate(entry.timestamp) }}</span>
+                      <div class="flex flex-wrap gap-2">
+                        <span v-for="(val, key) in entry.habits" :key="key" v-show="val"
+                          class="px-3 py-1 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[9px] font-black uppercase tracking-tighter border border-emerald-500/10">{{
+                          habitLabels[key] }}</span>
+                      </div>
                     </div>
-                    <p v-if="entry.note" class="text-slate-600 dark:text-slate-400 text-sm italic leading-relaxed">"{{ entry.note }}"</p>
+                    <p v-if="entry.note"
+                      class="text-zinc-600 dark:text-zinc-400 text-base font-medium leading-relaxed italic border-l-4 border-zinc-200 dark:border-zinc-700 pl-4 py-1">
+                      "{{ entry.note }}"</p>
                   </div>
                 </div>
-                <div v-if="entries.length === 0" class="text-center py-20 text-slate-400">
-                   <div class="text-6xl mb-6 opacity-10"><i class="fas fa-feather"></i></div>
-                   <p>Ваша история пока пуста. <br> Начните с первой записи на главной вкладке.</p>
+                <div v-if="entries.length === 0" class="text-center py-24">
+                  <div
+                    class="w-24 h-24 bg-zinc-50 dark:bg-zinc-800 rounded-3xl flex items-center justify-center mx-auto mb-8 text-zinc-200 dark:text-zinc-700 text-4xl">
+                    <i class="fas fa-feather-alt"></i>
+                  </div>
+                  <h4 class="text-xl font-black text-zinc-900 dark:text-white mb-4 uppercase tracking-tight">Ваша
+                    история пока пуста</h4>
+                  <p class="text-zinc-500 dark:text-zinc-400 font-medium">Начните с первой записи на вкладке «Сегодня».
+                  </p>
                 </div>
               </div>
             </div>
@@ -147,12 +186,14 @@
       <!-- Entry Modal -->
       <Transition name="modal">
         <div v-if="isEntryModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
-          <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md" @click="isEntryModalOpen = false"></div>
-          <div class="relative z-10 w-full max-w-2xl bg-white dark:bg-slate-900 rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
-            <button @click="isEntryModalOpen = false" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
-               <i class="fas fa-times"></i>
+          <div class="absolute inset-0 bg-zinc-950/80 backdrop-blur-xl" @click="isEntryModalOpen = false"></div>
+          <div
+            class="relative z-10 w-full max-w-2xl bg-white dark:bg-zinc-900 rounded-[3rem] shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden animate-in zoom-in-95 duration-500">
+            <button @click="isEntryModalOpen = false"
+              class="absolute top-8 right-8 w-12 h-12 flex items-center justify-center rounded-2xl bg-zinc-50 dark:bg-zinc-800 text-zinc-400 hover:text-red-500 hover:bg-red-500/10 transition-all shadow-sm">
+              <i class="fas fa-times text-lg"></i>
             </button>
-            <div class="p-4 sm:p-8 overflow-y-auto max-h-[90vh]">
+            <div class="p-8 sm:p-12 overflow-y-auto max-h-[90vh]">
               <HabitMoodEntry @save="saveEntry" />
             </div>
           </div>
@@ -160,19 +201,20 @@
       </Transition>
 
       <!-- Related Tools -->
-      <div class="mt-20">
-        <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-8 font-montserrat">Другие инструменты роста</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <NuxtLink 
-            v-for="tool in otherTools" 
-            :key="tool.id"
-            :to="tool.path"
-            class="p-6 rounded-2xl bg-white dark:bg-slate-800/30 border border-slate-200 dark:border-slate-700/50 hover:border-purple-500/50 transition-all group shadow-sm"
-          >
-            <div class="w-12 h-12 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center mb-4 transition-all group-hover:scale-110 group-hover:bg-purple-500/10 group-hover:text-purple-600">
-              <i :class="tool.icon"></i>
+      <div class="mt-32">
+        <h2 class="text-2xl font-black text-zinc-900 dark:text-white mb-10 uppercase tracking-tight">Другие инструменты
+          роста
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <NuxtLink v-for="tool in otherTools" :key="tool.id" :to="tool.path"
+            class="p-8 rounded-3xl bg-white dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/50 transition-all group shadow-sm hover:shadow-xl hover:-translate-y-1">
+            <div
+              class="w-14 h-14 rounded-2xl bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center mb-6 transition-all group-hover:scale-110 group-hover:bg-purple-600 group-hover:text-white shadow-inner">
+              <i :class="tool.icon" class="text-xl"></i>
             </div>
-            <h3 class="font-bold text-slate-900 dark:text-white group-hover:text-purple-600 transition-colors">{{ tool.name }}</h3>
+            <h3
+              class="text-base font-black text-zinc-900 dark:text-white uppercase tracking-tight group-hover:text-purple-600 transition-colors">
+              {{ tool.name }}</h3>
           </NuxtLink>
         </div>
       </div>
@@ -231,7 +273,7 @@ const fetchEntries = async () => {
     loading.value = false;
     return;
   }
-  
+
   loading.value = true;
   try {
     // We remove orderBy('timestamp') to avoid the requirement for a composite index
@@ -241,7 +283,7 @@ const fetchEntries = async () => {
       where('userId', '==', authStore.user.uid),
       limit(50)
     );
-    
+
     const snapshot = await getDocs(q);
     const fetchedEntries = snapshot.docs.map(doc => ({
       id: doc.id,
@@ -254,7 +296,7 @@ const fetchEntries = async () => {
       const timeB = b.timestamp?.seconds || 0;
       return timeB - timeA;
     });
-    
+
     lastSyncTime.value = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
   } catch (error) {
     console.error('Error fetching entries:', error);
@@ -265,19 +307,19 @@ const fetchEntries = async () => {
 
 const saveEntry = async (entry) => {
   if (!authStore.user) return;
-  
+
   try {
     const docRef = await addDoc(collection($firestore, 'habit_mood_journal'), {
       ...entry,
       userId: authStore.user.uid,
       timestamp: serverTimestamp()
     });
-    
+
     // Wait a bit for the user to see the success state in the modal
     setTimeout(() => {
       isEntryModalOpen.value = false;
     }, 1500);
-    
+
     await fetchEntries();
   } catch (error) {
     console.error('Error saving entry:', error);
@@ -292,11 +334,11 @@ const getMoodEmoji = (mood) => {
 const formatDate = (ts) => {
   if (!ts) return '';
   const date = ts.toDate ? ts.toDate() : new Date(ts);
-  return date.toLocaleDateString('ru-RU', { 
-    day: 'numeric', 
-    month: 'long', 
-    hour: '2-digit', 
-    minute: '2-digit' 
+  return date.toLocaleDateString('ru-RU', {
+    day: 'numeric',
+    month: 'long',
+    hour: '2-digit',
+    minute: '2-digit'
   });
 };
 

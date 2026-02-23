@@ -7,13 +7,13 @@
       class="absolute inset-0 z-50 bg-gradient-to-br from-zinc-50 to-white dark:from-black dark:to-zinc-950 flex flex-col items-center justify-center p-4">
       <div class="relative w-24 h-24 mb-8">
         <!-- Neural-like Spinner -->
-        <div class="absolute inset-0 rounded-2xl border-2 border-zinc-200 dark:border-zinc-800"></div>
+        <div class="absolute inset-0 rounded-full border-2 border-zinc-200 dark:border-zinc-800"></div>
         <div
-          class="absolute inset-0 rounded-2xl border-2 border-t-cyan-500 border-r-transparent border-b-transparent border-l-transparent animate-spin">
+          class="absolute inset-0 rounded-full border-2 border-t-cyan-500 border-r-transparent border-b-transparent border-l-transparent animate-spin">
         </div>
         <div class="absolute inset-0 flex items-center justify-center">
           <div
-            class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center animate-pulse">
+            class="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center animate-pulse">
             <i class="fas fa-brain text-xl text-white"></i>
           </div>
         </div>

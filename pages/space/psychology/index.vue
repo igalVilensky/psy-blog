@@ -1,32 +1,35 @@
 <!-- pages/space/psychology/index.vue -->
 <template>
-  <div class="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div
+    class="min-h-screen bg-gradient-to-br from-zinc-50/50 to-white dark:from-zinc-950/50 dark:to-black text-zinc-900 dark:text-white font-sans transition-colors duration-500">
+    <div class="max-w-7xl mx-auto px-6 py-8 space-y-12">
+      <!-- Breadcrumbs -->
       <Breadcrumbs />
-      <!-- Header Section - Fixed to match your style -->
-      <div class="mb-8">
-        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-          <div>
-            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight">
-              ПСИХОЛОГИЧЕСКАЯ ЛАБОРАТОРИЯ
+
+      <!-- Page Header -->
+      <div>
+        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
+          <div class="space-y-4">
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tighter leading-none">
+              Психологическая<br />Лаборатория
             </h1>
-            <p class="text-slate-600 dark:text-cyan-300/70 text-sm sm:text-base leading-relaxed max-w-2xl">
-              Исследуйте глубины разума через интерактивные эксперименты и
-              практические инструменты
+            <p class="text-zinc-600 dark:text-zinc-400 text-base sm:text-lg leading-relaxed max-w-2xl font-medium">
+              Научный подход к самопознанию: интерактивные инструменты анализа личности, когнитивные эксперименты и
+              библиотека знаний.
             </p>
           </div>
 
           <!-- Stats Overview -->
           <div class="flex items-center gap-4">
             <div class="stat-card">
-              <div class="text-2xl font-bold text-cyan-600 dark:text-cyan-400">8</div>
-              <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide">
+              <div class="text-3xl font-black text-cyan-600 dark:text-cyan-400 leading-none mb-1">8</div>
+              <div class="text-[10px] text-zinc-500 dark:text-zinc-500 uppercase tracking-widest font-black">
                 Инструментов
               </div>
             </div>
-            <div class="stat-card">
-              <div class="text-2xl font-bold text-purple-600 dark:text-purple-400">24</div>
-              <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide">
+            <div class="stat-card border-l-4 border-l-purple-500">
+              <div class="text-3xl font-black text-purple-600 dark:text-purple-400 leading-none mb-1">24</div>
+              <div class="text-[10px] text-zinc-500 dark:text-zinc-500 uppercase tracking-widest font-black">
                 Эксперимента
               </div>
             </div>
@@ -34,29 +37,65 @@
         </div>
       </div>
 
-      <!-- Rest of the content remains the same -->
-      <div class="mb-12">
+      <!-- Featured Experiment / Daily Highlight -->
+      <div class="relative group">
         <div
-          class="bg-gradient-to-r from-purple-500/5 to-pink-500/5 dark:from-purple-500/10 dark:to-pink-500/10 border border-purple-200 dark:border-purple-500/20 rounded-2xl p-6 shadow-sm dark:shadow-none">
-          <div class="flex items-center justify-between">
-            <div>
-              <div class="flex items-center gap-2 mb-3">
-                <i class="fas fa-star text-yellow-500 dark:text-yellow-400"></i>
-                <span class="text-yellow-600 dark:text-yellow-400 font-semibold">ЭКСПЕРИМЕНТ ДНЯ</span>
+          class="absolute inset-0 bg-gradient-to-r from-purple-500 to-cyan-500 rounded-[2.5rem] blur-2xl opacity-5 group-hover:opacity-10 transition-opacity duration-700">
+        </div>
+        <div
+          class="relative bg-white dark:bg-zinc-900/50 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 rounded-[2.5rem] p-8 sm:p-12 overflow-hidden shadow-2xl">
+          <!-- Decorative Background Icon -->
+          <div class="absolute -right-12 -bottom-12 opacity-[0.03] dark:opacity-[0.05] pointer-events-none">
+            <i class="fas fa-brain text-[15rem]"></i>
+          </div>
+
+          <div class="flex flex-col lg:flex-row items-center gap-12 relative z-10">
+            <div class="flex-1 space-y-8">
+              <div class="space-y-4">
+                <div class="flex items-center gap-3">
+                  <span
+                    class="px-3 py-1 bg-amber-500/10 text-amber-600 dark:text-amber-400 text-[10px] font-black uppercase tracking-widest rounded-lg border border-amber-500/20">
+                    <i class="fas fa-bolt mr-1.5"></i> Актуально прямо сейчас
+                  </span>
+                  <span class="text-[10px] font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
+                    5-7 МИНУТ
+                  </span>
+                </div>
+                <h3 class="text-3xl sm:text-3xll font-black text-zinc-900 dark:text-white tracking-tight leading-tight">
+                  Эффект Струпа: <br /><span class="text-cyan-600 dark:text-cyan-400">Тест на гибкость</span>
+                </h3>
+                <p class="text-zinc-600 dark:text-zinc-400 text-lg font-medium leading-relaxed max-w-xl">
+                  Классический эксперимент, проверяющий вашу способность подавлять автоматические реакции. Измерьте свою
+                  когнитивную устойчивость за считанные минуты.
+                </p>
               </div>
-              <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">Тест Струпа</h3>
-              <p class="text-slate-600 dark:text-slate-300 mb-4">
-                Измерьте свою когнитивную гибкость в классическом
-                психологическом тесте
-              </p>
-              <NuxtLink to="/space/brain-training/stroop" class="btn-primary inline-block">
-                <i class="fas fa-flask mr-2"></i>
-                Попробовать сейчас
-              </NuxtLink>
+
+              <div class="flex flex-wrap gap-4">
+                <NuxtLink to="/space/brain-training/stroop"
+                  class="px-10 py-5 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-black uppercase tracking-widest text-xs rounded-2xl transition-all shadow-xl shadow-zinc-500/20 active:scale-95 flex items-center gap-3 group/btn">
+                  <span>Запустить эксперимент</span>
+                  <i class="fas fa-arrow-right text-[10px] group-hover/btn:translate-x-1 transition-transform"></i>
+                </NuxtLink>
+                <div class="flex -space-x-3 items-center">
+                  <div v-for="i in 4" :key="i"
+                    class="w-10 h-10 rounded-full border-4 border-white dark:border-zinc-900 bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center overflow-hidden">
+                    <img :src="`https://i.pravatar.cc/100?u=${i}`" alt="user" class="w-full h-full object-cover" />
+                  </div>
+                  <div class="pl-6 text-[10px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
+                    +1.2к исследователей сегодня
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="hidden md:block">
-              <div class="w-32 h-32 rounded-2xl bg-purple-100 dark:bg-purple-500/20 flex items-center justify-center">
-                <i class="fas fa-brain text-purple-600 dark:text-purple-400 text-5xl"></i>
+
+            <div class="lg:w-1/3 flex justify-center lg:justify-end">
+              <div class="relative">
+                <div class="absolute inset-0 bg-cyan-500 blur-3xl opacity-20 animate-pulse"></div>
+                <div
+                  class="w-64 h-64 rounded-3xl bg-gradient-to-br from-zinc-100 to-white dark:from-zinc-800 dark:to-zinc-900 flex items-center justify-center shadow-inner relative border border-zinc-200 dark:border-zinc-700">
+                  <i
+                    class="fas fa-flask text-zinc-900 dark:text-white text-8xl transition-transform duration-700 group-hover:scale-110"></i>
+                </div>
               </div>
             </div>
           </div>
@@ -64,42 +103,77 @@
       </div>
 
       <!-- Psychology Lab Sections Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-        <LabSectionCard v-for="section in labSections" :key="section.id" :section="section"
-          @click="navigateToSection(section)" />
+      <div class="space-y-8">
+        <h2 class="text-2xl font-black text-zinc-900 dark:text-white uppercase tracking-tight flex items-center gap-4">
+          Направления исследований
+          <div class="h-px flex-1 bg-zinc-100 dark:bg-zinc-800"></div>
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <LabSectionCard v-for="section in labSections" :key="section.id" :section="section"
+            @click="navigateToSection(section)" />
+        </div>
       </div>
 
       <!-- Quick Tools -->
-      <div class="mb-12">
-        <div class="flex items-center justify-between mb-6">
-          <h2 class="text-xl font-semibold text-slate-900 dark:text-white">Быстрые инструменты</h2>
+      <div class="space-y-8">
+        <div class="flex items-center justify-between">
+          <h2 class="text-2xl font-black text-zinc-900 dark:text-white uppercase tracking-tight">Микро-инструменты</h2>
+          <NuxtLink to="/space"
+            class="text-xs font-black uppercase tracking-widest text-cyan-600 dark:text-cyan-400 hover:opacity-80 transition-opacity">
+            Смотреть все</NuxtLink>
         </div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-6">
           <QuickToolCard v-for="tool in quickTools" :key="tool.id" :tool="tool" />
         </div>
       </div>
 
-      <!-- Psychology Facts -->
-      <div
-        class="bg-white dark:bg-slate-800/30 rounded-2xl p-6 border border-slate-200 dark:border-cyan-500/20 shadow-sm dark:shadow-none">
-        <div class="flex items-center gap-4 mb-4">
-          <div class="w-12 h-12 rounded-xl bg-cyan-100 dark:bg-cyan-500/20 flex items-center justify-center">
-            <i class="fas fa-lightbulb text-cyan-600 dark:text-cyan-400 text-xl"></i>
+      <!-- Psychology Facts & Insights -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 pt-12 border-t border-zinc-100 dark:border-zinc-800">
+        <div class="lg:col-span-2 relative group">
+          <div
+            class="absolute -inset-1 bg-gradient-to-r from-zinc-100 to-zinc-50 dark:from-zinc-800/20 dark:to-zinc-900/10 rounded-[2.5rem] -z-10 transition-all group-hover:inset-0">
           </div>
-          <div>
-            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Факт о психологии</h3>
-            <p class="text-slate-500 dark:text-slate-400">Узнавайте что-то новое каждый день</p>
+          <div class="flex flex-col md:flex-row gap-10 p-10">
+            <div
+              class="w-20 h-20 rounded-2xl bg-zinc-900 dark:bg-white flex items-center justify-center flex-shrink-0 shadow-2xl">
+              <i class="fas fa-quote-right text-white dark:text-zinc-900 text-3xl"></i>
+            </div>
+            <div class="space-y-6">
+              <div class="flex items-center gap-4">
+                <span class="text-[10px] font-black uppercase tracking-widest text-cyan-600 dark:text-cyan-400">{{
+                  dailyFact.category }}</span>
+                <div class="w-1.5 h-1.5 rounded-full bg-zinc-300 dark:bg-zinc-700"></div>
+                <span class="text-[10px] font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-500">ИНСАЙТ
+                  ДНЯ</span>
+              </div>
+              <p class="text-3xl font-black text-zinc-900 dark:text-white leading-snug tracking-tight">
+                "{{ dailyFact.content }}"
+              </p>
+              <div class="flex items-center gap-4">
+                <button @click="refreshFact"
+                  class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-400 hover:text-cyan-600 transition-colors group/sync">
+                  <i class="fas fa-sync-alt group-active/sync:rotate-180 transition-transform duration-500"></i>
+                  Обновить факт
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="text-slate-600 dark:text-slate-300 leading-relaxed">
-          {{ dailyFact.content }}
-        </div>
-        <div class="flex items-center justify-between mt-4">
-          <span class="text-cyan-600 dark:text-cyan-400 text-sm font-mono">{{
-            dailyFact.category
-            }}</span>
-          <button class="text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
-            <i class="fas fa-sync-alt text-sm"></i>
+
+        <div
+          class="bg-zinc-900 dark:bg-zinc-950 rounded-[2.5rem] p-10 flex flex-col justify-between items-start text-white shadow-2xl">
+          <div class="space-y-6">
+            <div class="w-12 h-12 rounded-xl bg-cyan-500 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+              <i class="fas fa-question text-xl"></i>
+            </div>
+            <h4 class="text-2xl font-black uppercase tracking-tight leading-tight">Есть вопрос по <br />психологии?</h4>
+            <p class="text-zinc-400 text-sm font-medium leading-relaxed">
+              Наши ИИ-ассистенты готовы помочь вам разобраться в сложных темах.
+            </p>
+          </div>
+          <button
+            class="mt-8 px-8 py-4 bg-white text-zinc-900 font-black uppercase tracking-widest text-[10px] rounded-xl transition-all hover:bg-cyan-500 hover:text-white">
+            Задать вопрос
           </button>
         </div>
       </div>
@@ -108,9 +182,11 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import LabSectionCard from "~/components/space/psychology/LabSectionCard.vue";
 import QuickToolCard from "~/components/space/psychology/QuickToolCard.vue";
 import Breadcrumbs from "~/components/ui/Breadcrumbs.vue";
+
 definePageMeta({
   layout: "laboratory",
 });
@@ -134,7 +210,7 @@ useHead({
     },
     {
       property: "og:image",
-      content: "/images/psychology-og.jpg", // Placeholder
+      content: "/images/psychology-og.jpg",
     },
     {
       name: "twitter:card",
@@ -147,16 +223,16 @@ const labSections = [
   {
     id: "ego-states",
     title: "Эго-состояния",
-    description: "Исследуйте свои роли Родитель/Взрослый/Ребёнок",
-    icon: "fas fa-people-arrows",
+    description: "Исследуйте свои роли Взрослый, Ребёнок и Родитель через призму ТА.",
+    icon: "fas fa-users-viewfinder",
     gradient: "from-purple-500 to-pink-500",
     path: "/space/psychology/ego-states",
     featured: true,
   },
   {
     id: "healing-childhood-traumas",
-    title: "Исцеление детских травм",
-    description: "Трансформация негативного опыта в ресурс для роста",
+    title: "Исцеление травм",
+    description: "Трансформация негативного опыта в ресурсную базу для будущего.",
     icon: "fas fa-hand-holding-heart",
     gradient: "from-rose-500 to-pink-500",
     path: "/space/psychology/healing-childhood-traumas",
@@ -164,70 +240,60 @@ const labSections = [
   {
     id: "psychology-guides",
     title: "Библиотека гайдов",
-    description: "Коллекция практических руководств для саморазвития",
-    icon: "fas fa-book-open",
+    description: "Практические руководства по самотерапии и психологической гигиене.",
+    icon: "fas fa-bookmark",
     gradient: "from-violet-500 to-purple-500",
     path: "/space/psychology/guides",
   },
   {
+    id: "habit-override",
+    title: "Перепрошивка",
+    description: "Лаборатория анализа и изменения ваших автоматических реакций.",
+    icon: "fas fa-code-merge",
+    gradient: "from-cyan-500 to-blue-600",
+    path: "/space/psychology/habit-override",
+  },
+  {
     id: "podcasts",
     title: "Подкасты",
-    description: "Вдохновляющие беседы для личностного роста",
-    icon: "fas fa-podcast",
+    description: "Глубокие обсуждения психологических концепций и интервью с экспертами.",
+    icon: "fas fa-microphone-lines",
     gradient: "from-cyan-500 to-blue-500",
     path: "/space/psychology/podcasts",
   },
   {
     id: "mindfulness",
     title: "Осознанность",
-    description: "Практики присутствия и медитативные упражнения",
+    description: "Практики присутствия, медитации и инструменты снижения стресса.",
     icon: "fas fa-spa",
-    gradient: "from-teal-500 to-cyan-500",
     gradient: "from-teal-500 to-cyan-500",
     path: "/space/mindfulness",
   },
   {
-    id: "habit-override",
-    title: "Перепрошивка Привычек",
-    description: "Лаборатория анализа и изменения автоматических реакций",
-    icon: "fas fa-sync-alt",
-    gradient: "from-cyan-500 to-blue-600",
-    path: "/space/psychology/habit-override",
-  },
-  {
-    id: "cognitive-illusions",
-    title: "Когнитивные иллюзии",
-    description: "Обманите свой мозг и поймите как работает восприятие",
-    icon: "fas fa-eye",
-    gradient: "from-cyan-500 to-blue-500",
-    path: "/space/psychology/cognitive-illusions",
-    disabled: true,
-  },
-  {
-    id: "emotion-lab",
-    title: "Эмоциональная лаборатория",
-    description: "Анализируйте и тренируйте эмоциональный интеллект",
-    icon: "fas fa-heart-pulse",
-    gradient: "from-red-500 to-orange-500",
-    path: "/space/psychology/emotion-lab",
-    disabled: true,
-  },
-  {
     id: "social-psych",
-    title: "Социальная психология",
-    description: "Эксперименты с влиянием, убеждением и групповой динамикой",
-    icon: "fas fa-users",
+    title: "Влияние",
+    description: "Эксперименты с убеждением, лидерством и групповой динамикой.",
+    icon: "fas fa-user-group",
     gradient: "from-green-500 to-emerald-500",
     path: "/space/psychology/social",
     disabled: true,
   },
   {
     id: "personality",
-    title: "Личность и характер",
-    description: "Карта вашей уникальной психологической структуры",
+    title: "Личность",
+    description: "Исследование черт характера и вашей когнитивной архитектуры.",
     icon: "fas fa-fingerprint",
     gradient: "from-indigo-500 to-purple-500",
     path: "/space/psychology/personality",
+    disabled: true,
+  },
+  {
+    id: "emotion-lab",
+    title: "Эмоции",
+    description: "Анализ эмоциональных паттернов и развитие EQ.",
+    icon: "fas fa-heart-pulse",
+    gradient: "from-red-500 to-orange-500",
+    path: "/space/psychology/emotion-lab",
     disabled: true,
   },
 ];
@@ -235,63 +301,73 @@ const labSections = [
 const quickTools = [
   {
     id: "emotional-compass",
-    title: "Эмоциональный компас",
+    title: "Компас",
     icon: "fas fa-compass",
     color: "text-purple-600 dark:text-purple-400",
     path: "/space/growth/emotional-compass"
   },
   {
     id: "wheel-of-life",
-    title: "Колесо баланса",
+    title: "Колесо",
     icon: "fas fa-chart-pie",
     color: "text-cyan-600 dark:text-cyan-400",
     path: "/space/growth/wheel-of-life"
   },
   {
     id: "trigger-scan",
-    title: "Скан Триггеров",
-    icon: "fas fa-search",
-    color: "text-cyan-600 dark:text-cyan-400",
+    title: "Скан",
+    icon: "fas fa-expand",
+    color: "text-blue-600 dark:text-blue-400",
     path: "/space/psychology/habit-override#scan"
   },
   {
     id: "mood-tracker",
-    title: "Настроение",
+    title: "Настрой",
     icon: "fas fa-smile",
-    color: "text-yellow-600 dark:text-yellow-400",
+    color: "text-amber-500 dark:text-amber-400",
     path: "/space/psychology",
     disabled: true,
   },
   {
     id: "stress-test",
-    title: "Стресс-тест",
-    icon: "fas fa-heartbeat",
-    color: "text-red-600 dark:text-red-400",
+    title: "Стресс",
+    icon: "fas fa-bolt-lightning",
+    color: "text-rose-600 dark:text-rose-400",
     path: "/space/psychology",
     disabled: true,
   },
   {
     id: "focus-timer",
     title: "Фокус",
-    icon: "fas fa-hourglass-half",
-    color: "text-blue-600 dark:text-blue-400",
+    icon: "fas fa-stopwatch",
+    color: "text-cyan-500 dark:text-cyan-400",
     path: "/space/psychology",
     disabled: true,
   },
   {
     id: "breathing",
-    title: "Дыхание",
+    title: "Вдох",
     icon: "fas fa-wind",
-    color: "text-green-600 dark:text-green-400",
+    color: "text-emerald-500 dark:text-emerald-400",
     path: "/space/psychology",
     disabled: true,
   },
 ];
 
-const dailyFact = {
+const dailyFact = ref({
   content:
-    "Мозг человека способен хранить примерно 2.5 петабайта информации - это примерно 3 миллиона часов телепередач.",
+    "Ваш мозг потребляет около 20% всей энергии вашего тела, хотя составляет всего 2% его веса. Это самый энергозатратный орган в вашей личной вселенной.",
   category: "НЕЙРОНАУКА",
+});
+
+const refreshFact = () => {
+  // Simple simulation of refreshing
+  const facts = [
+    { content: "Мозгу требуется всего 1/10 секунды, чтобы отреагировать на страх.", category: "ЭМОЦИИ" },
+    { content: "Среднестатистический человек имеет около 6000 мыслей в день.", category: "КОГНИТИВИСТИКА" },
+    { content: "Сон — это не отдых для мозга, а время интенсивной очистки от нейротоксинов.", category: "ФИЗИОЛОГИЯ" }
+  ];
+  dailyFact.value = facts[Math.floor(Math.random() * facts.length)];
 };
 
 const navigateToSection = (section) => {
@@ -301,11 +377,6 @@ const navigateToSection = (section) => {
 
 <style scoped>
 .stat-card {
-  @apply text-center px-4 py-3 rounded-xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-cyan-500/10 shadow-sm dark:shadow-none;
-}
-
-.btn-primary {
-  @apply px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 hover:from-cyan-600 hover:via-blue-600 hover:to-purple-700 text-white font-medium transition-all duration-300 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:scale-105;
+  @apply text-center px-6 py-4 rounded-2xl bg-white dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-800 shadow-sm transition-all hover:scale-105;
 }
 </style>
-

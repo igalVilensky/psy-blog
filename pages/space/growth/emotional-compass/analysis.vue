@@ -1,27 +1,33 @@
 <template>
-  <div class="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+  <div class="min-h-screen bg-zinc-50 dark:bg-zinc-950 transition-colors duration-500 font-sans">
+    <div class="max-w-7xl mx-auto px-6 py-12 space-y-12">
       <!-- Breadcrumbs -->
       <Breadcrumbs />
 
       <!-- Header -->
-      <div class="mb-8">
-        <div class="flex items-center justify-between mb-2 px-4 xl:px-0">
-          <h1 class="text-3xl font-mono font-bold text-cyan-600 dark:text-cyan-300">
-            <i class="fas fa-chart-line mr-3"></i>АНАЛИЗ СОСТОЯНИЙ
-          </h1>
+      <div class="mb-12">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 px-4 xl:px-0">
+          <div>
+            <h1 class="text-3xl sm:text-4xl font-black text-zinc-900 dark:text-white uppercase tracking-tight mb-3">
+              Анализ Состояний
+            </h1>
+            <p class="text-zinc-500 dark:text-zinc-400 text-sm sm:text-base font-medium leading-relaxed max-w-2xl">
+              Детальная статистика и паттерны вашего эмоционального ландшафта на основе зафиксированных данных.
+            </p>
+          </div>
+          <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 flex items-center justify-center">
+            <i class="fas fa-chart-line text-cyan-600 dark:text-cyan-400 text-xl"></i>
+          </div>
         </div>
-        <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base px-4 xl:px-0">
-          Детальная статистика и паттерны вашего эмоционального состояния
-        </p>
       </div>
 
       <!-- Loading State -->
       <div v-if="isLoading"
-        class="bg-white dark:bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-slate-700 p-24 text-center mt-8">
-        <div class="w-16 h-16 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto mb-4">
+        class="bg-white dark:bg-zinc-900/50 backdrop-blur-xl rounded-[2rem] border border-zinc-200 dark:border-zinc-800 p-24 text-center mt-8 shadow-sm">
+        <div class="w-20 h-20 border-[6px] border-cyan-500/10 border-t-cyan-500 rounded-full animate-spin mx-auto mb-8">
         </div>
-        <p class="text-slate-500 animate-pulse font-mono uppercase tracking-widest">Анализируем ваши данные...</p>
+        <p class="text-zinc-400 font-black uppercase tracking-[0.2em] text-[10px] animate-pulse">Синхронизация данных...
+        </p>
       </div>
 
       <div v-else>
@@ -31,19 +37,21 @@
 
         <!-- Empty State -->
         <div v-else
-          class="bg-white dark:bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-slate-700 p-12 text-center my-8">
+          class="bg-white dark:bg-zinc-900/50 backdrop-blur-xl rounded-[2.5rem] border border-zinc-200 dark:border-zinc-800 p-16 text-center my-8 shadow-sm">
           <div class="text-center py-12">
             <div
-              class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-              <i class="fas fa-database text-slate-400 dark:text-slate-600 text-2xl"></i>
+              class="w-20 h-20 mx-auto mb-8 rounded-3xl bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center shadow-inner">
+              <i class="fas fa-database text-zinc-300 dark:text-zinc-600 text-3xl"></i>
             </div>
-            <h3 class="text-xl font-mono text-slate-500 dark:text-slate-400 mb-2">НЕТ ДАННЫХ</h3>
-            <p class="text-slate-600 dark:text-slate-500 max-w-md mx-auto">
-              База данных пуста. Создайте первую запись в Эмоциональном Компасе для активации аналитических модулей.
+            <h3 class="text-xl font-black text-zinc-900 dark:text-white mb-4 uppercase tracking-tight">База данных пуста
+            </h3>
+            <p class="text-zinc-500 dark:text-zinc-400 max-w-md mx-auto font-medium leading-relaxed text-sm">
+              Для активации аналитических модулей необходимо зафиксировать хотя бы одно состояние в Эмоциональном
+              Компасе.
             </p>
             <NuxtLink to="/space/growth/emotional-compass"
-              class="inline-block mt-6 px-6 py-2 rounded-lg bg-cyan-600/20 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 hover:bg-cyan-600/30 transition-all font-mono">
-              СОЗДАТЬ ЗАПИСЬ
+              class="inline-flex mt-10 px-8 py-4 rounded-2xl bg-cyan-600 text-white font-black uppercase tracking-widest text-xs hover:bg-cyan-700 transition-all shadow-lg shadow-cyan-500/25 active:scale-95">
+              Начать практику
             </NuxtLink>
           </div>
         </div>

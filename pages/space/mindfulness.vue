@@ -1,432 +1,328 @@
 <!-- pages/space/psychology/mindfulness.vue -->
 <template>
   <div
-    class="min-h-screen bg-slate-50 dark:bg-slate-950 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-teal-500/5 via-slate-50 to-slate-50 dark:from-teal-500/10 dark:via-slate-950 dark:to-slate-950 pb-8 transition-colors duration-500">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    class="min-h-screen bg-gradient-to-br from-zinc-50 to-white dark:from-zinc-950 dark:to-black px-6 py-8 transition-colors duration-500">
+    <div class="max-w-7xl mx-auto space-y-12">
       <Breadcrumbs />
+
       <!-- Header -->
-      <div v-if="!activeSession" class="mb-8">
-        <div class="flex-1">
-          <h1
-            class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white font-montserrat mb-3 tracking-tight">
-            ОСОЗНАННОСТЬ И МЕДИТАЦИЯ
-          </h1>
-          <p class="text-slate-600 dark:text-slate-400 mt-2 text-sm md:text-base">
-            Практики присутствия, медитативные техники и путь к внутреннему
-            спокойствию
-          </p>
-        </div>
+      <div v-if="!activeSession" class="space-y-4">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tighter uppercase leading-none">
+          Осознанность<br /><span class="text-cyan-600 dark:text-cyan-400">&</span> Медитация
+        </h1>
+        <p class="text-zinc-600 dark:text-zinc-400 text-lg font-medium leading-relaxed max-w-2xl">
+          Практики присутствия, медитативные техники и ваш путь к внутреннему спокойствию в цифровой лаборатории.
+        </p>
       </div>
 
-      <!-- Active Session Display -->
-      <transition name="slide-fade">
+      <!-- Active Session Display (Immersive Mode) -->
+      <transition name="slide-up">
         <div v-if="activeSession"
-          class="mb-4 md:mb-12 bg-white/80 dark:bg-slate-800/50 backdrop-blur-xl rounded-2xl p-4 md:p-8 border border-teal-200/50 dark:border-teal-500/30 relative overflow-hidden shadow-lg dark:shadow-none ring-1 ring-teal-500/10">
-          <!-- Visuals Background -->
-          <div class="absolute inset-0 rounded-2xl overflow-hidden z-0">
+          class="bg-zinc-900 dark:bg-zinc-950 rounded-[3rem] p-8 md:p-16 border border-zinc-800 shadow-2xl relative overflow-hidden ring-1 ring-white/5">
+
+          <!-- Meditation Visuals Background -->
+          <div class="absolute inset-0 opacity-40">
             <MeditationVisuals :is-active="!isSessionPaused" :intensity="0.5" />
           </div>
 
-          <div class="relative z-10 text-center">
-            <!-- Top Controls (Music) -->
-            <div class="absolute top-0 right-0 z-50">
-              <div class="relative">
-                <button @click="toggleVolumeSlider"
-                  class="w-10 h-10 rounded-full bg-teal-500/10 hover:bg-teal-500/20 text-teal-600 dark:text-teal-400 flex items-center justify-center transition-all duration-300 backdrop-blur-sm">
-                  <i :class="isMusicPlaying ? 'fas fa-music' : 'fas fa-volume-mute'
-                    "></i>
-                </button>
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/40 to-transparent pointer-events-none">
+          </div>
 
-                <!-- Vertical Volume Slider -->
+          <div class="relative z-10 max-w-4xl mx-auto">
+            <!-- Top Controls -->
+            <div class="absolute -top-4 -right-4 md:top-0 md:right-0 flex items-center gap-4">
+              <div class="relative flex items-center">
                 <transition name="fade">
                   <div v-if="showVolumeSlider"
-                    class="absolute top-12 right-0 w-12 h-36 bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl rounded-full shadow-xl border border-teal-100 dark:border-teal-500/30 flex flex-col items-center justify-between py-4">
-                    <!-- Volume Bar (clickable) -->
-                    <div @click="handleVolumeBarClick"
-                      class="h-24 w-3 bg-slate-200 dark:bg-slate-700 rounded-full relative cursor-pointer hover:w-4 transition-all">
-                      <div class="absolute bottom-0 left-0 w-full bg-teal-500 rounded-full transition-all duration-100"
-                        :style="{ height: `${musicVolume}%` }"></div>
+                    class="mr-4 w-32 h-2 bg-zinc-800 rounded-full cursor-pointer relative group overflow-hidden"
+                    @click="handleVolumeBarClick">
+                    <div class="absolute inset-0 bg-cyan-500/20"></div>
+                    <div class="h-full bg-cyan-500 transition-all duration-150" :style="{ width: `${musicVolume}%` }">
                     </div>
-
-                    <!-- Volume Text -->
-                    <div class="text-[10px] font-mono text-teal-600 dark:text-teal-400 font-bold">
-                      {{ Math.round(musicVolume) }}
-                    </div>
-
-                    <!-- Toggle Button -->
-                    <button @click="toggleMusic"
-                      class="text-xs text-teal-600 dark:text-teal-400 hover:scale-110 transition-transform">
-                      <i :class="isMusicPlaying
-                        ? 'fas fa-volume-up'
-                        : 'fas fa-volume-off'
-                        "></i>
-                    </button>
                   </div>
                 </transition>
+
+                <button @click="toggleVolumeSlider"
+                  class="w-12 h-12 rounded-2xl bg-zinc-800 hover:bg-zinc-700 text-cyan-400 flex items-center justify-center transition-all duration-300 border border-zinc-700">
+                  <i :class="isMusicPlaying ? 'fas fa-music' : 'fas fa-volume-mute'"></i>
+                </button>
               </div>
             </div>
 
-            <!-- Session Type -->
-            <div class="mb-4 md:mb-6">
+            <!-- Session Indicator -->
+            <div class="text-center mb-10">
               <div
-                class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-500/20 border border-teal-500/30">
-                <i :class="activeSession.icon" class="text-teal-600 dark:text-teal-400"></i>
-                <span class="text-teal-700 dark:text-teal-300 font-medium text-sm">{{ activeSession.title }}</span>
+                class="inline-flex items-center gap-3 px-6 py-2 rounded-2xl bg-zinc-800/80 border border-zinc-700 backdrop-blur-md mb-6">
+                <i :class="activeSession.icon" class="text-cyan-400"></i>
+                <span class="text-zinc-300 font-black uppercase tracking-widest text-[10px]">{{ activeSession.title
+                }}</span>
               </div>
             </div>
 
-            <!-- Timer & Guidance -->
-            <div class="mb-4 md:mb-8 relative z-10">
-              <!-- Fixed height container to prevent layout jumps -->
-              <div class="h-24 md:h-40 flex items-center justify-center mb-4 md:mb-8 px-4">
-                <transition name="blur-fade" mode="out-in">
-                  <div :key="currentInstruction ? currentInstruction.text : 'default'
-                    " class="max-w-3xl mx-auto text-center">
-                    <p v-if="currentInstruction"
-                      class="text-xl md:text-3xl font-serif font-medium leading-relaxed tracking-wide text-teal-900 dark:text-teal-50 drop-shadow-sm">
-                      {{ currentInstruction.text }}
-                    </p>
-                    <p v-else
-                      class="text-teal-700/60 dark:text-teal-200/60 text-sm font-medium tracking-widest uppercase">
-                      {{ sessionMessage }}
-                    </p>
-                  </div>
-                </transition>
-              </div>
-
-              <div
-                class="text-4xl md:text-5xl font-bold text-teal-900/20 dark:text-teal-100/20 font-mono tracking-wider transition-all duration-500 hover:text-teal-900/40 dark:hover:text-teal-100/40">
-                {{ formatTime(sessionTimeRemaining) }}
-              </div>
+            <!-- Guidance Text (Centerpiece) -->
+            <div class="h-48 md:h-64 flex items-center justify-center mb-12">
+              <transition name="blur-fade" mode="out-in">
+                <div :key="currentInstruction ? currentInstruction.text : 'default'" class="text-center space-y-6">
+                  <p v-if="currentInstruction"
+                    class="text-4xl md:text-5xl font-black leading-tight tracking-tighter text-white uppercase italic drop-shadow-2xl">
+                    {{ currentInstruction.text }}
+                  </p>
+                  <p v-else class="text-zinc-500 font-black tracking-widest uppercase text-sm">
+                    {{ sessionMessage }}
+                  </p>
+                </div>
+              </transition>
             </div>
 
-            <!-- Breathing Pacer (Visual Anchor) -->
-            <div class="flex justify-center mb-8 md:mb-12 relative">
-              <!-- Outer Glow -->
+            <!-- Breathing Sphere -->
+            <div class="flex justify-center mb-16 relative">
               <div
-                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-teal-500/20 blur-3xl transition-all duration-[4000ms] ease-in-out pointer-events-none"
-                :class="{
-                  'scale-150 opacity-60': isBreathingIn,
-                  'scale-100 opacity-30': !isBreathingIn,
-                }"></div>
+                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full bg-cyan-500/10 blur-[100px] transition-all duration-[4000ms] ease-in-out pointer-events-none"
+                :class="{ 'scale-150 opacity-100': isBreathingIn, 'scale-100 opacity-40': !isBreathingIn }"></div>
 
-              <!-- Main Circle -->
-              <div class="relative w-48 h-48 flex items-center justify-center">
-                <!-- Progress Ring Background -->
-                <svg class="absolute inset-0 transform -rotate-90 w-48 h-48 drop-shadow-lg">
-                  <circle cx="96" cy="96" r="88" stroke="currentColor" stroke-width="4" fill="none"
-                    class="text-slate-200 dark:text-slate-800/50" />
-                  <!-- Progress Arc -->
-                  <circle cx="96" cy="96" r="88" stroke="currentColor" stroke-width="4" fill="none"
-                    class="text-teal-500 dark:text-teal-400 transition-all duration-1000" :style="{
-                      strokeDasharray: `${2 * Math.PI * 88}`,
-                      strokeDashoffset: `${2 * Math.PI * 88 * (1 - sessionProgress)
-                        }`,
+              <div class="relative w-56 h-56 flex items-center justify-center">
+                <!-- Outer Progress Ring -->
+                <svg class="absolute inset-0 transform -rotate-90 w-56 h-56">
+                  <circle cx="112" cy="112" r="108" stroke="currentColor" stroke-width="1" fill="none"
+                    class="text-zinc-800" />
+                  <circle cx="112" cy="112" r="108" stroke="currentColor" stroke-width="2" fill="none"
+                    class="text-cyan-500 drop-shadow-[0_0_10px_rgba(6,182,212,0.5)] transition-all duration-1000"
+                    :style="{
+                      strokeDasharray: `${2 * Math.PI * 108}`,
+                      strokeDashoffset: `${2 * Math.PI * 108 * (1 - sessionProgress)}`,
                     }" stroke-linecap="round" />
                 </svg>
 
-                <!-- Breathing Center -->
+                <!-- Core Breathing Sphere -->
                 <div
-                  class="w-32 h-32 rounded-full bg-gradient-to-br from-teal-400 to-cyan-500 shadow-lg dark:shadow-teal-500/50 flex items-center justify-center transition-all duration-[4000ms] ease-in-out z-10"
+                  class="w-40 h-40 rounded-full bg-gradient-to-br from-cyan-400 to-purple-600 shadow-[0_0_50px_rgba(6,182,212,0.3)] flex items-center justify-center transition-all duration-[4000ms] ease-in-out z-10 border border-white/20"
                   :class="breathingScale">
-                  <div class="text-white font-medium text-center opacity-90">
-                    <div class="text-lg">{{ currentBreathingPhase }}</div>
-                    <div v-if="
-                      activeSession?.id === 'box-breathing' ||
-                      activeSession?.id === '478-breathing' ||
-                      activeSession?.id === 'coherent-breathing' ||
-                      activeSession?.id === 'alternate-nostril'
-                    " class="text-xs opacity-75">
-                      {{ breathingPhaseTimer }}с
+                  <div class="text-white text-center">
+                    <div class="text-xs font-black uppercase tracking-widest mb-1">{{ currentBreathingPhase }}</div>
+                    <div v-if="breathingPhaseTimer < 20" class="text-3xl font-black tabular-nums tracking-tighter">
+                      {{ breathingPhaseTimer }}<span class="text-sm">с</span>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- Control Buttons -->
-            <div class="flex flex-wrap justify-center gap-3 relative z-20">
-              <button v-if="!isSessionPaused" @click="pauseSession"
-                class="px-6 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-700 transition-all duration-300 flex items-center gap-2 shadow-sm dark:shadow-none">
-                <i class="fas fa-pause"></i>
-                <span>Пауза</span>
-              </button>
-              <button v-else @click="resumeSession"
-                class="px-6 py-3 rounded-xl bg-teal-500 border border-teal-400 text-white hover:bg-teal-600 transition-all duration-300 flex items-center gap-2 shadow-sm dark:shadow-none">
-                <i class="fas fa-play"></i>
-                <span>Продолжить</span>
-              </button>
-              <button @click="endSession"
-                class="px-6 py-3 rounded-xl bg-red-50 dark:bg-red-500/10 border border-red-300 dark:border-red-500/20 text-red-700 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-500/20 transition-all duration-300 flex items-center gap-2 shadow-sm dark:shadow-none">
-                <i class="fas fa-stop"></i>
-                <span>Завершить</span>
-              </button>
+            <!-- Timer & Controls -->
+            <div class="space-y-10">
+              <div class="text-center">
+                <span class="text-6xl md:text-8xl font-black text-zinc-800 tabular-nums tracking-tight">
+                  {{ formatTime(sessionTimeRemaining) }}
+                </span>
+              </div>
+
+              <div class="flex flex-wrap justify-center gap-4">
+                <button v-if="!isSessionPaused" @click="pauseSession"
+                  class="px-12 py-5 rounded-2xl bg-zinc-800 text-white font-black uppercase tracking-widest text-[10px] hover:bg-zinc-700 transition-all border border-zinc-700 shadow-xl">
+                  <i class="fas fa-pause mr-2"></i>
+                  Пауза
+                </button>
+                <button v-else @click="resumeSession"
+                  class="px-12 py-5 rounded-2xl bg-cyan-500 text-white font-black uppercase tracking-widest text-[10px] hover:bg-cyan-600 transition-all shadow-xl shadow-cyan-500/20">
+                  <i class="fas fa-play mr-2"></i>
+                  Продолжить
+                </button>
+                <button @click="endSession"
+                  class="px-12 py-5 rounded-2xl bg-zinc-800 text-red-400 font-black uppercase tracking-widest text-[10px] hover:bg-red-500/10 transition-all border border-red-500/20">
+                  <i class="fas fa-stop mr-2"></i>
+                  Завершить
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </transition>
 
-      <!-- Meditation Techniques Grid -->
-      <div v-if="!activeSession" class="mb-12">
-        <div class="flex items-center justify-between mb-6">
-          <h2 class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-3">
-            <span class="w-1 h-8 bg-gradient-to-b from-teal-500 to-cyan-500 rounded-full"></span>
-            Медитативные практики
-          </h2>
-        </div>
+      <!-- Main Content Grids -->
+      <div v-if="!activeSession" class="space-y-24">
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          <MeditationCard v-for="technique in meditationTechniques" :key="technique.id" :technique="technique"
-            @start="(tech, dur) => startMeditation(tech, dur)" />
-        </div>
-      </div>
+        <!-- Meditation Grid -->
+        <section class="space-y-10">
+          <div class="flex items-end justify-between border-b-2 border-zinc-900 pb-4">
+            <h2 class="text-4xl font-black uppercase tracking-tighter leading-none">
+              Медитативные <span class="text-cyan-600">Практики</span>
+            </h2>
+            <div class="hidden md:block text-[10px] font-black uppercase tracking-widest text-zinc-400">
+              {{ meditationTechniques.length }} ТЕХНИК ДОСТУПНО
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <MeditationCard v-for="technique in meditationTechniques" :key="technique.id" :technique="technique"
+              @start="(tech, dur) => startMeditation(tech, dur)" />
+          </div>
+        </section>
 
-      <!-- Breathing Exercises -->
-      <div v-if="!activeSession" class="mb-12">
-        <div class="flex items-center justify-between mb-6">
-          <h2 class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-3">
-            <span class="w-1 h-8 bg-gradient-to-b from-cyan-500 to-blue-500 rounded-full"></span>
-            Дыхательные упражнения
-          </h2>
-        </div>
+        <!-- Breathing Exercises -->
+        <section class="space-y-10">
+          <div class="flex items-end justify-between border-b-2 border-zinc-900 pb-4">
+            <h2 class="text-4xl font-black uppercase tracking-tighter leading-none">
+              Дыхательная <span class="text-purple-600">Инженерия</span>
+            </h2>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <BreathingCard v-for="breathing in breathingExercises" :key="breathing.id" :exercise="breathing"
+              @start="(ex, dur) => startBreathing(ex, dur)" />
+          </div>
+        </section>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-          <BreathingCard v-for="breathing in breathingExercises" :key="breathing.id" :exercise="breathing"
-            @start="(ex, dur) => startBreathing(ex, dur)" />
-        </div>
-      </div>
+        <!-- Mindfulness Activities -->
+        <section class="space-y-10">
+          <div class="flex items-end justify-between border-b-2 border-zinc-900 pb-4">
+            <h2 class="text-4xl font-black uppercase tracking-tighter leading-none">
+              Протоколы <span class="text-orange-600">Осознанности</span>
+            </h2>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <MindfulnessActivityCard v-for="activity in mindfulnessActivities" :key="activity.id" :activity="activity"
+              @start="startActivity(activity)" />
+          </div>
+        </section>
 
-      <!-- Mindfulness Activities -->
-      <div v-if="!activeSession" class="mb-12">
-        <div class="flex items-center justify-between mb-6">
-          <h2 class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-3">
-            <span class="w-1 h-8 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full"></span>
-            Практики осознанности
-          </h2>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <MindfulnessActivityCard v-for="activity in mindfulnessActivities" :key="activity.id" :activity="activity"
-            @start="startActivity(activity)" />
-        </div>
-      </div>
-
-      <!-- Progress Tracking -->
-      <div v-if="!activeSession" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
-        <!-- Weekly Progress -->
-        <div
-          class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all duration-300">
-          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
-            <i class="fas fa-chart-line text-teal-600 dark:text-teal-400"></i>
-            Прогресс за неделю
-          </h3>
-
-          <ClientOnly>
-            <!-- Login CTA for non-authenticated users -->
-            <div v-if="!user" class="text-center py-8">
-              <div class="mb-4">
-                <i class="fas fa-chart-bar text-teal-500/30 text-5xl"></i>
+        <!-- Stats & Tracking -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 pt-12">
+          <!-- Weekly Progress -->
+          <div class="bg-zinc-900 rounded-[3rem] p-10 md:p-12 border border-zinc-800 shadow-2xl">
+            <div class="flex items-center justify-between mb-12">
+              <h3 class="text-3xl font-black text-white uppercase tracking-tighter">
+                Активность
+              </h3>
+              <div
+                class="w-12 h-12 bg-cyan-500/10 rounded-2xl flex items-center justify-center border border-cyan-500/20">
+                <i class="fas fa-chart-line text-cyan-400"></i>
               </div>
-              <h4 class="text-lg font-semibold text-slate-900 dark:text-white mb-2">
-                Отслеживайте свой прогресс
-              </h4>
-              <p class="text-slate-600 dark:text-slate-400 mb-6 max-w-sm mx-auto">
-                Войдите или зарегистрируйтесь, чтобы сохранять историю медитаций и
-                отслеживать свой прогресс
-              </p>
-              <NuxtLink to="/login"
-                class="inline-flex items-center gap-2 px-6 py-3 bg-teal-500 hover:bg-teal-600 text-white rounded-xl font-medium transition-colors duration-300">
-                <i class="fas fa-sign-in-alt"></i>
-                <span>Войти</span>
-              </NuxtLink>
             </div>
 
-            <!-- Real data for authenticated users -->
-            <div v-else>
-              <div class="space-y-3 mb-6">
-                <div v-for="day in weeklyProgress" :key="day.day" class="flex items-center gap-4">
-                  <div class="w-16 text-slate-500 dark:text-slate-400 text-sm">
-                    {{ day.day }}
-                  </div>
-                  <div class="flex-1 h-8 bg-slate-100 dark:bg-slate-900/50 rounded-lg overflow-hidden relative">
-                    <div class="h-full bg-gradient-to-r from-teal-500 to-cyan-500 transition-all duration-500"
-                      :style="{ width: `${(day.minutes / 60) * 100}%` }"></div>
-                    <div class="absolute inset-0 flex items-center justify-end px-3">
-                      <span class="text-xs font-mono text-slate-700 dark:text-white">{{ day.minutes }} мин</span>
+            <ClientOnly>
+              <div v-if="!user" class="text-center py-10 space-y-6">
+                <div
+                  class="w-24 h-24 bg-zinc-800 rounded-[2rem] flex items-center justify-center mx-auto mb-4 border border-zinc-700 shadow-2xl">
+                  <i class="fas fa-lock text-3xl text-zinc-600"></i>
+                </div>
+                <p class="text-zinc-500 font-medium max-w-xs mx-auto">Авторизуйтесь для сохранения прогресса и
+                  разблокировки аналитики.</p>
+                <NuxtLink to="/login"
+                  class="inline-block px-10 py-4 bg-white text-zinc-900 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-cyan-500 hover:text-white transition-all">
+                  Авторизация
+                </NuxtLink>
+              </div>
+
+              <div v-else class="space-y-6">
+                <div class="space-y-4 mb-10">
+                  <div v-for="day in weeklyProgress" :key="day.day" class="flex items-center gap-4">
+                    <div class="w-10 text-zinc-500 text-[10px] font-black uppercase tracking-widest">
+                      {{ day.day }}
                     </div>
+                    <div class="flex-1 h-3 bg-zinc-800 rounded-full overflow-hidden relative">
+                      <div class="h-full bg-cyan-500 transition-all duration-700 shadow-[0_0_10px_rgba(6,182,212,0.4)]"
+                        :style="{ width: `${Math.min((day.minutes / 60) * 100, 100)}%` }"></div>
+                    </div>
+                    <div class="w-16 text-right text-zinc-300 font-mono text-xs font-bold">{{ day.minutes }}м</div>
+                  </div>
+                </div>
+
+                <div class="bg-zinc-800/50 rounded-2xl p-6 border border-zinc-700 flex items-center justify-between">
+                  <span class="text-zinc-500 font-black uppercase tracking-widest text-[10px]">Среднее / День</span>
+                  <span class="text-2xl font-black text-white uppercase italic tracking-tighter">{{ averageDaily }}
+                    мин</span>
+                </div>
+              </div>
+            </ClientOnly>
+          </div>
+
+          <!-- Achievements -->
+          <div
+            class="bg-zinc-100 dark:bg-zinc-900/40 rounded-[3rem] p-10 md:p-12 border border-zinc-200 dark:border-zinc-800">
+            <div class="flex items-center justify-between mb-12">
+              <h3 class="text-3xl font-black text-zinc-900 dark:text-white uppercase tracking-tighter">
+                Достижения
+              </h3>
+              <div
+                class="w-12 h-12 bg-purple-500/10 rounded-2xl flex items-center justify-center border border-purple-500/20">
+                <i class="fas fa-trophy text-purple-400"></i>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              <div v-for="achievement in achievements" :key="achievement.id"
+                class="p-4 rounded-3xl border text-center transition-all duration-500 group" :class="achievement.unlocked
+                  ? 'bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 shadow-xl scale-100'
+                  : 'bg-zinc-50 dark:bg-zinc-900 border-zinc-100 dark:border-zinc-800/50 opacity-40 grayscale scale-95'
+                  ">
+                <div class="text-4xl mb-3 group-hover:scale-110 transition-transform duration-500">{{ achievement.icon
+                }}</div>
+                <div class="text-[10px] font-black uppercase tracking-widest leading-tight"
+                  :class="achievement.unlocked ? 'text-zinc-900 dark:text-white' : 'text-zinc-500'">
+                  {{ achievement.title }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Resources & Tips (Editorial Style) -->
+        <section class="bg-zinc-900 rounded-[4rem] p-12 md:p-20 overflow-hidden relative">
+          <div class="absolute top-0 right-0 w-96 h-96 bg-purple-500/10 rounded-full blur-[120px] -z-0"></div>
+
+          <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-20">
+            <div class="space-y-12">
+              <div class="space-y-4">
+                <h3 class="text-5xl font-black text-white uppercase tracking-tighter leading-none">
+                  Гид по <br /><span class="text-purple-500">Глубине</span>
+                </h3>
+                <p class="text-zinc-500 font-medium">Краткие протоколы для повышения качества вашей практики.</p>
+              </div>
+
+              <div class="space-y-6">
+                <div class="flex gap-6 group">
+                  <div
+                    class="w-14 h-14 bg-zinc-800 rounded-2xl flex items-center justify-center border border-zinc-700 group-hover:bg-purple-500 group-hover:border-transparent transition-all duration-500 shrink-0">
+                    <i class="fas fa-lightbulb text-white text-xl"></i>
+                  </div>
+                  <div class="space-y-1">
+                    <h4 class="text-lg font-black text-white uppercase tracking-tight">Создайте пространство</h4>
+                    <p class="text-stone-500 text-sm leading-relaxed">Найдите место без сенсорных раздражителей. Тишина
+                      — это архитектура фокуса.</p>
+                  </div>
+                </div>
+
+                <div class="flex gap-6 group">
+                  <div
+                    class="w-14 h-14 bg-zinc-800 rounded-2xl flex items-center justify-center border border-zinc-700 group-hover:bg-cyan-500 group-hover:border-transparent transition-all duration-500 shrink-0">
+                    <i class="fas fa-clock text-white text-xl"></i>
+                  </div>
+                  <div class="space-y-1">
+                    <h4 class="text-lg font-black text-white uppercase tracking-tight">Биологический ритм</h4>
+                    <p class="text-stone-500 text-sm leading-relaxed">Регулярность важнее интенсивности. 5 минут каждое
+                      утро перестраивают нейронные связи.</p>
                   </div>
                 </div>
               </div>
-
-              <div class="bg-teal-500/10 rounded-xl p-4 border border-teal-500/20">
-                <div class="flex items-center justify-between">
-                  <span class="text-slate-600 dark:text-slate-300 text-sm">Среднее время в день</span>
-                  <span class="text-teal-600 dark:text-teal-400 font-bold">{{ averageDaily }} мин</span>
-                </div>
-              </div>
-            </div>
-          </ClientOnly>
-        </div>
-
-        <!-- Achievements -->
-        <div
-          class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all duration-300">
-          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
-            <i class="fas fa-trophy text-yellow-500 dark:text-yellow-400"></i>
-            Достижения
-          </h3>
-
-          <div class="grid grid-cols-2 gap-3">
-            <div v-for="achievement in achievements" :key="achievement.id" class="achievement-card" :class="achievement.unlocked
-              ? 'achievement-unlocked'
-              : 'achievement-locked'
-              ">
-              <div class="text-3xl mb-2">{{ achievement.icon }}</div>
-              <div class="text-sm font-semibold mb-1" :class="achievement.unlocked
-                ? 'text-slate-900 dark:text-white'
-                : 'text-slate-500 dark:text-slate-600'
-                ">
-                {{ achievement.title }}
-              </div>
-              <div class="text-xs" :class="achievement.unlocked
-                ? 'text-slate-500 dark:text-slate-400'
-                : 'text-slate-400 dark:text-slate-700'
-                ">
-                {{ achievement.description }}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Resources & Tips -->
-      <div v-if="!activeSession"
-        class="bg-white dark:bg-slate-900 rounded-2xl p-6 md:p-8 border border-slate-200 dark:border-slate-800 shadow-sm">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div>
-            <div class="flex items-center gap-3 mb-6">
-              <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center">
-                <i class="fas fa-book-open text-purple-600 dark:text-purple-400 text-xl"></i>
-              </div>
-              <div>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-white">
-                  Гид по медитации
-                </h3>
-                <p class="text-slate-600 dark:text-slate-400 text-sm">
-                  Советы для начинающих
-                </p>
-              </div>
             </div>
 
-            <div class="space-y-4">
-              <div
-                class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 border border-slate-100 dark:border-slate-700 hover:border-purple-200 dark:hover:border-purple-700/50 transition-colors">
-                <h4 class="text-slate-900 dark:text-white font-medium mb-2 flex items-center gap-2">
-                  <i class="fas fa-lightbulb text-yellow-500 dark:text-yellow-400 text-sm"></i>
-                  Создайте пространство
-                </h4>
-                <p class="text-slate-600 dark:text-slate-400 text-sm">
-                  Найдите тихое место, где вас никто не потревожит. Убедитесь,
-                  что вам комфортно.
-                </p>
-              </div>
-
-              <div
-                class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 border border-slate-100 dark:border-slate-700 hover:border-purple-200 dark:hover:border-purple-700/50 transition-colors">
-                <h4 class="text-slate-900 dark:text-white font-medium mb-2 flex items-center gap-2">
-                  <i class="fas fa-clock text-cyan-600 dark:text-cyan-400 text-sm"></i>
-                  Начните с малого
-                </h4>
-                <p class="text-slate-600 dark:text-slate-400 text-sm">
-                  5-10 минут в день достаточно для начала. Регулярность важнее
-                  длительности.
-                </p>
-              </div>
-
-              <div
-                class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 border border-slate-100 dark:border-slate-700 hover:border-purple-200 dark:hover:border-purple-700/50 transition-colors">
-                <h4 class="text-slate-900 dark:text-white font-medium mb-2 flex items-center gap-2">
-                  <i class="fas fa-smile text-emerald-600 dark:text-emerald-400 text-sm"></i>
-                  Будьте терпеливы
-                </h4>
-                <p class="text-slate-600 dark:text-slate-400 text-sm">
-                  Отвлечение мыслей — это нормально. Просто мягко возвращайте
-                  внимание к практике.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <div class="flex items-center gap-3 mb-6">
-              <div class="w-12 h-12 rounded-xl bg-teal-500/20 flex items-center justify-center">
-                <i class="fas fa-heart text-teal-600 dark:text-teal-400 text-xl"></i>
-              </div>
-              <div>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-white">
-                  Польза медитации
-                </h3>
-                <p class="text-slate-600 dark:text-slate-400 text-sm">
-                  Научно доказанные эффекты
-                </p>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-1 gap-3">
-              <div
-                class="flex items-start gap-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 border border-slate-100 dark:border-slate-700 hover:border-teal-200 dark:hover:border-teal-700/50 transition-colors">
-                <i class="fas fa-brain text-teal-600 dark:text-teal-400 mt-1"></i>
-                <div>
-                  <h4 class="text-slate-900 dark:text-white font-medium text-sm mb-1">
-                    Улучшение концентрации
-                  </h4>
-                  <p class="text-slate-600 dark:text-slate-400 text-xs">
-                    Усиление способности фокусироваться на задачах
-                  </p>
-                </div>
-              </div>
-
-              <div
-                class="flex items-start gap-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 border border-slate-100 dark:border-slate-700 hover:border-teal-200 dark:hover:border-teal-700/50 transition-colors">
-                <i class="fas fa-shield-alt text-cyan-600 dark:text-cyan-400 mt-1"></i>
-                <div>
-                  <h4 class="text-slate-900 dark:text-white font-medium text-sm mb-1">
-                    Снижение стресса
-                  </h4>
-                  <p class="text-slate-600 dark:text-slate-400 text-xs">
-                    Уменьшение уровня кортизола и тревожности
-                  </p>
-                </div>
-              </div>
-
-              <div
-                class="flex items-start gap-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 border border-slate-100 dark:border-slate-700 hover:border-teal-200 dark:hover:border-teal-700/50 transition-colors">
-                <i class="fas fa-bed text-purple-600 dark:text-purple-400 mt-1"></i>
-                <div>
-                  <h4 class="text-slate-900 dark:text-white font-medium text-sm mb-1">
-                    Лучший сон
-                  </h4>
-                  <p class="text-slate-600 dark:text-slate-400 text-xs">
-                    Улучшение качества и глубины сна
-                  </p>
-                </div>
-              </div>
-
-              <div
-                class="flex items-start gap-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 border border-slate-100 dark:border-slate-700 hover:border-teal-200 dark:hover:border-teal-700/50 transition-colors">
-                <i class="fas fa-smile-beam text-yellow-500 dark:text-yellow-400 mt-1"></i>
-                <div>
-                  <h4 class="text-slate-900 dark:text-white font-medium text-sm mb-1">
-                    Эмоциональное здоровье
-                  </h4>
-                  <p class="text-slate-600 dark:text-slate-400 text-xs">
-                    Повышение позитивных эмоций и самооценки
-                  </p>
+            <div class="bg-zinc-800/40 rounded-[3rem] p-10 border border-zinc-700 space-y-8">
+              <h4 class="text-2xl font-black text-white uppercase tracking-tighter">Функциональные бенефиты</h4>
+              <div class="grid grid-cols-1 gap-4">
+                <div v-for="benefit in [
+                  { title: 'Нейропластичность', desc: 'Укрепление префронтальной коры', icon: 'fa-brain', color: 'text-cyan-400' },
+                  { title: 'Гомеостаз', desc: 'Снижение уровня кортизола', icon: 'fa-shield-alt', color: 'text-purple-400' },
+                  { title: 'Когниция', desc: 'Повышение рабочей памяти', icon: 'fa-target', color: 'text-orange-400' }
+                ]" :key="benefit.title"
+                  class="flex items-center gap-5 p-4 rounded-2xl bg-zinc-900/50 border border-zinc-800">
+                  <i :class="['fas', benefit.icon, benefit.color]" class="text-xl w-8 text-center"></i>
+                  <div>
+                    <div class="text-sm font-black text-white uppercase tracking-widest">{{ benefit.title }}</div>
+                    <div class="text-xs text-zinc-500">{{ benefit.desc }}</div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </section>
       </div>
     </div>
 
@@ -1347,51 +1243,41 @@ onMounted(() => {
 
 <style scoped>
 .stat-card {
-  @apply bg-white dark:bg-slate-800/30 rounded-xl p-4 border border-slate-200 dark:border-slate-700/50 shadow-sm dark:shadow-none;
-}
-
-.achievement-card {
-  @apply bg-white dark:bg-slate-800/30 rounded-xl p-4 border border-slate-200 dark:border-slate-700/50 text-center transition-all duration-300 shadow-sm dark:shadow-none;
-}
-
-.achievement-unlocked {
-  @apply border-yellow-500/30 bg-yellow-50 dark:bg-yellow-500/5 hover:scale-105;
-}
-
-.achievement-locked {
-  @apply opacity-50 grayscale;
+  @apply bg-white dark:bg-zinc-800/30 rounded-3xl p-6 border border-zinc-200 dark:border-zinc-700/50 shadow-sm dark:shadow-none transition-all duration-500;
 }
 
 /* Animations */
-.slide-fade-enter-active {
-  transition: all 0.5s ease-out;
+.slide-up-enter-active {
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.slide-fade-leave-active {
-  transition: all 0.3s ease-in;
+.slide-up-leave-active {
+  transition: all 0.5s cubic-bezier(0.7, 0, 0.84, 0);
 }
 
-.slide-fade-enter-from {
-  transform: translateY(30px);
+.slide-up-enter-from {
+  transform: translateY(100px);
   opacity: 0;
+  filter: blur(20px);
 }
 
-.slide-fade-leave-to {
-  transform: translateY(-20px);
+.slide-up-leave-to {
+  transform: translateY(-50px);
   opacity: 0;
+  filter: blur(10px);
 }
 
 /* Blur Fade Transition for Guidance Text */
 .blur-fade-enter-active,
 .blur-fade-leave-active {
-  transition: all 1s ease;
+  transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .blur-fade-enter-from,
 .blur-fade-leave-to {
   opacity: 0;
-  filter: blur(8px);
-  transform: scale(0.98);
+  filter: blur(15px);
+  transform: scale(0.95);
 }
 
 .blur-fade-enter-to,
@@ -1400,5 +1286,15 @@ onMounted(() => {
   filter: blur(0);
   transform: scale(1);
 }
-</style>
 
+/* Custom Fade */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

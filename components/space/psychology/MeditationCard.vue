@@ -1,77 +1,67 @@
 <!-- components/space/psychology/MeditationCard.vue -->
 <template>
   <div
-    class="meditation-card group relative p-6 rounded-2xl border transition-all duration-500 cursor-pointer overflow-hidden hover:scale-[1.02]"
+    class="meditation-card group relative p-8 rounded-[2rem] border transition-all duration-700 cursor-pointer overflow-hidden hover:scale-[1.02]"
     :class="[
-      'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm hover:shadow-xl dark:hover:shadow-2xl dark:shadow-black/50',
+      'border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm hover:shadow-2xl dark:hover:shadow-black/60',
     ]" @click="selectDuration">
     <!-- Background Gradient -->
-    <div class="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500"
+    <div class="absolute inset-0 opacity-0 group-hover:opacity-[0.03] transition-opacity duration-700"
       :class="`bg-gradient-to-br ${technique.color}`"></div>
 
     <!-- Content -->
     <div class="relative z-10">
       <!-- Icon & Difficulty -->
-      <div class="flex items-start justify-between mb-4">
+      <div class="flex items-start justify-between mb-6">
         <div
-          class="w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 shadow-sm"
+          class="w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110 shadow-xl"
           :class="[
             `bg-gradient-to-br ${technique.color} bg-opacity-10 dark:bg-opacity-20`,
-            'text-white'
           ]">
-          <i :class="technique.icon" class="text-2xl text-white drop-shadow-md"></i>
+          <i :class="technique.icon" class="text-3xl text-white drop-shadow-2xl"></i>
         </div>
         <span
-          class="text-xs px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 font-medium">
+          class="text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700">
           {{ technique.difficulty }}
         </span>
       </div>
 
       <!-- Title & Description -->
       <h3
-        class="text-lg font-bold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
+        class="text-2xl font-black text-zinc-900 dark:text-white mb-3 uppercase tracking-tight group-hover:text-cyan-500 transition-colors duration-500">
         {{ technique.title }}
       </h3>
-      <p class="text-slate-600 dark:text-slate-400 text-sm mb-4 leading-relaxed">
+      <p class="text-zinc-600 dark:text-zinc-400 text-base font-medium mb-6 leading-relaxed">
         {{ technique.description }}
       </p>
 
       <!-- Benefits -->
-      <div class="flex flex-wrap gap-2 mb-4">
+      <div class="flex flex-wrap gap-2 mb-8">
         <span v-for="benefit in technique.benefits" :key="benefit"
-          class="text-xs px-2 py-1 rounded-lg bg-slate-50 dark:bg-slate-800/50 text-slate-600 dark:text-slate-400 border border-slate-100 dark:border-slate-700">
+          class="text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-lg bg-zinc-50 dark:bg-zinc-800/50 text-zinc-500 dark:text-zinc-400 border border-zinc-100 dark:border-zinc-700">
           {{ benefit }}
         </span>
       </div>
 
       <!-- Duration Options -->
-      <div class="pt-4 border-t border-slate-100 dark:border-slate-800">
+      <div class="pt-6 border-t border-zinc-100 dark:border-zinc-800/50">
         <div
-          class="text-xs font-medium text-slate-500 dark:text-slate-400 mb-3 uppercase tracking-wider flex items-center gap-2">
-          <i class="fas fa-play-circle text-teal-500"></i>
-          Начать практику
+          class="text-[10px] font-black text-zinc-400 dark:text-zinc-500 mb-4 uppercase tracking-widest flex items-center gap-2">
+          <i class="fas fa-bolt text-cyan-500"></i>
+          Старт сессии
         </div>
         <div class="flex gap-2 flex-wrap">
           <button v-for="duration in technique.duration" :key="duration"
             @click.stop="$emit('start', technique, duration)"
-            class="group/btn relative flex-1 min-w-[60px] text-xs font-bold py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-transparent transition-all duration-300 overflow-hidden">
-            <div class="absolute inset-0 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"
+            class="group/btn relative flex-1 min-w-[70px] text-xs font-black uppercase tracking-widest py-3 rounded-2xl bg-zinc-50 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 hover:border-transparent transition-all duration-500 overflow-hidden">
+            <div class="absolute inset-0 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500"
               :class="`bg-gradient-to-r ${technique.color}`"></div>
             <span
-              class="relative z-10 flex items-center justify-center gap-1 group-hover/btn:text-white transition-colors duration-300">
+              class="relative z-10 flex items-center justify-center gap-1 group-hover/btn:text-white transition-colors duration-500">
               <span>{{ duration }}</span>
               <span class="text-[10px] opacity-70">мин</span>
             </span>
           </button>
-        </div>
-      </div>
-
-      <!-- Hover State Indicator -->
-      <div
-        class="mt-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-        <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-500">
-          <span>Выберите длительность</span>
-          <i class="fas fa-arrow-right"></i>
         </div>
       </div>
     </div>
@@ -89,14 +79,12 @@ defineProps({
 defineEmits(["start"]);
 
 const selectDuration = () => {
-  // Default behavior if clicked on card (not duration button)
-  // Could show a modal or auto-select middle duration
-  console.log("test");
+  // Logic could go here
 };
 </script>
 
 <style scoped>
 .meditation-card {
-  @apply hover:shadow-slate-900/50;
+  @apply transition-transform duration-700 ease-in-out;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="min-h-screen bg-slate-50 dark:bg-slate-950 px-4 py-8 font-sans transition-colors duration-500 overflow-x-hidden">
+    class="min-h-screen bg-zinc-50 dark:bg-zinc-950 px-4 py-8 font-sans transition-colors duration-500 overflow-x-hidden">
     <!-- Breadcrumbs -->
     <Breadcrumbs class="mb-8 max-w-4xl mx-auto" />
 
@@ -10,44 +10,44 @@
         <div class="inline-flex p-3 rounded-2xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 mb-2">
           <i class="fas fa-font text-3xl"></i>
         </div>
-        <h1 class="text-5xl sm:text-6xl font-black text-slate-900 dark:text-white tracking-tight">
+        <h1 class="text-5xl sm:text-6xl font-black text-zinc-900 dark:text-white tracking-tight">
           Анаграммы
           <span class="block text-2xl font-medium text-cyan-600 dark:text-cyan-400 mt-2">Магия слов</span>
         </h1>
-        <p class="text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
+        <p class="text-xl text-zinc-600 dark:text-zinc-300 max-w-2xl mx-auto leading-relaxed font-medium">
           Развивайте вербальный интеллект и гибкость мышления, составляя слова из перемешанных букв.
         </p>
       </div>
 
       <div
-        class="bg-white dark:bg-slate-900/80 rounded-[2.5rem] p-8 border border-slate-200 dark:border-white/10 shadow-2xl backdrop-blur-xl text-left max-w-md mx-auto relative overflow-hidden group">
+        class="bg-white dark:bg-zinc-900/80 rounded-[2.5rem] p-8 border border-zinc-200 dark:border-white/10 shadow-2xl backdrop-blur-xl text-left max-w-md mx-auto relative overflow-hidden group">
         <div
           class="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
         </div>
 
         <div class="relative z-10 space-y-6">
-          <h3 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+          <h3 class="text-xl font-bold text-zinc-900 dark:text-white flex items-center gap-2">
             <i class="fas fa-cog text-cyan-500"></i>
             Настройки игры
           </h3>
 
           <div class="space-y-4">
             <div class="space-y-2">
-              <label class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Сложность
+              <label class="text-sm font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Сложность
                 (длина слов)</label>
               <div class="grid grid-cols-3 gap-2">
                 <button v-for="d in difficulties" :key="d.id" @click="settings.difficulty = d.id"
-                  :class="['py-3 rounded-xl font-bold transition-all border-2', settings.difficulty === d.id ? 'bg-cyan-600 border-cyan-600 text-white shadow-lg' : 'bg-transparent border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:border-cyan-500/50']">
+                  :class="['py-3 rounded-xl font-bold transition-all border-2', settings.difficulty === d.id ? 'bg-cyan-600 border-cyan-600 text-white shadow-lg' : 'bg-transparent border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 hover:border-cyan-500/50']">
                   {{ d.label }}
                 </button>
               </div>
             </div>
 
             <div
-              class="flex items-center justify-between p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-white/5">
+              class="flex items-center justify-between p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-white/5">
               <div class="flex flex-col">
-                <span class="text-slate-700 dark:text-slate-200 font-medium font-bold">Время игры</span>
-                <span class="text-xs text-slate-500 dark:text-slate-400">60 секунд на раунд</span>
+                <span class="text-zinc-700 dark:text-zinc-200 font-bold">Время игры</span>
+                <span class="text-xs text-zinc-500 dark:text-zinc-400">60 секунд на раунд</span>
               </div>
               <i class="fas fa-hourglass-half text-cyan-500"></i>
             </div>
@@ -66,22 +66,22 @@
     <div v-else-if="gameState === 'playing'" class="max-w-4xl mx-auto space-y-8 animate-fade-in">
       <!-- HUD -->
       <div
-        class="flex justify-between items-center bg-white dark:bg-slate-900/80 p-5 rounded-2xl shadow-lg border border-slate-200 dark:border-white/5 backdrop-blur-md">
+        class="flex justify-between items-center bg-white dark:bg-zinc-900/80 p-5 rounded-2xl shadow-lg border border-zinc-200 dark:border-white/5 backdrop-blur-md">
         <div class="flex gap-8 sm:gap-12">
           <div class="flex flex-col">
-            <span class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-1">Счет</span>
+            <span class="text-xs uppercase tracking-wider text-zinc-400 font-bold mb-1">Счет</span>
             <span class="text-3xl font-black text-cyan-600 dark:text-cyan-400 font-mono">{{ score }}</span>
           </div>
           <div class="flex flex-col">
-            <span class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-1">Время</span>
+            <span class="text-xs uppercase tracking-wider text-zinc-400 font-bold mb-1">Время</span>
             <span
-              :class="['text-3xl font-black font-mono', timeLeft <= 10 ? 'text-rose-500 animate-pulse' : 'text-slate-700 dark:text-slate-200']">
+              :class="['text-3xl font-black font-mono', timeLeft <= 10 ? 'text-rose-500 animate-pulse' : 'text-zinc-700 dark:text-zinc-200']">
               {{ timeLeft }}s
             </span>
           </div>
         </div>
         <button @click="confirmEndGame"
-          class="p-3 rounded-xl text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 transition-colors">
+          class="p-3 rounded-xl text-zinc-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 transition-colors">
           <i class="fas fa-times text-xl"></i>
         </button>
       </div>
@@ -91,7 +91,7 @@
         <!-- Scrambled Word -->
         <div class="flex flex-wrap justify-center gap-3">
           <div v-for="(letter, index) in scrambledLetters" :key="`scrambled-${index}`"
-            class="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center bg-white dark:bg-slate-800 rounded-2xl text-2xl sm:text-3xl font-black text-slate-800 dark:text-white shadow-lg border border-slate-200 dark:border-white/10 select-none transform transition-transform hover:scale-110 active:scale-95"
+            class="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center bg-white dark:bg-zinc-800 rounded-2xl text-2xl sm:text-3xl font-black text-zinc-800 dark:text-white shadow-lg border border-zinc-200 dark:border-white/10 select-none transform transition-transform hover:scale-110 active:scale-95"
             @click="addLetter(letter)">
             {{ letter }}
           </div>
@@ -100,7 +100,7 @@
         <!-- Input Area -->
         <div class="w-full flex flex-col items-center space-y-6">
           <div
-            class="min-w-[300px] h-20 flex items-center justify-center gap-2 border-b-4 border-slate-200 dark:border-slate-800 transition-colors"
+            class="min-w-[300px] h-20 flex items-center justify-center gap-2 border-b-4 border-zinc-200 dark:border-zinc-800 transition-colors"
             :class="{ 'border-cyan-500': userInput.length > 0 }">
             <TransitionGroup name="letter-pop" tag="div" class="flex gap-2">
               <div v-for="(letter, index) in userInput" :key="`input-${index}`"
@@ -108,19 +108,19 @@
                 {{ letter }}
               </div>
             </TransitionGroup>
-            <div v-if="userInput.length === 0" class="text-slate-400 dark:text-slate-600 italic text-lg select-none">
+            <div v-if="userInput.length === 0" class="text-zinc-400 dark:text-zinc-600 italic text-lg select-none">
               Начинайте вводить...
             </div>
           </div>
 
           <div class="flex gap-4">
             <button @click="backspace"
-              class="w-16 h-14 flex items-center justify-center rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-300 dark:hover:bg-slate-700 transition"
+              class="w-16 h-14 flex items-center justify-center rounded-xl bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition"
               :disabled="userInput.length === 0">
               <i class="fas fa-backspace text-xl"></i>
             </button>
             <button @click="clearInput"
-              class="px-6 h-14 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-bold hover:bg-slate-300 dark:hover:bg-slate-700 transition"
+              class="px-6 h-14 rounded-xl bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 font-bold hover:bg-zinc-300 dark:hover:bg-zinc-700 transition"
               :disabled="userInput.length === 0">
               Сброс
             </button>
@@ -153,38 +153,37 @@
     <!-- Results Screen -->
     <div v-else-if="gameState === 'finished'" class="max-w-2xl mx-auto text-center space-y-8 animate-fade-in-up pt-12">
       <div
-        class="bg-white dark:bg-slate-900 rounded-[3rem] p-10 border border-slate-200 dark:border-white/10 shadow-2xl relative overflow-hidden">
+        class="bg-white dark:bg-zinc-900 rounded-[3rem] p-10 border border-zinc-200 dark:border-white/10 shadow-2xl relative overflow-hidden">
         <div class="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500"></div>
 
-        <h2 class="text-4xl font-black text-slate-900 dark:text-white mb-10">Ваш результат</h2>
+        <h2 class="text-4xl font-black text-zinc-900 dark:text-white mb-10 uppercase tracking-tight">Ваш результат</h2>
 
         <div class="grid grid-cols-2 gap-8 mb-12">
           <div class="space-y-1">
-            <div class="text-xs uppercase tracking-widest text-slate-500 font-bold">Итоговый счет</div>
+            <div class="text-[10px] uppercase tracking-widest text-zinc-500 font-black">Итоговый счет</div>
             <div
               class="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-cyan-600 to-blue-600 dark:from-cyan-400 dark:to-blue-400">
               {{ score }}
             </div>
           </div>
           <div class="space-y-1">
-            <div class="text-xs uppercase tracking-widest text-slate-500 font-bold">Слов решено</div>
-            <div class="text-6xl font-black text-slate-800 dark:text-slate-100 italic">
+            <div class="text-[10px] uppercase tracking-widest text-zinc-500 font-black">Слов решено</div>
+            <div class="text-6xl font-black text-zinc-800 dark:text-zinc-100 italic">
               {{ wordsSolved }}
             </div>
           </div>
         </div>
 
         <div v-if="!isLoggedIn"
-          class="mb-10 p-6 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700">
-          <p class="text-slate-600 dark:text-slate-300 mb-4 font-medium">Желаете сохранить прогресс и отслеживать
-            когнитивный рост?</p>
+          class="mb-10 p-6 bg-zinc-50 dark:bg-zinc-800/50 rounded-2xl border border-dashed border-zinc-300 dark:border-zinc-700">
+          <p class="text-zinc-600 dark:text-zinc-300 mb-4 font-bold uppercase tracking-tight text-sm">Желаете сохранить прогресс?</p>
           <div class="flex flex-col sm:flex-row gap-3 justify-center">
             <button @click="navigateTo('/auth/login')"
-              class="px-6 py-2 rounded-xl bg-white dark:bg-slate-700 text-slate-900 dark:text-white font-semibold border border-slate-200 dark:border-slate-600 hover:bg-slate-50 transition">
+              class="px-8 py-2.5 rounded-xl bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white font-bold border border-zinc-200 dark:border-zinc-600 hover:bg-zinc-50 transition uppercase text-xs tracking-widest">
               Войти
             </button>
             <button @click="navigateTo('/auth/register')"
-              class="px-6 py-2 rounded-xl bg-cyan-600 text-white font-semibold hover:bg-cyan-700 transition">
+              class="px-8 py-2.5 rounded-xl bg-cyan-600 text-white font-bold hover:bg-cyan-700 transition uppercase text-xs tracking-widest">
               Регистрация
             </button>
           </div>
@@ -192,11 +191,11 @@
 
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
           <button @click="gameState = 'start'"
-            class="px-8 py-4 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+            class="px-8 py-4 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 font-bold hover:bg-zinc-200 dark:hover:bg-zinc-700 transition uppercase text-xs tracking-widest">
             К настройкам
           </button>
           <button @click="startGame"
-            class="px-8 py-4 rounded-xl bg-cyan-600 text-white font-bold shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition transform hover:-translate-y-0.5">
+            class="px-8 py-4 rounded-xl bg-cyan-600 text-white font-bold shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition transform hover:-translate-y-0.5 uppercase text-xs tracking-widest">
             Играть еще раз
           </button>
         </div>

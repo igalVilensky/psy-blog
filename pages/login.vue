@@ -180,7 +180,7 @@ const handleLogin = async () => {
   try {
     const auth = getAuth();
     await signInWithEmailAndPassword(auth, email.value, password.value);
-    router.push("/profile");
+    router.push("/space");
   } catch (err) {
     console.error("Login error:", err);
     error.value = "Неверный email или пароль. Пожалуйста, проверьте данные.";

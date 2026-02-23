@@ -3,7 +3,7 @@
   <div class="interactive-brain-map">
     <!-- Control Panel -->
     <div
-      class="control-panel mb-6 p-4 rounded-2xl bg-slate-900/50 border border-cyan-500/10 backdrop-blur-sm"
+      class="control-panel mb-6 p-4 rounded-2xl bg-zinc-900/50 border border-cyan-500/10 backdrop-blur-sm"
     >
       <div
         class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4"
@@ -14,11 +14,11 @@
             v-for="view in viewModes"
             :key="view.id"
             @click="activeView = view.id"
-            class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300"
+            class="px-4 py-2 rounded-lg text-sm font-bold uppercase tracking-widest transition-all duration-300"
             :class="
               activeView === view.id
-                ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
-                : 'bg-slate-800/50 text-slate-400 hover:text-slate-200 border border-slate-700/50'
+                ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-lg shadow-cyan-500/10'
+                : 'bg-zinc-800/50 text-zinc-400 hover:text-zinc-200 border border-zinc-700/50'
             "
           >
             {{ view.label }}
@@ -28,12 +28,12 @@
         <!-- Filter -->
         <div class="flex items-center gap-3">
           <span
-            class="text-xs text-slate-400 uppercase tracking-wide hidden sm:inline"
+            class="text-[10px] text-zinc-400 uppercase tracking-widest font-black hidden sm:inline"
             >Фильтр:</span
           >
           <select
             v-model="activeFilter"
-            class="bg-slate-800/80 border border-cyan-500/20 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500/40 cursor-pointer"
+            class="bg-zinc-800/80 border border-cyan-500/20 rounded-xl px-3 py-2 text-xs font-bold uppercase tracking-widest text-white focus:outline-none focus:border-cyan-500/40 cursor-pointer"
           >
             <option value="all">Все области</option>
             <option value="cognitive">Когнитивные</option>
@@ -47,7 +47,7 @@
 
     <!-- Brain Visualization -->
     <div
-      class="brain-container relative bg-slate-900/30 rounded-3xl border border-cyan-500/10   overflow-hidden"
+      class="brain-container relative bg-zinc-900/30 rounded-3xl border border-zinc-200 dark:border-zinc-800   overflow-hidden"
     >
       <!-- Background Grid -->
       <div class="absolute inset-0 opacity-5">
@@ -55,7 +55,7 @@
       </div>
 
       <!-- SVG Brain -->
-      <div class="brain-container relative w-full overflow-hidden rounded-3xl bg-slate-900/50 border border-slate-800/50 backdrop-blur-sm">
+      <div class="brain-container relative w-full overflow-hidden rounded-3xl bg-zinc-900/50 border border-zinc-800/50 backdrop-blur-sm">
       <!-- Scrollable container for mobile to prevent tiny shrinking -->
       <div class="overflow-x-auto w-full">
         <svg
@@ -114,10 +114,10 @@
               stroke-width="3"
               marker-end="url(#arrowFront)"
             />
-            <text x="50" y="245" class="text-sm fill-cyan-300 font-bold drop-shadow-md">
+            <text x="50" y="245" class="text-sm font-black fill-cyan-300 uppercase tracking-widest drop-shadow-md">
               ПЕРЕДНЯЯ
             </text>
-            <text x="65" y="260" class="text-xs fill-slate-300 font-medium drop-shadow-md">(Лоб)</text>
+            <text x="65" y="260" class="text-[10px] font-bold fill-zinc-400 uppercase tracking-wider drop-shadow-md">(Лоб)</text>
           </g>
 
           <!-- Back marker -->
@@ -131,10 +131,10 @@
               stroke-width="3"
               marker-end="url(#arrowBack)"
             />
-            <text x="900" y="285" class="text-sm fill-purple-300 font-bold drop-shadow-md">
+            <text x="900" y="285" class="text-sm font-black fill-purple-300 uppercase tracking-widest drop-shadow-md">
               ЗАДНЯЯ
             </text>
-            <text x="905" y="300" class="text-xs fill-slate-300 font-medium drop-shadow-md">
+            <text x="905" y="300" class="text-[10px] font-bold fill-zinc-400 uppercase tracking-wider drop-shadow-md">
               (Затылок)
             </text>
           </g>
@@ -222,29 +222,29 @@
               :y="tooltipPos.y"
               width="220"
               height="90"
-              rx="8"
-              fill="rgba(15, 23, 42, 0.95)"
+              rx="12"
+              fill="rgba(9, 9, 11, 0.95)"
               stroke="rgba(6, 182, 212, 0.5)"
               stroke-width="1"
             />
             <text
               :x="tooltipPos.x + 12"
               :y="tooltipPos.y + 25"
-              class="text-sm font-semibold fill-white"
+              class="text-sm font-black fill-white uppercase tracking-tight"
             >
               {{ hoveredRegion.name }}
             </text>
             <text
               :x="tooltipPos.x + 12"
               :y="tooltipPos.y + 45"
-              class="text-xs fill-slate-300"
+              class="text-[10px] font-bold fill-zinc-400 uppercase tracking-widest"
             >
               {{ hoveredRegion.function }}
             </text>
             <text
               :x="tooltipPos.x + 12"
-              :y="tooltipPos.y + 65"
-              class="text-xs fill-cyan-400"
+              :y="tooltipPos.y + 70"
+              class="text-[10px] font-black fill-cyan-400 uppercase tracking-widest"
             >
               Нажмите для подробностей
             </text>
@@ -264,18 +264,18 @@
       >
         <div
           v-if="selectedRegion"
-          class="region-details mt-6 p-6 rounded-xl bg-slate-800/50 border border-cyan-500/20"
+          class="region-details mt-6 p-6 rounded-2xl bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 backdrop-blur-md"
         >
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Left Column -->
             <div>
               <div class="flex items-start justify-between mb-4">
-                <h3 class="text-xl font-bold text-white">
+                <h3 class="text-xl font-black text-white uppercase tracking-tight">
                   {{ selectedRegion.name }}
                 </h3>
                 <button
                   @click="selectedRegion = null"
-                  class="text-slate-400 hover:text-white transition-colors p-1 rounded hover:bg-slate-700/50"
+                  class="text-zinc-400 hover:text-white transition-colors p-2 rounded-xl hover:bg-zinc-800"
                   aria-label="Закрыть"
                 >
                   <i class="fas fa-times text-lg"></i>
@@ -285,23 +285,23 @@
               <div class="space-y-4">
                 <div>
                   <div
-                    class="text-xs text-slate-400 uppercase tracking-wide mb-1"
+                    class="text-[10px] text-zinc-500 uppercase tracking-widest font-black mb-1"
                   >
                     Функция
                   </div>
-                  <div class="text-sm text-white">
+                  <div class="text-sm text-white font-medium">
                     {{ selectedRegion.function }}
                   </div>
                 </div>
 
                 <div>
                   <div
-                    class="text-xs text-slate-400 uppercase tracking-wide mb-1"
+                    class="text-[10px] text-zinc-500 uppercase tracking-widest font-black mb-1"
                   >
                     Тип
                   </div>
                   <span
-                    class="inline-flex px-3 py-1 rounded-full text-xs font-medium"
+                    class="inline-flex px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest"
                     :class="getTypeClass(selectedRegion.type)"
                   >
                     {{ getTypeName(selectedRegion.type) }}
@@ -310,11 +310,11 @@
 
                 <div>
                   <div
-                    class="text-xs text-slate-400 uppercase tracking-wide mb-2"
+                    class="text-[10px] text-zinc-500 uppercase tracking-widest font-black mb-1"
                   >
                     Расположение
                   </div>
-                  <div class="text-sm text-slate-300">
+                  <div class="text-sm text-zinc-400 font-medium leading-tight">
                     {{ selectedRegion.location }}
                   </div>
                 </div>
@@ -323,21 +323,21 @@
 
             <!-- Right Column -->
             <div>
-              <div class="text-xs text-slate-400 uppercase tracking-wide mb-2">
+              <div class="text-[10px] text-zinc-500 uppercase tracking-widest font-black mb-2">
                 Описание
               </div>
-              <p class="text-sm text-slate-300 leading-relaxed mb-4">
+              <p class="text-xs text-zinc-400 leading-relaxed mb-4 font-medium">
                 {{ selectedRegion.fullDescription }}
               </p>
 
-              <div class="text-xs text-slate-400 uppercase tracking-wide mb-2">
+              <div class="text-[10px] text-zinc-500 uppercase tracking-widest font-black mb-2">
                 Ключевые функции
               </div>
               <ul class="space-y-2">
                 <li
                   v-for="(func, index) in selectedRegion.keyFunctions"
                   :key="index"
-                  class="text-sm text-slate-300 flex items-start gap-2"
+                  class="text-xs text-zinc-400 flex items-start gap-2 font-medium"
                 >
                   <span class="text-cyan-400 mt-1">•</span>
                   <span>{{ func }}</span>
@@ -351,20 +351,20 @@
 
     <!-- Legend -->
     <div
-      class="legend mt-6 p-4 rounded-xl bg-slate-900/50 border border-cyan-500/10"
+      class="legend mt-6 p-4 rounded-2xl bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800"
     >
       <div class="flex flex-wrap items-center gap-6">
-        <div class="text-sm font-medium text-slate-300">Типы областей:</div>
+        <div class="text-[10px] font-black uppercase tracking-widest text-zinc-500">Типы областей:</div>
         <div
           v-for="type in regionTypes"
           :key="type.id"
           class="flex items-center gap-2"
         >
           <div
-            class="w-4 h-4 rounded"
+            class="w-3 h-3 rounded shadow-sm"
             :style="{ backgroundColor: type.color }"
           ></div>
-          <span class="text-sm text-slate-400">{{ type.label }}</span>
+          <span class="text-[10px] font-bold uppercase tracking-widest text-zinc-400">{{ type.label }}</span>
         </div>
       </div>
     </div>

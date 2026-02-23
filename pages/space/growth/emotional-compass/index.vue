@@ -214,59 +214,61 @@ onMounted(async () => {
 
 <template>
   <div
-    class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 transition-colors duration-500 font-sans selection:bg-cyan-500/30">
+    class="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 transition-colors duration-500 font-sans selection:bg-cyan-500/30">
     <div class="container mx-auto px-4 py-8 max-w-6xl">
+      <Breadcrumbs />
 
       <!-- Header -->
-      <section class="text-center mb-8">
+      <section class="text-center mb-12 mt-8">
         <h1
-          class="text-4xl sm:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400 tracking-tight font-mono">
-          ЭМОЦИОНАЛЬНЫЙ КОМПАС 2.0
+          class="text-3xl sm:text-5xl font-black mb-4 bg-clip-text text-transparent bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-400 dark:to-blue-400 tracking-tight uppercase">
+          ЭМОЦИОНАЛЬНЫЙ КОМПАС
         </h1>
-        <p class="text-slate-600 dark:text-cyan-100/70 max-w-2xl mx-auto text-sm sm:text-base">
+        <p class="text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto text-sm sm:text-base font-medium">
           Точная калибровка эмоций. Назови, чтобы управлять.
         </p>
       </section>
 
       <!-- Mode Selection (Only visible if not started) -->
-      <div v-if="!sessionStarted && !loading" class="max-w-4xl mx-auto mb-12 animate-fadeIn">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div v-if="!sessionStarted && !loading" class="max-w-4xl mx-auto mb-16 animate-fadeIn">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           <!-- Quick Pulse -->
           <button @click="startSession('quick')"
-            class="group relative p-6 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 hover:border-cyan-500 transition-all text-left">
-            <div class="absolute top-4 right-4 text-xs font-mono text-slate-400">30с</div>
+            class="group relative p-8 rounded-3xl bg-white dark:bg-zinc-900/50 backdrop-blur-sm border border-zinc-200 dark:border-zinc-800 hover:border-cyan-500/50 transition-all text-left shadow-sm hover:shadow-xl hover:shadow-cyan-500/10">
+            <div class="absolute top-6 right-6 text-[10px] font-black uppercase tracking-widest text-zinc-400">30с</div>
             <div
-              class="w-12 h-12 rounded-full bg-cyan-100 dark:bg-cyan-900/30 flex items-center justify-center mb-4 text-cyan-600 dark:text-cyan-400">
-              <i class="fas fa-bolt text-xl"></i>
+              class="w-14 h-14 rounded-2xl bg-cyan-50 dark:bg-cyan-900/30 flex items-center justify-center mb-6 text-cyan-600 dark:text-cyan-400 group-hover:scale-110 transition-transform">
+              <i class="fas fa-bolt text-2xl"></i>
             </div>
-            <h3 class="text-lg font-bold mb-2">Быстрый скан</h3>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Быстрая фиксация валентности и энергии. Для частого
-              отслеживания.</p>
+            <h3 class="text-xl font-black mb-3 uppercase tracking-tight">Быстрый скан</h3>
+            <p class="text-sm text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed">Быстрая фиксация валентности
+              и энергии. Для частого отслеживания.</p>
           </button>
 
           <!-- Standard Calibration -->
           <button @click="startSession('standard')"
-            class="group relative p-6 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 hover:border-purple-500 transition-all text-left ring-2 ring-purple-500/20">
-            <div class="absolute top-4 right-4 text-xs font-mono text-slate-400">2м</div>
+            class="group relative p-8 rounded-3xl bg-white dark:bg-zinc-900/50 backdrop-blur-sm border border-zinc-200 dark:border-zinc-800 hover:border-blue-500/50 transition-all text-left shadow-sm hover:shadow-xl hover:shadow-blue-500/10 ring-1 ring-blue-500/10">
+            <div class="absolute top-6 right-6 text-[10px] font-black uppercase tracking-widest text-zinc-400">2м</div>
             <div
-              class="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center mb-4 text-purple-600 dark:text-purple-400">
-              <i class="fas fa-compass text-xl"></i>
+              class="w-14 h-14 rounded-2xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center mb-6 text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform">
+              <i class="fas fa-compass text-2xl"></i>
             </div>
-            <h3 class="text-lg font-bold mb-2">Стандартный анализ</h3>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Полный чекин. Нюансы эмоций, тело и контекст.</p>
+            <h3 class="text-xl font-black mb-3 uppercase tracking-tight text-blue-600 dark:text-blue-400">Стандарт</h3>
+            <p class="text-sm text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed">Полный чекин. Нюансы эмоций,
+              тело и контекст.</p>
           </button>
 
           <!-- Deep Diagnostic -->
           <button @click="startSession('deep')"
-            class="group relative p-6 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 hover:border-pink-500 transition-all text-left">
-            <div class="absolute top-4 right-4 text-xs font-mono text-slate-400">5м+</div>
+            class="group relative p-8 rounded-3xl bg-white dark:bg-zinc-900/50 backdrop-blur-sm border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/50 transition-all text-left shadow-sm hover:shadow-xl hover:shadow-purple-500/10">
+            <div class="absolute top-6 right-6 text-[10px] font-black uppercase tracking-widest text-zinc-400">5м+</div>
             <div
-              class="w-12 h-12 rounded-full bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center mb-4 text-pink-600 dark:text-pink-400">
-              <i class="fas fa-microscope text-xl"></i>
+              class="w-14 h-14 rounded-2xl bg-purple-50 dark:bg-purple-900/30 flex items-center justify-center mb-6 text-purple-600 dark:text-purple-400 group-hover:scale-110 transition-transform">
+              <i class="fas fa-microscope text-2xl"></i>
             </div>
-            <h3 class="text-lg font-bold mb-2">Глубокая диагностика</h3>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Работа со сложными состояниями. Когнитивный анализ и
-              стратегии регуляции.</p>
+            <h3 class="text-xl font-black mb-3 uppercase tracking-tight">Глубоко</h3>
+            <p class="text-sm text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed">Сложные состояния. Глубокий
+              анализ и стратегии регуляции.</p>
           </button>
         </div>
       </div>
@@ -274,31 +276,35 @@ onMounted(async () => {
       <!-- Active Session Interface -->
       <div v-if="sessionStarted" class="max-w-3xl mx-auto">
         <!-- Progress Bar -->
-        <div class="mb-8 h-1 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
-          <div class="h-full bg-gradient-to-r from-cyan-500 to-purple-500 transition-all duration-500 ease-out"
+        <div class="mb-10 h-1.5 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
+          <div
+            class="h-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 transition-all duration-1000 ease-out"
             :style="{ width: `${progressPercentage}%` }"></div>
         </div>
 
         <!-- Step Container -->
         <div
-          class="bg-white dark:bg-slate-900/80 backdrop-blur-xl rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden min-h-[500px] flex flex-col">
+          class="bg-white dark:bg-zinc-900/80 backdrop-blur-2xl rounded-[2.5rem] border border-zinc-200 dark:border-zinc-800 shadow-2xl shadow-zinc-500/5 overflow-hidden min-h-[550px] flex flex-col">
 
           <!-- Step Header -->
-          <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
-            <h2 class="text-xl font-mono font-bold text-slate-700 dark:text-slate-200">
+          <div
+            class="px-8 py-6 border-b border-zinc-100 dark:border-zinc-800/50 flex justify-between items-center bg-zinc-50/30 dark:bg-zinc-800/20">
+            <h2 class="text-xs font-black uppercase tracking-[0.2em] text-zinc-400">
               {{ currentStepTitle }}
             </h2>
-            <button @click="cancelSession" class="text-slate-400 hover:text-red-400 transition-colors">
-              <i class="fas fa-times"></i>
+            <button @click="cancelSession"
+              class="w-8 h-8 flex items-center justify-center rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-400 hover:text-red-500 hover:bg-red-500/10 transition-all">
+              <i class="fas fa-times text-sm"></i>
             </button>
           </div>
 
           <!-- Step Content -->
-          <div class="flex-1 p-6 md:p-8 flex flex-col items-center justify-center">
+          <div class="flex-1 p-8 md:p-12 flex flex-col items-center justify-center">
 
             <!-- Step 1: Affect Grid -->
-            <div v-if="step === 1" class="w-full animate-fadeIn">
-              <p class="text-center text-slate-500 mb-6">Где вы сейчас находитесь?</p>
+            <div v-if="step === 1" class="w-full animate-fadeIn max-w-lg">
+              <p class="text-center text-zinc-500 dark:text-zinc-400 mb-10 font-medium">Определите свое текущее
+                положение на сетке состояний</p>
               <AffectGrid v-model="sessionData.affect" @change="onAffectChange" />
             </div>
 
@@ -309,40 +315,50 @@ onMounted(async () => {
 
             <!-- Step 3: Somatic Marker -->
             <div v-if="step === 3" class="w-full animate-fadeIn">
-              <p class="text-center text-slate-500 mb-6">Где это в теле? <span class="text-xs opacity-70">(напряжение,
-                  тяжесть, пустота)</span></p>
+              <p class="text-center text-zinc-500 dark:text-zinc-400 mb-10 font-medium">Где в теле ощущается эта эмоция?
+                <br>
+                <span class="text-[10px] font-black uppercase tracking-widest opacity-50">(напряжение, тяжесть,
+                  пульсация)</span>
+              </p>
               <BodyMapper v-model="sessionData.somatic.locations" />
             </div>
 
             <!-- Step 4: Context -->
             <div v-if="step === 4" class="w-full animate-fadeIn">
-              <p class="text-center text-slate-500 mb-6">Что влияет на это состояние?</p>
+              <p class="text-center text-zinc-500 dark:text-zinc-400 mb-10 font-medium">Какие внешние или внутренние
+                факторы влияют на это?</p>
               <ContextTagSelector v-model="sessionData.context.triggers" />
             </div>
 
             <!-- Step 5: Needs (Only for Deep Mode) -->
-            <div v-if="step === 5" class="w-full animate-fadeIn space-y-6">
-              <p class="text-center text-slate-500 mb-2">Чего этому состоянию хочется?</p>
-              <p class="text-center text-xs text-slate-400 mb-6">(покоя, тепла, опоры, отдыха)</p>
+            <div v-if="step === 5" class="w-full animate-fadeIn space-y-8 max-w-lg">
+              <div class="text-center">
+                <p class="text-zinc-500 dark:text-zinc-400 mb-2 font-medium">Чего вашему состоянию хочется прямо сейчас?
+                </p>
+                <p class="text-[10px] font-black uppercase tracking-widest text-zinc-400">Выберите ключевые потребности
+                </p>
+              </div>
 
               <div class="flex flex-wrap justify-center gap-3">
                 <button
                   v-for="need in ['Покоя', 'Тепла', 'Опоры', 'Отдыха', 'Безопасности', 'Принятия', 'Движения', 'Выражения', 'Тишины', 'Контакта']"
-                  :key="need" @click="toggleNeed(need)" class="px-4 py-2 rounded-xl border transition-all" :class="[
+                  :key="need" @click="toggleNeed(need)"
+                  class="px-5 py-2.5 rounded-2xl border transition-all text-sm font-bold uppercase tracking-widest"
+                  :class="[
                     sessionData.needs.includes(need)
-                      ? 'bg-purple-500 text-white border-purple-600 shadow-lg scale-105'
-                      : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-purple-300'
+                      ? 'bg-purple-600 dark:bg-purple-500 text-white border-transparent shadow-lg shadow-purple-500/25 scale-105'
+                      : 'bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-purple-300'
                   ]">
                   {{ need }}
                 </button>
               </div>
 
-              <div class="relative mt-8 max-w-sm mx-auto">
+              <div class="relative mt-10 w-full">
                 <input v-model="customNeed" @keydown.enter="addCustomNeed" type="text"
                   placeholder="Добавить свой вариант..."
-                  class="w-full px-4 py-2 pr-10 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm" />
+                  class="w-full px-6 py-4 pr-14 rounded-2xl bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-purple-500/50 text-sm font-medium" />
                 <button @click="addCustomNeed"
-                  class="absolute right-2 top-1/2 -translate-y-1/2 text-purple-500 hover:text-purple-600"
+                  class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-xl text-purple-600 hover:bg-purple-500/10 transition-colors"
                   :disabled="!customNeed.trim()">
                   <i class="fas fa-plus"></i>
                 </button>
@@ -353,18 +369,19 @@ onMounted(async () => {
 
           <!-- Footer / Navigation -->
           <div
-            class="p-6 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-slate-900/50">
+            class="p-8 border-t border-zinc-100 dark:border-zinc-800 flex justify-between items-center bg-zinc-50/50 dark:bg-zinc-900/50">
             <button v-if="step > 1" @click="prevStep"
-              class="px-6 py-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
-              Назад
+              class="px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-white dark:hover:bg-zinc-800 transition-all shadow-sm">
+              <i class="fas fa-chevron-left mr-2"></i> Назад
             </button>
             <div v-else></div>
 
             <button @click="handleNext" :disabled="!canProceed"
-              class="px-8 py-3 rounded-xl font-bold transition-all shadow-lg flex items-center gap-2" :class="[
+              class="px-10 py-5 rounded-2xl font-black uppercase tracking-[0.15em] text-xs transition-all shadow-xl flex items-center gap-3 active:scale-95"
+              :class="[
                 canProceed
-                  ? 'bg-gradient-to-r from-cyan-600 to-purple-600 text-white hover:shadow-cyan-500/25 hover:scale-105'
-                  : 'bg-slate-200 dark:bg-slate-800 text-slate-400 cursor-not-allowed'
+                  ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white hover:shadow-cyan-500/40'
+                  : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-400 cursor-not-allowed'
               ]">
               <span v-if="isLastStep">Сохранить</span>
               <span v-else>Далее</span>
@@ -375,31 +392,37 @@ onMounted(async () => {
       </div>
 
       <!-- History / Stats Links (Visible when not in session) -->
-      <div v-if="!sessionStarted" class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto mt-12">
+      <div v-if="!sessionStarted" class="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-4xl mx-auto mt-16 animate-fadeIn">
         <NuxtLink to="/space/growth/emotional-compass/analysis"
-          class="p-6 rounded-2xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-slate-800 hover:border-cyan-500/50 transition-all group">
-          <div class="flex items-center gap-4">
+          class="p-8 rounded-[2rem] bg-white dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800 hover:border-cyan-500/50 transition-all group shadow-sm hover:shadow-xl">
+          <div class="flex items-center gap-6">
             <div
-              class="w-10 h-10 rounded-lg bg-cyan-100 dark:bg-cyan-900/30 flex items-center justify-center text-cyan-600">
-              <i class="fas fa-chart-pie"></i>
+              class="w-14 h-14 rounded-2xl bg-cyan-50 dark:bg-cyan-900/30 flex items-center justify-center text-cyan-600 dark:text-cyan-400 group-hover:scale-110 transition-transform">
+              <i class="fas fa-chart-pie text-xl"></i>
             </div>
             <div>
-              <h3 class="font-bold group-hover:text-cyan-500 transition-colors">Анализ</h3>
-              <p class="text-sm text-slate-500">Эмоциональные паттерны</p>
+              <h3 class="text-lg font-black uppercase tracking-tight group-hover:text-cyan-600 transition-colors">Анализ
+              </h3>
+              <p class="text-sm text-zinc-500 font-medium">Эмоциональные паттерны</p>
             </div>
+            <i
+              class="fas fa-arrow-right ml-auto text-zinc-300 group-hover:text-cyan-500 transition-all group-hover:translate-x-1"></i>
           </div>
         </NuxtLink>
         <NuxtLink to="/space/growth/emotional-compass/journal-history"
-          class="p-6 rounded-2xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-slate-800 hover:border-purple-500/50 transition-all group">
-          <div class="flex items-center gap-4">
+          class="p-8 rounded-[2rem] bg-white dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/50 transition-all group shadow-sm hover:shadow-xl">
+          <div class="flex items-center gap-6">
             <div
-              class="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600">
-              <i class="fas fa-history"></i>
+              class="w-14 h-14 rounded-2xl bg-purple-50 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400 group-hover:scale-110 transition-transform">
+              <i class="fas fa-history text-xl"></i>
             </div>
             <div>
-              <h3 class="font-bold group-hover:text-purple-500 transition-colors">История</h3>
-              <p class="text-sm text-slate-500">Журнал записей</p>
+              <h3 class="text-lg font-black uppercase tracking-tight group-hover:text-purple-600 transition-colors">
+                История</h3>
+              <p class="text-sm text-zinc-500 font-medium">Журнал записей</p>
             </div>
+            <i
+              class="fas fa-arrow-right ml-auto text-zinc-300 group-hover:text-purple-500 transition-all group-hover:translate-x-1"></i>
           </div>
         </NuxtLink>
       </div>
