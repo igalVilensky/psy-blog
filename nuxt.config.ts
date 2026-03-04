@@ -46,7 +46,7 @@ export default defineNuxtConfig({
     manifest: {
       name: "MindQLab",
       short_name: "MindQLab",
-      description: "Система персонального развития на основе диагностики и прогресса",
+      description: "Personal development system based on diagnostics and progress tracking",
       theme_color: "#ffffff",
       icons: [
         {

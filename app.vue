@@ -20,7 +20,7 @@ onMounted(() => {
 useHead({
   // Global title template
   titleTemplate: (title) =>
-    title ? `${title} – MindQLab` : "MindQLab - Среда осознанного развития",
+    title ? `${title} – MindQLab` : "MindQLab - Conscious Development Environment",
 
   meta: [
     { charset: "utf-8" },
@@ -28,9 +28,9 @@ useHead({
     {
       name: "description",
       content:
-        "MindQLab — твое пространство осознанного развития. Проходи когнитивные тесты, развивай мышление с помощью игр и курсов, получай персональные рекомендации и отслеживай прогресс.",
+        "MindQLab — your space for conscious development. Take cognitive tests, develop your thinking with games and courses, get personalized recommendations, and track your progress.",
     },
-    { name: "language", content: "ru" },
+    { name: "language", content: "en" },
     // No geo.region — we target Russian speakers globally
     { property: "og:site_name", content: "MindQLab" },
     { property: "og:type", content: "website" },
@@ -61,7 +61,7 @@ useHead({
   ],
 
   htmlAttrs: {
-    lang: "ru",
+    lang: "en",
   },
 });
 

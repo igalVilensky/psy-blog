@@ -17,7 +17,7 @@ export const useHreflang = (path: string) => {
       {
         rel: "alternate",
         hreflang: "x-default",
-        href: `${config.public.siteUrl}/ru${path}`,
+        href: `${config.public.siteUrl}/en${path}`,
       },
     ],
   });
