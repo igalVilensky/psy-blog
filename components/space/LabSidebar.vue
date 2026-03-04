@@ -13,7 +13,7 @@
                     <span
                         class="text-sm font-bold text-zinc-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">MindQLab</span>
                     <div class="text-[10px] font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">
-                        Лаборатория</div>
+                        Lab</div>
                 </div>
             </NuxtLink>
 
@@ -76,7 +76,7 @@
                 <button @click="logout"
                     class="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-500/10 transition-all rounded-lg">
                     <i class="fas fa-sign-out-alt text-sm"></i>
-                    <span>Выйти</span>
+                    <span>Logout</span>
                 </button>
             </div>
         </nav>
@@ -99,36 +99,36 @@ const isDark = ref(false);
 const navSections = computed(() => {
     const sections = [
         {
-            title: 'Центр управления',
+            title: 'Control Center',
             items: [
-                { label: 'Дашборд', path: '/space/dashboard', icon: 'fas fa-microchip' },
-                { label: 'Тесты', path: '/space/tests', icon: 'fas fa-brain' },
-                { label: 'Тренировка', path: '/space/brain-training', icon: 'fas fa-dumbbell' },
+                { label: 'Dashboard', path: '/space/dashboard', icon: 'fas fa-microchip' },
+                { label: 'Tests', path: '/space/tests', icon: 'fas fa-brain' },
+                { label: 'Training', path: '/space/brain-training', icon: 'fas fa-dumbbell' },
             ]
         },
         {
-            title: 'Развитие',
+            title: 'Development',
             items: [
-                { label: 'Саморазвитие', path: '/space/growth', icon: 'fas fa-seedling' },
-                { label: 'Голос → Структура', path: '/space/experiments/voice-structure', icon: 'fas fa-microphone-alt' },
-                { label: 'Психология', path: '/space/psychology', icon: 'fas fa-book-open' },
-                { label: 'Медитация', path: '/space/mindfulness', icon: 'fas fa-spa' },
+                { label: 'Self-Development', path: '/space/growth', icon: 'fas fa-seedling' },
+                { label: 'Voice → Structure', path: '/space/experiments/voice-structure', icon: 'fas fa-microphone-alt' },
+                { label: 'Psychology', path: '/space/psychology', icon: 'fas fa-book-open' },
+                { label: 'Meditation', path: '/space/mindfulness', icon: 'fas fa-spa' },
             ]
         },
         {
-            title: 'Социум',
+            title: 'Social',
             items: [
-                { label: 'Сообщество', path: '/space/community', icon: 'fas fa-users' },
-                { label: 'Профиль', path: '/profile', icon: 'fas fa-user-circle' },
+                { label: 'Community', path: '/space/community', icon: 'fas fa-users' },
+                { label: 'Profile', path: '/profile', icon: 'fas fa-user-circle' },
             ]
         }
     ];
 
     if (authStore.user?.isCoach) {
         sections.push({
-            title: 'Коучинг',
+            title: 'Coaching',
             items: [
-                { label: 'Панель Коуча', path: '/coach', icon: 'fas fa-th-large', isHighlight: true },
+                { label: 'Coach Panel', path: '/coach', icon: 'fas fa-th-large', isHighlight: true },
             ]
         });
     }
