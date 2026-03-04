@@ -18,25 +18,25 @@
         <div
           class="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/10 to-blue-600/10 border border-cyan-500/20 dark:border-cyan-500/30 mb-8">
           <div class="w-2 h-2 rounded-full bg-cyan-500 mr-2 animate-pulse"></div>
-          <span class="text-sm font-medium text-cyan-600 dark:text-cyan-400 uppercase tracking-wider">О системе
+          <span class="text-sm font-medium text-cyan-600 dark:text-cyan-400 uppercase tracking-wider">About
             MindQLab</span>
         </div>
 
         <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-8 leading-[1.15]">
-          Инструменты для осознанного<br class="hidden md:block" /> взросления ума
+          Tools for conscious<br class="hidden md:block" /> mind maturity
         </h1>
 
         <p
           class="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto mb-16 font-medium leading-relaxed">
-          Мы создали платформу, которая переводит абстрактные психологические понятия в понятные данные и конкретные
-          шаги. Мы объединяем структурированную оценку с интерактивной практикой.
+          We have created a platform that translates abstract psychological concepts into clear data and concrete
+          steps. We combine structured assessment with interactive practice.
         </p>
 
         <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
           <NuxtLink to="/space/tests"
             class="group px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-medium hover:shadow-xl hover:shadow-cyan-500/25 transition-all duration-300 transform hover:-translate-y-0.5">
             <span class="flex items-center justify-center space-x-2">
-              <span>Начать с диагностики</span>
+              <span>Start with diagnostics</span>
               <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
             </span>
           </NuxtLink>
@@ -53,16 +53,16 @@
       <div class="container mx-auto max-w-7xl px-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <div>
-            <h2 class="text-3xl md:text-4xl font-bold mb-8">Больше, чем просто
-              информация</h2>
+            <h2 class="text-3xl md:text-4xl font-bold mb-8">More than just
+              information</h2>
             <div class="w-16 h-1.5 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full mb-8"></div>
             <p class="text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed mb-6 font-medium">
-              Настоящий рост происходит в цикле обратной связи: когда вы видите себя через данные и применяете это
-              знание в регулярной практике.
+              Real growth happens in a feedback loop: when you see yourself through data and apply this
+              knowledge in regular practice.
             </p>
             <p class="text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed font-medium">
-              MindQLab — это экосистема, где модули замера, аналитическое ядро и лаборатория навыков работают
-              вместе, делая путь саморазвития измеримым и понятным.
+              MindQLab is an ecosystem where measurement modules, an analytical core, and a skills lab work
+              together, making the self-development journey measurable and clear.
             </p>
           </div>
           <div class="grid grid-cols-2 gap-4">
@@ -83,9 +83,9 @@
     <section class="py-24 bg-zinc-50 dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800 reveal-on-scroll">
       <div class="container mx-auto max-w-7xl px-8">
         <div class="text-center mb-20">
-          <h2 class="text-3xl md:text-4xl font-bold mb-6">Метод MindQLab</h2>
+          <h2 class="text-3xl md:text-4xl font-bold mb-6">The MindQLab Method</h2>
           <p class="text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed font-medium">
-            Мы опираемся на пятиэтапный цикл развития, который превращает хаотичные попытки в структурированную систему.
+            We rely on a five-step development cycle that turns chaotic attempts into a structured system.
           </p>
         </div>
 
@@ -117,8 +117,8 @@
     <section class="py-24 border-b border-zinc-200 dark:border-zinc-800 bg-white dark:bg-black reveal-on-scroll">
       <div class="container mx-auto max-w-5xl px-6">
         <div class="text-center mb-16">
-          <h2 class="text-3xl md:text-4xl font-bold mb-4">Архитектура Системы</h2>
-          <p class="text-lg text-zinc-600 dark:text-zinc-400">Как эти этапы реализованы в продукте</p>
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">System Architecture</h2>
+          <p class="text-lg text-zinc-600 dark:text-zinc-400">How these stages are implemented in the product</p>
         </div>
 
         <div class="space-y-4">
@@ -136,7 +136,7 @@
               </div>
               <div
                 class="text-xs font-bold uppercase tracking-wide text-cyan-600 dark:text-cyan-400 md:ml-6 mt-4 md:mt-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                Этап {{ layer.stage }}</div>
+                Stage {{ layer.stage }}</div>
             </div>
           </div>
         </div>
@@ -147,11 +147,12 @@
     <section class="py-24 bg-zinc-50 dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800 reveal-on-scroll">
       <div class="container mx-auto max-w-7xl px-8">
         <div class="mb-16">
-          <h2 class="text-3xl md:text-4xl font-bold mb-6">Создатели проекта</h2>
+          <h2 class="text-3xl md:text-4xl font-bold mb-6">Project Creators</h2>
           <div class="w-16 h-1.5 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full mb-8"></div>
           <p class="text-lg text-zinc-600 dark:text-zinc-400 max-w-3xl leading-relaxed font-medium">
-            MindQLab родился на стыке практической психологии и современных технологий. Мы объединили наш опыт в
-            области когнитивного развития с современными игровыми механиками.
+            MindQLab was born at the intersection of practical psychology and modern technology. We combined our
+            experience in
+            cognitive development with modern game mechanics.
           </p>
         </div>
 
@@ -160,7 +161,7 @@
           <div
             class="p-8 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl flex flex-col sm:flex-row gap-8 items-center sm:items-start group transition-all duration-500 hover:shadow-xl hover:shadow-cyan-500/5">
             <div class="shrink-0 relative">
-              <img src="/assets/images/profile.jpg" alt="Анастасия Виленская"
+              <img src="/assets/images/profile.jpg" alt="Anastasia Vilensky"
                 class="w-32 h-32 rounded-xl object-cover transition-all duration-700 blur-[0.5px] group-hover:blur-0 border border-zinc-200 dark:border-zinc-800 shadow-lg" />
               <div
                 class="absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center text-white text-xs shadow-lg">
@@ -168,12 +169,13 @@
               </div>
             </div>
             <div>
-              <h3 class="text-2xl font-bold mb-1">Анастасия Виленская</h3>
+              <h3 class="text-2xl font-bold mb-1">Anastasia Vilensky</h3>
               <div class="text-cyan-600 dark:text-cyan-400 text-[10px] font-bold mb-4 uppercase tracking-[0.2em]">
                 Psychology & Content Lead</div>
               <p class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed mb-6">
-                Формирует методологическую базу и смысловую архитектуру. Её экспертиза позволяет интегрировать глубинные
-                психологические модели в интерактивный и поддерживающий формат.
+                Shapes the methodological foundation and semantic architecture. Her expertise allows for the integration
+                of deep
+                psychological models into an interactive and supportive format.
               </p>
               <div class="flex gap-4">
                 <a href="https://www.instagram.com/galactik.anastasia/" target="_blank"
@@ -190,7 +192,7 @@
           <div
             class="p-8 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl flex flex-col sm:flex-row gap-8 items-center sm:items-start group transition-all duration-500 hover:shadow-xl hover:shadow-cyan-500/5">
             <div class="shrink-0 relative">
-              <img src="/assets/images/igal.avif" alt="Игаль Виленский"
+              <img src="/assets/images/igal.avif" alt="Igal Vilensky"
                 class="w-32 h-32 rounded-xl object-cover transition-all duration-700 blur-[0.5px] group-hover:blur-0 border border-zinc-200 dark:border-zinc-800 shadow-lg" />
               <div
                 class="absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center text-white text-xs shadow-lg">
@@ -198,12 +200,12 @@
               </div>
             </div>
             <div>
-              <h3 class="text-2xl font-bold mb-1">Игаль Виленский</h3>
+              <h3 class="text-2xl font-bold mb-1">Igal Vilensky</h3>
               <div class="text-cyan-600 dark:text-cyan-400 text-[10px] font-bold mb-4 uppercase tracking-[0.2em]">
                 Tech Lead & Architect</div>
               <p class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed mb-6">
-                Реализует техническое видение платформы. Создает алгоритмы диагностики и игровые системы, превращая
-                сложные идеи в интуитивные инструменты для пользователя.
+                Realizes the technical vision of the platform. Creates diagnostic algorithms and game systems, turning
+                complex ideas into intuitive tools for the user.
               </p>
               <div class="flex gap-4">
                 <a href="#"
@@ -242,16 +244,17 @@
                 class="text-[10px] font-bold uppercase tracking-widest text-cyan-600 dark:text-cyan-400">Professional
                 Suite</span>
             </div>
-            <h2 class="text-3xl md:text-4xl font-bold mb-8">Для тех, кто сопровождает рост
+            <h2 class="text-3xl md:text-4xl font-bold mb-8">For those who guide growth
             </h2>
             <div class="w-16 h-1.5 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full mb-8"></div>
             <p class="text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed mb-6 font-medium">
-              Мы верим, что современные технологии должны помогать профессионалам быть точнее. Панель Коуча в MindQLab —
-              это не просто CRM, а мощный аналитический инструмент.
+              We believe that modern technology should help professionals be more precise. The Coach Panel in MindQLab
+              is
+              not just a CRM, but a powerful analytical tool.
             </p>
             <p class="text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed font-medium">
-              Объективные данные о когнитивном состоянии клиента позволяют строить более глубокие гипотезы и видеть
-              реальный эффект от вашей совместной работы.
+              Objective data about the client's cognitive state allows for building deeper hypotheses and seeing
+              the real effect of your work together.
             </p>
           </div>
         </div>
@@ -262,22 +265,22 @@
     <section class="py-32 text-center bg-zinc-50 dark:bg-zinc-950 reveal-on-scroll">
       <div class="container mx-auto max-w-4xl px-6 font-bold leading-tight">
         <h2 class="text-3xl md:text-5xl mb-8 italic text-zinc-900 dark:text-white">
-          «Качественные инструменты делают путь к себе короче»
+          "Quality tools make the journey to yourself shorter"
         </h2>
         <p class="text-lg text-zinc-600 dark:text-zinc-400 mb-12 max-w-2xl mx-auto leading-relaxed font-medium">
-          Начните знакомство с собой через данные, которые мы помогаем собрать и осмыслить.
+          Start getting to know yourself through the data we help collect and understand.
         </p>
         <div class="flex flex-col sm:flex-row gap-6 justify-center">
           <NuxtLink to="/space/tests"
             class="group px-10 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-medium hover:shadow-xl hover:shadow-cyan-500/25 transition-all duration-300 transform hover:scale-[1.02]">
             <span class="flex items-center justify-center space-x-2">
-              <span>Пройти тест</span>
+              <span>Take a test</span>
               <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
             </span>
           </NuxtLink>
           <NuxtLink to="/space/brain-training"
             class="px-10 py-4 rounded-xl border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 font-medium hover:border-cyan-500 dark:hover:border-cyan-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
-            Развивающие игры
+            Development games
           </NuxtLink>
         </div>
       </div>
@@ -297,42 +300,42 @@ import Footer from '~/components/ui/Footer.vue';
 
 
 useHead({
-  title: "О MindQLab — Система персонального развития",
+  title: "About MindQLab — Personal Development System",
   meta: [
-    { name: "description", content: "MindQLab — это инновационная экосистема для оценки и развития мышления. Переводим психологию в данные и практику." },
+    { name: "description", content: "MindQLab is an innovative ecosystem for assessing and developing thinking. We translate psychology into data and practice." },
   ]
 });
 
 const stats = [
-  { value: "40+", label: "Инструментов" },
-  { value: "15+", label: "Тестов" },
-  { value: "25+", label: "Тренажеров" },
-  { value: "5000+", label: "Сессий" },
+  { value: "40+", label: "Tools" },
+  { value: "15+", label: "Tests" },
+  { value: "25+", label: "Trainers" },
+  { value: "5000+", label: "Sessions" },
 ];
 
 const methodSteps = [
-  { index: "01", title: "Замер", description: "Сбор объективных данных о когнитивных и поведенческих паттернах через упражнения и игры." },
-  { index: "02", title: "Понимание", description: "Интерпретация полученных результатов в понятную и рабочую модель вашего развития." },
-  { index: "03", title: "Направления", description: "Определение векторов роста и выбор наиболее актуальных сейчас инструментов." },
-  { index: "04", title: "Практика", description: "Регулярное выполнение упражнений и тренажеров для укрепления целевых навыков." },
-  { index: "05", title: "Осмысление", description: "Анализ прогресса, фиксация изменений и постановка новых целей." },
+  { index: "01", title: "Measurement", description: "Collection of objective data on cognitive and behavioral patterns through exercises and games." },
+  { index: "02", title: "Understanding", description: "Interpretation of the results into a clear and working model for your development." },
+  { index: "03", title: "Directions", description: "Determining growth vectors and choosing the most relevant tools right now." },
+  { index: "04", title: "Practice", description: "Regular performance of exercises and trainers to strengthen target skills." },
+  { index: "05", title: "Reflection", description: "Analyzing progress, fixing changes, and setting new goals." },
 ];
 
 const layers = [
-  { stage: "1", icon: "fa-chart-bar", title: "Модуль оценки", description: "Выявляет реальные сценарии поведения, скрытые от субъективного наблюдения." },
-  { stage: "2", icon: "fa-fingerprint", title: "Аналитическое ядро", description: "Объясняет причины ваших реакций и превращает данные в осмысленный портрет." },
-  { stage: "3", icon: "fa-compass", title: "Система рекомендаций", description: "Формирует персональный план действий, отсекая лишний информационный шум." },
-  { stage: "4", icon: "fa-dumbbell", title: "Лаборатория навыков", description: "Интерактивные тренажеры для развития памяти, фокуса и когнитивного контроля." },
-  { stage: "5", icon: "fa-history", title: "Мониторинг прогресса", description: "Отслеживает динамику развития через повторные замеры и историю тренировок." },
-  { stage: "Beta", icon: "fa-microphone-alt", title: "Голосовое структурирование", description: "Экспериментальный AI-инструмент для превращения хаотичных мыслей в четкие когнитивные структуры." },
-  { stage: "Prof", icon: "fa-user-tie", title: "Панель Коуча", description: "Профессиональный слой для ведения клиентов, мониторинга их состояния и управления прогрессом." },
+  { stage: "1", icon: "fa-chart-bar", title: "Assessment module", description: "Identifies real behavioral scenarios hidden from subjective observation." },
+  { stage: "2", icon: "fa-fingerprint", title: "Analytical core", description: "Explains the reasons for your reactions and turns data into a meaningful portrait." },
+  { stage: "3", icon: "fa-compass", title: "Recommendation system", description: "Forms a personal action plan, cutting out unnecessary information noise." },
+  { stage: "4", icon: "fa-dumbbell", title: "Skills laboratory", description: "Interactive trainers for developing memory, focus, and cognitive control." },
+  { stage: "5", icon: "fa-history", title: "Progress monitoring", description: "Tracks development dynamics through repeated measurements and training history." },
+  { stage: "Beta", icon: "fa-microphone-alt", title: "Voice structuring", description: "An experimental AI tool for turning chaotic thoughts into clear cognitive structures." },
+  { stage: "Prof", icon: "fa-user-tie", title: "Coach Panel", description: "A professional layer for client management, monitoring their state, and managing progress." },
 ];
 
 const professionalTools = [
-  { icon: "fa-user-plus", title: "Управление базой", description: "Приглашение клиентов и удобная организация всех подопечных в одном месте." },
-  { icon: "fa-chart-line", title: "Аналитика прогресса", description: "Доступ к истории тестов и динамике показателей каждого клиента." },
-  { icon: "fa-notes-medical", title: "Система заметок", description: "Ведение профессиональных наблюдений и истории взаимодействия." },
-  { icon: "fa-calendar-check", title: "Мониторинг активности", description: "Отслеживание регулярности практик и вовлеченности клиента в процесс." },
+  { icon: "fa-user-plus", title: "Database management", description: "Invitation of clients and convenient organization of all charges in one place." },
+  { icon: "fa-chart-line", title: "Progress analytics", description: "Access to test history and dynamic indicators of each client." },
+  { icon: "fa-notes-medical", title: "Note system", description: "Keeping professional observations and interaction history." },
+  { icon: "fa-calendar-check", title: "Activity monitoring", description: "Tracking the regularity of practices and client engagement in the process." },
 ];
 
 onMounted(() => {
