@@ -18,8 +18,8 @@
             </NuxtLink>
           </div>
           <p class="text-zinc-600 dark:text-zinc-400 text-sm font-medium leading-relaxed mb-8 max-w-md">
-            Научный подход к когнитивному развитию. Система диагностики, анализа и практик для работы с мышлением и
-            эмоциональной устойчивостью.
+            Scientific approach to cognitive development. A system of diagnostics, analysis, and practices for working
+            with thinking and emotional resilience.
           </p>
           <div class="flex flex-wrap gap-3">
             <a v-for="(social, index) in socialLinks" :key="index" :href="social.link" target="_blank"
@@ -32,7 +32,7 @@
 
         <!-- Sitemap -->
         <div>
-          <h4 class="text-sm font-bold uppercase tracking-wider mb-6 text-zinc-800 dark:text-zinc-200">Навигация</h4>
+          <h4 class="text-sm font-bold uppercase tracking-wider mb-6 text-zinc-800 dark:text-zinc-200">Navigation</h4>
           <ul class="space-y-3">
             <li v-for="(link, index) in sitemapLinks.slice(0, 6)" :key="index">
               <NuxtLink :to="link.to"
@@ -47,7 +47,7 @@
 
         <!-- Resources -->
         <div>
-          <h4 class="text-sm font-bold uppercase tracking-wider mb-6 text-zinc-800 dark:text-zinc-200">Ресурсы</h4>
+          <h4 class="text-sm font-bold uppercase tracking-wider mb-6 text-zinc-800 dark:text-zinc-200">Resources</h4>
           <ul class="space-y-3">
             <li v-for="(link, index) in sitemapLinks.slice(6)" :key="index">
               <NuxtLink :to="link.to"
@@ -62,17 +62,17 @@
 
         <!-- Newsletter -->
         <div class="lg:col-span-1">
-          <h4 class="text-sm font-bold uppercase tracking-wider mb-6 text-zinc-800 dark:text-zinc-200">Обновления</h4>
+          <h4 class="text-sm font-bold uppercase tracking-wider mb-6 text-zinc-800 dark:text-zinc-200">Updates</h4>
           <p class="text-zinc-600 dark:text-zinc-400 text-xs font-medium mb-6 leading-relaxed">
-            Получайте полезные материалы о развитии мышления и новых возможностях системы.
+            Get useful materials about thinking development and new system features.
           </p>
           <div class="flex flex-col gap-3">
-            <input type="email" v-model="email" placeholder="Ваш email"
+            <input type="email" v-model="email" placeholder="Your email"
               class="w-full px-4 py-3 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 focus:border-cyan-500 outline-none text-sm placeholder-zinc-500 dark:placeholder-zinc-500 rounded-lg transition-colors" />
             <button @click="subscribeEmail"
               class="group w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-sm font-semibold hover:shadow-lg hover:shadow-cyan-500/25 transition-all rounded-lg">
               <span class="flex items-center justify-center gap-2">
-                Подписаться
+                Subscribe
                 <i class="fas fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
               </span>
             </button>
@@ -83,17 +83,17 @@
       <!-- Bottom Bar -->
       <div
         class="mt-16 pt-8 border-t border-zinc-200 dark:border-zinc-800 flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-zinc-500 dark:text-zinc-500">
-        <div class="text-center md:text-left">&copy; {{ new Date().getFullYear() }} MindQLab. Все права защищены.</div>
+        <div class="text-center md:text-left">&copy; {{ new Date().getFullYear() }} MindQLab. All rights reserved.</div>
 
         <nav class="flex gap-6 flex-wrap justify-center">
           <NuxtLink to="/legal/privacy" class="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
-            Конфиденциальность
+            Privacy
           </NuxtLink>
           <NuxtLink to="/legal/terms" class="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
-            Условия
+            Terms
           </NuxtLink>
           <NuxtLink to="/contact" class="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
-            Контакты
+            Contact
           </NuxtLink>
         </nav>
       </div>
@@ -110,22 +110,22 @@ const email = ref("");
 
 const sitemapLinks = computed(() => {
   const links = [
-    { label: "Центр Развития", to: "/space" },
-    { label: "Тесты", to: "/space/tests" },
-    { label: "Тренировка Мозга", to: "/space/brain-training" },
-    { label: "Психология", to: "/space/psychology" },
-    { label: "Медитация", to: "/space/mindfulness" },
-    { label: "Саморазвитие", to: "/space/growth" },
-    { label: "Голос → Структура", to: "/space/experiments/voice-structure" },
-    { label: "Дашборд", to: "/space/dashboard" },
-    { label: "Сообщество", to: "/space/community" },
-    { label: "Блог", to: "/blog" },
-    { label: "О проекте", to: "/about" },
+    { label: "Development Center", to: "/space" },
+    { label: "Tests", to: "/space/tests" },
+    { label: "Brain Training", to: "/space/brain-training" },
+    { label: "Psychology", to: "/space/psychology" },
+    { label: "Mindfulness", to: "/space/mindfulness" },
+    { label: "Growth", to: "/space/growth" },
+    { label: "Voice → Structure", to: "/space/experiments/voice-structure" },
+    { label: "Dashboard", to: "/space/dashboard" },
+    { label: "Community", to: "/space/community" },
+    { label: "Blog", to: "/blog" },
+    { label: "About", to: "/about" },
     { label: "FAQ", to: "/faq" }
   ];
 
   if (auth.user?.isCoach) {
-    links.splice(8, 0, { label: "Дашборд Коуча", to: "/coach" });
+    links.splice(8, 0, { label: "Coach Dashboard", to: "/coach" });
   }
 
   return links;
@@ -141,10 +141,10 @@ const socialLinks = [
 
 const subscribeEmail = () => {
   if (email.value && validateEmail(email.value)) {
-    alert("Спасибо за подписку!");
+    alert("Thank you for subscribing!");
     email.value = "";
   } else {
-    alert("Пожалуйста, введите корректный email");
+    alert("Please enter a valid email");
   }
 };
 

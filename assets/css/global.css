@@ -1,4 +1,8 @@
 /* assets/css/global.css */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem; /* Accounts for the fixed header height */
+}
 
 @keyframes slow-drift {
   0%,

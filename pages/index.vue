@@ -18,26 +18,26 @@
         <div class="hidden md:flex items-center gap-8">
           <NuxtLink to="#method"
             class="text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
-            Метод
+            Method
           </NuxtLink>
           <NuxtLink to="#system-layers"
             class="text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
-            Система
+            System
           </NuxtLink>
           <NuxtLink to="#pricing"
             class="text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
-            Тарифы
+            Pricing
           </NuxtLink>
 
           <div class="flex items-center gap-4">
             <button @click="toggleTheme"
               class="w-9 h-9 rounded-full bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center hover:scale-110 transition-transform">
-              <span v-if="isDark" class="text-sm">☀️</span>
+              <span v-if="themeStore.theme === 'dark'" class="text-sm">☀️</span>
               <span v-else class="text-sm">🌙</span>
             </button>
             <button @click="handleAuth"
               class="px-5 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg text-sm font-semibold hover:shadow-lg hover:shadow-cyan-500/25 transition-all">
-              Войти
+              Login
             </button>
           </div>
         </div>
@@ -46,12 +46,12 @@
         <div class="flex md:hidden items-center gap-3">
           <button @click="toggleTheme"
             class="w-9 h-9 rounded-full bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center">
-            <span v-if="isDark" class="text-sm">☀️</span>
+            <span v-if="themeStore.theme === 'dark'" class="text-sm">☀️</span>
             <span v-else class="text-sm">🌙</span>
           </button>
           <button @click="handleAuth"
             class="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg text-sm font-semibold">
-            Войти
+            Login
           </button>
         </div>
       </div>
@@ -71,27 +71,27 @@
         <div
           class="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/10 to-blue-600/10 border border-cyan-500/20 dark:border-cyan-500/30 mb-6">
           <div class="w-2 h-2 rounded-full bg-cyan-500 mr-2 animate-pulse"></div>
-          <span class="text-sm font-medium text-cyan-600 dark:text-cyan-400">СИСТЕМА ПЕРСОНАЛЬНОГО РАЗВИТИЯ</span>
+          <span class="text-sm font-medium text-cyan-600 dark:text-cyan-400">PERSONAL DEVELOPMENT SYSTEM</span>
         </div>
 
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-zinc-900 dark:text-white mb-6 leading-tight">
-          Инструменты для осознанного<br class="hidden md:block" /> взросления ума
+          Tools for Conscious<br class="hidden md:block" /> Mental Maturity
         </h1>
         <p class="text-lg sm:text-xl text-zinc-600 dark:text-zinc-300 mb-10 max-w-2xl mx-auto">
-          Систематический подход к развитию через диагностику, анализ и целенаправленные практики.
+          A systematic approach to growth through diagnostics, analysis, and targeted practices.
         </p>
 
         <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <NuxtLink to="/space/tests"
             class="group px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-medium hover:shadow-xl hover:shadow-cyan-500/25 transition-all duration-300 transform hover:-translate-y-0.5">
             <span class="flex items-center justify-center space-x-2">
-              <span>Начать с первичной диагностики</span>
+              <span>Start with Primary Diagnostics</span>
               <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
             </span>
           </NuxtLink>
           <NuxtLink to="#method"
             class="px-8 py-4 rounded-xl border-2 border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 font-medium hover:border-cyan-500 dark:hover:border-cyan-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
-            Узнать о методе
+            Learn About the Method
           </NuxtLink>
         </div>
       </div>
@@ -101,8 +101,10 @@
     <section class="py-20 bg-white dark:bg-black">
       <div class="container mx-auto px-4 sm:px-6 max-w-6xl">
         <div class="text-center mb-16">
-          <h2 class="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white mb-4">Что вы получите сразу?</h2>
-          <p class="text-lg text-zinc-600 dark:text-zinc-400">Результат первого шага — ясность и план действий.</p>
+          <h2 class="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white mb-4">What will you get immediately?
+          </h2>
+          <p class="text-lg text-zinc-600 dark:text-zinc-400">The result of the first step is clarity and an action
+            plan.</p>
         </div>
 
         <div class="grid md:grid-cols-3 gap-8">
@@ -113,9 +115,9 @@
               class="w-16 h-16 rounded-xl bg-gradient-to-br from-cyan-500/10 to-blue-600/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <i class="fas fa-fingerprint text-2xl text-cyan-600 dark:text-cyan-400"></i>
             </div>
-            <h3 class="text-xl font-bold text-zinc-900 dark:text-white mb-4">Профиль состояния</h3>
+            <h3 class="text-xl font-bold text-zinc-900 dark:text-white mb-4">State Profile</h3>
             <p class="text-zinc-600 dark:text-zinc-400">
-              Карта ваших когнитивных и эмоциональных паттернов, а не просто набор баллов.
+              A map of your cognitive and emotional patterns, not just a set of scores.
             </p>
           </div>
 
@@ -126,9 +128,9 @@
               class="w-16 h-16 rounded-xl bg-gradient-to-br from-cyan-500/10 to-blue-600/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <i class="fas fa-align-left text-2xl text-cyan-600 dark:text-cyan-400"></i>
             </div>
-            <h3 class="text-xl font-bold text-zinc-900 dark:text-white mb-4">Ключевые интерпретации</h3>
+            <h3 class="text-xl font-bold text-zinc-900 dark:text-white mb-4">Core Interpretations</h3>
             <p class="text-zinc-600 dark:text-zinc-400">
-              Понятное объяснение: почему вы чувствуете усталость, теряете фокус или тревожитесь.
+              Clear explanation: why you feel tired, lose focus, or feel anxious.
             </p>
           </div>
 
@@ -139,9 +141,9 @@
               class="w-16 h-16 rounded-xl bg-gradient-to-br from-cyan-500/10 to-blue-600/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <i class="fas fa-route text-2xl text-cyan-600 dark:text-cyan-400"></i>
             </div>
-            <h3 class="text-xl font-bold text-zinc-900 dark:text-white mb-4">Первые рекомендации</h3>
+            <h3 class="text-xl font-bold text-zinc-900 dark:text-white mb-4">First Recommendations</h3>
             <p class="text-zinc-600 dark:text-zinc-400">
-              Приоритетные направления развития и конкретные практики для старта.
+              Priority development areas and specific practices to get started.
             </p>
           </div>
         </div>
@@ -152,9 +154,9 @@
     <section id="method" class="py-20 bg-gradient-to-b from-white to-zinc-50 dark:from-black dark:to-zinc-950">
       <div class="container mx-auto px-4 sm:px-6 max-w-6xl">
         <div class="text-center mb-16">
-          <h2 class="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white mb-4">Метод MindQLab: Цикл развития
+          <h2 class="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white mb-4">MindQLab Method: Growth Cycle
           </h2>
-          <p class="text-lg text-zinc-600 dark:text-zinc-400">Пять этапов осознанного роста</p>
+          <p class="text-lg text-zinc-600 dark:text-zinc-400">Five stages of conscious growth</p>
         </div>
 
         <div class="relative">
@@ -170,8 +172,8 @@
                 class="w-16 h-16 rounded-full bg-white dark:bg-zinc-900 border-2 border-cyan-500/50 dark:border-cyan-500/30 flex items-center justify-center mb-4 text-sm font-bold text-cyan-600 dark:text-cyan-400">
                 01
               </div>
-              <h3 class="text-lg font-bold text-zinc-900 dark:text-white mb-2">Диагностика</h3>
-              <p class="text-sm text-zinc-600 dark:text-zinc-400">Сбор данных о когнитивных и поведенческих паттернах.
+              <h3 class="text-lg font-bold text-zinc-900 dark:text-white mb-2">Diagnostics</h3>
+              <p class="text-sm text-zinc-600 dark:text-zinc-400">Data collection on cognitive and behavioral patterns.
               </p>
             </div>
 
@@ -181,9 +183,9 @@
                 class="w-16 h-16 rounded-full bg-white dark:bg-zinc-900 border-2 border-cyan-500/50 dark:border-cyan-500/30 flex items-center justify-center mb-4 text-sm font-bold text-cyan-600 dark:text-cyan-400">
                 02
               </div>
-              <h3 class="text-lg font-bold text-zinc-900 dark:text-white mb-2">Понимание</h3>
-              <p class="text-sm text-zinc-600 dark:text-zinc-400">Интерпретация результатов в понятную модель
-                личности.</p>
+              <h3 class="text-lg font-bold text-zinc-900 dark:text-white mb-2">Understanding</h3>
+              <p class="text-sm text-zinc-600 dark:text-zinc-400">Interpretation of results into a clear personality
+                model.</p>
             </div>
 
             <!-- Step 3 -->
@@ -192,9 +194,9 @@
                 class="w-16 h-16 rounded-full bg-white dark:bg-zinc-900 border-2 border-cyan-500/50 dark:border-cyan-500/30 flex items-center justify-center mb-4 text-sm font-bold text-cyan-600 dark:text-cyan-400">
                 03
               </div>
-              <h3 class="text-lg font-bold text-zinc-900 dark:text-white mb-2">Направления</h3>
-              <p class="text-sm text-zinc-600 dark:text-zinc-400">Выбор вектора развития на основе слабых и сильных
-                сторон.</p>
+              <h3 class="text-lg font-bold text-zinc-900 dark:text-white mb-2">Directions</h3>
+              <p class="text-sm text-zinc-600 dark:text-zinc-400">Choosing development vectors based on strengths and
+                weaknesses.</p>
             </div>
 
             <!-- Step 4 -->
@@ -203,9 +205,8 @@
                 class="w-16 h-16 rounded-full bg-white dark:bg-zinc-900 border-2 border-cyan-500/50 dark:border-cyan-500/30 flex items-center justify-center mb-4 text-sm font-bold text-cyan-600 dark:text-cyan-400">
                 04
               </div>
-              <h3 class="text-lg font-bold text-zinc-900 dark:text-white mb-2">Практика</h3>
-              <p class="text-sm text-zinc-600 dark:text-zinc-400">Целенаправленные тренировки и упражнения для
-                развития навыков.</p>
+              <h3 class="text-lg font-bold text-zinc-900 dark:text-white mb-2">Practice</h3>
+              <p class="text-sm text-zinc-600 dark:text-zinc-400">Targeted drills and exercises to build skills.</p>
             </div>
 
             <!-- Step 5 -->
@@ -214,9 +215,9 @@
                 class="w-16 h-16 rounded-full bg-white dark:bg-zinc-900 border-2 border-cyan-500/50 dark:border-cyan-500/30 flex items-center justify-center mb-4 text-sm font-bold text-cyan-600 dark:text-cyan-400">
                 05
               </div>
-              <h3 class="text-lg font-bold text-zinc-900 dark:text-white mb-2">Осмысление</h3>
-              <p class="text-sm text-zinc-600 dark:text-zinc-400">Анализ прогресса и повторная оценка для коррекции
-                пути.</p>
+              <h3 class="text-lg font-bold text-zinc-900 dark:text-white mb-2">Refinement</h3>
+              <p class="text-sm text-zinc-600 dark:text-zinc-400">Progress analysis and re-evaluation to adjust the
+                path.</p>
             </div>
           </div>
         </div>
@@ -226,20 +227,20 @@
           class="mt-16 mx-auto max-w-3xl p-8 rounded-2xl bg-gradient-to-r from-cyan-500/5 to-blue-600/5 border border-cyan-500/20 dark:border-cyan-500/30">
           <div class="flex items-center mb-6">
             <div class="w-3 h-3 rounded-full bg-cyan-500 mr-3 animate-pulse"></div>
-            <span class="text-sm font-medium text-cyan-600 dark:text-cyan-400">Живой пример цикла</span>
+            <span class="text-sm font-medium text-cyan-600 dark:text-cyan-400">Live example of the cycle</span>
           </div>
           <div class="grid md:grid-cols-3 gap-6">
             <div class="p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
-              <div class="text-sm font-medium text-zinc-500 dark:text-zinc-400 mb-2">Шаг 1</div>
-              <div class="text-zinc-900 dark:text-white font-medium">Система выявила усталость внимания</div>
+              <div class="text-sm font-medium text-zinc-500 dark:text-zinc-400 mb-2">Step 1</div>
+              <div class="text-zinc-900 dark:text-white font-medium">System detects attention fatigue</div>
             </div>
             <div class="p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
-              <div class="text-sm font-medium text-zinc-500 dark:text-zinc-400 mb-2">Шаг 2</div>
-              <div class="text-zinc-900 dark:text-white font-medium">Рекомендован трек «Когнитивная выносливость»</div>
+              <div class="text-sm font-medium text-zinc-500 dark:text-zinc-400 mb-2">Step 2</div>
+              <div class="text-zinc-900 dark:text-white font-medium">Recommended "Cognitive Endurance" track</div>
             </div>
             <div class="p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
-              <div class="text-sm font-medium text-zinc-500 dark:text-zinc-400 mb-2">Шаг 3</div>
-              <div class="text-zinc-900 dark:text-white font-medium">Через 2 недели ретест показал +15% к фокусу</div>
+              <div class="text-sm font-medium text-zinc-500 dark:text-zinc-400 mb-2">Step 3</div>
+              <div class="text-zinc-900 dark:text-white font-medium">After 2 weeks re-test showed +15% focus</div>
             </div>
           </div>
         </div>
@@ -250,8 +251,8 @@
     <section id="system-layers" class="py-20 bg-white dark:bg-black">
       <div class="container mx-auto px-4 sm:px-6 max-w-5xl">
         <div class="text-center mb-16">
-          <p class="text-lg text-zinc-600 dark:text-zinc-400 mb-2">Ниже — как этот метод реализован внутри продукта.</p>
-          <h2 class="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white">Архитектура Системы</h2>
+          <p class="text-lg text-zinc-600 dark:text-zinc-400 mb-2">How the method is implemented within the product.</p>
+          <h2 class="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white">System Architecture</h2>
         </div>
 
         <div class="space-y-4">
@@ -263,13 +264,13 @@
                 <i class="fas fa-stethoscope text-zinc-600 dark:text-zinc-400"></i>
               </div>
               <div class="flex-grow">
-                <h4 class="text-lg font-bold text-zinc-900 dark:text-white mb-1">Диагностический модуль</h4>
-                <p class="text-sm text-zinc-600 dark:text-zinc-400">Выявляет реальные поведенческие паттерны, скрытые от
-                  обычного наблюдения.</p>
+                <h4 class="text-lg font-bold text-zinc-900 dark:text-white mb-1">Diagnostic Module</h4>
+                <p class="text-sm text-zinc-600 dark:text-zinc-400">Identifies real behavioral patterns hidden from
+                  ordinary observation.</p>
               </div>
               <div
                 class="text-xs font-bold uppercase tracking-wide text-cyan-600 dark:text-cyan-400 md:ml-6 mt-4 md:mt-0">
-                Этап 1</div>
+                Stage 1</div>
             </div>
           </div>
 
@@ -281,13 +282,13 @@
                 <i class="fas fa-fingerprint text-zinc-600 dark:text-zinc-400"></i>
               </div>
               <div class="flex-grow">
-                <h4 class="text-lg font-bold text-zinc-900 dark:text-white mb-1">Аналитическое ядро</h4>
-                <p class="text-sm text-zinc-600 dark:text-zinc-400">Превращает сырые данные в понятную карту вашей
-                  личности и объясняет причины реакций.</p>
+                <h4 class="text-lg font-bold text-zinc-900 dark:text-white mb-1">Analytical Core</h4>
+                <p class="text-sm text-zinc-600 dark:text-zinc-400">Turns raw data into a clear map of your personality
+                  and explains reaction causes.</p>
               </div>
               <div
                 class="text-xs font-bold uppercase tracking-wide text-cyan-600 dark:text-cyan-400 md:ml-6 mt-4 md:mt-0">
-                Этап 2</div>
+                Stage 2</div>
             </div>
           </div>
 
@@ -299,13 +300,13 @@
                 <i class="fas fa-compass text-zinc-600 dark:text-zinc-400"></i>
               </div>
               <div class="flex-grow">
-                <h4 class="text-lg font-bold text-zinc-900 dark:text-white mb-1">Система рекомендаций</h4>
-                <p class="text-sm text-zinc-600 dark:text-zinc-400">Отсеивает лишнее и предлагает только те векторы
-                  развития, которые актуальны для вас сейчас.</p>
+                <h4 class="text-lg font-bold text-zinc-900 dark:text-white mb-1">Recommendation System</h4>
+                <p class="text-sm text-zinc-600 dark:text-zinc-400">Filters out noise and suggests only the development
+                  vectors relevant to you now.</p>
               </div>
               <div
                 class="text-xs font-bold uppercase tracking-wide text-cyan-600 dark:text-cyan-400 md:ml-6 mt-4 md:mt-0">
-                Этап 3</div>
+                Stage 3</div>
             </div>
           </div>
 
@@ -317,13 +318,13 @@
                 <i class="fas fa-dumbbell text-zinc-600 dark:text-zinc-400"></i>
               </div>
               <div class="flex-grow">
-                <h4 class="text-lg font-bold text-zinc-900 dark:text-white mb-1">Лаборатория навыков</h4>
-                <p class="text-sm text-zinc-600 dark:text-zinc-400">Тренирует конкретные когнитивные мышцы (память,
-                  внимание, контроль) через регулярные практики.</p>
+                <h4 class="text-lg font-bold text-zinc-900 dark:text-white mb-1">Skills Laboratory</h4>
+                <p class="text-sm text-zinc-600 dark:text-zinc-400">Trains specific cognitive muscles (memory,
+                  attention, control) through regular practice.</p>
               </div>
               <div
                 class="text-xs font-bold uppercase tracking-wide text-cyan-600 dark:text-cyan-400 md:ml-6 mt-4 md:mt-0">
-                Этап 4</div>
+                Stage 4</div>
             </div>
           </div>
 
@@ -335,13 +336,13 @@
                 <i class="fas fa-history text-zinc-600 dark:text-zinc-400"></i>
               </div>
               <div class="flex-grow">
-                <h4 class="text-lg font-bold text-zinc-900 dark:text-white mb-1">Мониторинг прогресса</h4>
-                <p class="text-sm text-zinc-600 dark:text-zinc-400">Фиксирует реальные изменения через ретесты,
-                  микро-маркеры поведения и динамику профиля.</p>
+                <h4 class="text-lg font-bold text-zinc-900 dark:text-white mb-1">Progress Monitoring</h4>
+                <p class="text-sm text-zinc-600 dark:text-zinc-400">Tracks real changes through re-tests,
+                  micro-behavioral markers, and profile dynamics.</p>
               </div>
               <div
                 class="text-xs font-bold uppercase tracking-wide text-cyan-600 dark:text-cyan-400 md:ml-6 mt-4 md:mt-0">
-                Этап 5</div>
+                Stage 5</div>
             </div>
           </div>
 
@@ -353,13 +354,13 @@
                 <i class="fas fa-microphone-alt text-cyan-600 dark:text-cyan-400"></i>
               </div>
               <div class="flex-grow">
-                <h4 class="text-lg font-bold text-zinc-900 dark:text-white mb-1">Голосовое структурирование (Beta)</h4>
-                <p class="text-sm text-zinc-600 dark:text-zinc-400">Экспериментальный AI-инструмент для превращения
-                  хаотичных мыслей в четкие когнитивные структуры.</p>
+                <h4 class="text-lg font-bold text-zinc-900 dark:text-white mb-1">Voice-to-Structure (Beta)</h4>
+                <p class="text-sm text-zinc-600 dark:text-zinc-400">Experimental AI tool to turn chaotic thoughts into
+                  clear cognitive structures.</p>
               </div>
               <NuxtLink to="/space/experiments/voice-structure"
                 class="text-xs font-bold uppercase tracking-wide text-cyan-600 dark:text-cyan-400 hover:underline md:ml-6 mt-4 md:mt-0 whitespace-nowrap">
-                ПРОБОВАТЬ &rarr;
+                TRY IT &rarr;
               </NuxtLink>
             </div>
           </div>
@@ -372,9 +373,9 @@
                 <i class="fas fa-user-tie text-zinc-600 dark:text-zinc-400"></i>
               </div>
               <div class="flex-grow">
-                <h4 class="text-lg font-bold text-zinc-900 dark:text-white mb-1">Панель для специалистов</h4>
-                <p class="text-sm text-zinc-600 dark:text-zinc-400">Позволяет коучам и психологам управлять клиентами,
-                  видеть их прогресс и результаты в реальном времени.</p>
+                <h4 class="text-lg font-bold text-zinc-900 dark:text-white mb-1">Dashboard for Specialists</h4>
+                <p class="text-sm text-zinc-600 dark:text-zinc-400">Allows coaches and psychologists to manage clients,
+                  view their progress, and results in real-time.</p>
               </div>
               <div
                 class="text-xs font-bold uppercase tracking-wide text-cyan-600 dark:text-cyan-400 md:ml-6 mt-4 md:mt-0">
@@ -393,14 +394,14 @@
           <div class="flex-1 space-y-8">
             <div
               class="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/10 to-blue-600/10 border border-cyan-500/20 dark:border-cyan-500/30">
-              <span class="text-sm font-medium text-cyan-600 dark:text-cyan-400">Для специалистов</span>
+              <span class="text-sm font-medium text-cyan-600 dark:text-cyan-400">For Specialists</span>
             </div>
             <h2 class="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white">
-              Инструменты для эффективного <span class="text-cyan-600 dark:text-cyan-400">сопровождения</span>
+              Tools for Effective <span class="text-cyan-600 dark:text-cyan-400">Support</span>
             </h2>
             <p class="text-lg text-zinc-600 dark:text-zinc-400">
-              Мы разработали специальный функционал для коучей, тренеров и психологов. Теперь вы можете не только
-              рекомендовать упражнения, но и отслеживать динамику ваших клиентов в единой панели.
+              We have developed special functionality for coaches, trainers, and psychologists. Now you can not only
+              recommend exercises but also track your clients' dynamics in a single dashboard.
             </p>
             <ul class="space-y-6">
               <li class="flex items-start gap-4">
@@ -408,9 +409,9 @@
                   <i class="fas fa-check text-xs text-cyan-600 dark:text-cyan-400"></i>
                 </div>
                 <div>
-                  <h4 class="font-semibold text-lg text-zinc-900 dark:text-white mb-2">Управление клиентами</h4>
-                  <p class="text-zinc-600 dark:text-zinc-400">Приглашайте клиентов через персональные ссылки и
-                    ведите свою базу в удобном интерфейсе.</p>
+                  <h4 class="font-semibold text-lg text-zinc-900 dark:text-white mb-2">Client Management</h4>
+                  <p class="text-zinc-600 dark:text-zinc-400">Invite clients via personal links and manage your database
+                    in a convenient interface.</p>
                 </div>
               </li>
               <li class="flex items-start gap-4">
@@ -418,9 +419,9 @@
                   <i class="fas fa-check text-xs text-cyan-600 dark:text-cyan-400"></i>
                 </div>
                 <div>
-                  <h4 class="font-semibold text-lg text-zinc-900 dark:text-white mb-2">Прозрачная аналитика</h4>
-                  <p class="text-zinc-600 dark:text-zinc-400">Визуализация прогресса, результаты тестов и
-                    уровень вовлеченности каждого клиента.</p>
+                  <h4 class="font-semibold text-lg text-zinc-900 dark:text-white mb-2">Transparent Analytics</h4>
+                  <p class="text-zinc-600 dark:text-zinc-400">Progress visualization, test results, and engagement
+                    levels for each client.</p>
                 </div>
               </li>
             </ul>
@@ -432,7 +433,7 @@
                 <div>
                   <div class="text-xs font-semibold uppercase tracking-wide text-cyan-600 dark:text-cyan-400 mb-2">
                     Preview</div>
-                  <h3 class="text-2xl font-bold text-zinc-900 dark:text-white">Панель Коуча</h3>
+                  <h3 class="text-2xl font-bold text-zinc-900 dark:text-white">Coach Dashboard</h3>
                 </div>
                 <div
                   class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/10 to-blue-600/10 flex items-center justify-center">
@@ -456,7 +457,8 @@
     <!-- APPROACH & CREDIBILITY -->
     <section class="py-20 bg-gradient-to-b from-zinc-50 to-white dark:from-zinc-950 dark:to-black">
       <div class="container mx-auto px-4 sm:px-6 max-w-4xl">
-        <h2 class="text-3xl md:text-4xl font-bold text-center text-zinc-900 dark:text-white mb-12">Подход и принципы
+        <h2 class="text-3xl md:text-4xl font-bold text-center text-zinc-900 dark:text-white mb-12">Approach and
+          Principles
         </h2>
         <div class="grid md:grid-cols-2 gap-8">
           <div
@@ -465,10 +467,10 @@
               class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/10 to-blue-600/10 flex items-center justify-center mb-6">
               <i class="fas fa-flask text-xl text-cyan-600 dark:text-cyan-400"></i>
             </div>
-            <h4 class="text-xl font-bold text-zinc-900 dark:text-white mb-4">Научная база, не магия</h4>
+            <h4 class="text-xl font-bold text-zinc-900 dark:text-white mb-4">Scientific Basis, Not Magic</h4>
             <p class="text-zinc-600 dark:text-zinc-400">
-              Мы опираемся на когнитивные модели и поведенческую психологию. Наш метод — это структурированная работа с
-              вниманием и привычками, а не поиск волшебной таблетки.
+              We rely on cognitive models and behavioral psychology. Our method is structured work with attention and
+              habits, not a search for a magic pill.
             </p>
           </div>
           <div
@@ -477,10 +479,10 @@
               class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/10 to-blue-600/10 flex items-center justify-center mb-6">
               <i class="fas fa-tools text-xl text-cyan-600 dark:text-cyan-400"></i>
             </div>
-            <h4 class="text-xl font-bold text-zinc-900 dark:text-white mb-4">Инструмент, а не замена</h4>
+            <h4 class="text-xl font-bold text-zinc-900 dark:text-white mb-4">A Tool, Not a Substitute</h4>
             <p class="text-zinc-600 dark:text-zinc-400">
-              Платформа не заменяет терапию. Мы фокусируемся на развитии навыков саморегуляции и мышления, которые
-              помогают в повседневной жизни.
+              The platform does not replace therapy. We focus on developing self-regulation and thinking skills that
+              help in everyday life.
             </p>
           </div>
         </div>
@@ -491,29 +493,31 @@
     <section id="pricing" class="py-20 bg-white dark:bg-black">
       <div class="container mx-auto px-4 sm:px-6 max-w-6xl">
         <div class="text-center mb-16">
-          <h2 class="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white mb-4">Выберите формат участия</h2>
-          <p class="text-lg text-zinc-600 dark:text-zinc-400">Прозрачные условия для доступа к системе развития.</p>
+          <h2 class="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white mb-4">Choose Your Participation Format
+          </h2>
+          <p class="text-lg text-zinc-600 dark:text-zinc-400">Transparent conditions for access to the development
+            system.</p>
         </div>
 
         <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           <!-- Free -->
           <div
             class="relative p-8 rounded-2xl border-2 border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 transition-all duration-300 transform hover:-translate-y-2">
-            <h3 class="text-2xl font-bold text-zinc-900 dark:text-white mb-2">Старт</h3>
-            <div class="text-4xl font-bold text-zinc-900 dark:text-white mb-6">Бесплатно</div>
+            <h3 class="text-2xl font-bold text-zinc-900 dark:text-white mb-2">Start</h3>
+            <div class="text-4xl font-bold text-zinc-900 dark:text-white mb-6">Free</div>
             <ul class="text-zinc-600 dark:text-zinc-400 space-y-4 mb-8">
               <li class="flex items-start gap-3">
                 <i class="fas fa-check text-cyan-500 dark:text-cyan-400 mt-1"></i>
-                <span>Первичная диагностика</span>
+                <span>Primary diagnostics</span>
               </li>
               <li class="flex items-start gap-3">
                 <i class="fas fa-check text-cyan-500 dark:text-cyan-400 mt-1"></i>
-                <span>Базовые практики</span>
+                <span>Basic practices</span>
               </li>
             </ul>
             <NuxtLink to="/register"
               class="w-full py-4 border-2 border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 text-center rounded-xl font-semibold hover:border-cyan-500 dark:hover:border-cyan-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all">
-              Пройти стартовый профиль
+              Complete Start Profile
             </NuxtLink>
           </div>
 
@@ -522,48 +526,48 @@
             class="relative p-8 rounded-2xl bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 text-white transform md:scale-105 shadow-2xl">
             <div
               class="absolute -top-4 left-1/2 -translate-x-1/2 px-6 py-2 bg-yellow-400 text-black rounded-full text-sm font-bold shadow-lg">
-              ПОПУЛЯРНЫЙ ВЫБОР
+              POPULAR CHOICE
             </div>
-            <h3 class="text-2xl font-bold mb-2">Практик</h3>
-            <div class="text-4xl font-bold mb-6">490₽ <span class="text-lg opacity-80">/мес</span></div>
+            <h3 class="text-2xl font-bold mb-2">Practitioner</h3>
+            <div class="text-4xl font-bold mb-6">$5 <span class="text-lg opacity-80">/mo</span></div>
             <ul class="space-y-4 mb-8 opacity-95">
               <li class="flex items-start gap-3">
                 <i class="fas fa-check mt-1"></i>
-                <span>Полный доступ к Центру Развития</span>
+                <span>Full access to Development Center</span>
               </li>
               <li class="flex items-start gap-3">
                 <i class="fas fa-check mt-1"></i>
-                <span>Глубокая диагностика</span>
+                <span>Deep diagnostics</span>
               </li>
               <li class="flex items-start gap-3">
                 <i class="fas fa-check mt-1"></i>
-                <span>Аналитика прогресса</span>
+                <span>Progress analytics</span>
               </li>
             </ul>
             <button
               class="w-full py-4 bg-white text-cyan-600 text-center rounded-xl font-semibold hover:bg-cyan-50 transition-colors shadow-lg">
-              Выбрать план
+              Select Plan
             </button>
           </div>
 
           <!-- Pro -->
           <div
             class="relative p-8 rounded-2xl border-2 border-purple-500/30 bg-white dark:bg-zinc-900 transition-all duration-300 transform hover:-translate-y-2">
-            <h3 class="text-2xl font-bold text-zinc-900 dark:text-white mb-2">Навсегда</h3>
-            <div class="text-4xl font-bold text-zinc-900 dark:text-white mb-6">9990₽</div>
+            <h3 class="text-2xl font-bold text-zinc-900 dark:text-white mb-2">Lifetime</h3>
+            <div class="text-4xl font-bold text-zinc-900 dark:text-white mb-6">$99</div>
             <ul class="text-zinc-600 dark:text-zinc-400 space-y-4 mb-8">
               <li class="flex items-start gap-3">
                 <i class="fas fa-check text-purple-500 mt-1"></i>
-                <span>Доступ навсегда</span>
+                <span>Lifetime access</span>
               </li>
               <li class="flex items-start gap-3">
                 <i class="fas fa-check text-purple-500 mt-1"></i>
-                <span>Приоритетная поддержка</span>
+                <span>Priority support</span>
               </li>
             </ul>
             <button
               class="w-full py-4 bg-purple-600 text-white text-center rounded-xl font-semibold hover:bg-purple-700 transition-colors">
-              Купить доступ
+              Buy Access
             </button>
           </div>
         </div>
@@ -575,12 +579,12 @@
       <div class="container mx-auto px-4 sm:px-6 max-w-6xl">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12">
           <div>
-            <h2 class="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white mb-2">База знаний</h2>
-            <p class="text-lg text-zinc-600 dark:text-zinc-400">Материалы для понимания метода</p>
+            <h2 class="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white mb-2">Knowledge Base</h2>
+            <p class="text-lg text-zinc-600 dark:text-zinc-400">Materials for understanding the method</p>
           </div>
           <NuxtLink to="/blog"
             class="mt-4 md:mt-0 text-sm font-semibold text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300">
-            Все статьи →
+            All Articles →
           </NuxtLink>
         </div>
 
@@ -590,17 +594,17 @@
               class="group p-8 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-cyan-500/50 dark:hover:border-cyan-500/30 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
               <h3 class="text-xl font-bold text-zinc-900 dark:text-white mb-4">{{ post.title }}</h3>
               <p class="text-zinc-600 dark:text-zinc-400 mb-6 line-clamp-3">{{ post.excerpt ||
-                'Читатьстатью...' }}</p>
+                'Read article...' }}</p>
               <NuxtLink :to="`/blog/${post.slug.current}`"
                 class="text-sm font-semibold text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300">
-                Читать сейчас →
+                Read Now →
               </NuxtLink>
             </article>
           </template>
           <div v-else
             class="col-span-2 text-center py-16 border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-2xl">
             <i class="fas fa-newspaper text-4xl text-zinc-300 dark:text-zinc-700 mb-4"></i>
-            <p class="text-zinc-500 dark:text-zinc-400 text-lg">Скоро появятся новые статьи</p>
+            <p class="text-zinc-500 dark:text-zinc-400 text-lg">New articles coming soon</p>
           </div>
         </div>
       </div>
@@ -609,7 +613,8 @@
     <!-- FAQ -->
     <section class="py-20 bg-white dark:bg-black">
       <div class="container mx-auto px-4 sm:px-6 max-w-3xl">
-        <h2 class="text-3xl md:text-4xl font-bold text-center text-zinc-900 dark:text-white mb-12">Частые вопросы</h2>
+        <h2 class="text-3xl md:text-4xl font-bold text-center text-zinc-900 dark:text-white mb-12">Frequently Asked
+          Questions</h2>
         <div class="space-y-4">
           <div v-for="(item, i) in faq" :key="i"
             class="border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden bg-white dark:bg-zinc-900 hover:border-cyan-500/50 dark:hover:border-cyan-500/30 transition-colors">
@@ -631,22 +636,22 @@
     <section
       class="py-20 bg-gradient-to-br from-cyan-500/10 via-blue-600/10 to-cyan-500/10 border-t border-zinc-200 dark:border-zinc-800">
       <div class="container mx-auto px-4 sm:px-6 max-w-2xl text-center">
-        <h2 class="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white mb-6">Начните свой путь развития</h2>
+        <h2 class="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white mb-6">Start Your Development Journey
+        </h2>
         <p class="text-lg text-zinc-600 dark:text-zinc-400 mb-10">
-          Присоединяйтесь к сообществу людей, которые осознанно работают над своим мышлением и эмоциональным
-          интеллектом.
+          Join a community of people who are consciously working on their thinking and emotional intelligence.
         </p>
         <div class="flex flex-col sm:flex-row gap-6 justify-center">
           <NuxtLink to="/space/tests"
             class="group px-10 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-medium hover:shadow-xl hover:shadow-cyan-500/25 transition-all duration-300 transform hover:scale-[1.02]">
             <span class="flex items-center justify-center space-x-2">
-              <span>Начать бесплатно</span>
+              <span>Start for Free</span>
               <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
             </span>
           </NuxtLink>
           <NuxtLink to="/register"
             class="px-10 py-4 rounded-xl border-2 border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 font-medium hover:border-cyan-500 dark:hover:border-cyan-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
-            Зарегистрироваться
+            Register
           </NuxtLink>
         </div>
       </div>
@@ -702,11 +707,11 @@ onMounted(() => {
 
 // FAQ Data
 const faq = [
-  { q: "Как именно MindQLab со мной работает?", a: "Мы используем 5-этапный цикл: диагностика состояния, формирование понимания, выбор трека развития, практика навыков и анализ прогресса." },
-  { q: "Что происходит после тестов?", a: "Система формирует ваш профиль и рекомендует конкретные упражнения для зон, требующих внимания." },
-  { q: "Как формируется прогресс?", a: "Мы отслеживаем динамику изменений через повторные микро-замеры и результаты выполнения практик." },
-  { q: "Это заменяет психолога?", a: "Нет, MindQLab — это инструмент для развития когнитивных и эмоциональных навыков, который может отлично дополнять работу со специалистом, но не заменяет её." },
-  { q: "Можно ли попробовать бесплатно?", a: "Да, вы можете пройти первичную диагностику и получить базовый профиль бесплатно." }
+  { q: "How exactly does MindQLab work with me?", a: "We use a 5-stage cycle: state diagnostics, understanding formation, development track selection, skill practice, and progress analysis." },
+  { q: "What happens after the tests?", a: "The system forms your profile and recommends specific exercises for areas requiring attention." },
+  { q: "How is progress tracked?", a: "We track the dynamics of changes through repeated micro-measurements and the results of practice sessions." },
+  { q: "Does this replace a psychologist?", a: "No, MindQLab is a tool for developing cognitive and emotional skills that can perfectly complement work with a specialist but does not replace it." },
+  { q: "Can I try it for free?", a: "Yes, you can complete the primary diagnostics and receive a basic profile for free." }
 ];
 
 // Blog Data 
@@ -719,8 +724,8 @@ posts.value = Array.isArray(fetchedPosts.value) ? fetchedPosts.value : [];
 const latestPosts = computed(() => posts.value.slice(0, 2));
 
 useSeoMeta({
-  title: 'MindQLab — Система персонального развития',
-  description: 'Платформа для диагностики, понимания и развития мышления. Структурированный подход к личной эффективности.',
+  title: 'MindQLab — Personal Development System',
+  description: 'Platform for diagnostics, understanding, and thinking development. A structured approach to personal effectiveness.',
 });
 </script>
 
