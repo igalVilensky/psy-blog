@@ -23,14 +23,14 @@
                   class="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/10 to-blue-600/10 border border-cyan-500/20 dark:border-cyan-500/30 mb-6">
                   <div class="w-2 h-2 rounded-full bg-cyan-500 mr-2 animate-pulse"></div>
                   <span
-                    class="text-xs font-medium text-cyan-600 dark:text-cyan-400 uppercase tracking-wider">Авторизация</span>
+                    class="text-xs font-medium text-cyan-600 dark:text-cyan-400 uppercase tracking-wider">Authorization</span>
                 </div>
                 <h2 class="text-3xl font-bold text-zinc-900 dark:text-white mb-2">
-                  Вход в <span
+                  Login to <span
                     class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-400 dark:to-blue-400">MindQLab</span>
                 </h2>
                 <p class="text-zinc-500 dark:text-zinc-400 text-sm font-medium">
-                  Продолжите свой путь развития
+                  Continue your development journey
                 </p>
               </div>
 
@@ -49,7 +49,7 @@
 
                 <!-- Password -->
                 <div class="form-group">
-                  <label for="password" class="form-label">Пароль</label>
+                  <label for="password" class="form-label">Password</label>
                   <div class="relative">
                     <span class="absolute inset-y-0 left-4 flex items-center text-zinc-400 dark:text-zinc-500">
                       <i class="fas fa-lock text-sm"></i>
@@ -76,7 +76,7 @@
                     <span class="flex items-center justify-center gap-2">
                       <i v-if="isLoading" class="fas fa-spinner fa-spin"></i>
                       <i v-else class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
-                      {{ isLoading ? "Вход..." : "Войти" }}
+                      {{ isLoading ? "Logging in..." : "Login" }}
                     </span>
                   </button>
                 </div>
@@ -88,7 +88,7 @@
                   <div class="w-full border-t border-zinc-200 dark:border-zinc-800"></div>
                 </div>
                 <div class="relative flex justify-center text-xs uppercase tracking-wider">
-                  <span class="px-4 bg-white dark:bg-zinc-900 text-zinc-400">или</span>
+                  <span class="px-4 bg-white dark:bg-zinc-900 text-zinc-400">or</span>
                 </div>
               </div>
 
@@ -97,10 +97,10 @@
 
               <div class="mt-8 text-center">
                 <p class="text-sm text-zinc-500 dark:text-zinc-400 font-medium">
-                  Нет аккаунта?
+                  No account?
                   <NuxtLink to="/register"
                     class="text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300 font-bold transition-colors">
-                    Создать профиль
+                    Create profile
                   </NuxtLink>
                 </p>
               </div>
@@ -110,7 +110,7 @@
             <div
               class="bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-800/50 dark:to-zinc-900/50 p-8 sm:p-12 flex flex-col justify-center border-l border-zinc-200 dark:border-zinc-800">
               <h3 class="text-xl font-bold text-zinc-900 dark:text-white mb-8">
-                С возвращением
+                Welcome back
               </h3>
               <div class="space-y-6">
                 <div v-for="(item, i) in infoItems" :key="i" class="flex items-start gap-4 group">
@@ -152,7 +152,7 @@ definePageMeta({
 });
 
 useHead({
-  title: "Вход — MindQLab",
+  title: "Login — MindQLab",
 });
 
 const router = useRouter();
@@ -164,9 +164,9 @@ const showPassword = ref(false);
 const isLoading = ref(false);
 
 const infoItems = [
-  { icon: "fa-chart-pie", title: "Все замеры под рукой", text: "Ваша история диагностики и тренировок доступна в любой момент." },
-  { icon: "fa-rocket", title: "Прогрессируйте быстрее", text: "Система автоматически адаптирует план под ваше текущее состояние." },
-  { icon: "fa-shield-alt", title: "Безопасность данных", text: "Ваши результаты зашифрованы и доступны только вам." },
+  { icon: "fa-chart-pie", title: "All measurements at hand", text: "Your diagnostic and training history is available at any time." },
+  { icon: "fa-rocket", title: "Progress faster", text: "The system automatically adapts the plan to your current state." },
+  { icon: "fa-shield-alt", title: "Data security", text: "Your results are encrypted and accessible only to you." },
 ];
 
 const togglePassword = () => {
@@ -183,7 +183,7 @@ const handleLogin = async () => {
     router.push("/space");
   } catch (err) {
     console.error("Login error:", err);
-    error.value = "Неверный email или пароль. Пожалуйста, проверьте данные.";
+    error.value = "Invalid email or password. Please check your data.";
   } finally {
     isLoading.value = false;
   }

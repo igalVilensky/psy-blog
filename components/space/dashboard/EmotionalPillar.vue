@@ -8,7 +8,7 @@
             </div>
             <div>
                 <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-tight text-zinc-900 dark:text-white">
-                    Психоэмоциональный Баланс</h2>
+                    Psycho-emotional Balance</h2>
                 <p class="text-xs font-bold text-zinc-500 uppercase tracking-wide mt-1">Status Emotio</p>
             </div>
         </div>
@@ -19,10 +19,10 @@
                 class="bg-white dark:bg-zinc-900 p-6 border border-zinc-200 dark:border-zinc-800 border-l-4 border-l-rose-500 relative overflow-hidden rounded-2xl">
                 <div class="relative z-10">
                     <div class="flex items-center justify-between mb-8">
-                        <h3 class="font-bold uppercase tracking-wide text-zinc-900 dark:text-white">Барометр состояний
+                        <h3 class="font-bold uppercase tracking-wide text-zinc-900 dark:text-white">State Barometer
                         </h3>
-                        <span class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Последние 30
-                            дней</span>
+                        <span class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Last 30
+                            days</span>
                     </div>
 
                     <div class="grid grid-cols-2 gap-8 mb-8">
@@ -43,7 +43,7 @@
                             </svg>
                             <div class="absolute inset-0 flex flex-col items-center justify-center">
                                 <div class="text-3xl font-bold text-zinc-900 dark:text-white">{{ intensity }}</div>
-                                <div class="text-[8px] text-zinc-400 uppercase font-bold tracking-wider">Интенсивность
+                                <div class="text-[8px] text-zinc-400 uppercase font-bold tracking-wider">Intensity
                                 </div>
                             </div>
                         </div>
@@ -53,17 +53,17 @@
                                 class="p-4 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-center border-l-4 border-l-rose-400 rounded-xl">
                                 <div
                                     class="text-[10px] text-zinc-400 uppercase font-bold tracking-wider mb-1 leading-none">
-                                    Доминирующая эмоция</div>
+                                    Dominant Emotion</div>
                                 <div class="text-lg font-bold text-zinc-900 dark:text-white truncate uppercase">{{
-                                    commonEmotion || 'Спокойствие'
+                                    commonEmotion || 'Calm'
                                 }}</div>
                             </div>
                             <div
                                 class="p-4 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-center border-l-4 border-l-zinc-400 rounded-xl">
                                 <div
                                     class="text-[10px] text-zinc-400 uppercase font-bold tracking-wider mb-1 leading-none">
-                                    Всего
-                                    записей</div>
+                                    Total
+                                    Entries</div>
                                 <div class="text-lg font-bold text-zinc-900 dark:text-white">{{ totalEntries }}</div>
                             </div>
                         </div>
@@ -75,8 +75,8 @@
                         <div class="flex items-start gap-3">
                             <div class="text-rose-600 dark:text-rose-400 mt-0.5"><i class="fas fa-lightbulb"></i></div>
                             <div class="text-xs font-medium text-zinc-600 dark:text-zinc-300 leading-relaxed italic">
-                                «Ваше состояние часто коррелирует с утренними тренировками. Сохраняйте ритм для
-                                эмоциональной стабильности.»
+                                "Your state often correlates with morning workouts. Maintain the rhythm for
+                                emotional stability."
                             </div>
                         </div>
                     </div>
@@ -93,10 +93,9 @@
                     </div>
                     <div>
                         <div class="font-bold text-zinc-900 dark:text-white mb-2 uppercase tracking-wide text-sm">
-                            Компас эмоций</div>
-                        <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Детальный анализ чувств
-                            и
-                            потребностей</p>
+                            Emotion Compass</div>
+                        <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Detailed analysis of
+                            feelings and needs</p>
                     </div>
                 </NuxtLink>
 
@@ -108,10 +107,9 @@
                     </div>
                     <div>
                         <div class="font-bold text-zinc-900 dark:text-white mb-2 uppercase tracking-wide text-sm">
-                            Дневник привычек</div>
-                        <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Связь ваших действий с
-                            вашим
-                            состоянием</p>
+                            Habit Journal</div>
+                        <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Connecting your actions
+                            with your state</p>
                     </div>
                 </NuxtLink>
             </div>

@@ -19,9 +19,9 @@
         </div>
       </div>
       <div class="text-center space-y-2">
-        <h3 class="text-xl font-bold text-zinc-900 dark:text-white uppercase tracking-widest">Загрузка
-          Данных</h3>
-        <p class="text-zinc-500 dark:text-zinc-400 text-xs font-bold uppercase tracking-wide">Синхронизация профиля...
+        <h3 class="text-xl font-bold text-zinc-900 dark:text-white uppercase tracking-widest">Loading
+          Data</h3>
+        <p class="text-zinc-500 dark:text-zinc-400 text-xs font-bold uppercase tracking-wide">Syncing profile...
         </p>
       </div>
     </div>
@@ -79,10 +79,10 @@
           class="mt-12 bg-white dark:bg-zinc-900 p-8 border border-zinc-200 dark:border-zinc-800 border-l-4 border-l-cyan-500 rounded-2xl">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
             <h2 class="text-xl font-bold text-zinc-900 dark:text-white uppercase tracking-tight">
-              Результаты Тестов</h2>
+              Test Results</h2>
             <NuxtLink to="/space/tests"
               class="text-xs font-bold uppercase tracking-wider text-zinc-500 hover:text-cyan-600 dark:hover:text-cyan-400 flex items-center gap-2 transition-colors">
-              Библиотека тестов <i class="fas fa-arrow-right"></i>
+              Test Library <i class="fas fa-arrow-right"></i>
             </NuxtLink>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -99,8 +99,8 @@
               </div>
               <div class="text-xl font-bold text-zinc-900 dark:text-white">{{ test.score }}{{ test.unit }}
               </div>
-              <div class="text-[10px] text-zinc-400 uppercase tracking-wide mt-1 font-medium">Лучший: {{ test.lastPlayed
-                }}</div>
+              <div class="text-[10px] text-zinc-400 uppercase tracking-wide mt-1 font-medium">Best: {{ test.lastPlayed
+              }}</div>
             </div>
           </div>
         </div>
@@ -109,7 +109,7 @@
           <button @click="refreshData"
             class="flex items-center gap-2 text-zinc-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors text-xs font-bold uppercase tracking-widest">
             <i class="fas fa-sync" :class="{ 'animate-spin': loading }"></i>
-            ОБНОВИТЬ ДАННЫЕ
+            REFRESH DATA
           </button>
         </div>
       </div>
@@ -145,7 +145,7 @@
                   <div
                     class="bg-zinc-50 dark:bg-zinc-800 p-4 border border-zinc-200 dark:border-zinc-700 rounded-xl text-center">
                     <div class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider mb-1">
-                      Средний
+                      Average
                     </div>
                     <div class="text-xl font-bold text-zinc-900 dark:text-white">
                       {{ selectedExercise.avgScore }}{{ selectedExercise.unit }}
@@ -153,7 +153,7 @@
                   </div>
                   <div class="bg-zinc-50 dark:bg-zinc-800 p-4 border-l-4 border-emerald-500 rounded-xl text-center">
                     <div class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider mb-1">
-                      Лучший
+                      Best
                     </div>
                     <div class="text-xl font-bold text-zinc-900 dark:text-white">
                       {{ selectedExercise.bestScore }}{{ selectedExercise.unit }}
@@ -162,7 +162,7 @@
                   <div
                     class="bg-zinc-50 dark:bg-zinc-800 p-4 border border-zinc-200 dark:border-zinc-700 rounded-xl text-center">
                     <div class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider mb-1">
-                      Сессий
+                      Sessions
                     </div>
                     <div class="text-xl font-bold text-zinc-900 dark:text-white">
                       {{ selectedExercise.playCount || selectedExercise.totalSessions || 0 }}
@@ -170,7 +170,7 @@
                   </div>
                   <div class="bg-zinc-50 dark:bg-zinc-800 p-4 border-l-4 border-cyan-500 rounded-xl text-center">
                     <div class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider mb-1">
-                      Уровень
+                      Level
                     </div>
                     <div class="text-xl font-bold text-zinc-900 dark:text-white">
                       {{ Math.floor((selectedExercise.totalSessions || 0) / 5) + 1 }}
@@ -181,7 +181,7 @@
                 <!-- History List -->
                 <div>
                   <h4 class="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-4">
-                    История сессий
+                    Session History
                   </h4>
                   <div class="max-h-48 overflow-y-auto space-y-1 pr-2">
                     <div v-for="(session, index) in selectedExercise.history || []" :key="index"
@@ -202,7 +202,7 @@
                       </span>
                     </div>
                     <div v-if="!selectedExercise.history?.length" class="text-center py-4 text-xs text-zinc-400 italic">
-                      История пуста
+                      History is empty
                     </div>
                   </div>
                 </div>
@@ -211,12 +211,12 @@
                   <button type="button"
                     class="px-6 py-2 text-xs font-bold uppercase tracking-wider text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
                     @click="closeExerciseModal">
-                    Закрыть
+                    Close
                   </button>
                   <NuxtLink :to="selectedExercise.link"
                     class="px-6 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-xs font-bold uppercase tracking-wider hover:shadow-lg hover:shadow-cyan-500/25 transition-all rounded-lg">
                     <i class="fas fa-play mr-2"></i>
-                    Начать
+                    Start
                   </NuxtLink>
                 </div>
               </div>
@@ -267,9 +267,9 @@ const animatedStats = reactive({
 });
 const activeTab = ref('identity');
 const tabs = [
-  { id: 'identity', label: 'Идентичность', icon: 'fas fa-fingerprint' },
-  { id: 'cognition', label: 'Когниция', icon: 'fas fa-brain' },
-  { id: 'emotion', label: 'Эмоции', icon: 'fas fa-heart-pulse' },
+  { id: 'identity', label: 'Identity', icon: 'fas fa-fingerprint' },
+  { id: 'cognition', label: 'Cognition', icon: 'fas fa-brain' },
+  { id: 'emotion', label: 'Emotions', icon: 'fas fa-heart-pulse' },
 ];
 const sessionId = computed(() => `LAB-${Date.now().toString(36).toUpperCase()}`);
 
@@ -296,7 +296,7 @@ const ravenResults = ref([]);
 const big5Result = ref(null);
 const assessmentTimestamp = ref(null);
 const heatmapData = ref({});
-const lastUpdated = ref(new Date().toLocaleDateString('ru-RU'));
+const lastUpdated = ref(new Date().toLocaleDateString('en-US'));
 const selectedExercise = ref(null);
 
 
@@ -310,8 +310,8 @@ const achievements = computed(() => {
   if (big5Result.value) {
     list.push({
       id: 'big5',
-      name: 'Познание себя',
-      description: 'Пройден тест личности Big 5',
+      name: 'Self-Knowledge',
+      description: 'Completed Big 5 personality test',
       icon: 'fas fa-fingerprint text-purple-600 dark:text-purple-400',
       bgClass: 'bg-purple-500/10',
       unlocked: true,
@@ -323,8 +323,8 @@ const achievements = computed(() => {
   if (archetypeScores.value.length > 0) {
     list.push({
       id: 'archetypes',
-      name: 'Архитектор Личности',
-      description: 'Определены ведущие архетипы',
+      name: 'Personality Architect',
+      description: 'Leading archetypes identified',
       icon: 'fas fa-shapes text-amber-600 dark:text-amber-400',
       bgClass: 'bg-amber-500/10',
       unlocked: true,
@@ -337,8 +337,8 @@ const achievements = computed(() => {
   if (totalSessions > 0) {
     list.push({
       id: 'first-workout',
-      name: 'Первые шаги',
-      description: 'Завершена первая тренировка мозга',
+      name: 'First Steps',
+      description: 'First brain training completed',
       icon: 'fas fa-dumbbell text-cyan-600 dark:text-cyan-400',
       bgClass: 'bg-cyan-500/10',
       unlocked: true,
@@ -350,12 +350,12 @@ const achievements = computed(() => {
   if (emotionBarometerStats.value.totalEntries > 0) {
     list.push({
       id: 'emotion',
-      name: 'Эмоциональный Интеллект',
-      description: 'Начато отслеживание эмоций',
+      name: 'Emotional Intelligence',
+      description: 'Started tracking emotions',
       icon: 'fas fa-heart text-emerald-600 dark:text-emerald-400',
       bgClass: 'bg-emerald-500/10',
       unlocked: true,
-      date: 'Активно'
+      date: 'Active'
     });
   }
 
@@ -364,7 +364,7 @@ const achievements = computed(() => {
 
 // Real Progress Data Calculation (Interaction Counts)
 const progressData = computed(() => {
-  const days = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const now = new Date();
   const last7Days = Array.from({ length: 7 }, (_, i) => {
     const d = new Date(now);
@@ -444,19 +444,16 @@ const exercisesList = computed(() => {
     const scores = history.map(h => h.score);
     const avg = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
     const best = Math.max(...scores);
-    const last = history[0].date.toLocaleDateString("ru-RU");
+    const last = history[0].date.toLocaleDateString("en-US");
 
     list.push({
       id: "pattern-detection",
-      title: "Поиск паттернов",
-      category: "Память",
+      title: "Pattern Search",
+      category: "Memory",
       avgScore: avg,
       bestScore: best,
       lastPlayed: last,
       totalSessions: history.length,
-      icon: "fas fa-layer-group text-blue-600 dark:text-blue-400",
-      bgClass: "bg-blue-500/10",
-      history: history,
       icon: "fas fa-layer-group text-blue-600 dark:text-blue-400",
       bgClass: "bg-blue-500/10",
       history: history,
@@ -475,19 +472,16 @@ const exercisesList = computed(() => {
     const scores = history.map(h => h.score);
     const avg = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
     const best = Math.max(...scores);
-    const last = history[0].date.toLocaleDateString("ru-RU");
+    const last = history[0].date.toLocaleDateString("en-US");
 
     list.push({
       id: "mental-shift",
-      title: "Переключение",
-      category: "Гибкость",
+      title: "Shift",
+      category: "Flexibility",
       avgScore: avg,
       bestScore: best,
       lastPlayed: last,
       totalSessions: history.length,
-      icon: "fas fa-route text-emerald-600 dark:text-emerald-400",
-      bgClass: "bg-emerald-500/10",
-      history: history,
       icon: "fas fa-route text-emerald-600 dark:text-emerald-400",
       bgClass: "bg-emerald-500/10",
       history: history,
@@ -509,19 +503,16 @@ const exercisesList = computed(() => {
     const scores = history.map(h => h.score);
     const avg = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
     const best = Math.max(...scores);
-    const last = history[0].date.toLocaleDateString("ru-RU");
+    const last = history[0].date.toLocaleDateString("en-US");
 
     list.push({
       id: "target-tracking",
-      title: "Слежение за целью",
-      category: "Внимание",
+      title: "Target Tracking",
+      category: "Attention",
       avgScore: avg,
       bestScore: best,
       lastPlayed: last,
       totalSessions: history.length,
-      icon: "fas fa-crosshairs text-purple-600 dark:text-purple-400",
-      bgClass: "bg-purple-500/10",
-      history: history,
       icon: "fas fa-crosshairs text-purple-600 dark:text-purple-400",
       bgClass: "bg-purple-500/10",
       history: history,
@@ -541,12 +532,12 @@ const exercisesList = computed(() => {
     const scores = history.map(h => h.score);
     const avg = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
     const best = Math.max(...scores);
-    const last = history[0].date.toLocaleDateString("ru-RU");
+    const last = history[0].date.toLocaleDateString("en-US");
 
     list.push({
       id: "double",
-      title: "Дубль",
-      category: "Внимание",
+      title: "Double",
+      category: "Attention",
       avgScore: avg,
       bestScore: best,
       lastPlayed: last,
@@ -569,12 +560,12 @@ const exercisesList = computed(() => {
     const scores = history.map(h => h.score);
     const avg = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
     const best = Math.max(...scores);
-    const last = history[0].date.toLocaleDateString("ru-RU");
+    const last = history[0].date.toLocaleDateString("en-US");
 
     list.push({
       id: "nback-training",
-      title: "N-Back Тренировка",
-      category: "Память",
+      title: "N-Back Training",
+      category: "Memory",
       avgScore: avg,
       bestScore: best,
       lastPlayed: last,
@@ -597,12 +588,12 @@ const exercisesList = computed(() => {
     const scores = history.map(h => h.score);
     const avg = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
     const best = Math.max(...scores);
-    const last = history[0].date.toLocaleDateString("ru-RU");
+    const last = history[0].date.toLocaleDateString("en-US");
 
     list.push({
       id: "anagrams",
-      title: "Анаграммы",
-      category: "Вербальность",
+      title: "Anagrams",
+      category: "Verbal",
       avgScore: avg,
       bestScore: best,
       lastPlayed: last,
@@ -625,12 +616,12 @@ const exercisesList = computed(() => {
     const scores = history.map(h => h.score);
     const avg = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
     const best = Math.max(...scores);
-    const last = history[0].date.toLocaleDateString("ru-RU");
+    const last = history[0].date.toLocaleDateString("en-US");
 
     list.push({
       id: "logic-pairs",
-      title: "Логические Пары",
-      category: "Логика",
+      title: "Logic Pairs",
+      category: "Logic",
       avgScore: avg,
       bestScore: best,
       lastPlayed: last,
@@ -659,11 +650,11 @@ const testResultsList = computed(() => {
     const best = Math.max(...history.map(h => h.score));
     list.push({
       id: "digit-span",
-      title: "Объем памяти",
-      category: "Рабочая память",
+      title: "Memory Span",
+      category: "Working Memory",
       score: best,
-      unit: " цифр",
-      lastPlayed: history[0].date.toLocaleDateString("ru-RU"),
+      unit: " digits",
+      lastPlayed: history[0].date.toLocaleDateString("en-US"),
       icon: "fas fa-sort-numeric-down text-blue-500",
       bgClass: "bg-blue-500/10"
     });
@@ -679,11 +670,11 @@ const testResultsList = computed(() => {
     const bestAccuracy = Math.max(...history.map(h => h.accuracy));
     list.push({
       id: "nback-test",
-      title: "N-Back Тест",
-      category: "Флюидный интеллект",
+      title: "N-Back Test",
+      category: "Fluid Intelligence",
       score: bestAccuracy,
       unit: "%",
-      lastPlayed: history[0].date.toLocaleDateString("ru-RU"),
+      lastPlayed: history[0].date.toLocaleDateString("en-US"),
       icon: "fas fa-braille text-purple-500",
       bgClass: "bg-purple-500/10"
     });
@@ -701,11 +692,11 @@ const testResultsList = computed(() => {
     const latest = history[0].score;
     list.push({
       id: "trail-making",
-      title: "TMT Тест",
-      category: "Когнитивная гибкость",
+      title: "TMT Test",
+      category: "Cognitive Flexibility",
       score: latest,
       unit: " (B/A)",
-      lastPlayed: history[0].date.toLocaleDateString("ru-RU"),
+      lastPlayed: history[0].date.toLocaleDateString("en-US"),
       icon: "fas fa-pen-nib text-emerald-500",
       bgClass: "bg-emerald-500/10"
     });
@@ -720,11 +711,11 @@ const testResultsList = computed(() => {
     const best = Math.max(...history.map(h => h.score));
     list.push({
       id: "raven",
-      title: "Матрицы Равена",
-      category: "Абстрактная логика",
+      title: "Raven Matrices",
+      category: "Abstract Logic",
       score: best,
       unit: " IQ",
-      lastPlayed: history[0].date.toLocaleDateString("ru-RU"),
+      lastPlayed: history[0].date.toLocaleDateString("en-US"),
       icon: "fas fa-th text-blue-500",
       bgClass: "bg-blue-500/10"
     });
@@ -779,17 +770,17 @@ const metrics = computed(() => {
 });
 
 const categories = computed(() => [
-  { name: "Когнитивные функции", percentage: calculateCognitiveScore(), icon: "fas fa-network-wired text-cyan-600 dark:text-cyan-400", bgClass: "bg-cyan-500/10", barClass: "bg-gradient-to-r from-cyan-500 to-blue-500" },
+  { name: "Cognitive Functions", percentage: calculateCognitiveScore(), icon: "fas fa-network-wired text-cyan-600 dark:text-cyan-400", bgClass: "bg-cyan-500/10", barClass: "bg-gradient-to-r from-cyan-500 to-blue-500" },
 ]);
 
 const personalityTraits = computed(() => {
   if (!big5Result.value || !big5Result.value.traitScores) {
     return [
-      { name: "Открытость", value: 0, color: "bg-cyan-400" },
-      { name: "Добросовестность", value: 0, color: "bg-purple-400" },
-      { name: "Экстраверсия", value: 0, color: "bg-pink-400" },
-      { name: "Доброжелательность", value: 0, color: "bg-emerald-400" },
-      { name: "Нейротизм", value: 0, color: "bg-amber-400" },
+      { name: "Openness", value: 0, color: "bg-cyan-400" },
+      { name: "Conscientiousness", value: 0, color: "bg-purple-400" },
+      { name: "Extraversion", value: 0, color: "bg-pink-400" },
+      { name: "Agreeableness", value: 0, color: "bg-emerald-400" },
+      { name: "Neuroticism", value: 0, color: "bg-amber-400" },
     ];
   }
   const { traitScores } = big5Result.value;
@@ -799,11 +790,11 @@ const personalityTraits = computed(() => {
   const normalize = (val) => Math.round((val / 120) * 100);
 
   return [
-    { name: "Открытость", value: normalize(traitScores.открытость_опыту), color: "bg-cyan-400" },
-    { name: "Добросовестность", value: normalize(traitScores.добросовестность), color: "bg-purple-400" },
-    { name: "Экстраверсия", value: normalize(traitScores.экстраверсия), color: "bg-pink-400" },
-    { name: "Доброжелательность", value: normalize(traitScores.доброжелательность), color: "bg-emerald-400" },
-    { name: "Нейротизм", value: normalize(traitScores.нейротизм), color: "bg-amber-400" },
+    { name: "Openness", value: normalize(traitScores.открытость_опыту), color: "bg-cyan-400" },
+    { name: "Conscientiousness", value: normalize(traitScores.добросовестность), color: "bg-purple-400" },
+    { name: "Extraversion", value: normalize(traitScores.экстраверсия), color: "bg-pink-400" },
+    { name: "Agreeableness", value: normalize(traitScores.доброжелательность), color: "bg-emerald-400" },
+    { name: "Neuroticism", value: normalize(traitScores.нейротизм), color: "bg-amber-400" },
   ];
 });
 
@@ -954,7 +945,7 @@ const formatDate = (date) => {
   if (!date) return '';
   const d = new Date(date);
   if (isNaN(d.getTime())) return '';
-  return new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }).format(d);
+  return new Intl.DateTimeFormat('en-US', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }).format(d);
 };
 
 const animateNumbers = () => {

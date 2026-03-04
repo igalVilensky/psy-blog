@@ -16,25 +16,25 @@
             </div>
 
             <h2 class="text-3xl md:text-4xl font-bold text-white mb-6 uppercase tracking-tight">
-                Центр Управления Заблокирован
+                Control Center Locked
             </h2>
 
             <p class="text-stone-400 text-lg mb-10 leading-relaxed font-medium">
-                Для того чтобы отслеживать свой прогресс и просматривать результаты тренировок, необходимо
-                авторизоваться
+                In order to track your progress and view training results, you need to
+                log in
             </p>
 
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <NuxtLink to="/login"
                     class="w-full sm:w-auto px-8 py-4 bg-white text-stone-900 border border-white font-bold uppercase tracking-widest hover:bg-stone-200 transition-all duration-300 flex items-center justify-center gap-2">
                     <i class="fas fa-sign-in-alt"></i>
-                    Войти в аккаунт
+                    Login
                 </NuxtLink>
 
                 <NuxtLink to="/register"
                     class="w-full sm:w-auto px-8 py-4 bg-transparent text-white border border-stone-600 font-bold uppercase tracking-widest hover:bg-stone-800 transition-all duration-300 flex items-center justify-center gap-2">
                     <i class="fas fa-user-plus"></i>
-                    Регистрация
+                    Register
                 </NuxtLink>
             </div>
 
@@ -42,17 +42,17 @@
                 <div
                     class="bg-stone-800/50 backdrop-blur-sm p-5 border border-stone-700/50 hover:border-stone-500 transition-colors">
                     <i class="fas fa-chart-line text-stone-100 mb-3 text-lg"></i>
-                    <p class="text-[10px] font-bold text-stone-400 uppercase tracking-wider">Трекинг прогресса</p>
+                    <p class="text-[10px] font-bold text-stone-400 uppercase tracking-wider">Progress tracking</p>
                 </div>
                 <div
                     class="bg-stone-800/50 backdrop-blur-sm p-5 border border-stone-700/50 hover:border-stone-500 transition-colors">
                     <i class="fas fa-brain text-stone-100 mb-3 text-lg"></i>
-                    <p class="text-[10px] font-bold text-stone-400 uppercase tracking-wider">Когнитивные тесты</p>
+                    <p class="text-[10px] font-bold text-stone-400 uppercase tracking-wider">Cognitive tests</p>
                 </div>
                 <div
                     class="bg-stone-800/50 backdrop-blur-sm p-5 border border-stone-700/50 hover:border-stone-500 transition-colors">
                     <i class="fas fa-gem text-stone-100 mb-3 text-lg"></i>
-                    <p class="text-[10px] font-bold text-stone-400 uppercase tracking-wider">Персональные инсайты</p>
+                    <p class="text-[10px] font-bold text-stone-400 uppercase tracking-wider">Personal insights</p>
                 </div>
             </div>
         </div>

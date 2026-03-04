@@ -8,7 +8,7 @@
       </div>
       <div>
         <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-tight text-zinc-900 dark:text-white">
-          Идентичность</h2>
+          Identity</h2>
         <p class="text-xs font-bold text-zinc-500 uppercase tracking-wide mt-1">Stuctura Personalis</p>
       </div>
     </div>
@@ -18,10 +18,10 @@
       <div
         class="bg-white dark:bg-zinc-900 p-6 border border-zinc-200 dark:border-zinc-800 border-l-4 border-l-purple-500 rounded-2xl">
         <div class="flex items-center justify-between mb-6">
-          <h3 class="font-bold uppercase tracking-wide text-zinc-900 dark:text-white">Профиль (Big Five)</h3>
+          <h3 class="font-bold uppercase tracking-wide text-zinc-900 dark:text-white">Profile (Big Five)</h3>
           <NuxtLink to="/space/tests/big-5-model"
             class="text-xs font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors">
-            Перепройти
+            Retake
           </NuxtLink>
         </div>
 
@@ -30,7 +30,7 @@
           <div
             class="p-4 bg-purple-50 dark:bg-purple-900/10 border border-purple-100 dark:border-purple-800/20 border-l-4 border-l-purple-400 rounded-xl">
             <div class="text-[10px] text-purple-600 dark:text-purple-400 font-bold uppercase tracking-wider mb-1">
-              Сильная сторона</div>
+              Strength</div>
             <div class="text-sm font-bold text-zinc-900 dark:text-white mb-1 uppercase">{{
               dominantInsight.strength.trait
             }}</div>
@@ -38,7 +38,7 @@
           </div>
           <div
             class="p-4 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 border-l-4 border-l-zinc-400 rounded-xl">
-            <div class="text-[10px] text-zinc-500 font-bold uppercase tracking-wider mb-1">Зона роста</div>
+            <div class="text-[10px] text-zinc-500 font-bold uppercase tracking-wider mb-1">Growth Zone</div>
             <div class="text-sm font-bold text-zinc-900 dark:text-white mb-1 uppercase">{{ dominantInsight.growth.trait
             }}
             </div>
@@ -89,7 +89,7 @@
           class="bg-zinc-50 dark:bg-zinc-800/30 p-6 border border-zinc-200 dark:border-zinc-700 border-l-4 border-l-amber-500 rounded-2xl">
           <h3 class="font-bold uppercase tracking-wide text-zinc-900 dark:text-white mb-4 flex items-center gap-2">
             <i class="fas fa-masks-theater text-amber-500"></i>
-            Ваши Архетипы
+            Your Archetypes
           </h3>
           <div class="flex flex-wrap gap-2">
             <div v-for="arc in topArchetypes" :key="arc.name"
@@ -97,8 +97,9 @@
               <span>{{ arc.name }}</span>
               <span class="text-amber-500">{{ arc.level }}%</span>
             </div>
-            <div v-if="!topArchetypes.length" class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Тест на
-              архетипы еще не пройден
+            <div v-if="!topArchetypes.length" class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Archetype
+              test
+              not yet taken
             </div>
           </div>
         </div>
@@ -106,7 +107,7 @@
         <!-- Recent Achievements -->
         <div
           class="bg-white dark:bg-zinc-900 p-6 border border-zinc-200 dark:border-zinc-800 border-l-4 border-l-emerald-500 rounded-2xl flex-1">
-          <h3 class="font-bold uppercase tracking-wide text-zinc-900 dark:text-white mb-4">Вехи роста</h3>
+          <h3 class="font-bold uppercase tracking-wide text-zinc-900 dark:text-white mb-4">Growth Milestones</h3>
           <div class="space-y-4">
             <div v-for="ach in achievements.slice(0, 3)" :key="ach.id" class="flex items-start gap-4 group">
               <div
@@ -120,7 +121,7 @@
               </div>
             </div>
             <div v-if="!achievements.length"
-              class="text-center py-4 text-zinc-400 text-xs font-bold uppercase tracking-wider">Начните тренировки
+              class="text-center py-4 text-zinc-400 text-xs font-bold uppercase tracking-wider">Start training
             </div>
           </div>
         </div>
@@ -140,25 +141,25 @@ const props = defineProps({
 
 // Insight Logic
 const traitInsights = {
-  'Открытость': {
-    high: "Вы обладаете живым воображением и открыты к новым идеям.",
-    low: "Вы предпочитаете проверенные методы и конкретные факты."
+  'Openness': {
+    high: "You have a vivid imagination and are open to new ideas.",
+    low: "You prefer proven methods and concrete facts."
   },
-  'Добросовестность': {
-    high: "Вы организованы, дисциплинированы и всегда доводите дело до конца.",
-    low: "Вы спонтанны и гибки, но иногда можете отвлекаться от целей."
+  'Conscientiousness': {
+    high: "You are organized, disciplined, and always follow through.",
+    low: "You are spontaneous and flexible, but can sometimes get distracted from goals."
   },
-  'Экстраверсия': {
-    high: "Вы заряжаетесь энергией от общения и любите быть в центре внимания.",
-    low: "Вы цените уединение и глубокие, содержательные разговоры."
+  'Extraversion': {
+    high: "You gain energy from interaction and love being the center of attention.",
+    low: "You value solitude and deep, meaningful conversations."
   },
-  'Доброжелательность': {
-    high: "Вы сострадательны, заботливы и легко ладите с людьми.",
-    low: "Вы прямолинейны, конкурентны и скептически относитесь к мотивам других."
+  'Agreeableness': {
+    high: "You are compassionate, caring, and get along easily with people.",
+    low: "You are straightforward, competitive, and skeptical of others' motives."
   },
-  'Нейротизм': {
-    high: "Вы чувствительны к стрессу и глубоко переживаете эмоции.",
-    low: "Вы эмоционально устойчивы и сохраняете спокойствие в трудных ситуациях."
+  'Neuroticism': {
+    high: "You are sensitive to stress and experience emotions deeply.",
+    low: "You are emotionally stable and remain calm in difficult situations."
   }
 };
 
@@ -172,11 +173,11 @@ const dominantInsight = computed(() => {
   return {
     strength: {
       trait: highest.name,
-      text: traitInsights[highest.name]?.high || "Ваша ведущая черта."
+      text: traitInsights[highest.name]?.high || "Your leading trait."
     },
     growth: {
       trait: lowest.name,
-      text: traitInsights[lowest.name]?.low || "Область для балансировки."
+      text: traitInsights[lowest.name]?.low || "Area for balancing."
     }
   };
 });

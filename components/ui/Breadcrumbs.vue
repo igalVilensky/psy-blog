@@ -5,7 +5,7 @@
         <NuxtLink to="/space"
           class="text-slate-500 hover:text-cyan-600 dark:text-slate-400 dark:hover:text-cyan-400 transition-colors flex items-center">
           <i class="fas fa-flask mr-1"></i>
-          <span class="hidden sm:inline">Лаборатория</span>
+          <span class="hidden sm:inline">Lab</span>
         </NuxtLink>
       </li>
 
@@ -54,31 +54,31 @@ const crumbs = computed(() => {
 
     // Custom mappings
     const mappings = {
-      'psychology': 'Психология',
-      'tests': 'Тесты',
-      'games': 'Игры',
-      'mindfulness': 'Медитация',
+      'psychology': 'Psychology',
+      'tests': 'Tests',
+      'games': 'Games',
+      'mindfulness': 'Meditation',
 
-      'dashboard': 'Центр Управления',
-      'growth': 'Саморазвитие',
-      // 'analysis': 'Обсерватория', // Removed as page is deleted
-      'community': 'Сообщество',
+      'dashboard': 'Control Center',
+      'growth': 'Self-Development',
+      // 'analysis': 'Observatory', // Removed as page is deleted
+      'community': 'Community',
       'trail-making': 'Trail Making Test',
-      'ego-states': 'Эго-состояния',
-      'cognitive-illusions': 'Когнитивные иллюзии',
-      'emotion-lab': 'Эмоциональная лаборатория',
-      'social': 'Социальная психология',
-      'personality': 'Личность',
-      'stroop': 'Тест Струпа',
-      'reaction': 'Реакция',
+      'ego-states': 'Ego States',
+      'cognitive-illusions': 'Cognitive Illusions',
+      'emotion-lab': 'Emotion Lab',
+      'social': 'Social Psychology',
+      'personality': 'Personality',
+      'stroop': 'Stroop Test',
+      'reaction': 'Reaction',
 
-      'deep-conversation': 'Глубокий разговор',
-      'habit-override': 'Перепрошивка Привычек',
-      'habit-mood-journal': 'Дневник Состояния',
-      'blog': 'Блог',
-      'emotional-compass': 'Эмоциональный компас',
-      'journal-history': 'История журнала',
-      'analysis': 'Анализ',
+      'deep-conversation': 'Deep Conversation',
+      'habit-override': 'Habit Rewiring',
+      'habit-mood-journal': 'State Journal',
+      'blog': 'Blog',
+      'emotional-compass': 'Emotional Compass',
+      'journal-history': 'Journal History',
+      'analysis': 'Analysis',
     };
 
     if (mappings[segment]) {

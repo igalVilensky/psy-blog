@@ -8,7 +8,7 @@
       </div>
       <div>
         <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-tight text-zinc-900 dark:text-white">
-          Когнитивный Потенциал</h2>
+          Cognitive Potential</h2>
         <p class="text-xs font-bold text-zinc-500 uppercase tracking-wide mt-1">Potentia Cognitiva</p>
       </div>
     </div>
@@ -18,30 +18,30 @@
       <div
         class="lg:col-span-2 bg-white dark:bg-zinc-900 p-6 border border-zinc-200 dark:border-zinc-800 border-l-4 border-l-cyan-500 rounded-2xl">
         <div class="flex items-center justify-between mb-8">
-          <h3 class="font-bold uppercase tracking-wide text-zinc-900 dark:text-white">Эффективность тренировок</h3>
+          <h3 class="font-bold uppercase tracking-wide text-zinc-900 dark:text-white">Training Efficiency</h3>
           <div class="flex gap-2">
             <span
               class="px-3 py-1.5 bg-cyan-50 dark:bg-cyan-900/20 text-cyan-700 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800/50 text-[10px] font-bold uppercase tracking-wider rounded-lg">{{
-                summary.totalSessions }} Сессий</span>
+                summary.totalSessions }} Sessions</span>
           </div>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
           <div
             class="p-4 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-center rounded-xl">
-            <div class="text-[10px] text-zinc-400 uppercase font-bold tracking-wider mb-1">Точность</div>
+            <div class="text-[10px] text-zinc-400 uppercase font-bold tracking-wider mb-1">Accuracy</div>
             <div class="text-3xl font-bold text-zinc-900 dark:text-white">{{ summary.avgAccuracy }}%</div>
             <div class="w-8 h-1 bg-gradient-to-r from-cyan-500 to-blue-600 mx-auto mt-2 rounded-full"></div>
           </div>
           <div
             class="p-4 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-center rounded-xl">
-            <div class="text-[10px] text-zinc-400 uppercase font-bold tracking-wider mb-1">Фокус</div>
-            <div class="text-3xl font-bold text-zinc-900 dark:text-white">Высокий</div>
+            <div class="text-[10px] text-zinc-400 uppercase font-bold tracking-wider mb-1">Focus</div>
+            <div class="text-3xl font-bold text-zinc-900 dark:text-white">High</div>
             <div class="w-8 h-1 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto mt-2 rounded-full"></div>
           </div>
           <div
             class="p-4 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-center rounded-xl">
-            <div class="text-[10px] text-zinc-400 uppercase font-bold tracking-wider mb-1">Лучший счет</div>
+            <div class="text-[10px] text-zinc-400 uppercase font-bold tracking-wider mb-1">Best Score</div>
             <div class="text-3xl font-bold text-zinc-900 dark:text-white">{{ summary.bestScore }}%</div>
             <div class="w-8 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 mx-auto mt-2 rounded-full"></div>
           </div>
@@ -52,9 +52,9 @@
           <table class="w-full text-left text-sm">
             <thead class="bg-zinc-50 dark:bg-zinc-800 text-zinc-500 border-b border-zinc-200 dark:border-zinc-700">
               <tr>
-                <th class="px-4 py-3 font-bold uppercase tracking-wider text-[10px]">Упражнение</th>
-                <th class="px-4 py-3 font-bold uppercase tracking-wider text-[10px] text-center">Результат</th>
-                <th class="px-4 py-3 font-bold uppercase tracking-wider text-[10px] text-right">Статус</th>
+                <th class="px-4 py-3 font-bold uppercase tracking-wider text-[10px]">Exercise</th>
+                <th class="px-4 py-3 font-bold uppercase tracking-wider text-[10px] text-center">Result</th>
+                <th class="px-4 py-3 font-bold uppercase tracking-wider text-[10px] text-right">Status</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-zinc-100 dark:divide-zinc-700">
@@ -88,7 +88,7 @@
         <h3
           class="font-bold uppercase tracking-wide text-zinc-900 dark:text-white mb-6 relative z-10 flex items-center gap-2">
           <i class="fas fa-wave-square text-indigo-500"></i>
-          Активность
+          Activity
         </h3>
 
         <div class="flex-1 flex items-center justify-center p-4 relative z-10">
@@ -96,7 +96,7 @@
             <div v-for="day in 28" :key="day" :class="[
               getDayColor(day),
               'w-4 h-4 transition-all hover:scale-110 cursor-help rounded'
-            ]" :title="`День ${day}`">
+            ]" :title="`Day ${day}`">
             </div>
           </div>
         </div>
@@ -104,11 +104,11 @@
         <div class="mt-6 pt-6 border-t border-zinc-200 dark:border-zinc-700 relative z-10">
           <div class="flex justify-between items-end">
             <div>
-              <div class="text-[10px] text-zinc-400 uppercase font-bold tracking-wider mb-1">Стабильность</div>
+              <div class="text-[10px] text-zinc-400 uppercase font-bold tracking-wider mb-1">Stability</div>
               <div class="text-2xl font-bold text-zinc-900 dark:text-white">84%</div>
             </div>
             <div class="text-right">
-              <div class="text-[10px] text-zinc-400 uppercase font-bold tracking-wider mb-1">Активные дни</div>
+              <div class="text-[10px] text-zinc-400 uppercase font-bold tracking-wider mb-1">Active Days</div>
               <div
                 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-400 dark:to-blue-400">
                 {{ totalActiveDays }}</div>
