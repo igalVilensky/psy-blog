@@ -28,6 +28,14 @@
               <i :class="social.icon" class="text-lg"></i>
             </a>
           </div>
+          <div class="mt-6 border-t border-zinc-200 dark:border-zinc-800 pt-6">
+            <h4 class="text-xs font-bold uppercase tracking-wider mb-3 text-zinc-800 dark:text-zinc-200">Support Us</h4>
+            <a href="https://www.paypal.com/donate/?hosted_button_id=ZXUG94X62DR5J" target="_blank" rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 px-4 py-2 border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:text-cyan-600 dark:hover:text-cyan-400 hover:border-cyan-500/50 hover:bg-cyan-500/10 hover:shadow-lg hover:shadow-cyan-500/5 transition-all duration-300 rounded-lg text-sm font-semibold">
+              <i class="fas fa-heart text-cyan-500 dark:text-cyan-400"></i>
+              Donate via PayPal
+            </a>
+          </div>
         </div>
 
         <!-- Sitemap -->
