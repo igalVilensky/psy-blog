@@ -392,6 +392,15 @@ service cloud.firestore {
       allow read, write: if isSignedIn() && request.auth.uid == userId;
     }
 
+    // Voice Echoes
+    match /users/{userId}/echoes/{echoId} {
+      allow read, write: if isSignedIn() && request.auth.uid == userId;
+      
+      match /messages/{messageId} {
+        allow read, write: if isSignedIn() && request.auth.uid == userId;
+      }
+    }
+
     // ============================================
     // TOOLS & ASSESSMENTS
     // ============================================

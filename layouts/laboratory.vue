@@ -127,6 +127,7 @@ const pageTitle = computed(() => {
     "/space/psychology": "Психология",
     "/space/mindfulness": "Медитация",
     "/space/growth/wheel-of-life": "Колесо Баланса",
+    "/echoes": "Voice → Echoes",
   };
   // Handle specific sub-routes if needed, or default
   return stationMap[route.path] || "Исследовательская Станция";

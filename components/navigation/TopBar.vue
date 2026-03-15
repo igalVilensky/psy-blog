@@ -75,6 +75,12 @@
                 <i class="fas fa-microphone-alt w-5 text-center"></i>
                 <span>Voice &rarr; Structure</span>
               </NuxtLink>
+              <NuxtLink to="/echoes"
+                class="flex items-center space-x-3 px-6 py-3 text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:bg-emerald-500/10 transition-colors"
+                exact-active-class="bg-emerald-500/20" @click="closeDropdown">
+                <i class="fas fa-leaf w-5 text-center"></i>
+                <span>Voice &rarr; Echoes</span>
+              </NuxtLink>
               <NuxtLink to="/space/community"
                 class="flex items-center space-x-3 px-6 py-3 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-cyan-500/10 transition-colors"
                 exact-active-class="text-cyan-600 dark:text-cyan-400 bg-cyan-500/10" @click="closeDropdown">
@@ -247,6 +253,7 @@
                 { label: 'Dashboard', to: '/space/dashboard', icon: 'fa-chart-pie' },
                 { label: 'Self-Development', to: '/space/growth', icon: 'fa-seedling' },
                 { label: 'Voice → Structure', to: '/space/experiments/voice-structure', icon: 'fa-microphone-alt' },
+                { label: 'Voice → Echoes', to: '/echoes', icon: 'fa-leaf' },
                 { label: 'Community', to: '/space/community', icon: 'fa-users' },
                 ...(auth.user?.isCoach ? [{ label: 'Coach Dashboard', to: '/coach', icon: 'fa-user-tie', coach: true }] : [])
               ]" :key="link.to" :to="link.to"
