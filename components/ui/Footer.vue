@@ -125,6 +125,7 @@ const sitemapLinks = computed(() => {
     { label: "Mindfulness", to: "/space/mindfulness" },
     { label: "Growth", to: "/space/growth" },
     { label: "Voice → Structure", to: "/space/experiments/voice-structure" },
+    { label: "Voice → Echoes", to: "/space/experiments/echoes" },
     { label: "Dashboard", to: "/space/dashboard" },
     { label: "Community", to: "/space/community" },
     { label: "Blog", to: "/blog" },

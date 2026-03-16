@@ -111,7 +111,7 @@ const navSections = computed(() => {
             items: [
                 { label: 'Self-Development', path: '/space/growth', icon: 'fas fa-seedling' },
                 { label: 'Voice → Structure', path: '/space/experiments/voice-structure', icon: 'fas fa-microphone-alt' },
-                { label: 'Voice → Echoes', path: '/echoes', icon: 'fas fa-leaf' },
+                { label: 'Voice → Echoes', path: '/space/experiments/echoes', icon: 'fas fa-ghost' },
                 { label: 'Psychology', path: '/space/psychology', icon: 'fas fa-book-open' },
                 { label: 'Meditation', path: '/space/mindfulness', icon: 'fas fa-spa' },
             ]
