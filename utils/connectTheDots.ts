@@ -31,17 +31,15 @@ export function toVB(p: ExperimentPoint): { cx: number; cy: number } {
   }
 }
 
-// ─── Distance utilities ────────────────────────────────────────────────────────
 /**
- * Euclidean distance between two points in normalized space, then scaled to
- * abstract board units so the result is stable across viewport resizes.
+ * Euclidean distance between two points measured in viewBox coordinates.
+ * This exactly matches the rendered route length inside the SVG board and
+ * remains stable across viewport resizes because the viewBox never changes.
  */
-const BOARD_SCALE = 1000 // multiply normalized distance by this for display units
-
 export function getDistance(a: ExperimentPoint, b: ExperimentPoint): number {
-  const dx = a.x - b.x
-  const dy = a.y - b.y
-  return Math.sqrt(dx * dx + dy * dy) * BOARD_SCALE
+  const av = toVB(a)
+  const bv = toVB(b)
+  return Math.hypot(av.cx - bv.cx, av.cy - bv.cy)
 }
 
 /**
@@ -65,8 +63,7 @@ export function getRouteDistance(
 
 // ─── Point generation ─────────────────────────────────────────────────────────
 const POINT_COUNT = 10
-const MIN_DISTANCE_NORM = 0.18  // minimum distance in normalized space
-const PADDING = 0.10            // safe padding from edges (0..1)
+const PADDING = 0.10  // safe padding from edges (0..1)
 const MAX_ATTEMPTS = 500
 
 /** Deterministic fallback layout used when random generation fails. */
@@ -98,9 +95,11 @@ export function generatePoints(): ExperimentPoint[] {
       y: PADDING + Math.random() * (1 - PADDING * 2),
     }
 
-    const tooClose = points.some(
-      (p) => Math.hypot(p.x - candidate.x, p.y - candidate.y) < MIN_DISTANCE_NORM
-    )
+    const tooClose = points.some((p) => {
+      const pv = toVB(p)
+      const cv = toVB(candidate)
+      return Math.hypot(pv.cx - cv.cx, pv.cy - cv.cy) < 80 // 80 viewBox units ≈ comfortable spacing
+    })
 
     if (!tooClose) points.push(candidate)
   }

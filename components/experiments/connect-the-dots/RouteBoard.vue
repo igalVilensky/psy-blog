@@ -196,6 +196,13 @@ function onPointClick(id: number) {
   border-radius: 50%;
 }
 
+/* Dot, label and ring are purely visual — let the hit circle own all events */
+.ctd-point-dot,
+.ctd-point-label,
+.ctd-point-ring {
+  pointer-events: none;
+}
+
 /* Dot transitions */
 .ctd-point-dot {
   transition: r 0.15s ease, fill 0.15s ease;
