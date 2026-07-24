@@ -32,7 +32,6 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "@nuxtjs/robots",
     "@nuxtjs/sitemap",
-    "@vite-pwa/nuxt",
   ],
 
   routeRules: {
@@ -42,47 +41,6 @@ export default defineNuxtConfig({
 
     "/experiments/connect-the-dots": {
       prerender: true,
-    },
-  },
-
-  pwa: {
-    registerType: "autoUpdate",
-    manifest: {
-      name: "MindQLab",
-      short_name: "MindQLab",
-      description: "Personal development system based on diagnostics and progress tracking",
-      theme_color: "#ffffff",
-      icons: [
-        {
-          src: "/android-chrome-192x192.png",
-          sizes: "192x192",
-          type: "image/png",
-        },
-        {
-          src: "/android-chrome-512x512.png",
-          sizes: "512x512",
-          type: "image/png",
-        },
-        {
-          src: "/android-chrome-512x512.png",
-          sizes: "512x512",
-          type: "image/png",
-          purpose: "any maskable",
-        },
-      ],
-    },
-    workbox: {
-      navigateFallback: "/",
-      globPatterns: ["**/*.{js,css,html,png,svg,ico}"],
-    },
-    client: {
-      installPrompt: false,
-    },
-    devOptions: {
-      enabled: true,
-      suppressWarnings: true,
-      navigateFallbackAllowlist: [/^\/$/],
-      type: "module",
     },
   },
 
