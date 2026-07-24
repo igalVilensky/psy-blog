@@ -323,7 +323,7 @@ export function solveMachineRoute(points: ExperimentPoint[]): MachineRouteResult
   )
 
   const t1 = typeof performance !== 'undefined' ? performance.now() : Date.now()
-  const computationMs = Math.max(0.1, t1 - t0)
+  const computationMs = Math.max(0, t1 - t0)
 
   return {
     initial,
@@ -341,7 +341,16 @@ export function validateMachineRoute(
   points: ExperimentPoint[],
   result: MachineRouteResult | null
 ): boolean {
-  if (!result) return false
+  if (!Array.isArray(points) || !result) return false
+
+  // Verify that the point collection itself does not contain duplicate IDs
+  const validPointIds = new Set<number>()
+  for (const point of points) {
+    if (!point || typeof point.id !== 'number' || validPointIds.has(point.id)) {
+      return false
+    }
+    validPointIds.add(point.id)
+  }
 
   const checkRoute = (r: RouteResult) => {
     if (!r || !Array.isArray(r.pointOrder)) return false
@@ -350,7 +359,7 @@ export function validateMachineRoute(
 
     const seen = new Set<number>()
     for (const id of r.pointOrder) {
-      if (typeof id !== 'number' || id < 0 || id >= points.length || seen.has(id)) {
+      if (!validPointIds.has(id) || seen.has(id)) {
         return false
       }
       seen.add(id)

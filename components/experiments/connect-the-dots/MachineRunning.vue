@@ -107,7 +107,7 @@ const distanceFormatted = computed(() => formatDistance(props.currentDistance))
 const stageInstruction = computed(() => {
   switch (props.playbackStage) {
     case 'measuring':
-      return 'Analyzing distances across all candidate paths...'
+      return 'Testing different starting points...'
     case 'building':
       return 'Generating the initial Multi-Start Nearest Neighbor route...'
     case 'optimizing':

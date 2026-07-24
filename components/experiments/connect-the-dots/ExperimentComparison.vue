@@ -128,7 +128,10 @@ const humanTimeFormatted = computed(() => formatDuration(props.humanResult.durat
 const machineDistanceFormatted = computed(() => formatDistance(machineDist.value))
 const machineInitialFormatted = computed(() => formatDistance(props.machineResult.initial.distance))
 const savedFormatted = computed(() => formatDistance(savedDistance.value))
-const computationFormatted = computed(() => `${(props.machineResult.computationMs).toFixed(1)} ms`)
+const computationFormatted = computed(() => {
+  const ms = props.machineResult.computationMs
+  return ms < 0.1 ? '< 0.1 ms' : `${ms.toFixed(1)} ms`
+})
 
 // Outcome calculation
 const diff = computed(() => Math.abs(humanDist.value - machineDist.value))
@@ -250,7 +253,7 @@ const subtextText = computed(() => {
   font-size: 0.75rem;
   color: var(--ctd-muted);
   background: rgba(255, 255, 255, 0.6);
-  border: 1px stroke var(--ctd-border);
+  border: 1px solid var(--ctd-border);
   padding: 0.5rem 1rem;
   border-radius: 4px;
   text-align: center;

@@ -141,6 +141,7 @@ export function useConnectTheDotsExperiment() {
 
   function resetRoute() {
     pointOrder.value = []
+    roundStartTime.value = Date.now()
     robotState.value = 'idle'
     robotMessage.value = ''
     statusMessage.value = 'Route reset. Choose any point to begin.'
@@ -190,27 +191,36 @@ export function useConnectTheDotsExperiment() {
     const thisRunId = currentRunId
     phase.value = 'machine-running'
 
-    // Compute machine route locally (pure algorithm)
-    const result = solveMachineRoute(points.value)
+    try {
+      // Compute machine route locally (pure algorithm)
+      const result = solveMachineRoute(points.value)
 
-    // Validate algorithm output
-    const isValid = validateMachineRoute(points.value, result)
-    if (!isValid) {
+      // Validate algorithm output
+      const isValid = validateMachineRoute(points.value, result)
+      if (!isValid) {
+        if (thisRunId !== currentRunId) return
+        machinePlaybackStage.value = 'error'
+        robotState.value = 'surprised'
+        robotMessage.value = 'Something went wrong.'
+        statusMessage.value = 'The machine could not build a valid route.'
+        return
+      }
+
+      machineResult.value = result
+      machineVisibleOrder.value = []
+      machineCurrentDistance.value = 0
+      machineOptimizationNote.value = ''
+      activeSegmentRange.value = null
+
+      // Playback sequence
+      await runPlaybackSequence(result, thisRunId)
+    } catch (err) {
+      if (thisRunId !== currentRunId) return
       machinePlaybackStage.value = 'error'
       robotState.value = 'surprised'
       robotMessage.value = 'Something went wrong.'
-      statusMessage.value = 'Machine route validation failed.'
-      return
+      statusMessage.value = 'The machine could not build a valid route.'
     }
-
-    machineResult.value = result
-    machineVisibleOrder.value = []
-    machineCurrentDistance.value = 0
-    machineOptimizationNote.value = ''
-    activeSegmentRange.value = null
-
-    // Playback sequence
-    await runPlaybackSequence(result, thisRunId)
   }
 
   async function runPlaybackSequence(res: MachineRouteResult, thisRunId: number) {
