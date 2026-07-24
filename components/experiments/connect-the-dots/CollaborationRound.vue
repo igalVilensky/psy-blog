@@ -13,13 +13,42 @@
       </div>
     </div>
 
+    <div
+      class="ctd-collab-mode"
+      role="group"
+      aria-label="Collaboration operation"
+    >
+      <button
+        id="ctd-mode-reverse-btn"
+        class="ctd-collab-mode__button"
+        :class="{ 'ctd-collab-mode__button--active': editMode === 'reverse-section' }"
+        type="button"
+        :aria-pressed="editMode === 'reverse-section'"
+        @click="$emit('setEditMode', 'reverse-section')"
+      >
+        REVERSE SECTION
+      </button>
+      <button
+        id="ctd-mode-move-btn"
+        class="ctd-collab-mode__button"
+        :class="{ 'ctd-collab-mode__button--active': editMode === 'move-point' }"
+        type="button"
+        :aria-pressed="editMode === 'move-point'"
+        @click="$emit('setEditMode', 'move-point')"
+      >
+        MOVE POINT
+      </button>
+    </div>
+
     <RouteBoard
       :points="points"
       :pointOrder="collaborationOrder"
       :selectedSet="selectedSet"
       routeColor="#3567D6"
-      editMode="segment"
+      :editMode="editMode"
       :selectedEditIndices="selectedEditIndices"
+      :moveSourceIndex="moveSourceIndex"
+      :moveDestinationIndex="moveDestinationIndex"
       :candidateOrder="candidateOrder"
       :activeSegmentRange="activeSegmentRange"
       @selectRouteIndex="$emit('selectRouteIndex', $event)"
@@ -124,7 +153,9 @@ import { computed } from 'vue'
 import RouteBoard from './RouteBoard.vue'
 import RobotMascot from './RobotMascot.vue'
 import type {
+  CollaborationEditMode,
   CollaborationOutcome,
+  CollaborationOperation,
   ExperimentPoint,
   RobotState,
 } from '~/utils/connectTheDots'
@@ -134,8 +165,12 @@ const props = defineProps<{
   points: ExperimentPoint[]
   collaborationOrder: number[]
   selectedSet: Set<number>
+  editMode: CollaborationEditMode
   selectedEditIndices: number[]
+  moveSourceIndex: number | null
+  moveDestinationIndex: number | null
   candidateOrder: number[] | null
+  candidateOperation: CollaborationOperation | null
   currentDistance: number
   candidateDistance: number | null
   candidateDifference: number
@@ -150,6 +185,7 @@ const props = defineProps<{
 }>()
 
 defineEmits<{
+  setEditMode: [mode: CollaborationEditMode]
   selectRouteIndex: [index: number]
   acceptCandidate: []
   rejectCandidate: []
@@ -160,6 +196,13 @@ defineEmits<{
 
 const instruction = computed(() => {
   if (props.candidateOrder) return 'Review the robot measurement.'
+  if (props.editMode === 'move-point') {
+    if (props.moveSourceIndex !== null) {
+      return 'Now select the route position before which it should be inserted.'
+    }
+    return 'Select a point to move, then select where to insert it.'
+  }
+
   if (props.selectedEditIndices.length === 1) return 'Now select the other end of the section.'
   return 'Select two numbered points to reverse that route section.'
 })
@@ -191,16 +234,26 @@ const feedbackLabel = computed(() => {
 const feedbackText = computed(() => {
   if (props.feedback === 'better') {
     const pct = Math.abs(props.candidatePercentage)
+    if (props.candidateOperation === 'move-point') {
+      return pct >= 1
+        ? `This move improves the current route by ${pct.toFixed(1)}%.`
+        : `This move saves ${formatDistance(Math.abs(props.candidateDifference))} units.`
+    }
+
     return pct >= 1
       ? `This improves the current route by ${pct.toFixed(1)}%.`
       : `This saves ${formatDistance(Math.abs(props.candidateDifference))} units.`
   }
 
   if (props.feedback === 'worse') {
-    return 'Accept is disabled because the current route is shorter.'
+    return props.candidateOperation === 'move-point'
+      ? 'Accept is disabled because this relocation is longer.'
+      : 'Accept is disabled because the current route is shorter.'
   }
 
-  return 'This route has effectively the same measured length.'
+  return props.candidateOperation === 'move-point'
+    ? 'This relocation has effectively the same measured length.'
+    : 'This route has effectively the same measured length.'
 })
 </script>
 
@@ -242,6 +295,49 @@ const feedbackText = computed(() => {
   color: var(--ctd-muted);
   margin: 0;
   line-height: 1.5;
+}
+
+.ctd-collab-mode {
+  display: inline-grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.35rem;
+  padding: 0.25rem;
+  background: var(--ctd-surface);
+  border: 1px solid var(--ctd-border);
+  border-radius: 6px;
+  align-self: flex-start;
+}
+
+.ctd-collab-mode__button {
+  appearance: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--ctd-muted);
+  cursor: pointer;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  line-height: 1.1;
+  padding: 0.55rem 0.75rem;
+  text-transform: uppercase;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+  white-space: nowrap;
+}
+
+.ctd-collab-mode__button--active {
+  background: #EAF0FF;
+  border-color: #C4D6FC;
+  color: var(--ctd-robot);
+}
+
+.ctd-collab-mode__button:hover {
+  border-color: var(--ctd-border);
+}
+
+.ctd-collab-mode__button:focus-visible {
+  outline: 2px solid var(--ctd-robot);
+  outline-offset: 2px;
 }
 
 .ctd-collab-controls {
@@ -390,6 +486,16 @@ const feedbackText = computed(() => {
 }
 
 @media (max-width: 430px) {
+  .ctd-collab-mode {
+    align-self: stretch;
+  }
+
+  .ctd-collab-mode__button {
+    min-width: 0;
+    padding-inline: 0.45rem;
+    white-space: normal;
+  }
+
   .ctd-collab-controls__stats {
     padding: 0.85rem;
   }

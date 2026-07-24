@@ -6,6 +6,8 @@ import {
   type HumanRouteResult,
   type MachineRouteResult,
   type CollaborationChange,
+  type CollaborationEditMode,
+  type CollaborationOperation,
   type CollaborationOutcome,
   type CollaborationResult,
   type RobotState,
@@ -16,7 +18,9 @@ import {
   validateMachineRoute,
   validateRouteOrder,
   reverseRouteSection,
+  moveRoutePoint,
   evaluateCollaborationChange,
+  optimizeRouteTwoOpt,
 } from '~/utils/connectTheDots'
 
 const TOTAL_POINTS = 10
@@ -48,10 +52,14 @@ export function useConnectTheDotsExperiment() {
   const collaborationBaselineOrder = ref<number[]>([])
   const collaborationBaselineDistance = ref<number>(0)
   const collaborationCurrentDistance = ref<number>(0)
+  const collaborationEditMode = ref<CollaborationEditMode>('reverse-section')
   const collaborationFirstIndex = ref<number | null>(null)
   const collaborationSecondIndex = ref<number | null>(null)
+  const selectedMoveSourceIndex = ref<number | null>(null)
+  const selectedMoveDestinationIndex = ref<number | null>(null)
   const collaborationCandidateOrder = ref<number[] | null>(null)
   const collaborationCandidateDistance = ref<number | null>(null)
+  const collaborationCandidateOperation = ref<CollaborationOperation | null>(null)
   const collaborationCandidateDifference = ref<number>(0)
   const collaborationCandidatePercentage = ref<number>(0)
   const collaborationFeedback = ref<'idle' | 'selecting' | CollaborationOutcome>('idle')
@@ -95,16 +103,25 @@ export function useConnectTheDotsExperiment() {
 
   const collaborationSelectedEditIndices = computed(() => {
     const indices: number[] = []
-    if (collaborationFirstIndex.value !== null) {
+    if (collaborationEditMode.value === 'reverse-section' && collaborationFirstIndex.value !== null) {
       indices.push(collaborationFirstIndex.value)
     }
-    if (collaborationSecondIndex.value !== null) {
+    if (collaborationEditMode.value === 'reverse-section' && collaborationSecondIndex.value !== null) {
       indices.push(collaborationSecondIndex.value)
+    }
+    if (collaborationEditMode.value === 'move-point' && selectedMoveSourceIndex.value !== null) {
+      indices.push(selectedMoveSourceIndex.value)
+    }
+    if (collaborationEditMode.value === 'move-point' && selectedMoveDestinationIndex.value !== null) {
+      indices.push(selectedMoveDestinationIndex.value)
     }
     return indices
   })
 
   const collaborationActiveSegmentRange = computed<[number, number] | null>(() => {
+    if (collaborationEditMode.value !== 'reverse-section') {
+      return null
+    }
     if (
       collaborationFirstIndex.value === null ||
       collaborationSecondIndex.value === null
@@ -124,6 +141,36 @@ export function useConnectTheDotsExperiment() {
 
   const collaborationRejectedChanges = computed(
     () => collaborationHistory.value.filter((change) => !change.accepted).length
+  )
+
+  const collaborationReverseProposals = computed(
+    () => collaborationHistory.value.filter((change) => change.operation === 'reverse-section').length
+  )
+
+  const collaborationMoveProposals = computed(
+    () => collaborationHistory.value.filter((change) => change.operation === 'move-point').length
+  )
+
+  const collaborationAcceptedReversals = computed(
+    () =>
+      collaborationHistory.value.filter(
+        (change) => change.accepted && change.operation === 'reverse-section'
+      ).length
+  )
+
+  const collaborationAcceptedMoves = computed(
+    () =>
+      collaborationHistory.value.filter(
+        (change) => change.accepted && change.operation === 'move-point'
+      ).length
+  )
+
+  const collaborationMachineFollowUpImprovements = computed(
+    () =>
+      collaborationHistory.value.reduce(
+        (total, change) => total + (change.accepted ? change.machineFollowUpImprovements || 0 : 0),
+        0
+      )
   )
 
   const canUndoCollaboration = computed(
@@ -158,10 +205,14 @@ export function useConnectTheDotsExperiment() {
     collaborationBaselineOrder.value = []
     collaborationBaselineDistance.value = 0
     collaborationCurrentDistance.value = 0
+    collaborationEditMode.value = 'reverse-section'
     collaborationFirstIndex.value = null
     collaborationSecondIndex.value = null
+    selectedMoveSourceIndex.value = null
+    selectedMoveDestinationIndex.value = null
     collaborationCandidateOrder.value = null
     collaborationCandidateDistance.value = null
+    collaborationCandidateOperation.value = null
     collaborationCandidateDifference.value = 0
     collaborationCandidatePercentage.value = 0
     collaborationFeedback.value = 'idle'
@@ -173,8 +224,11 @@ export function useConnectTheDotsExperiment() {
   function clearCollaborationCandidate() {
     collaborationFirstIndex.value = null
     collaborationSecondIndex.value = null
+    selectedMoveSourceIndex.value = null
+    selectedMoveDestinationIndex.value = null
     collaborationCandidateOrder.value = null
     collaborationCandidateDistance.value = null
+    collaborationCandidateOperation.value = null
     collaborationCandidateDifference.value = 0
     collaborationCandidatePercentage.value = 0
     collaborationFeedback.value = 'selecting'
@@ -183,22 +237,49 @@ export function useConnectTheDotsExperiment() {
   function outcomeRobotMessage(
     outcome: CollaborationOutcome,
     difference: number,
-    percentageDifference: number
+    percentageDifference: number,
+    operation: CollaborationOperation
   ): string {
     const units = formatDistance(Math.abs(difference))
     const pct = Math.abs(percentageDifference)
 
     if (outcome === 'better') {
+      if (operation === 'move-point') {
+        return pct >= 1
+          ? `Good move. This saves ${Math.round(pct)}%.`
+          : `Relocating that point saves ${units} units.`
+      }
       return pct >= 1
         ? `Good catch. This saves ${Math.round(pct)}%.`
         : `That shortens the route by ${units} units.`
     }
 
     if (outcome === 'worse') {
+      if (operation === 'move-point') {
+        return `That relocation adds ${units} units.`
+      }
       return `That adds ${units} units. Let us keep the shorter route.`
     }
 
-    return 'Different shape, same distance.'
+    return operation === 'move-point'
+      ? 'That move is effectively neutral.'
+      : 'Different shape, same distance.'
+  }
+
+  function setCollaborationEditMode(mode: CollaborationEditMode) {
+    if (collaborationEditMode.value === mode) return
+
+    collaborationEditMode.value = mode
+    clearCollaborationCandidate()
+    robotState.value = 'ready'
+    robotMessage.value =
+      mode === 'move-point'
+        ? 'Move one point.'
+        : 'Reverse a section.'
+    statusMessage.value =
+      mode === 'move-point'
+        ? 'Move Point mode selected.'
+        : 'Reverse Section mode selected.'
   }
 
   // ─── Human Actions ──────────────────────────────────────────────────────────
@@ -461,8 +542,11 @@ export function useConnectTheDotsExperiment() {
     collaborationCurrentDistance.value = machineResult.value.optimized.distance
     collaborationFirstIndex.value = null
     collaborationSecondIndex.value = null
+    selectedMoveSourceIndex.value = null
+    selectedMoveDestinationIndex.value = null
     collaborationCandidateOrder.value = null
     collaborationCandidateDistance.value = null
+    collaborationCandidateOperation.value = null
     collaborationCandidateDifference.value = 0
     collaborationCandidatePercentage.value = 0
     collaborationFeedback.value = 'selecting'
@@ -471,8 +555,14 @@ export function useConnectTheDotsExperiment() {
     collaborationStartTime.value = Date.now()
 
     robotState.value = 'ready'
-    robotMessage.value = 'Select two points.'
-    statusMessage.value = 'Collaboration started. Select the first route boundary.'
+    robotMessage.value =
+      collaborationEditMode.value === 'move-point'
+        ? 'Move one point.'
+        : 'Select two points.'
+    statusMessage.value =
+      collaborationEditMode.value === 'move-point'
+        ? 'Collaboration started. Select the route point to move.'
+        : 'Collaboration started. Select the first route boundary.'
     phase.value = 'collaboration'
   }
 
@@ -483,6 +573,15 @@ export function useConnectTheDotsExperiment() {
       return
     }
 
+    if (collaborationEditMode.value === 'move-point') {
+      selectMovePointIndex(index)
+      return
+    }
+
+    selectReverseSectionIndex(index)
+  }
+
+  function selectReverseSectionIndex(index: number) {
     if (collaborationFirstIndex.value === null) {
       collaborationFirstIndex.value = index
       collaborationFeedback.value = 'selecting'
@@ -525,6 +624,7 @@ export function useConnectTheDotsExperiment() {
       candidateOrder
     )
 
+    collaborationCandidateOperation.value = 'reverse-section'
     collaborationCandidateOrder.value = [...evaluation.candidateOrder]
     collaborationCandidateDistance.value = evaluation.candidateDistance
     collaborationCandidateDifference.value = evaluation.difference
@@ -534,7 +634,8 @@ export function useConnectTheDotsExperiment() {
     robotMessage.value = outcomeRobotMessage(
       evaluation.outcome,
       evaluation.difference,
-      evaluation.percentageDifference
+      evaluation.percentageDifference,
+      'reverse-section'
     )
 
     const verb =
@@ -552,39 +653,150 @@ export function useConnectTheDotsExperiment() {
       `Candidate route created from positions ${fromIndex + 1} through ${toIndex + 1}. ${detail}`
   }
 
+  function selectMovePointIndex(index: number) {
+    if (selectedMoveSourceIndex.value === null) {
+      selectedMoveSourceIndex.value = index
+      collaborationFeedback.value = 'selecting'
+      robotState.value = 'watching'
+      robotMessage.value = 'Choose where to insert it.'
+      statusMessage.value = `Selected route position ${index + 1} to move.`
+      return
+    }
+
+    if (index === selectedMoveSourceIndex.value) {
+      selectedMoveSourceIndex.value = null
+      collaborationFeedback.value = 'selecting'
+      robotState.value = 'ready'
+      robotMessage.value = 'Move one point.'
+      statusMessage.value = 'Move selection cleared. Select the route point to move.'
+      return
+    }
+
+    selectedMoveDestinationIndex.value = index
+
+    const candidateOrder = moveRoutePoint(
+      collaborationOrder.value,
+      selectedMoveSourceIndex.value,
+      index
+    )
+
+    if (!candidateOrder) {
+      clearCollaborationCandidate()
+      robotState.value = 'ready'
+      robotMessage.value = 'Choose another destination.'
+      statusMessage.value = 'That selection would not change the route. Choose another destination.'
+      return
+    }
+
+    if (!validateRouteOrder(points.value, candidateOrder)) {
+      clearCollaborationCandidate()
+      robotState.value = 'surprised'
+      robotMessage.value = 'That move is not valid.'
+      statusMessage.value = 'The moved-point candidate was invalid and has been cleared.'
+      return
+    }
+
+    const evaluation = evaluateCollaborationChange(
+      points.value,
+      collaborationOrder.value,
+      candidateOrder
+    )
+
+    collaborationCandidateOperation.value = 'move-point'
+    collaborationCandidateOrder.value = [...evaluation.candidateOrder]
+    collaborationCandidateDistance.value = evaluation.candidateDistance
+    collaborationCandidateDifference.value = evaluation.difference
+    collaborationCandidatePercentage.value = evaluation.percentageDifference
+    collaborationFeedback.value = evaluation.outcome
+    robotState.value = evaluation.outcome === 'worse' ? 'surprised' : 'optimizing'
+    robotMessage.value = outcomeRobotMessage(
+      evaluation.outcome,
+      evaluation.difference,
+      evaluation.percentageDifference,
+      'move-point'
+    )
+
+    const detail =
+      evaluation.outcome === 'equal'
+        ? 'Candidate route length is effectively unchanged.'
+        : evaluation.outcome === 'better'
+          ? `Candidate shortens the route by ${formatDistance(Math.abs(evaluation.difference))} units.`
+          : `Candidate adds ${formatDistance(Math.abs(evaluation.difference))} units.`
+
+    statusMessage.value =
+      `Candidate created by moving route position ${selectedMoveSourceIndex.value + 1} before position ${index + 1}. ${detail}`
+  }
+
   function acceptCollaborationCandidate() {
     if (
       !collaborationCandidateOrder.value ||
       collaborationCandidateDistance.value === null ||
-      collaborationFirstIndex.value === null ||
-      collaborationSecondIndex.value === null ||
-      collaborationFeedback.value === 'worse'
+      collaborationCandidateOperation.value === null ||
+      collaborationFeedback.value === 'worse' ||
+      collaborationFeedback.value === 'idle' ||
+      collaborationFeedback.value === 'selecting'
     ) {
       return
     }
 
-    const fromIndex = Math.min(collaborationFirstIndex.value, collaborationSecondIndex.value)
-    const toIndex = Math.max(collaborationFirstIndex.value, collaborationSecondIndex.value)
+    const operation = collaborationCandidateOperation.value
+    const outcome = collaborationFeedback.value
+    const beforeOrder = [...collaborationOrder.value]
+    let finalAcceptedOrder = [...collaborationCandidateOrder.value]
+    let finalAcceptedDistance = collaborationCandidateDistance.value
+    let machineFollowUpImprovements = 0
+
+    if (operation === 'move-point') {
+      const { optimizedRoute, improvements } = optimizeRouteTwoOpt(
+        points.value,
+        finalAcceptedOrder
+      )
+
+      if (
+        improvements.length > 0 &&
+        optimizedRoute.distance < finalAcceptedDistance
+      ) {
+        finalAcceptedOrder = [...optimizedRoute.pointOrder]
+        finalAcceptedDistance = optimizedRoute.distance
+        machineFollowUpImprovements = improvements.length
+      }
+    }
+
     const change: CollaborationChange = {
-      beforeOrder: [...collaborationOrder.value],
+      operation,
+      beforeOrder,
       candidateOrder: [...collaborationCandidateOrder.value],
+      finalAcceptedOrder: [...finalAcceptedOrder],
       beforeDistance: collaborationCurrentDistance.value,
       candidateDistance: collaborationCandidateDistance.value,
-      fromIndex,
-      toIndex,
-      outcome: collaborationFeedback.value,
+      humanCandidateDistance: collaborationCandidateDistance.value,
+      finalAcceptedDistance,
+      outcome,
       accepted: true,
+      machineFollowUpImprovements,
+    }
+
+    if (operation === 'reverse-section') {
+      if (collaborationFirstIndex.value === null || collaborationSecondIndex.value === null) return
+      change.fromIndex = Math.min(collaborationFirstIndex.value, collaborationSecondIndex.value)
+      change.toIndex = Math.max(collaborationFirstIndex.value, collaborationSecondIndex.value)
+    } else {
+      if (selectedMoveSourceIndex.value === null || selectedMoveDestinationIndex.value === null) return
+      change.sourceIndex = selectedMoveSourceIndex.value
+      change.destinationIndex = selectedMoveDestinationIndex.value
     }
 
     collaborationHistory.value = [...collaborationHistory.value, change]
-    collaborationOrder.value = [...collaborationCandidateOrder.value]
-    collaborationCurrentDistance.value = collaborationCandidateDistance.value
+    collaborationOrder.value = [...finalAcceptedOrder]
+    collaborationCurrentDistance.value = finalAcceptedDistance
     clearCollaborationCandidate()
     robotState.value = 'finished'
     robotMessage.value =
-      change.outcome === 'better'
-        ? `Accepted. Saved ${formatDistance(Math.abs(change.beforeDistance - change.candidateDistance))} units.`
-        : 'Accepted. Distance unchanged.'
+      machineFollowUpImprovements > 0
+        ? 'Your move opened a better path. I shortened it further.'
+        : change.outcome === 'better'
+          ? `Accepted. Saved ${formatDistance(Math.abs(change.beforeDistance - finalAcceptedDistance))} units.`
+          : 'Accepted. Distance unchanged.'
     statusMessage.value = 'Candidate accepted.'
   }
 
@@ -592,25 +804,33 @@ export function useConnectTheDotsExperiment() {
     if (
       !collaborationCandidateOrder.value ||
       collaborationCandidateDistance.value === null ||
-      collaborationFirstIndex.value === null ||
-      collaborationSecondIndex.value === null ||
+      collaborationCandidateOperation.value === null ||
       collaborationFeedback.value === 'idle' ||
       collaborationFeedback.value === 'selecting'
     ) {
       return
     }
 
-    const fromIndex = Math.min(collaborationFirstIndex.value, collaborationSecondIndex.value)
-    const toIndex = Math.max(collaborationFirstIndex.value, collaborationSecondIndex.value)
+    const operation = collaborationCandidateOperation.value
     const change: CollaborationChange = {
+      operation,
       beforeOrder: [...collaborationOrder.value],
       candidateOrder: [...collaborationCandidateOrder.value],
       beforeDistance: collaborationCurrentDistance.value,
       candidateDistance: collaborationCandidateDistance.value,
-      fromIndex,
-      toIndex,
       outcome: collaborationFeedback.value,
       accepted: false,
+      machineFollowUpImprovements: 0,
+    }
+
+    if (operation === 'reverse-section') {
+      if (collaborationFirstIndex.value === null || collaborationSecondIndex.value === null) return
+      change.fromIndex = Math.min(collaborationFirstIndex.value, collaborationSecondIndex.value)
+      change.toIndex = Math.max(collaborationFirstIndex.value, collaborationSecondIndex.value)
+    } else {
+      if (selectedMoveSourceIndex.value === null || selectedMoveDestinationIndex.value === null) return
+      change.sourceIndex = selectedMoveSourceIndex.value
+      change.destinationIndex = selectedMoveDestinationIndex.value
     }
 
     collaborationHistory.value = [...collaborationHistory.value, change]
@@ -645,9 +865,7 @@ export function useConnectTheDotsExperiment() {
 
     collaborationOrder.value = [...collaborationBaselineOrder.value]
     collaborationCurrentDistance.value = collaborationBaselineDistance.value
-    collaborationHistory.value = collaborationHistory.value.filter(
-      (change) => !change.accepted
-    )
+    collaborationHistory.value = []
     clearCollaborationCandidate()
     robotState.value = 'ready'
     robotMessage.value = 'Back to the machine route.'
@@ -675,6 +893,11 @@ export function useConnectTheDotsExperiment() {
       finalDistance: collaborationCurrentDistance.value,
       acceptedChanges,
       rejectedChanges,
+      reverseProposals: collaborationReverseProposals.value,
+      moveProposals: collaborationMoveProposals.value,
+      acceptedReversals: collaborationAcceptedReversals.value,
+      acceptedMoves: collaborationAcceptedMoves.value,
+      machineFollowUpImprovements: collaborationMachineFollowUpImprovements.value,
       totalSaved: collaborationBaselineDistance.value - collaborationCurrentDistance.value,
       durationMs: Math.max(0, Date.now() - collaborationStartTime.value),
     }
@@ -740,10 +963,14 @@ export function useConnectTheDotsExperiment() {
     collaborationBaselineOrder,
     collaborationBaselineDistance,
     collaborationCurrentDistance,
+    collaborationEditMode,
     collaborationFirstIndex,
     collaborationSecondIndex,
+    selectedMoveSourceIndex,
+    selectedMoveDestinationIndex,
     collaborationCandidateOrder,
     collaborationCandidateDistance,
+    collaborationCandidateOperation,
     collaborationCandidateDifference,
     collaborationCandidatePercentage,
     collaborationFeedback,
@@ -764,6 +991,11 @@ export function useConnectTheDotsExperiment() {
     collaborationActiveSegmentRange,
     collaborationAcceptedChanges,
     collaborationRejectedChanges,
+    collaborationReverseProposals,
+    collaborationMoveProposals,
+    collaborationAcceptedReversals,
+    collaborationAcceptedMoves,
+    collaborationMachineFollowUpImprovements,
     canUndoCollaboration,
     canFinishCollaboration,
 
@@ -779,6 +1011,7 @@ export function useConnectTheDotsExperiment() {
     viewComparisonResults,
     continueToCollaborationIntro,
     startCollaboration,
+    setCollaborationEditMode,
     selectCollaborationRouteIndex,
     acceptCollaborationCandidate,
     rejectCollaborationCandidate,

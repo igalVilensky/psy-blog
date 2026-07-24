@@ -112,11 +112,14 @@
           :r="pointRadius(point.id)"
           :fill="pointFill(point.id)"
           :stroke="pointStroke(point.id)"
-          :stroke-width="isEditBoundary(point.id) ? 4 : selectedSet.has(point.id) ? 2 : 1.5"
+          :stroke-width="pointStrokeWidth(point.id)"
+          :stroke-dasharray="isMoveDestination(point.id) ? '7 5' : undefined"
           class="ctd-point-dot"
           :class="{
             'ctd-point-dot--selected': selectedSet.has(point.id),
             'ctd-point-dot--boundary': isEditBoundary(point.id),
+            'ctd-point-dot--move-source': isMoveSource(point.id),
+            'ctd-point-dot--move-destination': isMoveDestination(point.id),
           }"
           aria-hidden="true"
         />
@@ -180,8 +183,10 @@ const props = withDefaults(
     routeColor?: string
     showSequenceNumbers?: boolean
     activeSegmentRange?: [number, number] | null
-    editMode?: 'none' | 'segment'
+    editMode?: 'none' | 'reverse-section' | 'move-point'
     selectedEditIndices?: number[]
+    moveSourceIndex?: number | null
+    moveDestinationIndex?: number | null
     candidateOrder?: number[] | null
   }>(),
   {
@@ -191,6 +196,8 @@ const props = withDefaults(
     activeSegmentRange: null,
     editMode: 'none',
     selectedEditIndices: () => [],
+    moveSourceIndex: null,
+    moveDestinationIndex: null,
     candidateOrder: null,
   },
 )
@@ -270,46 +277,46 @@ const pointRouteIndexMap = computed(
 )
 
 function buildSegments(order: number[]): RouteSegment[] {
-    const segments: RouteSegment[] = []
+  const segments: RouteSegment[] = []
 
-    for (
-      let index = 0;
-      index < order.length - 1;
-      index++
-    ) {
-      const firstPoint = vbPointMap.value.get(
-        order[index],
-      )
+  for (
+    let index = 0;
+    index < order.length - 1;
+    index++
+  ) {
+    const firstPoint = vbPointMap.value.get(
+      order[index],
+    )
 
-      const secondPoint = vbPointMap.value.get(
-        order[index + 1],
-      )
+    const secondPoint = vbPointMap.value.get(
+      order[index + 1],
+    )
 
-      if (!firstPoint || !secondPoint) {
-        continue
-      }
-
-      let isHighlighted = false
-
-      if (props.activeSegmentRange) {
-        const [fromIndex, toIndex] =
-          props.activeSegmentRange
-
-        isHighlighted =
-          index >= fromIndex &&
-          index < toIndex
-      }
-
-      segments.push({
-        x1: firstPoint.cx,
-        y1: firstPoint.cy,
-        x2: secondPoint.cx,
-        y2: secondPoint.cy,
-        isHighlighted,
-      })
+    if (!firstPoint || !secondPoint) {
+      continue
     }
 
-    return segments
+    let isHighlighted = false
+
+    if (props.activeSegmentRange) {
+      const [fromIndex, toIndex] =
+        props.activeSegmentRange
+
+      isHighlighted =
+        index >= fromIndex &&
+        index < toIndex
+    }
+
+    segments.push({
+      x1: firstPoint.cx,
+      y1: firstPoint.cy,
+      x2: secondPoint.cx,
+      y2: secondPoint.cy,
+      isHighlighted,
+    })
+  }
+
+  return segments
 }
 
 function getOrder(id: number): number {
@@ -321,16 +328,32 @@ function pointAriaLabel(
 ): string {
   const routeIndex = pointRouteIndexMap.value.get(point.id)
 
-  if (props.editMode === 'segment' && routeIndex !== undefined) {
+  if (props.editMode === 'reverse-section' && routeIndex !== undefined) {
     if (selectedEditIndexSet.value.has(routeIndex)) {
-      return `Route position ${routeIndex + 1}, point ${point.id + 1}, selected as boundary.`
+      return `Route position ${routeIndex + 1}, point ${point.id + 1}, selected as section boundary.`
     }
 
     if (props.selectedEditIndices.length === 0) {
-      return `Route position ${routeIndex + 1}, point ${point.id + 1}. Select as first boundary.`
+      return `Route position ${routeIndex + 1}, point ${point.id + 1}. Select as first section boundary.`
     }
 
-    return `Route position ${routeIndex + 1}, point ${point.id + 1}. Select as second boundary.`
+    return `Route position ${routeIndex + 1}, point ${point.id + 1}. Select as second section boundary.`
+  }
+
+  if (props.editMode === 'move-point' && routeIndex !== undefined) {
+    if (props.moveSourceIndex === routeIndex) {
+      return `Route position ${routeIndex + 1}, point ${point.id + 1}. Selected to move.`
+    }
+
+    if (props.moveDestinationIndex === routeIndex) {
+      return `Route position ${routeIndex + 1}, point ${point.id + 1}. Selected as insertion destination.`
+    }
+
+    if (props.moveSourceIndex === null) {
+      return `Route position ${routeIndex + 1}, point ${point.id + 1}. Select this point to move.`
+    }
+
+    return `Route position ${routeIndex + 1}, point ${point.id + 1}. Insert selected point before this position.`
   }
 
   if (props.selectedSet.has(point.id)) {
@@ -345,7 +368,7 @@ function onPointClick(id: number) {
     return
   }
 
-  if (props.editMode === 'segment') {
+  if (props.editMode === 'reverse-section' || props.editMode === 'move-point') {
     const routeIndex = pointRouteIndexMap.value.get(id)
     if (routeIndex !== undefined) {
       emit('selectRouteIndex', routeIndex)
@@ -362,15 +385,33 @@ function onPointClick(id: number) {
 
 function isEditBoundary(id: number): boolean {
   const routeIndex = pointRouteIndexMap.value.get(id)
-  return routeIndex !== undefined && selectedEditIndexSet.value.has(routeIndex)
+  if (routeIndex === undefined) return false
+  if (props.editMode === 'move-point') {
+    return routeIndex === props.moveSourceIndex || routeIndex === props.moveDestinationIndex
+  }
+  return selectedEditIndexSet.value.has(routeIndex)
+}
+
+function isMoveSource(id: number): boolean {
+  const routeIndex = pointRouteIndexMap.value.get(id)
+  return props.editMode === 'move-point' && routeIndex === props.moveSourceIndex
+}
+
+function isMoveDestination(id: number): boolean {
+  const routeIndex = pointRouteIndexMap.value.get(id)
+  return props.editMode === 'move-point' && routeIndex === props.moveDestinationIndex
 }
 
 function isPointUnavailable(id: number): boolean {
-  return props.editMode !== 'segment' && props.selectedSet.has(id)
+  return (
+    props.editMode !== 'reverse-section' &&
+    props.editMode !== 'move-point' &&
+    props.selectedSet.has(id)
+  )
 }
 
 function isPointPressed(id: number): boolean {
-  if (props.editMode === 'segment') {
+  if (props.editMode === 'reverse-section' || props.editMode === 'move-point') {
     return isEditBoundary(id)
   }
 
@@ -378,18 +419,30 @@ function isPointPressed(id: number): boolean {
 }
 
 function pointRadius(id: number): number {
+  if (isMoveSource(id)) return 18
+  if (isMoveDestination(id)) return 16
   if (isEditBoundary(id)) return 17
   return props.selectedSet.has(id) ? 14 : 11
 }
 
 function pointFill(id: number): string {
+  if (isMoveSource(id)) return '#8B5CF6'
+  if (isMoveDestination(id)) return '#FFFDF7'
   if (isEditBoundary(id)) return '#8B5CF6'
   return props.selectedSet.has(id) ? activeColor.value : '#FFFDF7'
 }
 
 function pointStroke(id: number): string {
+  if (isMoveSource(id)) return '#171717'
+  if (isMoveDestination(id)) return '#8B5CF6'
   if (isEditBoundary(id)) return '#FFFDF7'
   return props.selectedSet.has(id) ? activeColor.value : '#6F6A61'
+}
+
+function pointStrokeWidth(id: number): number {
+  if (isMoveSource(id) || isMoveDestination(id)) return 4
+  if (isEditBoundary(id)) return 4
+  return props.selectedSet.has(id) ? 2 : 1.5
 }
 </script>
 

@@ -71,7 +71,12 @@
           <span>Started: {{ collaborationInitialFormatted }}</span>
           <span>Total saved: {{ collaborationSavedFormatted }}</span>
           <span>Accepted: {{ collaborationResult.acceptedChanges }}</span>
+          <span>Moved points: {{ collaborationResult.acceptedMoves }}</span>
+          <span>Reversed sections: {{ collaborationResult.acceptedReversals }}</span>
           <span>Rejected: {{ collaborationResult.rejectedChanges }}</span>
+          <span v-if="collaborationResult.machineFollowUpImprovements > 0">
+            Robot follow-up improvements: {{ collaborationResult.machineFollowUpImprovements }}
+          </span>
           <span>Time: {{ collaborationTimeFormatted }}</span>
         </div>
 

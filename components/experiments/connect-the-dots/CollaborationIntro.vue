@@ -14,7 +14,7 @@
       </p>
 
       <p class="ctd-collab-intro__note">
-        Select two route points to reverse the section between them.
+        Reverse a section or move one point to another route position.
         The robot will measure every proposal.
       </p>
 

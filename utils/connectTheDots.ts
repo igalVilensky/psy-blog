@@ -39,6 +39,12 @@ export type CollaborationOutcome =
   | 'worse'
   | 'equal'
 
+export type CollaborationOperation =
+  | 'reverse-section'
+  | 'move-point'
+
+export type CollaborationEditMode = CollaborationOperation
+
 export interface CollaborationEvaluation {
   candidateOrder: number[]
   currentDistance: number
@@ -49,14 +55,21 @@ export interface CollaborationEvaluation {
 }
 
 export interface CollaborationChange {
+  operation: CollaborationOperation
   beforeOrder: number[]
   candidateOrder: number[]
+  finalAcceptedOrder?: number[]
   beforeDistance: number
   candidateDistance: number
-  fromIndex: number
-  toIndex: number
+  finalAcceptedDistance?: number
+  humanCandidateDistance?: number
+  fromIndex?: number
+  toIndex?: number
+  sourceIndex?: number
+  destinationIndex?: number
   outcome: CollaborationOutcome
   accepted: boolean
+  machineFollowUpImprovements?: number
 }
 
 export interface CollaborationResult {
@@ -66,6 +79,11 @@ export interface CollaborationResult {
   finalDistance: number
   acceptedChanges: number
   rejectedChanges: number
+  reverseProposals: number
+  moveProposals: number
+  acceptedReversals: number
+  acceptedMoves: number
+  machineFollowUpImprovements: number
   totalSaved: number
   durationMs: number
 }
@@ -262,6 +280,56 @@ export function reverseRouteSection(
     ...order.slice(from, to + 1).reverse(),
     ...order.slice(to + 1),
   ]
+}
+
+/**
+ * Moves one route point by removing sourceIndex and inserting that point
+ * immediately before the point currently at destinationIndex.
+ * Returns null for invalid inputs or selections that leave the route unchanged.
+ */
+export function moveRoutePoint(
+  order: number[],
+  sourceIndex: number,
+  destinationIndex: number
+): number[] | null {
+  if (!Array.isArray(order)) return null
+  if (!Number.isInteger(sourceIndex) || !Number.isInteger(destinationIndex)) {
+    return null
+  }
+  if (
+    sourceIndex < 0 ||
+    destinationIndex < 0 ||
+    sourceIndex >= order.length ||
+    destinationIndex >= order.length ||
+    sourceIndex === destinationIndex
+  ) {
+    return null
+  }
+
+  const movingPointId = order[sourceIndex]
+  const withoutMovingPoint = [
+    ...order.slice(0, sourceIndex),
+    ...order.slice(sourceIndex + 1),
+  ]
+
+  const insertionIndex =
+    sourceIndex < destinationIndex
+      ? destinationIndex - 1
+      : destinationIndex
+
+  if (insertionIndex === sourceIndex) return null
+
+  const candidateOrder = [
+    ...withoutMovingPoint.slice(0, insertionIndex),
+    movingPointId,
+    ...withoutMovingPoint.slice(insertionIndex),
+  ]
+
+  const isUnchanged =
+    candidateOrder.length === order.length &&
+    candidateOrder.every((id, index) => id === order[index])
+
+  return isUnchanged ? null : candidateOrder
 }
 
 export function evaluateCollaborationChange(
