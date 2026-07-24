@@ -25,8 +25,9 @@
           :y1="seg.y1"
           :x2="seg.x2"
           :y2="seg.y2"
-          stroke="#FF5A36"
-          stroke-width="2.5"
+          :stroke="activeColor"
+          :stroke-width="seg.isHighlighted ? 4 : 2.5"
+          :opacity="seg.isHighlighted ? 1 : 0.9"
           stroke-linecap="round"
           class="ctd-route-line"
         />
@@ -34,8 +35,9 @@
 
       <!-- ── Points ── -->
       <g v-for="p in vbPoints" :key="p.id">
-        <!-- Large invisible hit target for touch -->
+        <!-- Hit target (interactive only if not readonly) -->
         <circle
+          v-if="!readonly"
           :cx="p.cx"
           :cy="p.cy"
           r="34"
@@ -55,8 +57,8 @@
           :cx="p.cx"
           :cy="p.cy"
           :r="selectedSet.has(p.id) ? 14 : 11"
-          :fill="selectedSet.has(p.id) ? '#FF5A36' : '#FFFDF7'"
-          :stroke="selectedSet.has(p.id) ? '#D94224' : '#6F6A61'"
+          :fill="selectedSet.has(p.id) ? activeColor : '#FFFDF7'"
+          :stroke="selectedSet.has(p.id) ? activeColor : '#6F6A61'"
           :stroke-width="selectedSet.has(p.id) ? 2 : 1.5"
           class="ctd-point-dot"
           :class="{ 'ctd-point-dot--selected': selectedSet.has(p.id) }"
@@ -65,7 +67,7 @@
 
         <!-- Sequence number inside selected dot -->
         <text
-          v-if="selectedSet.has(p.id)"
+          v-if="selectedSet.has(p.id) && showSequenceNumbers !== false"
           :x="p.cx"
           :y="p.cy + 1"
           text-anchor="middle"
@@ -78,14 +80,14 @@
           class="ctd-point-label"
         >{{ getOrder(p.id) }}</text>
 
-        <!-- Outer ring for unselected hover state -->
+        <!-- Outer ring for unselected hover state (interactive mode only) -->
         <circle
-          v-if="!selectedSet.has(p.id)"
+          v-if="!readonly && !selectedSet.has(p.id)"
           :cx="p.cx"
           :cy="p.cy"
           r="18"
           fill="none"
-          stroke="#FF5A36"
+          :stroke="activeColor"
           stroke-width="1.5"
           opacity="0"
           class="ctd-point-ring"
@@ -108,13 +110,27 @@ import {
 const VBW = VIEWBOX_W
 const VBH = VIEWBOX_H
 
-const props = defineProps<{
-  points: ExperimentPoint[]
-  pointOrder: number[]
-  selectedSet: Set<number>
-}>()
+const props = withDefaults(
+  defineProps<{
+    points: ExperimentPoint[]
+    pointOrder: number[]
+    selectedSet: Set<number>
+    readonly?: boolean
+    routeColor?: string
+    showSequenceNumbers?: boolean
+    activeSegmentRange?: [number, number] | null
+  }>(),
+  {
+    readonly: false,
+    routeColor: '#FF5A36',
+    showSequenceNumbers: true,
+    activeSegmentRange: null,
+  }
+)
 
 const emit = defineEmits<{ selectPoint: [id: number] }>()
+
+const activeColor = computed(() => props.routeColor || '#FF5A36')
 
 interface VBPoint {
   id: number
@@ -130,14 +146,29 @@ const vbPointMap = computed(() =>
   new Map(vbPoints.value.map((p) => [p.id, p]))
 )
 
-interface RouteSeg { x1: number; y1: number; x2: number; y2: number }
+interface RouteSeg {
+  x1: number
+  y1: number
+  x2: number
+  y2: number
+  isHighlighted: boolean
+}
 
 const routeSegments = computed<RouteSeg[]>(() => {
   const segs: RouteSeg[] = []
   for (let i = 0; i < props.pointOrder.length - 1; i++) {
     const a = vbPointMap.value.get(props.pointOrder[i])
     const b = vbPointMap.value.get(props.pointOrder[i + 1])
-    if (a && b) segs.push({ x1: a.cx, y1: a.cy, x2: b.cx, y2: b.cy })
+    if (a && b) {
+      let isHighlighted = false
+      if (props.activeSegmentRange) {
+        const [fromIdx, toIdx] = props.activeSegmentRange
+        if (i >= fromIdx && i < toIdx) {
+          isHighlighted = true
+        }
+      }
+      segs.push({ x1: a.cx, y1: a.cy, x2: b.cx, y2: b.cy, isHighlighted })
+    }
   }
   return segs
 })
@@ -155,7 +186,7 @@ function pointAriaLabel(p: VBPoint): string {
 }
 
 function onPointClick(id: number) {
-  if (props.selectedSet.has(id)) return
+  if (props.readonly || props.selectedSet.has(id)) return
   emit('selectPoint', id)
 }
 </script>

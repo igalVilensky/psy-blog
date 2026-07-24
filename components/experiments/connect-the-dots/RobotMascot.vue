@@ -26,24 +26,30 @@
         x="18" y="23"
         width="8" height="7"
         rx="2"
-        :fill="state === 'impressed' ? '#FF5A36' : '#3567D6'"
+        :fill="state === 'impressed' || state === 'surprised' ? '#FF5A36' : '#3567D6'"
         class="ctd-robot__eye"
       />
       <rect
         x="34" y="23"
         width="8" height="7"
         rx="2"
-        :fill="state === 'impressed' ? '#FF5A36' : '#3567D6'"
+        :fill="state === 'impressed' || state === 'surprised' ? '#FF5A36' : '#3567D6'"
         class="ctd-robot__eye"
       />
 
       <!-- Mouth — changes with state -->
-      <!-- idle: neutral line -->
-      <line v-if="state === 'idle'"    x1="22" y1="37" x2="38" y2="37" stroke="#6F6A61" stroke-width="1.5" stroke-linecap="round" />
+      <!-- idle / ready: neutral line -->
+      <line v-if="state === 'idle' || state === 'ready'" x1="22" y1="37" x2="38" y2="37" stroke="#6F6A61" stroke-width="1.5" stroke-linecap="round" />
       <!-- watching: small open rect -->
       <rect v-if="state === 'watching'" x="24" y="34" width="12" height="5" rx="2" fill="#6F6A61" />
-      <!-- impressed: smile arc -->
-      <path v-if="state === 'impressed'" d="M22 35 Q30 42 38 35" stroke="#FF5A36" stroke-width="2" stroke-linecap="round" fill="none" />
+      <!-- thinking: small circle mouth -->
+      <circle v-if="state === 'thinking'" cx="30" cy="36" r="2.5" fill="#3567D6" />
+      <!-- optimizing: active wave line -->
+      <path v-if="state === 'optimizing'" d="M22 36 Q26 32 30 36 T38 36" stroke="#FF5A36" stroke-width="1.5" stroke-linecap="round" fill="none" />
+      <!-- impressed / finished: smile arc -->
+      <path v-if="state === 'impressed' || state === 'finished'" d="M22 35 Q30 42 38 35" :stroke="state === 'impressed' ? '#FF5A36' : '#3567D6'" stroke-width="2" stroke-linecap="round" fill="none" />
+      <!-- surprised: open mouth circle -->
+      <circle v-if="state === 'surprised'" cx="30" cy="36" r="4" fill="#FF5A36" />
 
       <!-- Body -->
       <rect x="16" y="46" width="28" height="22" rx="4" fill="#FFFDF7" stroke="#D8D1C4" stroke-width="1.5" />
@@ -96,11 +102,18 @@ defineProps<{
 }
 
 /* State animations */
-.ctd-robot--watching .ctd-robot__svg {
+.ctd-robot--watching .ctd-robot__svg,
+.ctd-robot--thinking .ctd-robot__svg {
   animation: ctd-robot-bob 2s ease-in-out infinite;
 }
 
-.ctd-robot--impressed .ctd-robot__svg {
+.ctd-robot--optimizing .ctd-robot__svg {
+  animation: ctd-robot-bob 0.8s ease-in-out infinite;
+}
+
+.ctd-robot--impressed .ctd-robot__svg,
+.ctd-robot--finished .ctd-robot__svg,
+.ctd-robot--surprised .ctd-robot__svg {
   animation: ctd-robot-jump 0.4s ease;
 }
 

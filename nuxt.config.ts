@@ -39,6 +39,10 @@ export default defineNuxtConfig({
     "/": { prerender: true },
     "/about/**": { prerender: true },
     "/blog/**": { prerender: true },
+
+    "/experiments/connect-the-dots": {
+      prerender: true,
+    },
   },
 
   pwa: {

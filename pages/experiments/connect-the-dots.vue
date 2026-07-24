@@ -70,6 +70,45 @@
         />
       </div>
     </Transition>
+
+    <!-- ─── MACHINE INTRO PHASE ─────────────────────────────────────────────── -->
+    <Transition name="ctd-phase">
+      <div v-if="experiment.phase.value === 'machine-intro'" key="machine-intro" class="ctd-page__intro-wrap">
+        <MachineIntro @start="experiment.startMachineRun()" />
+      </div>
+    </Transition>
+
+    <!-- ─── MACHINE RUNNING PHASE ───────────────────────────────────────────── -->
+    <Transition name="ctd-phase">
+      <div v-if="experiment.phase.value === 'machine-running'" key="machine-running" class="ctd-page__main">
+        <MachineRunning
+          :points="experiment.points.value"
+          :visibleOrder="experiment.machineVisibleOrder.value"
+          :currentDistance="experiment.machineCurrentDistance.value"
+          :playbackStage="experiment.machinePlaybackStage.value"
+          :robotState="experiment.robotState.value"
+          :robotMessage="experiment.robotMessage.value"
+          :optimizationNote="experiment.machineOptimizationNote.value"
+          :activeSegmentRange="experiment.activeSegmentRange.value"
+          @viewResults="experiment.viewComparisonResults()"
+          @retryMachine="experiment.startMachineRun()"
+          @returnToHumanResult="experiment.phase.value = 'human-result'"
+        />
+      </div>
+    </Transition>
+
+    <!-- ─── COMPARISON PHASE ────────────────────────────────────────────────── -->
+    <Transition name="ctd-phase">
+      <div v-if="experiment.phase.value === 'comparison' && experiment.humanResult.value && experiment.machineResult.value" key="comparison" class="ctd-page__main">
+        <ExperimentComparison
+          :points="experiment.points.value"
+          :humanResult="experiment.humanResult.value"
+          :machineResult="experiment.machineResult.value"
+          @retrySameLayout="experiment.retrySameLayout()"
+          @retryNewLayout="experiment.retryNewLayout()"
+        />
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -79,6 +118,9 @@ import RouteBoard         from '~/components/experiments/connect-the-dots/RouteB
 import ExperimentControls from '~/components/experiments/connect-the-dots/ExperimentControls.vue'
 import HumanResult        from '~/components/experiments/connect-the-dots/HumanResult.vue'
 import RobotMascot        from '~/components/experiments/connect-the-dots/RobotMascot.vue'
+import MachineIntro       from '~/components/experiments/connect-the-dots/MachineIntro.vue'
+import MachineRunning     from '~/components/experiments/connect-the-dots/MachineRunning.vue'
+import ExperimentComparison from '~/components/experiments/connect-the-dots/ExperimentComparison.vue'
 import { useConnectTheDotsExperiment } from '~/composables/useConnectTheDotsExperiment'
 
 // ─── Disable app layout entirely ────────────────────────────────────────────

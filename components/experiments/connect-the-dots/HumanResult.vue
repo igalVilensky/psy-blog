@@ -39,21 +39,16 @@
       <button
         id="ctd-continue-btn"
         class="ctd-btn ctd-btn--ghost"
-        @click="onContinue"
+        @click="$emit('continue')"
       >
         CONTINUE
       </button>
     </div>
-
-    <!-- Machine round stub message -->
-    <p v-if="showMachineStub" class="ctd-result__stub">
-      The machine round will be added next.
-    </p>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import RouteBoard from './RouteBoard.vue'
 import type { ExperimentPoint, HumanRouteResult } from '~/utils/connectTheDots'
 import { formatDistance, formatDuration } from '~/utils/connectTheDots'
@@ -63,22 +58,15 @@ const props = defineProps<{
   points: ExperimentPoint[]
 }>()
 
-const emit = defineEmits<{
+defineEmits<{
   tryAgain: []
   continue: []
 }>()
-
-const showMachineStub = ref(false)
 
 const distanceFormatted = computed(() => formatDistance(props.result.distance))
 const durationFormatted = computed(() => formatDuration(props.result.durationMs))
 
 const allSelected = computed(() => new Set(props.result.pointOrder))
-
-function onContinue() {
-  showMachineStub.value = true
-  emit('continue')
-}
 </script>
 
 <style scoped>
