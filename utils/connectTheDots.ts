@@ -34,6 +34,42 @@ export interface MachineRouteResult {
   computationMs: number
 }
 
+export type CollaborationOutcome =
+  | 'better'
+  | 'worse'
+  | 'equal'
+
+export interface CollaborationEvaluation {
+  candidateOrder: number[]
+  currentDistance: number
+  candidateDistance: number
+  difference: number
+  percentageDifference: number
+  outcome: CollaborationOutcome
+}
+
+export interface CollaborationChange {
+  beforeOrder: number[]
+  candidateOrder: number[]
+  beforeDistance: number
+  candidateDistance: number
+  fromIndex: number
+  toIndex: number
+  outcome: CollaborationOutcome
+  accepted: boolean
+}
+
+export interface CollaborationResult {
+  initialOrder: number[]
+  finalOrder: number[]
+  initialDistance: number
+  finalDistance: number
+  acceptedChanges: number
+  rejectedChanges: number
+  totalSaved: number
+  durationMs: number
+}
+
 export type ExperimentPhase =
   | 'intro'
   | 'human'
@@ -41,6 +77,9 @@ export type ExperimentPhase =
   | 'machine-intro'
   | 'machine-running'
   | 'comparison'
+  | 'collaboration-intro'
+  | 'collaboration'
+  | 'collaboration-result'
 
 export type RobotState =
   | 'idle'
@@ -159,7 +198,102 @@ export function formatDuration(ms: number): string {
 // ─── Machine Algorithms ────────────────────────────────────────────────────────
 
 const IMPROVEMENT_EPSILON = 0.001
+export const COLLABORATION_EPSILON = 0.001
 const MAX_2OPT_PASSES = 100
+
+/**
+ * Validates that a route order contains every point ID exactly once.
+ * This checks against the actual IDs present in points, not sequential ID
+ * assumptions.
+ */
+export function validateRouteOrder(
+  points: ExperimentPoint[],
+  order: number[]
+): boolean {
+  if (!Array.isArray(points) || !Array.isArray(order)) return false
+  if (order.length !== points.length) return false
+
+  const validPointIds = new Set<number>()
+  for (const point of points) {
+    if (!point || typeof point.id !== 'number' || validPointIds.has(point.id)) {
+      return false
+    }
+    validPointIds.add(point.id)
+  }
+
+  const seen = new Set<number>()
+  for (const id of order) {
+    if (!validPointIds.has(id) || seen.has(id)) {
+      return false
+    }
+    seen.add(id)
+  }
+
+  return seen.size === points.length
+}
+
+/**
+ * Returns a new route with the inclusive section reversed.
+ * Invalid or identical indices safely return a copied source route.
+ */
+export function reverseRouteSection(
+  order: number[],
+  fromIndex: number,
+  toIndex: number
+): number[] {
+  if (!Array.isArray(order)) return []
+  if (!Number.isInteger(fromIndex) || !Number.isInteger(toIndex)) {
+    return [...order]
+  }
+
+  const from = Math.min(fromIndex, toIndex)
+  const to = Math.max(fromIndex, toIndex)
+
+  if (
+    from === to ||
+    from < 0 ||
+    to >= order.length
+  ) {
+    return [...order]
+  }
+
+  return [
+    ...order.slice(0, from),
+    ...order.slice(from, to + 1).reverse(),
+    ...order.slice(to + 1),
+  ]
+}
+
+export function evaluateCollaborationChange(
+  points: ExperimentPoint[],
+  currentOrder: number[],
+  candidateOrder: number[]
+): CollaborationEvaluation {
+  const safeCandidateOrder = [...candidateOrder]
+  const currentDistance = getRouteDistance(points, currentOrder)
+  const candidateDistance = validateRouteOrder(points, safeCandidateOrder)
+    ? getRouteDistance(points, safeCandidateOrder)
+    : currentDistance
+  const difference = currentDistance - candidateDistance
+  const percentageDifference =
+    currentDistance > 0 ? (difference / currentDistance) * 100 : 0
+
+  let outcome: CollaborationOutcome = 'equal'
+  if (candidateDistance < currentDistance - COLLABORATION_EPSILON) {
+    outcome = 'better'
+  } else if (candidateDistance > currentDistance + COLLABORATION_EPSILON) {
+    outcome = 'worse'
+  }
+
+  return {
+    candidateOrder: safeCandidateOrder,
+    currentDistance,
+    candidateDistance,
+    difference,
+    percentageDifference,
+    outcome,
+  }
+}
 
 /**
  * Builds a nearest-neighbor open path starting from startPointId.
@@ -343,30 +477,11 @@ export function validateMachineRoute(
 ): boolean {
   if (!Array.isArray(points) || !result) return false
 
-  // Verify that the point collection itself does not contain duplicate IDs
-  const validPointIds = new Set<number>()
-  for (const point of points) {
-    if (!point || typeof point.id !== 'number' || validPointIds.has(point.id)) {
-      return false
-    }
-    validPointIds.add(point.id)
-  }
-
   const checkRoute = (r: RouteResult) => {
     if (!r || !Array.isArray(r.pointOrder)) return false
-    if (r.pointOrder.length !== points.length) return false
     if (typeof r.distance !== 'number' || !Number.isFinite(r.distance) || r.distance < 0) return false
-
-    const seen = new Set<number>()
-    for (const id of r.pointOrder) {
-      if (!validPointIds.has(id) || seen.has(id)) {
-        return false
-      }
-      seen.add(id)
-    }
-    return seen.size === points.length
+    return validateRouteOrder(points, r.pointOrder)
   }
 
   return checkRoute(result.initial) && checkRoute(result.optimized)
 }
-

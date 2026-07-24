@@ -104,6 +104,68 @@
           :points="experiment.points.value"
           :humanResult="experiment.humanResult.value"
           :machineResult="experiment.machineResult.value"
+          @improveTogether="experiment.continueToCollaborationIntro()"
+          @retrySameLayout="experiment.retrySameLayout()"
+          @retryNewLayout="experiment.retryNewLayout()"
+        />
+      </div>
+    </Transition>
+
+    <!-- ─── COLLABORATION INTRO PHASE ──────────────────────────────────────── -->
+    <Transition name="ctd-phase">
+      <div v-if="experiment.phase.value === 'collaboration-intro'" key="collaboration-intro" class="ctd-page__intro-wrap">
+        <CollaborationIntro @start="experiment.startCollaboration()" />
+      </div>
+    </Transition>
+
+    <!-- ─── COLLABORATION ROUND PHASE ──────────────────────────────────────── -->
+    <Transition name="ctd-phase">
+      <div v-if="experiment.phase.value === 'collaboration'" key="collaboration" class="ctd-page__main">
+        <CollaborationRound
+          :points="experiment.points.value"
+          :collaborationOrder="experiment.collaborationOrder.value"
+          :selectedSet="experiment.collaborationSelectedSet.value"
+          :selectedEditIndices="experiment.collaborationSelectedEditIndices.value"
+          :candidateOrder="experiment.collaborationCandidateOrder.value"
+          :currentDistance="experiment.collaborationCurrentDistance.value"
+          :candidateDistance="experiment.collaborationCandidateDistance.value"
+          :candidateDifference="experiment.collaborationCandidateDifference.value"
+          :candidatePercentage="experiment.collaborationCandidatePercentage.value"
+          :feedback="experiment.collaborationFeedback.value"
+          :acceptedChanges="experiment.collaborationAcceptedChanges.value"
+          :canUndo="experiment.canUndoCollaboration.value"
+          :canFinish="experiment.canFinishCollaboration.value"
+          :activeSegmentRange="experiment.collaborationActiveSegmentRange.value"
+          :robotState="experiment.robotState.value"
+          :robotMessage="experiment.robotMessage.value"
+          @selectRouteIndex="experiment.selectCollaborationRouteIndex($event)"
+          @acceptCandidate="experiment.acceptCollaborationCandidate()"
+          @rejectCandidate="experiment.rejectCollaborationCandidate()"
+          @undoAccepted="experiment.undoLastCollaborationChange()"
+          @resetToMachine="experiment.resetCollaborationToMachineRoute()"
+          @finish="experiment.finishCollaboration()"
+        />
+      </div>
+    </Transition>
+
+    <!-- ─── FINAL COLLABORATION RESULT PHASE ───────────────────────────────── -->
+    <Transition name="ctd-phase">
+      <div
+        v-if="
+          experiment.phase.value === 'collaboration-result' &&
+          experiment.humanResult.value &&
+          experiment.machineResult.value &&
+          experiment.collaborationResult.value
+        "
+        key="collaboration-result"
+        class="ctd-page__main"
+      >
+        <ExperimentFinalComparison
+          :points="experiment.points.value"
+          :humanResult="experiment.humanResult.value"
+          :machineResult="experiment.machineResult.value"
+          :collaborationResult="experiment.collaborationResult.value"
+          @collaborateAgain="experiment.collaborateAgain()"
           @retrySameLayout="experiment.retrySameLayout()"
           @retryNewLayout="experiment.retryNewLayout()"
         />
@@ -121,6 +183,9 @@ import RobotMascot        from '~/components/experiments/connect-the-dots/RobotM
 import MachineIntro       from '~/components/experiments/connect-the-dots/MachineIntro.vue'
 import MachineRunning     from '~/components/experiments/connect-the-dots/MachineRunning.vue'
 import ExperimentComparison from '~/components/experiments/connect-the-dots/ExperimentComparison.vue'
+import CollaborationIntro from '~/components/experiments/connect-the-dots/CollaborationIntro.vue'
+import CollaborationRound from '~/components/experiments/connect-the-dots/CollaborationRound.vue'
+import ExperimentFinalComparison from '~/components/experiments/connect-the-dots/ExperimentFinalComparison.vue'
 import { useConnectTheDotsExperiment } from '~/composables/useConnectTheDotsExperiment'
 
 // ─── Disable app layout entirely ────────────────────────────────────────────

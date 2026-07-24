@@ -73,8 +73,15 @@
     <!-- Actions -->
     <div class="ctd-comparison__actions">
       <button
+        id="ctd-improve-together-btn"
+        class="ctd-btn ctd-btn--machine"
+        @click="$emit('improveTogether')"
+      >
+        IMPROVE IT TOGETHER
+      </button>
+      <button
         id="ctd-retry-same-btn"
-        class="ctd-btn ctd-btn--primary"
+        class="ctd-btn ctd-btn--ghost"
         @click="$emit('retrySameLayout')"
       >
         TRY SAME LAYOUT AGAIN
@@ -107,6 +114,7 @@ const props = defineProps<{
 }>()
 
 defineEmits<{
+  improveTogether: []
   retrySameLayout: []
   retryNewLayout: []
 }>()
@@ -360,6 +368,21 @@ const subtextText = computed(() => {
 
 .ctd-btn--primary:focus-visible {
   outline: 2px solid var(--ctd-primary);
+  outline-offset: 3px;
+}
+
+.ctd-btn--machine {
+  background: var(--ctd-robot);
+  color: #fff;
+}
+
+.ctd-btn--machine:hover {
+  background: #2852B5;
+  transform: translateY(-1px);
+}
+
+.ctd-btn--machine:focus-visible {
+  outline: 2px solid var(--ctd-robot);
   outline-offset: 3px;
 }
 

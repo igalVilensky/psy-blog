@@ -56,6 +56,28 @@
         />
       </g>
 
+      <!-- Candidate preview route -->
+      <g
+        v-if="candidateOrder"
+        role="presentation"
+        aria-hidden="true"
+      >
+        <line
+          v-for="(segment, index) in candidateSegments"
+          :key="`candidate-segment-${index}`"
+          :x1="segment.x1"
+          :y1="segment.y1"
+          :x2="segment.x2"
+          :y2="segment.y2"
+          stroke="#8B5CF6"
+          :stroke-width="segment.isHighlighted ? 4 : 2.5"
+          :opacity="segment.isHighlighted ? 0.95 : 0.5"
+          stroke-linecap="round"
+          stroke-dasharray="10 8"
+          class="ctd-route-line ctd-route-line--candidate"
+        />
+      </g>
+
       <!-- Points -->
       <g
         v-for="point in vbPoints"
@@ -71,10 +93,10 @@
           tabindex="0"
           role="button"
           :aria-label="pointAriaLabel(point)"
-          :aria-pressed="selectedSet.has(point.id)"
+          :aria-pressed="isPointPressed(point.id)"
           :class="[
             'ctd-point-hit',
-            selectedSet.has(point.id)
+            isPointUnavailable(point.id)
               ? 'ctd-point-hit--selected'
               : '',
           ]"
@@ -87,13 +109,14 @@
         <circle
           :cx="point.cx"
           :cy="point.cy"
-          :r="selectedSet.has(point.id) ? 14 : 11"
-          :fill="selectedSet.has(point.id) ? activeColor : '#FFFDF7'"
-          :stroke="selectedSet.has(point.id) ? activeColor : '#6F6A61'"
-          :stroke-width="selectedSet.has(point.id) ? 2 : 1.5"
+          :r="pointRadius(point.id)"
+          :fill="pointFill(point.id)"
+          :stroke="pointStroke(point.id)"
+          :stroke-width="isEditBoundary(point.id) ? 4 : selectedSet.has(point.id) ? 2 : 1.5"
           class="ctd-point-dot"
           :class="{
             'ctd-point-dot--selected': selectedSet.has(point.id),
+            'ctd-point-dot--boundary': isEditBoundary(point.id),
           }"
           aria-hidden="true"
         />
@@ -120,7 +143,7 @@
 
         <!-- Hover ring -->
         <circle
-          v-if="!readonly && !selectedSet.has(point.id)"
+          v-if="!readonly && !isPointUnavailable(point.id)"
           :cx="point.cx"
           :cy="point.cy"
           r="18"
@@ -157,17 +180,24 @@ const props = withDefaults(
     routeColor?: string
     showSequenceNumbers?: boolean
     activeSegmentRange?: [number, number] | null
+    editMode?: 'none' | 'segment'
+    selectedEditIndices?: number[]
+    candidateOrder?: number[] | null
   }>(),
   {
     readonly: false,
     routeColor: '#FF5A36',
     showSequenceNumbers: true,
     activeSegmentRange: null,
+    editMode: 'none',
+    selectedEditIndices: () => [],
+    candidateOrder: null,
   },
 )
 
 const emit = defineEmits<{
   selectPoint: [id: number]
+  selectRouteIndex: [index: number]
 }>()
 
 /**
@@ -218,20 +248,41 @@ const vbPointMap = computed(
 )
 
 const routeSegments = computed<RouteSegment[]>(
-  () => {
+  () => buildSegments(props.pointOrder),
+)
+
+const candidateSegments = computed<RouteSegment[]>(
+  () => buildSegments(props.candidateOrder || []),
+)
+
+const selectedEditIndexSet = computed(
+  () => new Set(props.selectedEditIndices),
+)
+
+const pointRouteIndexMap = computed(
+  () =>
+    new Map(
+      props.pointOrder.map((id, index) => [
+        id,
+        index,
+      ]),
+    ),
+)
+
+function buildSegments(order: number[]): RouteSegment[] {
     const segments: RouteSegment[] = []
 
     for (
       let index = 0;
-      index < props.pointOrder.length - 1;
+      index < order.length - 1;
       index++
     ) {
       const firstPoint = vbPointMap.value.get(
-        props.pointOrder[index],
+        order[index],
       )
 
       const secondPoint = vbPointMap.value.get(
-        props.pointOrder[index + 1],
+        order[index + 1],
       )
 
       if (!firstPoint || !secondPoint) {
@@ -259,8 +310,7 @@ const routeSegments = computed<RouteSegment[]>(
     }
 
     return segments
-  },
-)
+}
 
 function getOrder(id: number): number {
   return props.pointOrder.indexOf(id) + 1
@@ -269,6 +319,20 @@ function getOrder(id: number): number {
 function pointAriaLabel(
   point: VBPoint,
 ): string {
+  const routeIndex = pointRouteIndexMap.value.get(point.id)
+
+  if (props.editMode === 'segment' && routeIndex !== undefined) {
+    if (selectedEditIndexSet.value.has(routeIndex)) {
+      return `Route position ${routeIndex + 1}, point ${point.id + 1}, selected as boundary.`
+    }
+
+    if (props.selectedEditIndices.length === 0) {
+      return `Route position ${routeIndex + 1}, point ${point.id + 1}. Select as first boundary.`
+    }
+
+    return `Route position ${routeIndex + 1}, point ${point.id + 1}. Select as second boundary.`
+  }
+
   if (props.selectedSet.has(point.id)) {
     return `Point ${point.id + 1}, selected as number ${getOrder(point.id)}`
   }
@@ -277,14 +341,55 @@ function pointAriaLabel(
 }
 
 function onPointClick(id: number) {
-  if (
-    props.readonly ||
-    props.selectedSet.has(id)
-  ) {
+  if (props.readonly) {
+    return
+  }
+
+  if (props.editMode === 'segment') {
+    const routeIndex = pointRouteIndexMap.value.get(id)
+    if (routeIndex !== undefined) {
+      emit('selectRouteIndex', routeIndex)
+    }
+    return
+  }
+
+  if (props.selectedSet.has(id)) {
     return
   }
 
   emit('selectPoint', id)
+}
+
+function isEditBoundary(id: number): boolean {
+  const routeIndex = pointRouteIndexMap.value.get(id)
+  return routeIndex !== undefined && selectedEditIndexSet.value.has(routeIndex)
+}
+
+function isPointUnavailable(id: number): boolean {
+  return props.editMode !== 'segment' && props.selectedSet.has(id)
+}
+
+function isPointPressed(id: number): boolean {
+  if (props.editMode === 'segment') {
+    return isEditBoundary(id)
+  }
+
+  return props.selectedSet.has(id)
+}
+
+function pointRadius(id: number): number {
+  if (isEditBoundary(id)) return 17
+  return props.selectedSet.has(id) ? 14 : 11
+}
+
+function pointFill(id: number): string {
+  if (isEditBoundary(id)) return '#8B5CF6'
+  return props.selectedSet.has(id) ? activeColor.value : '#FFFDF7'
+}
+
+function pointStroke(id: number): string {
+  if (isEditBoundary(id)) return '#FFFDF7'
+  return props.selectedSet.has(id) ? activeColor.value : '#6F6A61'
 }
 </script>
 
